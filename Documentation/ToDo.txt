@@ -1,0 +1,6 @@
+bitbucket
+
+20130116
+Optional border between East Africa - Middle East.
+Optional rules for random area assigning or manual claim of area (standard / alternate)
+Optional movement of armies when winning
