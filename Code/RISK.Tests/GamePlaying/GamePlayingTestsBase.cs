@@ -22,7 +22,7 @@ namespace RISK.Tests.GamePlaying
         {
             _game = new Game();
 
-            CreateHumanUsers(humanUsers).Apply(_game.AddUser);
+            //CreateHumanUsers(humanUsers).Apply(_game.AddUser);
 
             return This;
         }

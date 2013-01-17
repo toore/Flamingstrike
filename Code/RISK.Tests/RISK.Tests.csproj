@@ -33,6 +33,9 @@
     <Reference Include="FluentAssertions">
       <HintPath>..\..\packages\FluentAssertions.2.0.0.1\lib\net45\FluentAssertions.dll</HintPath>
     </Reference>
+    <Reference Include="NSpec">
+      <HintPath>..\packages\nspec.0.9.64\lib\NSpec.dll</HintPath>
+    </Reference>
     <Reference Include="nunit.framework">
       <HintPath>..\..\packages\NUnit.2.6.2\lib\nunit.framework.dll</HintPath>
     </Reference>
@@ -48,6 +51,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DebuggerShim.cs" />
     <Compile Include="GamePlaying\AcceptanceTestsBase.cs" />
     <Compile Include="AreaProviderTests.cs" />
     <Compile Include="GamePlaying\InTurnGamePlayingTests.cs" />
