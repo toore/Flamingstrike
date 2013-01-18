@@ -1,11 +1,9 @@
-﻿using System.Collections.Generic;
-
-namespace RISK.Domain.Entities
+﻿namespace RISK.Domain.Entities
 {
     public interface IArea
     {
-        string TranslationKey { get; }
-        Continent Continent { get; }
-        IEnumerable<IArea> Neighbors { get; }
+        IUser Owner { get; set; }
+        int Armies { get; set; }
+        bool HasOwner { get; }
     }
 }

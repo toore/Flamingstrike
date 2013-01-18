@@ -43,16 +43,20 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Caliburn.Micro\ExtensionMethods.cs" />
-    <Compile Include="Entities\Area.cs" />
+    <Compile Include="Entities\AreaDefinition.cs" />
     <Compile Include="Entities\Continent.cs" />
     <Compile Include="Entities\HumanUser.cs" />
     <Compile Include="Entities\IArea.cs" />
+    <Compile Include="Entities\IAreaDefinition.cs" />
     <Compile Include="Entities\IUser.cs" />
-    <Compile Include="EntityProviders\AreaProvider.cs" />
+    <Compile Include="EntityProviders\AreaDefinitionProvider.cs" />
     <Compile Include="EntityProviders\ContinentProvider.cs" />
-    <Compile Include="EntityProviders\IAreaProvider.cs" />
+    <Compile Include="EntityProviders\IAreaDefinitionProvider.cs" />
     <Compile Include="EntityProviders\IContinentProvider.cs" />
+    <Compile Include="ITurn.cs" />
+    <Compile Include="WorldMap.cs" />
     <Compile Include="Game.cs" />
+    <Compile Include="IWorldMap.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

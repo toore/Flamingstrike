@@ -11,7 +11,7 @@ namespace RISK.Tests
     [TestFixture]
     public class AreaProviderTests
     {
-        private AreaProvider _areaProvider;
+        private AreaDefinitionProvider _areaDefinitionProvider;
         private readonly Continent _northAmerica = new Continent();
         private readonly Continent _southAmerica = new Continent();
         private readonly Continent _europe = new Continent();
@@ -30,7 +30,7 @@ namespace RISK.Tests
             continentProvider.Stub(x => x.Asia).Return(_asia);
             continentProvider.Stub(x => x.Australia).Return(_australia);
 
-            _areaProvider = new AreaProvider(continentProvider);
+            _areaDefinitionProvider = new AreaDefinitionProvider(continentProvider);
         }
 
         [Test]
@@ -205,240 +205,240 @@ namespace RISK.Tests
             GetAll().Should().Contain(expectedAreas);
         }
 
-        private void AssertNeighbors(IArea actualArea, params IArea[] expectedNeighbors)
+        private void AssertNeighbors(IAreaDefinition actualAreaDefinition, params IAreaDefinition[] expectedNeighbors)
         {
-            actualArea.Neighbors.Should().BeEquivalentTo(expectedNeighbors.ToList(),
-                actualArea.TranslationKey + " should have neighbors " + string.Join(", ", expectedNeighbors.Select(x => x.TranslationKey)));
+            actualAreaDefinition.Neighbors.Should().BeEquivalentTo(expectedNeighbors.ToList(),
+                actualAreaDefinition.TranslationKey + " should have neighbors " + string.Join(", ", expectedNeighbors.Select(x => x.TranslationKey)));
 
             foreach (var expectedNeighbor in expectedNeighbors)
             {
-                expectedNeighbor.Neighbors.Should().Contain(actualArea,
-                    expectedNeighbor.TranslationKey + " should recognize neighbor " + actualArea.TranslationKey +
+                expectedNeighbor.Neighbors.Should().Contain(actualAreaDefinition,
+                    expectedNeighbor.TranslationKey + " should recognize neighbor " + actualAreaDefinition.TranslationKey +
                     " but has neighbors: " + string.Join(", ", expectedNeighbor.Neighbors.Select(x => x.TranslationKey)));
             }
         }
 
-        private void AssertAreasInContinent(Continent continent, int expectedAreasCount, params IArea[] expectedAreas)
+        private void AssertAreasInContinent(Continent continent, int expectedAreasCount, params IAreaDefinition[] expectedAreasDefinition)
         {
             var actualAreas = GetAll().Where(x => x.Continent == continent).ToList();
 
             actualAreas.Count.Should().Be(expectedAreasCount);
-            actualAreas.Should().BeEquivalentTo(expectedAreas.ToList());
+            actualAreas.Should().BeEquivalentTo(expectedAreasDefinition.ToList());
         }
 
-        private IEnumerable<IArea> GetAll()
+        private IEnumerable<IAreaDefinition> GetAll()
         {
-            return _areaProvider.GetAll();
+            return _areaDefinitionProvider.GetAll();
         }
 
-        private IArea Alaska
+        private IAreaDefinition Alaska
         {
-            get { return _areaProvider.Alaska; }
+            get { return _areaDefinitionProvider.Alaska; }
         }
 
-        private IArea Alberta
+        private IAreaDefinition Alberta
         {
-            get { return _areaProvider.Alberta; }
+            get { return _areaDefinitionProvider.Alberta; }
         }
 
-        private IArea NewGuinea
+        private IAreaDefinition NewGuinea
         {
-            get { return _areaProvider.NewGuinea; }
+            get { return _areaDefinitionProvider.NewGuinea; }
         }
 
-        private IArea Indonesia
+        private IAreaDefinition Indonesia
         {
-            get { return _areaProvider.Indonesia; }
+            get { return _areaDefinitionProvider.Indonesia; }
         }
 
-        private IArea EasternAustralia
+        private IAreaDefinition EasternAustralia
         {
-            get { return _areaProvider.EasternAustralia; }
+            get { return _areaDefinitionProvider.EasternAustralia; }
         }
 
-        private IArea Yakutsk
+        private IAreaDefinition Yakutsk
         {
-            get { return _areaProvider.Yakutsk; }
+            get { return _areaDefinitionProvider.Yakutsk; }
         }
 
-        private IArea Ural
+        private IAreaDefinition Ural
         {
-            get { return _areaProvider.Ural; }
+            get { return _areaDefinitionProvider.Ural; }
         }
 
-        private IArea Siberia
+        private IAreaDefinition Siberia
         {
-            get { return _areaProvider.Siberia; }
+            get { return _areaDefinitionProvider.Siberia; }
         }
 
-        private IArea Siam
+        private IAreaDefinition Siam
         {
-            get { return _areaProvider.Siam; }
+            get { return _areaDefinitionProvider.Siam; }
         }
 
-        private IArea Mongolia
+        private IAreaDefinition Mongolia
         {
-            get { return _areaProvider.Mongolia; }
+            get { return _areaDefinitionProvider.Mongolia; }
         }
 
-        private IArea MiddleEast
+        private IAreaDefinition MiddleEast
         {
-            get { return _areaProvider.MiddleEast; }
+            get { return _areaDefinitionProvider.MiddleEast; }
         }
 
-        private IArea Kamchatka
+        private IAreaDefinition Kamchatka
         {
-            get { return _areaProvider.Kamchatka; }
+            get { return _areaDefinitionProvider.Kamchatka; }
         }
 
-        private IArea Japan
+        private IAreaDefinition Japan
         {
-            get { return _areaProvider.Japan; }
+            get { return _areaDefinitionProvider.Japan; }
         }
 
-        private IArea Irkutsk
+        private IAreaDefinition Irkutsk
         {
-            get { return _areaProvider.Irkutsk; }
+            get { return _areaDefinitionProvider.Irkutsk; }
         }
 
-        private IArea India
+        private IAreaDefinition India
         {
-            get { return _areaProvider.India; }
+            get { return _areaDefinitionProvider.India; }
         }
 
-        private IArea China
+        private IAreaDefinition China
         {
-            get { return _areaProvider.China; }
+            get { return _areaDefinitionProvider.China; }
         }
 
-        private IArea Afghanistan
+        private IAreaDefinition Afghanistan
         {
-            get { return _areaProvider.Afghanistan; }
+            get { return _areaDefinitionProvider.Afghanistan; }
         }
 
-        private IArea SouthAfrica
+        private IAreaDefinition SouthAfrica
         {
-            get { return _areaProvider.SouthAfrica; }
+            get { return _areaDefinitionProvider.SouthAfrica; }
         }
 
-        private IArea NorthAfrica
+        private IAreaDefinition NorthAfrica
         {
-            get { return _areaProvider.NorthAfrica; }
+            get { return _areaDefinitionProvider.NorthAfrica; }
         }
 
-        private IArea Madagascar
+        private IAreaDefinition Madagascar
         {
-            get { return _areaProvider.Madagascar; }
+            get { return _areaDefinitionProvider.Madagascar; }
         }
 
-        private IArea Egypt
+        private IAreaDefinition Egypt
         {
-            get { return _areaProvider.Egypt; }
+            get { return _areaDefinitionProvider.Egypt; }
         }
 
-        private IArea EastAfrica
+        private IAreaDefinition EastAfrica
         {
-            get { return _areaProvider.EastAfrica; }
+            get { return _areaDefinitionProvider.EastAfrica; }
         }
 
-        private IArea Congo
+        private IAreaDefinition Congo
         {
-            get { return _areaProvider.Congo; }
+            get { return _areaDefinitionProvider.Congo; }
         }
 
-        private IArea WesternEurope
+        private IAreaDefinition WesternEurope
         {
-            get { return _areaProvider.WesternEurope; }
+            get { return _areaDefinitionProvider.WesternEurope; }
         }
 
-        private IArea Ukraine
+        private IAreaDefinition Ukraine
         {
-            get { return _areaProvider.Ukraine; }
+            get { return _areaDefinitionProvider.Ukraine; }
         }
 
-        private IArea SouthernEurope
+        private IAreaDefinition SouthernEurope
         {
-            get { return _areaProvider.SouthernEurope; }
+            get { return _areaDefinitionProvider.SouthernEurope; }
         }
 
-        private IArea Scandinavia
+        private IAreaDefinition Scandinavia
         {
-            get { return _areaProvider.Scandinavia; }
+            get { return _areaDefinitionProvider.Scandinavia; }
         }
 
-        private IArea NorthernEurope
+        private IAreaDefinition NorthernEurope
         {
-            get { return _areaProvider.NorthernEurope; }
+            get { return _areaDefinitionProvider.NorthernEurope; }
         }
 
-        private IArea Iceland
+        private IAreaDefinition Iceland
         {
-            get { return _areaProvider.Iceland; }
+            get { return _areaDefinitionProvider.Iceland; }
         }
 
-        private IArea GreatBritain
+        private IAreaDefinition GreatBritain
         {
-            get { return _areaProvider.GreatBritain; }
+            get { return _areaDefinitionProvider.GreatBritain; }
         }
 
-        private IArea Venezuela
+        private IAreaDefinition Venezuela
         {
-            get { return _areaProvider.Venezuela; }
+            get { return _areaDefinitionProvider.Venezuela; }
         }
 
-        private IArea Peru
+        private IAreaDefinition Peru
         {
-            get { return _areaProvider.Peru; }
+            get { return _areaDefinitionProvider.Peru; }
         }
 
-        private IArea Brazil
+        private IAreaDefinition Brazil
         {
-            get { return _areaProvider.Brazil; }
+            get { return _areaDefinitionProvider.Brazil; }
         }
 
-        private IArea Argentina
+        private IAreaDefinition Argentina
         {
-            get { return _areaProvider.Argentina; }
+            get { return _areaDefinitionProvider.Argentina; }
         }
 
-        private IArea WesternUnitedStates
+        private IAreaDefinition WesternUnitedStates
         {
-            get { return _areaProvider.WesternUnitedStates; }
+            get { return _areaDefinitionProvider.WesternUnitedStates; }
         }
 
-        private IArea Quebec
+        private IAreaDefinition Quebec
         {
-            get { return _areaProvider.Quebec; }
+            get { return _areaDefinitionProvider.Quebec; }
         }
 
-        private IArea Ontario
+        private IAreaDefinition Ontario
         {
-            get { return _areaProvider.Ontario; }
+            get { return _areaDefinitionProvider.Ontario; }
         }
 
-        private IArea NorthwestTerritory
+        private IAreaDefinition NorthwestTerritory
         {
-            get { return _areaProvider.NorthwestTerritory; }
+            get { return _areaDefinitionProvider.NorthwestTerritory; }
         }
 
-        private IArea Greenland
+        private IAreaDefinition Greenland
         {
-            get { return _areaProvider.Greenland; }
+            get { return _areaDefinitionProvider.Greenland; }
         }
 
-        private IArea EasternUnitedStates
+        private IAreaDefinition EasternUnitedStates
         {
-            get { return _areaProvider.EasternUnitedStates; }
+            get { return _areaDefinitionProvider.EasternUnitedStates; }
         }
 
-        private IArea CentralAmerica
+        private IAreaDefinition CentralAmerica
         {
-            get { return _areaProvider.CentralAmerica; }
+            get { return _areaDefinitionProvider.CentralAmerica; }
         }
 
-        private IArea WesternAustralia
+        private IAreaDefinition WesternAustralia
         {
-            get { return _areaProvider.WesternAustralia; }
+            get { return _areaDefinitionProvider.WesternAustralia; }
         }
     }
 }

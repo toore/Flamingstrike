@@ -2,26 +2,26 @@
 
 namespace RISK.Domain.Entities
 {
-    public class Area : IArea
+    public class AreaDefinition : IAreaDefinition
     {
-        private readonly List<Area> _neighbors;
+        private readonly List<AreaDefinition> _neighbors;
 
-        public Area(string name, Continent continent)
+        public AreaDefinition(string name, Continent continent)
         {
             TranslationKey = name;
             Continent = continent;
-            _neighbors = new List<Area>();
+            _neighbors = new List<AreaDefinition>();
         }
 
         public string TranslationKey { get; private set; }
         public Continent Continent { get; private set; }
 
-        public IEnumerable<IArea> Neighbors
+        public IEnumerable<IAreaDefinition> Neighbors
         {
             get { return _neighbors; }
         }
 
-        public void AddNeighbors(params Area[] neighbors)
+        public void AddNeighbors(params AreaDefinition[] neighbors)
         {
             _neighbors.AddRange(neighbors);
         }

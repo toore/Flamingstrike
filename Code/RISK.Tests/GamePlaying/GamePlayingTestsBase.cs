@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using Caliburn.Micro;
 using NUnit.Framework;
 using RISK.Domain;
 using RISK.Domain.Entities;
@@ -7,15 +6,17 @@ using RISK.Domain.EntityProviders;
 
 namespace RISK.Tests.GamePlaying
 {
+    
+
     public class GamePlayingTestsBase : AcceptanceTestsBase<InTurnGamePlayingTests>
     {
-        private IAreaProvider _areaProvider;
+        private IAreaDefinitionProvider _areaDefinitionProvider;
         private Game _game;
 
         [SetUp]
         public void SetUp()
         {
-            _areaProvider = new AreaProvider(new ContinentProvider());
+            _areaDefinitionProvider = new AreaDefinitionProvider(new ContinentProvider());
         }
 
         protected InTurnGamePlayingTests new_game_with(int humanUsers)
@@ -35,14 +36,14 @@ namespace RISK.Tests.GamePlaying
             }
         }
 
-        protected IArea Brazil
+        protected IAreaDefinition Brazil
         {
-            get { return _areaProvider.Brazil; }
+            get { return _areaDefinitionProvider.Brazil; }
         }
 
-        protected IArea NorthAfrica
+        protected IAreaDefinition NorthAfrica
         {
-            get { return _areaProvider.NorthAfrica; }
+            get { return _areaDefinitionProvider.NorthAfrica; }
         }
     }
 }

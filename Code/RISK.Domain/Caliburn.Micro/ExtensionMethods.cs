@@ -1,11 +1,11 @@
-﻿namespace Caliburn.Micro
-{
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Linq.Expressions;
-    using System.Reflection;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Reflection;
 
+namespace RISK.Domain.Caliburn.Micro
+{
     /// <summary>
     /// Generic extension methods used by the framework.
     /// </summary>

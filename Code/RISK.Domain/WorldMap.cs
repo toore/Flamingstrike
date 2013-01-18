@@ -1,10 +1,11 @@
 ﻿using System;
+using RISK.Domain.Entities;
 
 namespace RISK.Domain
 {
-    public class Game
+    public class WorldMap : IWorldMap
     {
-        public ITurn GetNextTurn()
+        public IArea GetArea(IAreaDefinition areaDefinition)
         {
             throw new NotImplementedException();
         }
