@@ -56,7 +56,6 @@
     <Compile Include="AreaProviderTests.cs" />
     <Compile Include="GamePlaying\IArea.cs" />
     <Compile Include="GamePlaying\InTurnGamePlayingTests.cs" />
-    <Compile Include="GamePlaying\GamePlayingTestsBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
