@@ -6,17 +6,13 @@ using NUnit.Framework;
 
 namespace RISK.Tests.Specifications
 {
+    [Ignore("Debugger shim method Debug makes no sense to be called from base class.")]
     public class NSpecDebuggerShim : nspec
     {
         [Test]
         public void Debug()
         {
-            var tagOrClassName = this.GetType().Name;
-
-            if (tagOrClassName == "NSpecDebuggerShim")
-            {
-                Assert.Ignore("Debugger shim method Debug makes no sense to be called from base class.");
-            }
+            var tagOrClassName = GetType().Name;
 
             var invocation = new RunnerInvocation(Assembly.GetExecutingAssembly().Location, tagOrClassName);
 
