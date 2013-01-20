@@ -14,7 +14,7 @@ namespace RISK.Tests.Specifications
         private HumanPlayer _player1;
         private HumanPlayer _player2;
         private Game _game;
-        private WorldMap _worldMap;
+        private IWorldMap _worldMap;
         private ITurn _currentTurn;
 
         public void before_all()
@@ -42,7 +42,7 @@ namespace RISK.Tests.Specifications
 
                     _game = new Game();
 
-                    _worldMap = new WorldMap();
+                    _worldMap = _game.GetWorldMap();
 
                     UpdateArea(_areaDefinitionProvider.NorthAfrica, _player1, 5);
                     UpdateAllAreasWithoutOwner(_player2, 1);

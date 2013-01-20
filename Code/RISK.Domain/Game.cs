@@ -8,5 +8,10 @@ namespace RISK.Domain
         {
             throw new NotImplementedException();
         }
+
+        public IWorldMap GetWorldMap()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -43,6 +43,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Caliburn.Micro\ExtensionMethods.cs" />
+    <Compile Include="Entities\Area.cs" />
     <Compile Include="Entities\AreaDefinition.cs" />
     <Compile Include="Entities\Continent.cs" />
     <Compile Include="Entities\HumanPlayer.cs" />
