@@ -52,10 +52,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DebuggerShim.cs" />
-    <Compile Include="GamePlaying\AcceptanceTestsBase.cs" />
     <Compile Include="AreaProviderTests.cs" />
+    <Compile Include="Specifications\NSpecDebuggerShim.cs" />
     <Compile Include="GamePlaying\IArea.cs" />
-    <Compile Include="GamePlaying\InTurnGamePlayingTests.cs" />
+    <Compile Include="Specifications\game_playing_specifications.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

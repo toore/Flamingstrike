@@ -1,32 +1,15 @@
 ﻿using System;
 using System.Linq;
-using NSpec;
 using RISK.Domain;
 using RISK.Domain.Entities;
 using RISK.Domain.EntityProviders;
 
-namespace RISK.Tests.GamePlaying
+namespace RISK.Tests.Specifications
 {
-    internal class game_playing_specifications : nspec
+    public class game_playing_specifications : NSpecDebuggerShim
     {
-        private void attacking_an_area_and_winning_moves_armies_into_area_and_flags_that_user_should_receive_a_card_when_ending_turn()
+        public void attacking_an_area_and_winning_moves_armies_into_area_and_flags_that_user_should_receive_a_card_when_ending_turn()
         {
-            //Given.
-            //   new_game_with(humanUsers: 2).
-            //   first_user_deploys_armies_in_area(NorthAfrica, 5).
-            //   second_user_deploys_armies_in_available_areas(1).
-            //   deployment_phase_is_finished();
-
-            //When.User.
-            //    selects_area(NorthAfrica).
-            //    attacks_area(Brazil).
-            //    attacker_wins();
-
-            //Then.
-            //    first_user_should_have_armies_in_area(NorthAfrica, 1).
-            //    first_user_should_have_armies_in_area(Brazil, 4).
-            //    first_user_should_receive_a_card_when_turn_ends();
-
             before = () =>
                 {
                     _user1 = new HumanUser();
