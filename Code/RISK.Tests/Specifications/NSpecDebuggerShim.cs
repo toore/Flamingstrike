@@ -12,9 +12,9 @@ namespace RISK.Tests.Specifications
         [Test]
         public void Debug()
         {
-            var tagOrClassName = GetType().Name;
+            var classNameToDebug = GetType().Name;
 
-            var invocation = new RunnerInvocation(Assembly.GetExecutingAssembly().Location, tagOrClassName);
+            var invocation = new RunnerInvocation(Assembly.GetExecutingAssembly().Location, classNameToDebug);
 
             var contexts = invocation.Run();
 
