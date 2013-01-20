@@ -6,5 +6,7 @@ namespace RISK.Domain
     {
         void SelectArea(IAreaDefinition areaDefinition);
         void AttackArea(IAreaDefinition areaDefinition);
+
+        bool PlayerShouldReceiveCardWhenTurnEnds();
     }
 }

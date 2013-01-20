@@ -45,7 +45,7 @@
     <Compile Include="Caliburn.Micro\ExtensionMethods.cs" />
     <Compile Include="Entities\AreaDefinition.cs" />
     <Compile Include="Entities\Continent.cs" />
-    <Compile Include="Entities\HumanUser.cs" />
+    <Compile Include="Entities\HumanPlayer.cs" />
     <Compile Include="Entities\IArea.cs" />
     <Compile Include="Entities\IAreaDefinition.cs" />
     <Compile Include="Entities\IUser.cs" />
