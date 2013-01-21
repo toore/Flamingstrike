@@ -3,7 +3,7 @@ using System.Linq;
 using RISK.Domain.Entities;
 using RISK.Domain.Repositories;
 
-namespace RISK.Domain
+namespace RISK.Domain.GamePlaying
 {
     public class WorldMap : IWorldMap
     {

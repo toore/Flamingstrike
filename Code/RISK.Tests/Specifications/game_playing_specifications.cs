@@ -3,6 +3,7 @@ using FluentAssertions;
 using RISK.Domain;
 using RISK.Domain.Caliburn.Micro;
 using RISK.Domain.Entities;
+using RISK.Domain.GamePlaying;
 using RISK.Domain.Repositories;
 using StructureMap;
 
@@ -16,6 +17,7 @@ namespace RISK.Tests.Specifications
         private IGame _game;
         private IWorldMap _worldMap;
         private ITurn _currentTurn;
+        private IPlayerRepository _playerRepository;
 
         public void before_all()
         {
@@ -31,19 +33,25 @@ namespace RISK.Tests.Specifications
         {
             before = () =>
                 {
-                    _player1 = new HumanPlayer();
-                    _player2 = new HumanPlayer();
+                    _playerRepository = new PlayerRepository();
+                    ObjectFactory.Inject(_playerRepository);
+
+                    _areaDefinitionRepository = new AreaDefinitionRepository(new ContinentRepository());
+                    ObjectFactory.Inject(_areaDefinitionRepository);
+
+                    _player1 = new HumanPlayer("player 1");
+                    _player2 = new HumanPlayer("player 2");
+
+                    _playerRepository.Add(_player1);
+                    _playerRepository.Add(_player2);
 
                     _game = ObjectFactory.GetInstance<IGame>();
-
-                    _areaDefinitionRepository = ObjectFactory.GetInstance<IAreaDefinitionRepository>();
-
                     _worldMap = _game.GetWorldMap();
 
                     UpdateArea(_areaDefinitionRepository.NorthAfrica, _player1, 5);
                     UpdateAllAreasWithoutOwner(_player2, 1);
 
-                    // warEvaluater - user1 should always win
+                    // battleEvaluater - user1 should always win
 
                     _currentTurn = _game.GetNextTurn();
                 };
@@ -54,25 +62,25 @@ namespace RISK.Tests.Specifications
                     _currentTurn.AttackArea(_areaDefinitionRepository.Brazil);
                 };
 
-            it["user 1 should own North Africa"] = () => _worldMap.GetArea(_areaDefinitionRepository.NorthAfrica).Owner.Should().Be(_player1);
+            it["player 1 should own North Africa"] = () => _worldMap.GetArea(_areaDefinitionRepository.NorthAfrica).Owner.Should().Be(_player1);
             it["North Africa should have 1 army"] = () => _worldMap.GetArea(_areaDefinitionRepository.NorthAfrica).Armies.Should().Be(1);
-            it["user 1 should own Brazil"] = () => _worldMap.GetArea(_areaDefinitionRepository.Brazil).Owner.Should().Be(_player1);
+            it["player 1 should own Brazil"] = () => _worldMap.GetArea(_areaDefinitionRepository.Brazil).Owner.Should().Be(_player1);
             it["Brazil should have 4 armies"] = () => _worldMap.GetArea(_areaDefinitionRepository.Brazil).Armies.Should().Be(4);
-            it["user 1 should receive a card when turn ends"] = () => _currentTurn.PlayerShouldReceiveCardWhenTurnEnds();
+            it["player 1 should receive a card when turn ends"] = () => _currentTurn.PlayerShouldReceiveCardWhenTurnEnds();
         }
 
-        private void UpdateArea(IAreaDefinition areaDefinition, HumanPlayer owner, int armies)
+        private void UpdateArea(IAreaDefinition areaDefinition, IPlayer owner, int armies)
         {
-            var fakeArea = _worldMap.GetArea(areaDefinition);
-            fakeArea.Owner = owner;
-            fakeArea.Armies = armies;
+            var area = _worldMap.GetArea(areaDefinition);
+            area.Owner = owner;
+            area.Armies = armies;
         }
 
         private void UpdateAllAreasWithoutOwner(IPlayer owner, int armies)
         {
             _areaDefinitionRepository.GetAll()
                 .Select(x => _worldMap.GetArea(x))
-                .Where(x => x.HasOwner)
+                .Where(x => !x.HasOwner)
                 .Apply(x =>
                     {
                         x.Owner = owner;

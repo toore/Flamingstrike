@@ -53,68 +53,68 @@ namespace RISK.Tests
         }
 
         [Test]
-        public void Alaskas_neighbors_are_alberta_and_northwest_territory_and_kamchatka()
+        public void Alaskas_connected_areas_are_alberta_and_northwest_territory_and_kamchatka()
         {
-            Alaska.Neighbors.Should().BeEquivalentTo(Alberta, NorthwestTerritory, Kamchatka);
+            Alaska.ConnectedAreas.Should().BeEquivalentTo(Alberta, NorthwestTerritory, Kamchatka);
         }
 
         [Test]
-        public void Alberta_is_in_north_america_and_neighbors_are_alaska_and_northwest_territory_and_ontario_and_western_united_states()
+        public void Alberta_is_in_north_america_and_connected_areas_are_alaska_and_northwest_territory_and_ontario_and_western_united_states()
         {
             Alberta.Continent.Should().Be(_northAmerica);
-            Alberta.Neighbors.Should().BeEquivalentTo(Alaska, NorthwestTerritory, Ontario, WesternUnitedStates);
+            Alberta.ConnectedAreas.Should().BeEquivalentTo(Alaska, NorthwestTerritory, Ontario, WesternUnitedStates);
         }
 
         [Test]
-        public void All_areas_has_correct_neighbors()
+        public void All_areas_has_correct_connected_areas()
         {
-            AssertNeighbors(Alaska, Alberta, NorthwestTerritory, Kamchatka);
-            AssertNeighbors(Alberta, Alaska, NorthwestTerritory, Ontario, WesternUnitedStates);
-            AssertNeighbors(CentralAmerica, EasternUnitedStates, WesternUnitedStates, Venezuela);
-            AssertNeighbors(EasternUnitedStates, CentralAmerica, Ontario, Quebec, WesternUnitedStates);
-            AssertNeighbors(Greenland, NorthwestTerritory, Ontario, Quebec, Iceland);
-            AssertNeighbors(NorthwestTerritory, Alaska, Alberta, Greenland, Ontario);
-            AssertNeighbors(Ontario, Alberta, EasternUnitedStates, Greenland, NorthwestTerritory, Quebec, WesternUnitedStates);
-            AssertNeighbors(Quebec, EasternUnitedStates, Greenland, Ontario);
-            AssertNeighbors(WesternUnitedStates, Alberta, CentralAmerica, EasternUnitedStates, Ontario);
+            AssertConnectedAreas(Alaska, Alberta, NorthwestTerritory, Kamchatka);
+            AssertConnectedAreas(Alberta, Alaska, NorthwestTerritory, Ontario, WesternUnitedStates);
+            AssertConnectedAreas(CentralAmerica, EasternUnitedStates, WesternUnitedStates, Venezuela);
+            AssertConnectedAreas(EasternUnitedStates, CentralAmerica, Ontario, Quebec, WesternUnitedStates);
+            AssertConnectedAreas(Greenland, NorthwestTerritory, Ontario, Quebec, Iceland);
+            AssertConnectedAreas(NorthwestTerritory, Alaska, Alberta, Greenland, Ontario);
+            AssertConnectedAreas(Ontario, Alberta, EasternUnitedStates, Greenland, NorthwestTerritory, Quebec, WesternUnitedStates);
+            AssertConnectedAreas(Quebec, EasternUnitedStates, Greenland, Ontario);
+            AssertConnectedAreas(WesternUnitedStates, Alberta, CentralAmerica, EasternUnitedStates, Ontario);
 
-            AssertNeighbors(Argentina, Brazil, Peru);
-            AssertNeighbors(Brazil, Argentina, Peru, Venezuela, NorthAfrica);
-            AssertNeighbors(Peru, Argentina, Brazil, Venezuela);
-            AssertNeighbors(Venezuela, Brazil, Peru, CentralAmerica);
+            AssertConnectedAreas(Argentina, Brazil, Peru);
+            AssertConnectedAreas(Brazil, Argentina, Peru, Venezuela, NorthAfrica);
+            AssertConnectedAreas(Peru, Argentina, Brazil, Venezuela);
+            AssertConnectedAreas(Venezuela, Brazil, Peru, CentralAmerica);
 
-            AssertNeighbors(GreatBritain, Iceland, NorthernEurope, Scandinavia, WesternEurope);
-            AssertNeighbors(Iceland, GreatBritain, Scandinavia, Greenland);
-            AssertNeighbors(NorthernEurope, GreatBritain, Scandinavia, SouthernEurope, Ukraine, WesternEurope);
-            AssertNeighbors(Scandinavia, GreatBritain, Iceland, NorthernEurope, Ukraine);
-            AssertNeighbors(SouthernEurope, NorthernEurope, Ukraine, WesternEurope, Egypt, NorthAfrica, MiddleEast);
-            AssertNeighbors(Ukraine, NorthernEurope, Scandinavia, SouthernEurope, Afghanistan, MiddleEast, Ural);
-            AssertNeighbors(WesternEurope, GreatBritain, NorthernEurope, SouthernEurope, NorthAfrica);
+            AssertConnectedAreas(GreatBritain, Iceland, NorthernEurope, Scandinavia, WesternEurope);
+            AssertConnectedAreas(Iceland, GreatBritain, Scandinavia, Greenland);
+            AssertConnectedAreas(NorthernEurope, GreatBritain, Scandinavia, SouthernEurope, Ukraine, WesternEurope);
+            AssertConnectedAreas(Scandinavia, GreatBritain, Iceland, NorthernEurope, Ukraine);
+            AssertConnectedAreas(SouthernEurope, NorthernEurope, Ukraine, WesternEurope, Egypt, NorthAfrica, MiddleEast);
+            AssertConnectedAreas(Ukraine, NorthernEurope, Scandinavia, SouthernEurope, Afghanistan, MiddleEast, Ural);
+            AssertConnectedAreas(WesternEurope, GreatBritain, NorthernEurope, SouthernEurope, NorthAfrica);
 
-            AssertNeighbors(Congo, EastAfrica, NorthAfrica, SouthAfrica);
-            AssertNeighbors(EastAfrica, Congo, Egypt, Madagascar, NorthAfrica, SouthAfrica, MiddleEast);
-            AssertNeighbors(Egypt, EastAfrica, NorthAfrica, SouthernEurope, MiddleEast);
-            AssertNeighbors(Madagascar, EastAfrica, SouthAfrica);
-            AssertNeighbors(NorthAfrica, Congo, EastAfrica, Egypt, Brazil, SouthernEurope, WesternEurope);
-            AssertNeighbors(SouthAfrica, Congo, EastAfrica, Madagascar);
+            AssertConnectedAreas(Congo, EastAfrica, NorthAfrica, SouthAfrica);
+            AssertConnectedAreas(EastAfrica, Congo, Egypt, Madagascar, NorthAfrica, SouthAfrica, MiddleEast);
+            AssertConnectedAreas(Egypt, EastAfrica, NorthAfrica, SouthernEurope, MiddleEast);
+            AssertConnectedAreas(Madagascar, EastAfrica, SouthAfrica);
+            AssertConnectedAreas(NorthAfrica, Congo, EastAfrica, Egypt, Brazil, SouthernEurope, WesternEurope);
+            AssertConnectedAreas(SouthAfrica, Congo, EastAfrica, Madagascar);
 
-            AssertNeighbors(Afghanistan, China, India, MiddleEast, Ural, Ukraine);
-            AssertNeighbors(China, Afghanistan, India, Mongolia, Siam, Siberia, Ural);
-            AssertNeighbors(India, Afghanistan, China, MiddleEast, Siam);
-            AssertNeighbors(Irkutsk, Kamchatka, Mongolia, Siberia, Yakutsk);
-            AssertNeighbors(Japan, Kamchatka, Mongolia);
-            AssertNeighbors(Kamchatka, Irkutsk, Japan, Mongolia, Yakutsk, Alaska);
-            AssertNeighbors(MiddleEast, Afghanistan, India, SouthernEurope, Ukraine, EastAfrica, Egypt);
-            AssertNeighbors(Mongolia, China, Irkutsk, Japan, Kamchatka, Siberia);
-            AssertNeighbors(Siam, China, India, Indonesia);
-            AssertNeighbors(Siberia,China, Irkutsk, Mongolia, Ural, Yakutsk);
-            AssertNeighbors(Ural, Afghanistan, China, Siberia, Ukraine);
-            AssertNeighbors(Yakutsk, Irkutsk, Kamchatka, Siberia);
+            AssertConnectedAreas(Afghanistan, China, India, MiddleEast, Ural, Ukraine);
+            AssertConnectedAreas(China, Afghanistan, India, Mongolia, Siam, Siberia, Ural);
+            AssertConnectedAreas(India, Afghanistan, China, MiddleEast, Siam);
+            AssertConnectedAreas(Irkutsk, Kamchatka, Mongolia, Siberia, Yakutsk);
+            AssertConnectedAreas(Japan, Kamchatka, Mongolia);
+            AssertConnectedAreas(Kamchatka, Irkutsk, Japan, Mongolia, Yakutsk, Alaska);
+            AssertConnectedAreas(MiddleEast, Afghanistan, India, SouthernEurope, Ukraine, EastAfrica, Egypt);
+            AssertConnectedAreas(Mongolia, China, Irkutsk, Japan, Kamchatka, Siberia);
+            AssertConnectedAreas(Siam, China, India, Indonesia);
+            AssertConnectedAreas(Siberia,China, Irkutsk, Mongolia, Ural, Yakutsk);
+            AssertConnectedAreas(Ural, Afghanistan, China, Siberia, Ukraine);
+            AssertConnectedAreas(Yakutsk, Irkutsk, Kamchatka, Siberia);
 
-            AssertNeighbors(EasternAustralia, NewGuinea, WesternAustralia);
-            AssertNeighbors(Indonesia, NewGuinea, WesternAustralia, Siam);
-            AssertNeighbors(NewGuinea, EasternAustralia, Indonesia, WesternAustralia);
-            AssertNeighbors(WesternAustralia, EasternAustralia, Indonesia, NewGuinea);
+            AssertConnectedAreas(EasternAustralia, NewGuinea, WesternAustralia);
+            AssertConnectedAreas(Indonesia, NewGuinea, WesternAustralia, Siam);
+            AssertConnectedAreas(NewGuinea, EasternAustralia, Indonesia, WesternAustralia);
+            AssertConnectedAreas(WesternAustralia, EasternAustralia, Indonesia, NewGuinea);
         }
 
         [Test]
@@ -205,16 +205,16 @@ namespace RISK.Tests
             GetAll().Should().Contain(expectedAreas);
         }
 
-        private void AssertNeighbors(IAreaDefinition actualAreaDefinition, params IAreaDefinition[] expectedNeighbors)
+        private void AssertConnectedAreas(IAreaDefinition actualAreaDefinition, params IAreaDefinition[] expectedConnectedAreas)
         {
-            actualAreaDefinition.Neighbors.Should().BeEquivalentTo(expectedNeighbors.ToList(),
-                actualAreaDefinition.TranslationKey + " should have neighbors " + string.Join(", ", expectedNeighbors.Select(x => x.TranslationKey)));
+            actualAreaDefinition.ConnectedAreas.Should().BeEquivalentTo(expectedConnectedAreas.ToList(),
+                actualAreaDefinition.TranslationKey + " should have connected areas " + string.Join(", ", expectedConnectedAreas.Select(x => x.TranslationKey)));
 
-            foreach (var expectedNeighbor in expectedNeighbors)
+            foreach (var expectedConnectedArea in expectedConnectedAreas)
             {
-                expectedNeighbor.Neighbors.Should().Contain(actualAreaDefinition,
-                    expectedNeighbor.TranslationKey + " should recognize neighbor " + actualAreaDefinition.TranslationKey +
-                    " but has neighbors: " + string.Join(", ", expectedNeighbor.Neighbors.Select(x => x.TranslationKey)));
+                expectedConnectedArea.ConnectedAreas.Should().Contain(actualAreaDefinition,
+                    expectedConnectedArea.TranslationKey + " should recognize connected area " + actualAreaDefinition.TranslationKey +
+                    " but has connected areas: " + string.Join(", ", expectedConnectedArea.ConnectedAreas.Select(x => x.TranslationKey)));
             }
         }
 

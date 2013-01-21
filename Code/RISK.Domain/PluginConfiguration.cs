@@ -1,4 +1,5 @@
-﻿using RISK.Domain.Repositories;
+﻿using RISK.Domain.GamePlaying;
+using RISK.Domain.Repositories;
 using StructureMap;
 
 namespace RISK.Domain

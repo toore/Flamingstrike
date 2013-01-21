@@ -6,6 +6,6 @@ namespace RISK.Domain.Entities
     {
         string TranslationKey { get; }
         Continent Continent { get; }
-        IEnumerable<IAreaDefinition> Neighbors { get; }
+        IEnumerable<IAreaDefinition> ConnectedAreas { get; }
     }
 }

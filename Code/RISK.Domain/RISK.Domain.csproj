@@ -50,18 +50,24 @@
     <Compile Include="Entities\IArea.cs" />
     <Compile Include="Entities\IAreaDefinition.cs" />
     <Compile Include="Entities\IPlayer.cs" />
+    <Compile Include="Extensions\ObjectExtensions.cs" />
+    <Compile Include="GamePlaying\BattleEvaluater.cs" />
+    <Compile Include="GamePlaying\IBattleEvaluater.cs" />
+    <Compile Include="GamePlaying\ITurnFactory.cs" />
+    <Compile Include="GamePlaying\TurnFactory.cs" />
     <Compile Include="Repositories\AreaDefinitionRepository.cs" />
     <Compile Include="Repositories\ContinentRepository.cs" />
     <Compile Include="Repositories\IAreaDefinitionRepository.cs" />
     <Compile Include="Repositories\IContinentRepository.cs" />
-    <Compile Include="IGame.cs" />
-    <Compile Include="ITurn.cs" />
+    <Compile Include="GamePlaying\IGame.cs" />
+    <Compile Include="GamePlaying\ITurn.cs" />
     <Compile Include="PluginConfiguration.cs" />
     <Compile Include="Repositories\IPlayerRepository.cs" />
     <Compile Include="Repositories\PlayerRepository.cs" />
-    <Compile Include="WorldMap.cs" />
-    <Compile Include="Game.cs" />
-    <Compile Include="IWorldMap.cs" />
+    <Compile Include="GamePlaying\Turn.cs" />
+    <Compile Include="GamePlaying\WorldMap.cs" />
+    <Compile Include="GamePlaying\Game.cs" />
+    <Compile Include="GamePlaying\IWorldMap.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

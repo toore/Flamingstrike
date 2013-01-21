@@ -1,4 +1,4 @@
-﻿namespace RISK.Domain
+﻿namespace RISK.Domain.GamePlaying
 {
     public interface IGame
     {

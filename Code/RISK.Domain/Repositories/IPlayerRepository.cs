@@ -6,5 +6,6 @@ namespace RISK.Domain.Repositories
     public interface IPlayerRepository
     {
         IEnumerable<IPlayer> GetAll();
+        void Add(IPlayer player);
     }
 }

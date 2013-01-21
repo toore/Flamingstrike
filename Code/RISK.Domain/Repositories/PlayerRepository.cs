@@ -11,5 +11,10 @@ namespace RISK.Domain.Repositories
         {
             return _players;
         }
+
+        public void Add(IPlayer player)
+        {
+            _players.Add(player);
+        }
     }
 }

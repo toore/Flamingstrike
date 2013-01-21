@@ -1,4 +1,7 @@
 ﻿namespace RISK.Domain.Entities
 {
-    public interface IPlayer {}
+    public interface IPlayer
+    {
+        string Name { get; }
+    }
 }
