@@ -2,7 +2,7 @@
 {
     public interface IArea
     {
-        IUser Owner { get; set; }
+        IPlayer Owner { get; set; }
         int Armies { get; set; }
         bool HasOwner { get; }
     }

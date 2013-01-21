@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using RISK.Domain.Entities;
-using RISK.Domain.EntityProviders;
+using RISK.Domain.Repositories;
 
 namespace RISK.Domain
 {
@@ -9,9 +9,9 @@ namespace RISK.Domain
     {
         private readonly List<Area> _areas;
 
-        public WorldMap(IAreaDefinitionProvider areaDefinitionProvider)
+        public WorldMap(IAreaDefinitionRepository areaDefinitionRepository)
         {
-            _areas = areaDefinitionProvider.GetAll()
+            _areas = areaDefinitionRepository.GetAll()
                 .Select(x => new Area(x))
                 .ToList();
         }

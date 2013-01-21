@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using RISK.Domain.Entities;
 
-namespace RISK.Domain.EntityProviders
+namespace RISK.Domain.Repositories
 {
-    public interface IAreaDefinitionProvider
+    public interface IAreaDefinitionRepository
     {
         IEnumerable<IAreaDefinition> GetAll();
 

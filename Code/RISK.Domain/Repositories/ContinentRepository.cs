@@ -1,10 +1,10 @@
 ﻿using RISK.Domain.Entities;
 
-namespace RISK.Domain.EntityProviders
+namespace RISK.Domain.Repositories
 {
-    public class ContinentProvider : IContinentProvider
+    public class ContinentRepository : IContinentRepository
     {
-        public ContinentProvider()
+        public ContinentRepository()
         {
             Australia = new Continent { Bonus = 2 };
             Asia = new Continent { Bonus = 7 };

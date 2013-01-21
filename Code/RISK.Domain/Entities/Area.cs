@@ -9,7 +9,7 @@
 
         public IAreaDefinition AreaDefinition { get; private set; }
 
-        public IUser Owner { get; set; }
+        public IPlayer Owner { get; set; }
         public int Armies { get; set; }
         public bool HasOwner
         {

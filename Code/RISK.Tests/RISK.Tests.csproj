@@ -54,7 +54,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AreaProviderTests.cs" />
+    <Compile Include="AreaDefinitionRepositoryTests.cs" />
     <Compile Include="Specifications\NSpecDebuggerShim.cs" />
     <Compile Include="Specifications\game_playing_specifications.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

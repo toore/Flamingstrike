@@ -2,14 +2,21 @@
 
 namespace RISK.Domain
 {
-    public class Game
+    public class Game : IGame
     {
-        public ITurn GetNextTurn()
+        private readonly IWorldMap _worldMap;
+
+        public Game(IWorldMap worldMap)
         {
-            throw new NotImplementedException();
+            _worldMap = worldMap;
         }
 
         public IWorldMap GetWorldMap()
+        {
+            return _worldMap;
+        }
+
+        public ITurn GetNextTurn()
         {
             throw new NotImplementedException();
         }

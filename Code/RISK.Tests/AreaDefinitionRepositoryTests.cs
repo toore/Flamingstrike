@@ -3,15 +3,15 @@ using System.Linq;
 using FluentAssertions;
 using NUnit.Framework;
 using RISK.Domain.Entities;
-using RISK.Domain.EntityProviders;
+using RISK.Domain.Repositories;
 using Rhino.Mocks;
 
 namespace RISK.Tests
 {
     [TestFixture]
-    public class AreaProviderTests
+    public class AreaDefinitionRepositoryTests
     {
-        private AreaDefinitionProvider _areaDefinitionProvider;
+        private AreaDefinitionRepository _areaDefinitionRepository;
         private readonly Continent _northAmerica = new Continent();
         private readonly Continent _southAmerica = new Continent();
         private readonly Continent _europe = new Continent();
@@ -22,7 +22,7 @@ namespace RISK.Tests
         [SetUp]
         public void SetUp()
         {
-            var continentProvider = MockRepository.GenerateStub<IContinentProvider>();
+            var continentProvider = MockRepository.GenerateStub<IContinentRepository>();
             continentProvider.Stub(x => x.NorthAmerica).Return(_northAmerica);
             continentProvider.Stub(x => x.SouthAmerica).Return(_southAmerica);
             continentProvider.Stub(x => x.Europe).Return(_europe);
@@ -30,7 +30,7 @@ namespace RISK.Tests
             continentProvider.Stub(x => x.Asia).Return(_asia);
             continentProvider.Stub(x => x.Australia).Return(_australia);
 
-            _areaDefinitionProvider = new AreaDefinitionProvider(continentProvider);
+            _areaDefinitionRepository = new AreaDefinitionRepository(continentProvider);
         }
 
         [Test]
@@ -228,217 +228,217 @@ namespace RISK.Tests
 
         private IEnumerable<IAreaDefinition> GetAll()
         {
-            return _areaDefinitionProvider.GetAll();
+            return _areaDefinitionRepository.GetAll();
         }
 
         private IAreaDefinition Alaska
         {
-            get { return _areaDefinitionProvider.Alaska; }
+            get { return _areaDefinitionRepository.Alaska; }
         }
 
         private IAreaDefinition Alberta
         {
-            get { return _areaDefinitionProvider.Alberta; }
+            get { return _areaDefinitionRepository.Alberta; }
         }
 
         private IAreaDefinition NewGuinea
         {
-            get { return _areaDefinitionProvider.NewGuinea; }
+            get { return _areaDefinitionRepository.NewGuinea; }
         }
 
         private IAreaDefinition Indonesia
         {
-            get { return _areaDefinitionProvider.Indonesia; }
+            get { return _areaDefinitionRepository.Indonesia; }
         }
 
         private IAreaDefinition EasternAustralia
         {
-            get { return _areaDefinitionProvider.EasternAustralia; }
+            get { return _areaDefinitionRepository.EasternAustralia; }
         }
 
         private IAreaDefinition Yakutsk
         {
-            get { return _areaDefinitionProvider.Yakutsk; }
+            get { return _areaDefinitionRepository.Yakutsk; }
         }
 
         private IAreaDefinition Ural
         {
-            get { return _areaDefinitionProvider.Ural; }
+            get { return _areaDefinitionRepository.Ural; }
         }
 
         private IAreaDefinition Siberia
         {
-            get { return _areaDefinitionProvider.Siberia; }
+            get { return _areaDefinitionRepository.Siberia; }
         }
 
         private IAreaDefinition Siam
         {
-            get { return _areaDefinitionProvider.Siam; }
+            get { return _areaDefinitionRepository.Siam; }
         }
 
         private IAreaDefinition Mongolia
         {
-            get { return _areaDefinitionProvider.Mongolia; }
+            get { return _areaDefinitionRepository.Mongolia; }
         }
 
         private IAreaDefinition MiddleEast
         {
-            get { return _areaDefinitionProvider.MiddleEast; }
+            get { return _areaDefinitionRepository.MiddleEast; }
         }
 
         private IAreaDefinition Kamchatka
         {
-            get { return _areaDefinitionProvider.Kamchatka; }
+            get { return _areaDefinitionRepository.Kamchatka; }
         }
 
         private IAreaDefinition Japan
         {
-            get { return _areaDefinitionProvider.Japan; }
+            get { return _areaDefinitionRepository.Japan; }
         }
 
         private IAreaDefinition Irkutsk
         {
-            get { return _areaDefinitionProvider.Irkutsk; }
+            get { return _areaDefinitionRepository.Irkutsk; }
         }
 
         private IAreaDefinition India
         {
-            get { return _areaDefinitionProvider.India; }
+            get { return _areaDefinitionRepository.India; }
         }
 
         private IAreaDefinition China
         {
-            get { return _areaDefinitionProvider.China; }
+            get { return _areaDefinitionRepository.China; }
         }
 
         private IAreaDefinition Afghanistan
         {
-            get { return _areaDefinitionProvider.Afghanistan; }
+            get { return _areaDefinitionRepository.Afghanistan; }
         }
 
         private IAreaDefinition SouthAfrica
         {
-            get { return _areaDefinitionProvider.SouthAfrica; }
+            get { return _areaDefinitionRepository.SouthAfrica; }
         }
 
         private IAreaDefinition NorthAfrica
         {
-            get { return _areaDefinitionProvider.NorthAfrica; }
+            get { return _areaDefinitionRepository.NorthAfrica; }
         }
 
         private IAreaDefinition Madagascar
         {
-            get { return _areaDefinitionProvider.Madagascar; }
+            get { return _areaDefinitionRepository.Madagascar; }
         }
 
         private IAreaDefinition Egypt
         {
-            get { return _areaDefinitionProvider.Egypt; }
+            get { return _areaDefinitionRepository.Egypt; }
         }
 
         private IAreaDefinition EastAfrica
         {
-            get { return _areaDefinitionProvider.EastAfrica; }
+            get { return _areaDefinitionRepository.EastAfrica; }
         }
 
         private IAreaDefinition Congo
         {
-            get { return _areaDefinitionProvider.Congo; }
+            get { return _areaDefinitionRepository.Congo; }
         }
 
         private IAreaDefinition WesternEurope
         {
-            get { return _areaDefinitionProvider.WesternEurope; }
+            get { return _areaDefinitionRepository.WesternEurope; }
         }
 
         private IAreaDefinition Ukraine
         {
-            get { return _areaDefinitionProvider.Ukraine; }
+            get { return _areaDefinitionRepository.Ukraine; }
         }
 
         private IAreaDefinition SouthernEurope
         {
-            get { return _areaDefinitionProvider.SouthernEurope; }
+            get { return _areaDefinitionRepository.SouthernEurope; }
         }
 
         private IAreaDefinition Scandinavia
         {
-            get { return _areaDefinitionProvider.Scandinavia; }
+            get { return _areaDefinitionRepository.Scandinavia; }
         }
 
         private IAreaDefinition NorthernEurope
         {
-            get { return _areaDefinitionProvider.NorthernEurope; }
+            get { return _areaDefinitionRepository.NorthernEurope; }
         }
 
         private IAreaDefinition Iceland
         {
-            get { return _areaDefinitionProvider.Iceland; }
+            get { return _areaDefinitionRepository.Iceland; }
         }
 
         private IAreaDefinition GreatBritain
         {
-            get { return _areaDefinitionProvider.GreatBritain; }
+            get { return _areaDefinitionRepository.GreatBritain; }
         }
 
         private IAreaDefinition Venezuela
         {
-            get { return _areaDefinitionProvider.Venezuela; }
+            get { return _areaDefinitionRepository.Venezuela; }
         }
 
         private IAreaDefinition Peru
         {
-            get { return _areaDefinitionProvider.Peru; }
+            get { return _areaDefinitionRepository.Peru; }
         }
 
         private IAreaDefinition Brazil
         {
-            get { return _areaDefinitionProvider.Brazil; }
+            get { return _areaDefinitionRepository.Brazil; }
         }
 
         private IAreaDefinition Argentina
         {
-            get { return _areaDefinitionProvider.Argentina; }
+            get { return _areaDefinitionRepository.Argentina; }
         }
 
         private IAreaDefinition WesternUnitedStates
         {
-            get { return _areaDefinitionProvider.WesternUnitedStates; }
+            get { return _areaDefinitionRepository.WesternUnitedStates; }
         }
 
         private IAreaDefinition Quebec
         {
-            get { return _areaDefinitionProvider.Quebec; }
+            get { return _areaDefinitionRepository.Quebec; }
         }
 
         private IAreaDefinition Ontario
         {
-            get { return _areaDefinitionProvider.Ontario; }
+            get { return _areaDefinitionRepository.Ontario; }
         }
 
         private IAreaDefinition NorthwestTerritory
         {
-            get { return _areaDefinitionProvider.NorthwestTerritory; }
+            get { return _areaDefinitionRepository.NorthwestTerritory; }
         }
 
         private IAreaDefinition Greenland
         {
-            get { return _areaDefinitionProvider.Greenland; }
+            get { return _areaDefinitionRepository.Greenland; }
         }
 
         private IAreaDefinition EasternUnitedStates
         {
-            get { return _areaDefinitionProvider.EasternUnitedStates; }
+            get { return _areaDefinitionRepository.EasternUnitedStates; }
         }
 
         private IAreaDefinition CentralAmerica
         {
-            get { return _areaDefinitionProvider.CentralAmerica; }
+            get { return _areaDefinitionRepository.CentralAmerica; }
         }
 
         private IAreaDefinition WesternAustralia
         {
-            get { return _areaDefinitionProvider.WesternAustralia; }
+            get { return _areaDefinitionRepository.WesternAustralia; }
         }
     }
 }

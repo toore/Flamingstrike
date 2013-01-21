@@ -1,8 +1,8 @@
 ﻿using RISK.Domain.Entities;
 
-namespace RISK.Domain.EntityProviders
+namespace RISK.Domain.Repositories
 {
-    public interface IContinentProvider
+    public interface IContinentRepository
     {
         Continent NorthAmerica { get; }
         Continent SouthAmerica { get; }

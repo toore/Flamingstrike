@@ -1,4 +1,4 @@
 ﻿namespace RISK.Domain.Entities
 {
-    public interface IUser {}
+    public interface IPlayer {}
 }

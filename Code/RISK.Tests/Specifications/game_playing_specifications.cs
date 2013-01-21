@@ -1,36 +1,30 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using FluentAssertions;
 using RISK.Domain;
+using RISK.Domain.Caliburn.Micro;
 using RISK.Domain.Entities;
-using RISK.Domain.EntityProviders;
+using RISK.Domain.Repositories;
 using StructureMap;
 
 namespace RISK.Tests.Specifications
 {
     public class game_playing_specifications : NSpecDebuggerShim
     {
-        private IAreaDefinitionProvider _areaDefinitionProvider;
+        private IAreaDefinitionRepository _areaDefinitionRepository;
         private HumanPlayer _player1;
         private HumanPlayer _player2;
-        private Game _game;
+        private IGame _game;
         private IWorldMap _worldMap;
         private ITurn _currentTurn;
 
         public void before_all()
         {
             Configure();
-
-            _areaDefinitionProvider = ObjectFactory.GetInstance<IAreaDefinitionProvider>();
         }
 
         public void Configure()
         {
-            ObjectFactory.Initialize(x =>
-                {
-                    x.For<IContinentProvider>().Use<ContinentProvider>();
-                    x.For<IAreaDefinitionProvider>().Use<AreaDefinitionProvider>();
-                });
+            PluginConfiguration.Configure();
         }
 
         public void attacking_an_area_and_winning_moves_armies_into_area_and_flags_that_user_should_receive_a_card_when_ending_turn()
@@ -40,11 +34,13 @@ namespace RISK.Tests.Specifications
                     _player1 = new HumanPlayer();
                     _player2 = new HumanPlayer();
 
-                    _game = new Game();
+                    _game = ObjectFactory.GetInstance<IGame>();
+
+                    _areaDefinitionRepository = ObjectFactory.GetInstance<IAreaDefinitionRepository>();
 
                     _worldMap = _game.GetWorldMap();
 
-                    UpdateArea(_areaDefinitionProvider.NorthAfrica, _player1, 5);
+                    UpdateArea(_areaDefinitionRepository.NorthAfrica, _player1, 5);
                     UpdateAllAreasWithoutOwner(_player2, 1);
 
                     // warEvaluater - user1 should always win
@@ -54,14 +50,14 @@ namespace RISK.Tests.Specifications
 
             act = () =>
                 {
-                    _currentTurn.SelectArea(_areaDefinitionProvider.NorthAfrica);
-                    _currentTurn.AttackArea(_areaDefinitionProvider.Brazil);
+                    _currentTurn.SelectArea(_areaDefinitionRepository.NorthAfrica);
+                    _currentTurn.AttackArea(_areaDefinitionRepository.Brazil);
                 };
 
-            it["user 1 should own North Africa"] = () => _worldMap.GetArea(_areaDefinitionProvider.NorthAfrica).Owner.Should().Be(_player1);
-            it["North Africa should have 1 army"] = () => _worldMap.GetArea(_areaDefinitionProvider.NorthAfrica).Armies.Should().Be(1);
-            it["user 1 should own Brazil"] = () => _worldMap.GetArea(_areaDefinitionProvider.Brazil).Owner.Should().Be(_player1);
-            it["Brazil should have 4 armies"] = () => _worldMap.GetArea(_areaDefinitionProvider.Brazil).Armies.Should().Be(4);
+            it["user 1 should own North Africa"] = () => _worldMap.GetArea(_areaDefinitionRepository.NorthAfrica).Owner.Should().Be(_player1);
+            it["North Africa should have 1 army"] = () => _worldMap.GetArea(_areaDefinitionRepository.NorthAfrica).Armies.Should().Be(1);
+            it["user 1 should own Brazil"] = () => _worldMap.GetArea(_areaDefinitionRepository.Brazil).Owner.Should().Be(_player1);
+            it["Brazil should have 4 armies"] = () => _worldMap.GetArea(_areaDefinitionRepository.Brazil).Armies.Should().Be(4);
             it["user 1 should receive a card when turn ends"] = () => _currentTurn.PlayerShouldReceiveCardWhenTurnEnds();
         }
 
@@ -72,11 +68,16 @@ namespace RISK.Tests.Specifications
             fakeArea.Armies = armies;
         }
 
-        private void UpdateAllAreasWithoutOwner(HumanPlayer owner, int armies)
+        private void UpdateAllAreasWithoutOwner(IPlayer owner, int armies)
         {
-            var fakeAreas = _areaDefinitionProvider.GetAll().Select(x => _worldMap.GetArea(x)).Where(x => x.HasOwner);
-
-            throw new NotImplementedException();
+            _areaDefinitionRepository.GetAll()
+                .Select(x => _worldMap.GetArea(x))
+                .Where(x => x.HasOwner)
+                .Apply(x =>
+                    {
+                        x.Owner = owner;
+                        x.Armies = armies;
+                    });
         }
     }
 }

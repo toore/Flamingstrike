@@ -1,63 +1,63 @@
 ﻿using System.Collections.Generic;
 using RISK.Domain.Entities;
 
-namespace RISK.Domain.EntityProviders
+namespace RISK.Domain.Repositories
 {
-    public class AreaDefinitionProvider : IAreaDefinitionProvider
+    public class AreaDefinitionRepository : IAreaDefinitionRepository
     {
-        private readonly IContinentProvider _continentProvider;
+        private readonly IContinentRepository _continentRepository;
 
-        public AreaDefinitionProvider(IContinentProvider continentProvider)
+        public AreaDefinitionRepository(IContinentRepository continentRepository)
         {
-            _continentProvider = continentProvider;
+            _continentRepository = continentRepository;
 
-            var alaska = new AreaDefinition("ALASKA", _continentProvider.NorthAmerica);
-            var alberta = new AreaDefinition("ALBERTA", _continentProvider.NorthAmerica);
-            var centralAmerica = new AreaDefinition("CENTRAL_AMERICA", _continentProvider.NorthAmerica);
-            var easternUnitedStates = new AreaDefinition("EASTERN_UNITED_STATES", _continentProvider.NorthAmerica);
-            var greenland = new AreaDefinition("GREENLAND", _continentProvider.NorthAmerica);
-            var northwestTerritory = new AreaDefinition("NORTHWEST_TERRITORY", _continentProvider.NorthAmerica);
-            var ontario = new AreaDefinition("ONTARIO", _continentProvider.NorthAmerica);
-            var quebec = new AreaDefinition("QUEBEC", _continentProvider.NorthAmerica);
-            var westernUnitedStates = new AreaDefinition("WESTERN_UNITED_STATES", _continentProvider.NorthAmerica);
+            var alaska = new AreaDefinition("ALASKA", _continentRepository.NorthAmerica);
+            var alberta = new AreaDefinition("ALBERTA", _continentRepository.NorthAmerica);
+            var centralAmerica = new AreaDefinition("CENTRAL_AMERICA", _continentRepository.NorthAmerica);
+            var easternUnitedStates = new AreaDefinition("EASTERN_UNITED_STATES", _continentRepository.NorthAmerica);
+            var greenland = new AreaDefinition("GREENLAND", _continentRepository.NorthAmerica);
+            var northwestTerritory = new AreaDefinition("NORTHWEST_TERRITORY", _continentRepository.NorthAmerica);
+            var ontario = new AreaDefinition("ONTARIO", _continentRepository.NorthAmerica);
+            var quebec = new AreaDefinition("QUEBEC", _continentRepository.NorthAmerica);
+            var westernUnitedStates = new AreaDefinition("WESTERN_UNITED_STATES", _continentRepository.NorthAmerica);
 
-            var argentina = new AreaDefinition("ARGENTINA", _continentProvider.SouthAmerica);
-            var brazil = new AreaDefinition("BRAZIL", _continentProvider.SouthAmerica);
-            var peru = new AreaDefinition("PERU", _continentProvider.SouthAmerica);
-            var venezuela = new AreaDefinition("VENEZUELA", _continentProvider.SouthAmerica);
+            var argentina = new AreaDefinition("ARGENTINA", _continentRepository.SouthAmerica);
+            var brazil = new AreaDefinition("BRAZIL", _continentRepository.SouthAmerica);
+            var peru = new AreaDefinition("PERU", _continentRepository.SouthAmerica);
+            var venezuela = new AreaDefinition("VENEZUELA", _continentRepository.SouthAmerica);
 
-            var greatBritain = new AreaDefinition("GREAT_BRITAIN", _continentProvider.Europe);
-            var iceland = new AreaDefinition("ICELAND", _continentProvider.Europe);
-            var northernEurope = new AreaDefinition("NORTHERN_EUROPE", _continentProvider.Europe);
-            var scandinavia = new AreaDefinition("SCANDINAVIA", _continentProvider.Europe);
-            var southernEurope = new AreaDefinition("SOUTHERN_EUROPE", _continentProvider.Europe);
-            var ukraine = new AreaDefinition("UKRAINE", _continentProvider.Europe);
-            var westernEurope = new AreaDefinition("WESTERN_EUROPE", _continentProvider.Europe);
+            var greatBritain = new AreaDefinition("GREAT_BRITAIN", _continentRepository.Europe);
+            var iceland = new AreaDefinition("ICELAND", _continentRepository.Europe);
+            var northernEurope = new AreaDefinition("NORTHERN_EUROPE", _continentRepository.Europe);
+            var scandinavia = new AreaDefinition("SCANDINAVIA", _continentRepository.Europe);
+            var southernEurope = new AreaDefinition("SOUTHERN_EUROPE", _continentRepository.Europe);
+            var ukraine = new AreaDefinition("UKRAINE", _continentRepository.Europe);
+            var westernEurope = new AreaDefinition("WESTERN_EUROPE", _continentRepository.Europe);
 
-            var congo = new AreaDefinition("CONGO", _continentProvider.Africa);
-            var eastAfrica = new AreaDefinition("EAST_AFRICA", _continentProvider.Africa);
-            var egypt = new AreaDefinition("EGYPT", _continentProvider.Africa);
-            var madagascar = new AreaDefinition("MADAGASCAR", _continentProvider.Africa);
-            var northAfrica = new AreaDefinition("NORTH_AFRICA", _continentProvider.Africa);
-            var southAfrica = new AreaDefinition("SOUTH_AFRICA", _continentProvider.Africa);
+            var congo = new AreaDefinition("CONGO", _continentRepository.Africa);
+            var eastAfrica = new AreaDefinition("EAST_AFRICA", _continentRepository.Africa);
+            var egypt = new AreaDefinition("EGYPT", _continentRepository.Africa);
+            var madagascar = new AreaDefinition("MADAGASCAR", _continentRepository.Africa);
+            var northAfrica = new AreaDefinition("NORTH_AFRICA", _continentRepository.Africa);
+            var southAfrica = new AreaDefinition("SOUTH_AFRICA", _continentRepository.Africa);
 
-            var afghanistan = new AreaDefinition("AFGHANISTAN", _continentProvider.Asia);
-            var china = new AreaDefinition("CHINA", _continentProvider.Asia);
-            var india = new AreaDefinition("INDIA", _continentProvider.Asia);
-            var irkutsk = new AreaDefinition("IRKUTSK", _continentProvider.Asia);
-            var japan = new AreaDefinition("JAPAN", _continentProvider.Asia);
-            var kamchatka = new AreaDefinition("KAMCHATKA", _continentProvider.Asia);
-            var middleEast = new AreaDefinition("MIDDLE_EAST", _continentProvider.Asia);
-            var mongolia = new AreaDefinition("MONGOLIA", _continentProvider.Asia);
-            var siam = new AreaDefinition("SIAM", _continentProvider.Asia);
-            var siberia = new AreaDefinition("SIBERIA", _continentProvider.Asia);
-            var ural = new AreaDefinition("URAL", _continentProvider.Asia);
-            var yakutsk = new AreaDefinition("YAKUTSK", _continentProvider.Asia);
+            var afghanistan = new AreaDefinition("AFGHANISTAN", _continentRepository.Asia);
+            var china = new AreaDefinition("CHINA", _continentRepository.Asia);
+            var india = new AreaDefinition("INDIA", _continentRepository.Asia);
+            var irkutsk = new AreaDefinition("IRKUTSK", _continentRepository.Asia);
+            var japan = new AreaDefinition("JAPAN", _continentRepository.Asia);
+            var kamchatka = new AreaDefinition("KAMCHATKA", _continentRepository.Asia);
+            var middleEast = new AreaDefinition("MIDDLE_EAST", _continentRepository.Asia);
+            var mongolia = new AreaDefinition("MONGOLIA", _continentRepository.Asia);
+            var siam = new AreaDefinition("SIAM", _continentRepository.Asia);
+            var siberia = new AreaDefinition("SIBERIA", _continentRepository.Asia);
+            var ural = new AreaDefinition("URAL", _continentRepository.Asia);
+            var yakutsk = new AreaDefinition("YAKUTSK", _continentRepository.Asia);
 
-            var easternAustralia = new AreaDefinition("EASTERN_AUSTRALIA", _continentProvider.Australia);
-            var indonesia = new AreaDefinition("INDONESIA", _continentProvider.Australia);
-            var newGuinea = new AreaDefinition("NEW_GUINEA", _continentProvider.Australia);
-            var westernAustralia = new AreaDefinition("WESTERN_AUSTRALIA", _continentProvider.Australia);
+            var easternAustralia = new AreaDefinition("EASTERN_AUSTRALIA", _continentRepository.Australia);
+            var indonesia = new AreaDefinition("INDONESIA", _continentRepository.Australia);
+            var newGuinea = new AreaDefinition("NEW_GUINEA", _continentRepository.Australia);
+            var westernAustralia = new AreaDefinition("WESTERN_AUSTRALIA", _continentRepository.Australia);
 
             alaska.AddNeighbors(alberta, northwestTerritory, kamchatka);
             alberta.AddNeighbors(alaska, northwestTerritory, ontario, westernUnitedStates);
