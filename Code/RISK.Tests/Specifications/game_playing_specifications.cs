@@ -4,7 +4,9 @@ using RISK.Domain;
 using RISK.Domain.Caliburn.Micro;
 using RISK.Domain.Entities;
 using RISK.Domain.GamePlaying;
+using RISK.Domain.GamePlaying.DiceAndCalculation;
 using RISK.Domain.Repositories;
+using Rhino.Mocks;
 using StructureMap;
 
 namespace RISK.Tests.Specifications
@@ -18,13 +20,9 @@ namespace RISK.Tests.Specifications
         private IWorldMap _worldMap;
         private ITurn _currentTurn;
         private IPlayerRepository _playerRepository;
+        private IBattleEvaluater _battleEvaluater;
 
         public void before_all()
-        {
-            Configure();
-        }
-
-        public void Configure()
         {
             PluginConfiguration.Configure();
         }
@@ -39,6 +37,10 @@ namespace RISK.Tests.Specifications
                     _areaDefinitionRepository = new AreaDefinitionRepository(new ContinentRepository());
                     ObjectFactory.Inject(_areaDefinitionRepository);
 
+                    var dices = MockRepository.GenerateStub<IDices>();
+                    _battleEvaluater = new BattleEvaluater(dices);
+                    ObjectFactory.Inject(_battleEvaluater);
+
                     _player1 = new HumanPlayer("player 1");
                     _player2 = new HumanPlayer("player 2");
 
@@ -50,8 +52,6 @@ namespace RISK.Tests.Specifications
 
                     UpdateArea(_areaDefinitionRepository.NorthAfrica, _player1, 5);
                     UpdateAllAreasWithoutOwner(_player2, 1);
-
-                    // battleEvaluater - user1 should always win
 
                     _currentTurn = _game.GetNextTurn();
                 };

@@ -38,8 +38,7 @@ namespace RISK.Domain.GamePlaying
             var isAreaOccupiedByEnemy = areaToAttack.Owner != _player;
             if (isAreaConnected && isAreaOccupiedByEnemy)
             {
-                //_battleEvaluater.Attack(_selectedArea, areaToAttack);
-                //area
+                _battleEvaluater.Attack(_selectedArea, areaToAttack);
             }
         }
 
