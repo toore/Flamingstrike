@@ -13,58 +13,58 @@ namespace RISK.Tests
     public class WorldMapTests
     {
         private WorldMap _worldMap;
-        private IAreaDefinitionRepository _areaDefinitionRepository;
+        private ITerritoryLocationRepository _territoryLocationRepository;
 
         [SetUp]
         public void SetUp()
         {
-            _areaDefinitionRepository = MockRepository.GenerateStub<IAreaDefinitionRepository>();
-            var scandinavia = new AreaDefinition("scandinavia", new Continent());
-            var congo = new AreaDefinition("congo", new Continent());
-            var egypt = new AreaDefinition("egypt", new Continent());
-            _areaDefinitionRepository.Stub(x => x.Scandinavia).Return(scandinavia);
-            _areaDefinitionRepository.Stub(x => x.Congo).Return(congo);
-            _areaDefinitionRepository.Stub(x => x.Egypt).Return(egypt);
-            _areaDefinitionRepository.Stub(x => x.GetAll()).Return(new[] { scandinavia, congo, egypt });
+            _territoryLocationRepository = MockRepository.GenerateStub<ITerritoryLocationRepository>();
+            var scandinavia = new TerritoryLocation("scandinavia", new Continent());
+            var congo = new TerritoryLocation("congo", new Continent());
+            var egypt = new TerritoryLocation("egypt", new Continent());
+            _territoryLocationRepository.Stub(x => x.Scandinavia).Return(scandinavia);
+            _territoryLocationRepository.Stub(x => x.Congo).Return(congo);
+            _territoryLocationRepository.Stub(x => x.Egypt).Return(egypt);
+            _territoryLocationRepository.Stub(x => x.GetAll()).Return(new[] { scandinavia, congo, egypt });
 
-            _worldMap = new WorldMap(_areaDefinitionRepository);
+            _worldMap = new WorldMap(_territoryLocationRepository);
         }
 
         [Test]
         public void GetArea_has_area_for_scandinavia()
         {
-            AssertGetArea(_areaDefinitionRepository.Scandinavia);
+            AssertGetArea(_territoryLocationRepository.Scandinavia);
         }
 
         [Test]
         public void GetArea_has_area_for_congo()
         {
-            AssertGetArea(_areaDefinitionRepository.Congo);
+            AssertGetArea(_territoryLocationRepository.Congo);
         }
 
         [Test]
         public void GetArea_has_area_for_egypt()
         {
-            AssertGetArea(_areaDefinitionRepository.Egypt);
+            AssertGetArea(_territoryLocationRepository.Egypt);
         }
 
         [Test]
         [ExpectedException(typeof(InvalidOperationException))]
         public void GetArea_throws_for_area_Japan()
         {
-            GetArea(_areaDefinitionRepository.Japan);
+            GetArea(_territoryLocationRepository.Japan);
         }
 
-        private void AssertGetArea(IAreaDefinition areaDefinition)
+        private void AssertGetArea(ITerritoryLocation territoryLocation)
         {
-            var area = GetArea(areaDefinition);
+            var area = GetArea(territoryLocation);
 
             area.Should().NotBeNull();
         }
 
-        private IArea GetArea(IAreaDefinition areaDefinition)
+        private ITerritory GetArea(ITerritoryLocation territoryLocation)
         {
-            return _worldMap.GetArea(areaDefinition);
+            return _worldMap.GetArea(territoryLocation);
         }
     }
 }

@@ -43,27 +43,28 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Caliburn.Micro\ExtensionMethods.cs" />
-    <Compile Include="Entities\Area.cs" />
-    <Compile Include="Entities\AreaDefinition.cs" />
+    <Compile Include="Entities\Territory.cs" />
+    <Compile Include="Entities\TerritoryLocation.cs" />
     <Compile Include="Entities\Continent.cs" />
     <Compile Include="Entities\HumanPlayer.cs" />
-    <Compile Include="Entities\IArea.cs" />
-    <Compile Include="Entities\IAreaDefinition.cs" />
+    <Compile Include="Entities\ITerritory.cs" />
+    <Compile Include="Entities\ITerritoryLocation.cs" />
     <Compile Include="Entities\IPlayer.cs" />
     <Compile Include="Extensions\ObjectExtensions.cs" />
-    <Compile Include="GamePlaying\BattleEvaluater.cs" />
+    <Compile Include="GamePlaying\BattleCalculator.cs" />
+    <Compile Include="GamePlaying\DiceAndCalculation\Dices.cs" />
     <Compile Include="GamePlaying\DiceAndCalculation\DicesResult.cs" />
     <Compile Include="GamePlaying\DiceAndCalculation\DiceValueCalculator.cs" />
     <Compile Include="GamePlaying\DiceAndCalculation\IDicesResult.cs" />
     <Compile Include="GamePlaying\DiceAndCalculation\IDiceValueCalculator.cs" />
     <Compile Include="GamePlaying\DiceAndCalculation\DiceValue.cs" />
-    <Compile Include="GamePlaying\IBattleEvaluater.cs" />
+    <Compile Include="GamePlaying\IBattleCalculator.cs" />
     <Compile Include="GamePlaying\DiceAndCalculation\IDices.cs" />
     <Compile Include="GamePlaying\ITurnFactory.cs" />
     <Compile Include="GamePlaying\TurnFactory.cs" />
-    <Compile Include="Repositories\AreaDefinitionRepository.cs" />
+    <Compile Include="Repositories\TerritoryLocationRepository.cs" />
     <Compile Include="Repositories\ContinentRepository.cs" />
-    <Compile Include="Repositories\IAreaDefinitionRepository.cs" />
+    <Compile Include="Repositories\ITerritoryLocationRepository.cs" />
     <Compile Include="Repositories\IContinentRepository.cs" />
     <Compile Include="GamePlaying\IGame.cs" />
     <Compile Include="GamePlaying\ITurn.cs" />

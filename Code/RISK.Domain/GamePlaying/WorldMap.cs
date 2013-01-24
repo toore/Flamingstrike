@@ -7,18 +7,18 @@ namespace RISK.Domain.GamePlaying
 {
     public class WorldMap : IWorldMap
     {
-        private readonly List<Area> _areas;
+        private readonly List<Territory> _areas;
 
-        public WorldMap(IAreaDefinitionRepository areaDefinitionRepository)
+        public WorldMap(ITerritoryLocationRepository territoryLocationRepository)
         {
-            _areas = areaDefinitionRepository.GetAll()
-                .Select(x => new Area(x))
+            _areas = territoryLocationRepository.GetAll()
+                .Select(x => new Territory(x))
                 .ToList();
         }
 
-        public IArea GetArea(IAreaDefinition areaDefinition)
+        public ITerritory GetArea(ITerritoryLocation territoryLocation)
         {
-            return _areas.Single(x => x.AreaDefinition == areaDefinition);
+            return _areas.Single(x => x.TerritoryLocation == territoryLocation);
         }
     }
 }

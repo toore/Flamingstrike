@@ -7,38 +7,38 @@ namespace RISK.Domain.GamePlaying
     {
         private readonly IPlayer _player;
         private readonly IWorldMap _worldMap;
-        private readonly IBattleEvaluater _battleEvaluater;
-        private IArea _selectedArea;
+        private readonly IBattleCalculator _battleCalculator;
+        private ITerritory _selectedTerritory;
 
-        public Turn(IPlayer player, IWorldMap worldMap, IBattleEvaluater battleEvaluater)
+        public Turn(IPlayer player, IWorldMap worldMap, IBattleCalculator battleCalculator)
         {
             _player = player;
             _worldMap = worldMap;
-            _battleEvaluater = battleEvaluater;
+            _battleCalculator = battleCalculator;
         }
 
-        public void SelectArea(IAreaDefinition areaDefinition)
+        public void SelectArea(ITerritoryLocation territoryLocation)
         {
-            var area = GetArea(areaDefinition);
+            var area = GetArea(territoryLocation);
             if (area.Owner == _player)
             {
-                _selectedArea = area;
+                _selectedTerritory = area;
             }
         }
 
-        private IArea GetArea(IAreaDefinition areaDefinition)
+        private ITerritory GetArea(ITerritoryLocation territoryLocation)
         {
-            return _worldMap.GetArea(areaDefinition);
+            return _worldMap.GetArea(territoryLocation);
         }
 
-        public void AttackArea(IAreaDefinition areaDefinition)
+        public void AttackArea(ITerritoryLocation territoryLocation)
         {
-            var isAreaConnected = _selectedArea.AreaDefinition.ConnectedAreas.Contains(areaDefinition);
-            var areaToAttack = GetArea(areaDefinition);
+            var isAreaConnected = _selectedTerritory.TerritoryLocation.ConnectedTerritories.Contains(territoryLocation);
+            var areaToAttack = GetArea(territoryLocation);
             var isAreaOccupiedByEnemy = areaToAttack.Owner != _player;
             if (isAreaConnected && isAreaOccupiedByEnemy)
             {
-                _battleEvaluater.Attack(_selectedArea, areaToAttack);
+                _battleCalculator.Attack(_selectedTerritory, areaToAttack);
             }
         }
 

@@ -14,7 +14,7 @@ namespace RISK.Tests
     [TestFixture]
     public class BattleEvaluaterTests
     {
-        private BattleEvaluater _battleEvaluater;
+        private BattleCalculator _battleCalculator;
         private IPlayer _player1;
         private IDices _dices;
 
@@ -22,7 +22,7 @@ namespace RISK.Tests
         public void SetUp()
         {
             _dices = MockRepository.GenerateStub<IDices>();
-            _battleEvaluater = new BattleEvaluater(_dices);
+            _battleCalculator = new BattleCalculator(_dices);
 
             _player1 = MockRepository.GenerateStub<IPlayer>();
         }
@@ -32,10 +32,11 @@ namespace RISK.Tests
         {
             var diceResult = MockRepository.GenerateStub<IDicesResult>();
             _dices.Stub(x => x.Roll(2, 1)).Return(diceResult);
-            var attacker = new Area(new AreaDefinition("attacker area", new Continent())) { Owner = _player1, Armies = 2};
-            var defender = new Area(new AreaDefinition("defender area", new Continent()));
 
-            _battleEvaluater.Attack(attacker, defender);
+            var attacker = new Territory(new TerritoryLocation("attacker area", new Continent())) { Owner = _player1, Armies = 2};
+            var defender = new Territory(new TerritoryLocation("defender area", new Continent()));
+
+            _battleCalculator.Attack(attacker, defender);
 
             attacker.Owner.Should().Be(_player1);
             attacker.Armies.Should().Be(1);

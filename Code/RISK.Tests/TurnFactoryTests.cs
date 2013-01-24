@@ -14,15 +14,15 @@ namespace RISK.Tests
     {
         private TurnFactory _factory;
         private IWorldMap _worldMap;
-        private IBattleEvaluater _battleEvaluater;
+        private IBattleCalculator _battleCalculator;
 
         [SetUp]
         public void SetUp()
         {
             _worldMap = MockRepository.GenerateStub<IWorldMap>();
-            _battleEvaluater = MockRepository.GenerateStub<IBattleEvaluater>();
+            _battleCalculator = MockRepository.GenerateStub<IBattleCalculator>();
 
-            _factory = new TurnFactory(_worldMap, _battleEvaluater);
+            _factory = new TurnFactory(_worldMap, _battleCalculator);
         }
 
         [Test]

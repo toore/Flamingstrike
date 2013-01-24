@@ -13,14 +13,14 @@ namespace RISK.Tests.Specifications
 {
     public class game_playing_specifications : NSpecDebuggerShim
     {
-        private IAreaDefinitionRepository _areaDefinitionRepository;
+        private ITerritoryLocationRepository _territoryLocationRepository;
         private HumanPlayer _player1;
         private HumanPlayer _player2;
         private IGame _game;
         private IWorldMap _worldMap;
         private ITurn _currentTurn;
         private IPlayerRepository _playerRepository;
-        private IBattleEvaluater _battleEvaluater;
+        private IBattleCalculator _battleCalculator;
 
         public void before_all()
         {
@@ -34,12 +34,12 @@ namespace RISK.Tests.Specifications
                     _playerRepository = new PlayerRepository();
                     ObjectFactory.Inject(_playerRepository);
 
-                    _areaDefinitionRepository = new AreaDefinitionRepository(new ContinentRepository());
-                    ObjectFactory.Inject(_areaDefinitionRepository);
+                    _territoryLocationRepository = new TerritoryLocationRepository(new ContinentRepository());
+                    ObjectFactory.Inject(_territoryLocationRepository);
 
                     var dices = MockRepository.GenerateStub<IDices>();
-                    _battleEvaluater = new BattleEvaluater(dices);
-                    ObjectFactory.Inject(_battleEvaluater);
+                    _battleCalculator = new BattleCalculator(dices);
+                    ObjectFactory.Inject(_battleCalculator);
 
                     _player1 = new HumanPlayer("player 1");
                     _player2 = new HumanPlayer("player 2");
@@ -50,7 +50,7 @@ namespace RISK.Tests.Specifications
                     _game = ObjectFactory.GetInstance<IGame>();
                     _worldMap = _game.GetWorldMap();
 
-                    UpdateArea(_areaDefinitionRepository.NorthAfrica, _player1, 5);
+                    UpdateArea(_territoryLocationRepository.NorthAfrica, _player1, 5);
                     UpdateAllAreasWithoutOwner(_player2, 1);
 
                     _currentTurn = _game.GetNextTurn();
@@ -58,27 +58,27 @@ namespace RISK.Tests.Specifications
 
             act = () =>
                 {
-                    _currentTurn.SelectArea(_areaDefinitionRepository.NorthAfrica);
-                    _currentTurn.AttackArea(_areaDefinitionRepository.Brazil);
+                    _currentTurn.SelectArea(_territoryLocationRepository.NorthAfrica);
+                    _currentTurn.AttackArea(_territoryLocationRepository.Brazil);
                 };
 
-            it["player 1 should own North Africa"] = () => _worldMap.GetArea(_areaDefinitionRepository.NorthAfrica).Owner.Should().Be(_player1);
-            it["North Africa should have 1 army"] = () => _worldMap.GetArea(_areaDefinitionRepository.NorthAfrica).Armies.Should().Be(1);
-            it["player 1 should own Brazil"] = () => _worldMap.GetArea(_areaDefinitionRepository.Brazil).Owner.Should().Be(_player1);
-            it["Brazil should have 4 armies"] = () => _worldMap.GetArea(_areaDefinitionRepository.Brazil).Armies.Should().Be(4);
+            it["player 1 should own North Africa"] = () => _worldMap.GetArea(_territoryLocationRepository.NorthAfrica).Owner.Should().Be(_player1);
+            it["North Africa should have 1 army"] = () => _worldMap.GetArea(_territoryLocationRepository.NorthAfrica).Armies.Should().Be(1);
+            it["player 1 should own Brazil"] = () => _worldMap.GetArea(_territoryLocationRepository.Brazil).Owner.Should().Be(_player1);
+            it["Brazil should have 4 armies"] = () => _worldMap.GetArea(_territoryLocationRepository.Brazil).Armies.Should().Be(4);
             it["player 1 should receive a card when turn ends"] = () => _currentTurn.PlayerShouldReceiveCardWhenTurnEnds();
         }
 
-        private void UpdateArea(IAreaDefinition areaDefinition, IPlayer owner, int armies)
+        private void UpdateArea(ITerritoryLocation territoryLocation, IPlayer owner, int armies)
         {
-            var area = _worldMap.GetArea(areaDefinition);
+            var area = _worldMap.GetArea(territoryLocation);
             area.Owner = owner;
             area.Armies = armies;
         }
 
         private void UpdateAllAreasWithoutOwner(IPlayer owner, int armies)
         {
-            _areaDefinitionRepository.GetAll()
+            _territoryLocationRepository.GetAll()
                 .Select(x => _worldMap.GetArea(x))
                 .Where(x => !x.HasOwner)
                 .Apply(x =>

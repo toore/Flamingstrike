@@ -4,6 +4,6 @@ namespace RISK.Domain.GamePlaying
 {
     public interface IWorldMap
     {
-        IArea GetArea(IAreaDefinition areaDefinition);
+        ITerritory GetArea(ITerritoryLocation territoryLocation);
     }
 }

@@ -1,8 +1,8 @@
 ﻿namespace RISK.Domain.Entities
 {
-    public interface IArea
+    public interface ITerritory
     {
-        IAreaDefinition AreaDefinition { get; }
+        ITerritoryLocation TerritoryLocation { get; }
         IPlayer Owner { get; set; }
         int Armies { get; set; }
         bool HasOwner { get; }

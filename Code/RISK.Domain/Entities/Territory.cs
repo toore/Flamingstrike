@@ -1,13 +1,13 @@
 ﻿namespace RISK.Domain.Entities
 {
-    public class Area : IArea
+    public class Territory : ITerritory
     {
-        public Area(IAreaDefinition areaDefinition)
+        public Territory(ITerritoryLocation territoryLocation)
         {
-            AreaDefinition = areaDefinition;
+            TerritoryLocation = territoryLocation;
         }
 
-        public IAreaDefinition AreaDefinition { get; private set; }
+        public ITerritoryLocation TerritoryLocation { get; private set; }
 
         public IPlayer Owner { get; set; }
         public int Armies { get; set; }

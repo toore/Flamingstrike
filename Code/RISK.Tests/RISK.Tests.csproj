@@ -54,7 +54,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AreaDefinitionRepositoryTests.cs" />
+    <Compile Include="TerritoryLocationRepositoryTests.cs" />
     <Compile Include="BattleEvaluaterTests.cs" />
     <Compile Include="Dice\DiceValueCalculatorTests.cs" />
     <Compile Include="Extensions\ObjectExtensionsTests.cs" />
