@@ -55,7 +55,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="TerritoryLocationRepositoryTests.cs" />
-    <Compile Include="BattleEvaluaterTests.cs" />
+    <Compile Include="BattleCalculatorTests.cs" />
     <Compile Include="Dice\DiceValueCalculatorTests.cs" />
     <Compile Include="Extensions\ObjectExtensionsTests.cs" />
     <Compile Include="GameTests.cs" />
