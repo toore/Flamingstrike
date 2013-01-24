@@ -31,40 +31,40 @@ namespace RISK.Tests
         }
 
         [Test]
-        public void GetArea_has_area_for_scandinavia()
+        public void GetTerritory_has_territory_for_scandinavia()
         {
-            AssertGetArea(_territoryLocationRepository.Scandinavia);
+            AssertGetTerritory(_territoryLocationRepository.Scandinavia);
         }
 
         [Test]
-        public void GetArea_has_area_for_congo()
+        public void GetTerritory_has_territory_for_congo()
         {
-            AssertGetArea(_territoryLocationRepository.Congo);
+            AssertGetTerritory(_territoryLocationRepository.Congo);
         }
 
         [Test]
-        public void GetArea_has_area_for_egypt()
+        public void GetTerritory_has_territory_for_egypt()
         {
-            AssertGetArea(_territoryLocationRepository.Egypt);
+            AssertGetTerritory(_territoryLocationRepository.Egypt);
         }
 
         [Test]
         [ExpectedException(typeof(InvalidOperationException))]
-        public void GetArea_throws_for_area_Japan()
+        public void GetTerritory_throws_for_territory_Japan()
         {
-            GetArea(_territoryLocationRepository.Japan);
+            GetTerritory(_territoryLocationRepository.Japan);
         }
 
-        private void AssertGetArea(ITerritoryLocation territoryLocation)
+        private void AssertGetTerritory(ITerritoryLocation territoryLocation)
         {
-            var area = GetArea(territoryLocation);
+            var territory = GetTerritory(territoryLocation);
 
-            area.Should().NotBeNull();
+            territory.Should().NotBeNull();
         }
 
-        private ITerritory GetArea(ITerritoryLocation territoryLocation)
+        private ITerritory GetTerritory(ITerritoryLocation territoryLocation)
         {
-            return _worldMap.GetArea(territoryLocation);
+            return _worldMap.GetTerritory(territoryLocation);
         }
     }
 }

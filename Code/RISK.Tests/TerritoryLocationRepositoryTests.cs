@@ -210,11 +210,11 @@ namespace RISK.Tests
             actualTerritoryLocation.ConnectedTerritories.Should().BeEquivalentTo(expectedConnectedTerritories.ToList(),
                 actualTerritoryLocation.TranslationKey + " should have connected territories " + string.Join(", ", expectedConnectedTerritories.Select(x => x.TranslationKey)));
 
-            foreach (var expectedConnectedArea in expectedConnectedTerritories)
+            foreach (var expectedConnectedTerritory in expectedConnectedTerritories)
             {
-                expectedConnectedArea.ConnectedTerritories.Should().Contain(actualTerritoryLocation,
-                    expectedConnectedArea.TranslationKey + " should recognize connected area " + actualTerritoryLocation.TranslationKey +
-                    " but has connected territories: " + string.Join(", ", expectedConnectedArea.ConnectedTerritories.Select(x => x.TranslationKey)));
+                expectedConnectedTerritory.ConnectedTerritories.Should().Contain(actualTerritoryLocation,
+                    expectedConnectedTerritory.TranslationKey + " should recognize connected territory " + actualTerritoryLocation.TranslationKey +
+                    " but has connected territories: " + string.Join(", ", expectedConnectedTerritory.ConnectedTerritories.Select(x => x.TranslationKey)));
             }
         }
 

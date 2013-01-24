@@ -21,9 +21,9 @@ namespace RISK.Domain.Entities
             get { return _connectedTerritories; }
         }
 
-        public void AddConnectedAreas(params TerritoryLocation[] connectedTerritories)
+        public void AddConnectedTerritories(params TerritoryLocation[] territories)
         {
-            _connectedTerritories.AddRange(connectedTerritories);
+            _connectedTerritories.AddRange(territories);
         }
     }
 }

@@ -17,28 +17,28 @@ namespace RISK.Domain.GamePlaying
             _battleCalculator = battleCalculator;
         }
 
-        public void SelectArea(ITerritoryLocation territoryLocation)
+        public void SelectTerritory(ITerritoryLocation territoryLocation)
         {
-            var area = GetArea(territoryLocation);
-            if (area.Owner == _player)
+            var territory = GetTerritory(territoryLocation);
+            if (territory.Owner == _player)
             {
-                _selectedTerritory = area;
+                _selectedTerritory = territory;
             }
         }
 
-        private ITerritory GetArea(ITerritoryLocation territoryLocation)
+        private ITerritory GetTerritory(ITerritoryLocation territoryLocation)
         {
-            return _worldMap.GetArea(territoryLocation);
+            return _worldMap.GetTerritory(territoryLocation);
         }
 
-        public void AttackArea(ITerritoryLocation territoryLocation)
+        public void AttackTerritory(ITerritoryLocation territoryLocation)
         {
-            var isAreaConnected = _selectedTerritory.TerritoryLocation.ConnectedTerritories.Contains(territoryLocation);
-            var areaToAttack = GetArea(territoryLocation);
-            var isAreaOccupiedByEnemy = areaToAttack.Owner != _player;
-            if (isAreaConnected && isAreaOccupiedByEnemy)
+            var isConnected = _selectedTerritory.TerritoryLocation.ConnectedTerritories.Contains(territoryLocation);
+            var territoryToAttack = GetTerritory(territoryLocation);
+            var isTerritoryOccupiedByEnemy = territoryToAttack.Owner != _player;
+            if (isConnected && isTerritoryOccupiedByEnemy)
             {
-                _battleCalculator.Attack(_selectedTerritory, areaToAttack);
+                _battleCalculator.Attack(_selectedTerritory, territoryToAttack);
             }
         }
 

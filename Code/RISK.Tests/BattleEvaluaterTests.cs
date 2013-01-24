@@ -33,8 +33,8 @@ namespace RISK.Tests
             var diceResult = MockRepository.GenerateStub<IDicesResult>();
             _dices.Stub(x => x.Roll(2, 1)).Return(diceResult);
 
-            var attacker = new Territory(new TerritoryLocation("attacker area", new Continent())) { Owner = _player1, Armies = 2};
-            var defender = new Territory(new TerritoryLocation("defender area", new Continent()));
+            var attacker = new Territory(new TerritoryLocation("attacker territory", new Continent())) { Owner = _player1, Armies = 2};
+            var defender = new Territory(new TerritoryLocation("defender territory", new Continent()));
 
             _battleCalculator.Attack(attacker, defender);
 
