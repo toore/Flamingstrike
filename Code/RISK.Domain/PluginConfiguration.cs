@@ -17,7 +17,7 @@ namespace RISK.Domain
                             s.WithDefaultConventions();
                         });
 
-                    x.For<ITerritoryLocationRepository>().Singleton();
+                    x.For<ILocationRepository>().Singleton();
                 });
         }
     }

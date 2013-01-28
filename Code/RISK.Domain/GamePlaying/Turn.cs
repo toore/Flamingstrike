@@ -3,12 +3,12 @@ using RISK.Domain.Entities;
 
 namespace RISK.Domain.GamePlaying
 {
-    public class Turn : ITurn 
+    public class Turn : ITurn
     {
         private readonly IPlayer _player;
         private readonly IWorldMap _worldMap;
         private readonly IBattleCalculator _battleCalculator;
-        private ITerritory _selectedTerritory;
+        private bool _playerShouldReceiveCardWhenTurnEnds;
 
         public Turn(IPlayer player, IWorldMap worldMap, IBattleCalculator battleCalculator)
         {
@@ -17,34 +17,87 @@ namespace RISK.Domain.GamePlaying
             _battleCalculator = battleCalculator;
         }
 
-        public void SelectTerritory(ITerritoryLocation territoryLocation)
+        public ITerritory SelectedTerritory { get; private set; }
+
+        public bool IsTerritorySelected
         {
-            var territory = GetTerritory(territoryLocation);
-            if (territory.Owner == _player)
+            get { return SelectedTerritory != null; }
+        }
+
+        public bool CanSelect(ILocation location)
+        {
+            return GetTerritory(location).Owner == _player;
+        }
+
+        public void Select(ILocation location)
+        {
+            if (!CanSelect(location))
             {
-                _selectedTerritory = territory;
+                return;
+            }
+
+            var territoryToSelect = GetTerritory(location);
+            if (territoryToSelect == SelectedTerritory)
+            {
+                SelectedTerritory = null;
+            }
+            else
+            {
+                SelectedTerritory = territoryToSelect;
             }
         }
 
-        private ITerritory GetTerritory(ITerritoryLocation territoryLocation)
+        public void Attack(ILocation location)
         {
-            return _worldMap.GetTerritory(territoryLocation);
+            if (IsTerritorySelected)
+            {
+                AttackFromSelected(location);
+            }
         }
 
-        public void AttackTerritory(ITerritoryLocation territoryLocation)
+        private void AttackFromSelected(ILocation location)
         {
-            var isConnected = _selectedTerritory.TerritoryLocation.ConnectedTerritories.Contains(territoryLocation);
-            var territoryToAttack = GetTerritory(territoryLocation);
-            var isTerritoryOccupiedByEnemy = territoryToAttack.Owner != _player;
-            if (isConnected && isTerritoryOccupiedByEnemy)
+            var territoryToAttack = GetTerritory(location);
+            var canAttack = CanAttack(territoryToAttack);
+
+            if (canAttack)
             {
-                _battleCalculator.Attack(_selectedTerritory, territoryToAttack);
+                Attack(territoryToAttack);
+            }
+        }
+
+        private void Attack(ITerritory territory)
+        {
+            _battleCalculator.Attack(SelectedTerritory, territory);
+
+            if (HasPlayerOccupiedTerritory(territory))
+            {
+                _playerShouldReceiveCardWhenTurnEnds = true;
             }
         }
 
         public bool PlayerShouldReceiveCardWhenTurnEnds()
         {
-            throw new System.NotImplementedException();
+            return _playerShouldReceiveCardWhenTurnEnds;
+        }
+
+        private bool HasPlayerOccupiedTerritory(ITerritory territoryToAttack)
+        {
+            return territoryToAttack.Owner == _player;
+        }
+
+        private bool CanAttack(ITerritory territoryToAttack)
+        {
+            var isTerritoryOccupiedByEnemy = territoryToAttack.Owner != _player;
+            var isConnected = SelectedTerritory.Location.Connections.Contains(territoryToAttack.Location);
+            var canAttack = isConnected && isTerritoryOccupiedByEnemy;
+
+            return canAttack;
+        }
+
+        private ITerritory GetTerritory(ILocation location)
+        {
+            return _worldMap.GetTerritory(location);
         }
     }
 }

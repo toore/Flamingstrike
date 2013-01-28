@@ -2,12 +2,12 @@
 {
     public class Territory : ITerritory
     {
-        public Territory(ITerritoryLocation territoryLocation)
+        public Territory(ILocation location)
         {
-            TerritoryLocation = territoryLocation;
+            Location = location;
         }
 
-        public ITerritoryLocation TerritoryLocation { get; private set; }
+        public ILocation Location { get; private set; }
 
         public IPlayer Owner { get; set; }
         public int Armies { get; set; }

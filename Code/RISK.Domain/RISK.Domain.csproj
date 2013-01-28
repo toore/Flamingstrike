@@ -44,11 +44,11 @@
   <ItemGroup>
     <Compile Include="Caliburn.Micro\ExtensionMethods.cs" />
     <Compile Include="Entities\Territory.cs" />
-    <Compile Include="Entities\TerritoryLocation.cs" />
+    <Compile Include="Entities\Location.cs" />
     <Compile Include="Entities\Continent.cs" />
     <Compile Include="Entities\HumanPlayer.cs" />
     <Compile Include="Entities\ITerritory.cs" />
-    <Compile Include="Entities\ITerritoryLocation.cs" />
+    <Compile Include="Entities\ILocation.cs" />
     <Compile Include="Entities\IPlayer.cs" />
     <Compile Include="Extensions\ObjectExtensions.cs" />
     <Compile Include="GamePlaying\BattleCalculator.cs" />
@@ -62,9 +62,9 @@
     <Compile Include="GamePlaying\DiceAndCalculation\IDices.cs" />
     <Compile Include="GamePlaying\ITurnFactory.cs" />
     <Compile Include="GamePlaying\TurnFactory.cs" />
-    <Compile Include="Repositories\TerritoryLocationRepository.cs" />
+    <Compile Include="Repositories\LocationRepository.cs" />
     <Compile Include="Repositories\ContinentRepository.cs" />
-    <Compile Include="Repositories\ITerritoryLocationRepository.cs" />
+    <Compile Include="Repositories\ILocationRepository.cs" />
     <Compile Include="Repositories\IContinentRepository.cs" />
     <Compile Include="GamePlaying\IGame.cs" />
     <Compile Include="GamePlaying\ITurn.cs" />

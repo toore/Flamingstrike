@@ -13,7 +13,7 @@ namespace RISK.Tests.Specifications
 {
     public class game_playing_specifications : NSpecDebuggerShim
     {
-        private ITerritoryLocationRepository _territoryLocationRepository;
+        private ILocationRepository _locationRepository;
         private HumanPlayer _player1;
         private HumanPlayer _player2;
         private IGame _game;
@@ -34,10 +34,14 @@ namespace RISK.Tests.Specifications
                     _playerRepository = new PlayerRepository();
                     ObjectFactory.Inject(_playerRepository);
 
-                    _territoryLocationRepository = new TerritoryLocationRepository(new ContinentRepository());
-                    ObjectFactory.Inject(_territoryLocationRepository);
+                    _locationRepository = new LocationRepository(new ContinentRepository());
+                    ObjectFactory.Inject(_locationRepository);
 
                     var dices = MockRepository.GenerateStub<IDices>();
+                    var diceResult = MockRepository.GenerateStub<IDicesResult>();
+                    diceResult.Stub(x => x.DefenderCasualties).Return(1);
+                    dices.Stub(x => x.Roll(5, 1)).Return(diceResult);
+                    
                     _battleCalculator = new BattleCalculator(dices);
                     ObjectFactory.Inject(_battleCalculator);
 
@@ -50,7 +54,7 @@ namespace RISK.Tests.Specifications
                     _game = ObjectFactory.GetInstance<IGame>();
                     _worldMap = _game.GetWorldMap();
 
-                    UpdateTerritory(_territoryLocationRepository.NorthAfrica, _player1, 5);
+                    UpdateTerritory(_locationRepository.NorthAfrica, _player1, 5);
                     UpdateAllTerritoriesWithoutOwner(_player2, 1);
 
                     _currentTurn = _game.GetNextTurn();
@@ -58,27 +62,27 @@ namespace RISK.Tests.Specifications
 
             act = () =>
                 {
-                    _currentTurn.SelectTerritory(_territoryLocationRepository.NorthAfrica);
-                    _currentTurn.AttackTerritory(_territoryLocationRepository.Brazil);
+                    _currentTurn.Select(_locationRepository.NorthAfrica);
+                    _currentTurn.Attack(_locationRepository.Brazil);
                 };
 
-            it["player 1 should own North Africa"] = () => _worldMap.GetTerritory(_territoryLocationRepository.NorthAfrica).Owner.Should().Be(_player1);
-            it["North Africa should have 1 army"] = () => _worldMap.GetTerritory(_territoryLocationRepository.NorthAfrica).Armies.Should().Be(1);
-            it["player 1 should own Brazil"] = () => _worldMap.GetTerritory(_territoryLocationRepository.Brazil).Owner.Should().Be(_player1);
-            it["Brazil should have 4 armies"] = () => _worldMap.GetTerritory(_territoryLocationRepository.Brazil).Armies.Should().Be(4);
+            it["player 1 should own North Africa"] = () => _worldMap.GetTerritory(_locationRepository.NorthAfrica).Owner.Should().Be(_player1);
+            it["North Africa should have 1 army"] = () => _worldMap.GetTerritory(_locationRepository.NorthAfrica).Armies.Should().Be(1);
+            it["player 1 should own Brazil"] = () => _worldMap.GetTerritory(_locationRepository.Brazil).Owner.Should().Be(_player1);
+            it["Brazil should have 4 armies"] = () => _worldMap.GetTerritory(_locationRepository.Brazil).Armies.Should().Be(4);
             it["player 1 should receive a card when turn ends"] = () => _currentTurn.PlayerShouldReceiveCardWhenTurnEnds();
         }
 
-        private void UpdateTerritory(ITerritoryLocation territoryLocation, IPlayer owner, int armies)
+        private void UpdateTerritory(ILocation location, IPlayer owner, int armies)
         {
-            var territory = _worldMap.GetTerritory(territoryLocation);
+            var territory = _worldMap.GetTerritory(location);
             territory.Owner = owner;
             territory.Armies = armies;
         }
 
         private void UpdateAllTerritoriesWithoutOwner(IPlayer owner, int armies)
         {
-            _territoryLocationRepository.GetAll()
+            _locationRepository.GetAll()
                 .Select(x => _worldMap.GetTerritory(x))
                 .Where(x => !x.HasOwner)
                 .Apply(x =>

@@ -2,10 +2,10 @@
 
 namespace RISK.Domain.Entities
 {
-    public interface ITerritoryLocation
+    public interface ILocation
     {
         string TranslationKey { get; }
         Continent Continent { get; }
-        IEnumerable<ITerritoryLocation> ConnectedTerritories { get; }
+        IEnumerable<ILocation> Connections { get; }
     }
 }

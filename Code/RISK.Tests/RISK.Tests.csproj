@@ -42,6 +42,9 @@
     <Reference Include="Rhino.Mocks">
       <HintPath>..\..\packages\RhinoMocks.3.6.1\lib\net\Rhino.Mocks.dll</HintPath>
     </Reference>
+    <Reference Include="Spextensions.RhinoMocks">
+      <HintPath>..\packages\Spextensions.RhinoMocks.1.0.2\lib\net40\Spextensions.RhinoMocks.dll</HintPath>
+    </Reference>
     <Reference Include="StructureMap">
       <HintPath>..\packages\structuremap.2.6.4.1\lib\net40\StructureMap.dll</HintPath>
     </Reference>
@@ -54,7 +57,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="TerritoryLocationRepositoryTests.cs" />
+    <Compile Include="LocationRepositoryTests.cs" />
     <Compile Include="BattleCalculatorTests.cs" />
     <Compile Include="Dice\DiceValueCalculatorTests.cs" />
     <Compile Include="Extensions\ObjectExtensionsTests.cs" />
@@ -63,6 +66,7 @@
     <Compile Include="Specifications\game_playing_specifications.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TurnFactoryTests.cs" />
+    <Compile Include="TurnTests.cs" />
     <Compile Include="WorldMapTests.cs" />
   </ItemGroup>
   <ItemGroup>

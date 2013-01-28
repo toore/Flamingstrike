@@ -13,58 +13,58 @@ namespace RISK.Tests
     public class WorldMapTests
     {
         private WorldMap _worldMap;
-        private ITerritoryLocationRepository _territoryLocationRepository;
+        private ILocationRepository _locationRepository;
 
         [SetUp]
         public void SetUp()
         {
-            _territoryLocationRepository = MockRepository.GenerateStub<ITerritoryLocationRepository>();
-            var scandinavia = new TerritoryLocation("scandinavia", new Continent());
-            var congo = new TerritoryLocation("congo", new Continent());
-            var egypt = new TerritoryLocation("egypt", new Continent());
-            _territoryLocationRepository.Stub(x => x.Scandinavia).Return(scandinavia);
-            _territoryLocationRepository.Stub(x => x.Congo).Return(congo);
-            _territoryLocationRepository.Stub(x => x.Egypt).Return(egypt);
-            _territoryLocationRepository.Stub(x => x.GetAll()).Return(new[] { scandinavia, congo, egypt });
+            _locationRepository = MockRepository.GenerateStub<ILocationRepository>();
+            var scandinavia = new Location("scandinavia", new Continent());
+            var congo = new Location("congo", new Continent());
+            var egypt = new Location("egypt", new Continent());
+            _locationRepository.Stub(x => x.Scandinavia).Return(scandinavia);
+            _locationRepository.Stub(x => x.Congo).Return(congo);
+            _locationRepository.Stub(x => x.Egypt).Return(egypt);
+            _locationRepository.Stub(x => x.GetAll()).Return(new[] { scandinavia, congo, egypt });
 
-            _worldMap = new WorldMap(_territoryLocationRepository);
+            _worldMap = new WorldMap(_locationRepository);
         }
 
         [Test]
         public void GetTerritory_has_territory_for_scandinavia()
         {
-            AssertGetTerritory(_territoryLocationRepository.Scandinavia);
+            AssertGetTerritory(_locationRepository.Scandinavia);
         }
 
         [Test]
         public void GetTerritory_has_territory_for_congo()
         {
-            AssertGetTerritory(_territoryLocationRepository.Congo);
+            AssertGetTerritory(_locationRepository.Congo);
         }
 
         [Test]
         public void GetTerritory_has_territory_for_egypt()
         {
-            AssertGetTerritory(_territoryLocationRepository.Egypt);
+            AssertGetTerritory(_locationRepository.Egypt);
         }
 
         [Test]
         [ExpectedException(typeof(InvalidOperationException))]
         public void GetTerritory_throws_for_territory_Japan()
         {
-            GetTerritory(_territoryLocationRepository.Japan);
+            GetTerritory(_locationRepository.Japan);
         }
 
-        private void AssertGetTerritory(ITerritoryLocation territoryLocation)
+        private void AssertGetTerritory(ILocation location)
         {
-            var territory = GetTerritory(territoryLocation);
+            var territory = GetTerritory(location);
 
             territory.Should().NotBeNull();
         }
 
-        private ITerritory GetTerritory(ITerritoryLocation territoryLocation)
+        private ITerritory GetTerritory(ILocation location)
         {
-            return _worldMap.GetTerritory(territoryLocation);
+            return _worldMap.GetTerritory(location);
         }
     }
 }

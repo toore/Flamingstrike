@@ -4,8 +4,8 @@ namespace RISK.Domain.GamePlaying
 {
     public interface ITurn
     {
-        void SelectTerritory(ITerritoryLocation territoryLocation);
-        void AttackTerritory(ITerritoryLocation territoryLocation);
+        void Select(ILocation location);
+        void Attack(ILocation location);
 
         bool PlayerShouldReceiveCardWhenTurnEnds();
     }

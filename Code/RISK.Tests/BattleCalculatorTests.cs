@@ -35,8 +35,8 @@ namespace RISK.Tests
         {
             StubDices(attackingArmies, defendingArmies, attackerCasualties, defenderCasualties);
 
-            var attacker = new Territory(new TerritoryLocation("attacker territory", new Continent())) { Owner = _attacker, Armies = attackingArmies };
-            var defender = new Territory(new TerritoryLocation("defender territory", new Continent())) { Owner = _defender, Armies = defendingArmies };
+            var attacker = new Territory(new Location("attacker territory", new Continent())) { Owner = _attacker, Armies = attackingArmies };
+            var defender = new Territory(new Location("defender territory", new Continent())) { Owner = _defender, Armies = defendingArmies };
 
             _battleCalculator.Attack(attacker, defender);
 

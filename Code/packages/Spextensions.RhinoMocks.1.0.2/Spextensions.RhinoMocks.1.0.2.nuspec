@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>Spextensions.RhinoMocks</id>
+    <version>1.0.2</version>
+    <title>Spextensions.RhinoMocks</title>
+    <authors>Erik Öjebo</authors>
+    <owners>Erik Öjebo</owners>
+    <projectUrl>https://github.com/erikojebo/Spextensions/wiki</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Extensions for the mocking framework RhinoMocks</description>
+    <summary>Extensions for the mocking framework RhinoMocks</summary>
+    <copyright>Copyright 2011</copyright>
+    <tags>rhinomocks mocking mock mocks spextensions</tags>
+    <dependencies>
+      <dependency id="RhinoMocks" version="3.6" />
+    </dependencies>
+    <references>
+      <reference file="Spextensions.RhinoMocks.dll" />
+    </references>
+  </metadata>
+</package>
