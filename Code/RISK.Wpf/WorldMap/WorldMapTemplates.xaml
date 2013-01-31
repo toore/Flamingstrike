@@ -1,0 +1,20 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:WorldMap="clr-namespace:RISK.WorldMap">
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="./TerritoryButtonTemplate.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+
+    <DataTemplate DataType="{x:Type WorldMap:WorldMapViewModel}">
+        <Grid>
+            <WorldMap:WorldMapUserControl Opacity="0.2" />
+
+            <Canvas>
+                <ItemsControl ItemsSource="{Binding Territories}" />
+            </Canvas>
+
+        </Grid>
+    </DataTemplate>
+
+</ResourceDictionary>

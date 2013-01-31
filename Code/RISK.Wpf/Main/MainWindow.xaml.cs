@@ -1,4 +1,4 @@
-﻿namespace RISK
+﻿namespace RISK.Main
 {
     public partial class MainWindow
     {

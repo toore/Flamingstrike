@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RISK.Wpf", "RISK.Wpf\RISK.Wpf.csproj", "{3B937F0E-E727-442D-B1DA-E5ED6EF939D5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RISK.GuiWpf", "RISK.Wpf\RISK.GuiWpf.csproj", "{3B937F0E-E727-442D-B1DA-E5ED6EF939D5}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RISK.Domain", "RISK.Domain\RISK.Domain.csproj", "{6DE17FCA-3F04-4923-8AB8-E3FA376A54FF}"
 EndProject
