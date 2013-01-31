@@ -6,9 +6,33 @@
         <ResourceDictionary Source="TerritoryStyles.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
-    <DataTemplate DataType="{x:Type Territories:AlaskaTerritoryViewModel}">
+    <DataTemplate DataType="{x:Type Territories:AlaskaViewModel}">
         <Territories:TerritoryButtonUserControl
             PathStyle="{StaticResource NorthAmericaPathStyle}"
-            TerritoryName="Alaska" />
+            TerritoryName="{Binding Name}">
+            <Territories:TerritoryButtonUserControl.GeometryChildren>
+                <GeometryCollection>
+                    <PathGeometry
+                        Figures="m 12.121866 139.68511 41.67913 -42.115279 12.86906 -25.564934 50.513114 -8.563276 40.40058 8.563276 -45.57044 44.381753 5.76544 11.7349 -44.064802 -14.83465 z"
+                        FillRule="NonZero" />
+                </GeometryCollection>
+            </Territories:TerritoryButtonUserControl.GeometryChildren>
+        </Territories:TerritoryButtonUserControl>
     </DataTemplate>
+
+    <DataTemplate DataType="{x:Type Territories:CentralAmericaViewModel}">
+        <Territories:TerritoryButtonUserControl
+            PathStyle="{StaticResource NorthAmericaPathStyle}"
+            TerritoryName="{Binding Name}">
+            <Territories:TerritoryButtonUserControl.GeometryChildren>
+                <GeometryCollection>
+                    <PathGeometry
+                        Figures="m 97.984797 251.81205 39.395953 84.0952 120.46069 67.93276 6.81853 -7.32361 -43.6891 -69.44799 -43.6891 2.77792 4.04061 -29.04188 -33.08249 -30.55712 z"
+                        FillRule="NonZero" />
+                    <PathGeometry Figures="m 233.34524 320.24988 19.44543 -6.81853 65.40738 29.54697 -19.1929 12.87944 z" FillRule="NonZero" />
+                </GeometryCollection>
+            </Territories:TerritoryButtonUserControl.GeometryChildren>
+        </Territories:TerritoryButtonUserControl>
+    </DataTemplate>
+
 </ResourceDictionary>

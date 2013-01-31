@@ -1,10 +1,12 @@
 ﻿namespace RISK.WorldMap.Territories
 {
-    public class AlaskaTerritoryViewModel : TerritoryViewModelBase
+    public class AlaskaViewModel : TerritoryViewModelBase
     {
-        public override string Title
+        public override string Name
         {
             get { return "ALASKA"; }
         }
     }
+
+
 }

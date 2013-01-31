@@ -56,7 +56,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="WorldMap\Territories\AlaskaTerritoryViewModel.cs" />
+    <Compile Include="WorldMap\Territories\AlaskaViewModel.cs" />
+    <Compile Include="WorldMap\Territories\CentralAmericaViewModel.cs" />
     <Compile Include="WorldMap\Territories\TerritoryButtonUserControl.xaml.cs">
       <DependentUpon>TerritoryButtonUserControl.xaml</DependentUpon>
     </Compile>

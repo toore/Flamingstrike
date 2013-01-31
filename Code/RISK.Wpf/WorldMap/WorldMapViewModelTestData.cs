@@ -1,4 +1,3 @@
-using RISK.Domain.Extensions;
 using RISK.WorldMap.Territories;
 
 namespace RISK.WorldMap
@@ -7,7 +6,11 @@ namespace RISK.WorldMap
     {
         public WorldMapViewModelTestData()
         {
-            Territories = new AlaskaTerritoryViewModel().AsList();
+            Territories = new TerritoryViewModelBase[]
+                {
+                    new AlaskaViewModel(),
+                    new CentralAmericaViewModel()
+                };
         }
     }
 }

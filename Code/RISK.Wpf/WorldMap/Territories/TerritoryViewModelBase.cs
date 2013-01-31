@@ -2,6 +2,6 @@
 {
     public abstract class TerritoryViewModelBase
     {
-        public abstract string Title { get; }
+        public abstract string Name { get; }
     }
 }

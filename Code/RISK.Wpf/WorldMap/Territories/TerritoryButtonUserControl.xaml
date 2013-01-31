@@ -4,8 +4,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     mc:Ignorable="d"
-    d:DesignHeight="300" d:DesignWidth="300"
-    DataContext="{Binding RelativeSource={RelativeSource Self}}">
+    d:DesignHeight="300" d:DesignWidth="300">
 
     <UserControl.Resources>
 
@@ -59,17 +58,23 @@
 
     <Button Style="{StaticResource TerritoryButtonStyle}">
         <Button.Content>
-            <Grid Background="Transparent">
-                <Path Name="alaska" Style="{Binding Path=PathStyle}">
-                    <Path.Data>
-                        <PathGeometry
-                            Figures="m 12.121866 139.68511 41.67913 -42.115279 12.86906 -25.564934 50.513114 -8.563276 40.40058 8.563276 -45.57044 44.381753 5.76544 11.7349 -44.064802 -14.83465 z"
-                            FillRule="NonZero" />
-                    </Path.Data>
-                </Path>
+            <Grid
+                Background="Transparent"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Stretch">
+                <!--<Canvas>-->
+                    <Path Name="alaska" Style="{Binding Path=PathStyle, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}">
+                        <Path.Data>
+                            <GeometryGroup Children="{Binding Path=GeometryChildren, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" />
+                        </Path.Data>
+                    </Path>
 
-                <Label HorizontalAlignment="Center" VerticalAlignment="Center" Content="{Binding Path=TerritoryName}" />
+                    <Label
+                        Content="{Binding Path=TerritoryName, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center" />
 
+                <!--</Canvas>-->
             </Grid>
         </Button.Content>
     </Button>
