@@ -57,6 +57,9 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="WorldMap\Territories\AlaskaTerritoryViewModel.cs" />
+    <Compile Include="WorldMap\Territories\TerritoryButtonUserControl.xaml.cs">
+      <DependentUpon>TerritoryButtonUserControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="WorldMap\Territories\TerritoryViewModelBase.cs" />
     <Compile Include="WorldMap\WorldMapViewModelTestData.cs" />
     <Compile Include="Main\MainUserControl.xaml.cs">
@@ -67,8 +70,8 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>strings.resx</DependentUpon>
     </Compile>
-    <Compile Include="WorldMap\WorldMapUserControl.xaml.cs">
-      <DependentUpon>WorldMapUserControl.xaml</DependentUpon>
+    <Compile Include="WorldMap\WorldMapTestUserControl.xaml.cs">
+      <DependentUpon>WorldMapTestUserControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="WorldMap\WorldMapViewModel.cs" />
     <Page Include="Main\MainUserControl.xaml">
@@ -87,15 +90,19 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="WorldMap\TerritoryButtonTemplate.xaml">
+    <Page Include="WorldMap\Territories\TerritoryButtonUserControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="WorldMap\WorldMapStyles.xaml">
+    <Page Include="WorldMap\Territories\TerritoryTemplates.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="WorldMap\WorldMapUserControl.xaml">
+    <Page Include="WorldMap\Territories\TerritoryStyles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WorldMap\WorldMapTestUserControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

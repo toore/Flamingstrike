@@ -1,0 +1,77 @@
+﻿<UserControl x:Class="RISK.WorldMap.Territories.TerritoryButtonUserControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    mc:Ignorable="d"
+    d:DesignHeight="300" d:DesignWidth="300"
+    DataContext="{Binding RelativeSource={RelativeSource Self}}">
+
+    <UserControl.Resources>
+
+        <ControlTemplate x:Key="TerritoryButtonTemplate" TargetType="Button">
+            <Border Name="RootElement">
+
+                <VisualStateManager.VisualStateGroups>
+
+                    <!--Define the states and transitions for the common states. The states in the VisualStateGroup are mutually exclusive to each other.-->
+                    <VisualStateGroup Name="CommonStates">
+
+                        <!--The Normal state is the state the button is in when it is not in another state from this VisualStateGroup.-->
+                        <VisualState Name="Normal" />
+
+                        <!--Change the SolidColorBrush, BorderBrush, to red when the mouse is over the button.-->
+                        <VisualState Name="MouseOver">
+                            <!--<Storyboard>
+                                <ColorAnimation Storyboard.TargetName="BorderBrush"
+                                    Storyboard.TargetProperty="Color"
+                                    To="Red" />
+                            </Storyboard>-->
+                        </VisualState>
+
+                        <!--Change the SolidColorBrush, BorderBrush, to Transparent when the button is pressed.-->
+                        <VisualState Name="Pressed">
+                            <!--<Storyboard>
+                                <ColorAnimation Storyboard.TargetName="BorderBrush"
+                                    Storyboard.TargetProperty="Color"
+                                    To="Transparent" />
+                            </Storyboard>-->
+                        </VisualState>
+
+                        <!--The Disabled state is omitted for brevity.-->
+                    </VisualStateGroup>
+                </VisualStateManager.VisualStateGroups>
+
+                <Grid Background="{TemplateBinding Background}">
+                    <ContentPresenter
+                        HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                        VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                </Grid>
+            </Border>
+        </ControlTemplate>
+
+        <Style x:Key="TerritoryButtonStyle" TargetType="{x:Type Button}">
+            <Setter Property="Template" Value="{StaticResource TerritoryButtonTemplate}" />
+            <Setter Property="Background" Value="Transparent" />
+        </Style>
+
+    </UserControl.Resources>
+
+    <Button Style="{StaticResource TerritoryButtonStyle}">
+        <Button.Content>
+            <Grid Background="Transparent">
+                <Path Name="alaska" Style="{Binding Path=PathStyle}">
+                    <Path.Data>
+                        <PathGeometry
+                            Figures="m 12.121866 139.68511 41.67913 -42.115279 12.86906 -25.564934 50.513114 -8.563276 40.40058 8.563276 -45.57044 44.381753 5.76544 11.7349 -44.064802 -14.83465 z"
+                            FillRule="NonZero" />
+                    </Path.Data>
+                </Path>
+
+                <Label HorizontalAlignment="Center" VerticalAlignment="Center" Content="{Binding Path=TerritoryName}" />
+
+            </Grid>
+        </Button.Content>
+    </Button>
+
+</UserControl>

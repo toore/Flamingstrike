@@ -3,7 +3,7 @@
     xmlns:WorldMap="clr-namespace:RISK.WorldMap">
 
     <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="./TerritoryButtonTemplate.xaml" />
+        <ResourceDictionary Source="Territories/TerritoryTemplates.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
     <DataTemplate DataType="{x:Type WorldMap:WorldMapViewModel}">
