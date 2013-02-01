@@ -86,5 +86,59 @@ namespace RISK.Properties {
                 return ResourceManager.GetString("CENTRAL_AMERICA", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Eastern United States.
+        /// </summary>
+        internal static string EASTERN_UNITED_STATES {
+            get {
+                return ResourceManager.GetString("EASTERN_UNITED_STATES", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Greenland.
+        /// </summary>
+        internal static string GREENLAND {
+            get {
+                return ResourceManager.GetString("GREENLAND", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Northwest Territory.
+        /// </summary>
+        internal static string NORTHWEST_TERRITORY {
+            get {
+                return ResourceManager.GetString("NORTHWEST_TERRITORY", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ontario.
+        /// </summary>
+        internal static string ONTARIO {
+            get {
+                return ResourceManager.GetString("ONTARIO", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Quebec.
+        /// </summary>
+        internal static string QUEBEC {
+            get {
+                return ResourceManager.GetString("QUEBEC", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Western United States.
+        /// </summary>
+        internal static string WESTERN_UNITED_STATES {
+            get {
+                return ResourceManager.GetString("WESTERN_UNITED_STATES", resourceCulture);
+            }
+        }
     }
 }

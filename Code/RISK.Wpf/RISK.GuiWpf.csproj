@@ -56,12 +56,24 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Services\ColorService.cs" />
+    <Compile Include="Services\ContinentColors.cs" />
+    <Compile Include="Services\IColorService.cs" />
+    <Compile Include="WorldMap\Territories\AlbertaViewModel.cs" />
+    <Compile Include="WorldMap\Territories\EasternUnitedStatesViewModel.cs" />
+    <Compile Include="WorldMap\Territories\GreenlandViewModel.cs" />
+    <Compile Include="WorldMap\Territories\ITerritoryViewModelFactory.cs" />
+    <Compile Include="WorldMap\Territories\NorthwestTerritoryViewModel.cs" />
+    <Compile Include="WorldMap\Territories\OntarioViewModel.cs" />
+    <Compile Include="WorldMap\Territories\QuebecViewModel.cs" />
     <Compile Include="WorldMap\Territories\AlaskaViewModel.cs" />
     <Compile Include="WorldMap\Territories\CentralAmericaViewModel.cs" />
     <Compile Include="WorldMap\Territories\TerritoryButtonUserControl.xaml.cs">
       <DependentUpon>TerritoryButtonUserControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="WorldMap\Territories\TerritoryViewModelBase.cs" />
+    <Compile Include="WorldMap\Territories\TerritoryViewModelFactory.cs" />
+    <Compile Include="WorldMap\Territories\WesternUnitedStatesViewModel.cs" />
     <Compile Include="WorldMap\WorldMapViewModelTestData.cs" />
     <Compile Include="Main\MainUserControl.xaml.cs">
       <DependentUpon>MainUserControl.xaml</DependentUpon>
@@ -120,6 +132,7 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">

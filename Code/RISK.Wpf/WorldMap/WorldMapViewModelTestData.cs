@@ -1,3 +1,4 @@
+using RISK.Services;
 using RISK.WorldMap.Territories;
 
 namespace RISK.WorldMap
@@ -6,11 +7,8 @@ namespace RISK.WorldMap
     {
         public WorldMapViewModelTestData()
         {
-            Territories = new TerritoryViewModelBase[]
-                {
-                    new AlaskaViewModel(),
-                    new CentralAmericaViewModel()
-                };
+            Territories = new TerritoryViewModelFactory(new ColorService()).Create();
+
         }
     }
 }

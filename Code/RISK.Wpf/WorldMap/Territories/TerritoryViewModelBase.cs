@@ -10,9 +10,9 @@ namespace RISK.WorldMap.Territories
 
         public abstract string Path { get; }
 
-        public abstract Color NormalStrokeColor { get; }
-        public abstract Color NormalFillColor { get; }
-        public abstract Color MouseOverStrokeColor { get; }
-        public abstract Color MouseOverFillColor { get; }
+        public Color NormalStrokeColor { get; set; }
+        public Color NormalFillColor { get; set; }
+        public Color MouseOverStrokeColor { get; set; }
+        public Color MouseOverFillColor { get; set; }
     }
 }
