@@ -32,7 +32,7 @@ namespace RISK.WorldMap.Territories
 
         public override Color MouseOverFillColor
         {
-            get { return Colors.OrangeRed; }
+            get { return Colors.PaleGreen; }
         }
 
         public override Color MouseOverStrokeColor

@@ -24,10 +24,11 @@
                         <!--Change the SolidColorBrush, BorderBrush, to red when the mouse is over the button.-->
                         <VisualState Name="MouseOver">
                             <Storyboard>
-                                <ColorAnimation Storyboard.TargetName="fill"
+
+                                <!--<ColorAnimation Storyboard.TargetName="normalFill"
                                     Storyboard.TargetProperty="Color"
-                                    To="Red"
-                                    Duration="0:0:0.1" />
+                                    To="{Binding Path=NormalFillColor, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
+                                    Duration="0:0:0.1" />-->
                             </Storyboard>
                         </VisualState>
 
@@ -46,7 +47,7 @@
                 </VisualStateManager.VisualStateGroups>
 
                 <Canvas>
-                    <Path>
+                    <Path StrokeThickness="3">
                         <Path.Fill>
                             <SolidColorBrush x:Name="fill" Color="{Binding Path=NormalFillColor, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" />
                         </Path.Fill>
@@ -57,6 +58,36 @@
                         <Path.Data>
                             <GeometryGroup Children="{Binding Path=GeometryChildren, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" />
                         </Path.Data>
+                        <Path.Triggers>
+                            <EventTrigger RoutedEvent="MouseEnter">
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <ColorAnimation Storyboard.TargetName="fill"
+                                            Storyboard.TargetProperty="Color"
+                                            To="{Binding Path=MouseOverFillColor, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
+                                            Duration="0:0:0.1" />
+                                        <ColorAnimation Storyboard.TargetName="stroke"
+                                            Storyboard.TargetProperty="Color"
+                                            To="{Binding Path=MouseOverStrokeColor, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
+                                            Duration="0:0:0.1" />
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                            <EventTrigger RoutedEvent="MouseLeave">
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <ColorAnimation Storyboard.TargetName="fill"
+                                            Storyboard.TargetProperty="Color"
+                                            To="{Binding Path=NormalFillColor, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
+                                            Duration="0:0:0.1" />
+                                        <ColorAnimation Storyboard.TargetName="stroke"
+                                            Storyboard.TargetProperty="Color"
+                                            To="{Binding Path=NormalStrokeColor, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
+                                            Duration="0:0:0.1" />
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                        </Path.Triggers>
                     </Path>
 
                     <Label
