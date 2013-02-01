@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Media;
+using RISK.Properties;
 
 namespace RISK.WorldMap.Territories
 {
@@ -7,7 +8,7 @@ namespace RISK.WorldMap.Territories
     {
         public override string Name
         {
-            get { return "CENTRAL AMERICA"; }
+            get { return Resources.CENTRAL_AMERICA; }
         }
 
         public override Point NamePosition
