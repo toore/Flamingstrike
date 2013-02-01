@@ -1,5 +1,26 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:Territories="clr-namespace:RISK.WorldMap.Territories">
+
+    <DataTemplate DataType="{x:Type Territories:TerritoryViewModelBase}">
+        <Territories:TerritoryButtonUserControl
+            TerritoryName="{Binding Name}"
+            TerritoryNamePosition="{Binding NamePosition}"
+            NormalFillColor="{Binding NormalFillColor}"
+            NormalStrokeColor="{Binding NormalStrokeColor}"
+            MouseOverFillColor="{Binding MouseOverFillColor}"
+            MouseOverStrokeColor="{Binding MouseOverStrokeColor}">
+
+            <Territories:TerritoryButtonUserControl.GeometryChildren>
+                <GeometryCollection>
+                    <PathGeometry
+                        Figures="{Binding Path}"
+                        FillRule="NonZero" />
+                </GeometryCollection>
+            </Territories:TerritoryButtonUserControl.GeometryChildren>
+
+        </Territories:TerritoryButtonUserControl>
+    </DataTemplate>
 
     <Style x:Key="ContinentPathBaseStyle" TargetType="Path">
         <Setter Property="StrokeThickness" Value="3" />

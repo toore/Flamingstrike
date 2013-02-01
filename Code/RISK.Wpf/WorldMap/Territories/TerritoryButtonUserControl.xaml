@@ -17,15 +17,18 @@
                     <VisualStateGroup Name="CommonStates">
 
                         <!--The Normal state is the state the button is in when it is not in another state from this VisualStateGroup.-->
-                        <VisualState Name="Normal" />
+                        <VisualState Name="Normal">
+
+                        </VisualState>
 
                         <!--Change the SolidColorBrush, BorderBrush, to red when the mouse is over the button.-->
                         <VisualState Name="MouseOver">
-                            <!--<Storyboard>
-                                <ColorAnimation Storyboard.TargetName="BorderBrush"
+                            <Storyboard>
+                                <ColorAnimation Storyboard.TargetName="fill"
                                     Storyboard.TargetProperty="Color"
-                                    To="Red" />
-                            </Storyboard>-->
+                                    To="Red"
+                                    Duration="0:0:0.1" />
+                            </Storyboard>
                         </VisualState>
 
                         <!--Change the SolidColorBrush, BorderBrush, to Transparent when the button is pressed.-->
@@ -37,15 +40,35 @@
                             </Storyboard>-->
                         </VisualState>
 
-                        <!--The Disabled state is omitted for brevity.-->
+                        <!--The Disabled state is omitted for brevity.
+                        Background="{TemplateBinding Background}-->
                     </VisualStateGroup>
                 </VisualStateManager.VisualStateGroups>
 
-                <Grid Background="{TemplateBinding Background}">
+                <Canvas>
+                    <Path>
+                        <Path.Fill>
+                            <SolidColorBrush x:Name="fill" Color="{Binding Path=NormalFillColor, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" />
+                        </Path.Fill>
+                        <Path.Stroke>
+                            <SolidColorBrush x:Name="stroke" Color="{Binding Path=NormalStrokeColor, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" />
+                        </Path.Stroke>
+
+                        <Path.Data>
+                            <GeometryGroup Children="{Binding Path=GeometryChildren, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" />
+                        </Path.Data>
+                    </Path>
+
+                    <Label
+                        Canvas.Left="{Binding Path=TerritoryNamePosition.X, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
+                        Canvas.Top="{Binding Path=TerritoryNamePosition.Y, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
+                        Content="{Binding Path=TerritoryName, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
+                        IsHitTestVisible="False" />
+
                     <ContentPresenter
                         HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                         VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
-                </Grid>
+                </Canvas>
             </Border>
         </ControlTemplate>
 
@@ -56,27 +79,6 @@
 
     </UserControl.Resources>
 
-    <Button Style="{StaticResource TerritoryButtonStyle}">
-        <Button.Content>
-            <Grid
-                Background="Transparent"
-                HorizontalAlignment="Stretch"
-                VerticalAlignment="Stretch">
-                <!--<Canvas>-->
-                    <Path Name="alaska" Style="{Binding Path=PathStyle, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}">
-                        <Path.Data>
-                            <GeometryGroup Children="{Binding Path=GeometryChildren, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" />
-                        </Path.Data>
-                    </Path>
-
-                    <Label
-                        Content="{Binding Path=TerritoryName, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Center" />
-
-                <!--</Canvas>-->
-            </Grid>
-        </Button.Content>
-    </Button>
+    <Button Style="{StaticResource TerritoryButtonStyle}" />
 
 </UserControl>

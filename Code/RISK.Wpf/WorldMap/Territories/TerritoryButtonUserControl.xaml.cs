@@ -8,6 +8,11 @@ namespace RISK.WorldMap.Territories
         public static readonly DependencyProperty PathStyleProperty = DependencyProperty.Register("PathStyle", typeof(Style), typeof(TerritoryButtonUserControl), new PropertyMetadata(default(Style)));
         public static readonly DependencyProperty TerritoryNameProperty = DependencyProperty.Register("TerritoryName", typeof(string), typeof(TerritoryButtonUserControl), new PropertyMetadata(default(string)));
         public static readonly DependencyProperty GeometryChildrenProperty = DependencyProperty.Register("GeometryChildren", typeof(GeometryCollection), typeof(TerritoryButtonUserControl), new FrameworkPropertyMetadata(default(GeometryCollection), FrameworkPropertyMetadataOptions.AffectsRender));
+        public static readonly DependencyProperty TerritoryNamePositionProperty = DependencyProperty.Register("TerritoryNamePosition", typeof(Point), typeof(TerritoryButtonUserControl), new PropertyMetadata(default(Point)));
+        public static readonly DependencyProperty NormalFillColorProperty = DependencyProperty.Register("NormalFillColor", typeof(Color), typeof(TerritoryButtonUserControl), new PropertyMetadata(default(Color)));
+        public static readonly DependencyProperty NormalStrokeColorProperty = DependencyProperty.Register("NormalStrokeColor", typeof(Color), typeof(TerritoryButtonUserControl), new PropertyMetadata(default(Color)));
+        public static readonly DependencyProperty MouseOverFillColorProperty = DependencyProperty.Register("MouseOverFillColor", typeof(Color), typeof(TerritoryButtonUserControl), new PropertyMetadata(default(Color)));
+        public static readonly DependencyProperty MouseOverStrokeColorProperty = DependencyProperty.Register("MouseOverStrokeColor", typeof(Color), typeof(TerritoryButtonUserControl), new PropertyMetadata(default(Color)));
 
         public TerritoryButtonUserControl()
         {
@@ -30,6 +35,36 @@ namespace RISK.WorldMap.Territories
         {
             get { return (GeometryCollection)GetValue(GeometryChildrenProperty); }
             set { SetValue(GeometryChildrenProperty, value); }
+        }
+      
+        public Point TerritoryNamePosition
+        {
+            get { return (Point)GetValue(TerritoryNamePositionProperty); }
+            set { SetValue(TerritoryNamePositionProperty, value); }
+        }
+
+        public Color NormalFillColor
+        {
+            get { return (Color)GetValue(NormalFillColorProperty); }
+            set { SetValue(NormalFillColorProperty, value); }
+        }
+
+        public Color NormalStrokeColor
+        {
+            get { return (Color)GetValue(NormalStrokeColorProperty); }
+            set { SetValue(NormalStrokeColorProperty, value); }
+        }
+
+        public Color MouseOverFillColor
+        {
+            get { return (Color)GetValue(MouseOverFillColorProperty); }
+            set { SetValue(MouseOverFillColorProperty, value); }
+        }
+
+        public Color MouseOverStrokeColor
+        {
+            get { return (Color)GetValue(MouseOverStrokeColorProperty); }
+            set { SetValue(MouseOverStrokeColorProperty, value); }
         }
     }
 }

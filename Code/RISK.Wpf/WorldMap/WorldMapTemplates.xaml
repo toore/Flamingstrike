@@ -3,16 +3,22 @@
     xmlns:WorldMap="clr-namespace:RISK.WorldMap">
 
     <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="Territories/TerritoryTemplates.xaml" />
+        <ResourceDictionary Source="Territories/TerritoryStyles.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
     <DataTemplate DataType="{x:Type WorldMap:WorldMapViewModel}">
         <Grid>
+            <Grid.Resources>
+                <ItemsPanelTemplate x:Key="TerritoriesPanelTemplate">
+                    <Canvas />
+                </ItemsPanelTemplate>
+            </Grid.Resources>
+            
             <WorldMap:WorldMapUserControl Opacity="0.2" />
 
-            <Canvas>
-                <ItemsControl ItemsSource="{Binding Territories}" />
-            </Canvas>
+            <ItemsControl 
+                ItemsPanel="{StaticResource TerritoriesPanelTemplate}" 
+                ItemsSource="{Binding Territories}" />
 
         </Grid>
     </DataTemplate>
