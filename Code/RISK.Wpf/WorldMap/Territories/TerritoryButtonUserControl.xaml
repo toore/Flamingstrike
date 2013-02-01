@@ -11,41 +11,6 @@
         <ControlTemplate x:Key="TerritoryButtonTemplate" TargetType="Button">
             <Border Name="RootElement">
 
-                <VisualStateManager.VisualStateGroups>
-
-                    <!--Define the states and transitions for the common states. The states in the VisualStateGroup are mutually exclusive to each other.-->
-                    <VisualStateGroup Name="CommonStates">
-
-                        <!--The Normal state is the state the button is in when it is not in another state from this VisualStateGroup.-->
-                        <VisualState Name="Normal">
-
-                        </VisualState>
-
-                        <!--Change the SolidColorBrush, BorderBrush, to red when the mouse is over the button.-->
-                        <VisualState Name="MouseOver">
-                            <Storyboard>
-
-                                <!--<ColorAnimation Storyboard.TargetName="normalFill"
-                                    Storyboard.TargetProperty="Color"
-                                    To="{Binding Path=NormalFillColor, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
-                                    Duration="0:0:0.1" />-->
-                            </Storyboard>
-                        </VisualState>
-
-                        <!--Change the SolidColorBrush, BorderBrush, to Transparent when the button is pressed.-->
-                        <VisualState Name="Pressed">
-                            <!--<Storyboard>
-                                <ColorAnimation Storyboard.TargetName="BorderBrush"
-                                    Storyboard.TargetProperty="Color"
-                                    To="Transparent" />
-                            </Storyboard>-->
-                        </VisualState>
-
-                        <!--The Disabled state is omitted for brevity.
-                        Background="{TemplateBinding Background}-->
-                    </VisualStateGroup>
-                </VisualStateManager.VisualStateGroups>
-
                 <Canvas>
                     <Path StrokeThickness="3">
                         <Path.Fill>
