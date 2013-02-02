@@ -17,37 +17,37 @@ namespace GuiWpf.Services
                 normalStrokeColor: Colors.DarkOrange,
                 normalFillColor: Colors.Yellow,
                 mouseOverStrokeColor: Colors.Orange,
-                mouseOverFillColor: Colors.LightYellow);
+                mouseOverFillColor: Color.FromArgb(255, 255, 255, 210));
 
             SouthAmericaColors = new ContinentColors(
                 normalStrokeColor: Colors.DarkRed,
                 normalFillColor: Colors.Red,
-                mouseOverStrokeColor: Colors.Brown,
-                mouseOverFillColor: Colors.PeachPuff);
+                mouseOverStrokeColor: Color.FromArgb(255, 159, 50, 50),
+                mouseOverFillColor: Color.FromArgb(255, 255, 150, 150));
 
             EuropeColors = new ContinentColors(
                 normalStrokeColor: Colors.Blue,
                 normalFillColor: Colors.LightBlue,
                 mouseOverStrokeColor: Color.FromArgb(255, 25, 25, 255),
-                mouseOverFillColor: Colors.AliceBlue);
+                mouseOverFillColor: Color.FromArgb(255, 218, 235, 255));
 
             AfricaColors = new ContinentColors(
                 normalStrokeColor: Colors.SaddleBrown,
                 normalFillColor: Colors.Orange,
-                mouseOverStrokeColor: Colors.Sienna,
-                mouseOverFillColor: Colors.LightYellow);
+                mouseOverStrokeColor: Color.FromArgb(255, 169, 99, 49),
+                mouseOverFillColor: Color.FromArgb(255, 255, 225, 150));
 
             AsiaColors = new ContinentColors(
                 normalStrokeColor: Colors.DarkGreen,
                 normalFillColor: Colors.LightGreen,
-                mouseOverStrokeColor: Colors.Green,
-                mouseOverFillColor: Colors.PaleGreen);
+                mouseOverStrokeColor: Color.FromArgb(255, 25, 115, 25),
+                mouseOverFillColor: Color.FromArgb(255, 214, 250, 214));
 
             AustraliaColors = new ContinentColors(
                 normalStrokeColor: Colors.Purple,
                 normalFillColor: Colors.Pink,
                 mouseOverStrokeColor: Color.FromArgb(255, 156, 0, 156),
-                mouseOverFillColor: Color.FromArgb(255, 255, 232, 243));
+                mouseOverFillColor: Color.FromArgb(255, 255, 237, 230));
         }
     }
 }
