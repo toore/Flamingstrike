@@ -1,6 +1,6 @@
 using System.Windows.Media;
 
-namespace RISK.Services
+namespace GuiWpf.Services
 {
     public class ContinentColors
     {

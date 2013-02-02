@@ -117,31 +117,130 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AFGHANISTAN" xml:space="preserve">
+    <value>Afghanistan</value>
+  </data>
   <data name="ALASKA" xml:space="preserve">
     <value>Alaska</value>
   </data>
   <data name="ALBERTA" xml:space="preserve">
     <value>Alberta</value>
   </data>
+  <data name="ARGENTINA" xml:space="preserve">
+    <value>Argentina</value>
+  </data>
+  <data name="BRAZIL" xml:space="preserve">
+    <value>Brazil</value>
+  </data>
   <data name="CENTRAL_AMERICA" xml:space="preserve">
     <value>Central America</value>
+  </data>
+  <data name="CHINA" xml:space="preserve">
+    <value>China</value>
+  </data>
+  <data name="CONGO" xml:space="preserve">
+    <value>Congo</value>
+  </data>
+  <data name="EASTERN_AUSTRALIA" xml:space="preserve">
+    <value>Eastern Australia</value>
   </data>
   <data name="EASTERN_UNITED_STATES" xml:space="preserve">
     <value>Eastern United States</value>
   </data>
+  <data name="EAST_AFRICA" xml:space="preserve">
+    <value>East Africa</value>
+  </data>
+  <data name="EGYPT" xml:space="preserve">
+    <value>Egypt</value>
+  </data>
+  <data name="GREAT_BRITAIN" xml:space="preserve">
+    <value>Great Britain</value>
+  </data>
   <data name="GREENLAND" xml:space="preserve">
     <value>Greenland</value>
+  </data>
+  <data name="ICELAND" xml:space="preserve">
+    <value>Iceland</value>
+  </data>
+  <data name="INDIA" xml:space="preserve">
+    <value>India</value>
+  </data>
+  <data name="INDONESIA" xml:space="preserve">
+    <value>Indonesia</value>
+  </data>
+  <data name="IRKUTSK" xml:space="preserve">
+    <value>Irkutsk</value>
+  </data>
+  <data name="JAPAN" xml:space="preserve">
+    <value>Japan</value>
+  </data>
+  <data name="KAMCHATKA" xml:space="preserve">
+    <value>Kamchatka</value>
+  </data>
+  <data name="MADAGASCAR" xml:space="preserve">
+    <value>Madagascar</value>
+  </data>
+  <data name="MIDDLE_EAST" xml:space="preserve">
+    <value>Middle East</value>
+  </data>
+  <data name="MONGOLIA" xml:space="preserve">
+    <value>Mongolia</value>
+  </data>
+  <data name="NEW_GUINEA" xml:space="preserve">
+    <value>New Guinea</value>
+  </data>
+  <data name="NORTHERN_EUROPE" xml:space="preserve">
+    <value>Northern Europe</value>
   </data>
   <data name="NORTHWEST_TERRITORY" xml:space="preserve">
     <value>Northwest Territory</value>
   </data>
+  <data name="NORTH_AFRICA" xml:space="preserve">
+    <value>North Africa</value>
+  </data>
   <data name="ONTARIO" xml:space="preserve">
     <value>Ontario</value>
+  </data>
+  <data name="PERU" xml:space="preserve">
+    <value>Peru</value>
   </data>
   <data name="QUEBEC" xml:space="preserve">
     <value>Quebec</value>
   </data>
+  <data name="SCANDINAVIA" xml:space="preserve">
+    <value>Scandinavia</value>
+  </data>
+  <data name="SIAM" xml:space="preserve">
+    <value>Siam</value>
+  </data>
+  <data name="SIBERIA" xml:space="preserve">
+    <value>Siberia</value>
+  </data>
+  <data name="SOUTHERN_EUROPE" xml:space="preserve">
+    <value>Southern Europe</value>
+  </data>
+  <data name="SOUTH_AFRICA" xml:space="preserve">
+    <value>South Africa</value>
+  </data>
+  <data name="UKRAINE" xml:space="preserve">
+    <value>Ukraine</value>
+  </data>
+  <data name="URAL" xml:space="preserve">
+    <value>Ural</value>
+  </data>
+  <data name="VENEZUELA" xml:space="preserve">
+    <value>Venezuela</value>
+  </data>
+  <data name="WESTERN_AUSTRALIA" xml:space="preserve">
+    <value>Western Australia</value>
+  </data>
+  <data name="WESTERN_EUROPE" xml:space="preserve">
+    <value>Western Europe</value>
+  </data>
   <data name="WESTERN_UNITED_STATES" xml:space="preserve">
     <value>Western United States</value>
+  </data>
+  <data name="YAKUTSK" xml:space="preserve">
+    <value>Yakutsk</value>
   </data>
 </root>

@@ -7,8 +7,8 @@
     <ProjectGuid>{3B937F0E-E727-442D-B1DA-E5ED6EF939D5}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>RISK</RootNamespace>
-    <AssemblyName>RISK</AssemblyName>
+    <RootNamespace>GuiWpf</RootNamespace>
+    <AssemblyName>GuiWpf</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -39,6 +39,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -52,66 +53,100 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <ApplicationDefinition Include="App.xaml">
+    <ApplicationDefinition Include="Views\Main\App.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="GeometryValueConverter.cs" />
     <Compile Include="Services\ColorService.cs" />
     <Compile Include="Services\ContinentColors.cs" />
     <Compile Include="Services\IColorService.cs" />
-    <Compile Include="WorldMap\Territories\AlbertaViewModel.cs" />
-    <Compile Include="WorldMap\Territories\EasternUnitedStatesViewModel.cs" />
-    <Compile Include="WorldMap\Territories\GreenlandViewModel.cs" />
-    <Compile Include="WorldMap\Territories\ITerritoryViewModelFactory.cs" />
-    <Compile Include="WorldMap\Territories\NorthwestTerritoryViewModel.cs" />
-    <Compile Include="WorldMap\Territories\OntarioViewModel.cs" />
-    <Compile Include="WorldMap\Territories\QuebecViewModel.cs" />
-    <Compile Include="WorldMap\Territories\AlaskaViewModel.cs" />
-    <Compile Include="WorldMap\Territories\CentralAmericaViewModel.cs" />
-    <Compile Include="WorldMap\Territories\TerritoryButtonUserControl.xaml.cs">
+    <Compile Include="Views\WorldMapView\Territories\AfhanistanViewModel.cs" />
+    <Compile Include="Views\WorldMapView\Territories\AlbertaViewModel.cs" />
+    <Compile Include="Views\WorldMapView\Territories\ArgentinaViewModel.cs" />
+    <Compile Include="Views\WorldMapView\Territories\BrazilViewModel.cs" />
+    <Compile Include="Views\WorldMapView\Territories\ChinaViewModel.cs" />
+    <Compile Include="Views\WorldMapView\Territories\CongoViewModel.cs" />
+    <Compile Include="Views\WorldMapView\Territories\EastAfricaViewModel.cs" />
+    <Compile Include="Views\WorldMapView\Territories\EasternAustraliaViewModel.cs" />
+    <Compile Include="Views\WorldMapView\Territories\EasternUnitedStatesViewModel.cs" />
+    <Compile Include="Views\WorldMapView\Territories\EgyptViewModel.cs" />
+    <Compile Include="Views\WorldMapView\Territories\GreatBritainViewModel.cs" />
+    <Compile Include="Views\WorldMapView\Territories\GreenlandViewModel.cs" />
+    <Compile Include="Views\WorldMapView\Territories\IcelandViewModel.cs" />
+    <Compile Include="Views\WorldMapView\Territories\IndiaViewModel.cs" />
+    <Compile Include="Views\WorldMapView\Territories\IndonesiaViewModel.cs" />
+    <Compile Include="Views\WorldMapView\Territories\IrkutskViewModel.cs" />
+    <Compile Include="Views\WorldMapView\Territories\ITerritoryViewModelFactory.cs" />
+    <Compile Include="Views\WorldMapView\Territories\ITerritoryViewModelsFactory.cs" />
+    <Compile Include="Views\WorldMapView\Territories\JapanViewModel.cs" />
+    <Compile Include="Views\WorldMapView\Territories\KamchatkaViewModel.cs" />
+    <Compile Include="Views\WorldMapView\Territories\MadagascarViewModel.cs" />
+    <Compile Include="Views\WorldMapView\Territories\MiddleEastViewModel.cs" />
+    <Compile Include="Views\WorldMapView\Territories\MongoliaViewModel.cs" />
+    <Compile Include="Views\WorldMapView\Territories\NewGuineaViewModel.cs" />
+    <Compile Include="Views\WorldMapView\Territories\NorthAfricaViewModel.cs" />
+    <Compile Include="Views\WorldMapView\Territories\NorthernEuropeViewModel.cs" />
+    <Compile Include="Views\WorldMapView\Territories\NorthwestTerritoryViewModel.cs" />
+    <Compile Include="Views\WorldMapView\Territories\OntarioViewModel.cs" />
+    <Compile Include="Views\WorldMapView\Territories\PeruViewModel.cs" />
+    <Compile Include="Views\WorldMapView\Territories\QuebecViewModel.cs" />
+    <Compile Include="Views\WorldMapView\Territories\AlaskaViewModel.cs" />
+    <Compile Include="Views\WorldMapView\Territories\CentralAmericaViewModel.cs" />
+    <Compile Include="Views\WorldMapView\Territories\ScandinaviaViewModel.cs" />
+    <Compile Include="Views\WorldMapView\Territories\SiamViewModel.cs" />
+    <Compile Include="Views\WorldMapView\Territories\SiberiaViewModel.cs" />
+    <Compile Include="Views\WorldMapView\Territories\SouthAfricaViewModel.cs" />
+    <Compile Include="Views\WorldMapView\Territories\SouthernEuropeViewModel.cs" />
+    <Compile Include="Views\WorldMapView\Territories\TerritoryButtonUserControl.xaml.cs">
       <DependentUpon>TerritoryButtonUserControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="WorldMap\Territories\TerritoryViewModelBase.cs" />
-    <Compile Include="WorldMap\Territories\TerritoryViewModelFactory.cs" />
-    <Compile Include="WorldMap\Territories\WesternUnitedStatesViewModel.cs" />
-    <Compile Include="WorldMap\WorldMapViewModelTestData.cs" />
-    <Compile Include="Main\MainUserControl.xaml.cs">
+    <Compile Include="Views\WorldMapView\Territories\TerritoryViewModelBase.cs" />
+    <Compile Include="Views\WorldMapView\Territories\TerritoryViewModelFactory.cs" />
+    <Compile Include="Views\WorldMapView\Territories\TerritoryViewModelsFactory.cs" />
+    <Compile Include="Views\WorldMapView\Territories\UkraineViewModel.cs" />
+    <Compile Include="Views\WorldMapView\Territories\UralViewModel.cs" />
+    <Compile Include="Views\WorldMapView\Territories\VenezuelaViewModel.cs" />
+    <Compile Include="Views\WorldMapView\Territories\WesternAustraliaViewModel.cs" />
+    <Compile Include="Views\WorldMapView\Territories\WesternEuropeViewModel.cs" />
+    <Compile Include="Views\WorldMapView\Territories\WesternUnitedStatesViewModel.cs" />
+    <Compile Include="Views\WorldMapView\Territories\YakutskViewModel.cs" />
+    <Compile Include="Views\WorldMapView\WorldMapViewModelTestData.cs" />
+    <Compile Include="Views\Main\MainUserControl.xaml.cs">
       <DependentUpon>MainUserControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="WorldMap\WorldMapTestUserControl.xaml.cs">
+    <Compile Include="Views\WorldMapView\WorldMapTestUserControl.xaml.cs">
       <DependentUpon>WorldMapTestUserControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="WorldMap\WorldMapViewModel.cs" />
-    <Page Include="Main\MainUserControl.xaml">
+    <Compile Include="Views\WorldMapView\WorldMapViewModel.cs" />
+    <Page Include="Views\Main\MainUserControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Main\MainWindow.xaml">
+    <Page Include="Views\Main\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="App.xaml.cs">
+    <Compile Include="Views\Main\App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Main\MainWindow.xaml.cs">
+    <Compile Include="Views\Main\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="WorldMap\Territories\TerritoryButtonUserControl.xaml">
+    <Page Include="Views\WorldMapView\Territories\TerritoryButtonUserControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="WorldMap\Territories\TerritoryStyles.xaml">
+    <Page Include="Views\WorldMapView\Territories\TerritoryStyles.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="WorldMap\WorldMapTestUserControl.xaml">
+    <Page Include="Views\WorldMapView\WorldMapTestUserControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="WorldMap\WorldMapTemplates.xaml">
+    <Page Include="Views\WorldMapView\WorldMapTemplates.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -143,13 +178,16 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="Views\Main\App.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\RISK.Domain\RISK.Domain.csproj">
       <Project>{6DE17FCA-3F04-4923-8AB8-E3FA376A54FF}</Project>
       <Name>RISK.Domain</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -1,9 +1,0 @@
-﻿<Window x:Class="RISK.Main.MainWindow"
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:MainWindow="clr-namespace:RISK.Main"
-    Title="RISK">
-
-    <MainWindow:MainUserControl />
-    
-</Window>

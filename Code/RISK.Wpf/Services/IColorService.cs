@@ -1,7 +1,12 @@
-namespace RISK.Services
+namespace GuiWpf.Services
 {
     public interface IColorService
     {
-        ContinentColors GetNorthAmericaColors();
+        ContinentColors NorthAmericaColors { get; }
+        ContinentColors SouthAmericaColors { get; }
+        ContinentColors EuropeColors { get; }
+        ContinentColors AfricaColors { get; }
+        ContinentColors AsiaColors { get; }
+        ContinentColors AustraliaColors { get; }
     }
 }
