@@ -1,4 +1,5 @@
 ﻿using GuiWpf.Views.WorldMapView;
+using RISK.Domain.Entities;
 using RISK.Domain.GamePlaying;
 
 namespace GuiWpf.Views.Main
@@ -18,7 +19,12 @@ namespace GuiWpf.Views.Main
         {
             var worldMap = _game.GetWorldMap();
 
-            return _worldMapViewModelFactory.Create(worldMap);
+            return _worldMapViewModelFactory.Create(worldMap, SelectTerritory);
+        }
+
+        private void SelectTerritory(ITerritory territory)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

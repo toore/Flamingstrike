@@ -2,7 +2,7 @@
 
 namespace GuiWpf.Views.WorldMapView.Territories
 {
-    public class TerritoryInformationViewModel : IWorldMapViewModel
+    public class TextViewModel : IWorldMapViewModel
     {
         public Point Position { get; set; }
         public string TerritoryName { get; set; }

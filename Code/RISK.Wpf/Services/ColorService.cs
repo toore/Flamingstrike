@@ -1,4 +1,5 @@
 using System.Windows.Media;
+using RISK.Domain.Entities;
 
 namespace GuiWpf.Services
 {
@@ -48,6 +49,15 @@ namespace GuiWpf.Services
                 normalFillColor: Colors.Pink,
                 mouseOverStrokeColor: Color.FromArgb(255, 156, 0, 156),
                 mouseOverFillColor: Color.FromArgb(255, 255, 237, 230));
+        }
+
+        public ITerritoryColors GetPlayerTerritoryColors(IPlayer player)
+        {
+            return new TerritoryColors(
+                normalStrokeColor: Colors.Black,
+                normalFillColor: Colors.Gray,
+                mouseOverStrokeColor: Color.FromArgb(255, 50, 50, 50),
+                mouseOverFillColor: Color.FromArgb(255, 200, 200, 200));
         }
     }
 }

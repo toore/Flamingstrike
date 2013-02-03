@@ -1,9 +1,12 @@
+using System.Linq;
 using GuiWpf.Services;
+using GuiWpf.Views.WorldMapView;
 using GuiWpf.Views.WorldMapView.Territories;
+using RISK.Domain.Entities;
 using RISK.Domain.GamePlaying;
 using RISK.Domain.Repositories;
 
-namespace GuiWpf.Views.WorldMapView
+namespace GuiWpf.Views.Main
 {
     public class WorldMapViewModelTestData : WorldMapViewModel
     {
@@ -13,8 +16,13 @@ namespace GuiWpf.Views.WorldMapView
             var locationRepository = new LocationRepository(continentRepository);
             var colorService = new ColorService();
             var territoryViewModelsFactorySelector = new TerritoryViewModelsFactorySelector(locationRepository, colorService);
+
             var worldMap = new WorldMap(locationRepository);
-            var worldMapViewModels = new WorldMapViewModelFactory(territoryViewModelsFactorySelector, locationRepository).Create(worldMap).WorldMapViewModels;
+            var territory = worldMap.GetTerritory(locationRepository.Brazil);
+            territory.Owner = new HumanPlayer("pelle");
+            territory.Armies = 99;
+
+            var worldMapViewModels = new WorldMapViewModelFactory(territoryViewModelsFactorySelector, locationRepository, colorService).Create(worldMap, null).WorldMapViewModels.ToList();
 
             WorldMapViewModels = worldMapViewModels;
         }

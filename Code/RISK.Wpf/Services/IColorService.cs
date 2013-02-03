@@ -1,3 +1,5 @@
+using RISK.Domain.Entities;
+
 namespace GuiWpf.Services
 {
     public interface IColorService
@@ -8,5 +10,6 @@ namespace GuiWpf.Services
         ITerritoryColors AfricaColors { get; }
         ITerritoryColors AsiaColors { get; }
         ITerritoryColors AustraliaColors { get; }
+        ITerritoryColors GetPlayerTerritoryColors(IPlayer player);
     }
 }

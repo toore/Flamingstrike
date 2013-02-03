@@ -32,7 +32,7 @@
         <Setter Property="FontWeight" Value="Bold"/>
     </Style>
 
-    <DataTemplate DataType="{x:Type Territories:TerritoryInformationViewModel}">
+    <DataTemplate DataType="{x:Type Territories:TextViewModel}">
         <Canvas IsHitTestVisible="False">
             <Border
                 CornerRadius="25"

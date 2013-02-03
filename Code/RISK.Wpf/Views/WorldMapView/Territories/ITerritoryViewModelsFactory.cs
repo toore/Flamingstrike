@@ -4,7 +4,7 @@ namespace GuiWpf.Views.WorldMapView.Territories
 {
     public interface ITerritoryViewModelsFactory
     {
-        TerritoryInformationViewModel CreateTextViewModel(ITerritory territory);
+        TextViewModel CreateTextViewModel(ITerritory territory);
         TerritoryViewModel CreateTerritoryViewModel();
     }
 }

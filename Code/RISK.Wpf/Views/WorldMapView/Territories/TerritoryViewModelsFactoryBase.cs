@@ -13,9 +13,9 @@ namespace GuiWpf.Views.WorldMapView.Territories
             _territoryColors = territoryColors;
         }
 
-        public TerritoryInformationViewModel CreateTextViewModel(ITerritory territory)
+        public TextViewModel CreateTextViewModel(ITerritory territory)
         {
-            return new TerritoryInformationViewModel
+            return new TextViewModel
                 {
                     Position = NamePosition,
                     TerritoryName = Name,
