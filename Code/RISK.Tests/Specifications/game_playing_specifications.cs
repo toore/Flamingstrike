@@ -1,8 +1,6 @@
 ﻿using System.Linq;
 using FluentAssertions;
 using GuiWpf.Infrastructure;
-using RISK.Domain;
-using RISK.Domain.Caliburn.Micro;
 using RISK.Domain.Entities;
 using RISK.Domain.GamePlaying;
 using RISK.Domain.GamePlaying.DiceAndCalculation;
@@ -42,7 +40,7 @@ namespace RISK.Tests.Specifications
                     var diceResult = MockRepository.GenerateStub<IDicesResult>();
                     diceResult.Stub(x => x.DefenderCasualties).Return(1);
                     dices.Stub(x => x.Roll(5, 1)).Return(diceResult);
-                    
+
                     _battleCalculator = new BattleCalculator(dices);
                     ObjectFactory.Inject(_battleCalculator);
 
@@ -86,7 +84,8 @@ namespace RISK.Tests.Specifications
             _locationRepository.GetAll()
                 .Select(x => _worldMap.GetTerritory(x))
                 .Where(x => !x.HasOwner)
-                .Apply(x =>
+                .ToList()
+                .ForEach(x =>
                     {
                         x.Owner = owner;
                         x.Armies = armies;

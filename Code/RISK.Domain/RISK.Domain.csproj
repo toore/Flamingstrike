@@ -42,7 +42,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Caliburn.Micro\ExtensionMethods.cs" />
     <Compile Include="Entities\Territory.cs" />
     <Compile Include="Entities\Location.cs" />
     <Compile Include="Entities\Continent.cs" />
