@@ -23,6 +23,7 @@
                         <Path.Data>
                             <GeometryGroup Children="{Binding Path=GeometryChildren, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" />
                         </Path.Data>
+                        
                         <Path.Triggers>
                             <EventTrigger RoutedEvent="MouseEnter">
                                 <BeginStoryboard>
