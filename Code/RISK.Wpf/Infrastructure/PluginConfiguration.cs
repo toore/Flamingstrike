@@ -1,8 +1,9 @@
-﻿using RISK.Domain.GamePlaying;
+﻿using GuiWpf.Views.Main;
+using RISK.Domain.GamePlaying;
 using RISK.Domain.Repositories;
 using StructureMap;
 
-namespace RISK.Domain
+namespace GuiWpf.Infrastructure
 {
     public class PluginConfiguration
     {
@@ -13,6 +14,7 @@ namespace RISK.Domain
                     x.Scan(s =>
                         {
                             s.AssemblyContainingType<IGame>();
+                            s.AssemblyContainingType<IGameEngine>();
 
                             s.WithDefaultConventions();
                         });

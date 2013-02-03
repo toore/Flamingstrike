@@ -57,10 +57,13 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Infrastructure\PluginConfiguration.cs" />
     <Compile Include="Services\ColorService.cs" />
     <Compile Include="Services\TerritoryColors.cs" />
     <Compile Include="Services\IColorService.cs" />
     <Compile Include="Services\ITerritoryColors.cs" />
+    <Compile Include="Views\Main\GameEngine.cs" />
+    <Compile Include="Views\Main\IGameEngine.cs" />
     <Compile Include="Views\WorldMapView\Territories\AfhanistanViewModelsFactory.cs" />
     <Compile Include="Views\WorldMapView\Territories\AlbertaViewModelsFactory.cs" />
     <Compile Include="Views\WorldMapView\Territories\ArgentinaViewModelsFactory.cs" />
@@ -79,7 +82,7 @@
     <Compile Include="Views\WorldMapView\Territories\IrkutskViewModelsFactory.cs" />
     <Compile Include="Views\WorldMapView\Territories\ITerritoryViewModelsFactory.cs" />
     <Compile Include="Views\WorldMapView\Territories\ITerritoryViewModelsFactorySelector.cs" />
-    <Compile Include="Views\WorldMapView\Territories\IWorldMapViewModelsFactory.cs" />
+    <Compile Include="Views\WorldMapView\IWorldMapViewModelFactory.cs" />
     <Compile Include="Views\WorldMapView\Territories\IWorldMapViewModel.cs" />
     <Compile Include="Views\WorldMapView\Territories\JapanViewModelsFactory.cs" />
     <Compile Include="Views\WorldMapView\Territories\KamchatkaViewModelsFactory.cs" />
@@ -106,7 +109,7 @@
     <Compile Include="Views\WorldMapView\Territories\TerritoryViewModel.cs" />
     <Compile Include="Views\WorldMapView\Territories\TerritoryViewModelsFactoryBase.cs" />
     <Compile Include="Views\WorldMapView\Territories\TerritoryViewModelsFactorySelector.cs" />
-    <Compile Include="Views\WorldMapView\Territories\WorldMapViewModelsFactory.cs" />
+    <Compile Include="Views\WorldMapView\WorldMapViewModelFactory.cs" />
     <Compile Include="Views\WorldMapView\Territories\TerritoryInformationViewModel.cs" />
     <Compile Include="Views\WorldMapView\Territories\UkraineViewModelsFactory.cs" />
     <Compile Include="Views\WorldMapView\Territories\UralViewModelsFactory.cs" />

@@ -7,8 +7,6 @@ namespace GuiWpf.Views.Main
         public MainWindow()
         {
             InitializeComponent();
-
-            DataContext = new WorldMapViewModelTestData();
         }
     }
 }

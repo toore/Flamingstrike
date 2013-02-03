@@ -68,7 +68,6 @@
     <Compile Include="Repositories\IContinentRepository.cs" />
     <Compile Include="GamePlaying\IGame.cs" />
     <Compile Include="GamePlaying\ITurn.cs" />
-    <Compile Include="PluginConfiguration.cs" />
     <Compile Include="Repositories\IPlayerRepository.cs" />
     <Compile Include="Repositories\PlayerRepository.cs" />
     <Compile Include="GamePlaying\Turn.cs" />

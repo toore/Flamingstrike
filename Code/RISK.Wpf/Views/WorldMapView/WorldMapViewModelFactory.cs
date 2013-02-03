@@ -1,31 +1,35 @@
-using System.Collections.Generic;
 using System.Linq;
+using GuiWpf.Views.WorldMapView.Territories;
 using RISK.Domain.Entities;
 using RISK.Domain.GamePlaying;
 using RISK.Domain.Repositories;
 
-namespace GuiWpf.Views.WorldMapView.Territories
+namespace GuiWpf.Views.WorldMapView
 {
-    public class WorldMapViewModelsFactory : IWorldMapViewModelsFactory
+    public class WorldMapViewModelFactory : IWorldMapViewModelFactory
     {
         private readonly ITerritoryViewModelsFactorySelector _territoryViewModelsFactorySelector;
-        private readonly IWorldMap _worldMap;
         private readonly ILocationRepository _locationRepository;
 
-        public WorldMapViewModelsFactory(ITerritoryViewModelsFactorySelector territoryViewModelsFactorySelector, IWorldMap worldMap, ILocationRepository locationRepository)
+        public WorldMapViewModelFactory(ITerritoryViewModelsFactorySelector territoryViewModelsFactorySelector, ILocationRepository locationRepository)
         {
             _territoryViewModelsFactorySelector = territoryViewModelsFactorySelector;
-            _worldMap = worldMap;
             _locationRepository = locationRepository;
         }
 
-        public IEnumerable<IWorldMapViewModel> Create()
+        public WorldMapViewModel Create(IWorldMap worldMap)
         {
-            var territories = _locationRepository.GetAll().Select(_worldMap.GetTerritory).ToList();
+            var territories = _locationRepository.GetAll().Select(worldMap.GetTerritory).ToList();
 
-            return territories.Select(CreateTerritoryViewModel)
+            var worldMapViewModels = territories
+                .Select(CreateTerritoryViewModel)
                 .Union(territories.Select(CreateTextViewModel))
                 .ToList();
+
+            return new WorldMapViewModel
+                {
+                    WorldMapViewModels = worldMapViewModels
+                };
         }
 
         private IWorldMapViewModel CreateTerritoryViewModel(ITerritory territory)

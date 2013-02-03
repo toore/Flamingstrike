@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using FluentAssertions;
+using GuiWpf.Infrastructure;
 using RISK.Domain;
 using RISK.Domain.Caliburn.Micro;
 using RISK.Domain.Entities;
