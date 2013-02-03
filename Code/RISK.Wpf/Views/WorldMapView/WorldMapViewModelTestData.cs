@@ -12,10 +12,10 @@ namespace GuiWpf.Views.WorldMapView
             var continentRepository = new ContinentRepository();
             var locationRepository = new LocationRepository(continentRepository);
             var colorService = new ColorService();
-            var territoryViewModelFactory = new TerritoryViewModelFactory(locationRepository, continentRepository, colorService);
+            var worldMapEntityFactorySelector = new TerritoryViewModelsFactorySelector(locationRepository, colorService);
             var worldMap = new WorldMap(locationRepository);
 
-            Territories = new TerritoryViewModelsFactory(territoryViewModelFactory, worldMap, locationRepository, colorService).Create();
+            WorldMapViewModels = new WorldMapViewModelsFactory(worldMapEntityFactorySelector, worldMap, locationRepository).Create();
         }
     }
 }

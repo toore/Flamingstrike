@@ -112,7 +112,7 @@ namespace RISK.Domain.Repositories
             CentralAmerica = centralAmerica;
             EasternUnitedStates = easternUnitedStates;
             Greenland = greenland;
-            Northwest = northwestTerritory;
+            NorthwestTerritory = northwestTerritory;
             Ontario = ontario;
             Quebec = quebec;
             WesternUnitedStates = westernUnitedStates;
@@ -165,7 +165,7 @@ namespace RISK.Domain.Repositories
                     CentralAmerica,
                     EasternUnitedStates,
                     Greenland,
-                    Northwest,
+                    NorthwestTerritory,
                     Ontario,
                     Quebec,
                     WesternUnitedStates,
@@ -210,7 +210,7 @@ namespace RISK.Domain.Repositories
         public ILocation CentralAmerica { get; private set; }
         public ILocation EasternUnitedStates { get; private set; }
         public ILocation Greenland { get; private set; }
-        public ILocation Northwest { get; private set; }
+        public ILocation NorthwestTerritory { get; private set; }
         public ILocation Ontario { get; private set; }
         public ILocation Quebec { get; private set; }
         public ILocation WesternUnitedStates { get; private set; }

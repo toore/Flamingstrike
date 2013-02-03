@@ -5,6 +5,6 @@ namespace GuiWpf.Views.WorldMapView
 {
     public class WorldMapViewModel
     {
-        public IEnumerable<TerritoryViewModelBase> Territories { get; set; }
+        public IEnumerable<IWorldMapViewModel> WorldMapViewModels { get; set; }
     }
 }

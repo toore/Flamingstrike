@@ -11,7 +11,45 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/GuiWpf;component/Views/WorldMapView/Territories/TerritoryStyles.xaml" />
             </ResourceDictionary.MergedDictionaries>
+
+            <Style x:Key="ContinentPathBaseStyle" TargetType="Path">
+                <Setter Property="StrokeThickness" Value="3" />
+                <Setter Property="StrokeLineJoin" Value="Miter" />
+                <Setter Property="StrokeStartLineCap" Value="Flat" />
+                <Setter Property="StrokeEndLineCap" Value="Flat" />
+            </Style>
+
+            <Style x:Key="NorthAmericaPathStyle" TargetType="Path" BasedOn="{StaticResource ContinentPathBaseStyle}">
+                <Setter Property="Stroke" Value="DarkOrange" />
+                <Setter Property="Fill" Value="Yellow" />
+            </Style>
+
+            <Style x:Key="SouthAmericaPathStyle" TargetType="Path" BasedOn="{StaticResource ContinentPathBaseStyle}">
+                <Setter Property="Stroke" Value="DarkRed" />
+                <Setter Property="Fill" Value="Red" />
+            </Style>
+
+            <Style x:Key="AfricaPathStyle" TargetType="Path" BasedOn="{StaticResource ContinentPathBaseStyle}">
+                <Setter Property="Stroke" Value="SaddleBrown" />
+                <Setter Property="Fill" Value="Orange" />
+            </Style>
+
+            <Style x:Key="EuropePathStyle" TargetType="Path" BasedOn="{StaticResource ContinentPathBaseStyle}">
+                <Setter Property="Stroke" Value="Blue" />
+                <Setter Property="Fill" Value="LightBlue" />
+            </Style>
+
+            <Style x:Key="AsiaPathStyle" TargetType="Path" BasedOn="{StaticResource ContinentPathBaseStyle}">
+                <Setter Property="Stroke" Value="DarkGreen" />
+                <Setter Property="Fill" Value="LightGreen" />
+            </Style>
+
+            <Style x:Key="AustraliaPathStyle" TargetType="Path" BasedOn="{StaticResource ContinentPathBaseStyle}">
+                <Setter Property="Stroke" Value="Purple" />
+                <Setter Property="Fill" Value="Pink" />
+            </Style>
         </ResourceDictionary>
+
     </UserControl.Resources>
 
     <Canvas Width="1366" Height="768">

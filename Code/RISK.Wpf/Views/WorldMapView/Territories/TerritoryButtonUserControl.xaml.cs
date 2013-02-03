@@ -6,9 +6,7 @@ namespace GuiWpf.Views.WorldMapView.Territories
     public partial class TerritoryButtonUserControl
     {
         public static readonly DependencyProperty PathStyleProperty = DependencyProperty.Register("PathStyle", typeof(Style), typeof(TerritoryButtonUserControl), new PropertyMetadata(default(Style)));
-        public static readonly DependencyProperty TerritoryNameProperty = DependencyProperty.Register("TerritoryName", typeof(string), typeof(TerritoryButtonUserControl), new PropertyMetadata(default(string)));
         public static readonly DependencyProperty GeometryChildrenProperty = DependencyProperty.Register("GeometryChildren", typeof(GeometryCollection), typeof(TerritoryButtonUserControl), new PropertyMetadata(default(GeometryCollection)));
-        public static readonly DependencyProperty TerritoryNamePositionProperty = DependencyProperty.Register("TerritoryNamePosition", typeof(Point), typeof(TerritoryButtonUserControl), new PropertyMetadata(default(Point)));
         public static readonly DependencyProperty NormalFillColorProperty = DependencyProperty.Register("NormalFillColor", typeof(Color), typeof(TerritoryButtonUserControl), new PropertyMetadata(default(Color)));
         public static readonly DependencyProperty NormalStrokeColorProperty = DependencyProperty.Register("NormalStrokeColor", typeof(Color), typeof(TerritoryButtonUserControl), new PropertyMetadata(default(Color)));
         public static readonly DependencyProperty MouseOverFillColorProperty = DependencyProperty.Register("MouseOverFillColor", typeof(Color), typeof(TerritoryButtonUserControl), new PropertyMetadata(default(Color)));
@@ -25,23 +23,12 @@ namespace GuiWpf.Views.WorldMapView.Territories
             set { SetValue(PathStyleProperty, value); }
         }
 
-        public string TerritoryName
-        {
-            get { return (string)GetValue(TerritoryNameProperty); }
-            set { SetValue(TerritoryNameProperty, value); }
-        }
-
         public GeometryCollection GeometryChildren
         {
             get { return (GeometryCollection)GetValue(GeometryChildrenProperty); }
             set { SetValue(GeometryChildrenProperty, value); }
         }
-      
-        public Point TerritoryNamePosition
-        {
-            get { return (Point)GetValue(TerritoryNamePositionProperty); }
-            set { SetValue(TerritoryNamePositionProperty, value); }
-        }
+    
 
         public Color NormalFillColor
         {

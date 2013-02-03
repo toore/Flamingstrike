@@ -12,7 +12,7 @@ namespace RISK.Domain.Repositories
         ILocation CentralAmerica { get; }
         ILocation EasternUnitedStates { get; }
         ILocation Greenland { get; }
-        ILocation Northwest { get; }
+        ILocation NorthwestTerritory { get; }
         ILocation Ontario { get; }
         ILocation Quebec { get; }
         ILocation WesternUnitedStates { get; }

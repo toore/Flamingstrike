@@ -67,7 +67,7 @@
     <Compile Include="Specifications\NSpecDebuggerShim.cs" />
     <Compile Include="Specifications\game_playing_specifications.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TerritoryViewModelFactoryTests.cs" />
+    <Compile Include="TerritoryViewModelFactorySelectorTests.cs" />
     <Compile Include="TurnFactoryTests.cs" />
     <Compile Include="TurnTests.cs" />
     <Compile Include="WorldMapTests.cs" />

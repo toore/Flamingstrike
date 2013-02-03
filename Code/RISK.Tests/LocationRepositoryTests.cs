@@ -418,7 +418,7 @@ namespace RISK.Tests
 
         private ILocation Northwest
         {
-            get { return _locationRepository.Northwest; }
+            get { return _locationRepository.NorthwestTerritory; }
         }
 
         private ILocation Greenland

@@ -1,9 +1,10 @@
-using System.Collections.Generic;
+using RISK.Domain.Entities;
 
 namespace GuiWpf.Views.WorldMapView.Territories
 {
     public interface ITerritoryViewModelsFactory
     {
-        IEnumerable<TerritoryViewModelBase> Create();
+        TerritoryInformationViewModel CreateTextViewModel(ITerritory territory);
+        TerritoryViewModel CreateTerritoryViewModel();
     }
 }

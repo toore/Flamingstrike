@@ -2,11 +2,11 @@ namespace GuiWpf.Services
 {
     public interface IColorService
     {
-        ContinentColors NorthAmericaColors { get; }
-        ContinentColors SouthAmericaColors { get; }
-        ContinentColors EuropeColors { get; }
-        ContinentColors AfricaColors { get; }
-        ContinentColors AsiaColors { get; }
-        ContinentColors AustraliaColors { get; }
+        ITerritoryColors NorthAmericaColors { get; }
+        ITerritoryColors SouthAmericaColors { get; }
+        ITerritoryColors EuropeColors { get; }
+        ITerritoryColors AfricaColors { get; }
+        ITerritoryColors AsiaColors { get; }
+        ITerritoryColors AustraliaColors { get; }
     }
 }
