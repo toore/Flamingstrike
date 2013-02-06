@@ -1,7 +1,7 @@
 ﻿using System.Windows.Media;
 using FluentAssertions;
 using GuiWpf.Services;
-using GuiWpf.Views.WorldMap.TerritoryViewModelFactories;
+using GuiWpf.ViewModels.TerritoryViewModelFactories;
 using NUnit.Framework;
 using RISK.Domain.Entities;
 using RISK.Domain.Repositories;

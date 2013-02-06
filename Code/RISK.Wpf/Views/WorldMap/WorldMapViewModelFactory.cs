@@ -1,7 +1,8 @@
 using System;
 using System.Linq;
 using GuiWpf.Services;
-using GuiWpf.Views.WorldMap.TerritoryViewModelFactories;
+using GuiWpf.ViewModels;
+using GuiWpf.ViewModels.TerritoryViewModelFactories;
 using RISK.Domain.Entities;
 using RISK.Domain.GamePlaying;
 using RISK.Domain.Repositories;
@@ -28,7 +29,7 @@ namespace GuiWpf.Views.WorldMap
                 .ToList();
 
             var worldMapViewModels = territories
-                .Select(x=>CreateTerritoryViewModel(x, selectTerritory))
+                .Select(x => CreateTerritoryViewModel(x, selectTerritory))
                 .Union(territories.Select(CreateTextViewModel))
                 .ToList();
 
@@ -41,7 +42,7 @@ namespace GuiWpf.Views.WorldMap
         private IWorldMapViewModel CreateTerritoryViewModel(ITerritory territory, Action<ITerritory> selectTerritory)
         {
             var territoryViewModel = GetFactory(territory).CreateTerritoryViewModel();
-            territoryViewModel.Click = ()=>selectTerritory(territory);
+            territoryViewModel.ClickCommand = () => selectTerritory(territory);
 
             if (territory.HasOwner)
             {

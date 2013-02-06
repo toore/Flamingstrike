@@ -7,11 +7,14 @@ namespace GuiWpf.Views.WorldMap
     {
         private readonly IGame _game;
         private readonly IWorldMapViewModelFactory _worldMapViewModelFactory;
+        private ITurn _currentTurn;
 
         public GameEngine(IGame game, IWorldMapViewModelFactory worldMapViewModelFactory)
         {
             _game = game;
             _worldMapViewModelFactory = worldMapViewModelFactory;
+
+            _currentTurn = _game.GetNextTurn();
         }
 
         public WorldMapViewModel GetWorldMapViewModel()
@@ -23,7 +26,7 @@ namespace GuiWpf.Views.WorldMap
 
         private void SelectTerritory(ITerritory territory)
         {
-            throw new System.NotImplementedException();
+            _currentTurn.Select(territory.Location);
         }
     }
 }

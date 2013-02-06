@@ -82,7 +82,7 @@
     <Button Style="{StaticResource TerritoryButtonStyle}">
         <i:Interaction.Triggers>
             <i:EventTrigger EventName="Click">
-                <cal:ActionMessage MethodName="Click" />
+                <cal:ActionMessage MethodName="OnClick" />
             </i:EventTrigger>
         </i:Interaction.Triggers>
     </Button>

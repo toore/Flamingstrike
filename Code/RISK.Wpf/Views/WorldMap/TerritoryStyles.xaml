@@ -2,14 +2,15 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:WorldMap="clr-namespace:GuiWpf.Views.WorldMap"
-    xmlns:Territories="clr-namespace:GuiWpf.Views.WorldMap.TerritoryViewModelFactories">
+    xmlns:ViewModels="clr-namespace:GuiWpf.ViewModels">
 
-    <DataTemplate DataType="{x:Type Territories:TerritoryViewModel}">
+    <DataTemplate DataType="{x:Type ViewModels:TerritoryViewModel}">
         <WorldMap:TerritoryButtonUserControl
             NormalFillColor="{Binding NormalFillColor}"
             NormalStrokeColor="{Binding NormalStrokeColor}"
             MouseOverFillColor="{Binding MouseOverFillColor}"
-            MouseOverStrokeColor="{Binding MouseOverStrokeColor}">
+            MouseOverStrokeColor="{Binding MouseOverStrokeColor}"
+            IsEnabled="{Binding IsEnabled}">
 
             <WorldMap:TerritoryButtonUserControl.GeometryChildren>
                 <GeometryCollection>
@@ -33,7 +34,7 @@
         <Setter Property="FontWeight" Value="Bold" />
     </Style>
 
-    <DataTemplate DataType="{x:Type Territories:TextViewModel}">
+    <DataTemplate DataType="{x:Type ViewModels:TextViewModel}">
         <Canvas IsHitTestVisible="False">
             <Border
                 CornerRadius="25"

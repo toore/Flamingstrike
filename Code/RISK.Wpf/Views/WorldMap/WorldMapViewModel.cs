@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using GuiWpf.Views.WorldMap.TerritoryViewModelFactories;
+using GuiWpf.ViewModels.TerritoryViewModelFactories;
 
 namespace GuiWpf.Views.WorldMap
 {

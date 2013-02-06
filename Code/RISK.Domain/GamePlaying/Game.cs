@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using RISK.Domain.Entities;
 using RISK.Domain.Repositories;
@@ -10,7 +9,7 @@ namespace RISK.Domain.GamePlaying
     {
         private readonly IWorldMap _worldMap;
         private readonly ITurnFactory _turnFactory;
-        private IEnumerable<IPlayer> _players;
+        private readonly IEnumerable<IPlayer> _players;
 
         public Game(IWorldMap worldMap, ITurnFactory turnFactory, IPlayerRepository playerRepository)
         {
