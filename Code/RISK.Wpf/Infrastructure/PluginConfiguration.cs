@@ -1,5 +1,5 @@
 ﻿using Caliburn.Micro;
-using GuiWpf.Views.Main;
+using GuiWpf.Views.WorldMap;
 using RISK.Domain.GamePlaying;
 using RISK.Domain.Repositories;
 using StructureMap;

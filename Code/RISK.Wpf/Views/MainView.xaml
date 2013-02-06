@@ -11,7 +11,7 @@
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/GuiWpf;component/Views/WorldMapView/WorldMapTemplates.xaml" />
+                <ResourceDictionary Source="/GuiWpf;component/Views/WorldMap/WorldMapTemplates.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>

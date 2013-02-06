@@ -1,6 +1,5 @@
 ﻿using Caliburn.Micro;
-using GuiWpf.Views.Main;
-using GuiWpf.Views.WorldMapView;
+using GuiWpf.Views.WorldMap;
 
 namespace GuiWpf.ViewModels
 {
@@ -8,9 +7,6 @@ namespace GuiWpf.ViewModels
     {
         public MainViewModel(IGameEngine gameEngine)
         {
-            //var gameEngine = ObjectFactory.GetInstance<IGameEngine>();
-            //var worldMapViewModel = gameEngine.GetWorldMapViewModel();
-
             WorldMapViewModel = gameEngine.GetWorldMapViewModel();
         }
 

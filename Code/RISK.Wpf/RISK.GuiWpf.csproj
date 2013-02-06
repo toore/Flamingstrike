@@ -73,78 +73,71 @@
     <Compile Include="Services\IColorService.cs" />
     <Compile Include="Services\ITerritoryColors.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
-    <Compile Include="Views\Main\GameEngine.cs" />
-    <Compile Include="Views\Main\IGameEngine.cs" />
-    <Compile Include="Views\Main\MainWindow.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
-    </Compile>
+    <Compile Include="Views\WorldMap\GameEngine.cs" />
+    <Compile Include="Views\WorldMap\IGameEngine.cs" />
     <Compile Include="Views\MainBootstrapper.cs" />
     <Compile Include="ViewModels\MainViewModelTestData.cs" />
-    <Compile Include="Views\WorldMapView\Territories\AfhanistanViewModelsFactory.cs" />
-    <Compile Include="Views\WorldMapView\Territories\AlbertaViewModelsFactory.cs" />
-    <Compile Include="Views\WorldMapView\Territories\ArgentinaViewModelsFactory.cs" />
-    <Compile Include="Views\WorldMapView\Territories\BrazilViewModelsFactory.cs" />
-    <Compile Include="Views\WorldMapView\Territories\ChinaViewModelsFactory.cs" />
-    <Compile Include="Views\WorldMapView\Territories\CongoViewModelsFactory.cs" />
-    <Compile Include="Views\WorldMapView\Territories\EastAfricaViewModelsFactory.cs" />
-    <Compile Include="Views\WorldMapView\Territories\EasternAustraliaViewModel.cs" />
-    <Compile Include="Views\WorldMapView\Territories\EasternUnitedStatesViewModelsFactory.cs" />
-    <Compile Include="Views\WorldMapView\Territories\EgyptViewModelsFactory.cs" />
-    <Compile Include="Views\WorldMapView\Territories\GreatBritainViewModelsFactory.cs" />
-    <Compile Include="Views\WorldMapView\Territories\GreenlandViewModelsFactory.cs" />
-    <Compile Include="Views\WorldMapView\Territories\IcelandViewModelsFactory.cs" />
-    <Compile Include="Views\WorldMapView\Territories\IndiaViewModelsFactory.cs" />
-    <Compile Include="Views\WorldMapView\Territories\IndonesiaViewModelsFactory.cs" />
-    <Compile Include="Views\WorldMapView\Territories\IrkutskViewModelsFactory.cs" />
-    <Compile Include="Views\WorldMapView\Territories\ITerritoryViewModelsFactory.cs" />
-    <Compile Include="Views\WorldMapView\Territories\ITerritoryViewModelsFactorySelector.cs" />
-    <Compile Include="Views\WorldMapView\IWorldMapViewModelFactory.cs" />
-    <Compile Include="Views\WorldMapView\Territories\IWorldMapViewModel.cs" />
-    <Compile Include="Views\WorldMapView\Territories\JapanViewModelsFactory.cs" />
-    <Compile Include="Views\WorldMapView\Territories\KamchatkaViewModelsFactory.cs" />
-    <Compile Include="Views\WorldMapView\Territories\MadagascarViewModelsFactory.cs" />
-    <Compile Include="Views\WorldMapView\Territories\MiddleEastViewModelsFactory.cs" />
-    <Compile Include="Views\WorldMapView\Territories\MongoliaViewModelsFactory.cs" />
-    <Compile Include="Views\WorldMapView\Territories\NewGuineaViewModelsFactory.cs" />
-    <Compile Include="Views\WorldMapView\Territories\NorthAfricaViewModelsFactory.cs" />
-    <Compile Include="Views\WorldMapView\Territories\NorthernEuropeViewModelsFactory.cs" />
-    <Compile Include="Views\WorldMapView\Territories\NorthwestTerritoryViewModelsFactory.cs" />
-    <Compile Include="Views\WorldMapView\Territories\OntarioViewModelsFactory.cs" />
-    <Compile Include="Views\WorldMapView\Territories\PeruViewModelsFactory.cs" />
-    <Compile Include="Views\WorldMapView\Territories\QuebecViewModelsFactory.cs" />
-    <Compile Include="Views\WorldMapView\Territories\AlaskaViewModelsFactory.cs" />
-    <Compile Include="Views\WorldMapView\Territories\CentralAmericaViewModelsFactory.cs" />
-    <Compile Include="Views\WorldMapView\Territories\ScandinaviaViewModelsFactory.cs" />
-    <Compile Include="Views\WorldMapView\Territories\SiamViewModelsFactory.cs" />
-    <Compile Include="Views\WorldMapView\Territories\SiberiaViewModelsFactory.cs" />
-    <Compile Include="Views\WorldMapView\Territories\SouthAfricaViewModelsFactory.cs" />
-    <Compile Include="Views\WorldMapView\Territories\SouthernEuropeViewModelsFactory.cs" />
-    <Compile Include="Views\WorldMapView\Territories\TerritoryButtonUserControl.xaml.cs">
+    <Compile Include="Views\WorldMap\TerritoryViewModelFactories\AfhanistanViewModelsFactory.cs" />
+    <Compile Include="Views\WorldMap\TerritoryViewModelFactories\AlbertaViewModelsFactory.cs" />
+    <Compile Include="Views\WorldMap\TerritoryViewModelFactories\ArgentinaViewModelsFactory.cs" />
+    <Compile Include="Views\WorldMap\TerritoryViewModelFactories\BrazilViewModelsFactory.cs" />
+    <Compile Include="Views\WorldMap\TerritoryViewModelFactories\ChinaViewModelsFactory.cs" />
+    <Compile Include="Views\WorldMap\TerritoryViewModelFactories\CongoViewModelsFactory.cs" />
+    <Compile Include="Views\WorldMap\TerritoryViewModelFactories\EastAfricaViewModelsFactory.cs" />
+    <Compile Include="Views\WorldMap\TerritoryViewModelFactories\EasternAustraliaViewModel.cs" />
+    <Compile Include="Views\WorldMap\TerritoryViewModelFactories\EasternUnitedStatesViewModelsFactory.cs" />
+    <Compile Include="Views\WorldMap\TerritoryViewModelFactories\EgyptViewModelsFactory.cs" />
+    <Compile Include="Views\WorldMap\TerritoryViewModelFactories\GreatBritainViewModelsFactory.cs" />
+    <Compile Include="Views\WorldMap\TerritoryViewModelFactories\GreenlandViewModelsFactory.cs" />
+    <Compile Include="Views\WorldMap\TerritoryViewModelFactories\IcelandViewModelsFactory.cs" />
+    <Compile Include="Views\WorldMap\TerritoryViewModelFactories\IndiaViewModelsFactory.cs" />
+    <Compile Include="Views\WorldMap\TerritoryViewModelFactories\IndonesiaViewModelsFactory.cs" />
+    <Compile Include="Views\WorldMap\TerritoryViewModelFactories\IrkutskViewModelsFactory.cs" />
+    <Compile Include="Views\WorldMap\TerritoryViewModelFactories\ITerritoryViewModelsFactory.cs" />
+    <Compile Include="Views\WorldMap\TerritoryViewModelFactories\ITerritoryViewModelsFactorySelector.cs" />
+    <Compile Include="Views\WorldMap\IWorldMapViewModelFactory.cs" />
+    <Compile Include="Views\WorldMap\TerritoryViewModelFactories\IWorldMapViewModel.cs" />
+    <Compile Include="Views\WorldMap\TerritoryViewModelFactories\JapanViewModelsFactory.cs" />
+    <Compile Include="Views\WorldMap\TerritoryViewModelFactories\KamchatkaViewModelsFactory.cs" />
+    <Compile Include="Views\WorldMap\TerritoryViewModelFactories\MadagascarViewModelsFactory.cs" />
+    <Compile Include="Views\WorldMap\TerritoryViewModelFactories\MiddleEastViewModelsFactory.cs" />
+    <Compile Include="Views\WorldMap\TerritoryViewModelFactories\MongoliaViewModelsFactory.cs" />
+    <Compile Include="Views\WorldMap\TerritoryViewModelFactories\NewGuineaViewModelsFactory.cs" />
+    <Compile Include="Views\WorldMap\TerritoryViewModelFactories\NorthAfricaViewModelsFactory.cs" />
+    <Compile Include="Views\WorldMap\TerritoryViewModelFactories\NorthernEuropeViewModelsFactory.cs" />
+    <Compile Include="Views\WorldMap\TerritoryViewModelFactories\NorthwestTerritoryViewModelsFactory.cs" />
+    <Compile Include="Views\WorldMap\TerritoryViewModelFactories\OntarioViewModelsFactory.cs" />
+    <Compile Include="Views\WorldMap\TerritoryViewModelFactories\PeruViewModelsFactory.cs" />
+    <Compile Include="Views\WorldMap\TerritoryViewModelFactories\QuebecViewModelsFactory.cs" />
+    <Compile Include="Views\WorldMap\TerritoryViewModelFactories\AlaskaViewModelsFactory.cs" />
+    <Compile Include="Views\WorldMap\TerritoryViewModelFactories\CentralAmericaViewModelsFactory.cs" />
+    <Compile Include="Views\WorldMap\TerritoryViewModelFactories\ScandinaviaViewModelsFactory.cs" />
+    <Compile Include="Views\WorldMap\TerritoryViewModelFactories\SiamViewModelsFactory.cs" />
+    <Compile Include="Views\WorldMap\TerritoryViewModelFactories\SiberiaViewModelsFactory.cs" />
+    <Compile Include="Views\WorldMap\TerritoryViewModelFactories\SouthAfricaViewModelsFactory.cs" />
+    <Compile Include="Views\WorldMap\TerritoryViewModelFactories\SouthernEuropeViewModelsFactory.cs" />
+    <Compile Include="Views\WorldMap\TerritoryButtonUserControl.xaml.cs">
       <DependentUpon>TerritoryButtonUserControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\WorldMapView\Territories\TerritoryViewModel.cs" />
-    <Compile Include="Views\WorldMapView\Territories\TerritoryViewModelsFactoryBase.cs" />
-    <Compile Include="Views\WorldMapView\Territories\TerritoryViewModelsFactorySelector.cs" />
-    <Compile Include="Views\WorldMapView\WorldMapViewModelFactory.cs" />
-    <Compile Include="Views\WorldMapView\Territories\TextViewModel.cs" />
-    <Compile Include="Views\WorldMapView\Territories\UkraineViewModelsFactory.cs" />
-    <Compile Include="Views\WorldMapView\Territories\UralViewModelsFactory.cs" />
-    <Compile Include="Views\WorldMapView\Territories\VenezuelaViewModelsFactory.cs" />
-    <Compile Include="Views\WorldMapView\Territories\WesternAustraliaViewModelsFactory.cs" />
-    <Compile Include="Views\WorldMapView\Territories\WesternEuropeViewModelsFactory.cs" />
-    <Compile Include="Views\WorldMapView\Territories\WesternUnitedStatesViewModelsFactory.cs" />
-    <Compile Include="Views\WorldMapView\Territories\YakutskViewModelsFactory.cs" />
+    <Compile Include="Views\WorldMap\TerritoryViewModelFactories\TerritoryViewModel.cs" />
+    <Compile Include="Views\WorldMap\TerritoryViewModelFactories\TerritoryViewModelsFactoryBase.cs" />
+    <Compile Include="Views\WorldMap\TerritoryViewModelFactories\TerritoryViewModelsFactorySelector.cs" />
+    <Compile Include="Views\WorldMap\WorldMapViewModelFactory.cs" />
+    <Compile Include="Views\WorldMap\TerritoryViewModelFactories\TextViewModel.cs" />
+    <Compile Include="Views\WorldMap\TerritoryViewModelFactories\UkraineViewModelsFactory.cs" />
+    <Compile Include="Views\WorldMap\TerritoryViewModelFactories\UralViewModelsFactory.cs" />
+    <Compile Include="Views\WorldMap\TerritoryViewModelFactories\VenezuelaViewModelsFactory.cs" />
+    <Compile Include="Views\WorldMap\TerritoryViewModelFactories\WesternAustraliaViewModelsFactory.cs" />
+    <Compile Include="Views\WorldMap\TerritoryViewModelFactories\WesternEuropeViewModelsFactory.cs" />
+    <Compile Include="Views\WorldMap\TerritoryViewModelFactories\WesternUnitedStatesViewModelsFactory.cs" />
+    <Compile Include="Views\WorldMap\TerritoryViewModelFactories\YakutskViewModelsFactory.cs" />
     <Compile Include="Views\MainView.xaml.cs">
       <DependentUpon>MainView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\WorldMapView\WorldMapTestUserControl.xaml.cs">
+    <Compile Include="Views\WorldMap\WorldMapTestUserControl.xaml.cs">
       <DependentUpon>WorldMapTestUserControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\WorldMapView\WorldMapViewModel.cs" />
-    <Page Include="Views\Main\MainWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
+    <Compile Include="Views\WorldMap\WorldMapViewModel.cs" />
     <Page Include="Views\MainView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -153,19 +146,19 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Views\WorldMapView\Territories\TerritoryButtonUserControl.xaml">
+    <Page Include="Views\WorldMap\TerritoryButtonUserControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\WorldMapView\Territories\TerritoryStyles.xaml">
+    <Page Include="Views\WorldMap\TerritoryStyles.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\WorldMapView\WorldMapTestUserControl.xaml">
+    <Page Include="Views\WorldMap\WorldMapTestUserControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\WorldMapView\WorldMapTemplates.xaml">
+    <Page Include="Views\WorldMap\WorldMapTemplates.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -208,6 +201,7 @@
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

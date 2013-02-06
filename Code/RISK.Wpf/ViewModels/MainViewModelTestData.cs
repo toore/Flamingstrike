@@ -1,8 +1,7 @@
 using System.Linq;
 using GuiWpf.Services;
-using GuiWpf.Views.Main;
-using GuiWpf.Views.WorldMapView;
-using GuiWpf.Views.WorldMapView.Territories;
+using GuiWpf.Views.WorldMap;
+using GuiWpf.Views.WorldMap.TerritoryViewModelFactories;
 using RISK.Domain.Entities;
 using RISK.Domain.GamePlaying;
 using RISK.Domain.Repositories;

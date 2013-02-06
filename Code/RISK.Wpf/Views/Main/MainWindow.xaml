@@ -1,9 +1,0 @@
-﻿<Window x:Class="GuiWpf.Views.Main.MainWindow"
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:MainWindow="clr-namespace:GuiWpf.Views.Main" xmlns:Views="clr-namespace:GuiWpf.Views"
-    Title="Conquer the World">
-
-    <Views:MainView />
-
-</Window>
