@@ -1,4 +1,6 @@
-﻿using Caliburn.Micro;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using GuiWpf.Views.WorldMap;
 using RISK.Domain.GamePlaying;
 using RISK.Domain.Repositories;
@@ -8,7 +10,7 @@ namespace GuiWpf.Infrastructure
 {
     public class PluginConfiguration
     {
-        public static void Configure()
+        public void Configure()
         {
             ObjectFactory.Configure(x =>
                 {
@@ -17,13 +19,31 @@ namespace GuiWpf.Infrastructure
                             s.AssemblyContainingType<IGame>();
                             s.AssemblyContainingType<IGameEngine>();
 
-                            s.AssemblyContainingType<IWindowManager>();
-
                             s.WithDefaultConventions();
                         });
 
                     x.For<ILocationRepository>().Singleton();
                 });
+        }
+
+        public void BuildUp(object target)
+        {
+            ObjectFactory.BuildUp(target);
+        }
+
+        public object GetInstance(Type pluginType, string instanceKey)
+        {
+            if (instanceKey == null)
+            {
+                return ObjectFactory.GetInstance(pluginType);
+            }
+
+            return ObjectFactory.Container.GetInstance(pluginType, instanceKey);
+        }
+
+        public IEnumerable<object> GetAllInstances(Type pluginType)
+        {
+            return ObjectFactory.GetAllInstances(pluginType).Cast<object>();
         }
     }
 }

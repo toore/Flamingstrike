@@ -23,7 +23,7 @@ namespace RISK.Tests.Specifications
 
         public void before_all()
         {
-            PluginConfiguration.Configure();
+            new PluginConfiguration().Configure();
         }
 
         public void attacking_an_territory_and_winning_moves_armies_into_territory_and_flags_that_user_should_receive_a_card_when_ending_turn()

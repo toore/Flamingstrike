@@ -1,38 +1,33 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using Caliburn.Micro;
 using GuiWpf.Infrastructure;
 using GuiWpf.ViewModels;
-using StructureMap;
 
 namespace GuiWpf.Views
 {
     public class MainBootstrapper : Bootstrapper<MainViewModel>
     {
+        private readonly PluginConfiguration _pluginConfiguration = new PluginConfiguration();
+
         protected override void Configure()
         {
-            PluginConfiguration.Configure();
+            _pluginConfiguration.Configure();
         }
 
         protected override void BuildUp(object instance)
         {
-            ObjectFactory.BuildUp(instance);
+            _pluginConfiguration.BuildUp(instance);
         }
 
         protected override object GetInstance(Type service, string key)
         {
-            if (key == null)
-            {
-                return ObjectFactory.GetInstance(service);
-            }
-            
-            return ObjectFactory.Container.GetInstance(service, key);
+            return _pluginConfiguration.GetInstance(service, key);
         }
 
         protected override IEnumerable<object> GetAllInstances(Type service)
         {
-            return ObjectFactory.GetAllInstances(service).Cast<object>();
+            return _pluginConfiguration.GetAllInstances(service);
         }
     }
 }

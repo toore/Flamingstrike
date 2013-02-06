@@ -68,6 +68,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Infrastructure\PluginConfiguration.cs" />
+    <Compile Include="Infrastructure\WindowManager.cs" />
     <Compile Include="Services\ColorService.cs" />
     <Compile Include="Services\TerritoryColors.cs" />
     <Compile Include="Services\IColorService.cs" />
