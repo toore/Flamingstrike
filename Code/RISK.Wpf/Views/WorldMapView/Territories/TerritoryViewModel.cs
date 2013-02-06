@@ -1,4 +1,5 @@
-﻿using System.Windows.Media;
+﻿using System;
+using System.Windows.Media;
 
 namespace GuiWpf.Views.WorldMapView.Territories
 {
@@ -10,5 +11,6 @@ namespace GuiWpf.Views.WorldMapView.Territories
         public Color NormalFillColor { get; set; }
         public Color MouseOverStrokeColor { get; set; }
         public Color MouseOverFillColor { get; set; }
+        public Action Click { get; set; }
     }
 }

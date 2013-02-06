@@ -1,4 +1,5 @@
-﻿using GuiWpf.Views.Main;
+﻿using Caliburn.Micro;
+using GuiWpf.Views.Main;
 using RISK.Domain.GamePlaying;
 using RISK.Domain.Repositories;
 using StructureMap;
@@ -15,6 +16,8 @@ namespace GuiWpf.Infrastructure
                         {
                             s.AssemblyContainingType<IGame>();
                             s.AssemblyContainingType<IGameEngine>();
+
+                            s.AssemblyContainingType<IWindowManager>();
 
                             s.WithDefaultConventions();
                         });

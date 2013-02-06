@@ -41,7 +41,7 @@ namespace GuiWpf.Views.WorldMapView
         private IWorldMapViewModel CreateTerritoryViewModel(ITerritory territory, Action<ITerritory> selectTerritory)
         {
             var territoryViewModel = GetFactory(territory).CreateTerritoryViewModel();
-            //territoryViewModel.Command = new DelegateCommand<object>;
+            territoryViewModel.Click = ()=>selectTerritory(territory);
 
             if (territory.HasOwner)
             {
