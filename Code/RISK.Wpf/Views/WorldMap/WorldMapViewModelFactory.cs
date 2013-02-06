@@ -1,7 +1,5 @@
 using System;
 using System.Linq;
-using GuiWpf.Services;
-using GuiWpf.ViewModels;
 using GuiWpf.ViewModels.TerritoryViewModelFactories;
 using RISK.Domain.Entities;
 using RISK.Domain.GamePlaying;
@@ -11,15 +9,15 @@ namespace GuiWpf.Views.WorldMap
 {
     public class WorldMapViewModelFactory : IWorldMapViewModelFactory
     {
-        private readonly ITerritoryViewModelsFactorySelector _territoryViewModelsFactorySelector;
+        private readonly ITerritoryViewModelFactory _territoryViewModelFactory;
+        private readonly ITextViewModelFactory _textViewModelFactory;
         private readonly ILocationRepository _locationRepository;
-        private readonly IColorService _colorService;
 
-        public WorldMapViewModelFactory(ITerritoryViewModelsFactorySelector territoryViewModelsFactorySelector, ILocationRepository locationRepository, IColorService colorService)
+        public WorldMapViewModelFactory(ILocationRepository locationRepository, ITerritoryViewModelFactory territoryViewModelFactory, ITextViewModelFactory textViewModelFactory)
         {
-            _territoryViewModelsFactorySelector = territoryViewModelsFactorySelector;
+            _territoryViewModelFactory = territoryViewModelFactory;
+            _textViewModelFactory = textViewModelFactory;
             _locationRepository = locationRepository;
-            _colorService = colorService;
         }
 
         public WorldMapViewModel Create(IWorldMap worldMap, Action<ITerritory> selectTerritory)
@@ -41,35 +39,14 @@ namespace GuiWpf.Views.WorldMap
 
         private IWorldMapViewModel CreateTerritoryViewModel(ITerritory territory, Action<ITerritory> selectTerritory)
         {
-            var territoryViewModel = GetFactory(territory).CreateTerritoryViewModel();
-            territoryViewModel.ClickCommand = () => selectTerritory(territory);
+            Action action = () => selectTerritory(territory);
 
-            if (territory.HasOwner)
-            {
-                SetTerritoryOwnerColors(territory, territoryViewModel);
-            }
-
-            return territoryViewModel;
-        }
-
-        private void SetTerritoryOwnerColors(ITerritory territory, TerritoryViewModel territoryViewModel)
-        {
-            var playerTerritoryColors = _colorService.GetPlayerTerritoryColors(territory.Owner);
-
-            territoryViewModel.NormalStrokeColor = playerTerritoryColors.NormalStrokeColor;
-            territoryViewModel.NormalFillColor = playerTerritoryColors.NormalFillColor;
-            territoryViewModel.MouseOverStrokeColor = playerTerritoryColors.MouseOverStrokeColor;
-            territoryViewModel.MouseOverFillColor = playerTerritoryColors.MouseOverFillColor;
+            return _territoryViewModelFactory.Create(territory, action);
         }
 
         private IWorldMapViewModel CreateTextViewModel(ITerritory territory)
         {
-            return GetFactory(territory).CreateTextViewModel(territory);
-        }
-
-        private ITerritoryViewModelsFactory GetFactory(ITerritory territory)
-        {
-            return _territoryViewModelsFactorySelector.Select(territory);
+            return _textViewModelFactory.Create(territory);
         }
     }
 }

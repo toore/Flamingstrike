@@ -19,14 +19,19 @@ namespace GuiWpf.ViewModels
                 var continentRepository = new ContinentRepository();
                 var locationRepository = new LocationRepository(continentRepository);
                 var colorService = new ColorService();
-                var territoryViewModelsFactorySelector = new TerritoryViewModelsFactorySelector(locationRepository, colorService);
+                var territoryColorsFactory = new TerritoryColorsFactory(locationRepository, colorService);
+                var territoryLayoutInformationFactory = new TerritoryLayoutInformationFactory(locationRepository);
+                var territoryViewModelFactory = new TerritoryViewModelFactory(territoryColorsFactory, territoryLayoutInformationFactory);
 
                 var worldMap = new WorldMap(locationRepository);
                 var territory = worldMap.GetTerritory(locationRepository.Brazil);
                 territory.Owner = new HumanPlayer("pelle");
                 territory.Armies = 99;
 
-                var worldMapViewModels = new WorldMapViewModelFactory(territoryViewModelsFactorySelector, locationRepository, colorService).Create(worldMap, null).WorldMapViewModels.ToList();
+                var textViewModelFactory = new TextViewModelFactory(territoryLayoutInformationFactory);
+                var worldMapViewModelFactory = new WorldMapViewModelFactory(locationRepository, territoryViewModelFactory, textViewModelFactory);
+
+                var worldMapViewModels = worldMapViewModelFactory.Create(worldMap, null).WorldMapViewModels.ToList();
 
                 return new WorldMapViewModel
                     {

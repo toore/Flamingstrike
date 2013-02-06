@@ -14,7 +14,7 @@ namespace GuiWpf.Views.WorldMap
             _game = game;
             _worldMapViewModelFactory = worldMapViewModelFactory;
 
-            _currentTurn = _game.GetNextTurn();
+            //_currentTurn = _game.GetNextTurn();
         }
 
         public WorldMapViewModel GetWorldMapViewModel()
