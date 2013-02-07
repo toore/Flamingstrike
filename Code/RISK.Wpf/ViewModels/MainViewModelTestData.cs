@@ -1,4 +1,5 @@
 using System.Linq;
+using Caliburn.Micro;
 using GuiWpf.Services;
 using GuiWpf.ViewModels.TerritoryViewModelFactories;
 using GuiWpf.Views.WorldMap;
@@ -14,7 +15,7 @@ namespace GuiWpf.ViewModels
 
         private class GameEngineStub : IGameEngine
         {
-            public WorldMapViewModel GetWorldMapViewModel()
+            private WorldMapViewModel CreateWorldMapViewModel()
             {
                 var continentRepository = new ContinentRepository();
                 var locationRepository = new LocationRepository(continentRepository);
@@ -33,10 +34,15 @@ namespace GuiWpf.ViewModels
 
                 var worldMapViewModels = worldMapViewModelFactory.Create(worldMap, null).WorldMapViewModels.ToList();
 
-                return new WorldMapViewModel
-                    {
-                        WorldMapViewModels = worldMapViewModels
-                    };
+                var worldMapViewModel = new WorldMapViewModel();
+                worldMapViewModels.Apply(worldMapViewModel.WorldMapViewModels.Add);
+
+                return worldMapViewModel;
+            }
+
+            WorldMapViewModel IGameEngine.WorldMapViewModel
+            {
+                get { return CreateWorldMapViewModel(); }
             }
         }
     }

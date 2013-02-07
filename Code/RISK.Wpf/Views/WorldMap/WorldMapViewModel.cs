@@ -1,10 +1,20 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections.ObjectModel;
 using GuiWpf.ViewModels.TerritoryViewModelFactories;
 
 namespace GuiWpf.Views.WorldMap
 {
     public class WorldMapViewModel
     {
-        public IEnumerable<IWorldMapViewModel> WorldMapViewModels { get; set; }
+        private readonly ObservableCollection<IWorldMapViewModel> _worldMapViewModels;
+
+        public WorldMapViewModel()
+        {
+            _worldMapViewModels = new ObservableCollection<IWorldMapViewModel>();
+        }
+
+        public ObservableCollection<IWorldMapViewModel> WorldMapViewModels
+        {
+            get { return _worldMapViewModels; }
+        }
     }
 }

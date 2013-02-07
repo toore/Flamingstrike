@@ -1,15 +1,25 @@
-﻿using Caliburn.Micro;
-using GuiWpf.Views.WorldMap;
+﻿using GuiWpf.Views.WorldMap;
 
 namespace GuiWpf.ViewModels
 {
-    public class MainViewModel : PropertyChangedBase
+    public class MainViewModel : ViewModelBase
     {
+        private WorldMapViewModel _worldMapViewModel;
+
         public MainViewModel(IGameEngine gameEngine)
         {
-            WorldMapViewModel = gameEngine.GetWorldMapViewModel();
+            WorldMapViewModel = gameEngine.WorldMapViewModel;
         }
 
-        public WorldMapViewModel WorldMapViewModel { get; set; }
+        public void UpdateWorldMapViewModel(WorldMapViewModel worldMapViewModel)
+        {
+            WorldMapViewModel = worldMapViewModel;
+        }
+
+        public WorldMapViewModel WorldMapViewModel
+        {
+            get { return _worldMapViewModel; }
+            set { NotifyOfPropertyChange(value, () => WorldMapViewModel, x => _worldMapViewModel = value); }
+        }
     }
 }

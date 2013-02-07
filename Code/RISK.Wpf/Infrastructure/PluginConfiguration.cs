@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using GuiWpf.ViewModels;
 using GuiWpf.Views.WorldMap;
 using RISK.Domain.GamePlaying;
 using RISK.Domain.Repositories;
