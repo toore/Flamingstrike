@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using Caliburn.Micro;
 using FluentAssertions;
 using GuiWpf.Infrastructure;
 using RISK.Domain.Entities;
@@ -18,8 +19,6 @@ namespace RISK.Tests.Specifications
         private IGame _game;
         private IWorldMap _worldMap;
         private ITurn _currentTurn;
-        private IPlayerRepository _playerRepository;
-        private IBattleCalculator _battleCalculator;
 
         public void before_all()
         {
@@ -30,31 +29,15 @@ namespace RISK.Tests.Specifications
         {
             before = () =>
                 {
-                    _playerRepository = new PlayerRepository();
-                    ObjectFactory.Inject(_playerRepository);
-
-                    _locationRepository = new LocationRepository(new ContinentRepository());
-                    ObjectFactory.Inject(_locationRepository);
-
-                    var dices = MockRepository.GenerateStub<IDices>();
-                    var diceResult = MockRepository.GenerateStub<IDicesResult>();
-                    diceResult.Stub(x => x.DefenderCasualties).Return(1);
-                    dices.Stub(x => x.Roll(5, 1)).Return(diceResult);
-
-                    _battleCalculator = new BattleCalculator(dices);
-                    ObjectFactory.Inject(_battleCalculator);
-
-                    _player1 = new HumanPlayer("player 1");
-                    _player2 = new HumanPlayer("player 2");
-
-                    _playerRepository.Add(_player1);
-                    _playerRepository.Add(_player2);
+                    InjectPlayerRepositoryWithTwoPlayers();
+                    InjectLocationRepository();
+                    InjectBattleCalculatorWithAttackingFiveDefendingOneDefenderLosesOne();
 
                     _game = ObjectFactory.GetInstance<IGame>();
                     _worldMap = _game.GetWorldMap();
 
-                    UpdateTerritory(_locationRepository.NorthAfrica, _player1, 5);
-                    UpdateAllTerritoriesWithoutOwner(_player2, 1);
+                    PlayerOneHasNorthAfricaWithFiveArmies();
+                    PlayerTwoHasEveryTerritoryNotOwnedWithOneArmy();
 
                     _currentTurn = _game.GetNextTurn();
                 };
@@ -72,6 +55,45 @@ namespace RISK.Tests.Specifications
             it["player 1 should receive a card when turn ends"] = () => _currentTurn.PlayerShouldReceiveCardWhenTurnEnds();
         }
 
+        private void PlayerTwoHasEveryTerritoryNotOwnedWithOneArmy()
+        {
+            UpdateAllTerritoriesWithoutOwner(_player2, 1);
+        }
+
+        private void PlayerOneHasNorthAfricaWithFiveArmies()
+        {
+            UpdateTerritory(_locationRepository.NorthAfrica, _player1, 5);
+        }
+
+        private void InjectBattleCalculatorWithAttackingFiveDefendingOneDefenderLosesOne()
+        {
+            var dices = MockRepository.GenerateStub<IDices>();
+            var diceResult = MockRepository.GenerateStub<IDicesResult>();
+            diceResult.Stub(x => x.DefenderCasualties).Return(1);
+            dices.Stub(x => x.Roll(5, 1)).Return(diceResult);
+
+            var battleCalculator = new BattleCalculator(dices);
+            ObjectFactory.Inject<IBattleCalculator>(battleCalculator);
+        }
+
+        private void InjectLocationRepository()
+        {
+            _locationRepository = new LocationRepository(new ContinentRepository());
+            ObjectFactory.Inject(_locationRepository);
+        }
+
+        private void InjectPlayerRepositoryWithTwoPlayers()
+        {
+            var playerRepository = new PlayerRepository();
+            ObjectFactory.Inject<IPlayerRepository>(playerRepository);
+
+            _player1 = new HumanPlayer("player 1");
+            _player2 = new HumanPlayer("player 2");
+
+            playerRepository.Add(_player1);
+            playerRepository.Add(_player2);
+        }
+
         private void UpdateTerritory(ILocation location, IPlayer owner, int armies)
         {
             var territory = _worldMap.GetTerritory(location);
@@ -84,8 +106,7 @@ namespace RISK.Tests.Specifications
             _locationRepository.GetAll()
                 .Select(x => _worldMap.GetTerritory(x))
                 .Where(x => !x.HasOwner)
-                .ToList()
-                .ForEach(x =>
+                .Apply(x =>
                     {
                         x.Owner = owner;
                         x.Armies = armies;
