@@ -2,9 +2,9 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:WorldMap="clr-namespace:GuiWpf.Views.WorldMap"
-    xmlns:ViewModels="clr-namespace:GuiWpf.ViewModels">
+    xmlns:ViewModels="clr-namespace:GuiWpf.ViewModels" xmlns:WorldMapViewModels="clr-namespace:GuiWpf.ViewModels.WorldMapViewModels">
 
-    <DataTemplate DataType="{x:Type ViewModels:TerritoryViewModel}">
+    <DataTemplate DataType="{x:Type WorldMapViewModels:TerritoryViewModel}">
         <WorldMap:TerritoryButtonUserControl
             NormalFillColor="{Binding NormalFillColor}"
             NormalStrokeColor="{Binding NormalStrokeColor}"
@@ -34,7 +34,7 @@
         <Setter Property="FontWeight" Value="Bold" />
     </Style>
 
-    <DataTemplate DataType="{x:Type ViewModels:TextViewModel}">
+    <DataTemplate DataType="{x:Type WorldMapViewModels:TextViewModel}">
         <Canvas IsHitTestVisible="False">
             <Border
                 CornerRadius="25"

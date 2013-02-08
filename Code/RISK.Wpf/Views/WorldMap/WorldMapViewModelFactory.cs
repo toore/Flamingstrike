@@ -1,11 +1,10 @@
 using System;
 using System.Linq;
 using Caliburn.Micro;
-using GuiWpf.ViewModels.TerritoryViewModelFactories;
+using GuiWpf.ViewModels.WorldMapViewModels;
 using RISK.Domain.Entities;
 using RISK.Domain.GamePlaying;
 using RISK.Domain.Repositories;
-using Action = System.Action;
 
 namespace GuiWpf.Views.WorldMap
 {
@@ -22,14 +21,14 @@ namespace GuiWpf.Views.WorldMap
             _locationRepository = locationRepository;
         }
 
-        public WorldMapViewModel Create(IWorldMap worldMap, Action<ITerritory> selectTerritory)
+        public WorldMapViewModel Create(IWorldMap worldMap, Action<ILocation> selectLocation)
         {
             var territories = _locationRepository.GetAll()
                 .Select(worldMap.GetTerritory)
                 .ToList();
 
             var worldMapViewModels = territories
-                .Select(x => CreateTerritoryViewModel(x, selectTerritory))
+                .Select(x => CreateTerritoryViewModel(x, selectLocation))
                 .Union(territories.Select(CreateTextViewModel))
                 .ToList();
 
@@ -39,11 +38,9 @@ namespace GuiWpf.Views.WorldMap
             return worldMapViewModel;
         }
 
-        private IWorldMapViewModel CreateTerritoryViewModel(ITerritory territory, Action<ITerritory> selectTerritory)
+        private IWorldMapViewModel CreateTerritoryViewModel(ITerritory territory, Action<ILocation> selectLocation)
         {
-            Action action = () => selectTerritory(territory);
-
-            return _territoryViewModelFactory.Create(territory, action);
+            return _territoryViewModelFactory.Create(territory, selectLocation);
         }
 
         private IWorldMapViewModel CreateTextViewModel(ITerritory territory)

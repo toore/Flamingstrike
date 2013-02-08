@@ -1,24 +1,34 @@
-﻿using GuiWpf.Views.WorldMap;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Caliburn.Micro;
+using GuiWpf.ViewModels.WorldMapViewModels;
+using GuiWpf.Views.WorldMap;
 using RISK.Domain.Entities;
 using RISK.Domain.GamePlaying;
+using RISK.Domain.Repositories;
 
 namespace GuiWpf.ViewModels
 {
     public class GameEngine : IGameEngine
     {
-        private IGame _game;
-        private IWorldMapViewModelFactory _worldMapViewModelFactory;
+        private readonly IGame _game;
         private ITurn _currentTurn;
+        private List<ITerritory> _territories;
         public WorldMapViewModel WorldMapViewModel { get; private set; }
 
-        public GameEngine(IGame game, IWorldMapViewModelFactory worldMapViewModelFactory)
+        public GameEngine(IGame game, ILocationRepository locationRepository, IWorldMapViewModelFactory worldMapViewModelFactory)
         {
             _game = game;
-            _worldMapViewModelFactory = worldMapViewModelFactory;
+
+            var worldMap = _game.GetWorldMap();
+
+            _territories = locationRepository.GetAll()
+                .Select(worldMap.GetTerritory)
+                .ToList();
 
             GetNextTurn();
 
-            CreateWorldMapViewModel();
+            WorldMapViewModel = worldMapViewModelFactory.Create(worldMap, SelectLocation);
         }
 
         private void GetNextTurn()
@@ -26,18 +36,25 @@ namespace GuiWpf.ViewModels
             _currentTurn = _game.GetNextTurn();
         }
 
-        private void CreateWorldMapViewModel()
+        private void SelectLocation(ILocation location)
         {
-            var worldMap = _game.GetWorldMap();
+            _currentTurn.Select(location);
 
-            WorldMapViewModel = _worldMapViewModelFactory.Create(worldMap, SelectTerritory);
+            UpdateWorldMap();
         }
 
-        private void SelectTerritory(ITerritory territory)
+        private void UpdateWorldMap()
         {
-            _currentTurn.Select(territory.Location);
+            _territories.Apply(UpdateTerritory);
+        }
 
-            //_gameEngineSubscriber.UpdateWorldMapViewModel(GetWorldMapViewModel());
+        private void UpdateTerritory(ITerritory territory)
+        {
+            var territoryViewModel = WorldMapViewModel.WorldMapViewModels
+                .OfType<ITerritoryViewModel>()
+                .Single(x => x.Location == territory.Location);
+
+           //territoryViewModel.
         }
     }
 }

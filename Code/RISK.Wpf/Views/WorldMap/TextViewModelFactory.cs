@@ -1,5 +1,6 @@
+using GuiWpf.GuiDefinitions;
 using GuiWpf.ViewModels;
-using GuiWpf.ViewModels.TerritoryViewModelFactories;
+using GuiWpf.ViewModels.WorldMapViewModels;
 using RISK.Domain.Entities;
 
 namespace GuiWpf.Views.WorldMap

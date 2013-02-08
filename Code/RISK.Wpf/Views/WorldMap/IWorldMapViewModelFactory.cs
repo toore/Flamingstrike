@@ -6,6 +6,6 @@ namespace GuiWpf.Views.WorldMap
 {
     public interface IWorldMapViewModelFactory
     {
-        WorldMapViewModel Create(IWorldMap worldMap, Action<ITerritory> selectTerritory);
+        WorldMapViewModel Create(IWorldMap worldMap, Action<ILocation> selectLocation);
     }
 }

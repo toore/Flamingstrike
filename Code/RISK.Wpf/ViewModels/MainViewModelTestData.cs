@@ -1,7 +1,8 @@
 using System.Linq;
 using Caliburn.Micro;
+using GuiWpf.GuiDefinitions;
 using GuiWpf.Services;
-using GuiWpf.ViewModels.TerritoryViewModelFactories;
+using GuiWpf.ViewModels.WorldMapViewModels;
 using GuiWpf.Views.WorldMap;
 using RISK.Domain.Entities;
 using RISK.Domain.GamePlaying;
