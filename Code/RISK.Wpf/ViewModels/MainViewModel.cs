@@ -1,4 +1,5 @@
-﻿using GuiWpf.Views.WorldMap;
+﻿using GuiWpf.Services;
+using GuiWpf.Views.WorldMapViews;
 
 namespace GuiWpf.ViewModels
 {

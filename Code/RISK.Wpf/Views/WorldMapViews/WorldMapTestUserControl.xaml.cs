@@ -1,4 +1,4 @@
-﻿namespace GuiWpf.Views.WorldMap
+﻿namespace GuiWpf.Views.WorldMapViews
 {
     public partial class WorldMapUserControl
     {

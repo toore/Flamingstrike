@@ -7,26 +7,22 @@ namespace GuiWpf.ViewModels.WorldMapViewModels
 {
     public class TerritoryViewModelFactory : ITerritoryViewModelFactory
     {
-        private readonly ITerritoryColorsFactory _territoryColorsFactory;
-        private readonly ITerritoryLayoutInformationFactory _territoryLayoutInformationFactory;
+        private readonly ITerritoryViewModelUpdater _territoryViewModelUpdater;
+        private readonly ITerritoryGuiDefinitionFactory _territoryGuiDefinitionFactory;
 
-        public TerritoryViewModelFactory(ITerritoryColorsFactory territoryColorsFactory, ITerritoryLayoutInformationFactory territoryLayoutInformationFactory)
+        public TerritoryViewModelFactory(ITerritoryViewModelUpdater territoryViewModelUpdater, ITerritoryGuiDefinitionFactory territoryGuiDefinitionFactory)
         {
-            _territoryColorsFactory = territoryColorsFactory;
-            _territoryLayoutInformationFactory = territoryLayoutInformationFactory;
+            _territoryViewModelUpdater = territoryViewModelUpdater;
+            _territoryGuiDefinitionFactory = territoryGuiDefinitionFactory;
         }
 
         public TerritoryViewModel Create(ITerritory territory, Action<ILocation> clickCommand)
         {
-            var layoutInformation = _territoryLayoutInformationFactory.Create(territory.Location);
+            var layoutInformation = _territoryGuiDefinitionFactory.Create(territory.Location);
 
             var territoryViewModel = new TerritoryViewModel(territory.Location, layoutInformation.Path, clickCommand);
-
-            var territoryColors = _territoryColorsFactory.Create(territory);
-            territoryViewModel.NormalStrokeColor = territoryColors.NormalStrokeColor;
-            territoryViewModel.NormalFillColor = territoryColors.NormalFillColor;
-            territoryViewModel.MouseOverStrokeColor = territoryColors.MouseOverStrokeColor;
-            territoryViewModel.MouseOverFillColor = territoryColors.MouseOverFillColor;
+            territoryViewModel.IsEnabled = true;
+            _territoryViewModelUpdater.UpdateColor(territoryViewModel, territory);
 
             return territoryViewModel;
         }

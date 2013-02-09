@@ -1,7 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using GuiWpf.ViewModels.WorldMapViewModels;
 
-namespace GuiWpf.Views.WorldMap
+namespace GuiWpf.Views.WorldMapViews
 {
     public class WorldMapViewModel
     {

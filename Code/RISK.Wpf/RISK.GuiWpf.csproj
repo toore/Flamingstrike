@@ -41,6 +41,9 @@
     <Reference Include="Caliburn.Micro">
       <HintPath>..\packages\Caliburn.Micro.1.4.1\lib\net45\Caliburn.Micro.dll</HintPath>
     </Reference>
+    <Reference Include="FluentAssertions">
+      <HintPath>..\RISK.Tests\bin\Debug\FluentAssertions.dll</HintPath>
+    </Reference>
     <Reference Include="StructureMap">
       <HintPath>..\packages\structuremap.2.6.4.1\lib\net40\StructureMap.dll</HintPath>
     </Reference>
@@ -76,14 +79,16 @@
     <Compile Include="Services\IColorService.cs" />
     <Compile Include="Services\ITerritoryColors.cs" />
     <Compile Include="Services\TerritoryColorsFactory.cs" />
+    <Compile Include="Services\TerritoryViewModelUpdater.cs" />
     <Compile Include="ViewModels\IMainViewModel.cs" />
     <Compile Include="ViewModels\WorldMapViewModels\ITerritoryViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
-    <Compile Include="GuiDefinitions\ITerritoryLayoutInformationFactory.cs" />
-    <Compile Include="GuiDefinitions\TerritoryLayoutInformationFactory.cs" />
+    <Compile Include="GuiDefinitions\ITerritoryGuiDefinitionFactory.cs" />
+    <Compile Include="GuiDefinitions\TerritoryGuiDefinitionFactory.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
-    <Compile Include="ViewModels\GameEngine.cs" />
-    <Compile Include="ViewModels\IGameEngine.cs" />
+    <Compile Include="Services\GameEngine.cs" />
+    <Compile Include="Services\IGameEngine.cs" />
+    <Compile Include="Services\ITerritoryViewModelUpdater.cs" />
     <Compile Include="Views\MainBootstrapper.cs" />
     <Compile Include="ViewModels\MainViewModelTestData.cs" />
     <Compile Include="GuiDefinitions\AfhanistanGuiDefinitions.cs" />
@@ -104,8 +109,8 @@
     <Compile Include="GuiDefinitions\IrkutskGuiDefinitions.cs" />
     <Compile Include="ViewModels\WorldMapViewModels\ITerritoryViewModelFactory.cs" />
     <Compile Include="Services\ITerritoryColorsFactory.cs" />
-    <Compile Include="Views\WorldMap\ITextViewModelFactory.cs" />
-    <Compile Include="Views\WorldMap\IWorldMapViewModelFactory.cs" />
+    <Compile Include="Views\WorldMapViews\ITextViewModelFactory.cs" />
+    <Compile Include="Views\WorldMapViews\IWorldMapViewModelFactory.cs" />
     <Compile Include="ViewModels\WorldMapViewModels\IWorldMapViewModel.cs" />
     <Compile Include="GuiDefinitions\JapanGuiDefinitions.cs" />
     <Compile Include="GuiDefinitions\KamchatkaGuiDefinitions.cs" />
@@ -126,14 +131,14 @@
     <Compile Include="GuiDefinitions\SiberiaGuiDefinitions.cs" />
     <Compile Include="GuiDefinitions\SouthAfricaGuiDefinitions.cs" />
     <Compile Include="GuiDefinitions\SouthernEuropeGuiDefinitions.cs" />
-    <Compile Include="Views\WorldMap\TerritoryButtonUserControl.xaml.cs">
+    <Compile Include="Views\WorldMapViews\TerritoryButtonUserControl.xaml.cs">
       <DependentUpon>TerritoryButtonUserControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\WorldMapViewModels\TerritoryViewModel.cs" />
     <Compile Include="GuiDefinitions\ITerritoryGuiDefinitions.cs" />
     <Compile Include="ViewModels\WorldMapViewModels\TerritoryViewModelFactory.cs" />
-    <Compile Include="Views\WorldMap\TextViewModelFactory.cs" />
-    <Compile Include="Views\WorldMap\WorldMapViewModelFactory.cs" />
+    <Compile Include="Views\WorldMapViews\TextViewModelFactory.cs" />
+    <Compile Include="Views\WorldMapViews\WorldMapViewModelFactory.cs" />
     <Compile Include="ViewModels\WorldMapViewModels\TextViewModel.cs" />
     <Compile Include="GuiDefinitions\UkraineGuiDefinitions.cs" />
     <Compile Include="GuiDefinitions\UralGuiDefinitions.cs" />
@@ -145,10 +150,10 @@
     <Compile Include="Views\MainView.xaml.cs">
       <DependentUpon>MainView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\WorldMap\WorldMapTestUserControl.xaml.cs">
+    <Compile Include="Views\WorldMapViews\WorldMapTestUserControl.xaml.cs">
       <DependentUpon>WorldMapTestUserControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\WorldMap\WorldMapViewModel.cs" />
+    <Compile Include="Views\WorldMapViews\WorldMapViewModel.cs" />
     <Page Include="Views\MainView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -157,19 +162,19 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Views\WorldMap\TerritoryButtonUserControl.xaml">
+    <Page Include="Views\WorldMapViews\TerritoryButtonUserControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\WorldMap\TerritoryStyles.xaml">
+    <Page Include="Views\WorldMapViews\TerritoryStyles.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\WorldMap\WorldMapTestUserControl.xaml">
+    <Page Include="Views\WorldMapViews\WorldMapTestUserControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\WorldMap\WorldMapTemplates.xaml">
+    <Page Include="Views\WorldMapViews\WorldMapTemplates.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

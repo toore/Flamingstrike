@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Media;
 
-namespace GuiWpf.Views.WorldMap
+namespace GuiWpf.Views.WorldMapViews
 {
     public partial class TerritoryButtonUserControl
     {

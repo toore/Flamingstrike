@@ -1,6 +1,6 @@
-﻿using GuiWpf.Views.WorldMap;
+﻿using GuiWpf.Views.WorldMapViews;
 
-namespace GuiWpf.ViewModels
+namespace GuiWpf.Services
 {
     public interface IGameEngine
     {

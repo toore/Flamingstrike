@@ -1,14 +1,15 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:WorldMap="clr-namespace:GuiWpf.Views.WorldMap">
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:WorldMapViews="clr-namespace:GuiWpf.Views.WorldMapViews">
 
     <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="/GuiWpf;component/Views/WorldMap/TerritoryStyles.xaml" />
+        <ResourceDictionary Source="TerritoryStyles.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
-    <DataTemplate DataType="{x:Type WorldMap:WorldMapViewModel}">
+    <DataTemplate DataType="{x:Type WorldMapViews:WorldMapViewModel}">
         <Grid>
 
-            <WorldMap:WorldMapUserControl Opacity="0.2" />
+            <WorldMapViews:WorldMapUserControl Opacity="0.2" />
 
             <Canvas>
                 <ItemsControl ItemsSource="{Binding WorldMapViewModels}" />

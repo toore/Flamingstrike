@@ -3,7 +3,7 @@ using Caliburn.Micro;
 using GuiWpf.GuiDefinitions;
 using GuiWpf.Services;
 using GuiWpf.ViewModels.WorldMapViewModels;
-using GuiWpf.Views.WorldMap;
+using GuiWpf.Views.WorldMapViews;
 using RISK.Domain.Entities;
 using RISK.Domain.GamePlaying;
 using RISK.Domain.Repositories;
@@ -22,8 +22,9 @@ namespace GuiWpf.ViewModels
                 var locationRepository = new LocationRepository(continentRepository);
                 var colorService = new ColorService();
                 var territoryColorsFactory = new TerritoryColorsFactory(locationRepository, colorService);
-                var territoryLayoutInformationFactory = new TerritoryLayoutInformationFactory(locationRepository);
-                var territoryViewModelFactory = new TerritoryViewModelFactory(territoryColorsFactory, territoryLayoutInformationFactory);
+                var territoryLayoutInformationFactory = new TerritoryGuiDefinitionFactory(locationRepository);
+                var territoryViewModelUpdater = new TerritoryViewModelUpdater(territoryColorsFactory);
+                var territoryViewModelFactory = new TerritoryViewModelFactory(territoryViewModelUpdater, territoryLayoutInformationFactory);
 
                 var worldMap = new WorldMap(locationRepository);
                 var territory = worldMap.GetTerritory(locationRepository.Brazil);

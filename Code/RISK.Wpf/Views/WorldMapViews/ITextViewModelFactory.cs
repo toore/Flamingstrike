@@ -1,8 +1,7 @@
-using GuiWpf.ViewModels;
 using GuiWpf.ViewModels.WorldMapViewModels;
 using RISK.Domain.Entities;
 
-namespace GuiWpf.Views.WorldMap
+namespace GuiWpf.Views.WorldMapViews
 {
     public interface ITextViewModelFactory
     {

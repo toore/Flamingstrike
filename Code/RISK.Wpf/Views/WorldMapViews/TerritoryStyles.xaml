@@ -1,26 +1,26 @@
 ﻿<ResourceDictionary
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:WorldMap="clr-namespace:GuiWpf.Views.WorldMap"
-    xmlns:ViewModels="clr-namespace:GuiWpf.ViewModels" xmlns:WorldMapViewModels="clr-namespace:GuiWpf.ViewModels.WorldMapViewModels">
+    xmlns:WorldMapViewModels="clr-namespace:GuiWpf.ViewModels.WorldMapViewModels" 
+    xmlns:WorldMapViews="clr-namespace:GuiWpf.Views.WorldMapViews">
 
     <DataTemplate DataType="{x:Type WorldMapViewModels:TerritoryViewModel}">
-        <WorldMap:TerritoryButtonUserControl
+        <WorldMapViews:TerritoryButtonUserControl
             NormalFillColor="{Binding NormalFillColor}"
             NormalStrokeColor="{Binding NormalStrokeColor}"
             MouseOverFillColor="{Binding MouseOverFillColor}"
             MouseOverStrokeColor="{Binding MouseOverStrokeColor}"
             IsEnabled="{Binding IsEnabled}">
 
-            <WorldMap:TerritoryButtonUserControl.GeometryChildren>
+            <WorldMapViews:TerritoryButtonUserControl.GeometryChildren>
                 <GeometryCollection>
                     <PathGeometry
                         Figures="{Binding Path}"
                         FillRule="NonZero" />
                 </GeometryCollection>
-            </WorldMap:TerritoryButtonUserControl.GeometryChildren>
+            </WorldMapViews:TerritoryButtonUserControl.GeometryChildren>
 
-        </WorldMap:TerritoryButtonUserControl>
+        </WorldMapViews:TerritoryButtonUserControl>
     </DataTemplate>
 
     <Style x:Key="TerritoryNameLabelStyle" TargetType="{x:Type Label}">

@@ -1,22 +1,21 @@
 using GuiWpf.GuiDefinitions;
-using GuiWpf.ViewModels;
 using GuiWpf.ViewModels.WorldMapViewModels;
 using RISK.Domain.Entities;
 
-namespace GuiWpf.Views.WorldMap
+namespace GuiWpf.Views.WorldMapViews
 {
     public class TextViewModelFactory : ITextViewModelFactory
     {
-        private readonly ITerritoryLayoutInformationFactory _territoryLayoutInformationFactory;
+        private readonly ITerritoryGuiDefinitionFactory _territoryGuiDefinitionFactory;
 
-        public TextViewModelFactory(ITerritoryLayoutInformationFactory territoryLayoutInformationFactory)
+        public TextViewModelFactory(ITerritoryGuiDefinitionFactory territoryGuiDefinitionFactory)
         {
-            _territoryLayoutInformationFactory = territoryLayoutInformationFactory;
+            _territoryGuiDefinitionFactory = territoryGuiDefinitionFactory;
         }
 
         public TextViewModel Create(ITerritory territory)
         {
-            var layoutInformation = _territoryLayoutInformationFactory.Create(territory.Location);
+            var layoutInformation = _territoryGuiDefinitionFactory.Create(territory.Location);
 
             return new TextViewModel
                 {

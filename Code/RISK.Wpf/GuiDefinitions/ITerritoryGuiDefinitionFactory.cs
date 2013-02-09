@@ -2,7 +2,7 @@ using RISK.Domain.Entities;
 
 namespace GuiWpf.GuiDefinitions
 {
-    public interface ITerritoryLayoutInformationFactory
+    public interface ITerritoryGuiDefinitionFactory
     {
         ITerritoryGuiDefinitions Create(ILocation location);
     }

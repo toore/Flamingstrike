@@ -4,11 +4,11 @@ using RISK.Domain.Repositories;
 
 namespace GuiWpf.GuiDefinitions
 {
-    public class TerritoryLayoutInformationFactory : ITerritoryLayoutInformationFactory
+    public class TerritoryGuiDefinitionFactory : ITerritoryGuiDefinitionFactory
     {
         private readonly Dictionary<ILocation, ITerritoryGuiDefinitions> _layoutInformation;
 
-        public TerritoryLayoutInformationFactory(ILocationRepository locationRepository)
+        public TerritoryGuiDefinitionFactory(ILocationRepository locationRepository)
         {
             _layoutInformation = new Dictionary<ILocation, ITerritoryGuiDefinitions>
                 {
