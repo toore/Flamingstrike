@@ -9,5 +9,6 @@ namespace RISK.Domain.GamePlaying
         bool PlayerShouldReceiveCardWhenTurnEnds();
         bool CanSelect(ILocation location);
         void Select(ILocation location);
+        bool IsTerritorySelected { get; }
     }
 }

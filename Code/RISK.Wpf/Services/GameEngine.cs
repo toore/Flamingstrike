@@ -40,7 +40,14 @@ namespace GuiWpf.Services
 
         public void SelectLocation(ILocation location)
         {
-            _currentTurn.Select(location);
+            if (_currentTurn.IsTerritorySelected)
+            {
+                _currentTurn.Attack(location);
+            }
+            else
+            {
+                _currentTurn.Select(location);
+            }
 
             UpdateWorldMap();
         }
@@ -53,14 +60,17 @@ namespace GuiWpf.Services
         private void UpdateTerritory(ITerritory territory)
         {
             var location = territory.Location;
-
-            var territoryViewModel = WorldMapViewModel.WorldMapViewModels
-                .OfType<ITerritoryViewModel>()
-                .Single(x => x.Location == location);
+            var territoryViewModel = FindTerritoryViewModel(location, WorldMapViewModel.WorldMapViewModels);
 
             territoryViewModel.IsEnabled = _currentTurn.CanSelect(location);
-            
             _territoryViewModelUpdater.UpdateColor(territoryViewModel, territory);
+        }
+
+        private ITerritoryViewModel FindTerritoryViewModel(ILocation location, IEnumerable<IWorldMapViewModel> worldMapViewModels)
+        {
+            return worldMapViewModels
+                .OfType<ITerritoryViewModel>()
+                .Single(x => x.Location == location);
         }
     }
 }

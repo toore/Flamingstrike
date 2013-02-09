@@ -28,6 +28,9 @@ namespace RISK.Tests
         private IWorldMap _worldMap;
         private IPlayer _player1;
         private ITerritoryViewModelUpdater _territoryViewModelUpdater;
+        private ITurn _turn;
+        private ITerritory _territory1;
+        private ITerritory _territory2;
 
         [SetUp]
         public void SetUp()
@@ -47,7 +50,13 @@ namespace RISK.Tests
             _locationRepository.Stub(x => x.GetAll()).Return(_allLocations);
 
             _worldMap = MockRepository.GenerateStub<IWorldMap>();
+            _territory1 = new Territory(_location1);
+            _territory2 = new Territory(_location2);
+            _worldMap.Stub(x => x.GetTerritory(_location1)).Return(_territory1);
+            _worldMap.Stub(x => x.GetTerritory(_location2)).Return(_territory2);
             _game.Stub(x => x.GetWorldMap()).Return(_worldMap);
+            _turn = MockRepository.GenerateStub<ITurn>();
+            _game.Stub(x => x.GetNextTurn()).Return(_turn);
 
             _viewModel1 = StubWorldViewModel(_location1);
             _viewModel2 = StubWorldViewModel(_location2);
@@ -61,13 +70,6 @@ namespace RISK.Tests
             _player1 = new HumanPlayer("Player 1");
         }
 
-        private ITerritoryViewModel StubWorldViewModel(ILocation location)
-        {
-            var worldMapViewModel = MockRepository.GenerateStub<ITerritoryViewModel>();
-            worldMapViewModel.Stub(x => x.Location).Return(location);
-            return worldMapViewModel;
-        }
-
         [Test]
         public void Initializes_WorldMapViewModel()
         {
@@ -75,17 +77,28 @@ namespace RISK.Tests
         }
 
         [Test]
-        public void SelectLocation_updates_viewmodel()
+        public void SelectLocation_invokes_turn_select()
         {
-            //var territory1 = MockRepository.GenerateStub<ITerritory>();
-            //territory1.Stub(x => x.Owner).Return(_player1);
-            //territory1.Armies = 1;
+            _gameEngine.SelectLocation(_location1);
 
-            //_worldMap.Stub(x => x.GetTerritory(_location1)).Return(territory1);
+            _turn.AssertWasCalled(x=>x.Select(_location1));
+        }
 
-            //_gameEngine.SelectLocation(_location1);
+        [Test]
+        public void SelectLocation_invokes_turn_attack()
+        {
+            _turn.Stub(x => x.IsTerritorySelected).Return(true);
 
-            //_viewModel1.
+            _gameEngine.SelectLocation(_location2);
+
+            _turn.AssertWasCalled(x => x.Attack(_location2));
+        }
+
+        private ITerritoryViewModel StubWorldViewModel(ILocation location)
+        {
+            var worldMapViewModel = MockRepository.GenerateStub<ITerritoryViewModel>();
+            worldMapViewModel.Stub(x => x.Location).Return(location);
+            return worldMapViewModel;
         }
     }
 }
