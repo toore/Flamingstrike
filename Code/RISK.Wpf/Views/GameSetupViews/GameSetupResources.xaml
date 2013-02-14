@@ -3,9 +3,25 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:Setup="clr-namespace:GuiWpf.ViewModels.Setup">
 
+    <DataTemplate x:Key="PlayerSetupViewModelTemplate" DataType="{x:Type Setup:PlayerSetupViewModel}">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+
+            <CheckBox x:Name="isEnabledCheckBox" Grid.Column="1" IsChecked="{Binding IsEnabled}" />
+            <TextBlock Grid.Column="2" Text="{Binding Name}" IsEnabled="{Binding IsChecked, ElementName=isEnabledCheckBox}" />
+            <ComboBox Grid.Column="3" Text="{Binding PlayerType}" IsEnabled="{Binding IsChecked, ElementName=isEnabledCheckBox}" />
+        </Grid>
+    </DataTemplate>
+
     <DataTemplate DataType="{x:Type Setup:GameSetupViewModel}">
         <Grid>
-            <Button>TEST</Button>
+            <ItemsControl
+                ItemsSource="{Binding Players}"
+                ItemTemplate="{StaticResource PlayerSetupViewModelTemplate}" />
         </Grid>
     </DataTemplate>
 
