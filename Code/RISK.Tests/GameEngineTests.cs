@@ -26,7 +26,6 @@ namespace RISK.Tests
         private ITerritoryViewModel _viewModel1;
         private ITerritoryViewModel _viewModel2;
         private IWorldMap _worldMap;
-        private IPlayer _player1;
         private ITerritoryViewModelUpdater _territoryViewModelUpdater;
         private ITurn _turn;
         private ITerritory _territory1;
@@ -66,8 +65,6 @@ namespace RISK.Tests
             _worldMapViewModelFactory.Stub(x => x.Create(Arg<IWorldMap>.Is.Equal(_worldMap), Arg<Action<ILocation>>.Is.Anything)).Return(_worldMapViewModel);
 
             _gameEngine = new GameEngine(_game, _locationRepository, _worldMapViewModelFactory, _territoryViewModelUpdater);
-
-            _player1 = new HumanPlayer("Player 1");
         }
 
         [Test]
@@ -81,7 +78,7 @@ namespace RISK.Tests
         {
             _gameEngine.SelectLocation(_location1);
 
-            _turn.AssertWasCalled(x=>x.Select(_location1));
+            _turn.AssertWasCalled(x => x.Select(_location1));
         }
 
         [Test]
