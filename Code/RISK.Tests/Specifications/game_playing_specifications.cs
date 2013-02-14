@@ -19,10 +19,11 @@ namespace RISK.Tests.Specifications
     public class game_playing_specifications : NSpecDebuggerShim
     {
         private ILocationRepository _locationRepository;
-        private HumanPlayer _player1;
-        private HumanPlayer _player2;
+        private IPlayer _player1;
+        private IPlayer _player2;
         private IMainGameViewModel _mainGameBoardViewModel;
         private IWorldMap _worldMap;
+        private PlayerRepository _playerRepository;
 
         public void before_all()
         {
@@ -33,7 +34,7 @@ namespace RISK.Tests.Specifications
         {
             before = () =>
                 {
-                    //InjectPlayerRepositoryWithTwoPlayers();
+                    InjectPlayerRepository();
                     InjectLocationRepository();
                     InjectWorldMap();
                     InjectBattleCalculatorWithAttackingFiveDefendingOneDefenderLosesOne();
@@ -41,6 +42,9 @@ namespace RISK.Tests.Specifications
                     _mainGameBoardViewModel = ObjectFactory.GetInstance<IMainGameViewModel>();
 
                     SelectTwoPlayersAndConfirm();
+
+                    _player1 = _playerRepository.GetAll().First();
+                    _player2 = _playerRepository.GetAll().Second();
 
                     PlayerOneOccupiesNorthAfricaWithFiveArmies();
                     PlayerTwoOccupiesEveryUnoccupiedTerritoryWithOneArmy();
@@ -112,17 +116,11 @@ namespace RISK.Tests.Specifications
             ObjectFactory.Inject(_locationRepository);
         }
 
-        //private void InjectPlayerRepositoryWithTwoPlayers()
-        //{
-        //    var playerRepository = new PlayerRepository();
-        //    ObjectFactory.Inject<IPlayerRepository>(playerRepository);
-
-        //    _player1 = new HumanPlayer("player 1");
-        //    _player2 = new HumanPlayer("player 2");
-
-        //    playerRepository.Add(_player1);
-        //    playerRepository.Add(_player2);
-        //}
+        private void InjectPlayerRepository()
+        {
+            _playerRepository = new PlayerRepository();
+            ObjectFactory.Inject<IPlayerRepository>(_playerRepository);
+        }
 
         private void UpdateTerritory(ILocation location, IPlayer owner, int armies)
         {

@@ -92,6 +92,8 @@
     <Compile Include="ViewModels\MainGameViewModel.cs" />
     <Compile Include="ViewModels\Gameboard\IGameboardViewModel.cs" />
     <Compile Include="ViewModels\IMainGameViewViewModel.cs" />
+    <Compile Include="ViewModels\Setup\IPlayerFactory.cs" />
+    <Compile Include="ViewModels\Setup\PlayerFactory.cs" />
     <Compile Include="ViewModels\Setup\PlayerSetupViewModel.cs" />
     <Compile Include="ViewModels\Gameboard\WorldMap\ITerritoryViewModel.cs" />
     <Compile Include="ViewModels\Gameboard\GameboardViewModel.cs" />
@@ -160,14 +162,14 @@
     <Compile Include="GuiDefinitions\WesternEuropeGuiDefinitions.cs" />
     <Compile Include="GuiDefinitions\WesternUnitedStatesGuiDefinitions.cs" />
     <Compile Include="GuiDefinitions\YakutskGuiDefinitions.cs" />
-    <Compile Include="Views\MainView.xaml.cs">
-      <DependentUpon>MainView.xaml</DependentUpon>
+    <Compile Include="Views\GameboardView.xaml.cs">
+      <DependentUpon>GameboardView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\WorldMapViews\WorldMapTestUserControl.xaml.cs">
       <DependentUpon>WorldMapTestUserControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\WorldMapViews\WorldMapViewModel.cs" />
-    <Page Include="Views\MainView.xaml">
+    <Page Include="Views\GameboardView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

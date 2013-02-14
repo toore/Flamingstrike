@@ -1,8 +1,8 @@
 ﻿namespace GuiWpf.Views
 {
-    public partial class MainView
+    public partial class GameboardView
     {
-        public MainView()
+        public GameboardView()
         {
             InitializeComponent();
         }
