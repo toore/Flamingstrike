@@ -63,6 +63,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ColorServiceTests.cs" />
+    <Compile Include="Extensions\EnumerableExtensionsTests.cs" />
     <Compile Include="GameEngineTests.cs" />
     <Compile Include="LocationRepositoryTests.cs" />
     <Compile Include="BattleCalculatorTests.cs" />

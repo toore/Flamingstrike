@@ -1,8 +1,8 @@
 ﻿using GuiWpf.Views.WorldMapViews;
 
-namespace GuiWpf.ViewModels
+namespace GuiWpf.ViewModels.Gameboard
 {
-    public interface IMainViewModel
+    public interface IGameboardViewModel : IMainGameViewViewModel
     {
         WorldMapViewModel WorldMapViewModel { get; }
     }

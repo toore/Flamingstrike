@@ -2,7 +2,7 @@
 using FluentAssertions;
 using GuiWpf.GuiDefinitions;
 using GuiWpf.Services;
-using GuiWpf.ViewModels.WorldMapViewModels;
+using GuiWpf.ViewModels.Gameboard.WorldMap;
 using NUnit.Framework;
 using RISK.Domain.Entities;
 using RISK.Domain.Repositories;
@@ -16,7 +16,6 @@ namespace RISK.Tests
         private TerritoryViewModelFactory _territoryViewModelFactory;
         private ILocationRepository _locationRepository;
         private IContinentRepository _continentRepository;
-        private byte _colorValue;
         private Action<ILocation> _action;
         private ITerritoryGuiDefinitionFactory _territoryGuiDefinitionFactory;
         private ITerritoryViewModelUpdater _territoryViewModelUpdater;

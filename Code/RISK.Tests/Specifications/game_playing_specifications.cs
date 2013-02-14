@@ -3,8 +3,11 @@ using Caliburn.Micro;
 using FluentAssertions;
 using GuiWpf.Infrastructure;
 using GuiWpf.ViewModels;
-using GuiWpf.ViewModels.WorldMapViewModels;
+using GuiWpf.ViewModels.Gameboard;
+using GuiWpf.ViewModels.Gameboard.WorldMap;
+using GuiWpf.ViewModels.Setup;
 using RISK.Domain.Entities;
+using RISK.Domain.Extensions;
 using RISK.Domain.GamePlaying;
 using RISK.Domain.GamePlaying.DiceAndCalculation;
 using RISK.Domain.Repositories;
@@ -18,7 +21,7 @@ namespace RISK.Tests.Specifications
         private ILocationRepository _locationRepository;
         private HumanPlayer _player1;
         private HumanPlayer _player2;
-        private IMainViewModel _mainViewModel;
+        private IMainGameViewModel _mainGameBoardViewModel;
         private IWorldMap _worldMap;
 
         public void before_all()
@@ -30,15 +33,17 @@ namespace RISK.Tests.Specifications
         {
             before = () =>
                 {
-                    InjectPlayerRepositoryWithTwoPlayers();
+                    //InjectPlayerRepositoryWithTwoPlayers();
                     InjectLocationRepository();
                     InjectWorldMap();
                     InjectBattleCalculatorWithAttackingFiveDefendingOneDefenderLosesOne();
 
-                    _mainViewModel = ObjectFactory.GetInstance<IMainViewModel>();
+                    _mainGameBoardViewModel = ObjectFactory.GetInstance<IMainGameViewModel>();
+
+                    SelectTwoPlayersAndConfirm();
 
                     PlayerOneOccupiesNorthAfricaWithFiveArmies();
-                    PlayerTwoOccupiesEveryFreTerritoryWithOneArmy();
+                    PlayerTwoOccupiesEveryUnoccupiedTerritoryWithOneArmy();
                 };
 
             act = () =>
@@ -51,7 +56,7 @@ namespace RISK.Tests.Specifications
             it["North Africa should have 1 army"] = () => _worldMap.GetTerritory(_locationRepository.NorthAfrica).Armies.Should().Be(1);
             it["player 1 should occupy Brazil"] = () => _worldMap.GetTerritory(_locationRepository.Brazil).Owner.Should().Be(_player1);
             it["Brazil should have 4 armies"] = () => _worldMap.GetTerritory(_locationRepository.Brazil).Armies.Should().Be(4);
-            //it["player 1 should receive a card when turn ends"] = () => _currentTurn.PlayerShouldReceiveCardWhenTurnEnds();
+            xit["player 1 should have a card when turn ends"] = () => _player1.Cards.Count().Should().Be(1);
         }
 
         private void InjectWorldMap()
@@ -60,19 +65,31 @@ namespace RISK.Tests.Specifications
             ObjectFactory.Inject(_worldMap);
         }
 
+        private void SelectTwoPlayersAndConfirm()
+        {
+            var gameSetupViewModel = (IGameSetupViewModel)_mainGameBoardViewModel.MainViewModel;
+
+            gameSetupViewModel.Players.First().IsEnabled = true;
+            gameSetupViewModel.Players.Second().IsEnabled = true;
+
+            gameSetupViewModel.OnConfirm();
+        }
+
         private void PlayerOneOccupiesNorthAfricaWithFiveArmies()
         {
             UpdateTerritory(_locationRepository.NorthAfrica, _player1, 5);
         }
 
-        private void PlayerTwoOccupiesEveryFreTerritoryWithOneArmy()
+        private void PlayerTwoOccupiesEveryUnoccupiedTerritoryWithOneArmy()
         {
             UpdateAllTerritoriesWithoutOwner(_player2, 1);
         }
 
         private void ClickOn(ILocation territory)
         {
-            _mainViewModel.WorldMapViewModel.WorldMapViewModels
+            var gameboardViewModel = (IGameboardViewModel)_mainGameBoardViewModel.MainViewModel;
+
+            gameboardViewModel.WorldMapViewModel.WorldMapViewModels
                 .OfType<ITerritoryViewModel>()
                 .Single(x => x.Location == territory)
                 .OnClick();
@@ -95,17 +112,17 @@ namespace RISK.Tests.Specifications
             ObjectFactory.Inject(_locationRepository);
         }
 
-        private void InjectPlayerRepositoryWithTwoPlayers()
-        {
-            var playerRepository = new PlayerRepository();
-            ObjectFactory.Inject<IPlayerRepository>(playerRepository);
+        //private void InjectPlayerRepositoryWithTwoPlayers()
+        //{
+        //    var playerRepository = new PlayerRepository();
+        //    ObjectFactory.Inject<IPlayerRepository>(playerRepository);
 
-            _player1 = new HumanPlayer("player 1");
-            _player2 = new HumanPlayer("player 2");
+        //    _player1 = new HumanPlayer("player 1");
+        //    _player2 = new HumanPlayer("player 2");
 
-            playerRepository.Add(_player1);
-            playerRepository.Add(_player2);
-        }
+        //    playerRepository.Add(_player1);
+        //    playerRepository.Add(_player2);
+        //}
 
         private void UpdateTerritory(ILocation location, IPlayer owner, int armies)
         {

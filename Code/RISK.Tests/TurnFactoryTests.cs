@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using FluentAssertions;
+﻿using FluentAssertions;
 using NUnit.Framework;
 using RISK.Domain.GamePlaying;
 using Rhino.Mocks;
-using Is = Rhino.Mocks.Constraints.Is;
 
 namespace RISK.Tests
 {

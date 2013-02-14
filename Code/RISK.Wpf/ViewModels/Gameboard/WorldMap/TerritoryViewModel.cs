@@ -2,7 +2,7 @@
 using System.Windows.Media;
 using RISK.Domain.Entities;
 
-namespace GuiWpf.ViewModels.WorldMapViewModels
+namespace GuiWpf.ViewModels.Gameboard.WorldMap
 {
     public class TerritoryViewModel : ViewModelBase, ITerritoryViewModel
     {

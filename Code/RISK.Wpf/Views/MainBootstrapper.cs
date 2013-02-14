@@ -6,7 +6,7 @@ using GuiWpf.ViewModels;
 
 namespace GuiWpf.Views
 {
-    public class MainBootstrapper : Bootstrapper<MainViewModel>
+    public class MainBootstrapper : Bootstrapper<IMainGameViewModel>
     {
         private readonly PluginConfiguration _pluginConfiguration = new PluginConfiguration();
 

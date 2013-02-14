@@ -2,17 +2,16 @@ using System.Linq;
 using Caliburn.Micro;
 using GuiWpf.GuiDefinitions;
 using GuiWpf.Services;
-using GuiWpf.ViewModels.WorldMapViewModels;
+using GuiWpf.ViewModels.Gameboard.WorldMap;
 using GuiWpf.Views.WorldMapViews;
 using RISK.Domain.Entities;
-using RISK.Domain.GamePlaying;
 using RISK.Domain.Repositories;
 
-namespace GuiWpf.ViewModels
+namespace GuiWpf.ViewModels.Gameboard
 {
-    public class MainViewModelTestData : MainViewModel
+    public class GameboardViewModelTestData : GameboardViewModel
     {
-        public MainViewModelTestData() : base(new GameEngineStub()) {}
+        public GameboardViewModelTestData() : base(new GameEngineStub()) {}
 
         private class GameEngineStub : IGameEngine
         {
@@ -26,7 +25,7 @@ namespace GuiWpf.ViewModels
                 var territoryViewModelUpdater = new TerritoryViewModelUpdater(territoryColorsFactory);
                 var territoryViewModelFactory = new TerritoryViewModelFactory(territoryViewModelUpdater, territoryLayoutInformationFactory);
 
-                var worldMap = new WorldMap(locationRepository);
+                var worldMap = new RISK.Domain.GamePlaying.WorldMap(locationRepository);
                 var territory = worldMap.GetTerritory(locationRepository.Brazil);
                 territory.Owner = new HumanPlayer("pelle");
                 territory.Armies = 99;

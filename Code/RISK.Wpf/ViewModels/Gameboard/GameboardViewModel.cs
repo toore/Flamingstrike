@@ -1,11 +1,11 @@
 ﻿using GuiWpf.Services;
 using GuiWpf.Views.WorldMapViews;
 
-namespace GuiWpf.ViewModels
+namespace GuiWpf.ViewModels.Gameboard
 {
-    public class MainViewModel : IMainViewModel
+    public class GameboardViewModel : IGameboardViewModel
     {
-        public MainViewModel(IGameEngine gameEngine)
+        public GameboardViewModel(IGameEngine gameEngine)
         {
             WorldMapViewModel = gameEngine.WorldMapViewModel;
         }
