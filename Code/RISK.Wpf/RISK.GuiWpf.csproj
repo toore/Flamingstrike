@@ -124,6 +124,10 @@
     <Compile Include="GuiDefinitions\IrkutskGuiDefinitions.cs" />
     <Compile Include="ViewModels\Gameboard\WorldMap\ITerritoryViewModelFactory.cs" />
     <Compile Include="Services\ITerritoryColorsFactory.cs" />
+    <Compile Include="Views\MainGameView.xaml.cs">
+      <DependentUpon>MainGameView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\MainGameViewTestDataFactory.cs" />
     <Compile Include="Views\WorldMapViews\ITextViewModelFactory.cs" />
     <Compile Include="Views\WorldMapViews\IWorldMapViewModelFactory.cs" />
     <Compile Include="ViewModels\Gameboard\WorldMap\IWorldMapViewModel.cs" />
@@ -177,6 +181,14 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Views\GameSetupViews\GameSetupResources.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\MainGameView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\WorldMapViews\TerritoryButtonUserControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
