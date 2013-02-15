@@ -11,13 +11,13 @@ namespace GuiWpf.ViewModels.Setup
     {
         private readonly Action<GameSetup> _confirm;
         private readonly IPlayerFactory _playerFactory;
-        private readonly IPlayerTypesFactory _playerTypesFactory;
+        private readonly IPlayerTypes _playerTypes;
 
-        public GameSetupViewModel(IPlayerFactory playerFactory, IPlayerTypesFactory playerTypesFactory, Action<GameSetup> confirm)
+        public GameSetupViewModel(IPlayerFactory playerFactory, IPlayerTypes playerTypes, Action<GameSetup> confirm)
         {
             _confirm = confirm;
             _playerFactory = playerFactory;
-            _playerTypesFactory = playerTypesFactory;
+            _playerTypes = playerTypes;
 
             const int maxNumberOfPlayers = 6;
             Players = Enumerable.Range(0, maxNumberOfPlayers)
@@ -27,7 +27,7 @@ namespace GuiWpf.ViewModels.Setup
 
         private PlayerSetupViewModel CreatePlayerSetupViewModel(int playerNumber)
         {
-            return new PlayerSetupViewModel(_playerTypesFactory)
+            return new PlayerSetupViewModel(_playerTypes)
                 {
                     Name = "Player " + (playerNumber + 1)
                 };

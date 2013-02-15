@@ -2,8 +2,8 @@
 
 namespace GuiWpf.ViewModels.Setup
 {
-    public interface IPlayerTypesFactory
+    public interface IPlayerTypes
     {
-        IEnumerable<PlayerTypeBase> Create();
+        List<PlayerTypeBase> Values { get; }
     }
 }

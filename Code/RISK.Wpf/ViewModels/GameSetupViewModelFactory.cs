@@ -6,17 +6,17 @@ namespace GuiWpf.ViewModels
     public class GameSetupViewModelFactory : IGameSetupViewModelFactory
     {
         private readonly IPlayerFactory _playerFactory;
-        private readonly IPlayerTypesFactory _playerTypesFactory;
+        private readonly IPlayerTypes _playerTypes;
 
-        public GameSetupViewModelFactory(IPlayerFactory playerFactory, IPlayerTypesFactory playerTypesFactory)
+        public GameSetupViewModelFactory(IPlayerFactory playerFactory, IPlayerTypes playerTypes)
         {
             _playerFactory = playerFactory;
-            _playerTypesFactory = playerTypesFactory;
+            _playerTypes = playerTypes;
         }
 
         public IGameSetupViewModel Create(Action<GameSetup> confirm)
         {
-            return new GameSetupViewModel(_playerFactory, _playerTypesFactory, confirm);
+            return new GameSetupViewModel(_playerFactory, _playerTypes, confirm);
         }
     }
 }

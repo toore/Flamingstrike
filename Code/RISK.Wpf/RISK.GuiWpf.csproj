@@ -94,7 +94,7 @@
     <Compile Include="ViewModels\Gameboard\IGameboardViewModel.cs" />
     <Compile Include="ViewModels\IMainGameViewViewModel.cs" />
     <Compile Include="ViewModels\Setup\IPlayerFactory.cs" />
-    <Compile Include="ViewModels\Setup\IPlayerTypesFactory.cs" />
+    <Compile Include="ViewModels\Setup\IPlayerTypes.cs" />
     <Compile Include="ViewModels\Setup\NeutralPlayerType.cs" />
     <Compile Include="ViewModels\Setup\PlayerFactory.cs" />
     <Compile Include="ViewModels\Setup\PlayerSetupViewModel.cs" />
@@ -103,12 +103,15 @@
     <Compile Include="GuiDefinitions\ITerritoryGuiDefinitionFactory.cs" />
     <Compile Include="GuiDefinitions\TerritoryGuiDefinitionFactory.cs" />
     <Compile Include="ViewModels\Setup\PlayerTypeBase.cs" />
-    <Compile Include="ViewModels\Setup\PlayerTypesFactory.cs" />
+    <Compile Include="ViewModels\Setup\PlayerTypes.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="Services\GameEngine.cs" />
     <Compile Include="Services\IGameEngine.cs" />
     <Compile Include="Services\ITerritoryViewModelUpdater.cs" />
     <Compile Include="ViewModels\IMainGameViewModel.cs" />
+    <Compile Include="Views\GameSetupViews\GameSetupView.xaml.cs">
+      <DependentUpon>GameSetupView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\MainBootstrapper.cs" />
     <Compile Include="ViewModels\Gameboard\GameboardViewModelTestData.cs" />
     <Compile Include="GuiDefinitions\AfhanistanGuiDefinitions.cs" />
@@ -188,6 +191,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Views\GameSetupViews\GameSetupResources.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\GameSetupViews\GameSetupView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

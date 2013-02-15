@@ -1,14 +1,14 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace GuiWpf.ViewModels.Setup
 {
     public class PlayerSetupViewModel : ViewModelBase
     {
-        private readonly IPlayerTypesFactory _playerTypesFactory;
-
-        public PlayerSetupViewModel(IPlayerTypesFactory playerTypesFactory)
+        public PlayerSetupViewModel(IPlayerTypes playerTypes)
         {
-            _playerTypesFactory = playerTypesFactory;
+            PlayerTypes = playerTypes.Values;
+            SelectedPlayerType = PlayerTypes.First();
         }
 
         private bool _isEnabled;
@@ -32,9 +32,6 @@ namespace GuiWpf.ViewModels.Setup
             set { NotifyOfPropertyChange(value, () => SelectedPlayerType, type => _selectedPlayerType = type); }
         }
 
-        public IEnumerable<PlayerTypeBase> PlayerTypes
-        {
-            get { return _playerTypesFactory.Create(); }
-        }
+        public IEnumerable<PlayerTypeBase> PlayerTypes { get; private set; }
     }
 }
