@@ -1,20 +1,18 @@
 ﻿using GuiWpf.Infrastructure;
+using StructureMap;
 
 namespace GuiWpf.Views
 {
     public class TestDataFactoryBase
     {
-        private readonly PluginConfiguration _pluginConfiguration;
-
         public TestDataFactoryBase()
         {
-            _pluginConfiguration = new PluginConfiguration();
-            _pluginConfiguration.Configure();
+            new PluginConfiguration().Configure();
         }
 
         protected T Create<T>()
         {
-            return _pluginConfiguration.GetInstance<T>();
+            return ObjectFactory.GetInstance<T>();
         }
     }
 }

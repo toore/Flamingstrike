@@ -3,20 +3,25 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:Views="clr-namespace:GuiWpf.Views" xmlns:GameSetupViews="clr-namespace:GuiWpf.Views.GameSetupViews" xmlns:Setup="clr-namespace:GuiWpf.ViewModels.Setup"
+    xmlns:Views="clr-namespace:GuiWpf.Views"
+    xmlns:GameSetupViews="clr-namespace:GuiWpf.Views.GameSetupViews"
+    xmlns:Setup="clr-namespace:GuiWpf.ViewModels.Setup"
+    xmlns:Gameboard="clr-namespace:GuiWpf.ViewModels.Gameboard"
     mc:Ignorable="d"
     d:DesignHeight="300" d:DesignWidth="300"
     d:DataContext="{Binding Source={x:Static Views:MainGameViewTestDataFactory.ViewModel}}">
 
     <UserControl.Resources>
         <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/GuiWpf;component/Views/WorldMapViews/WorldMapResources.xaml" />
-            </ResourceDictionary.MergedDictionaries>
 
             <DataTemplate DataType="{x:Type Setup:GameSetupViewModel}">
                 <GameSetupViews:GameSetupView Players="{Binding Players}" />
             </DataTemplate>
+
+            <DataTemplate DataType="{x:Type Gameboard:GameboardViewModel}">
+                <Views:GameboardView />
+            </DataTemplate>
+            
         </ResourceDictionary>
     </UserControl.Resources>
 
