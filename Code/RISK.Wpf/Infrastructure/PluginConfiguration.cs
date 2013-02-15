@@ -31,6 +31,11 @@ namespace GuiWpf.Infrastructure
             ObjectFactory.BuildUp(target);
         }
 
+        public T GetInstance<T>()
+        {
+            return ObjectFactory.GetInstance<T>();
+        }
+
         public object GetInstance(Type pluginType, string instanceKey)
         {
             if (instanceKey == null)

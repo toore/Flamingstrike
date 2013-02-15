@@ -1,4 +1,6 @@
-﻿using GuiWpf.ViewModels;
+﻿using GuiWpf.Infrastructure;
+using GuiWpf.ViewModels;
+using StructureMap;
 
 namespace GuiWpf.Views
 {
@@ -6,7 +8,15 @@ namespace GuiWpf.Views
     {
         private IMainGameViewModel Create()
         {
-            return new MainGameViewModel(new GameSetupViewModelFactory(null), null, null);
+            var pluginConfiguration = new PluginConfiguration();
+            pluginConfiguration.Configure();
+
+            //var mainGameViewModel = ObjectFactory.GetInstance<IMainGameViewModel>();
+
+            var instance = pluginConfiguration.GetInstance<IMainGameViewModel>();
+            return instance;
+
+            //return new MainGameViewModel(new GameSetupViewModelFactory(null), null, null);
         }
 
         public static IMainGameViewModel ViewModel

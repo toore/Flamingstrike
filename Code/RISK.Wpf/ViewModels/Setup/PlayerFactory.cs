@@ -6,7 +6,7 @@ namespace GuiWpf.ViewModels.Setup
     {
         public IPlayer Create(PlayerSetupViewModel playerSetupViewModel)
         {
-            return new HumanPlayer("");
+            return new HumanPlayer(playerSetupViewModel.Name);
         }
     }
 }

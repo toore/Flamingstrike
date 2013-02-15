@@ -6,14 +6,14 @@
     <DataTemplate x:Key="PlayerSetupViewModelTemplate" DataType="{x:Type Setup:PlayerSetupViewModel}">
         <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition />
-                <ColumnDefinition />
-                <ColumnDefinition />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
-            <CheckBox x:Name="isEnabledCheckBox" Grid.Column="1" IsChecked="{Binding IsEnabled}" />
-            <TextBlock Grid.Column="2" Text="{Binding Name}" IsEnabled="{Binding IsChecked, ElementName=isEnabledCheckBox}" />
-            <ComboBox Grid.Column="3" Text="{Binding PlayerType}" IsEnabled="{Binding IsChecked, ElementName=isEnabledCheckBox}" />
+            <CheckBox x:Name="isEnabledCheckBox" IsChecked="{Binding IsEnabled}" />
+            <TextBlock Grid.Column="1" Text="{Binding Name}" IsEnabled="{Binding IsChecked, ElementName=isEnabledCheckBox}" />
+            <ComboBox Grid.Column="2" SelectedItem="{Binding PlayerSetupType}" IsEnabled="{Binding IsChecked, ElementName=isEnabledCheckBox}" />
         </Grid>
     </DataTemplate>
 

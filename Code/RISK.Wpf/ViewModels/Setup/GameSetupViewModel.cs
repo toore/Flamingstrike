@@ -18,8 +18,9 @@ namespace GuiWpf.ViewModels.Setup
             _playerFactory = playerFactory;
 
             const int maxNumberOfPlayers = 6;
+            var playerNumber = 1;
             Players = Enumerable.Range(0, maxNumberOfPlayers)
-                .Select(x => new PlayerSetupViewModel())
+                .Select(x => new PlayerSetupViewModel { Name = "Player " + playerNumber++ })
                 .ToObservableCollection();
         }
 
