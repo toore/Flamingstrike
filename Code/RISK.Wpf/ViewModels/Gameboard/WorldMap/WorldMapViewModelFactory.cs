@@ -1,12 +1,11 @@
 using System;
 using System.Linq;
 using Caliburn.Micro;
-using GuiWpf.ViewModels.Gameboard.WorldMap;
 using RISK.Domain.Entities;
 using RISK.Domain.GamePlaying;
 using RISK.Domain.Repositories;
 
-namespace GuiWpf.Views.WorldMapViews
+namespace GuiWpf.ViewModels.Gameboard.WorldMap
 {
     public class WorldMapViewModelFactory : IWorldMapViewModelFactory
     {

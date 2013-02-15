@@ -3,17 +3,23 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:Setup="clr-namespace:GuiWpf.ViewModels.Setup">
 
+    <Style x:Key="PlayerNameLabelStyle" TargetType="{x:Type Label}">
+        <Setter Property="FontSize" Value="14" />
+    </Style>
+
     <DataTemplate x:Key="PlayerSetupViewModelTemplate" DataType="{x:Type Setup:PlayerSetupViewModel}">
-        <Grid>
+        <Grid Margin="10">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
-            <CheckBox x:Name="isEnabledCheckBox" IsChecked="{Binding IsEnabled}" />
-            <TextBlock Grid.Column="1" Text="{Binding Name}" IsEnabled="{Binding IsChecked, ElementName=isEnabledCheckBox}" />
-            <ComboBox Grid.Column="2" SelectedItem="{Binding PlayerSetupType}" IsEnabled="{Binding IsChecked, ElementName=isEnabledCheckBox}" />
+            <CheckBox x:Name="isEnabledCheckBox" VerticalAlignment="Center" IsChecked="{Binding IsEnabled}">
+                <CheckBox.Content>
+                    <Label Grid.Column="1" Content="{Binding Name}" Style="{StaticResource PlayerNameLabelStyle}" IsEnabled="{Binding IsChecked, ElementName=isEnabledCheckBox}" />
+                </CheckBox.Content>
+            </CheckBox>
+            <ComboBox Grid.Column="1" SelectedItem="{Binding SelectedPlayerType}" ItemsSource="{Binding PlayerTypes}" IsEnabled="{Binding IsChecked, ElementName=isEnabledCheckBox}" />
         </Grid>
     </DataTemplate>
 

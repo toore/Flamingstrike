@@ -1,7 +1,6 @@
 ﻿using System.Collections.ObjectModel;
-using GuiWpf.ViewModels.Gameboard.WorldMap;
 
-namespace GuiWpf.Views.WorldMapViews
+namespace GuiWpf.ViewModels.Gameboard.WorldMap
 {
     public class WorldMapViewModel
     {

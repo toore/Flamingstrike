@@ -187,6 +187,15 @@ namespace GuiWpf.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Human.
+        /// </summary>
+        internal static string HUMAN {
+            get {
+                return ResourceManager.GetString("HUMAN", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Iceland.
         /// </summary>
         internal static string ICELAND {
@@ -264,6 +273,15 @@ namespace GuiWpf.Properties {
         internal static string MONGOLIA {
             get {
                 return ResourceManager.GetString("MONGOLIA", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Neutral.
+        /// </summary>
+        internal static string NEUTRAL {
+            get {
+                return ResourceManager.GetString("NEUTRAL", resourceCulture);
             }
         }
         

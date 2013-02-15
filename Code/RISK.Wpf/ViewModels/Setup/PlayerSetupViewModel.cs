@@ -1,7 +1,16 @@
-﻿namespace GuiWpf.ViewModels.Setup
+﻿using System.Collections.Generic;
+
+namespace GuiWpf.ViewModels.Setup
 {
     public class PlayerSetupViewModel : ViewModelBase
     {
+        private readonly IPlayerTypesFactory _playerTypesFactory;
+
+        public PlayerSetupViewModel(IPlayerTypesFactory playerTypesFactory)
+        {
+            _playerTypesFactory = playerTypesFactory;
+        }
+
         private bool _isEnabled;
         public bool IsEnabled
         {
@@ -16,18 +25,16 @@
             set { NotifyOfPropertyChange(value, () => Name, s => _name = s); }
         }
 
-        private PlayerSetupType _playerSetupType;
-        public PlayerSetupType PlayerSetupType
+        private PlayerTypeBase _selectedPlayerType;
+        public PlayerTypeBase SelectedPlayerType
         {
-            get { return _playerSetupType; }
-            set { NotifyOfPropertyChange(value, () => PlayerSetupType, type => _playerSetupType = type); }
+            get { return _selectedPlayerType; }
+            set { NotifyOfPropertyChange(value, () => SelectedPlayerType, type => _selectedPlayerType = type); }
         }
-    }
 
-    public enum PlayerSetupType
-    {
-        Human,
-        ComputerAdvanced,
-        ComputerNeutral
+        public IEnumerable<PlayerTypeBase> PlayerTypes
+        {
+            get { return _playerTypesFactory.Create(); }
+        }
     }
 }

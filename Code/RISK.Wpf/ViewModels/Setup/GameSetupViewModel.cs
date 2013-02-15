@@ -11,17 +11,26 @@ namespace GuiWpf.ViewModels.Setup
     {
         private readonly Action<GameSetup> _confirm;
         private readonly IPlayerFactory _playerFactory;
+        private readonly IPlayerTypesFactory _playerTypesFactory;
 
-        public GameSetupViewModel(IPlayerFactory playerFactory, Action<GameSetup> confirm)
+        public GameSetupViewModel(IPlayerFactory playerFactory, IPlayerTypesFactory playerTypesFactory, Action<GameSetup> confirm)
         {
             _confirm = confirm;
             _playerFactory = playerFactory;
+            _playerTypesFactory = playerTypesFactory;
 
             const int maxNumberOfPlayers = 6;
-            var playerNumber = 1;
             Players = Enumerable.Range(0, maxNumberOfPlayers)
-                .Select(x => new PlayerSetupViewModel { Name = "Player " + playerNumber++ })
+                .Select(CreatePlayerSetupViewModel)
                 .ToObservableCollection();
+        }
+
+        private PlayerSetupViewModel CreatePlayerSetupViewModel(int playerNumber)
+        {
+            return new PlayerSetupViewModel(_playerTypesFactory)
+                {
+                    Name = "Player " + (playerNumber + 1)
+                };
         }
 
         public ObservableCollection<PlayerSetupViewModel> Players { get; private set; }

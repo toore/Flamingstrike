@@ -1,4 +1,5 @@
 ﻿using GuiWpf.Services;
+using GuiWpf.ViewModels.Gameboard.WorldMap;
 using GuiWpf.Views.WorldMapViews;
 using RISK.Domain.GamePlaying;
 using RISK.Domain.Repositories;

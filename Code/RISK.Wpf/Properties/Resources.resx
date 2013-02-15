@@ -159,6 +159,9 @@
   <data name="GREENLAND" xml:space="preserve">
     <value>Greenland</value>
   </data>
+  <data name="HUMAN" xml:space="preserve">
+    <value>Human</value>
+  </data>
   <data name="ICELAND" xml:space="preserve">
     <value>Iceland</value>
   </data>
@@ -185,6 +188,9 @@
   </data>
   <data name="MONGOLIA" xml:space="preserve">
     <value>Mongolia</value>
+  </data>
+  <data name="NEUTRAL" xml:space="preserve">
+    <value>Neutral</value>
   </data>
   <data name="NEW_GUINEA" xml:space="preserve">
     <value>New Guinea</value>
