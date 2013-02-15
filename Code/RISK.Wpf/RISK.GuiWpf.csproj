@@ -155,6 +155,7 @@
     <Compile Include="GuiDefinitions\SiberiaGuiDefinitions.cs" />
     <Compile Include="GuiDefinitions\SouthAfricaGuiDefinitions.cs" />
     <Compile Include="GuiDefinitions\SouthernEuropeGuiDefinitions.cs" />
+    <Compile Include="Views\TestDataFactoryBase.cs" />
     <Compile Include="Views\WorldMapViews\TerritoryButtonUserControl.xaml.cs">
       <DependentUpon>TerritoryButtonUserControl.xaml</DependentUpon>
     </Compile>

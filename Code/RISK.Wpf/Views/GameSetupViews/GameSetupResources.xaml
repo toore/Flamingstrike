@@ -7,6 +7,10 @@
         <Setter Property="FontSize" Value="14" />
     </Style>
 
+    <DataTemplate x:Key="PlayerTypeTemplate" DataType="{x:Type Setup:PlayerTypeBase}">
+        <Label Content="{Binding Name}" Style="{StaticResource PlayerNameLabelStyle}"/>
+    </DataTemplate>
+    
     <DataTemplate x:Key="PlayerSetupViewModelTemplate" DataType="{x:Type Setup:PlayerSetupViewModel}">
         <Grid Margin="10">
             <Grid.ColumnDefinitions>
@@ -14,12 +18,25 @@
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
-            <CheckBox x:Name="isEnabledCheckBox" VerticalAlignment="Center" IsChecked="{Binding IsEnabled}">
+            <CheckBox
+                x:Name="isEnabledCheckBox"
+                VerticalAlignment="Center"
+                IsChecked="{Binding IsEnabled}">
                 <CheckBox.Content>
-                    <Label Grid.Column="1" Content="{Binding Name}" Style="{StaticResource PlayerNameLabelStyle}" IsEnabled="{Binding IsChecked, ElementName=isEnabledCheckBox}" />
+                    <Label
+                        Grid.Column="1"
+                        Content="{Binding Name}"
+                        Style="{StaticResource PlayerNameLabelStyle}"
+                        IsEnabled="{Binding IsChecked, ElementName=isEnabledCheckBox}" />
                 </CheckBox.Content>
             </CheckBox>
-            <ComboBox Grid.Column="1" SelectedItem="{Binding SelectedPlayerType}" ItemsSource="{Binding PlayerTypes}" IsEnabled="{Binding IsChecked, ElementName=isEnabledCheckBox}" />
+
+            <ComboBox
+                Grid.Column="1"
+                SelectedItem="{Binding SelectedPlayerType}"
+                ItemTemplate="{StaticResource PlayerTypeTemplate}"
+                ItemsSource="{Binding PlayerTypes}"
+                IsEnabled="{Binding IsChecked, ElementName=isEnabledCheckBox}" />
         </Grid>
     </DataTemplate>
 

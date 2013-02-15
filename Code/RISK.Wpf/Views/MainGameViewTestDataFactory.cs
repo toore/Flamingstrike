@@ -1,27 +1,12 @@
-﻿using GuiWpf.Infrastructure;
-using GuiWpf.ViewModels;
-using StructureMap;
+﻿using GuiWpf.ViewModels;
 
 namespace GuiWpf.Views
 {
-    public class MainGameViewTestDataFactory
+    public class MainGameViewTestDataFactory : TestDataFactoryBase
     {
-        private IMainGameViewModel Create()
-        {
-            var pluginConfiguration = new PluginConfiguration();
-            pluginConfiguration.Configure();
-
-            //var mainGameViewModel = ObjectFactory.GetInstance<IMainGameViewModel>();
-
-            var instance = pluginConfiguration.GetInstance<IMainGameViewModel>();
-            return instance;
-
-            //return new MainGameViewModel(new GameSetupViewModelFactory(null), null, null);
-        }
-
         public static IMainGameViewModel ViewModel
         {
-            get { return new MainGameViewTestDataFactory().Create(); }
+            get { return new MainGameViewTestDataFactory().Create<IMainGameViewModel>(); }
         }
     }
 }
