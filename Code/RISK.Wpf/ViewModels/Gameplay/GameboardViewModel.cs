@@ -1,7 +1,7 @@
 ﻿using GuiWpf.Services;
-using GuiWpf.ViewModels.Gameboard.WorldMap;
+using GuiWpf.ViewModels.Gameplay.WorldMap;
 
-namespace GuiWpf.ViewModels.Gameboard
+namespace GuiWpf.ViewModels.Gameplay
 {
     public class GameboardViewModel : IGameboardViewModel
     {

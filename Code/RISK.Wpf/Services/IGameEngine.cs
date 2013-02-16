@@ -1,4 +1,4 @@
-﻿using GuiWpf.ViewModels.Gameboard.WorldMap;
+﻿using GuiWpf.ViewModels.Gameplay.WorldMap;
 using GuiWpf.Views.WorldMapViews;
 
 namespace GuiWpf.Services

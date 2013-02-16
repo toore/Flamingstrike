@@ -1,7 +1,6 @@
-﻿using GuiWpf.ViewModels.Gameboard.WorldMap;
-using GuiWpf.Views.WorldMapViews;
+﻿using GuiWpf.ViewModels.Gameplay.WorldMap;
 
-namespace GuiWpf.ViewModels.Gameboard
+namespace GuiWpf.ViewModels.Gameplay
 {
     public interface IGameboardViewModel : IMainGameViewViewModel
     {

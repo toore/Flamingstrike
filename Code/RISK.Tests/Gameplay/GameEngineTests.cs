@@ -2,15 +2,14 @@
 using System.Collections.Generic;
 using FluentAssertions;
 using GuiWpf.Services;
-using GuiWpf.ViewModels.Gameboard.WorldMap;
-using GuiWpf.Views.WorldMapViews;
+using GuiWpf.ViewModels.Gameplay.WorldMap;
 using NUnit.Framework;
 using RISK.Domain.Entities;
 using RISK.Domain.GamePlaying;
 using RISK.Domain.Repositories;
 using Rhino.Mocks;
 
-namespace RISK.Tests
+namespace RISK.Tests.Gameplay
 {
     [TestFixture]
     public class GameEngineTests

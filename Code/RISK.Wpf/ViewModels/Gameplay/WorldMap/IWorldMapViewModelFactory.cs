@@ -2,7 +2,7 @@ using System;
 using RISK.Domain.Entities;
 using RISK.Domain.GamePlaying;
 
-namespace GuiWpf.ViewModels.Gameboard.WorldMap
+namespace GuiWpf.ViewModels.Gameplay.WorldMap
 {
     public interface IWorldMapViewModelFactory
     {

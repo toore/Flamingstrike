@@ -5,7 +5,7 @@ using RISK.Domain.GamePlaying;
 using RISK.Domain.GamePlaying.DiceAndCalculation;
 using Rhino.Mocks;
 
-namespace RISK.Tests
+namespace RISK.Tests.Battle
 {
     [TestFixture]
     public class BattleCalculatorTests

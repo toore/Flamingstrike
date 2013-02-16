@@ -2,12 +2,11 @@ using System.Linq;
 using Caliburn.Micro;
 using GuiWpf.GuiDefinitions;
 using GuiWpf.Services;
-using GuiWpf.ViewModels.Gameboard.WorldMap;
-using GuiWpf.Views.WorldMapViews;
+using GuiWpf.ViewModels.Gameplay.WorldMap;
 using RISK.Domain.Entities;
 using RISK.Domain.Repositories;
 
-namespace GuiWpf.ViewModels.Gameboard
+namespace GuiWpf.ViewModels.Gameplay
 {
     public class GameboardViewModelTestData : GameboardViewModel
     {

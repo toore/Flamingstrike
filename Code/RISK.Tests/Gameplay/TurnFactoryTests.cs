@@ -3,7 +3,7 @@ using NUnit.Framework;
 using RISK.Domain.GamePlaying;
 using Rhino.Mocks;
 
-namespace RISK.Tests
+namespace RISK.Tests.Gameplay
 {
     [TestFixture]
     public class TurnFactoryTests

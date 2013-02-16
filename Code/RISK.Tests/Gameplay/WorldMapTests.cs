@@ -6,7 +6,7 @@ using RISK.Domain.GamePlaying;
 using RISK.Domain.Repositories;
 using Rhino.Mocks;
 
-namespace RISK.Tests
+namespace RISK.Tests.Gameplay
 {
     [TestFixture]
     public class WorldMapTests

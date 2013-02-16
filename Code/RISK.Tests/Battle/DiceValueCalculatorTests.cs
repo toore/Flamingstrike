@@ -3,7 +3,7 @@ using FluentAssertions;
 using NUnit.Framework;
 using RISK.Domain.GamePlaying.DiceAndCalculation;
 
-namespace RISK.Tests.Dice
+namespace RISK.Tests.Battle
 {
     [TestFixture]
     public class DiceValueCalculatorTests

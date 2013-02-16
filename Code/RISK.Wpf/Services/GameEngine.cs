@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Caliburn.Micro;
-using GuiWpf.ViewModels.Gameboard.WorldMap;
+using GuiWpf.ViewModels.Gameplay.WorldMap;
 using GuiWpf.Views.WorldMapViews;
 using RISK.Domain.Entities;
 using RISK.Domain.GamePlaying;

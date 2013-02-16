@@ -1,4 +1,4 @@
-﻿using GuiWpf.ViewModels.Gameboard;
+﻿using GuiWpf.ViewModels.Gameplay;
 
 namespace GuiWpf.ViewModels
 {
