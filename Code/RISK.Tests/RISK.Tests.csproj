@@ -70,6 +70,7 @@
     <Compile Include="Battle\DiceValueCalculatorTests.cs" />
     <Compile Include="Extensions\ObjectExtensionsTests.cs" />
     <Compile Include="Gameplay\GameTests.cs" />
+    <Compile Include="Setup\GameSetupViewModelTests.cs" />
     <Compile Include="Specifications\NSpecDebuggerShim.cs" />
     <Compile Include="Specifications\game_playing_specifications.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -91,9 +92,7 @@
       <Name>RISK.GuiWpf</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Setup\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

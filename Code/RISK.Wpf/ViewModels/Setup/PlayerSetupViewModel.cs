@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace GuiWpf.ViewModels.Setup
@@ -11,11 +12,20 @@ namespace GuiWpf.ViewModels.Setup
             SelectedPlayerType = PlayerTypes.First();
         }
 
+        public Action OnIsEnabledChanged = () => { };
+
         private bool _isEnabled;
         public bool IsEnabled
         {
             get { return _isEnabled; }
-            set { NotifyOfPropertyChange(value, () => IsEnabled, x => _isEnabled = x); }
+            set
+            {
+                NotifyOfPropertyChange(value, () => IsEnabled, x =>
+                    {
+                        _isEnabled = x;
+                        OnIsEnabledChanged();
+                    });
+            }
         }
 
         private string _name;

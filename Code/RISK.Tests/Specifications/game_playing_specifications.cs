@@ -76,7 +76,7 @@ namespace RISK.Tests.Specifications
             gameSetupViewModel.Players.First().IsEnabled = true;
             gameSetupViewModel.Players.Second().IsEnabled = true;
 
-            gameSetupViewModel.OnConfirm();
+            gameSetupViewModel.Confirm();
         }
 
         private void PlayerOneOccupiesNorthAfricaWithFiveArmies()

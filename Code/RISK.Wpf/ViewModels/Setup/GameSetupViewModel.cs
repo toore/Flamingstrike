@@ -7,7 +7,7 @@ using RISK.Domain.Extensions;
 
 namespace GuiWpf.ViewModels.Setup
 {
-    public class GameSetupViewModel : IGameSetupViewModel
+    public class GameSetupViewModel : ViewModelBase, IGameSetupViewModel
     {
         private readonly Action<GameSetup> _confirm;
         private readonly IPlayerFactory _playerFactory;
@@ -29,13 +29,24 @@ namespace GuiWpf.ViewModels.Setup
         {
             return new PlayerSetupViewModel(_playerTypes)
                 {
-                    Name = "Player " + (playerNumber + 1)
+                    Name = "Player " + (playerNumber + 1),
+                    OnIsEnabledChanged = () => OnEnabledPlayerChanged()
                 };
+        }
+
+        private void OnEnabledPlayerChanged()
+        {
+            NotifyOfPropertyChange(() => CanConfirm);
         }
 
         public ObservableCollection<PlayerSetupViewModel> Players { get; private set; }
 
-        public void OnConfirm()
+        public bool CanConfirm
+        {
+            get { return GetEnabledPlayers().Any(); }
+        }
+
+        public void Confirm()
         {
             var gameSetupResult = new GameSetup
                 {
@@ -47,10 +58,15 @@ namespace GuiWpf.ViewModels.Setup
 
         private IEnumerable<IPlayer> CreatePlayers()
         {
-            return Players
-                .Where(x => x.IsEnabled)
+            return GetEnabledPlayers()
                 .Select(_playerFactory.Create)
                 .ToList();
+        }
+
+        private IEnumerable<PlayerSetupViewModel> GetEnabledPlayers()
+        {
+            return Players
+                .Where(x => x.IsEnabled);
         }
     }
 }

@@ -18,16 +18,23 @@
     <Grid>
         <StackPanel>
             <ItemsControl
+                HorizontalAlignment="Center"
                 ItemsSource="{Binding Players, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
                 ItemTemplate="{StaticResource PlayerSetupViewModelTemplate}" />
 
-            <Button Content="OK">
-                <i:Interaction.Triggers>
-                    <i:EventTrigger EventName="Click">
-                        <cal:ActionMessage MethodName="OnConfirm" />
-                    </i:EventTrigger>
-                </i:Interaction.Triggers>
-            </Button>
+            <Grid 
+                HorizontalAlignment="Center"
+                Margin="20">
+                <Button 
+                    Content="Start Game"
+                    Padding="20 10 20 10">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="Click">
+                            <cal:ActionMessage MethodName="Confirm" />
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </Button>
+            </Grid>
 
         </StackPanel>
 
