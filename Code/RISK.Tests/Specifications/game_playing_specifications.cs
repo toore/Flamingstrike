@@ -41,13 +41,13 @@ namespace RISK.Tests.Specifications
 
                     _mainGameBoardViewModel = ObjectFactory.GetInstance<IMainGameViewModel>();
 
-                    SelectTwoPlayersAndConfirm();
+                    SelectTwoHumanPlayersAndConfirm();
 
                     _player1 = _playerRepository.GetAll().First();
                     _player2 = _playerRepository.GetAll().Second();
 
-                    PlayerOneOccupiesNorthAfricaWithFiveArmies();
-                    PlayerTwoOccupiesEveryUnoccupiedTerritoryWithOneArmy();
+                    //PlayerOneOccupiesNorthAfricaWithFiveArmies();
+                    //PlayerTwoOccupiesEveryUnoccupiedTerritoryWithOneArmy();
                 };
 
             act = () =>
@@ -69,7 +69,7 @@ namespace RISK.Tests.Specifications
             ObjectFactory.Inject(_worldMap);
         }
 
-        private void SelectTwoPlayersAndConfirm()
+        private void SelectTwoHumanPlayersAndConfirm()
         {
             var gameSetupViewModel = (IGameSetupViewModel)_mainGameBoardViewModel.MainViewModel;
 

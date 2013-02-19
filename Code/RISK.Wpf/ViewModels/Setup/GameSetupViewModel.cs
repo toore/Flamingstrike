@@ -43,7 +43,7 @@ namespace GuiWpf.ViewModels.Setup
 
         public bool CanConfirm
         {
-            get { return GetEnabledPlayers().Any(); }
+            get { return GetEnabledPlayers().Count() > 1; }
         }
 
         public void Confirm()

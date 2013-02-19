@@ -37,9 +37,26 @@ namespace RISK.Tests.Setup
         }
 
         [Test]
-        public void Cant_confirm_when_no_player_is_selected()
+        public void Cant_confirm_when_no_players_are_selected()
         {
             _gameSetupViewModel.CanConfirm.Should().BeFalse();
+        }
+
+        [Test]
+        public void Cant_confirm_when_less_than_two_players_are_selected()
+        {
+            _gameSetupViewModel.Players.First().IsEnabled = true;
+
+            _gameSetupViewModel.CanConfirm.Should().BeFalse();
+        }
+
+        [Test]
+        public void Can_confirm_when_at_least_two_players_are_selected()
+        {
+            _gameSetupViewModel.Players.First().IsEnabled = true;
+            _gameSetupViewModel.Players.Second().IsEnabled = true;
+
+            _gameSetupViewModel.CanConfirm.Should().BeTrue();
         }
     }
 }
