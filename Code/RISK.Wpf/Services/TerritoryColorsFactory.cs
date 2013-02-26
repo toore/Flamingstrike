@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using RISK.Domain.Entities;
+using RISK.Domain.Extensions;
 using RISK.Domain.Repositories;
 
 namespace GuiWpf.Services
@@ -65,7 +66,7 @@ namespace GuiWpf.Services
 
         public ITerritoryColors Create(ITerritory territory)
         {
-            if (territory.HasOwner)
+            if (territory.HasOwner())
             {
                 return _colorService.GetPlayerTerritoryColors(territory.Owner);
             }

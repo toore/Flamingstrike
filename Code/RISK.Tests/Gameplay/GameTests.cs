@@ -17,6 +17,7 @@ namespace RISK.Tests.Gameplay
         private ITurn _nextTurn;
         private IPlayerRepository _playerRepository;
         private IPlayer _player;
+        private IAlternateGameSetup _alternateGameSetup;
 
         [SetUp]
         public void SetUp()
@@ -24,6 +25,7 @@ namespace RISK.Tests.Gameplay
             _worldMap = MockRepository.GenerateStub<IWorldMap>();
             _turnFactory = MockRepository.GenerateStub<ITurnFactory>();
             _playerRepository = MockRepository.GenerateStub<IPlayerRepository>();
+            _alternateGameSetup = MockRepository.GenerateStub<IAlternateGameSetup>();
 
             _nextTurn = MockRepository.GenerateStub<ITurn>();
             _player = MockRepository.GenerateStub<IPlayer>();
@@ -31,7 +33,7 @@ namespace RISK.Tests.Gameplay
 
             _playerRepository.Stub(x => x.GetAll()).Return(_player.AsList());
 
-            _game = new Game(_worldMap, _turnFactory, _playerRepository);
+            _game = new Game(_worldMap, _turnFactory, _playerRepository, _alternateGameSetup);
         }
 
         [Test]
@@ -46,6 +48,12 @@ namespace RISK.Tests.Gameplay
             var actualNextTurn = _game.GetNextTurn();
 
             actualNextTurn.Should().Be(_nextTurn);
+        }
+
+        [Test]
+        public void Initializes_with_alternate_territory_assignment()
+        {
+            _alternateGameSetup.AssertWasCalled(x => x.Initialize(_worldMap));
         }
     }
 }

@@ -30,6 +30,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Caliburn.Micro">
+      <HintPath>..\packages\Caliburn.Micro.1.4.1\lib\net45\Caliburn.Micro.dll</HintPath>
+    </Reference>
     <Reference Include="StructureMap">
       <HintPath>..\..\packages\structuremap.2.6.4.1\lib\net40\StructureMap.dll</HintPath>
     </Reference>
@@ -53,6 +56,8 @@
     <Compile Include="Entities\IPlayer.cs" />
     <Compile Include="Extensions\EnumerableExtensions.cs" />
     <Compile Include="Extensions\ObjectExtensions.cs" />
+    <Compile Include="Extensions\TerritoryExtensions.cs" />
+    <Compile Include="GamePlaying\AlternateGameSetup.cs" />
     <Compile Include="GamePlaying\BattleCalculator.cs" />
     <Compile Include="GamePlaying\DiceAndCalculation\Dices.cs" />
     <Compile Include="GamePlaying\DiceAndCalculation\DicesResult.cs" />
@@ -60,9 +65,14 @@
     <Compile Include="GamePlaying\DiceAndCalculation\IDicesResult.cs" />
     <Compile Include="GamePlaying\DiceAndCalculation\IDiceValueCalculator.cs" />
     <Compile Include="GamePlaying\DiceAndCalculation\DiceValue.cs" />
+    <Compile Include="GamePlaying\IAlternateGameSetup.cs" />
     <Compile Include="GamePlaying\IBattleCalculator.cs" />
     <Compile Include="GamePlaying\DiceAndCalculation\IDices.cs" />
+    <Compile Include="GamePlaying\IRandomizedPlayerRepository.cs" />
+    <Compile Include="GamePlaying\IRandomWrapper.cs" />
     <Compile Include="GamePlaying\ITurnFactory.cs" />
+    <Compile Include="GamePlaying\RandomizedPlayerRepository.cs" />
+    <Compile Include="GamePlaying\RandomWrapper.cs" />
     <Compile Include="GamePlaying\TurnFactory.cs" />
     <Compile Include="Repositories\LocationRepository.cs" />
     <Compile Include="Repositories\ContinentRepository.cs" />

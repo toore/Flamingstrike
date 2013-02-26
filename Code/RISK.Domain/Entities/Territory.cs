@@ -11,9 +11,5 @@
 
         public IPlayer Owner { get; set; }
         public int Armies { get; set; }
-        public bool HasOwner
-        {
-            get { return Owner != null; }
-        }
     }
 }

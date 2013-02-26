@@ -133,7 +133,7 @@ namespace RISK.Tests.Specifications
         {
             _locationRepository.GetAll()
                 .Select(x => _worldMap.GetTerritory(x))
-                .Where(x => !x.HasOwner)
+                .Where(x => !x.HasOwner())
                 .Apply(x =>
                     {
                         x.Owner = owner;

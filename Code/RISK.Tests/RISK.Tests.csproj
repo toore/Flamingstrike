@@ -64,6 +64,8 @@
   <ItemGroup>
     <Compile Include="ColorServiceTests.cs" />
     <Compile Include="Extensions\EnumerableExtensionsTests.cs" />
+    <Compile Include="Extensions\TerritoryExtensionsTests.cs" />
+    <Compile Include="Gameplay\AlternateGameSetupTests.cs" />
     <Compile Include="Gameplay\GameEngineTests.cs" />
     <Compile Include="LocationRepositoryTests.cs" />
     <Compile Include="Battle\BattleCalculatorTests.cs" />
