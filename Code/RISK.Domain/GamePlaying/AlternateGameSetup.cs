@@ -1,55 +1,42 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Caliburn.Micro;
-using RISK.Domain.Entities;
+﻿using System.Linq;
+using RISK.Domain.Extensions;
 using RISK.Domain.Repositories;
 
 namespace RISK.Domain.GamePlaying
 {
     public class AlternateGameSetup : IAlternateGameSetup
     {
-        private readonly IRandomizedPlayerRepository _randomizedPlayerRepository;
+        private readonly IPlayerRepository _playerRepository;
         private readonly ILocationRepository _locationRepository;
-        private readonly IRandomWrapper _randomWrapper;
-        private List<ILocation> _allLocations;
+        private readonly IRandomizeOrderer _randomizeOrderer;
         private IWorldMap _worldMap;
 
-        public AlternateGameSetup(IRandomizedPlayerRepository randomizedPlayerRepository, ILocationRepository locationRepository, IRandomWrapper randomWrapper)
+        public AlternateGameSetup(IPlayerRepository playerRepository, ILocationRepository locationRepository, IRandomizeOrderer randomizeOrderer)
         {
-            _randomizedPlayerRepository = randomizedPlayerRepository;
+            _playerRepository = playerRepository;
             _locationRepository = locationRepository;
-            _randomWrapper = randomWrapper;
+            _randomizeOrderer = randomizeOrderer;
         }
 
         public void Initialize(IWorldMap worldMap)
         {
             _worldMap = worldMap;
 
-            var players = _randomizedPlayerRepository
-                .GetAllInRandomizedOrder()
+            var players = _playerRepository.GetAll();
+            var playersInRandomizedOrder = _randomizeOrderer.OrderByRandomOrder(players)
                 .ToList();
 
-            _allLocations = _locationRepository
-                .GetAll()
-                .ToList();
+            var locations = _locationRepository.GetAll();
+            var locationsInRandomizedOrder = _randomizeOrderer.OrderByRandomOrder(locations);
 
-            while (_allLocations.Any())
+            var player = playersInRandomizedOrder.First();
+
+            foreach (var location in locationsInRandomizedOrder)
             {
-                players.Apply(OccupyRandomTerritory);  TODO fixa detta om ojämt antal länder och spelare
+                _worldMap.GetTerritory(location).Owner = player;
+
+                player = playersInRandomizedOrder.GetNextOrFirst(player);
             }
-        }
-
-        private void OccupyRandomTerritory(IPlayer player)
-        {
-            var randomLocation = GetRandomLocation();
-            _worldMap.GetTerritory(randomLocation).Owner = player;
-            _allLocations.Remove(randomLocation);
-        }
-
-        private ILocation GetRandomLocation()
-        {
-            var randomLocationIndex = _randomWrapper.Next(_allLocations.Count - 1);
-            return _allLocations.ElementAt(randomLocationIndex);
         }
     }
 }

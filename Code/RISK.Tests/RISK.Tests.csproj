@@ -68,6 +68,7 @@
     <Compile Include="Extensions\TerritoryExtensionsTests.cs" />
     <Compile Include="Gameplay\AlternateGameSetupTests.cs" />
     <Compile Include="Gameplay\GameEngineTests.cs" />
+    <Compile Include="Gameplay\RandomizeOrdererTests.cs" />
     <Compile Include="LocationRepositoryTests.cs" />
     <Compile Include="Battle\BattleCalculatorTests.cs" />
     <Compile Include="Battle\DiceValueCalculatorTests.cs" />

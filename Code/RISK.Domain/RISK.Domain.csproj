@@ -70,9 +70,11 @@
     <Compile Include="GamePlaying\IBattleCalculator.cs" />
     <Compile Include="GamePlaying\DiceAndCalculation\IDices.cs" />
     <Compile Include="GamePlaying\IRandomizedPlayerRepository.cs" />
+    <Compile Include="GamePlaying\IRandomizeOrderer.cs" />
     <Compile Include="GamePlaying\IRandomWrapper.cs" />
     <Compile Include="GamePlaying\ITurnFactory.cs" />
     <Compile Include="GamePlaying\RandomizedPlayerRepository.cs" />
+    <Compile Include="GamePlaying\RandomizeOrderer.cs" />
     <Compile Include="GamePlaying\RandomWrapper.cs" />
     <Compile Include="GamePlaying\TurnFactory.cs" />
     <Compile Include="Repositories\LocationRepository.cs" />
