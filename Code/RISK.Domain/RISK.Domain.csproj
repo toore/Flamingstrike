@@ -55,6 +55,7 @@
     <Compile Include="Entities\ILocation.cs" />
     <Compile Include="Entities\IPlayer.cs" />
     <Compile Include="Extensions\EnumerableExtensions.cs" />
+    <Compile Include="Extensions\ListExtensions.cs" />
     <Compile Include="Extensions\ObjectExtensions.cs" />
     <Compile Include="Extensions\TerritoryExtensions.cs" />
     <Compile Include="GamePlaying\AlternateGameSetup.cs" />
