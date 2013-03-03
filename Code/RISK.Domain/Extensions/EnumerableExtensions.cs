@@ -11,6 +11,11 @@ namespace RISK.Domain.Extensions
             return sequence.ElementAt(1);
         }
 
+        public static T Third<T>(this IEnumerable<T> sequence)
+        {
+            return sequence.ElementAt(2);
+        }
+
         public static ObservableCollection<T> ToObservableCollection<T>(this IEnumerable<T> collection)
         {
             return new ObservableCollection<T>(collection);

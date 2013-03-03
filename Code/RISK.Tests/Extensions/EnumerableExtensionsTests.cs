@@ -18,6 +18,14 @@ namespace RISK.Tests.Extensions
         }
 
         [Test]
+        public void Third_returns_the_third_element_of_an_enumerable()
+        {
+            IEnumerable<object> sequence = new object[] { "first element", "second element", "third element", "fourth element" };
+
+            sequence.Third().Should().Be("third element");
+        }
+
+        [Test]
         public void ToObservableCollection_returns_observable_collection()
         {
             IEnumerable<object> collection = new object[] { "first element", "second element" };
