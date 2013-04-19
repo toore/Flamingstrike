@@ -3,61 +3,61 @@ using RISK.Domain.Entities;
 
 namespace RISK.Domain.Repositories
 {
-    public class LocationRepository : ILocationRepository
+    public class LocationProvider : ILocationProvider
     {
-        private readonly IContinentRepository _continentRepository;
+        private readonly IContinentProvider _continentProvider;
 
-        public LocationRepository(IContinentRepository continentRepository)
+        public LocationProvider(IContinentProvider continentProvider)
         {
-            _continentRepository = continentRepository;
+            _continentProvider = continentProvider;
 
-            var alaska = new Location("ALASKA", _continentRepository.NorthAmerica);
-            var alberta = new Location("ALBERTA", _continentRepository.NorthAmerica);
-            var centralAmerica = new Location("CENTRAL_AMERICA", _continentRepository.NorthAmerica);
-            var easternUnitedStates = new Location("EASTERN_UNITED_STATES", _continentRepository.NorthAmerica);
-            var greenland = new Location("GREENLAND", _continentRepository.NorthAmerica);
-            var northwestTerritory = new Location("NORTHWEST_TERRITORY", _continentRepository.NorthAmerica);
-            var ontario = new Location("ONTARIO", _continentRepository.NorthAmerica);
-            var quebec = new Location("QUEBEC", _continentRepository.NorthAmerica);
-            var westernUnitedStates = new Location("WESTERN_UNITED_STATES", _continentRepository.NorthAmerica);
+            var alaska = new Location("ALASKA", _continentProvider.NorthAmerica);
+            var alberta = new Location("ALBERTA", _continentProvider.NorthAmerica);
+            var centralAmerica = new Location("CENTRAL_AMERICA", _continentProvider.NorthAmerica);
+            var easternUnitedStates = new Location("EASTERN_UNITED_STATES", _continentProvider.NorthAmerica);
+            var greenland = new Location("GREENLAND", _continentProvider.NorthAmerica);
+            var northwestTerritory = new Location("NORTHWEST_TERRITORY", _continentProvider.NorthAmerica);
+            var ontario = new Location("ONTARIO", _continentProvider.NorthAmerica);
+            var quebec = new Location("QUEBEC", _continentProvider.NorthAmerica);
+            var westernUnitedStates = new Location("WESTERN_UNITED_STATES", _continentProvider.NorthAmerica);
 
-            var argentina = new Location("ARGENTINA", _continentRepository.SouthAmerica);
-            var brazil = new Location("BRAZIL", _continentRepository.SouthAmerica);
-            var peru = new Location("PERU", _continentRepository.SouthAmerica);
-            var venezuela = new Location("VENEZUELA", _continentRepository.SouthAmerica);
+            var argentina = new Location("ARGENTINA", _continentProvider.SouthAmerica);
+            var brazil = new Location("BRAZIL", _continentProvider.SouthAmerica);
+            var peru = new Location("PERU", _continentProvider.SouthAmerica);
+            var venezuela = new Location("VENEZUELA", _continentProvider.SouthAmerica);
 
-            var greatBritain = new Location("GREAT_BRITAIN", _continentRepository.Europe);
-            var iceland = new Location("ICELAND", _continentRepository.Europe);
-            var northernEurope = new Location("NORTHERN_EUROPE", _continentRepository.Europe);
-            var scandinavia = new Location("SCANDINAVIA", _continentRepository.Europe);
-            var southernEurope = new Location("SOUTHERN_EUROPE", _continentRepository.Europe);
-            var ukraine = new Location("UKRAINE", _continentRepository.Europe);
-            var westernEurope = new Location("WESTERN_EUROPE", _continentRepository.Europe);
+            var greatBritain = new Location("GREAT_BRITAIN", _continentProvider.Europe);
+            var iceland = new Location("ICELAND", _continentProvider.Europe);
+            var northernEurope = new Location("NORTHERN_EUROPE", _continentProvider.Europe);
+            var scandinavia = new Location("SCANDINAVIA", _continentProvider.Europe);
+            var southernEurope = new Location("SOUTHERN_EUROPE", _continentProvider.Europe);
+            var ukraine = new Location("UKRAINE", _continentProvider.Europe);
+            var westernEurope = new Location("WESTERN_EUROPE", _continentProvider.Europe);
 
-            var congo = new Location("CONGO", _continentRepository.Africa);
-            var eastAfrica = new Location("EAST_AFRICA", _continentRepository.Africa);
-            var egypt = new Location("EGYPT", _continentRepository.Africa);
-            var madagascar = new Location("MADAGASCAR", _continentRepository.Africa);
-            var northAfrica = new Location("NORTH_AFRICA", _continentRepository.Africa);
-            var southAfrica = new Location("SOUTH_AFRICA", _continentRepository.Africa);
+            var congo = new Location("CONGO", _continentProvider.Africa);
+            var eastAfrica = new Location("EAST_AFRICA", _continentProvider.Africa);
+            var egypt = new Location("EGYPT", _continentProvider.Africa);
+            var madagascar = new Location("MADAGASCAR", _continentProvider.Africa);
+            var northAfrica = new Location("NORTH_AFRICA", _continentProvider.Africa);
+            var southAfrica = new Location("SOUTH_AFRICA", _continentProvider.Africa);
 
-            var afghanistan = new Location("AFGHANISTAN", _continentRepository.Asia);
-            var china = new Location("CHINA", _continentRepository.Asia);
-            var india = new Location("INDIA", _continentRepository.Asia);
-            var irkutsk = new Location("IRKUTSK", _continentRepository.Asia);
-            var japan = new Location("JAPAN", _continentRepository.Asia);
-            var kamchatka = new Location("KAMCHATKA", _continentRepository.Asia);
-            var middleEast = new Location("MIDDLE_EAST", _continentRepository.Asia);
-            var mongolia = new Location("MONGOLIA", _continentRepository.Asia);
-            var siam = new Location("SIAM", _continentRepository.Asia);
-            var siberia = new Location("SIBERIA", _continentRepository.Asia);
-            var ural = new Location("URAL", _continentRepository.Asia);
-            var yakutsk = new Location("YAKUTSK", _continentRepository.Asia);
+            var afghanistan = new Location("AFGHANISTAN", _continentProvider.Asia);
+            var china = new Location("CHINA", _continentProvider.Asia);
+            var india = new Location("INDIA", _continentProvider.Asia);
+            var irkutsk = new Location("IRKUTSK", _continentProvider.Asia);
+            var japan = new Location("JAPAN", _continentProvider.Asia);
+            var kamchatka = new Location("KAMCHATKA", _continentProvider.Asia);
+            var middleEast = new Location("MIDDLE_EAST", _continentProvider.Asia);
+            var mongolia = new Location("MONGOLIA", _continentProvider.Asia);
+            var siam = new Location("SIAM", _continentProvider.Asia);
+            var siberia = new Location("SIBERIA", _continentProvider.Asia);
+            var ural = new Location("URAL", _continentProvider.Asia);
+            var yakutsk = new Location("YAKUTSK", _continentProvider.Asia);
 
-            var easternAustralia = new Location("EASTERN_AUSTRALIA", _continentRepository.Australia);
-            var indonesia = new Location("INDONESIA", _continentRepository.Australia);
-            var newGuinea = new Location("NEW_GUINEA", _continentRepository.Australia);
-            var westernAustralia = new Location("WESTERN_AUSTRALIA", _continentRepository.Australia);
+            var easternAustralia = new Location("EASTERN_AUSTRALIA", _continentProvider.Australia);
+            var indonesia = new Location("INDONESIA", _continentProvider.Australia);
+            var newGuinea = new Location("NEW_GUINEA", _continentProvider.Australia);
+            var westernAustralia = new Location("WESTERN_AUSTRALIA", _continentProvider.Australia);
 
             alaska.AddConnectedTerritories(alberta, northwestTerritory, kamchatka);
             alberta.AddConnectedTerritories(alaska, northwestTerritory, ontario, westernUnitedStates);

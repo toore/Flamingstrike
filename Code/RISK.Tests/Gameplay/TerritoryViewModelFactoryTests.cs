@@ -14,8 +14,8 @@ namespace RISK.Tests.Gameplay
     public class TerritoryViewModelFactoryTests
     {
         private TerritoryViewModelFactory _territoryViewModelFactory;
-        private ILocationRepository _locationRepository;
-        private IContinentRepository _continentRepository;
+        private ILocationProvider _locationProvider;
+        private IContinentProvider _continentProvider;
         private Action<ILocation> _action;
         private ITerritoryGuiDefinitionFactory _territoryGuiDefinitionFactory;
         private ITerritoryViewModelUpdater _territoryViewModelUpdater;
@@ -25,8 +25,8 @@ namespace RISK.Tests.Gameplay
         [SetUp]
         public void SetUp()
         {
-            _continentRepository = new ContinentRepository();
-            _locationRepository = new LocationRepository(_continentRepository);
+            _continentProvider = new ContinentProvider();
+            _locationProvider = new LocationProvider(_continentProvider);
             _territoryViewModelUpdater = MockRepository.GenerateStub<ITerritoryViewModelUpdater>();
             _territoryGuiDefinitionFactory = MockRepository.GenerateStub<ITerritoryGuiDefinitionFactory>();
 
@@ -35,11 +35,11 @@ namespace RISK.Tests.Gameplay
             _action = MockRepository.GenerateMock<Action<ILocation>>();
 
             _siamTerritory = MockRepository.GenerateStub<ITerritory>();
-            _siamTerritory.Stub(x => x.Location).Return(_locationRepository.Siam);
+            _siamTerritory.Stub(x => x.Location).Return(_locationProvider.Siam);
 
             _siamGuiDefinitions = MockRepository.GenerateStub<ITerritoryGuiDefinitions>();
             _siamGuiDefinitions.Stub(x => x.Path).Return("siam path");
-            _territoryGuiDefinitionFactory.Stub(x => x.Create(_locationRepository.Siam)).Return(_siamGuiDefinitions);
+            _territoryGuiDefinitionFactory.Stub(x => x.Create(_locationProvider.Siam)).Return(_siamGuiDefinitions);
         }
 
         [Test]
@@ -60,7 +60,7 @@ namespace RISK.Tests.Gameplay
 
             viewModel.OnClick();
 
-            _action.AssertWasCalled(x => x(_locationRepository.Siam));
+            _action.AssertWasCalled(x => x(_locationProvider.Siam));
         }
 
         private TerritoryViewModel CreateSiamTerritoryViewModel()

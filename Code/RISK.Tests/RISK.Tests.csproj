@@ -71,6 +71,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ColorServiceTests.cs" />
+    <Compile Include="DebuggerShim.cs" />
     <Compile Include="Extensions\EnumerableExtensionsTests.cs" />
     <Compile Include="Extensions\ListExtensionsTests.cs" />
     <Compile Include="Extensions\TerritoryExtensionsTests.cs" />

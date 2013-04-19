@@ -7,22 +7,24 @@ namespace GuiWpf.ViewModels
 {
     public class GameEngineFactory : IGameEngineFactory
     {
-        private readonly IGame _game;
-        private readonly ILocationRepository _locationRepository;
+        private readonly IGameFactory _gameFactory;
+        private readonly ILocationProvider _locationProvider;
         private readonly IWorldMapViewModelFactory _worldMapViewModelFactory;
         private readonly ITerritoryViewModelUpdater _territoryViewModelUpdater;
 
-        public GameEngineFactory(IGame game, ILocationRepository locationRepository, IWorldMapViewModelFactory worldMapViewModelFactory, ITerritoryViewModelUpdater territoryViewModelUpdater)
+        public GameEngineFactory(IGameFactory gameFactory, ILocationProvider locationProvider, IWorldMapViewModelFactory worldMapViewModelFactory, ITerritoryViewModelUpdater territoryViewModelUpdater)
         {
-            _game = game;
-            _locationRepository = locationRepository;
+            _gameFactory = gameFactory;
+            _locationProvider = locationProvider;
             _worldMapViewModelFactory = worldMapViewModelFactory;
             _territoryViewModelUpdater = territoryViewModelUpdater;
         }
 
         public IGameEngine Create()
         {
-            return new GameEngine(_game, _locationRepository, _worldMapViewModelFactory, _territoryViewModelUpdater);
+            var game = _gameFactory.Create();
+
+            return new GameEngine(game, _locationProvider, _worldMapViewModelFactory, _territoryViewModelUpdater);
         }
     }
 }

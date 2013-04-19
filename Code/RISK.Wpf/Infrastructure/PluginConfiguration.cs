@@ -22,7 +22,7 @@ namespace GuiWpf.Infrastructure
                             s.WithDefaultConventions();
                         });
 
-                    x.For<ILocationRepository>().Singleton();
+                    x.For<ILocationProvider>().Singleton();
                 });
         }
 

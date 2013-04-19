@@ -16,7 +16,7 @@ namespace RISK.Tests.Gameplay
     {
         private GameEngine _gameEngine;
         private IGame _game;
-        private ILocationRepository _locationRepository;
+        private ILocationProvider _locationProvider;
         private IWorldMapViewModelFactory _worldMapViewModelFactory;
         private WorldMapViewModel _worldMapViewModel;
         private List<ILocation> _allLocations;
@@ -34,7 +34,7 @@ namespace RISK.Tests.Gameplay
         public void SetUp()
         {
             _game = MockRepository.GenerateStub<IGame>();
-            _locationRepository = MockRepository.GenerateStub<ILocationRepository>();
+            _locationProvider = MockRepository.GenerateStub<ILocationProvider>();
             _worldMapViewModelFactory = MockRepository.GenerateStub<IWorldMapViewModelFactory>();
             _territoryViewModelUpdater = MockRepository.GenerateStub<ITerritoryViewModelUpdater>();
 
@@ -45,7 +45,7 @@ namespace RISK.Tests.Gameplay
                     _location1,
                     _location2
                 };
-            _locationRepository.Stub(x => x.GetAll()).Return(_allLocations);
+            _locationProvider.Stub(x => x.GetAll()).Return(_allLocations);
 
             _worldMap = MockRepository.GenerateStub<IWorldMap>();
             _territory1 = new Territory(_location1);
@@ -63,7 +63,7 @@ namespace RISK.Tests.Gameplay
             _worldMapViewModel.WorldMapViewModels.Add(_viewModel2);
             _worldMapViewModelFactory.Stub(x => x.Create(Arg<IWorldMap>.Is.Equal(_worldMap), Arg<Action<ILocation>>.Is.Anything)).Return(_worldMapViewModel);
 
-            _gameEngine = new GameEngine(_game, _locationRepository, _worldMapViewModelFactory, _territoryViewModelUpdater);
+            _gameEngine = new GameEngine(_game, _locationProvider, _worldMapViewModelFactory, _territoryViewModelUpdater);
         }
 
         [Test]

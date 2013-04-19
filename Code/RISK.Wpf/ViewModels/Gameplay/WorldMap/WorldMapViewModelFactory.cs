@@ -11,18 +11,18 @@ namespace GuiWpf.ViewModels.Gameplay.WorldMap
     {
         private readonly ITerritoryViewModelFactory _territoryViewModelFactory;
         private readonly ITextViewModelFactory _textViewModelFactory;
-        private readonly ILocationRepository _locationRepository;
+        private readonly ILocationProvider _locationProvider;
 
-        public WorldMapViewModelFactory(ILocationRepository locationRepository, ITerritoryViewModelFactory territoryViewModelFactory, ITextViewModelFactory textViewModelFactory)
+        public WorldMapViewModelFactory(ILocationProvider locationProvider, ITerritoryViewModelFactory territoryViewModelFactory, ITextViewModelFactory textViewModelFactory)
         {
             _territoryViewModelFactory = territoryViewModelFactory;
             _textViewModelFactory = textViewModelFactory;
-            _locationRepository = locationRepository;
+            _locationProvider = locationProvider;
         }
 
         public WorldMapViewModel Create(IWorldMap worldMap, Action<ILocation> selectLocation)
         {
-            var territories = _locationRepository.GetAll()
+            var territories = _locationProvider.GetAll()
                 .Select(worldMap.GetTerritory)
                 .ToList();
 

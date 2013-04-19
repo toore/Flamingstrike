@@ -9,9 +9,9 @@ namespace RISK.Domain.GamePlaying
     {
         private readonly List<Territory> _territories;
 
-        public WorldMap(ILocationRepository locationRepository)
+        public WorldMap(ILocationProvider locationProvider)
         {
-            _territories = locationRepository.GetAll()
+            _territories = locationProvider.GetAll()
                 .Select(x => new Territory(x))
                 .ToList();
         }

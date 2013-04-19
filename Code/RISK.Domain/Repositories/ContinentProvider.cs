@@ -2,9 +2,9 @@
 
 namespace RISK.Domain.Repositories
 {
-    public class ContinentRepository : IContinentRepository
+    public class ContinentProvider : IContinentProvider
     {
-        public ContinentRepository()
+        public ContinentProvider()
         {
             Australia = new Continent { Bonus = 2 };
             Asia = new Continent { Bonus = 7 };

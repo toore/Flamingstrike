@@ -2,7 +2,7 @@
 
 namespace RISK.Domain.Repositories
 {
-    public interface IContinentRepository
+    public interface IContinentProvider
     {
         Continent NorthAmerica { get; }
         Continent SouthAmerica { get; }

@@ -16,14 +16,14 @@ namespace GuiWpf.Services
         private readonly List<ITerritory> _territories;
         public WorldMapViewModel WorldMapViewModel { get; private set; }
 
-        public GameEngine(IGame game, ILocationRepository locationRepository, IWorldMapViewModelFactory worldMapViewModelFactory, ITerritoryViewModelUpdater territoryViewModelUpdater)
+        public GameEngine(IGame game, ILocationProvider locationProvider, IWorldMapViewModelFactory worldMapViewModelFactory, ITerritoryViewModelUpdater territoryViewModelUpdater)
         {
             _game = game;
             _territoryViewModelUpdater = territoryViewModelUpdater;
 
             var worldMap = _game.GetWorldMap();
 
-            _territories = locationRepository.GetAll()
+            _territories = locationProvider.GetAll()
                 .Select(worldMap.GetTerritory)
                 .ToList();
 

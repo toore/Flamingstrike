@@ -15,7 +15,7 @@ namespace RISK.Tests.Gameplay
         private AlternateGameSetup _alternateGameSetup;
         private IWorldMap _worldMap;
         private IPlayerRepository _playerRepository;
-        private ILocationRepository _locationRepository;
+        private ILocationProvider _locationProvider;
         private ILocation _location1;
         private ILocation _location2;
         private ILocation _location3;
@@ -30,7 +30,7 @@ namespace RISK.Tests.Gameplay
         public void SetUp()
         {
             _playerRepository = MockRepository.GenerateStub<IPlayerRepository>();
-            _locationRepository = MockRepository.GenerateStub<ILocationRepository>();
+            _locationProvider = MockRepository.GenerateStub<ILocationProvider>();
             _randomizeOrderer = MockRepository.GenerateStub<IRandomizeOrderer>();
 
             _player1 = MockRepository.GenerateStub<IPlayer>();
@@ -44,11 +44,11 @@ namespace RISK.Tests.Gameplay
             _location2 = MockRepository.GenerateStub<ILocation>();
             _location3 = MockRepository.GenerateStub<ILocation>();
             var locationsInRepository = Enumerable.Empty<ILocation>().ToList();
-            _locationRepository
+            _locationProvider
                 .Stub(x => x.GetAll())
                 .Return(locationsInRepository);
 
-            _alternateGameSetup = new AlternateGameSetup(_playerRepository, _locationRepository, _randomizeOrderer);
+            _alternateGameSetup = new AlternateGameSetup(_playerRepository, _locationProvider, _randomizeOrderer);
 
             _worldMap = MockRepository.GenerateStub<IWorldMap>();
             _territory1 = MockRepository.GenerateStub<ITerritory>();

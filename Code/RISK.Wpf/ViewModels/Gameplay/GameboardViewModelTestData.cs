@@ -16,8 +16,8 @@ namespace GuiWpf.ViewModels.Gameplay
         {
             private WorldMapViewModel CreateWorldMapViewModel()
             {
-                var continentRepository = new ContinentRepository();
-                var locationRepository = new LocationRepository(continentRepository);
+                var continentRepository = new ContinentProvider();
+                var locationRepository = new LocationProvider(continentRepository);
                 var colorService = new ColorService();
                 var territoryColorsFactory = new TerritoryColorsFactory(locationRepository, colorService);
                 var territoryLayoutInformationFactory = new TerritoryGuiDefinitionFactory(locationRepository);

@@ -11,7 +11,7 @@ namespace RISK.Tests
     [TestFixture]
     public class LocationRepositoryTests
     {
-        private LocationRepository _locationRepository;
+        private LocationProvider _locationProvider;
         private readonly Continent _northAmerica = new Continent();
         private readonly Continent _southAmerica = new Continent();
         private readonly Continent _europe = new Continent();
@@ -22,7 +22,7 @@ namespace RISK.Tests
         [SetUp]
         public void SetUp()
         {
-            var continentProvider = MockRepository.GenerateStub<IContinentRepository>();
+            var continentProvider = MockRepository.GenerateStub<IContinentProvider>();
             continentProvider.Stub(x => x.NorthAmerica).Return(_northAmerica);
             continentProvider.Stub(x => x.SouthAmerica).Return(_southAmerica);
             continentProvider.Stub(x => x.Europe).Return(_europe);
@@ -30,7 +30,7 @@ namespace RISK.Tests
             continentProvider.Stub(x => x.Asia).Return(_asia);
             continentProvider.Stub(x => x.Australia).Return(_australia);
 
-            _locationRepository = new LocationRepository(continentProvider);
+            _locationProvider = new LocationProvider(continentProvider);
         }
 
         [Test]
@@ -228,217 +228,217 @@ namespace RISK.Tests
 
         private IEnumerable<ILocation> GetAll()
         {
-            return _locationRepository.GetAll();
+            return _locationProvider.GetAll();
         }
 
         private ILocation Alaska
         {
-            get { return _locationRepository.Alaska; }
+            get { return _locationProvider.Alaska; }
         }
 
         private ILocation Alberta
         {
-            get { return _locationRepository.Alberta; }
+            get { return _locationProvider.Alberta; }
         }
 
         private ILocation NewGuinea
         {
-            get { return _locationRepository.NewGuinea; }
+            get { return _locationProvider.NewGuinea; }
         }
 
         private ILocation Indonesia
         {
-            get { return _locationRepository.Indonesia; }
+            get { return _locationProvider.Indonesia; }
         }
 
         private ILocation EasternAustralia
         {
-            get { return _locationRepository.EasternAustralia; }
+            get { return _locationProvider.EasternAustralia; }
         }
 
         private ILocation Yakutsk
         {
-            get { return _locationRepository.Yakutsk; }
+            get { return _locationProvider.Yakutsk; }
         }
 
         private ILocation Ural
         {
-            get { return _locationRepository.Ural; }
+            get { return _locationProvider.Ural; }
         }
 
         private ILocation Siberia
         {
-            get { return _locationRepository.Siberia; }
+            get { return _locationProvider.Siberia; }
         }
 
         private ILocation Siam
         {
-            get { return _locationRepository.Siam; }
+            get { return _locationProvider.Siam; }
         }
 
         private ILocation Mongolia
         {
-            get { return _locationRepository.Mongolia; }
+            get { return _locationProvider.Mongolia; }
         }
 
         private ILocation MiddleEast
         {
-            get { return _locationRepository.MiddleEast; }
+            get { return _locationProvider.MiddleEast; }
         }
 
         private ILocation Kamchatka
         {
-            get { return _locationRepository.Kamchatka; }
+            get { return _locationProvider.Kamchatka; }
         }
 
         private ILocation Japan
         {
-            get { return _locationRepository.Japan; }
+            get { return _locationProvider.Japan; }
         }
 
         private ILocation Irkutsk
         {
-            get { return _locationRepository.Irkutsk; }
+            get { return _locationProvider.Irkutsk; }
         }
 
         private ILocation India
         {
-            get { return _locationRepository.India; }
+            get { return _locationProvider.India; }
         }
 
         private ILocation China
         {
-            get { return _locationRepository.China; }
+            get { return _locationProvider.China; }
         }
 
         private ILocation Afghanistan
         {
-            get { return _locationRepository.Afghanistan; }
+            get { return _locationProvider.Afghanistan; }
         }
 
         private ILocation SouthAfrica
         {
-            get { return _locationRepository.SouthAfrica; }
+            get { return _locationProvider.SouthAfrica; }
         }
 
         private ILocation NorthAfrica
         {
-            get { return _locationRepository.NorthAfrica; }
+            get { return _locationProvider.NorthAfrica; }
         }
 
         private ILocation Madagascar
         {
-            get { return _locationRepository.Madagascar; }
+            get { return _locationProvider.Madagascar; }
         }
 
         private ILocation Egypt
         {
-            get { return _locationRepository.Egypt; }
+            get { return _locationProvider.Egypt; }
         }
 
         private ILocation EastAfrica
         {
-            get { return _locationRepository.EastAfrica; }
+            get { return _locationProvider.EastAfrica; }
         }
 
         private ILocation Congo
         {
-            get { return _locationRepository.Congo; }
+            get { return _locationProvider.Congo; }
         }
 
         private ILocation WesternEurope
         {
-            get { return _locationRepository.WesternEurope; }
+            get { return _locationProvider.WesternEurope; }
         }
 
         private ILocation Ukraine
         {
-            get { return _locationRepository.Ukraine; }
+            get { return _locationProvider.Ukraine; }
         }
 
         private ILocation SouthernEurope
         {
-            get { return _locationRepository.SouthernEurope; }
+            get { return _locationProvider.SouthernEurope; }
         }
 
         private ILocation Scandinavia
         {
-            get { return _locationRepository.Scandinavia; }
+            get { return _locationProvider.Scandinavia; }
         }
 
         private ILocation NorthernEurope
         {
-            get { return _locationRepository.NorthernEurope; }
+            get { return _locationProvider.NorthernEurope; }
         }
 
         private ILocation Iceland
         {
-            get { return _locationRepository.Iceland; }
+            get { return _locationProvider.Iceland; }
         }
 
         private ILocation GreatBritain
         {
-            get { return _locationRepository.GreatBritain; }
+            get { return _locationProvider.GreatBritain; }
         }
 
         private ILocation Venezuela
         {
-            get { return _locationRepository.Venezuela; }
+            get { return _locationProvider.Venezuela; }
         }
 
         private ILocation Peru
         {
-            get { return _locationRepository.Peru; }
+            get { return _locationProvider.Peru; }
         }
 
         private ILocation Brazil
         {
-            get { return _locationRepository.Brazil; }
+            get { return _locationProvider.Brazil; }
         }
 
         private ILocation Argentina
         {
-            get { return _locationRepository.Argentina; }
+            get { return _locationProvider.Argentina; }
         }
 
         private ILocation WesternUnitedStates
         {
-            get { return _locationRepository.WesternUnitedStates; }
+            get { return _locationProvider.WesternUnitedStates; }
         }
 
         private ILocation Quebec
         {
-            get { return _locationRepository.Quebec; }
+            get { return _locationProvider.Quebec; }
         }
 
         private ILocation Ontario
         {
-            get { return _locationRepository.Ontario; }
+            get { return _locationProvider.Ontario; }
         }
 
         private ILocation Northwest
         {
-            get { return _locationRepository.NorthwestTerritory; }
+            get { return _locationProvider.NorthwestTerritory; }
         }
 
         private ILocation Greenland
         {
-            get { return _locationRepository.Greenland; }
+            get { return _locationProvider.Greenland; }
         }
 
         private ILocation EasternUnitedStates
         {
-            get { return _locationRepository.EasternUnitedStates; }
+            get { return _locationProvider.EasternUnitedStates; }
         }
 
         private ILocation CentralAmerica
         {
-            get { return _locationRepository.CentralAmerica; }
+            get { return _locationProvider.CentralAmerica; }
         }
 
         private ILocation WesternAustralia
         {
-            get { return _locationRepository.WesternAustralia; }
+            get { return _locationProvider.WesternAustralia; }
         }
     }
 }

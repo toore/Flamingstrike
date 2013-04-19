@@ -3,7 +3,7 @@ using RISK.Domain.Entities;
 
 namespace RISK.Domain.Repositories
 {
-    public interface ILocationRepository
+    public interface ILocationProvider
     {
         IEnumerable<ILocation> GetAll();
 
