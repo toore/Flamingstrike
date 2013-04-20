@@ -15,7 +15,6 @@ using RISK.Domain.GamePlaying.DiceAndCalculation;
 using RISK.Domain.Repositories;
 using Rhino.Mocks;
 using StructureMap;
-using StructureMap.Interceptors;
 
 namespace RISK.Tests.Specifications
 {
@@ -73,8 +72,8 @@ namespace RISK.Tests.Specifications
                     _player1 = _playerRepository.GetAll().First();
                     _player2 = _playerRepository.GetAll().Second();
 
-                    //PlayerOneOccupiesNorthAfricaWithFiveArmies();
-                    //PlayerTwoOccupiesEveryUnoccupiedTerritoryWithOneArmy();
+                    PlayerOneOccupiesNorthAfricaWithFiveArmies();
+                    PlayerTwoOccupiesEveryUnoccupiedTerritoryWithOneArmy();
                 };
 
             act = () =>
@@ -84,10 +83,10 @@ namespace RISK.Tests.Specifications
                 };
 
             it["player 1 should occupy North Africa"] = () => _worldMap.GetTerritory(_locationProvider.NorthAfrica).Owner.Should().Be(_player1);
-            xit["North Africa should have 1 army"] = () => _worldMap.GetTerritory(_locationProvider.NorthAfrica).Armies.Should().Be(1);
-            xit["player 1 should occupy Brazil"] = () => _worldMap.GetTerritory(_locationProvider.Brazil).Owner.Should().Be(_player1);
-            xit["Brazil should have 4 armies"] = () => _worldMap.GetTerritory(_locationProvider.Brazil).Armies.Should().Be(4);
-            xit["player 1 should have a card when turn ends"] = () => _player1.Cards.Count().Should().Be(1);
+            it["North Africa should have 1 army"] = () => _worldMap.GetTerritory(_locationProvider.NorthAfrica).Armies.Should().Be(1);
+            it["player 1 should occupy Brazil"] = () => _worldMap.GetTerritory(_locationProvider.Brazil).Owner.Should().Be(_player1);
+            it["Brazil should have 4 armies"] = () => _worldMap.GetTerritory(_locationProvider.Brazil).Armies.Should().Be(4);
+            it["player 1 should have a card when turn ends"] = () => _player1.Cards.Count().Should().Be(1);
         }
 
         private void InjectWorldMap()
