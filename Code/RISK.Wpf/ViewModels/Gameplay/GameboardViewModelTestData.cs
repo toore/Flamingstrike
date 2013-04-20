@@ -36,7 +36,7 @@ namespace GuiWpf.ViewModels.Gameplay
             var playerRepository = new PlayerRepository();
             playerRepository.Add(humanPlayer);
 
-            var alternateGameSetup = new AlternateGameSetup(playerRepository, locationProvider, new RandomOrderer(new RandomWrapper()), new WorldMapFactory(locationProvider));
+            var alternateGameSetup = new AlternateGameSetup(playerRepository, locationProvider, new RandomSorter(new RandomWrapper()), new WorldMapFactory(locationProvider));
             ITurnFactory turnFactory = new TurnFactory(null);
             var game = new Game(turnFactory, playerRepository, alternateGameSetup);
             var gameboardViewModel = new GameboardViewModel(game, locationProvider, worldMapViewModelFactory, territoryViewModelUpdater);

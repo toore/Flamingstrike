@@ -20,7 +20,7 @@ namespace RISK.Tests.Gameplay
         private ILocation _location3;
         private IPlayer _player1;
         private IPlayer _player2;
-        private IRandomOrderer _randomOrderer;
+        private IRandomSorter _randomSorter;
         private IWorldMapFactory _worldMapFactory;
         private IWorldMap _worldMap;
 
@@ -29,7 +29,7 @@ namespace RISK.Tests.Gameplay
         {
             _playerRepository = Substitute.For<IPlayerRepository>();
             _locationProvider = Substitute.For<ILocationProvider>();
-            _randomOrderer = Substitute.For<IRandomOrderer>();
+            _randomSorter = Substitute.For<IRandomSorter>();
             _worldMapFactory = Substitute.For<IWorldMapFactory>();
 
             _player1 = Substitute.For<IPlayer>();
@@ -46,10 +46,10 @@ namespace RISK.Tests.Gameplay
             _worldMap = new WorldMap(_locationProvider);
             _worldMapFactory.Create().Returns(_worldMap);
 
-            _alternateGameSetup = new AlternateGameSetup(_playerRepository, _locationProvider, _randomOrderer, _worldMapFactory);
+            _alternateGameSetup = new AlternateGameSetup(_playerRepository, _locationProvider, _randomSorter, _worldMapFactory);
 
-            _randomOrderer.OrderByRandomOrder(playersInRepository).Returns(new[] { _player1, _player2 });
-            _randomOrderer.OrderByRandomOrder(locations).Returns(new[] { _location3, _location2, _location1 });
+            _randomSorter.RandomSort(playersInRepository).Returns(new[] { _player1, _player2 });
+            _randomSorter.RandomSort(locations).Returns(new[] { _location3, _location2, _location1 });
         }
 
         [Test]

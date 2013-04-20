@@ -1,6 +1,9 @@
 ﻿using System.Linq;
 using Caliburn.Micro;
 using FluentAssertions;
+using GuiWpf.GuiDefinitions;
+using GuiWpf.Infrastructure;
+using GuiWpf.Services;
 using GuiWpf.ViewModels;
 using GuiWpf.ViewModels.Gameplay;
 using GuiWpf.ViewModels.Gameplay.Map;
@@ -12,6 +15,7 @@ using RISK.Domain.GamePlaying.DiceAndCalculation;
 using RISK.Domain.Repositories;
 using Rhino.Mocks;
 using StructureMap;
+using StructureMap.Interceptors;
 
 namespace RISK.Tests.Specifications
 {
@@ -26,8 +30,6 @@ namespace RISK.Tests.Specifications
 
         public void before_all()
         {
-            //new PluginConfiguration().Configure();
-
             ObjectFactory.Configure(x =>
                 {
                     x.For<IMainGameViewModel>().Use<MainGameViewModel>();
@@ -36,7 +38,22 @@ namespace RISK.Tests.Specifications
                     x.For<IPlayerTypes>().Use<PlayerTypes>();
                     x.For<IGameSetupEventAggregator>().Use<GameSetupEventAggregator>();
                     x.For<IGameboardViewModelFactory>().Use<GameboardViewModelFactory>();
-                    x.For<IGameboardViewModelFactory>().Use<GameboardViewModelFactory>();
+                    x.For<IGameFactory>().Use<GameFactory>();
+                    x.For<ITurnFactory>().Use<TurnFactory>();
+                    x.For<IAlternateGameSetup>().Use<AlternateGameSetup>();
+                    x.For<IRandomSorter>().Use<RandomSorter>();
+                    x.For<IRandomWrapper>().Use<RandomWrapper>();
+                    x.For<IMainGameViewModel>().Use<MainGameViewModel>();
+                    x.For<IWorldMapFactory>().Use<WorldMapFactory>();
+                    x.For<IWorldMapViewModelFactory>().Use<WorldMapViewModelFactory>();
+                    x.For<ITerritoryViewModelFactory>().Use<TerritoryViewModelFactory>();
+                    x.For<ITerritoryViewModelUpdater>().Use<TerritoryViewModelUpdater>();
+                    x.For<ITerritoryColorsFactory>().Use<TerritoryColorsFactory>();
+                    x.For<IColorService>().Use<ColorService>();
+                    x.For<ITerritoryGuiDefinitionFactory>().Use<TerritoryGuiDefinitionFactory>();
+                    x.For<ITextViewModelFactory>().Use<TextViewModelFactory>();
+
+                    x.RegisterInterceptor(new HandleInterceptor<IGameSetupEventAggregator>());
                 });
         }
 

@@ -9,17 +9,17 @@ using Rhino.Mocks;
 namespace RISK.Tests.Gameplay
 {
     [TestFixture]
-    public class RandomizeOrdererTests
+    public class RandomSorterTests
     {
         private IRandomWrapper _randomWrapper;
-        private RandomOrderer _randomOrderer;
+        private RandomSorter _randomSorter;
 
         [SetUp]
         public void SetUp()
         {
             _randomWrapper = MockRepository.GenerateStub<IRandomWrapper>();
 
-            _randomOrderer = new RandomOrderer(_randomWrapper);
+            _randomSorter = new RandomSorter(_randomWrapper);
         }
 
         [Test]
@@ -30,7 +30,7 @@ namespace RISK.Tests.Gameplay
             _randomWrapper.Stub(x => x.Next(2)).Return(0);
             _randomWrapper.Stub(x => x.Next(1)).Return(0);
 
-            var orderedSequence = _randomOrderer.OrderByRandomOrder(sequence);
+            var orderedSequence = _randomSorter.RandomSort(sequence);
 
             orderedSequence.First().Should().Be("third element");
             orderedSequence.Second().Should().Be("first element");

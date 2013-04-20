@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Linq;
-using System.Reflection;
 using Caliburn.Micro;
 using StructureMap;
 using StructureMap.Interceptors;

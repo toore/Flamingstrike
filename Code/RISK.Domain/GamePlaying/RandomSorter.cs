@@ -3,16 +3,16 @@ using System.Linq;
 
 namespace RISK.Domain.GamePlaying
 {
-    public class RandomOrderer : IRandomOrderer
+    public class RandomSorter : IRandomSorter
     {
         private readonly IRandomWrapper _randomWrapper;
 
-        public RandomOrderer(IRandomWrapper randomWrapper)
+        public RandomSorter(IRandomWrapper randomWrapper)
         {
             _randomWrapper = randomWrapper;
         }
 
-        public IEnumerable<T> OrderByRandomOrder<T>(IEnumerable<T> collection)
+        public IEnumerable<T> RandomSort<T>(IEnumerable<T> collection)
         {
             var originalCollection = collection.ToList();
 
