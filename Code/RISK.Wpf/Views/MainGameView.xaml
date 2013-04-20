@@ -7,6 +7,7 @@
     xmlns:GameSetupViews="clr-namespace:GuiWpf.Views.GameSetupViews"
     xmlns:Setup="clr-namespace:GuiWpf.ViewModels.Setup"
     xmlns:Gameboard="clr-namespace:GuiWpf.ViewModels.Gameplay"
+    xmlns:WorldMapViews="clr-namespace:GuiWpf.Views.WorldMapViews"
     mc:Ignorable="d"
     d:DesignHeight="300" d:DesignWidth="300"
     d:DataContext="{Binding Source={x:Static Views:MainGameViewTestDataFactory.ViewModel}}">
@@ -19,7 +20,7 @@
             </DataTemplate>
 
             <DataTemplate DataType="{x:Type Gameboard:GameboardViewModel}">
-                <Views:GameboardView />
+                <WorldMapViews:GameboardView />
             </DataTemplate>
 
         </ResourceDictionary>

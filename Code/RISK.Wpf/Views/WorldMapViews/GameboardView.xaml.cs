@@ -1,4 +1,4 @@
-﻿namespace GuiWpf.Views
+﻿namespace GuiWpf.Views.WorldMapViews
 {
     public partial class GameboardView
     {

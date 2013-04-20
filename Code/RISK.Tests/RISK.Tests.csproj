@@ -4,15 +4,18 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{48231B07-A5BD-4D68-9B84-84825A73FF50}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <ProjectGuid>{F02CB4F8-34FC-4D10-9039-C3CCE3AF5CDB}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>RISK.Tests</RootNamespace>
     <AssemblyName>RISK.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -22,6 +25,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -29,31 +33,26 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-  <PropertyGroup>
-    <StartupObject />
-  </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Caliburn.Micro, Version=1.5.1.0, Culture=neutral, PublicKeyToken=8e5891231f2ed21f, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="Caliburn.Micro">
       <HintPath>..\packages\Caliburn.Micro.1.5.1\lib\net45\Caliburn.Micro.dll</HintPath>
     </Reference>
-    <Reference Include="FluentAssertions, Version=2.0.1.0, Culture=neutral, PublicKeyToken=33f2691a05b67b6a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="FluentAssertions">
       <HintPath>..\packages\FluentAssertions.2.0.1\lib\net45\FluentAssertions.dll</HintPath>
     </Reference>
-    <Reference Include="NSpec, Version=0.9.65.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="NSpec">
       <HintPath>..\packages\nspec.0.9.65\lib\NSpec.dll</HintPath>
     </Reference>
     <Reference Include="NSubstitute">
       <HintPath>..\packages\NSubstitute.1.6.0.0\lib\NET40\NSubstitute.dll</HintPath>
     </Reference>
-    <Reference Include="nunit.framework">
-      <HintPath>..\..\packages\NUnit.2.6.2\lib\nunit.framework.dll</HintPath>
+    <Reference Include="nunit.framework, Version=2.6.2.12296, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\NUnit.2.6.2\lib\nunit.framework.dll</HintPath>
     </Reference>
-    <Reference Include="PresentationCore" />
-    <Reference Include="Rhino.Mocks">
-      <HintPath>..\..\packages\RhinoMocks.3.6.1\lib\net\Rhino.Mocks.dll</HintPath>
+    <Reference Include="Rhino.Mocks, Version=3.6.0.0, Culture=neutral, PublicKeyToken=0b3305902db7183f, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\RhinoMocks.3.6.1\lib\net\Rhino.Mocks.dll</HintPath>
     </Reference>
     <Reference Include="Spextensions.RhinoMocks">
       <HintPath>..\packages\Spextensions.RhinoMocks.1.0.2\lib\net40\Spextensions.RhinoMocks.dll</HintPath>
@@ -62,45 +61,89 @@
       <HintPath>..\packages\structuremap.2.6.4.1\lib\net40\StructureMap.dll</HintPath>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Caliburn.Micro.1.5.1\lib\net45\System.Windows.Interactivity.dll</HintPath>
     </Reference>
-    <Reference Include="System.Xaml" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
     <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Gameplay\ColorServiceTests.cs" />
-    <Compile Include="DebuggerShim.cs" />
-    <Compile Include="Extensions\EnumerableExtensionsTests.cs" />
-    <Compile Include="Extensions\ListExtensionsTests.cs" />
-    <Compile Include="Extensions\TerritoryExtensionsTests.cs" />
-    <Compile Include="Gameplay\AlternateGameSetupTests.cs" />
-    <Compile Include="Gameplay\GameEngineTests.cs" />
-    <Compile Include="Gameplay\RandomizeOrdererTests.cs" />
-    <Compile Include="Gameplay\LocationRepositoryTests.cs" />
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
     <Compile Include="Battle\BattleCalculatorTests.cs" />
     <Compile Include="Battle\DiceValueCalculatorTests.cs" />
-    <Compile Include="Extensions\ObjectExtensionsTests.cs" />
-    <Compile Include="Gameplay\GameTests.cs" />
-    <Compile Include="Infrastructure\HandleInterceptorTests.cs" />
-    <Compile Include="Infrastructure\TypeExtensionsTests.cs" />
+    <Compile Include="DebuggerShim.cs" />
     <Compile Include="Setup\GameSetupViewModelTests.cs" />
-    <Compile Include="Specifications\NSpecDebuggerShim.cs" />
     <Compile Include="Specifications\game_playing_specifications.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Specifications\NSpecDebuggerShim.cs" />
+    <Page Include="MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Extensions\EnumerableExtensionsTests.cs" />
+    <Compile Include="Extensions\ListExtensionsTests.cs" />
+    <Compile Include="Extensions\ObjectExtensionsTests.cs" />
+    <Compile Include="Extensions\TerritoryExtensionsTests.cs" />
+    <Compile Include="Gameplay\AlternateGameSetupTests.cs" />
+    <Compile Include="Gameplay\ColorServiceTests.cs" />
+    <Compile Include="Gameplay\GameEngineTests.cs" />
+    <Compile Include="Gameplay\GameTests.cs" />
+    <Compile Include="Gameplay\LocationRepositoryTests.cs" />
+    <Compile Include="Gameplay\RandomizeOrdererTests.cs" />
     <Compile Include="Gameplay\TerritoryViewModelFactoryTests.cs" />
     <Compile Include="Gameplay\TurnFactoryTests.cs" />
     <Compile Include="Gameplay\TurnTests.cs" />
     <Compile Include="Gameplay\WorldMapTests.cs" />
+    <Compile Include="Infrastructure\HandleInterceptorTests.cs" />
+    <Compile Include="Infrastructure\TypeExtensionsTests.cs" />
+    <Compile Include="MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\RISK.Domain\RISK.Domain.csproj">
@@ -108,11 +151,10 @@
       <Name>RISK.Domain</Name>
     </ProjectReference>
     <ProjectReference Include="..\RISK.Wpf\RISK.GuiWpf.csproj">
-      <Project>{3B937F0E-E727-442D-B1DA-E5ED6EF939D5}</Project>
+      <Project>{3b937f0e-e727-442d-b1da-e5ed6ef939d5}</Project>
       <Name>RISK.GuiWpf</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -39,8 +39,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Caliburn.Micro, Version=1.5.1.0, Culture=neutral, PublicKeyToken=8e5891231f2ed21f, processorArchitecture=MSIL">
-      <HintPath>..\packages\Caliburn.Micro.1.5.1\lib\net45\Caliburn.Micro.dll</HintPath>
       <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Caliburn.Micro.1.5.1\lib\net45\Caliburn.Micro.dll</HintPath>
     </Reference>
     <Reference Include="StructureMap">
       <HintPath>..\packages\structuremap.2.6.4.1\lib\net40\StructureMap.dll</HintPath>
@@ -173,7 +173,7 @@
     <Compile Include="GuiDefinitions\WesternEuropeGuiDefinitions.cs" />
     <Compile Include="GuiDefinitions\WesternUnitedStatesGuiDefinitions.cs" />
     <Compile Include="GuiDefinitions\YakutskGuiDefinitions.cs" />
-    <Compile Include="Views\GameboardView.xaml.cs">
+    <Compile Include="Views\WorldMapViews\GameboardView.xaml.cs">
       <DependentUpon>GameboardView.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\Gameplay\Map\WorldMapViewModel.cs" />
@@ -181,7 +181,7 @@
       <DependentUpon>WorldMapTestUserControl.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Views\GameboardView.xaml">
+    <Page Include="Views\WorldMapViews\GameboardView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
