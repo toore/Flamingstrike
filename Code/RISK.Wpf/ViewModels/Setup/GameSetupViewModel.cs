@@ -1,7 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using Caliburn.Micro;
 using RISK.Domain.Entities;
 using RISK.Domain.Extensions;
 
@@ -9,16 +9,15 @@ namespace GuiWpf.ViewModels.Setup
 {
     public class GameSetupViewModel : ViewModelBase, IGameSetupViewModel
     {
-        private readonly Action<GameSetup> _confirm;
         private readonly IPlayerFactory _playerFactory;
         private readonly IPlayerTypes _playerTypes;
+        private readonly IGameSetupEventAggregator _gameSetupEventAggregator;
 
-        // event aggregator
-        public GameSetupViewModel(IPlayerFactory playerFactory, IPlayerTypes playerTypes, Action<GameSetup> confirm)
+        public GameSetupViewModel(IPlayerFactory playerFactory, IPlayerTypes playerTypes, IGameSetupEventAggregator gameSetupEventAggregator)
         {
-            _confirm = confirm;
             _playerFactory = playerFactory;
             _playerTypes = playerTypes;
+            _gameSetupEventAggregator = gameSetupEventAggregator;
 
             const int maxNumberOfPlayers = 6;
             Players = Enumerable.Range(0, maxNumberOfPlayers)
@@ -49,12 +48,12 @@ namespace GuiWpf.ViewModels.Setup
 
         public void Confirm()
         {
-            var gameSetupResult = new GameSetup
+            var gameSetup = new GameSetup
                 {
                     Players = CreatePlayers()
                 };
 
-            _confirm(gameSetupResult);
+            _gameSetupEventAggregator.Publish(gameSetup);
         }
 
         private IEnumerable<IPlayer> CreatePlayers()
@@ -70,4 +69,8 @@ namespace GuiWpf.ViewModels.Setup
                 .Where(x => x.IsEnabled);
         }
     }
+
+    public interface IGameSetupEventAggregator : IEventAggregator {}
+
+    public class GameSetupEventAggregator : EventAggregator, IGameSetupEventAggregator {}
 }

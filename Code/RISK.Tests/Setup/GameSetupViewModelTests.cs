@@ -1,11 +1,10 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using FluentAssertions;
 using GuiWpf.ViewModels;
 using GuiWpf.ViewModels.Setup;
+using NSubstitute;
 using NUnit.Framework;
 using RISK.Domain.Extensions;
-using Rhino.Mocks;
 
 namespace RISK.Tests.Setup
 {
@@ -15,19 +14,19 @@ namespace RISK.Tests.Setup
         private GameSetupViewModel _gameSetupViewModel;
         private IPlayerFactory _playerFactory;
         private IPlayerTypes _playerTypes;
-        private Action<GameSetup> _confirm;
+        private IGameSetupEventAggregator _gameSetupEventAggregator;
 
         [SetUp]
         public void SetUp()
         {
-            _playerFactory = MockRepository.GenerateStub<IPlayerFactory>();
-            _playerTypes = MockRepository.GenerateStub<IPlayerTypes>();
-            _confirm = MockRepository.GenerateStub<Action<GameSetup>>();
+            _playerFactory = Substitute.For<IPlayerFactory>();
+            _playerTypes = Substitute.For<IPlayerTypes>();
+            _gameSetupEventAggregator = Substitute.For<IGameSetupEventAggregator>();
 
-            var playerType = MockRepository.GenerateStub<PlayerTypeBase>();
-            _playerTypes.Stub(x => x.Values).Return(playerType.AsList().ToList());
+            var playerType = Substitute.For<PlayerTypeBase>();
+            _playerTypes.Values.Returns(playerType.AsList());
 
-            _gameSetupViewModel = new GameSetupViewModel(_playerFactory, _playerTypes, _confirm);
+            _gameSetupViewModel = new GameSetupViewModel(_playerFactory, _playerTypes, _gameSetupEventAggregator);
         }
 
         [Test]
@@ -57,6 +56,14 @@ namespace RISK.Tests.Setup
             _gameSetupViewModel.Players.Second().IsEnabled = true;
 
             _gameSetupViewModel.CanConfirm.Should().BeTrue();
+        }
+
+        [Test]
+        public void Confirm_publishes_message()
+        {
+            _gameSetupViewModel.Confirm();
+
+            _gameSetupEventAggregator.Received().Publish(Arg.Any<GameSetup>());
         }
     }
 }
