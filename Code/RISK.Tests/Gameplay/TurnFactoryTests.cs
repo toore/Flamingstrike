@@ -1,7 +1,8 @@
 ﻿using FluentAssertions;
+using NSubstitute;
 using NUnit.Framework;
+using RISK.Domain.Entities;
 using RISK.Domain.GamePlaying;
-using Rhino.Mocks;
 
 namespace RISK.Tests.Gameplay
 {
@@ -9,22 +10,23 @@ namespace RISK.Tests.Gameplay
     public class TurnFactoryTests
     {
         private TurnFactory _factory;
-        private IWorldMap _worldMap;
         private IBattleCalculator _battleCalculator;
 
         [SetUp]
         public void SetUp()
         {
-            _worldMap = MockRepository.GenerateStub<IWorldMap>();
-            _battleCalculator = MockRepository.GenerateStub<IBattleCalculator>();
+            _battleCalculator = Substitute.For<IBattleCalculator>();
 
-            _factory = new TurnFactory(_worldMap, _battleCalculator);
+            _factory = new TurnFactory(_battleCalculator);
         }
 
         [Test]
         public void Create_initializes_turn()
         {
-            var turn = _factory.Create(null);
+            var player = Substitute.For<IPlayer>();
+            var worldMap = Substitute.For<IWorldMap>();
+
+            var turn = _factory.Create(player, worldMap);
 
             turn.Should().NotBeNull();
         }

@@ -33,16 +33,13 @@ namespace GuiWpf.ViewModels.Gameplay
             var textViewModelFactory = new TextViewModelFactory(territoryLayoutInformationFactory);
             var worldMapViewModelFactory = new WorldMapViewModelFactory(locationProvider, territoryViewModelFactory, textViewModelFactory);
 
-            //var worldMapViewModels = worldMapViewModelFactory.Create(worldMap, null).WorldMapViewModels.ToList();
-
             var playerRepository = new PlayerRepository();
             playerRepository.Add(humanPlayer);
 
-            var game = new Game(null, playerRepository, new AlternateGameSetup(playerRepository, locationProvider, new RandomOrderer(new RandomWrapper()), new WorldMapFactory(locationProvider)));
+            var alternateGameSetup = new AlternateGameSetup(playerRepository, locationProvider, new RandomOrderer(new RandomWrapper()), new WorldMapFactory(locationProvider));
+            ITurnFactory turnFactory = new TurnFactory(null);
+            var game = new Game(turnFactory, playerRepository, alternateGameSetup);
             var gameboardViewModel = new GameboardViewModel(game, locationProvider, worldMapViewModelFactory, territoryViewModelUpdater);
-
-            //var worldMapViewModel = new WorldMapViewModel();
-            //worldMapViewModels.Apply(worldMapViewModel.WorldMapViewModels.Add);
 
             return gameboardViewModel;
         }

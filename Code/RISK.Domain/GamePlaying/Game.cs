@@ -26,7 +26,7 @@ namespace RISK.Domain.GamePlaying
 
         public ITurn GetNextTurn()
         {
-            return _turnFactory.Create(_players.First());
+            return _turnFactory.Create(_players.First(), _worldMap);
         }
     }
 }

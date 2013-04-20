@@ -29,7 +29,7 @@ namespace RISK.Tests.Gameplay
 
             _nextTurn = MockRepository.GenerateStub<ITurn>();
             _player = MockRepository.GenerateStub<IPlayer>();
-            _turnFactory.Stub(x => x.Create(_player)).Return(_nextTurn);
+            _turnFactory.Stub(x => x.Create(_player, _worldMap)).Return(_nextTurn);
 
             _playerRepository.Stub(x => x.GetAll()).Return(_player.AsList());
 

@@ -4,6 +4,6 @@ namespace RISK.Domain.GamePlaying
 {
     public interface ITurnFactory
     {
-        ITurn Create(IPlayer player);
+        ITurn Create(IPlayer player, IWorldMap worldMap);
     }
 }
