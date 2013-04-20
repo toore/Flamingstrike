@@ -81,13 +81,7 @@
     <Compile Include="Services\ITerritoryColors.cs" />
     <Compile Include="Services\TerritoryColorsFactory.cs" />
     <Compile Include="Services\TerritoryViewModelUpdater.cs" />
-    <Compile Include="ViewModels\GameboardViewModelFactory.cs" />
-    <Compile Include="ViewModels\GameEngineFactory.cs" />
     <Compile Include="ViewModels\GameSetup.cs" />
-    <Compile Include="ViewModels\GameSetupViewModelFactory.cs" />
-    <Compile Include="ViewModels\IGameboardViewModelFactory.cs" />
-    <Compile Include="ViewModels\IGameEngineFactory.cs" />
-    <Compile Include="ViewModels\IGameSetupViewModelFactory.cs" />
     <Compile Include="ViewModels\Setup\GameSetupViewModel.cs" />
     <Compile Include="ViewModels\Setup\HumanPlayerType.cs" />
     <Compile Include="ViewModels\Setup\IGameSetupViewModel.cs" />

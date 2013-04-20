@@ -14,23 +14,25 @@ namespace RISK.Domain.GamePlaying
     {
         private readonly IPlayerRepository _playerRepository;
         private readonly ILocationProvider _locationProvider;
-        private readonly IRandomizeOrderer _randomizeOrderer;
+        private readonly IRandomOrderer _randomOrderer;
 
-        public AlternateGameSetup(IPlayerRepository playerRepository, ILocationProvider locationProvider, IRandomizeOrderer randomizeOrderer)
+        public AlternateGameSetup(IPlayerRepository playerRepository, ILocationProvider locationProvider, IRandomOrderer randomOrderer)
         {
             _playerRepository = playerRepository;
             _locationProvider = locationProvider;
-            _randomizeOrderer = randomizeOrderer;
+            _randomOrderer = randomOrderer;
         }
 
-        public void Initialize(IWorldMap worldMap)
+        public IWorldMap Initialize()
         {
+            var worldMap = new WorldMap(_locationProvider);
+
             var players = _playerRepository.GetAll();
-            var playersInRandomizedOrder = _randomizeOrderer.OrderByRandomOrder(players)
+            var playersInRandomizedOrder = _randomOrderer.OrderByRandomOrder(players)
                 .ToList();
 
             var locations = _locationProvider.GetAll();
-            var locationsInRandomizedOrder = _randomizeOrderer.OrderByRandomOrder(locations);
+            var locationsInRandomizedOrder = _randomOrderer.OrderByRandomOrder(locations);
 
             var player = playersInRandomizedOrder.First();
 
@@ -40,6 +42,8 @@ namespace RISK.Domain.GamePlaying
 
                 player = playersInRandomizedOrder.GetNextOrFirst(player);
             }
+
+            return worldMap;
         }
     }
 }

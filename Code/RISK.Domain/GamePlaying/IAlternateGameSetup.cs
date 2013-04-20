@@ -2,6 +2,6 @@
 {
     public interface IAlternateGameSetup 
     {
-        void Initialize(IWorldMap worldMap);
+        IWorldMap Initialize();
     }
 }

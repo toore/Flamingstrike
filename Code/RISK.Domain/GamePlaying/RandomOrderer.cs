@@ -3,11 +3,11 @@ using System.Linq;
 
 namespace RISK.Domain.GamePlaying
 {
-    public class RandomizeOrderer : IRandomizeOrderer
+    public class RandomOrderer : IRandomOrderer
     {
         private readonly IRandomWrapper _randomWrapper;
 
-        public RandomizeOrderer(IRandomWrapper randomWrapper)
+        public RandomOrderer(IRandomWrapper randomWrapper)
         {
             _randomWrapper = randomWrapper;
         }

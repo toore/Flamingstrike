@@ -33,7 +33,9 @@ namespace RISK.Tests.Gameplay
 
             _playerRepository.Stub(x => x.GetAll()).Return(_player.AsList());
 
-            _game = new Game(_worldMap, _turnFactory, _playerRepository, _alternateGameSetup);
+            _alternateGameSetup.Stub(x => x.Initialize()).Return(_worldMap);
+
+            _game = new Game(_turnFactory, _playerRepository, _alternateGameSetup);
         }
 
         [Test]
@@ -53,7 +55,7 @@ namespace RISK.Tests.Gameplay
         [Test]
         public void Initializes_with_alternate_territory_assignment()
         {
-            _alternateGameSetup.AssertWasCalled(x => x.Initialize(_worldMap));
+            _alternateGameSetup.AssertWasCalled(x => x.Initialize());
         }
     }
 }

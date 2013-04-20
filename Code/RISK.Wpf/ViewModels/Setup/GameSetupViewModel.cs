@@ -13,6 +13,7 @@ namespace GuiWpf.ViewModels.Setup
         private readonly IPlayerFactory _playerFactory;
         private readonly IPlayerTypes _playerTypes;
 
+        // event aggregator
         public GameSetupViewModel(IPlayerFactory playerFactory, IPlayerTypes playerTypes, Action<GameSetup> confirm)
         {
             _confirm = confirm;
