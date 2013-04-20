@@ -15,17 +15,19 @@ namespace RISK.Domain.GamePlaying
         private readonly IPlayerRepository _playerRepository;
         private readonly ILocationProvider _locationProvider;
         private readonly IRandomOrderer _randomOrderer;
+        private readonly IWorldMapFactory _worldMapFactory;
 
-        public AlternateGameSetup(IPlayerRepository playerRepository, ILocationProvider locationProvider, IRandomOrderer randomOrderer)
+        public AlternateGameSetup(IPlayerRepository playerRepository, ILocationProvider locationProvider, IRandomOrderer randomOrderer, IWorldMapFactory worldMapFactory)
         {
             _playerRepository = playerRepository;
             _locationProvider = locationProvider;
             _randomOrderer = randomOrderer;
+            _worldMapFactory = worldMapFactory;
         }
 
         public IWorldMap Initialize()
         {
-            var worldMap = new WorldMap(_locationProvider);
+            var worldMap = _worldMapFactory.Create();
 
             var players = _playerRepository.GetAll();
             var playersInRandomizedOrder = _randomOrderer.OrderByRandomOrder(players)

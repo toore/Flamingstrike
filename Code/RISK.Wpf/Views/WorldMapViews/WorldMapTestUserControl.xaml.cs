@@ -1,8 +1,8 @@
 ﻿namespace GuiWpf.Views.WorldMapViews
 {
-    public partial class WorldMapUserControl
+    public partial class WorldMapTestUserControl
     {
-        public WorldMapUserControl()
+        public WorldMapTestUserControl()
         {
             InitializeComponent();
         }

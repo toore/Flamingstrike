@@ -2,7 +2,7 @@
 using FluentAssertions;
 using GuiWpf.GuiDefinitions;
 using GuiWpf.Services;
-using GuiWpf.ViewModels.Gameplay.WorldMap;
+using GuiWpf.ViewModels.Gameplay.Map;
 using NUnit.Framework;
 using RISK.Domain.Entities;
 using RISK.Domain.Repositories;

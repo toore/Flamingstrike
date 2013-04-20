@@ -1,4 +1,4 @@
-using GuiWpf.ViewModels.Gameplay.WorldMap;
+using GuiWpf.ViewModels.Gameplay.Map;
 using RISK.Domain.Entities;
 
 namespace GuiWpf.Services

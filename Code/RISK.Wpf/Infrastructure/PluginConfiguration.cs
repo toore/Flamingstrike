@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using GuiWpf.Services;
+using GuiWpf.ViewModels.Gameplay;
 using GuiWpf.ViewModels.Setup;
 using RISK.Domain.GamePlaying;
 using RISK.Domain.Repositories;
@@ -18,7 +19,7 @@ namespace GuiWpf.Infrastructure
                     x.Scan(s =>
                         {
                             s.AssemblyContainingType<IGame>();
-                            s.AssemblyContainingType<IGameEngine>();
+                            s.AssemblyContainingType<IGameboardViewModel>();
 
                             s.WithDefaultConventions();
                         });

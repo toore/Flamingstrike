@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace GuiWpf.ViewModels.Gameplay.WorldMap
+namespace GuiWpf.ViewModels.Gameplay.Map
 {
     public class TextViewModel : IWorldMapViewModel
     {

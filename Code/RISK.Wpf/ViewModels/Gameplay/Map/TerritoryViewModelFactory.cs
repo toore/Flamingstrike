@@ -3,7 +3,7 @@ using GuiWpf.GuiDefinitions;
 using GuiWpf.Services;
 using RISK.Domain.Entities;
 
-namespace GuiWpf.ViewModels.Gameplay.WorldMap
+namespace GuiWpf.ViewModels.Gameplay.Map
 {
     public class TerritoryViewModelFactory : ITerritoryViewModelFactory
     {

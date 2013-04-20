@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using FluentAssertions;
 using GuiWpf.Services;
-using GuiWpf.ViewModels.Gameplay.WorldMap;
+using GuiWpf.ViewModels.Gameplay;
+using GuiWpf.ViewModels.Gameplay.Map;
 using NUnit.Framework;
 using RISK.Domain.Entities;
 using RISK.Domain.GamePlaying;
@@ -14,7 +15,7 @@ namespace RISK.Tests.Gameplay
     [TestFixture]
     public class GameEngineTests
     {
-        private GameEngine _gameEngine;
+        private GameboardViewModel _gameboardViewModel;
         private IGame _game;
         private ILocationProvider _locationProvider;
         private IWorldMapViewModelFactory _worldMapViewModelFactory;
@@ -63,19 +64,19 @@ namespace RISK.Tests.Gameplay
             _worldMapViewModel.WorldMapViewModels.Add(_viewModel2);
             _worldMapViewModelFactory.Stub(x => x.Create(Arg<IWorldMap>.Is.Equal(_worldMap), Arg<Action<ILocation>>.Is.Anything)).Return(_worldMapViewModel);
 
-            _gameEngine = new GameEngine(_game, _locationProvider, _worldMapViewModelFactory, _territoryViewModelUpdater);
+            _gameboardViewModel = new GameboardViewModel(_game, _locationProvider, _worldMapViewModelFactory, _territoryViewModelUpdater);
         }
 
         [Test]
         public void Initializes_WorldMapViewModel()
         {
-            _gameEngine.WorldMapViewModel.Should().Be(_worldMapViewModel);
+            _gameboardViewModel.WorldMapViewModel.Should().Be(_worldMapViewModel);
         }
 
         [Test]
         public void SelectLocation_invokes_turn_select()
         {
-            _gameEngine.SelectLocation(_location1);
+            _gameboardViewModel.SelectLocation(_location1);
 
             _turn.AssertWasCalled(x => x.Select(_location1));
         }
@@ -85,7 +86,7 @@ namespace RISK.Tests.Gameplay
         {
             _turn.Stub(x => x.IsTerritorySelected).Return(true);
 
-            _gameEngine.SelectLocation(_location2);
+            _gameboardViewModel.SelectLocation(_location2);
 
             _turn.AssertWasCalled(x => x.Attack(_location2));
         }

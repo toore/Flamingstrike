@@ -1,11 +1,11 @@
 ﻿using System.Linq;
 using FluentAssertions;
+using NSubstitute;
 using NUnit.Framework;
 using RISK.Domain.Entities;
 using RISK.Domain.Extensions;
 using RISK.Domain.GamePlaying;
 using RISK.Domain.Repositories;
-using Rhino.Mocks;
 
 namespace RISK.Tests.Gameplay
 {
@@ -20,45 +20,44 @@ namespace RISK.Tests.Gameplay
         private ILocation _location3;
         private IPlayer _player1;
         private IPlayer _player2;
-        private ITerritory _territory1;
-        private ITerritory _territory2;
-        private ITerritory _territory3;
         private IRandomOrderer _randomOrderer;
+        private IWorldMapFactory _worldMapFactory;
+        private IWorldMap _worldMap;
 
         [SetUp]
         public void SetUp()
         {
-            _playerRepository = MockRepository.GenerateStub<IPlayerRepository>();
-            _locationProvider = MockRepository.GenerateStub<ILocationProvider>();
-            _randomOrderer = MockRepository.GenerateStub<IRandomOrderer>();
+            _playerRepository = Substitute.For<IPlayerRepository>();
+            _locationProvider = Substitute.For<ILocationProvider>();
+            _randomOrderer = Substitute.For<IRandomOrderer>();
+            _worldMapFactory = Substitute.For<IWorldMapFactory>();
 
-            _player1 = MockRepository.GenerateStub<IPlayer>();
-            _player2 = MockRepository.GenerateStub<IPlayer>();
+            _player1 = Substitute.For<IPlayer>();
+            _player2 = Substitute.For<IPlayer>();
             var playersInRepository = Enumerable.Empty<IPlayer>().ToList();
-            _playerRepository
-                .Stub(x => x.GetAll())
-                .Return(playersInRepository);
+            _playerRepository.GetAll().Returns(playersInRepository);
 
-            _location1 = MockRepository.GenerateStub<ILocation>();
-            _location2 = MockRepository.GenerateStub<ILocation>();
-            _location3 = MockRepository.GenerateStub<ILocation>();
+            _location1 = Substitute.For<ILocation>();
+            _location2 = Substitute.For<ILocation>();
+            _location3 = Substitute.For<ILocation>();
             var locations = new[] { _location1, _location2, _location3 };
-            _locationProvider
-                .Stub(x => x.GetAll())
-                .Return(locations);
+            _locationProvider.GetAll().Returns(locations);
 
-            _alternateGameSetup = new AlternateGameSetup(_playerRepository, _locationProvider, _randomOrderer);
+            _worldMap = new WorldMap(_locationProvider);
+            _worldMapFactory.Create().Returns(_worldMap);
 
-            //_worldMap = MockRepository.GenerateStub<IWorldMap>();
-            _territory1 = MockRepository.GenerateStub<ITerritory>();
-            _territory2 = MockRepository.GenerateStub<ITerritory>();
-            _territory3 = MockRepository.GenerateStub<ITerritory>();
-            //_worldMap.Stub(x => x.GetTerritory(_location1)).Return(_territory1);
-            //_worldMap.Stub(x => x.GetTerritory(_location2)).Return(_territory2);
-            //_worldMap.Stub(x => x.GetTerritory(_location3)).Return(_territory3);
+            _alternateGameSetup = new AlternateGameSetup(_playerRepository, _locationProvider, _randomOrderer, _worldMapFactory);
 
-            _randomOrderer.Stub(x => x.OrderByRandomOrder(playersInRepository)).Return(new[] { _player1, _player2 });
-            _randomOrderer.Stub(x => x.OrderByRandomOrder(locations)).Return(new[] { _location3, _location2, _location1 });
+            _randomOrderer.OrderByRandomOrder(playersInRepository).Returns(new[] { _player1, _player2 });
+            _randomOrderer.OrderByRandomOrder(locations).Returns(new[] { _location3, _location2, _location1 });
+        }
+
+        [Test]
+        public void Creates_world_map()
+        {
+            var worldMap = _alternateGameSetup.Initialize();
+
+            worldMap.Should().Be(_worldMap);
         }
 
         [Test]

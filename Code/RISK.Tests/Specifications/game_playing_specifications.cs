@@ -1,10 +1,9 @@
 ﻿using System.Linq;
 using Caliburn.Micro;
 using FluentAssertions;
-using GuiWpf.Infrastructure;
 using GuiWpf.ViewModels;
 using GuiWpf.ViewModels.Gameplay;
-using GuiWpf.ViewModels.Gameplay.WorldMap;
+using GuiWpf.ViewModels.Gameplay.Map;
 using GuiWpf.ViewModels.Setup;
 using RISK.Domain.Entities;
 using RISK.Domain.Extensions;
@@ -27,7 +26,18 @@ namespace RISK.Tests.Specifications
 
         public void before_all()
         {
-            new PluginConfiguration().Configure();
+            //new PluginConfiguration().Configure();
+
+            ObjectFactory.Configure(x =>
+                {
+                    x.For<IMainGameViewModel>().Use<MainGameViewModel>();
+                    x.For<IGameSetupViewModel>().Use<GameSetupViewModel>();
+                    x.For<IPlayerFactory>().Use<PlayerFactory>();
+                    x.For<IPlayerTypes>().Use<PlayerTypes>();
+                    x.For<IGameSetupEventAggregator>().Use<GameSetupEventAggregator>();
+                    x.For<IGameboardViewModelFactory>().Use<GameboardViewModelFactory>();
+                    x.For<IGameboardViewModelFactory>().Use<GameboardViewModelFactory>();
+                });
         }
 
         public void selecting_North_Africa_and_attacking_Brazil_and_win_moves_armies_into_territory_and_flags_that_user_should_receive_a_card_when_turn_ends()

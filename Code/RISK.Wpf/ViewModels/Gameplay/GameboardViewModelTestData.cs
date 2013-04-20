@@ -1,49 +1,50 @@
-using System.Linq;
-using Caliburn.Micro;
 using GuiWpf.GuiDefinitions;
 using GuiWpf.Services;
-using GuiWpf.ViewModels.Gameplay.WorldMap;
+using GuiWpf.ViewModels.Gameplay.Map;
 using RISK.Domain.Entities;
+using RISK.Domain.GamePlaying;
 using RISK.Domain.Repositories;
 
 namespace GuiWpf.ViewModels.Gameplay
 {
-    public class GameboardViewModelTestData : GameboardViewModel
+    public class GameboardViewModelTestData
     {
-        public GameboardViewModelTestData() : base(new GameEngineStub()) {}
-
-        private class GameEngineStub : IGameEngine
+        public static GameboardViewModel ViewModel
         {
-            private WorldMapViewModel CreateWorldMapViewModel()
-            {
-                var continentRepository = new ContinentProvider();
-                var locationRepository = new LocationProvider(continentRepository);
-                var colorService = new ColorService();
-                var territoryColorsFactory = new TerritoryColorsFactory(locationRepository, colorService);
-                var territoryLayoutInformationFactory = new TerritoryGuiDefinitionFactory(locationRepository);
-                var territoryViewModelUpdater = new TerritoryViewModelUpdater(territoryColorsFactory);
-                var territoryViewModelFactory = new TerritoryViewModelFactory(territoryViewModelUpdater, territoryLayoutInformationFactory);
+            get { return new GameboardViewModelTestData().Create(); }
+        }
 
-                var worldMap = new RISK.Domain.GamePlaying.WorldMap(locationRepository);
-                var territory = worldMap.GetTerritory(locationRepository.Brazil);
-                territory.Owner = new HumanPlayer("pelle");
-                territory.Armies = 99;
+        private GameboardViewModel Create()
+        {
+            var continentProvider = new ContinentProvider();
+            var locationProvider = new LocationProvider(continentProvider);
+            var colorService = new ColorService();
+            var territoryColorsFactory = new TerritoryColorsFactory(locationProvider, colorService);
+            var territoryLayoutInformationFactory = new TerritoryGuiDefinitionFactory(locationProvider);
+            var territoryViewModelUpdater = new TerritoryViewModelUpdater(territoryColorsFactory);
+            var territoryViewModelFactory = new TerritoryViewModelFactory(territoryViewModelUpdater, territoryLayoutInformationFactory);
 
-                var textViewModelFactory = new TextViewModelFactory(territoryLayoutInformationFactory);
-                var worldMapViewModelFactory = new WorldMapViewModelFactory(locationRepository, territoryViewModelFactory, textViewModelFactory);
+            var worldMap = new WorldMap(locationProvider);
+            var territory = worldMap.GetTerritory(locationProvider.Brazil);
+            var humanPlayer = new HumanPlayer("pelle");
+            territory.Owner = humanPlayer;
+            territory.Armies = 99;
 
-                var worldMapViewModels = worldMapViewModelFactory.Create(worldMap, null).WorldMapViewModels.ToList();
+            var textViewModelFactory = new TextViewModelFactory(territoryLayoutInformationFactory);
+            var worldMapViewModelFactory = new WorldMapViewModelFactory(locationProvider, territoryViewModelFactory, textViewModelFactory);
 
-                var worldMapViewModel = new WorldMapViewModel();
-                worldMapViewModels.Apply(worldMapViewModel.WorldMapViewModels.Add);
+            //var worldMapViewModels = worldMapViewModelFactory.Create(worldMap, null).WorldMapViewModels.ToList();
 
-                return worldMapViewModel;
-            }
+            var playerRepository = new PlayerRepository();
+            playerRepository.Add(humanPlayer);
 
-            WorldMapViewModel IGameEngine.WorldMapViewModel
-            {
-                get { return CreateWorldMapViewModel(); }
-            }
+            var game = new Game(null, playerRepository, new AlternateGameSetup(playerRepository, locationProvider, new RandomOrderer(new RandomWrapper()), new WorldMapFactory(locationProvider)));
+            var gameboardViewModel = new GameboardViewModel(game, locationProvider, worldMapViewModelFactory, territoryViewModelUpdater);
+
+            //var worldMapViewModel = new WorldMapViewModel();
+            //worldMapViewModels.Apply(worldMapViewModel.WorldMapViewModels.Add);
+
+            return gameboardViewModel;
         }
     }
 }

@@ -5,7 +5,7 @@ using RISK.Domain.Entities;
 using RISK.Domain.GamePlaying;
 using RISK.Domain.Repositories;
 
-namespace GuiWpf.ViewModels.Gameplay.WorldMap
+namespace GuiWpf.ViewModels.Gameplay.Map
 {
     public class WorldMapViewModelFactory : IWorldMapViewModelFactory
     {
