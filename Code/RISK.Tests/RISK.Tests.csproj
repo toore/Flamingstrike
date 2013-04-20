@@ -70,7 +70,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ColorServiceTests.cs" />
+    <Compile Include="Gameplay\ColorServiceTests.cs" />
     <Compile Include="DebuggerShim.cs" />
     <Compile Include="Extensions\EnumerableExtensionsTests.cs" />
     <Compile Include="Extensions\ListExtensionsTests.cs" />
@@ -78,11 +78,13 @@
     <Compile Include="Gameplay\AlternateGameSetupTests.cs" />
     <Compile Include="Gameplay\GameEngineTests.cs" />
     <Compile Include="Gameplay\RandomizeOrdererTests.cs" />
-    <Compile Include="LocationRepositoryTests.cs" />
+    <Compile Include="Gameplay\LocationRepositoryTests.cs" />
     <Compile Include="Battle\BattleCalculatorTests.cs" />
     <Compile Include="Battle\DiceValueCalculatorTests.cs" />
     <Compile Include="Extensions\ObjectExtensionsTests.cs" />
     <Compile Include="Gameplay\GameTests.cs" />
+    <Compile Include="Infrastructure\HandleInterceptorTests.cs" />
+    <Compile Include="Infrastructure\TypeExtensionsTests.cs" />
     <Compile Include="Setup\GameSetupViewModelTests.cs" />
     <Compile Include="Specifications\NSpecDebuggerShim.cs" />
     <Compile Include="Specifications\game_playing_specifications.cs" />

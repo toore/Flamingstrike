@@ -1,36 +1,34 @@
 ﻿using Caliburn.Micro;
-using GuiWpf.ViewModels.Gameplay;
 using GuiWpf.ViewModels.Setup;
 using RISK.Domain.Repositories;
 
 namespace GuiWpf.ViewModels
 {
-    public class MainGameViewModel : ViewModelBase, IMainGameViewModel
+    public class MainGameViewModel : ViewModelBase, IMainGameViewModel, IHandle<GameSetupMessage>
     {
         private readonly IGameSetupViewModel _gameSetupViewModel;
-        private readonly IGameboardViewModel _gameboardViewModel;
+        private readonly IGameboardViewModelFactory _gameboardViewModelFactory;
         private readonly IPlayerRepository _playerRepository;
 
-        //Event aggregator
-        public MainGameViewModel(IGameSetupViewModel gameSetupViewModel, IGameboardViewModel gameboardViewModel, IPlayerRepository playerRepository)
+        public MainGameViewModel(IGameSetupViewModel gameSetupViewModel, IGameboardViewModelFactory gameboardViewModelFactory, IPlayerRepository playerRepository)
         {
             _gameSetupViewModel = gameSetupViewModel;
-            _gameboardViewModel = gameboardViewModel;
+            _gameboardViewModelFactory = gameboardViewModelFactory;
             _playerRepository = playerRepository;
 
             MainViewModel = _gameSetupViewModel;
         }
 
-        private void Confirm(GameSetup gameSetup)
+        public void Handle(GameSetupMessage message)
         {
-            gameSetup.Players.Apply(_playerRepository.Add);
+            message.Players.Apply(_playerRepository.Add);
 
             StartNewGame();
         }
 
         private void StartNewGame()
         {
-            MainViewModel = _gameboardViewModel;
+            MainViewModel = _gameboardViewModelFactory.Create();
         }
 
         private IMainGameViewViewModel _mainViewModel;

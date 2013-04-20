@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using Caliburn.Micro;
 using RISK.Domain.Entities;
 using RISK.Domain.Extensions;
 
@@ -48,7 +47,7 @@ namespace GuiWpf.ViewModels.Setup
 
         public void Confirm()
         {
-            var gameSetup = new GameSetup
+            var gameSetup = new GameSetupMessage
                 {
                     Players = CreatePlayers()
                 };
@@ -69,8 +68,4 @@ namespace GuiWpf.ViewModels.Setup
                 .Where(x => x.IsEnabled);
         }
     }
-
-    public interface IGameSetupEventAggregator : IEventAggregator {}
-
-    public class GameSetupEventAggregator : EventAggregator, IGameSetupEventAggregator {}
 }

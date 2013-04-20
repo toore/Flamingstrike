@@ -27,12 +27,12 @@ namespace GuiWpf.Services
                 .Select(worldMap.GetTerritory)
                 .ToList();
 
-            GetNextTurn();
+            BeginNextPlayerTurn();
 
             WorldMapViewModel = worldMapViewModelFactory.Create(worldMap, SelectLocation);
         }
 
-        private void GetNextTurn()
+        private void BeginNextPlayerTurn()
         {
             _currentTurn = _game.GetNextTurn();
         }
@@ -65,7 +65,7 @@ namespace GuiWpf.Services
             _territoryViewModelUpdater.UpdateColor(territoryViewModel, territory);
         }
 
-        private ITerritoryViewModel FindTerritoryViewModel(ILocation location, IEnumerable<IWorldMapViewModel> worldMapViewModels)
+        private static ITerritoryViewModel FindTerritoryViewModel(ILocation location, IEnumerable<IWorldMapViewModel> worldMapViewModels)
         {
             return worldMapViewModels
                 .OfType<ITerritoryViewModel>()

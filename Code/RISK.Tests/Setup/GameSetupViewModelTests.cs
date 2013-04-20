@@ -63,7 +63,7 @@ namespace RISK.Tests.Setup
         {
             _gameSetupViewModel.Confirm();
 
-            _gameSetupEventAggregator.Received().Publish(Arg.Any<GameSetup>());
+            _gameSetupEventAggregator.Received().Publish(Arg.Any<GameSetupMessage>());
         }
     }
 }

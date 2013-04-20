@@ -73,7 +73,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Infrastructure\HandleInterceptor.cs" />
     <Compile Include="Infrastructure\PluginConfiguration.cs" />
+    <Compile Include="Infrastructure\TypeExtensions.cs" />
     <Compile Include="Infrastructure\WindowManager.cs" />
     <Compile Include="Services\ColorService.cs" />
     <Compile Include="Services\TerritoryColors.cs" />
@@ -81,9 +83,17 @@
     <Compile Include="Services\ITerritoryColors.cs" />
     <Compile Include="Services\TerritoryColorsFactory.cs" />
     <Compile Include="Services\TerritoryViewModelUpdater.cs" />
-    <Compile Include="ViewModels\GameSetup.cs" />
+    <Compile Include="ViewModels\GameboardViewModelFactory.cs" />
+    <Compile Include="ViewModels\GameEngineFactory.cs" />
+    <Compile Include="ViewModels\GameFactory.cs" />
+    <Compile Include="ViewModels\GameSetupMessage.cs" />
+    <Compile Include="ViewModels\IGameboardViewModelFactory.cs" />
+    <Compile Include="ViewModels\IGameEngineFactory.cs" />
+    <Compile Include="ViewModels\IGameFactory.cs" />
+    <Compile Include="ViewModels\Setup\GameSetupEventAggregator.cs" />
     <Compile Include="ViewModels\Setup\GameSetupViewModel.cs" />
     <Compile Include="ViewModels\Setup\HumanPlayerType.cs" />
+    <Compile Include="ViewModels\Setup\IGameSetupEventAggregator.cs" />
     <Compile Include="ViewModels\Setup\IGameSetupViewModel.cs" />
     <Compile Include="ViewModels\MainGameViewModel.cs" />
     <Compile Include="ViewModels\Gameplay\IGameboardViewModel.cs" />

@@ -3,7 +3,7 @@ using RISK.Domain.Entities;
 
 namespace GuiWpf.ViewModels
 {
-    public class GameSetup
+    public class GameSetupMessage
     {
         public IEnumerable<IPlayer> Players { get; set; }
     }

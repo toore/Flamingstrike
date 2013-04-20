@@ -2,7 +2,7 @@
 using GuiWpf.Services;
 using NUnit.Framework;
 
-namespace RISK.Tests
+namespace RISK.Tests.Gameplay
 {
     [TestFixture]
     public class ColorServiceTests
