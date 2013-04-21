@@ -102,7 +102,7 @@
     <Compile Include="Extensions\TerritoryExtensionsTests.cs" />
     <Compile Include="Gameplay\AlternateGameSetupTests.cs" />
     <Compile Include="Gameplay\ColorServiceTests.cs" />
-    <Compile Include="Gameplay\GameEngineTests.cs" />
+    <Compile Include="Gameplay\GameboardViewModelTests.cs" />
     <Compile Include="Gameplay\GameTests.cs" />
     <Compile Include="Gameplay\LocationRepositoryTests.cs" />
     <Compile Include="Gameplay\RandomSorterTests.cs" />

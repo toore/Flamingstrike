@@ -13,7 +13,7 @@ using Rhino.Mocks;
 namespace RISK.Tests.Gameplay
 {
     [TestFixture]
-    public class GameEngineTests
+    public class GameboardViewModelTests
     {
         private GameboardViewModel _gameboardViewModel;
         private IGame _game;
