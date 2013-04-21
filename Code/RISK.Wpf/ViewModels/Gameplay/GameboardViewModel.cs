@@ -60,17 +60,10 @@ namespace GuiWpf.ViewModels.Gameplay
         private void UpdateTerritory(ITerritory territory)
         {
             var location = territory.Location;
-            var territoryViewModel = FindTerritoryViewModel(location, WorldMapViewModel.WorldMapViewModels);
+            var territoryViewModel = WorldMapViewModel.WorldMapViewModels.Get(location);
 
             territoryViewModel.IsEnabled = _currentTurn.CanSelect(location);
             _territoryViewModelUpdater.UpdateColor(territoryViewModel, territory);
-        }
-
-        private static ITerritoryViewModel FindTerritoryViewModel(ILocation location, IEnumerable<IWorldMapViewModel> worldMapViewModels)
-        {
-            return worldMapViewModels
-                .OfType<ITerritoryViewModel>()
-                .Single(x => x.Location == location);
         }
     }
 }

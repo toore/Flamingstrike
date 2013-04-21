@@ -82,6 +82,7 @@
     <Compile Include="Services\TerritoryViewModelUpdater.cs" />
     <Compile Include="ViewModels\GameboardViewModelFactory.cs" />
     <Compile Include="ViewModels\GameFactory.cs" />
+    <Compile Include="ViewModels\Gameplay\Map\WorldMapViewModelsExtensions.cs" />
     <Compile Include="ViewModels\GameSetupMessage.cs" />
     <Compile Include="ViewModels\IGameboardViewModelFactory.cs" />
     <Compile Include="ViewModels\IGameFactory.cs" />
