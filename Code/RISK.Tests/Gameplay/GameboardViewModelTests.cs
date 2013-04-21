@@ -27,7 +27,8 @@ namespace RISK.Tests.Gameplay
         private ITerritoryViewModel _viewModel2;
         private IWorldMap _worldMap;
         private ITerritoryViewModelUpdater _territoryViewModelUpdater;
-        private ITurn _turn;
+        private ITurn _turn1;
+        private ITurn _turn2;
         private ITerritory _territory1;
         private ITerritory _territory2;
 
@@ -54,8 +55,10 @@ namespace RISK.Tests.Gameplay
             _worldMap.GetTerritory(_location1).Returns(_territory1);
             _worldMap.GetTerritory(_location2).Returns(_territory2);
             _game.GetWorldMap().Returns(_worldMap);
-            _turn = Substitute.For<ITurn>();
-            _game.GetNextTurn().Returns(_turn);
+            
+            _turn1 = Substitute.For<ITurn>();
+            _turn2 = Substitute.For<ITurn>();
+            _game.GetNextTurn().Returns(_turn1, _turn2);
 
             _viewModel1 = StubWorldViewModel(_location1);
             _viewModel2 = StubWorldViewModel(_location2);
@@ -79,23 +82,28 @@ namespace RISK.Tests.Gameplay
         {
             _gameboardViewModel.SelectLocation(_location1);
 
-            _turn.Received().Select(_location1);
+            _turn1.Received().Select(_location1);
         }
 
         [Test]
         public void SelectLocation_invokes_turn_attack()
         {
-            _turn.IsTerritorySelected.Returns(true);
+            _turn1.IsTerritorySelected.Returns(true);
 
             _gameboardViewModel.SelectLocation(_location2);
 
-            _turn.Received().Attack(_location2);
+            _turn1.Received().Attack(_location2);
         }
 
         [Test]
         public void Ends_turn_and_gets_next_turn()
         {
+            _game.ClearReceivedCalls();
+
             _gameboardViewModel.EndTurn();
+
+            _turn1.Received(1).EndTurn();
+            _game.Received(1).GetNextTurn();
         }
 
         private ITerritoryViewModel StubWorldViewModel(ILocation location)

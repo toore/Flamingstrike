@@ -5,5 +5,6 @@ namespace GuiWpf.ViewModels.Gameplay
     public interface IGameboardViewModel : IMainGameViewViewModel
     {
         WorldMapViewModel WorldMapViewModel { get; }
+        void EndTurn();
     }
 }

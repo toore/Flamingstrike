@@ -81,6 +81,8 @@ namespace RISK.Tests.Specifications
                 {
                     ClickOn(_locationProvider.NorthAfrica);
                     ClickOn(_locationProvider.Brazil);
+
+                    EndTurn();
                 };
 
             it["player 1 should occupy North Africa"] = () => _worldMap.GetTerritory(_locationProvider.NorthAfrica).Owner.Should().Be(_player1);
@@ -88,6 +90,12 @@ namespace RISK.Tests.Specifications
             it["player 1 should occupy Brazil"] = () => _worldMap.GetTerritory(_locationProvider.Brazil).Owner.Should().Be(_player1);
             it["Brazil should have 4 armies"] = () => _worldMap.GetTerritory(_locationProvider.Brazil).Armies.Should().Be(4);
             it["player 1 should have a card when turn ends"] = () => _player1.Cards.Count().Should().Be(1);
+        }
+
+        private void EndTurn()
+        {
+            var gameboardViewModel = (IGameboardViewModel)_mainGameBoardViewModel.MainViewModel;
+            gameboardViewModel.EndTurn();
         }
 
         private void InjectWorldMapFactory()

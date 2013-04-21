@@ -10,5 +10,6 @@ namespace RISK.Domain.GamePlaying
         bool CanSelect(ILocation location);
         void Select(ILocation location);
         bool IsTerritorySelected { get; }
+        void EndTurn();
     }
 }

@@ -40,7 +40,9 @@ namespace GuiWpf.ViewModels.Gameplay
 
         public void EndTurn()
         {
-            throw new System.NotImplementedException();
+            _currentTurn.EndTurn();
+
+            BeginNextPlayerTurn();
         }
 
         public void SelectLocation(ILocation location)

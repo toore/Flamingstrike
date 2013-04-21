@@ -3,7 +3,8 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:Gameboard="clr-namespace:GuiWpf.ViewModels.Gameplay"
+    xmlns:Gameboard="clr-namespace:GuiWpf.ViewModels.Gameplay" xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+    xmlns:cal="clr-namespace:Caliburn.Micro;assembly=Caliburn.Micro"
     mc:Ignorable="d"
     d:DesignHeight="768" d:DesignWidth="1366"
     d:DataContext="{Binding Source={x:Static Gameboard:GameboardViewModelTestData.ViewModel}}">
@@ -17,11 +18,29 @@
     </UserControl.Resources>
 
     <Grid
-
         HorizontalAlignment="Stretch"
         VerticalAlignment="Stretch">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
 
-        <Viewbox Stretch="Uniform">
+        <StackPanel Orientation="Horizontal">
+            <Button
+                Content="End Turn" 
+                Style="{StaticResource StandardButtonStyle}"
+                Margin="5">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="Click">
+                        <cal:ActionMessage MethodName="EndTurn" />
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </Button>
+        </StackPanel>
+
+        <Viewbox 
+            Stretch="Uniform"
+            Grid.Row="1">
             <ContentControl Content="{Binding WorldMapViewModel}" />
         </Viewbox>
 

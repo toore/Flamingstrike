@@ -6,6 +6,7 @@
 
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="TerritoryStyles.xaml" />
+        <ResourceDictionary Source="../GameResources.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
     <DataTemplate DataType="{x:Type Map:WorldMapViewModel}">

@@ -24,6 +24,12 @@ namespace RISK.Domain.GamePlaying
             get { return SelectedTerritory != null; }
         }
 
+        public void EndTurn()
+        {
+            if(PlayerShouldReceiveCardWhenTurnEnds())
+            {}
+        }
+
         public bool CanSelect(ILocation location)
         {
             return GetTerritory(location).Owner == _player;
