@@ -38,6 +38,11 @@ namespace GuiWpf.ViewModels.Gameplay
             _currentTurn = _game.GetNextTurn();
         }
 
+        public void EndTurn()
+        {
+            throw new System.NotImplementedException();
+        }
+
         public void SelectLocation(ILocation location)
         {
             if (_currentTurn.IsTerritorySelected)

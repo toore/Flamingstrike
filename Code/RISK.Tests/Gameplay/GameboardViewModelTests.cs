@@ -4,11 +4,11 @@ using FluentAssertions;
 using GuiWpf.Services;
 using GuiWpf.ViewModels.Gameplay;
 using GuiWpf.ViewModels.Gameplay.Map;
+using NSubstitute;
 using NUnit.Framework;
 using RISK.Domain.Entities;
 using RISK.Domain.GamePlaying;
 using RISK.Domain.Repositories;
-using Rhino.Mocks;
 
 namespace RISK.Tests.Gameplay
 {
@@ -34,35 +34,36 @@ namespace RISK.Tests.Gameplay
         [SetUp]
         public void SetUp()
         {
-            _game = MockRepository.GenerateStub<IGame>();
-            _locationProvider = MockRepository.GenerateStub<ILocationProvider>();
-            _worldMapViewModelFactory = MockRepository.GenerateStub<IWorldMapViewModelFactory>();
-            _territoryViewModelUpdater = MockRepository.GenerateStub<ITerritoryViewModelUpdater>();
+            _game = Substitute.For<IGame>();
+            _locationProvider = Substitute.For<ILocationProvider>();
+            _worldMapViewModelFactory = Substitute.For<IWorldMapViewModelFactory>();
+            _territoryViewModelUpdater = Substitute.For<ITerritoryViewModelUpdater>();
 
-            _location1 = MockRepository.GenerateStub<ILocation>();
-            _location2 = MockRepository.GenerateStub<ILocation>();
+            _location1 = Substitute.For<ILocation>();
+            _location2 = Substitute.For<ILocation>();
             _allLocations = new List<ILocation>
                 {
                     _location1,
                     _location2
                 };
-            _locationProvider.Stub(x => x.GetAll()).Return(_allLocations);
+            _locationProvider.GetAll().Returns(_allLocations);
 
-            _worldMap = MockRepository.GenerateStub<IWorldMap>();
+            _worldMap = Substitute.For<IWorldMap>();
             _territory1 = new Territory(_location1);
             _territory2 = new Territory(_location2);
-            _worldMap.Stub(x => x.GetTerritory(_location1)).Return(_territory1);
-            _worldMap.Stub(x => x.GetTerritory(_location2)).Return(_territory2);
-            _game.Stub(x => x.GetWorldMap()).Return(_worldMap);
-            _turn = MockRepository.GenerateStub<ITurn>();
-            _game.Stub(x => x.GetNextTurn()).Return(_turn);
+            _worldMap.GetTerritory(_location1).Returns(_territory1);
+            _worldMap.GetTerritory(_location2).Returns(_territory2);
+            _game.GetWorldMap().Returns(_worldMap);
+            _turn = Substitute.For<ITurn>();
+            _game.GetNextTurn().Returns(_turn);
 
             _viewModel1 = StubWorldViewModel(_location1);
             _viewModel2 = StubWorldViewModel(_location2);
             _worldMapViewModel = new WorldMapViewModel();
             _worldMapViewModel.WorldMapViewModels.Add(_viewModel1);
             _worldMapViewModel.WorldMapViewModels.Add(_viewModel2);
-            _worldMapViewModelFactory.Stub(x => x.Create(Arg<IWorldMap>.Is.Equal(_worldMap), Arg<Action<ILocation>>.Is.Anything)).Return(_worldMapViewModel);
+            
+            _worldMapViewModelFactory.Create(Arg.Is(_worldMap), Arg.Any<Action<ILocation>>()).Returns(_worldMapViewModel);
 
             _gameboardViewModel = new GameboardViewModel(_game, _locationProvider, _worldMapViewModelFactory, _territoryViewModelUpdater);
         }
@@ -78,23 +79,29 @@ namespace RISK.Tests.Gameplay
         {
             _gameboardViewModel.SelectLocation(_location1);
 
-            _turn.AssertWasCalled(x => x.Select(_location1));
+            _turn.Received().Select(_location1);
         }
 
         [Test]
         public void SelectLocation_invokes_turn_attack()
         {
-            _turn.Stub(x => x.IsTerritorySelected).Return(true);
+            _turn.IsTerritorySelected.Returns(true);
 
             _gameboardViewModel.SelectLocation(_location2);
 
-            _turn.AssertWasCalled(x => x.Attack(_location2));
+            _turn.Received().Attack(_location2);
+        }
+
+        [Test]
+        public void Ends_turn_and_gets_next_turn()
+        {
+            _gameboardViewModel.EndTurn();
         }
 
         private ITerritoryViewModel StubWorldViewModel(ILocation location)
         {
-            var worldMapViewModel = MockRepository.GenerateStub<ITerritoryViewModel>();
-            worldMapViewModel.Stub(x => x.Location).Return(location);
+            var worldMapViewModel = Substitute.For<ITerritoryViewModel>();
+            worldMapViewModel.Location.Returns(location);
             return worldMapViewModel;
         }
     }
