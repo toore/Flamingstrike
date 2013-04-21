@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
+using RISK.Domain.Entities;
 using RISK.Domain.Extensions;
 using RISK.Domain.Repositories;
 
@@ -10,6 +12,7 @@ namespace RISK.Domain.GamePlaying
      * and take turns placing their armies. The original rules from 1959 state that the entire deck of Risk cards (minus the wild cards) is dealt out, 
      * assigning players to the territories on their cards. One and only one army is placed on each territory before the game commences.
      */
+
     public class AlternateGameSetup : IAlternateGameSetup
     {
         private readonly IPlayerRepository _playerRepository;
@@ -29,18 +32,18 @@ namespace RISK.Domain.GamePlaying
         {
             var worldMap = _worldMapFactory.Create();
 
-            var players = _playerRepository.GetAll();
-            var playersInRandomOrder = _randomSorter.Sort(players)
+            var playersInRandomOrder = _randomSorter.Sort(_playerRepository.GetAll())
                 .ToList();
 
-            var locations = _locationProvider.GetAll();
-            var locationsInRandomOrder = _randomSorter.Sort(locations);
+            var locationsInRandomOrder = _randomSorter.Sort(_locationProvider.GetAll())
+                .ToList();
 
             var player = playersInRandomOrder.First();
 
             foreach (var location in locationsInRandomOrder)
             {
-                worldMap.GetTerritory(location).Owner = player;
+                var territory = worldMap.GetTerritory(location);
+                territory.Owner = player;
 
                 player = playersInRandomOrder.GetNextOrFirst(player);
             }

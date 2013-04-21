@@ -3,7 +3,6 @@ using FluentAssertions;
 using NSubstitute;
 using NUnit.Framework;
 using RISK.Domain.Entities;
-using RISK.Domain.Extensions;
 using RISK.Domain.GamePlaying;
 using RISK.Domain.Repositories;
 
@@ -40,10 +39,10 @@ namespace RISK.Tests.Gameplay
             _location1 = Substitute.For<ILocation>();
             _location2 = Substitute.For<ILocation>();
             _location3 = Substitute.For<ILocation>();
-            var locations = new[] { _location1, _location2, _location3 };
+            var locations = Enumerable.Empty<ILocation>().ToList();
             _locationProvider.GetAll().Returns(locations);
 
-            _worldMap = new WorldMap(_locationProvider);
+            _worldMap = Substitute.For<IWorldMap>();
             _worldMapFactory.Create().Returns(_worldMap);
 
             _alternateGameSetup = new AlternateGameSetup(_playerRepository, _locationProvider, _randomSorter, _worldMapFactory);
@@ -61,13 +60,13 @@ namespace RISK.Tests.Gameplay
         }
 
         [Test]
-        public void Initializes_all_territories_with_owners()
+        public void Initializes_all_territories_in_random_order()
         {
             var worldMap = _alternateGameSetup.Initialize();
 
-            worldMap.GetTerritory(_location1).HasOwner().Should().BeTrue();
-            worldMap.GetTerritory(_location2).HasOwner().Should().BeTrue();
-            worldMap.GetTerritory(_location3).HasOwner().Should().BeTrue();
+            worldMap.GetTerritory(_location1).Owner.Should().Be(_player1);
+            worldMap.GetTerritory(_location2).Owner.Should().Be(_player2);
+            worldMap.GetTerritory(_location3).Owner.Should().Be(_player1);
         }
     }
 }
