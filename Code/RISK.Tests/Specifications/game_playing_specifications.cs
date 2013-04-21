@@ -8,6 +8,7 @@ using GuiWpf.ViewModels;
 using GuiWpf.ViewModels.Gameplay;
 using GuiWpf.ViewModels.Gameplay.Map;
 using GuiWpf.ViewModels.Setup;
+using NSubstitute;
 using RISK.Domain.Entities;
 using RISK.Domain.Extensions;
 using RISK.Domain.GamePlaying;
@@ -62,7 +63,7 @@ namespace RISK.Tests.Specifications
                 {
                     InjectPlayerRepository();
                     InjectLocationProvider();
-                    InjectWorldMap();
+                    InjectWorldMapFactory();
                     InjectBattleCalculatorWithAttackingFiveDefendingOneDefenderLosesOne();
 
                     _mainGameBoardViewModel = ObjectFactory.GetInstance<IMainGameViewModel>();
@@ -73,7 +74,7 @@ namespace RISK.Tests.Specifications
                     _player2 = _playerRepository.GetAll().Second();
 
                     PlayerOneOccupiesNorthAfricaWithFiveArmies();
-                    PlayerTwoOccupiesEveryUnoccupiedTerritoryWithOneArmy();
+                    PlayerTwoOccupiesEveryTerritoryExceptNorthAfricaWithOneArmy();
                 };
 
             act = () =>
@@ -89,10 +90,14 @@ namespace RISK.Tests.Specifications
             it["player 1 should have a card when turn ends"] = () => _player1.Cards.Count().Should().Be(1);
         }
 
-        private void InjectWorldMap()
+        private void InjectWorldMapFactory()
         {
             _worldMap = new WorldMap(_locationProvider);
-            ObjectFactory.Inject(_worldMap);
+
+            var worldMapFactory = Substitute.For<IWorldMapFactory>();
+            worldMapFactory.Create().Returns(_worldMap);
+
+            ObjectFactory.Inject(worldMapFactory);
         }
 
         private void SelectTwoHumanPlayersAndConfirm()
@@ -110,9 +115,9 @@ namespace RISK.Tests.Specifications
             UpdateTerritory(_locationProvider.NorthAfrica, _player1, 5);
         }
 
-        private void PlayerTwoOccupiesEveryUnoccupiedTerritoryWithOneArmy()
+        private void PlayerTwoOccupiesEveryTerritoryExceptNorthAfricaWithOneArmy()
         {
-            UpdateAllTerritoriesWithoutOwner(_player2, 1);
+            UpdateAllTerritoriesExcept(_locationProvider.NorthAfrica, _player2, 1);
         }
 
         private void ClickOn(ILocation territory)
@@ -155,11 +160,11 @@ namespace RISK.Tests.Specifications
             territory.Armies = armies;
         }
 
-        private void UpdateAllTerritoriesWithoutOwner(IPlayer owner, int armies)
+        private void UpdateAllTerritoriesExcept(ILocation location, IPlayer owner, int armies)
         {
             _locationProvider.GetAll()
+                .Where(x => x != location)
                 .Select(x => _worldMap.GetTerritory(x))
-                .Where(x => !x.HasOwner())
                 .Apply(x =>
                     {
                         x.Owner = owner;
