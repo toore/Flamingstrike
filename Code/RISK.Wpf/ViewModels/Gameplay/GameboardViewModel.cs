@@ -28,14 +28,16 @@ namespace GuiWpf.ViewModels.Gameplay
                 .Select(worldMap.GetTerritory)
                 .ToList();
 
-            BeginNextPlayerTurn();
-
             WorldMapViewModel = worldMapViewModelFactory.Create(worldMap, SelectLocation);
+
+            BeginNextPlayerTurn();
         }
 
         private void BeginNextPlayerTurn()
         {
             _currentTurn = _game.GetNextTurn();
+
+            UpdateWorldMap();
         }
 
         public void EndTurn()

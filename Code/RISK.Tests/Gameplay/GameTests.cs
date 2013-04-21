@@ -1,10 +1,9 @@
 ﻿using FluentAssertions;
+using NSubstitute;
 using NUnit.Framework;
 using RISK.Domain.Entities;
-using RISK.Domain.Extensions;
 using RISK.Domain.GamePlaying;
 using RISK.Domain.Repositories;
-using Rhino.Mocks;
 
 namespace RISK.Tests.Gameplay
 {
@@ -15,47 +14,55 @@ namespace RISK.Tests.Gameplay
         private IWorldMap _worldMap;
         private ITurnFactory _turnFactory;
         private ITurn _nextTurn;
+        private ITurn _turnAfterNextTurn;
         private IPlayerRepository _playerRepository;
-        private IPlayer _player;
+        private IPlayer _player1;
+        private IPlayer _player2;
         private IAlternateGameSetup _alternateGameSetup;
 
         [SetUp]
         public void SetUp()
         {
-            _worldMap = MockRepository.GenerateStub<IWorldMap>();
-            _turnFactory = MockRepository.GenerateStub<ITurnFactory>();
-            _playerRepository = MockRepository.GenerateStub<IPlayerRepository>();
-            _alternateGameSetup = MockRepository.GenerateStub<IAlternateGameSetup>();
+            _worldMap = Substitute.For<IWorldMap>();
+            _turnFactory = Substitute.For<ITurnFactory>();
+            _playerRepository = Substitute.For<IPlayerRepository>();
+            _alternateGameSetup = Substitute.For<IAlternateGameSetup>();
 
-            _nextTurn = MockRepository.GenerateStub<ITurn>();
-            _player = MockRepository.GenerateStub<IPlayer>();
-            _turnFactory.Stub(x => x.Create(_player, _worldMap)).Return(_nextTurn);
+            _nextTurn = Substitute.For<ITurn>();
+            _turnAfterNextTurn = Substitute.For<ITurn>();
+            _player1 = Substitute.For<IPlayer>();
+            _player2 = Substitute.For<IPlayer>();
+            _turnFactory.Create(_player1, _worldMap).Returns(_nextTurn);
+            _turnFactory.Create(_player2, _worldMap).Returns(_turnAfterNextTurn);
 
-            _playerRepository.Stub(x => x.GetAll()).Return(_player.AsList());
+            _playerRepository.GetAll().Returns(new[] { _player1, _player2 });
 
-            _alternateGameSetup.Stub(x => x.Initialize()).Return(_worldMap);
+            _alternateGameSetup.Initialize().Returns(_worldMap);
 
             _game = new Game(_turnFactory, _playerRepository, _alternateGameSetup);
         }
 
         [Test]
-        public void GetWorldMap_gets_world_map_instance()
+        public void Gets_world_map()
         {
             _game.GetWorldMap().Should().Be(_worldMap);
         }
 
         [Test]
-        public void GetNextTurn_creates_next_turn()
+        public void Gets_next_turn()
         {
-            var actualNextTurn = _game.GetNextTurn();
+            var actual = _game.GetNextTurn();
 
-            actualNextTurn.Should().Be(_nextTurn);
+            actual.Should().Be(_nextTurn);
         }
 
         [Test]
-        public void Initializes_with_alternate_territory_assignment()
+        public void Gets_turn_after_next_turn()
         {
-            _alternateGameSetup.AssertWasCalled(x => x.Initialize());
+            _game.GetNextTurn();
+            var actual = _game.GetNextTurn();
+
+            actual.Should().Be(_turnAfterNextTurn);
         }
     }
 }
