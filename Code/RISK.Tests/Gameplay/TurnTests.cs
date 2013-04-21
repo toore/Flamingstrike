@@ -1,11 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Linq;
 using FluentAssertions;
+using NSubstitute;
 using NUnit.Framework;
 using RISK.Domain.Entities;
 using RISK.Domain.Extensions;
 using RISK.Domain.GamePlaying;
-using Rhino.Mocks;
 
 namespace RISK.Tests.Gameplay
 {
@@ -21,25 +21,21 @@ namespace RISK.Tests.Gameplay
         private ITerritory _territory;
         private ILocation _otherLocation;
         private ITerritory _otherTerritory;
-        private LazyReturnValue<IEnumerable<ILocation>> _locationConnections;
-        private LazyReturnValue<IEnumerable<ILocation>> _otherLocationConnections;
 
         [SetUp]
         public void SetUp()
         {
-            _currentPlayer = MockRepository.GenerateStub<IPlayer>();
-            _worldMap = MockRepository.GenerateStub<IWorldMap>();
-            _battleCalculator = MockRepository.GenerateStub<IBattleCalculator>();
+            _currentPlayer = Substitute.For<IPlayer>();
+            _worldMap = Substitute.For<IWorldMap>();
+            _battleCalculator = Substitute.For<IBattleCalculator>();
 
             _turn = new Turn(_currentPlayer, _worldMap, _battleCalculator);
 
-            _locationConnections = new LazyReturnValue<IEnumerable<ILocation>>(new List<ILocation>());
-            _location = GenerateLocationStub(_locationConnections);
+            _location = Substitute.For<ILocation>();
             _territory = GenerateTerritoryStub(_location, _currentPlayer);
 
-            _otherLocationConnections = new LazyReturnValue<IEnumerable<ILocation>>(new List<ILocation>());
-            _otherLocation = GenerateLocationStub(_otherLocationConnections);
-            _otherPlayer = MockRepository.GenerateStub<IPlayer>();
+            _otherLocation = Substitute.For<ILocation>();
+            _otherPlayer = Substitute.For<IPlayer>();
             _otherTerritory = GenerateTerritoryStub(_otherLocation, _otherPlayer);
         }
 
@@ -96,24 +92,22 @@ namespace RISK.Tests.Gameplay
         {
             SelectAndAttack();
 
-            _battleCalculator.AssertWasNotCalled(x => x.Attack(null, null), x => x.IgnoreArguments());
+            _battleCalculator.DidNotReceiveWithAnyArgs().Attack(null, null);
         }
 
         [Test]
         public void Can_attack_when_territories_are_connected()
         {
-            StubLocationIsConnectedWithOtherLocation();
+            LocationIsConnectedToOtherLocation();
 
             SelectAndAttack();
 
-            _battleCalculator.AssertWasCalled(x => x.Attack(_territory, _otherTerritory));
+            _battleCalculator.Received().Attack(_territory, _otherTerritory);
         }
 
         [Test]
         public void Player_should_not_receive_a_card_when_attack_fails()
         {
-            StubLocationIsConnectedWithOtherLocation();
-
             SelectAndAttack();
 
             _turn.PlayerShouldReceiveCardWhenTurnEnds().Should().BeFalse();
@@ -122,8 +116,8 @@ namespace RISK.Tests.Gameplay
         [Test]
         public void Player_should_receive_a_card_when_attack_succeeds()
         {
-            StubLocationIsConnectedWithOtherLocation();
-            _battleCalculator.Stub(x => x.Attack(_territory, _otherTerritory)).WhenCalled(x => _otherTerritory.Owner = _currentPlayer);
+            LocationIsConnectedToOtherLocation();
+            _battleCalculator.When(x => x.Attack(_territory, _otherTerritory)).Do(x => _otherTerritory.Owner = _currentPlayer);
 
             SelectAndAttack();
 
@@ -136,9 +130,17 @@ namespace RISK.Tests.Gameplay
             _turn.PlayerShouldReceiveCardWhenTurnEnds().Should().BeFalse();
         }
 
-        private void StubLocationIsConnectedWithOtherLocation()
+        [Test]
+        public void Player_should_not_receive_card_when_turn_ends()
         {
-            _locationConnections.Value = _otherLocation.AsList();
+            _turn.EndTurn();
+
+            _currentPlayer.Cards.Count().Should().Be(0);
+        }
+
+        private void LocationIsConnectedToOtherLocation()
+        {
+            _location.Connections.Returns(_otherLocation.AsList());
         }
 
         private void SelectAndAttack()
@@ -147,21 +149,13 @@ namespace RISK.Tests.Gameplay
             _turn.Attack(_otherLocation);
         }
 
-        private static ILocation GenerateLocationStub(LazyReturnValue<IEnumerable<ILocation>> connections)
-        {
-            var location = MockRepository.GenerateStub<ILocation>();
-            location.Stub(x => x.Connections).LazyReturnValue(connections);
-
-            return location;
-        }
-
         private ITerritory GenerateTerritoryStub(ILocation location, IPlayer owner)
         {
-            var territory = MockRepository.GenerateStub<ITerritory>();
-            territory.Stub(x => x.Location).Return(location);
+            var territory = Substitute.For<ITerritory>();
+            territory.Location.Returns(location);
             territory.Owner = owner;
 
-            _worldMap.Stub(x => x.GetTerritory(location)).Return(territory);
+            _worldMap.GetTerritory(location).Returns(territory);
 
             return territory;
         }
