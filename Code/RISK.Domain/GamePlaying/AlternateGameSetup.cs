@@ -30,19 +30,19 @@ namespace RISK.Domain.GamePlaying
             var worldMap = _worldMapFactory.Create();
 
             var players = _playerRepository.GetAll();
-            var playersInRandomizedOrder = _randomSorter.RandomSort(players)
+            var playersInRandomOrder = _randomSorter.Sort(players)
                 .ToList();
 
             var locations = _locationProvider.GetAll();
-            var locationsInRandomizedOrder = _randomSorter.RandomSort(locations);
+            var locationsInRandomOrder = _randomSorter.Sort(locations);
 
-            var player = playersInRandomizedOrder.First();
+            var player = playersInRandomOrder.First();
 
-            foreach (var location in locationsInRandomizedOrder)
+            foreach (var location in locationsInRandomOrder)
             {
                 worldMap.GetTerritory(location).Owner = player;
 
-                player = playersInRandomizedOrder.GetNextOrFirst(player);
+                player = playersInRandomOrder.GetNextOrFirst(player);
             }
 
             return worldMap;

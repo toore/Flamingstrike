@@ -30,7 +30,7 @@ namespace RISK.Tests.Gameplay
             _randomWrapper.Stub(x => x.Next(2)).Return(0);
             _randomWrapper.Stub(x => x.Next(1)).Return(0);
 
-            var orderedSequence = _randomSorter.RandomSort(sequence);
+            var orderedSequence = _randomSorter.Sort(sequence);
 
             orderedSequence.First().Should().Be("third element");
             orderedSequence.Second().Should().Be("first element");

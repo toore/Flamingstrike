@@ -48,8 +48,8 @@ namespace RISK.Tests.Gameplay
 
             _alternateGameSetup = new AlternateGameSetup(_playerRepository, _locationProvider, _randomSorter, _worldMapFactory);
 
-            _randomSorter.RandomSort(playersInRepository).Returns(new[] { _player1, _player2 });
-            _randomSorter.RandomSort(locations).Returns(new[] { _location3, _location2, _location1 });
+            _randomSorter.Sort(playersInRepository).Returns(new[] { _player1, _player2 });
+            _randomSorter.Sort(locations).Returns(new[] { _location3, _location2, _location1 });
         }
 
         [Test]

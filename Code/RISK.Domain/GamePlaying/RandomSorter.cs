@@ -12,7 +12,7 @@ namespace RISK.Domain.GamePlaying
             _randomWrapper = randomWrapper;
         }
 
-        public IEnumerable<T> RandomSort<T>(IEnumerable<T> collection)
+        public IEnumerable<T> Sort<T>(IEnumerable<T> collection)
         {
             var originalCollection = collection.ToList();
 
