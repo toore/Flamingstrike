@@ -21,15 +21,26 @@
         HorizontalAlignment="Stretch"
         VerticalAlignment="Stretch">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <StackPanel Orientation="Horizontal">
-            <Button
-                Content="End Turn" 
-                Style="{StaticResource StandardButtonStyle}"
-                Margin="5">
+        <Viewbox
+            Stretch="Uniform"
+            Grid.Row="0">
+            <ContentControl Content="{Binding WorldMapViewModel}" />
+        </Viewbox>
+        
+        <StackPanel
+            Orientation="Horizontal"
+            Grid.Row="1">
+            <StackPanel.Resources>
+                <Style TargetType="Button" BasedOn="{StaticResource StandardButtonStyle}">
+                    <Setter Property="Margin" Value="5" />
+                </Style>
+            </StackPanel.Resources>
+            <Button Content="Fortify"></Button>
+            <Button Content="End Turn">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="Click">
                         <cal:ActionMessage MethodName="EndTurn" />
@@ -37,12 +48,6 @@
                 </i:Interaction.Triggers>
             </Button>
         </StackPanel>
-
-        <Viewbox 
-            Stretch="Uniform"
-            Grid.Row="1">
-            <ContentControl Content="{Binding WorldMapViewModel}" />
-        </Viewbox>
 
     </Grid>
 </UserControl>
