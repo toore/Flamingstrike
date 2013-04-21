@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using FluentAssertions;
 using NSubstitute;
 using NUnit.Framework;
@@ -21,6 +20,7 @@ namespace RISK.Tests.Gameplay
         private ITerritory _territory;
         private ILocation _otherLocation;
         private ITerritory _otherTerritory;
+        private ICardFactory _cardFactory;
 
         [SetUp]
         public void SetUp()
@@ -28,8 +28,9 @@ namespace RISK.Tests.Gameplay
             _currentPlayer = Substitute.For<IPlayer>();
             _worldMap = Substitute.For<IWorldMap>();
             _battleCalculator = Substitute.For<IBattleCalculator>();
+            _cardFactory = Substitute.For<ICardFactory>();
 
-            _turn = new Turn(_currentPlayer, _worldMap, _battleCalculator);
+            _turn = new Turn(_currentPlayer, _worldMap, _battleCalculator, _cardFactory);
 
             _location = Substitute.For<ILocation>();
             _territory = GenerateTerritoryStub(_location, _currentPlayer);
@@ -109,8 +110,9 @@ namespace RISK.Tests.Gameplay
         public void Player_should_not_receive_a_card_when_attack_fails()
         {
             SelectAndAttack();
+            EndTurn();
 
-            _turn.PlayerShouldReceiveCardWhenTurnEnds().Should().BeFalse();
+            _currentPlayer.DidNotReceive().AddCard(null);
         }
 
         [Test]
@@ -120,14 +122,9 @@ namespace RISK.Tests.Gameplay
             _battleCalculator.When(x => x.Attack(_territory, _otherTerritory)).Do(x => _otherTerritory.Owner = _currentPlayer);
 
             SelectAndAttack();
+            EndTurn();
 
-            _turn.PlayerShouldReceiveCardWhenTurnEnds().Should().BeTrue();
-        }
-
-        [Test]
-        public void Player_should_not_receive_a_card_when_turn_begins()
-        {
-            _turn.PlayerShouldReceiveCardWhenTurnEnds().Should().BeFalse();
+            _currentPlayer.Received().AddCard(null);
         }
 
         [Test]
@@ -135,7 +132,7 @@ namespace RISK.Tests.Gameplay
         {
             _turn.EndTurn();
 
-            _currentPlayer.Cards.Count().Should().Be(0);
+            _currentPlayer.DidNotReceive().AddCard(null);
         }
 
         private void LocationIsConnectedToOtherLocation()
@@ -158,6 +155,11 @@ namespace RISK.Tests.Gameplay
             _worldMap.GetTerritory(location).Returns(territory);
 
             return territory;
+        }
+
+        private void EndTurn()
+        {
+            _turn.EndTurn();
         }
     }
 }

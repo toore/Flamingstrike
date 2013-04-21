@@ -64,6 +64,7 @@
     <Compile Include="Extensions\TerritoryExtensions.cs" />
     <Compile Include="GamePlaying\AlternateGameSetup.cs" />
     <Compile Include="GamePlaying\BattleCalculator.cs" />
+    <Compile Include="GamePlaying\CardFactory.cs" />
     <Compile Include="GamePlaying\DiceAndCalculation\Dices.cs" />
     <Compile Include="GamePlaying\DiceAndCalculation\DicesResult.cs" />
     <Compile Include="GamePlaying\DiceAndCalculation\DiceValueCalculator.cs" />
@@ -73,6 +74,7 @@
     <Compile Include="GamePlaying\IAlternateGameSetup.cs" />
     <Compile Include="GamePlaying\IBattleCalculator.cs" />
     <Compile Include="GamePlaying\DiceAndCalculation\IDices.cs" />
+    <Compile Include="GamePlaying\ICardFactory.cs" />
     <Compile Include="GamePlaying\IRandomizedPlayerRepository.cs" />
     <Compile Include="GamePlaying\IRandomSorter.cs" />
     <Compile Include="GamePlaying\IRandomWrapper.cs" />

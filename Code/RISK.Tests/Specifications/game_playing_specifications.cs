@@ -52,6 +52,7 @@ namespace RISK.Tests.Specifications
                     x.For<IColorService>().Use<ColorService>();
                     x.For<ITerritoryGuiDefinitionFactory>().Use<TerritoryGuiDefinitionFactory>();
                     x.For<ITextViewModelFactory>().Use<TextViewModelFactory>();
+                    x.For<ICardFactory>().Use<CardFactory>();
 
                     x.RegisterInterceptor(new HandleInterceptor<IGameSetupEventAggregator>());
                 });

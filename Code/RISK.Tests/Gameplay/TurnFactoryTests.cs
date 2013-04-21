@@ -11,13 +11,15 @@ namespace RISK.Tests.Gameplay
     {
         private TurnFactory _factory;
         private IBattleCalculator _battleCalculator;
+        private ICardFactory _cardFactory;
 
         [SetUp]
         public void SetUp()
         {
             _battleCalculator = Substitute.For<IBattleCalculator>();
+            _cardFactory = Substitute.For<ICardFactory>();
 
-            _factory = new TurnFactory(_battleCalculator);
+            _factory = new TurnFactory(_battleCalculator, _cardFactory);
         }
 
         [Test]

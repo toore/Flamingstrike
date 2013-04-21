@@ -8,13 +8,15 @@ namespace RISK.Domain.GamePlaying
         private readonly IPlayer _player;
         private readonly IWorldMap _worldMap;
         private readonly IBattleCalculator _battleCalculator;
+        private readonly ICardFactory _cardFactory;
         private bool _playerShouldReceiveCardWhenTurnEnds;
 
-        public Turn(IPlayer player, IWorldMap worldMap, IBattleCalculator battleCalculator)
+        public Turn(IPlayer player, IWorldMap worldMap, IBattleCalculator battleCalculator, ICardFactory cardFactory)
         {
             _player = player;
             _worldMap = worldMap;
             _battleCalculator = battleCalculator;
+            _cardFactory = cardFactory;
         }
 
         public ITerritory SelectedTerritory { get; private set; }
@@ -26,8 +28,10 @@ namespace RISK.Domain.GamePlaying
 
         public void EndTurn()
         {
-            if(PlayerShouldReceiveCardWhenTurnEnds())
-            {}
+            if (_playerShouldReceiveCardWhenTurnEnds)
+            {
+                _player.AddCard(_cardFactory.Create());
+            }
         }
 
         public bool CanSelect(ILocation location)
@@ -80,11 +84,6 @@ namespace RISK.Domain.GamePlaying
             {
                 _playerShouldReceiveCardWhenTurnEnds = true;
             }
-        }
-
-        public bool PlayerShouldReceiveCardWhenTurnEnds()
-        {
-            return _playerShouldReceiveCardWhenTurnEnds;
         }
 
         private bool HasPlayerOccupiedTerritory(ITerritory territoryToAttack)

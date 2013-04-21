@@ -6,5 +6,6 @@ namespace RISK.Domain.Entities
     {
         string Name { get; }
         IEnumerable<Card> Cards { get; }
+        void AddCard(Card card);
     }
 }
