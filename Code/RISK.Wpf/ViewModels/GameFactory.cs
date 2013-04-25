@@ -1,4 +1,5 @@
 ﻿using RISK.Domain.GamePlaying;
+using RISK.Domain.GamePlaying.Setup;
 using RISK.Domain.Repositories;
 
 namespace GuiWpf.ViewModels

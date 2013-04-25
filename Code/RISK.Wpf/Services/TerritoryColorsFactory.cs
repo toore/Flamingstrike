@@ -66,9 +66,9 @@ namespace GuiWpf.Services
 
         public ITerritoryColors Create(ITerritory territory)
         {
-            if (territory.HasOwner())
+            if (territory.IsAssignedToPlayer())
             {
-                return _colorService.GetPlayerTerritoryColors(territory.Owner);
+                return _colorService.GetPlayerTerritoryColors(territory.AssignedToPlayer);
             }
 
             return _colors[territory.Location]();

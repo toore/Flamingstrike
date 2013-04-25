@@ -3,7 +3,7 @@
     public interface ITerritory
     {
         ILocation Location { get; }
-        IPlayer Owner { get; set; }
+        IPlayer AssignedToPlayer { get; set; }
         int Armies { get; set; }
     }
 }

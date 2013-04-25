@@ -119,7 +119,7 @@ namespace RISK.Tests.Gameplay
         public void Player_should_receive_a_card_when_attack_succeeds()
         {
             LocationIsConnectedToOtherLocation();
-            _battleCalculator.When(x => x.Attack(_territory, _otherTerritory)).Do(x => _otherTerritory.Owner = _currentPlayer);
+            _battleCalculator.When(x => x.Attack(_territory, _otherTerritory)).Do(x => _otherTerritory.AssignedToPlayer = _currentPlayer);
 
             SelectAndAttack();
             EndTurn();
@@ -150,7 +150,7 @@ namespace RISK.Tests.Gameplay
         {
             var territory = Substitute.For<ITerritory>();
             territory.Location.Returns(location);
-            territory.Owner = owner;
+            territory.AssignedToPlayer = owner;
 
             _worldMap.GetTerritory(location).Returns(territory);
 

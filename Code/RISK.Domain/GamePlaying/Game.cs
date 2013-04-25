@@ -1,12 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using RISK.Domain.Entities;
+using RISK.Domain.GamePlaying.Setup;
 using RISK.Domain.Repositories;
 using RISK.Domain.Extensions;
 
 namespace RISK.Domain.GamePlaying
 {
-    public class Game : IGame
+    public class Game : IGame, ILocationSelector
     {
         private readonly IWorldMap _worldMap;
         private readonly ITurnFactory _turnFactory;
@@ -19,7 +20,13 @@ namespace RISK.Domain.GamePlaying
             _players = playerRepository.GetAll()
                 .ToList();
 
-            _worldMap = alternateGameSetup.Initialize();
+            _worldMap = alternateGameSetup.Initialize(this);
+        }
+
+        public ILocation Select(IEnumerable<ILocation> locations)
+        {
+            //TODO: Select from gui?
+            return locations.First();
         }
 
         public IWorldMap GetWorldMap()

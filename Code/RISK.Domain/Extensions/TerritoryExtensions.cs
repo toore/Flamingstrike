@@ -4,9 +4,9 @@ namespace RISK.Domain.Extensions
 {
     public static class TerritoryExtensions
     {
-        public static bool HasOwner(this ITerritory territory)
+        public static bool IsAssignedToPlayer(this ITerritory territory)
         {
-            return territory.Owner != null;
+            return territory.AssignedToPlayer != null;
         }
     }
 }

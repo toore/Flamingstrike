@@ -3,6 +3,7 @@ using GuiWpf.Services;
 using GuiWpf.ViewModels.Gameplay.Map;
 using RISK.Domain.Entities;
 using RISK.Domain.GamePlaying;
+using RISK.Domain.GamePlaying.Setup;
 using RISK.Domain.Repositories;
 
 namespace GuiWpf.ViewModels.Gameplay
@@ -27,7 +28,7 @@ namespace GuiWpf.ViewModels.Gameplay
             var worldMap = new WorldMap(locationProvider);
             var territory = worldMap.GetTerritory(locationProvider.Brazil);
             var humanPlayer = new HumanPlayer("pelle");
-            territory.Owner = humanPlayer;
+            territory.AssignedToPlayer = humanPlayer;
             territory.Armies = 99;
 
             var textViewModelFactory = new TextViewModelFactory(territoryLayoutInformationFactory);
@@ -36,7 +37,7 @@ namespace GuiWpf.ViewModels.Gameplay
             var playerRepository = new PlayerRepository();
             playerRepository.Add(humanPlayer);
 
-            var alternateGameSetup = new AlternateGameSetup(playerRepository, locationProvider, new RandomSorter(new RandomWrapper()), new WorldMapFactory(locationProvider));
+            var alternateGameSetup = new AlternateGameSetup(playerRepository, locationProvider, new RandomSorter(new RandomWrapper()), new WorldMapFactory(locationProvider), new InitialArmyCountProvider());
             ITurnFactory turnFactory = new TurnFactory(null, null);
             var game = new Game(turnFactory, playerRepository, alternateGameSetup);
             var gameboardViewModel = new GameboardViewModel(game, locationProvider, worldMapViewModelFactory, territoryViewModelUpdater);

@@ -9,7 +9,7 @@
 
         public ILocation Location { get; private set; }
 
-        public IPlayer Owner { get; set; }
+        public IPlayer AssignedToPlayer { get; set; }
         public int Armies { get; set; }
     }
 }

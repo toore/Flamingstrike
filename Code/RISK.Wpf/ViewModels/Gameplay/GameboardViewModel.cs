@@ -63,6 +63,7 @@ namespace GuiWpf.ViewModels.Gameplay
 
         private void UpdateWorldMap()
         {
+            // TODO: uppdatera numerär texter, uppdatera länder som ska kunna attackeras=>måste bli klickbara
             _territories.Apply(UpdateTerritory);
         }
 

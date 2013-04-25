@@ -13,6 +13,7 @@ using RISK.Domain.Entities;
 using RISK.Domain.Extensions;
 using RISK.Domain.GamePlaying;
 using RISK.Domain.GamePlaying.DiceAndCalculation;
+using RISK.Domain.GamePlaying.Setup;
 using RISK.Domain.Repositories;
 using Rhino.Mocks;
 using StructureMap;
@@ -53,6 +54,7 @@ namespace RISK.Tests.Specifications
                     x.For<ITerritoryGuiDefinitionFactory>().Use<TerritoryGuiDefinitionFactory>();
                     x.For<ITextViewModelFactory>().Use<TextViewModelFactory>();
                     x.For<ICardFactory>().Use<CardFactory>();
+                    x.For<IInitialArmyCountProvider>().Use<InitialArmyCountProvider>();
 
                     x.RegisterInterceptor(new HandleInterceptor<IGameSetupEventAggregator>());
                 });
@@ -86,9 +88,9 @@ namespace RISK.Tests.Specifications
                     EndTurn();
                 };
 
-            it["player 1 should occupy North Africa"] = () => _worldMap.GetTerritory(_locationProvider.NorthAfrica).Owner.Should().Be(_player1);
+            it["player 1 should occupy North Africa"] = () => _worldMap.GetTerritory(_locationProvider.NorthAfrica).AssignedToPlayer.Should().Be(_player1);
             it["North Africa should have 1 army"] = () => _worldMap.GetTerritory(_locationProvider.NorthAfrica).Armies.Should().Be(1);
-            it["player 1 should occupy Brazil"] = () => _worldMap.GetTerritory(_locationProvider.Brazil).Owner.Should().Be(_player1);
+            it["player 1 should occupy Brazil"] = () => _worldMap.GetTerritory(_locationProvider.Brazil).AssignedToPlayer.Should().Be(_player1);
             it["Brazil should have 4 armies"] = () => _worldMap.GetTerritory(_locationProvider.Brazil).Armies.Should().Be(4);
             it["player 1 should have a card when turn ends"] = () => _player1.Cards.Count().Should().Be(1);
         }
@@ -165,7 +167,7 @@ namespace RISK.Tests.Specifications
         private void UpdateTerritory(ILocation location, IPlayer owner, int armies)
         {
             var territory = _worldMap.GetTerritory(location);
-            territory.Owner = owner;
+            territory.AssignedToPlayer = owner;
             territory.Armies = armies;
         }
 
@@ -176,7 +178,7 @@ namespace RISK.Tests.Specifications
                 .Select(x => _worldMap.GetTerritory(x))
                 .Apply(x =>
                     {
-                        x.Owner = owner;
+                        x.AssignedToPlayer = owner;
                         x.Armies = armies;
                     });
         }

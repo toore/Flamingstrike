@@ -36,7 +36,7 @@ namespace RISK.Domain.GamePlaying
 
         public bool CanSelect(ILocation location)
         {
-            return GetTerritory(location).Owner == _player;
+            return GetTerritory(location).AssignedToPlayer == _player;
         }
 
         public void Select(ILocation location)
@@ -88,12 +88,12 @@ namespace RISK.Domain.GamePlaying
 
         private bool HasPlayerOccupiedTerritory(ITerritory territoryToAttack)
         {
-            return territoryToAttack.Owner == _player;
+            return territoryToAttack.AssignedToPlayer == _player;
         }
 
         private bool CanAttack(ITerritory territoryToAttack)
         {
-            var isTerritoryOccupiedByEnemy = territoryToAttack.Owner != _player;
+            var isTerritoryOccupiedByEnemy = territoryToAttack.AssignedToPlayer != _player;
             var isConnected = SelectedTerritory.Location.Connections.Contains(territoryToAttack.Location);
             var canAttack = isConnected && isTerritoryOccupiedByEnemy;
 

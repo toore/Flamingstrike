@@ -1,8 +1,10 @@
-﻿using FluentAssertions;
+﻿using System;
+using FluentAssertions;
 using NSubstitute;
 using NUnit.Framework;
 using RISK.Domain.Entities;
 using RISK.Domain.GamePlaying;
+using RISK.Domain.GamePlaying.Setup;
 using RISK.Domain.Repositories;
 
 namespace RISK.Tests.Gameplay
@@ -19,6 +21,7 @@ namespace RISK.Tests.Gameplay
         private IPlayer _player1;
         private IPlayer _player2;
         private IAlternateGameSetup _alternateGameSetup;
+        private ILocationSelector _locationSelector;
 
         [SetUp]
         public void SetUp()
@@ -37,9 +40,21 @@ namespace RISK.Tests.Gameplay
 
             _playerRepository.GetAll().Returns(new[] { _player1, _player2 });
 
-            _alternateGameSetup.Initialize().Returns(_worldMap);
+            _alternateGameSetup.Initialize(Arg.Any<ILocationSelector>()).Returns(_worldMap);
+            _alternateGameSetup.WhenForAnyArgs(x => x.Initialize(null)).Do(x => AlternateGameSetupInitializerSpy(x.Arg<ILocationSelector>()));
 
             _game = new Game(_turnFactory, _playerRepository, _alternateGameSetup);
+        }
+
+        private void AlternateGameSetupInitializerSpy(ILocationSelector locationSelector)
+        {
+            _locationSelector = locationSelector;
+        }
+
+        [Test]
+        public void Alternate_game_setup_is_initialized_with_game()
+        {
+            _locationSelector.Should().Be(_game, "AlternateGameSetup must be initialized with game instance");
         }
 
         [Test]

@@ -35,14 +35,14 @@ namespace RISK.Tests.Battle
         {
             StubDices(attackingArmies, defendingArmies, attackerCasualties, defenderCasualties);
 
-            var attacker = new Territory(new Location("attacker territory", new Continent())) { Owner = _attacker, Armies = attackingArmies };
-            var defender = new Territory(new Location("defender territory", new Continent())) { Owner = _defender, Armies = defendingArmies };
+            var attacker = new Territory(new Location("attacker territory", new Continent())) { AssignedToPlayer = _attacker, Armies = attackingArmies };
+            var defender = new Territory(new Location("defender territory", new Continent())) { AssignedToPlayer = _defender, Armies = defendingArmies };
 
             _battleCalculator.Attack(attacker, defender);
 
-            attacker.Owner.Should().Be(_attacker);
+            attacker.AssignedToPlayer.Should().Be(_attacker);
             attacker.Armies.Should().Be(expectedArmiesInAttackingTerritoryAfter);
-            defender.Owner.Should().Be(expectedOwnerAfterAttack);
+            defender.AssignedToPlayer.Should().Be(expectedOwnerAfterAttack);
             defender.Armies.Should().Be(expectedArmiesInDefendingTerritoryAfter);
         }
 

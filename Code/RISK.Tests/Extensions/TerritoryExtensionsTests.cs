@@ -1,8 +1,8 @@
 ﻿using FluentAssertions;
+using NSubstitute;
 using NUnit.Framework;
 using RISK.Domain.Entities;
 using RISK.Domain.Extensions;
-using Rhino.Mocks;
 
 namespace RISK.Tests.Extensions
 {
@@ -10,15 +10,15 @@ namespace RISK.Tests.Extensions
     public class TerritoryExtensionsTests
     {
         [Test]
-        public void HasOwner_is_true()
+        public void Is_assigned_to_player()
         {
-            new Territory(null) { Owner = MockRepository.GenerateStub<IPlayer>() }.HasOwner().Should().BeTrue();
+            new Territory(null) { AssignedToPlayer = Substitute.For<IPlayer>() }.IsAssignedToPlayer().Should().BeTrue();
         }
 
         [Test]
-        public void HasOwner_is_false()
+        public void Is_not_assigned_to_player()
         {
-            new Territory(null).HasOwner().Should().BeFalse();
+            new Territory(null).IsAssignedToPlayer().Should().BeFalse();
         }
     }
 }

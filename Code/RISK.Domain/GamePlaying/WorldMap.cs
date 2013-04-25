@@ -20,5 +20,12 @@ namespace RISK.Domain.GamePlaying
         {
             return _territories.Single(x => x.Location == location);
         }
+
+        public IEnumerable<ITerritory> GetTerritoriesAssignedTo(IPlayer player)
+        {
+            return _territories
+                .Where(x => x.AssignedToPlayer == player)
+                .ToList();
+        }
     }
 }
