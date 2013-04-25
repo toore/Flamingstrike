@@ -5,7 +5,6 @@ namespace RISK.Domain.GamePlaying
 {
     public class Turn : ITurn
     {
-        private readonly IPlayer _player;
         private readonly IWorldMap _worldMap;
         private readonly IBattleCalculator _battleCalculator;
         private readonly ICardFactory _cardFactory;
@@ -13,13 +12,14 @@ namespace RISK.Domain.GamePlaying
 
         public Turn(IPlayer player, IWorldMap worldMap, IBattleCalculator battleCalculator, ICardFactory cardFactory)
         {
-            _player = player;
+            Player = player;
             _worldMap = worldMap;
             _battleCalculator = battleCalculator;
             _cardFactory = cardFactory;
         }
 
         public ITerritory SelectedTerritory { get; private set; }
+        public IPlayer Player { get; private set; }
 
         public bool IsTerritorySelected
         {
@@ -30,13 +30,13 @@ namespace RISK.Domain.GamePlaying
         {
             if (_playerShouldReceiveCardWhenTurnEnds)
             {
-                _player.AddCard(_cardFactory.Create());
+                Player.AddCard(_cardFactory.Create());
             }
         }
 
         public bool CanSelect(ILocation location)
         {
-            return GetTerritory(location).AssignedToPlayer == _player;
+            return GetTerritory(location).AssignedToPlayer == Player;
         }
 
         public void Select(ILocation location)
@@ -88,12 +88,12 @@ namespace RISK.Domain.GamePlaying
 
         private bool HasPlayerOccupiedTerritory(ITerritory territoryToAttack)
         {
-            return territoryToAttack.AssignedToPlayer == _player;
+            return territoryToAttack.AssignedToPlayer == Player;
         }
 
         private bool CanAttack(ITerritory territoryToAttack)
         {
-            var isTerritoryOccupiedByEnemy = territoryToAttack.AssignedToPlayer != _player;
+            var isTerritoryOccupiedByEnemy = territoryToAttack.AssignedToPlayer != Player;
             var isConnected = SelectedTerritory.Location.Connections.Contains(territoryToAttack.Location);
             var canAttack = isConnected && isTerritoryOccupiedByEnemy;
 

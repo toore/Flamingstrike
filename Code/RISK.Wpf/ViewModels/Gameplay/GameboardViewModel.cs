@@ -9,12 +9,13 @@ using RISK.Domain.Repositories;
 
 namespace GuiWpf.ViewModels.Gameplay
 {
-    public class GameboardViewModel : IGameboardViewModel
+    public class GameboardViewModel : ViewModelBase, IGameboardViewModel
     {
         private readonly IGame _game;
         private readonly ITerritoryViewModelUpdater _territoryViewModelUpdater;
         private ITurn _currentTurn;
         private readonly List<ITerritory> _territories;
+        private IPlayer _player;
         public WorldMapViewModel WorldMapViewModel { get; private set; }
 
         public GameboardViewModel(IGame game, ILocationProvider locationProvider, IWorldMapViewModelFactory worldMapViewModelFactory, ITerritoryViewModelUpdater territoryViewModelUpdater)
@@ -33,9 +34,16 @@ namespace GuiWpf.ViewModels.Gameplay
             BeginNextPlayerTurn();
         }
 
+        public IPlayer Player
+        {
+            get { return _player; }
+            set { NotifyOfPropertyChange(value, () => Player, x => _player = x); }
+        }
+
         private void BeginNextPlayerTurn()
         {
             _currentTurn = _game.GetNextTurn();
+            Player = _currentTurn.Player;
 
             UpdateWorldMap();
         }

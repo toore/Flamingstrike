@@ -3,7 +3,8 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:Gameboard="clr-namespace:GuiWpf.ViewModels.Gameplay" xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+    xmlns:Gameboard="clr-namespace:GuiWpf.ViewModels.Gameplay"
+    xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
     xmlns:cal="clr-namespace:Caliburn.Micro;assembly=Caliburn.Micro"
     mc:Ignorable="d"
     d:DesignHeight="768" d:DesignWidth="1366"
@@ -21,19 +22,26 @@
         HorizontalAlignment="Stretch"
         VerticalAlignment="Stretch">
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
+        <StackPanel
+            Orientation="Horizontal">
+            <Label Content="Player: " />
+            <Label Content="{Binding Player.Name}" />
+        </StackPanel>
+
         <Viewbox
             Stretch="Uniform"
-            Grid.Row="0">
+            Grid.Row="1">
             <ContentControl Content="{Binding WorldMapViewModel}" />
         </Viewbox>
-        
+
         <StackPanel
             Orientation="Horizontal"
-            Grid.Row="1">
+            Grid.Row="2">
             <StackPanel.Resources>
                 <Style TargetType="Button" BasedOn="{StaticResource StandardButtonStyle}">
                     <Setter Property="Margin" Value="5" />

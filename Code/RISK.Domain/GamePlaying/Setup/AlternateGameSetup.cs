@@ -97,7 +97,9 @@ namespace RISK.Domain.GamePlaying.Setup
         {
             var player = playerInSetup.GetInGamePlayer();
             var locations = worldMap.GetTerritoriesAssignedTo(player)
-                .Select(x => x.Location);
+                .Select(x => x.Location)
+                .ToList();
+
             var selectedLocation = _locationSelector.Select(locations);
 
             var territory = worldMap.GetTerritory(selectedLocation);

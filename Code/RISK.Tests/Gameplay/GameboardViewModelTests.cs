@@ -31,6 +31,8 @@ namespace RISK.Tests.Gameplay
         private ITurn _turn2;
         private ITerritory _territory1;
         private ITerritory _territory2;
+        private IPlayer _player1;
+        private IPlayer _player2;
 
         [SetUp]
         public void SetUp()
@@ -55,9 +57,14 @@ namespace RISK.Tests.Gameplay
             _worldMap.GetTerritory(_location1).Returns(_territory1);
             _worldMap.GetTerritory(_location2).Returns(_territory2);
             _game.GetWorldMap().Returns(_worldMap);
+
+            _player1 = Substitute.For<IPlayer>();
+            _player2 = Substitute.For<IPlayer>();
             
             _turn1 = Substitute.For<ITurn>();
+            _turn1.Player.Returns(_player1);
             _turn2 = Substitute.For<ITurn>();
+            _turn2.Player.Returns(_player2);
             _game.GetNextTurn().Returns(_turn1, _turn2);
 
             _viewModel1 = StubWorldViewModel(_location1);
@@ -75,6 +82,25 @@ namespace RISK.Tests.Gameplay
         public void Initializes_WorldMapViewModel()
         {
             _gameboardViewModel.WorldMapViewModel.Should().Be(_worldMapViewModel);
+        }
+
+        [Test]
+        public void Player1_takes_first_turn()
+        {
+            AssertPlayer(_player1);
+        }
+
+        [Test]
+        public void Player2_takes_second_turn()
+        {
+            _gameboardViewModel.EndTurn();
+
+            AssertPlayer(_player2);
+        }
+
+        private void AssertPlayer(IPlayer expected)
+        {
+            _gameboardViewModel.Player.Should().Be(expected);
         }
 
         [Test]
