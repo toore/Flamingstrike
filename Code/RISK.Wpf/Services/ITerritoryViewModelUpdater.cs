@@ -5,6 +5,6 @@ namespace GuiWpf.Services
 {
     public interface ITerritoryViewModelUpdater
     {
-        void UpdateColor(ITerritoryViewModel territoryViewModel, ITerritory territory);
+        void UpdateColor(ITerritoryLayoutViewModel territoryLayoutViewModel, ITerritory territory);
     }
 }

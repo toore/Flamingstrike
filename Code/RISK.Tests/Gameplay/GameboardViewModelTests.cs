@@ -23,8 +23,8 @@ namespace RISK.Tests.Gameplay
         private List<ILocation> _allLocations;
         private ILocation _location1;
         private ILocation _location2;
-        private ITerritoryViewModel _viewModel1;
-        private ITerritoryViewModel _viewModel2;
+        private ITerritoryLayoutViewModel _viewModel1;
+        private ITerritoryLayoutViewModel _viewModel2;
         private IWorldMap _worldMap;
         private ITerritoryViewModelUpdater _territoryViewModelUpdater;
         private ITurn _turn1;
@@ -132,9 +132,9 @@ namespace RISK.Tests.Gameplay
             _game.Received(1).GetNextTurn();
         }
 
-        private ITerritoryViewModel StubWorldViewModel(ILocation location)
+        private ITerritoryLayoutViewModel StubWorldViewModel(ILocation location)
         {
-            var worldMapViewModel = Substitute.For<ITerritoryViewModel>();
+            var worldMapViewModel = Substitute.For<ITerritoryLayoutViewModel>();
             worldMapViewModel.Location.Returns(location);
             return worldMapViewModel;
         }

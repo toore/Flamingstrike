@@ -31,7 +31,7 @@ namespace GuiWpf.ViewModels.Gameplay
             territory.AssignedToPlayer = humanPlayer;
             territory.Armies = 99;
 
-            var textViewModelFactory = new TextViewModelFactory(territoryLayoutInformationFactory);
+            var textViewModelFactory = new TerritoryDataViewModelFactory(territoryLayoutInformationFactory);
             var worldMapViewModelFactory = new WorldMapViewModelFactory(locationProvider, territoryViewModelFactory, textViewModelFactory);
 
             var playerRepository = new PlayerRepository();

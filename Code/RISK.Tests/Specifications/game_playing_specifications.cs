@@ -52,7 +52,7 @@ namespace RISK.Tests.Specifications
                     x.For<ITerritoryColorsFactory>().Use<TerritoryColorsFactory>();
                     x.For<IColorService>().Use<ColorService>();
                     x.For<ITerritoryGuiDefinitionFactory>().Use<TerritoryGuiDefinitionFactory>();
-                    x.For<ITextViewModelFactory>().Use<TextViewModelFactory>();
+                    x.For<ITerritoryDataViewModelFactory>().Use<TerritoryDataViewModelFactory>();
                     x.For<ICardFactory>().Use<CardFactory>();
                     x.For<IInitialArmyCountProvider>().Use<InitialArmyCountProvider>();
 
@@ -136,7 +136,7 @@ namespace RISK.Tests.Specifications
             var gameboardViewModel = (IGameboardViewModel)_mainGameBoardViewModel.MainViewModel;
 
             gameboardViewModel.WorldMapViewModel.WorldMapViewModels
-                .OfType<ITerritoryViewModel>()
+                .OfType<ITerritoryLayoutViewModel>()
                 .Single(x => x.Location == territory)
                 .OnClick();
         }

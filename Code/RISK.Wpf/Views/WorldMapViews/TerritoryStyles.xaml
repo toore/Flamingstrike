@@ -4,7 +4,7 @@
     xmlns:Map="clr-namespace:GuiWpf.ViewModels.Gameplay.Map" 
     xmlns:MapViews="clr-namespace:GuiWpf.Views.WorldMapViews">
 
-    <DataTemplate DataType="{x:Type Map:TerritoryViewModel}">
+    <DataTemplate DataType="{x:Type Map:TerritoryLayoutViewModel}">
         <MapViews:TerritoryButtonUserControl
             NormalFillColor="{Binding NormalFillColor}"
             NormalStrokeColor="{Binding NormalStrokeColor}"
@@ -34,7 +34,7 @@
         <Setter Property="FontWeight" Value="Bold" />
     </Style>
 
-    <DataTemplate DataType="{x:Type Map:TextViewModel}">
+    <DataTemplate DataType="{x:Type Map:TerritoryDataViewModel}">
         <Canvas IsHitTestVisible="False">
             <Border
                 CornerRadius="25"

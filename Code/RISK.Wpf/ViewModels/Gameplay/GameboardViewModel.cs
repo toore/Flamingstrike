@@ -77,11 +77,24 @@ namespace GuiWpf.ViewModels.Gameplay
 
         private void UpdateTerritory(ITerritory territory)
         {
-            var location = territory.Location;
-            var territoryViewModel = WorldMapViewModel.WorldMapViewModels.Get(location);
+            UpdateTerritoryLayout(territory);
 
-            territoryViewModel.IsEnabled = _currentTurn.CanSelect(location);
-            _territoryViewModelUpdater.UpdateColor(territoryViewModel, territory);
+            UpdateTerritoryData(territory);
+        }
+
+        private void UpdateTerritoryLayout(ITerritory territory)
+        {
+            var location = territory.Location;
+            var territoryLayout = WorldMapViewModel.WorldMapViewModels.GetTerritoryLayout(location);
+
+            territoryLayout.IsEnabled = _currentTurn.CanSelect(location);
+            _territoryViewModelUpdater.UpdateColor(territoryLayout, territory);
+        }
+
+        private void UpdateTerritoryData(ITerritory territory)
+        {
+            var territoryData = WorldMapViewModel.WorldMapViewModels.GetTerritoryData(territory.Location);
+            territoryData.Armies = territory.Armies;
         }
     }
 }

@@ -16,11 +16,11 @@ namespace GuiWpf.ViewModels.Gameplay.Map
             _territoryGuiDefinitionFactory = territoryGuiDefinitionFactory;
         }
 
-        public TerritoryViewModel Create(ITerritory territory, Action<ILocation> clickCommand)
+        public TerritoryLayoutViewModel Create(ITerritory territory, Action<ILocation> clickCommand)
         {
             var layoutInformation = _territoryGuiDefinitionFactory.Create(territory.Location);
 
-            var territoryViewModel = new TerritoryViewModel(territory.Location, layoutInformation.Path, clickCommand);
+            var territoryViewModel = new TerritoryLayoutViewModel(territory.Location, layoutInformation.Path, clickCommand);
             territoryViewModel.IsEnabled = true;
             _territoryViewModelUpdater.UpdateColor(territoryViewModel, territory);
 

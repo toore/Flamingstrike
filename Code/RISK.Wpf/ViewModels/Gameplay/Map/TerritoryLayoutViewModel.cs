@@ -4,11 +4,11 @@ using RISK.Domain.Entities;
 
 namespace GuiWpf.ViewModels.Gameplay.Map
 {
-    public class TerritoryViewModel : ViewModelBase, ITerritoryViewModel
+    public class TerritoryLayoutViewModel : ViewModelBase, ITerritoryLayoutViewModel
     {
         private readonly Action<ILocation> _clickCommand;
 
-        public TerritoryViewModel(ILocation location, string path, Action<ILocation> clickCommand)
+        public TerritoryLayoutViewModel(ILocation location, string path, Action<ILocation> clickCommand)
         {
             Location = location;
             Path = path;

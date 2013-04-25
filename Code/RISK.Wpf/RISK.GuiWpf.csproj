@@ -82,6 +82,7 @@
     <Compile Include="Services\TerritoryViewModelUpdater.cs" />
     <Compile Include="ViewModels\GameboardViewModelFactory.cs" />
     <Compile Include="ViewModels\GameFactory.cs" />
+    <Compile Include="ViewModels\Gameplay\Map\ITerritoryDataViewModel.cs" />
     <Compile Include="ViewModels\Gameplay\Map\WorldMapViewModelsExtensions.cs" />
     <Compile Include="ViewModels\GameSetupMessage.cs" />
     <Compile Include="ViewModels\IGameboardViewModelFactory.cs" />
@@ -98,7 +99,7 @@
     <Compile Include="ViewModels\Setup\NeutralPlayerType.cs" />
     <Compile Include="ViewModels\Setup\PlayerFactory.cs" />
     <Compile Include="ViewModels\Setup\PlayerSetupViewModel.cs" />
-    <Compile Include="ViewModels\Gameplay\Map\ITerritoryViewModel.cs" />
+    <Compile Include="ViewModels\Gameplay\Map\ITerritoryLayoutViewModel.cs" />
     <Compile Include="GuiDefinitions\ITerritoryGuiDefinitionFactory.cs" />
     <Compile Include="GuiDefinitions\TerritoryGuiDefinitionFactory.cs" />
     <Compile Include="ViewModels\Setup\PlayerTypeBase.cs" />
@@ -135,7 +136,7 @@
       <DependentUpon>MainGameView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\MainGameViewTestDataFactory.cs" />
-    <Compile Include="ViewModels\Gameplay\Map\ITextViewModelFactory.cs" />
+    <Compile Include="ViewModels\Gameplay\Map\ITerritoryDataViewModelFactory.cs" />
     <Compile Include="ViewModels\Gameplay\Map\IWorldMapViewModelFactory.cs" />
     <Compile Include="ViewModels\Gameplay\Map\IWorldMapViewModel.cs" />
     <Compile Include="GuiDefinitions\JapanGuiDefinitions.cs" />
@@ -161,12 +162,12 @@
     <Compile Include="Views\WorldMapViews\TerritoryButtonUserControl.xaml.cs">
       <DependentUpon>TerritoryButtonUserControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewModels\Gameplay\Map\TerritoryViewModel.cs" />
+    <Compile Include="ViewModels\Gameplay\Map\TerritoryLayoutViewModel.cs" />
     <Compile Include="GuiDefinitions\ITerritoryGuiDefinitions.cs" />
     <Compile Include="ViewModels\Gameplay\Map\TerritoryViewModelFactory.cs" />
-    <Compile Include="ViewModels\Gameplay\Map\TextViewModelFactory.cs" />
+    <Compile Include="ViewModels\Gameplay\Map\TerritoryDataViewModelFactory.cs" />
     <Compile Include="ViewModels\Gameplay\Map\WorldMapViewModelFactory.cs" />
-    <Compile Include="ViewModels\Gameplay\Map\TextViewModel.cs" />
+    <Compile Include="ViewModels\Gameplay\Map\TerritoryDataViewModel.cs" />
     <Compile Include="GuiDefinitions\UkraineGuiDefinitions.cs" />
     <Compile Include="GuiDefinitions\UralGuiDefinitions.cs" />
     <Compile Include="GuiDefinitions\VenezuelaGuiDefinitions.cs" />

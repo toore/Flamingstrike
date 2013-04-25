@@ -47,10 +47,10 @@ namespace RISK.Tests.Gameplay
         {
             var viewModel = CreateSiamTerritoryViewModel();
 
-            viewModel.Should().BeOfType<TerritoryViewModel>();
+            viewModel.Should().BeOfType<TerritoryLayoutViewModel>();
             viewModel.Path.Should().Be(_siamGuiDefinitions.Path);
             viewModel.IsEnabled.Should().BeTrue();
-            _territoryViewModelUpdater.AssertWasCalled(x => x.UpdateColor(Arg<ITerritoryViewModel>.Is.Anything, Arg<ITerritory>.Is.Equal(_siamTerritory)));
+            _territoryViewModelUpdater.AssertWasCalled(x => x.UpdateColor(Arg<ITerritoryLayoutViewModel>.Is.Anything, Arg<ITerritory>.Is.Equal(_siamTerritory)));
         }
 
         [Test]
@@ -63,7 +63,7 @@ namespace RISK.Tests.Gameplay
             _action.AssertWasCalled(x => x(_locationProvider.Siam));
         }
 
-        private TerritoryViewModel CreateSiamTerritoryViewModel()
+        private TerritoryLayoutViewModel CreateSiamTerritoryViewModel()
         {
             return _territoryViewModelFactory.Create(_siamTerritory, _action);
         }

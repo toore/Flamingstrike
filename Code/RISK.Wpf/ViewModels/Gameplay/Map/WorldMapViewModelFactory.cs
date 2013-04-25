@@ -10,13 +10,13 @@ namespace GuiWpf.ViewModels.Gameplay.Map
     public class WorldMapViewModelFactory : IWorldMapViewModelFactory
     {
         private readonly ITerritoryViewModelFactory _territoryViewModelFactory;
-        private readonly ITextViewModelFactory _textViewModelFactory;
+        private readonly ITerritoryDataViewModelFactory _territoryDataViewModelFactory;
         private readonly ILocationProvider _locationProvider;
 
-        public WorldMapViewModelFactory(ILocationProvider locationProvider, ITerritoryViewModelFactory territoryViewModelFactory, ITextViewModelFactory textViewModelFactory)
+        public WorldMapViewModelFactory(ILocationProvider locationProvider, ITerritoryViewModelFactory territoryViewModelFactory, ITerritoryDataViewModelFactory territoryDataViewModelFactory)
         {
             _territoryViewModelFactory = territoryViewModelFactory;
-            _textViewModelFactory = textViewModelFactory;
+            _territoryDataViewModelFactory = territoryDataViewModelFactory;
             _locationProvider = locationProvider;
         }
 
@@ -44,7 +44,7 @@ namespace GuiWpf.ViewModels.Gameplay.Map
 
         private IWorldMapViewModel CreateTextViewModel(ITerritory territory)
         {
-            return _textViewModelFactory.Create(territory);
+            return _territoryDataViewModelFactory.Create(territory);
         }
     }
 }

@@ -6,10 +6,17 @@ namespace GuiWpf.ViewModels.Gameplay.Map
 {
     public static class WorldMapViewModelsExtensions
     {
-        public static ITerritoryViewModel Get(this IEnumerable<IWorldMapViewModel> worldMapViewModels, ILocation location)
+        public static ITerritoryLayoutViewModel GetTerritoryLayout(this IEnumerable<IWorldMapViewModel> worldMapViewModels, ILocation location)
         {
             return worldMapViewModels
-                .OfType<ITerritoryViewModel>()
+                .OfType<ITerritoryLayoutViewModel>()
+                .Single(x => x.Location == location);
+        }
+
+        public static ITerritoryDataViewModel GetTerritoryData(this IEnumerable<IWorldMapViewModel> worldMapViewModels, ILocation location)
+        {
+            return worldMapViewModels
+                .OfType<ITerritoryDataViewModel>()
                 .Single(x => x.Location == location);
         } 
     }

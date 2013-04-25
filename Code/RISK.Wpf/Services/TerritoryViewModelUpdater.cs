@@ -12,14 +12,14 @@ namespace GuiWpf.Services
             _territoryColorsFactory = territoryColorsFactory;
         }
 
-        public void UpdateColor(ITerritoryViewModel territoryViewModel, ITerritory territory)
+        public void UpdateColor(ITerritoryLayoutViewModel territoryLayoutViewModel, ITerritory territory)
         {
             var territoryColors = _territoryColorsFactory.Create(territory);
 
-            territoryViewModel.NormalStrokeColor = territoryColors.NormalStrokeColor;
-            territoryViewModel.NormalFillColor = territoryColors.NormalFillColor;
-            territoryViewModel.MouseOverStrokeColor = territoryColors.MouseOverStrokeColor;
-            territoryViewModel.MouseOverFillColor = territoryColors.MouseOverFillColor;
+            territoryLayoutViewModel.NormalStrokeColor = territoryColors.NormalStrokeColor;
+            territoryLayoutViewModel.NormalFillColor = territoryColors.NormalFillColor;
+            territoryLayoutViewModel.MouseOverStrokeColor = territoryColors.MouseOverStrokeColor;
+            territoryLayoutViewModel.MouseOverFillColor = territoryColors.MouseOverFillColor;
         }
     }
 }
