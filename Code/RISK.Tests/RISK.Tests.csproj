@@ -82,12 +82,16 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Battle\BattleCalculatorTests.cs" />
-    <Compile Include="Battle\DiceValueCalculatorTests.cs" />
+    <Compile Include="Application\Battle\BattleCalculatorTests.cs" />
+    <Compile Include="Application\Battle\DiceValueCalculatorTests.cs" />
+    <Compile Include="Application\Gameplay\TerritoryTests.cs" />
+    <Compile Include="Base\Extensions\MaybeExtensionsTests.cs" />
+    <Compile Include="Base\Extensions\MaybeTests.cs" />
     <Compile Include="DebuggerShim.cs" />
-    <Compile Include="Setup\GameSetupViewModelTests.cs" />
-    <Compile Include="Specifications\game_playing_specifications.cs" />
-    <Compile Include="Specifications\NSpecDebuggerShim.cs" />
+    <Compile Include="GuiWpf\EnumerableExtensionsTests.cs" />
+    <Compile Include="GuiWpf\GameSetupViewModelTests.cs" />
+    <Compile Include="Application\Specifications\game_playing_specifications.cs" />
+    <Compile Include="Application\Specifications\NSpecDebuggerShim.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -96,22 +100,21 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Extensions\EnumerableExtensionsTests.cs" />
-    <Compile Include="Extensions\ListExtensionsTests.cs" />
-    <Compile Include="Extensions\ObjectExtensionsTests.cs" />
-    <Compile Include="Extensions\TerritoryExtensionsTests.cs" />
-    <Compile Include="Gameplay\AlternateGameSetupTests.cs" />
-    <Compile Include="Gameplay\ColorServiceTests.cs" />
-    <Compile Include="Gameplay\GameboardViewModelTests.cs" />
-    <Compile Include="Gameplay\GameTests.cs" />
-    <Compile Include="Gameplay\LocationRepositoryTests.cs" />
-    <Compile Include="Gameplay\RandomSorterTests.cs" />
-    <Compile Include="Gameplay\TerritoryViewModelFactoryTests.cs" />
-    <Compile Include="Gameplay\TurnFactoryTests.cs" />
-    <Compile Include="Gameplay\TurnTests.cs" />
-    <Compile Include="Gameplay\WorldMapTests.cs" />
-    <Compile Include="Infrastructure\HandleInterceptorTests.cs" />
-    <Compile Include="Infrastructure\TypeExtensionsTests.cs" />
+    <Compile Include="Base\Extensions\EnumerableExtensionsTests.cs" />
+    <Compile Include="Base\Extensions\ListExtensionsTests.cs" />
+    <Compile Include="Base\Extensions\ObjectExtensionsTests.cs" />
+    <Compile Include="Application\Gameplay\AlternateGameSetupTests.cs" />
+    <Compile Include="GuiWpf\ColorServiceTests.cs" />
+    <Compile Include="GuiWpf\GameboardViewModelTests.cs" />
+    <Compile Include="Application\Gameplay\GameTests.cs" />
+    <Compile Include="Application\Gameplay\LocationProviderTests.cs" />
+    <Compile Include="Application\Gameplay\RandomSorterTests.cs" />
+    <Compile Include="GuiWpf\TerritoryViewModelFactoryTests.cs" />
+    <Compile Include="Application\Gameplay\TurnFactoryTests.cs" />
+    <Compile Include="Application\Gameplay\TurnTests.cs" />
+    <Compile Include="Application\Gameplay\WorldMapTests.cs" />
+    <Compile Include="GuiWpf\Infrastructure\HandleInterceptorTests.cs" />
+    <Compile Include="GuiWpf\Infrastructure\TypeExtensionsTests.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -146,11 +149,15 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\RISK.Domain\RISK.Domain.csproj">
+    <ProjectReference Include="..\RISK.Application\RISK.Application.csproj">
       <Project>{6de17fca-3f04-4923-8ab8-e3fa376a54ff}</Project>
-      <Name>RISK.Domain</Name>
+      <Name>RISK.Application</Name>
     </ProjectReference>
-    <ProjectReference Include="..\RISK.Wpf\RISK.GuiWpf.csproj">
+    <ProjectReference Include="..\RISK.Base\RISK.Base.csproj">
+      <Project>{A946654D-4A11-4B0E-9007-B773201C4BCD}</Project>
+      <Name>RISK.Base</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\RISK.GuiWpf\RISK.GuiWpf.csproj">
       <Project>{3b937f0e-e727-442d-b1da-e5ed6ef939d5}</Project>
       <Name>RISK.GuiWpf</Name>
     </ProjectReference>

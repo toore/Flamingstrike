@@ -1,5 +1,4 @@
 ﻿using System.Linq;
-using System.Reflection;
 using NSpec;
 using NSpec.Domain;
 using NSpec.Domain.Formatters;
@@ -21,22 +20,25 @@ using NSpec.Domain.Formatters;
  */
 
 //[TestFixture]
-public class DebuggerShim
+namespace RISK.Tests
 {
-    //[Test]
-    public void debug()
+    public class DebuggerShim
     {
-        var tagOrClassName = "class_or_tag_you_want_to_debug";
+        //[Test]
+        public void debug()
+        {
+            var tagOrClassName = "class_or_tag_you_want_to_debug";
 
-        var types = GetType().Assembly.GetTypes(); 
-        // OR
-        // var types = new Type[]{typeof(Some_Type_Containg_some_Specs)};
-        var finder = new SpecFinder(types, "");
-        var builder = new ContextBuilder(finder, new Tags().Parse(tagOrClassName), new DefaultConventions());
-        var runner = new ContextRunner(builder, new ConsoleFormatter(), false);
-        var results = runner.Run(builder.Contexts().Build());
+            var types = GetType().Assembly.GetTypes(); 
+            // OR
+            // var types = new Type[]{typeof(Some_Type_Containg_some_Specs)};
+            var finder = new SpecFinder(types, "");
+            var builder = new ContextBuilder(finder, new Tags().Parse(tagOrClassName), new DefaultConventions());
+            var runner = new ContextRunner(builder, new ConsoleFormatter(), false);
+            var results = runner.Run(builder.Contexts().Build());
 
-        //assert that there aren't any failures
-        results.Failures().Count().should_be(0);
+            //assert that there aren't any failures
+            results.Failures().Count().should_be(0);
+        }
     }
 }

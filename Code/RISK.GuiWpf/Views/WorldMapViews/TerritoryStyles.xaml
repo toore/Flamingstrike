@@ -1,0 +1,61 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:Map="clr-namespace:GuiWpf.ViewModels.Gameplay.Map" 
+    xmlns:MapViews="clr-namespace:GuiWpf.Views.WorldMapViews">
+
+    <DataTemplate DataType="{x:Type Map:TerritoryLayoutViewModel}">
+        <MapViews:TerritoryButtonUserControl
+            NormalFillColor="{Binding NormalFillColor}"
+            NormalStrokeColor="{Binding NormalStrokeColor}"
+            MouseOverFillColor="{Binding MouseOverFillColor}"
+            MouseOverStrokeColor="{Binding MouseOverStrokeColor}"
+            IsEnabled="{Binding IsEnabled}">
+
+            <MapViews:TerritoryButtonUserControl.GeometryChildren>
+                <GeometryCollection>
+                    <PathGeometry
+                        Figures="{Binding Path}"
+                        FillRule="NonZero" />
+                </GeometryCollection>
+            </MapViews:TerritoryButtonUserControl.GeometryChildren>
+
+        </MapViews:TerritoryButtonUserControl>
+    </DataTemplate>
+
+    <Style x:Key="TerritoryNameLabelStyle" TargetType="{x:Type Label}">
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="Foreground" Value="White" />
+    </Style>
+
+    <Style x:Key="ArmiesLabelStyle" TargetType="{x:Type Label}">
+        <Setter Property="FontSize" Value="20" />
+        <Setter Property="Foreground" Value="White" />
+        <Setter Property="FontWeight" Value="Bold" />
+    </Style>
+
+    <DataTemplate DataType="{x:Type Map:TerritoryTextViewModel}">
+        <Canvas IsHitTestVisible="False">
+            <Border
+                CornerRadius="25"
+                Opacity=".5"
+                Canvas.Left="{Binding Position.X}"
+                Canvas.Top="{Binding Position.Y}"
+                Background="Black">
+
+                <StackPanel>
+                    <Label
+                        HorizontalAlignment="Center"
+                        Style="{StaticResource TerritoryNameLabelStyle}"
+                        Content="{Binding TerritoryName}" />
+
+                    <Label
+                        HorizontalAlignment="Center"
+                        Style="{StaticResource ArmiesLabelStyle}"
+                        Content="{Binding Armies}" />
+                </StackPanel>
+            </Border>
+        </Canvas>
+    </DataTemplate>
+
+</ResourceDictionary>
