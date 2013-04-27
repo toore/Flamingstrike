@@ -1,10 +1,10 @@
 ﻿using System;
 using FluentAssertions;
+using NSubstitute;
 using NUnit.Framework;
 using RISK.Domain.Entities;
 using RISK.Domain.GamePlaying;
 using RISK.Domain.Repositories;
-using Rhino.Mocks;
 
 namespace RISK.Tests.Gameplay
 {
@@ -17,14 +17,14 @@ namespace RISK.Tests.Gameplay
         [SetUp]
         public void SetUp()
         {
-            _locationProvider = MockRepository.GenerateStub<ILocationProvider>();
+            _locationProvider = Substitute.For<ILocationProvider>();
             var scandinavia = new Location("scandinavia", new Continent());
             var congo = new Location("congo", new Continent());
             var egypt = new Location("egypt", new Continent());
-            _locationProvider.Stub(x => x.Scandinavia).Return(scandinavia);
-            _locationProvider.Stub(x => x.Congo).Return(congo);
-            _locationProvider.Stub(x => x.Egypt).Return(egypt);
-            _locationProvider.Stub(x => x.GetAll()).Return(new[] { scandinavia, congo, egypt });
+            _locationProvider.Scandinavia.Returns(scandinavia);
+            _locationProvider.Congo.Returns(congo);
+            _locationProvider.Egypt.Returns(egypt);
+            _locationProvider.GetAll().Returns(new[] { scandinavia, congo, egypt });
 
             _worldMap = new WorldMap(_locationProvider);
         }

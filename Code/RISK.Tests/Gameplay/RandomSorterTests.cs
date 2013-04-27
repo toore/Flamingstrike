@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using FluentAssertions;
+using NSubstitute;
 using NUnit.Framework;
 using RISK.Domain.Extensions;
 using RISK.Domain.GamePlaying;
-using Rhino.Mocks;
 
 namespace RISK.Tests.Gameplay
 {
@@ -17,7 +17,7 @@ namespace RISK.Tests.Gameplay
         [SetUp]
         public void SetUp()
         {
-            _randomWrapper = MockRepository.GenerateStub<IRandomWrapper>();
+            _randomWrapper = Substitute.For<IRandomWrapper>();
 
             _randomSorter = new RandomSorter(_randomWrapper);
         }
@@ -26,11 +26,12 @@ namespace RISK.Tests.Gameplay
         public void OrderByRandomOrder_randomizes_three_elements()
         {
             IEnumerable<object> sequence = new object[] { "first element", "second element", "third element" };
-            _randomWrapper.Stub(x => x.Next(3)).Return(2);
-            _randomWrapper.Stub(x => x.Next(2)).Return(0);
-            _randomWrapper.Stub(x => x.Next(1)).Return(0);
+            _randomWrapper.Next(3).Returns(2);
+            _randomWrapper.Next(2).Returns(0);
+            _randomWrapper.Next(1).Returns(0);
 
-            var orderedSequence = _randomSorter.Sort(sequence);
+            var orderedSequence = _randomSorter.Sort(sequence)
+                .ToList();
 
             orderedSequence.First().Should().Be("third element");
             orderedSequence.Second().Should().Be("first element");
