@@ -29,8 +29,8 @@ namespace RISK.Tests.GuiWpf
         private ITerritoryTextViewModel _textViewModel2;
         private IWorldMap _worldMap;
         private ITerritoryViewModelUpdater _territoryViewModelUpdater;
-        private ITurn _turn1;
-        private ITurn _turn2;
+        private ITurn _currentTurn;
+        private ITurn _nextTurn;
         private ITerritory _territory1;
         private ITerritory _territory2;
         private IPlayer _player1;
@@ -63,11 +63,11 @@ namespace RISK.Tests.GuiWpf
             _player1 = Substitute.For<IPlayer>();
             _player2 = Substitute.For<IPlayer>();
             
-            _turn1 = Substitute.For<ITurn>();
-            _turn1.Player.Returns(_player1);
-            _turn2 = Substitute.For<ITurn>();
-            _turn2.Player.Returns(_player2);
-            _game.GetNextTurn().Returns(_turn1, _turn2);
+            _currentTurn = Substitute.For<ITurn>();
+            _currentTurn.Player.Returns(_player1);
+            _nextTurn = Substitute.For<ITurn>();
+            _nextTurn.Player.Returns(_player2);
+            _game.GetNextTurn().Returns(_currentTurn, _nextTurn);
 
             _layoutViewModel1 = StubLayoutViewModel(_location1);
             _textViewModel1 = StubTextViewModel(_location1);
@@ -115,17 +115,37 @@ namespace RISK.Tests.GuiWpf
         {
             _gameboardViewModel.SelectLocation(_location1);
 
-            _turn1.Received().Select(_location1);
+            _currentTurn.Received().Select(_location1);
         }
 
         [Test]
         public void SelectLocation_invokes_turn_attack()
         {
-            _turn1.IsTerritorySelected.Returns(true);
+            _currentTurn.IsTerritorySelected.Returns(true);
 
             _gameboardViewModel.SelectLocation(_location2);
 
-            _turn1.Received().Attack(_location2);
+            _currentTurn.Received().Attack(_location2);
+        }
+
+        [Test]
+        public void Select_location_selects_territory()
+        {
+            _gameboardViewModel.SelectLocation(_location1);
+
+            _layoutViewModel1.IsSelected = true;
+        }
+
+        [Test]
+        public void Select_location_can_select_location_2()
+        {
+            _currentTurn.CanAttack(_territory1).Returns(false);
+            _currentTurn.CanAttack(_territory2).Returns(true);
+
+            _gameboardViewModel.SelectLocation(_location1);
+
+            _layoutViewModel1.IsEnabled.Should().BeFalse("location 1 can not be selected");
+            _layoutViewModel2.IsEnabled.Should().BeTrue("location 1 can be selected");
         }
 
         [Test]
@@ -135,7 +155,7 @@ namespace RISK.Tests.GuiWpf
 
             _gameboardViewModel.EndTurn();
 
-            _turn1.Received(1).EndTurn();
+            _currentTurn.Received(1).EndTurn();
             _game.Received(1).GetNextTurn();
         }
 

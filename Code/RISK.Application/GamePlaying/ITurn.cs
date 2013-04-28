@@ -6,11 +6,12 @@ namespace RISK.Domain.GamePlaying
     {
         IPlayer Player { get; }
         ITerritory SelectedTerritory { get; }
+        bool IsTerritorySelected { get; }
 
-        void Attack(ILocation location);
         bool CanSelect(ILocation location);
         void Select(ILocation location);
-        bool IsTerritorySelected { get; }
+        bool CanAttack(ITerritory territoryToAttack);
+        void Attack(ILocation location);
         void EndTurn();
     }
 }

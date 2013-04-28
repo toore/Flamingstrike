@@ -87,11 +87,16 @@ namespace GuiWpf.ViewModels.Gameplay
             var location = territory.Location;
             var territoryLayout = WorldMapViewModel.WorldMapViewModels.GetTerritoryLayout(location);
 
-            territoryLayout.IsEnabled = _currentTurn.CanSelect(location);
+            territoryLayout.IsEnabled = CanClick(territory);
             territoryLayout.IsSelected = _currentTurn.SelectedTerritory == territory;
             _territoryViewModelUpdater.UpdateColor(territoryLayout, territory);
         }
-        
+
+        private bool CanClick(ITerritory territory)
+        {
+            return _currentTurn.CanSelect(territory.Location) || _currentTurn.CanAttack(territory);
+        }
+
         private void UpdateTerritoryData(ITerritory territory)
         {
             var territoryData = WorldMapViewModel.WorldMapViewModels.GetTerritoryData(territory.Location);

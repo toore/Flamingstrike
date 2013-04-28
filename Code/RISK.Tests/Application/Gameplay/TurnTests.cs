@@ -81,6 +81,12 @@ namespace RISK.Tests.Application.Gameplay
         }
 
         [Test]
+        public void Cant_attack()
+        {
+            _turn.CanAttack(null).Should().BeFalse("no territory has been selected");
+        }
+
+        [Test]
         public void Cant_attack_when_no_territory_is_selected()
         {
             Action attack = () => _turn.Attack(null);
