@@ -22,7 +22,7 @@ namespace GuiWpf.Territories
                     { locationProvider.Quebec, new QuebecGui() },
                     { locationProvider.WesternUnitedStates, new WesternUnitedStatesGui() },
                     { locationProvider.Argentina, new ArgentinaGui() },
-                    { locationProvider.Brazil, new BrazilViewModelsFactory() },
+                    { locationProvider.Brazil, new BrazilGui() },
                     { locationProvider.Peru, new PeruGui() },
                     { locationProvider.Venezuela, new VenezuelaGui() },
                     { locationProvider.GreatBritain, new GreatBritainGui() },

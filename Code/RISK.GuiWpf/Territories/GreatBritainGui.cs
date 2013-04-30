@@ -12,7 +12,7 @@ namespace GuiWpf.Territories
 
         public Point NamePosition
         {
-            get { return new Point(584.37325, 142.2105); }
+            get { return new Point(525, 110); }
         }
 
         public string Path

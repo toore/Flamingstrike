@@ -118,7 +118,7 @@
     <Compile Include="Territories\AfhanistanGui.cs" />
     <Compile Include="Territories\AlbertaGui.cs" />
     <Compile Include="Territories\ArgentinaGui.cs" />
-    <Compile Include="Territories\BrazilViewModelsFactory.cs" />
+    <Compile Include="Territories\BrazilGui.cs" />
     <Compile Include="Territories\ChinaGui.cs" />
     <Compile Include="Territories\CongoGui.cs" />
     <Compile Include="Territories\EastAfricaGui.cs" />
