@@ -91,7 +91,7 @@
     <Compile Include="GuiWpf\EnumerableExtensionsTests.cs" />
     <Compile Include="GuiWpf\GameSetupViewModelTests.cs" />
     <Compile Include="Application\Specifications\game_playing_specifications.cs" />
-    <Compile Include="Application\Specifications\NSpecDebuggerShim.cs" />
+    <Compile Include="NSpecDebuggerShim.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

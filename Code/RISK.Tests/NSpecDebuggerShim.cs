@@ -4,7 +4,7 @@ using NSpec;
 using NSpec.Domain;
 using NUnit.Framework;
 
-namespace RISK.Tests.Application.Specifications
+namespace RISK.Tests
 {
     [Ignore("Debugger shim method Debug makes no sense to be called from base class.")]
     public class NSpecDebuggerShim : nspec
