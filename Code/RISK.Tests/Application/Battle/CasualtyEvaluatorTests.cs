@@ -6,9 +6,9 @@ using RISK.Domain.GamePlaying.DiceAndCalculation;
 namespace RISK.Tests.Application.Battle
 {
     [TestFixture]
-    public class DiceValueCalculatorTests
+    public class CasualtyEvaluatorTests
     {
-        private DiceValueCalculator _diceValueCalculator;
+        private CasualtyEvaluator _casualtyEvaluator;
 
         private static readonly object[] _attackerCasualtiesCases =
             {
@@ -37,19 +37,19 @@ namespace RISK.Tests.Application.Battle
         [SetUp]
         public void SetUp()
         {
-            _diceValueCalculator = new DiceValueCalculator();
+            _casualtyEvaluator = new CasualtyEvaluator();
         }
 
         [TestCaseSource("_attackerCasualtiesCases")]
         public void CalculateAttackerCasualties(int expectedCasualties, IEnumerable<DiceValue> attacker, IEnumerable<DiceValue> defender)
         {
-            _diceValueCalculator.CalculateAttackerCasualties(attacker, defender).Should().Be(expectedCasualties);
+            _casualtyEvaluator.GetAttackerCasualties(attacker, defender).Should().Be(expectedCasualties);
         }
 
         [TestCaseSource("_defenderCasualtiesCases")]
         public void CalculateDefenderCasualties(int expectedCasualties, IEnumerable<DiceValue> attacker, IEnumerable<DiceValue> defender)
         {
-            _diceValueCalculator.CalculateDefenderCasualties(attacker, defender).Should().Be(expectedCasualties);
+            _casualtyEvaluator.GetDefenderCasualties(attacker, defender).Should().Be(expectedCasualties);
         }
     }
 }

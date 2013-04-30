@@ -83,8 +83,8 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Application\Battle\BattleCalculatorTests.cs" />
-    <Compile Include="Application\Battle\DiceValueCalculatorTests.cs" />
     <Compile Include="Application\Battle\DiceRollerTests.cs" />
+    <Compile Include="Application\Battle\CasualtyEvaluatorTests.cs" />
     <Compile Include="Application\Gameplay\TerritoryTests.cs" />
     <Compile Include="Base\Extensions\MaybeExtensionsTests.cs" />
     <Compile Include="Base\Extensions\MaybeTests.cs" />

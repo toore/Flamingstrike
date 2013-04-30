@@ -4,15 +4,15 @@ using System.Linq;
 
 namespace RISK.Domain.GamePlaying.DiceAndCalculation
 {
-    public class DiceValueCalculator : IDiceValueCalculator
+    public class CasualtyEvaluator : ICasualtyEvaluator
     {
-        public int CalculateAttackerCasualties(IEnumerable<DiceValue> attacker, IEnumerable<DiceValue> defender)
+        public int GetAttackerCasualties(IEnumerable<DiceValue> attacker, IEnumerable<DiceValue> defender)
         {
             return MatchDices(attacker, defender)
                 .Count(x => HasAttackerLost(x.Attack, x.Defend));
         }
 
-        public int CalculateDefenderCasualties(IEnumerable<DiceValue> attacker, IEnumerable<DiceValue> defender)
+        public int GetDefenderCasualties(IEnumerable<DiceValue> attacker, IEnumerable<DiceValue> defender)
         {
             return MatchDices(attacker, defender)
                 .Count(x => HasDefenderLost(x.Attack, x.Defend));
