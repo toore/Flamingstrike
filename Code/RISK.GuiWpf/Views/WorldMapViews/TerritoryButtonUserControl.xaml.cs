@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using System.Windows.Input;
 using System.Windows.Media;
 
 namespace GuiWpf.Views.WorldMapViews
@@ -17,6 +18,18 @@ namespace GuiWpf.Views.WorldMapViews
             InitializeComponent();
         }
 
+        static void OnMouseEnter(object sender, MouseEventArgs e)
+        {
+            var frameworkElement = (FrameworkElement)e.Source;
+            VisualStateManager.GoToElementState(frameworkElement, "MouseEnter", true);
+        }
+
+        static void OnMouseLeave(object sender, MouseEventArgs e)
+        {
+            var frameworkElement = (FrameworkElement)e.Source;
+            VisualStateManager.GoToElementState(frameworkElement, "MouseLeave", true);
+        }
+
         public Style PathStyle
         {
             get { return (Style)GetValue(PathStyleProperty); }
@@ -28,7 +41,6 @@ namespace GuiWpf.Views.WorldMapViews
             get { return (GeometryCollection)GetValue(GeometryChildrenProperty); }
             set { SetValue(GeometryChildrenProperty, value); }
         }
-    
 
         public Color NormalFillColor
         {

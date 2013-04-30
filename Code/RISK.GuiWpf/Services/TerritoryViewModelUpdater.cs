@@ -6,20 +6,32 @@ namespace GuiWpf.Services
     public class TerritoryViewModelUpdater : ITerritoryViewModelUpdater
     {
         private readonly ITerritoryColorsFactory _territoryColorsFactory;
+        private readonly IColorService _colorService;
 
-        public TerritoryViewModelUpdater(ITerritoryColorsFactory territoryColorsFactory)
+        public TerritoryViewModelUpdater(ITerritoryColorsFactory territoryColorsFactory, IColorService colorService)
         {
             _territoryColorsFactory = territoryColorsFactory;
+            _colorService = colorService;
         }
 
-        public void UpdateColor(ITerritoryLayoutViewModel territoryLayoutViewModel, ITerritory territory)
+        public void UpdateColors(ITerritoryLayoutViewModel territoryLayoutViewModel, ITerritory territory)
         {
             var territoryColors = _territoryColorsFactory.Create(territory);
 
-            territoryLayoutViewModel.NormalStrokeColor = territoryColors.NormalStrokeColor;
-            territoryLayoutViewModel.NormalFillColor = territoryColors.NormalFillColor;
-            territoryLayoutViewModel.MouseOverStrokeColor = territoryColors.MouseOverStrokeColor;
-            territoryLayoutViewModel.MouseOverFillColor = territoryColors.MouseOverFillColor;
+            var strokeColor = territoryColors.NormalStrokeColor;
+            var fillColor = territoryColors.NormalFillColor;
+            var mouseOverStrokeColor = territoryColors.MouseOverStrokeColor;
+            var mouseOverFillColor = territoryColors.MouseOverFillColor;
+
+            if (territoryLayoutViewModel.IsSelected)
+            {
+                fillColor = _colorService.SelectedTerritoryColor;
+            }
+
+            territoryLayoutViewModel.NormalStrokeColor = strokeColor;
+            territoryLayoutViewModel.NormalFillColor = fillColor;
+            territoryLayoutViewModel.MouseOverStrokeColor = mouseOverStrokeColor;
+            territoryLayoutViewModel.MouseOverFillColor = mouseOverFillColor;
         }
     }
 }

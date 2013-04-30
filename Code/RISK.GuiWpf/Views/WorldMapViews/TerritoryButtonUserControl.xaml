@@ -13,6 +13,27 @@
         <ControlTemplate x:Key="TerritoryButtonTemplate" TargetType="Button">
             <Border Name="RootElement">
 
+                <VisualStateManager.VisualStateGroups>
+                    <VisualStateGroup x:Name="CommonStates">
+                        <VisualState x:Name="Normal" />
+                        <VisualState x:Name="MouseOver">
+                            <Storyboard>
+                                <ColorAnimation Storyboard.TargetName="fill"
+                                    Storyboard.TargetProperty="Color"
+                                    To="#B0000000"
+                                    Duration="0:0:0.2"  />
+                                <ColorAnimation Storyboard.TargetName="stroke"
+                                    Storyboard.TargetProperty="Color"
+                                    To="#C0F5F5F5"
+                                    Duration="0:0:0.2" />
+                            </Storyboard>
+                        </VisualState>
+                        <VisualState x:Name="Pressed" />
+                        <VisualState x:Name="Disabled" />
+                    </VisualStateGroup>
+                    
+                </VisualStateManager.VisualStateGroups>
+
                 <Canvas>
                     <Path StrokeThickness="3">
                         <Path.Fill>
@@ -26,37 +47,6 @@
                             <GeometryGroup Children="{Binding Path=GeometryChildren, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" />
                         </Path.Data>
 
-                        <Path.Triggers>
-                            <EventTrigger RoutedEvent="MouseEnter">
-                                <BeginStoryboard>
-                                    <Storyboard>
-                                        <ColorAnimation Storyboard.TargetName="fill"
-                                            Storyboard.TargetProperty="Color"
-                                            To="{Binding Path=MouseOverFillColor, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
-                                            Duration="0:0:0.2" />
-                                        <ColorAnimation Storyboard.TargetName="stroke"
-                                            Storyboard.TargetProperty="Color"
-                                            To="{Binding Path=MouseOverStrokeColor, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
-                                            Duration="0:0:0.2" />
-                                    </Storyboard>
-                                </BeginStoryboard>
-                            </EventTrigger>
-                            <EventTrigger RoutedEvent="MouseLeave">
-                                <BeginStoryboard>
-                                    <Storyboard>
-                                        <ColorAnimation Storyboard.TargetName="fill"
-                                            Storyboard.TargetProperty="Color"
-                                            To="{Binding Path=NormalFillColor, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
-                                            Duration="0:0:0.1" />
-                                        <ColorAnimation Storyboard.TargetName="stroke"
-                                            Storyboard.TargetProperty="Color"
-                                            To="{Binding Path=NormalStrokeColor, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
-                                            Duration="0:0:0.1" />
-                                    </Storyboard>
-                                </BeginStoryboard>
-                            </EventTrigger>
-
-                        </Path.Triggers>
                     </Path>
 
                     <ContentPresenter
@@ -67,7 +57,7 @@
 
             <ControlTemplate.Triggers>
                 <Trigger Property="IsEnabled" Value="False">
-                    <Setter Property="Opacity" Value="0.5" />
+                    <Setter Property="Opacity" Value="0.1" />
                 </Trigger>
             </ControlTemplate.Triggers>
         </ControlTemplate>
@@ -75,6 +65,7 @@
         <Style x:Key="TerritoryButtonStyle" TargetType="{x:Type Button}">
             <Setter Property="Template" Value="{StaticResource TerritoryButtonTemplate}" />
             <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Focusable" Value="False" />
         </Style>
 
     </UserControl.Resources>

@@ -9,8 +9,8 @@ namespace RISK.Domain.GamePlaying
         bool IsTerritorySelected { get; }
 
         bool CanSelect(ILocation location);
+        bool CanAttack(ILocation location);
         void Select(ILocation location);
-        bool CanAttack(ITerritory territoryToAttack);
         void Attack(ILocation location);
         void EndTurn();
     }

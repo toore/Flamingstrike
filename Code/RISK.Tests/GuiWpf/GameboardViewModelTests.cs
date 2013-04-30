@@ -111,27 +111,30 @@ namespace RISK.Tests.GuiWpf
         }
 
         [Test]
-        public void SelectLocation_invokes_turn_select()
+        public void OnLocationClick_invokes_turn_select()
         {
-            _gameboardViewModel.SelectLocation(_location1);
+            _currentTurn.CanSelect(_location1).Returns(true);
+
+            _gameboardViewModel.OnLocationClick(_location1);
 
             _currentTurn.Received().Select(_location1);
         }
 
         [Test]
-        public void SelectLocation_invokes_turn_attack()
+        public void OnLocationClick_invokes_turn_attack()
         {
-            _currentTurn.IsTerritorySelected.Returns(true);
+            _currentTurn.CanSelect(_location2).Returns(false);
+            _currentTurn.CanAttack(_location2).Returns(true);
 
-            _gameboardViewModel.SelectLocation(_location2);
+            _gameboardViewModel.OnLocationClick(_location2);
 
             _currentTurn.Received().Attack(_location2);
         }
 
         [Test]
-        public void Select_location_selects_territory()
+        public void OnLocationClick_selects_territory()
         {
-            _gameboardViewModel.SelectLocation(_location1);
+            _gameboardViewModel.OnLocationClick(_location1);
 
             _layoutViewModel1.IsSelected = true;
         }
@@ -139,10 +142,10 @@ namespace RISK.Tests.GuiWpf
         [Test]
         public void Select_location_can_select_location_2()
         {
-            _currentTurn.CanAttack(_territory1).Returns(false);
-            _currentTurn.CanAttack(_territory2).Returns(true);
+            _currentTurn.CanAttack(_location1).Returns(false);
+            _currentTurn.CanAttack(_location2).Returns(true);
 
-            _gameboardViewModel.SelectLocation(_location1);
+            _gameboardViewModel.OnLocationClick(_location1);
 
             _layoutViewModel1.IsEnabled.Should().BeFalse("location 1 can not be selected");
             _layoutViewModel2.IsEnabled.Should().BeTrue("location 1 can be selected");

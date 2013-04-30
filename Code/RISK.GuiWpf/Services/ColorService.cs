@@ -59,5 +59,10 @@ namespace GuiWpf.Services
                 mouseOverStrokeColor: Color.FromArgb(255, 50, 50, 50),
                 mouseOverFillColor: Color.FromArgb(255, 200, 200, 200));
         }
+
+        public Color SelectedTerritoryColor
+        {
+            get { return Color.FromArgb(0x32, 0xEA, 0xEA, 0x15); }
+        }
     }
 }

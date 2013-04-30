@@ -51,7 +51,7 @@ namespace RISK.Tests.GuiWpf
             viewModel.Path.Should().Be(_siamGui.Path);
             viewModel.IsEnabled.Should().BeTrue();
 
-            _territoryViewModelUpdater.Received().UpdateColor(Arg.Any<ITerritoryLayoutViewModel>(), Arg.Is(_siamTerritory));
+            _territoryViewModelUpdater.Received().UpdateColors(Arg.Any<ITerritoryLayoutViewModel>(), Arg.Is(_siamTerritory));
         }
 
         [Test]

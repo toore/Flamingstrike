@@ -22,7 +22,7 @@ namespace GuiWpf.ViewModels.Gameplay
             var colorService = new ColorService();
             var territoryColorsFactory = new TerritoryColorsFactory(locationProvider, colorService);
             var territoryLayoutInformationFactory = new TerritoryGuiFactory(locationProvider);
-            var territoryViewModelUpdater = new TerritoryViewModelUpdater(territoryColorsFactory);
+            var territoryViewModelUpdater = new TerritoryViewModelUpdater(territoryColorsFactory, colorService);
             var territoryViewModelFactory = new TerritoryViewModelFactory(territoryViewModelUpdater, territoryLayoutInformationFactory);
 
             var worldMap = new WorldMap(locationProvider);

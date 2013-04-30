@@ -22,7 +22,7 @@ namespace GuiWpf.ViewModels.Gameplay.Map
 
             var territoryViewModel = new TerritoryLayoutViewModel(territory.Location, layoutInformation.Path, clickCommand);
             territoryViewModel.IsEnabled = true;
-            _territoryViewModelUpdater.UpdateColor(territoryViewModel, territory);
+            _territoryViewModelUpdater.UpdateColors(territoryViewModel, territory);
 
             return territoryViewModel;
         }

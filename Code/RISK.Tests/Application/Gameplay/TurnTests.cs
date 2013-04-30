@@ -53,6 +53,14 @@ namespace RISK.Tests.Application.Gameplay
         }
 
         [Test]
+        public void Can_not_select_when_territory_is_selected()
+        {
+            _turn.Select(_location);
+
+            _turn.CanSelect(_otherLocation).Should().BeFalse("territory is already selected");
+        }
+
+        [Test]
         public void SelectedTerritory_should_be_territory()
         {
             _turn.Select(_location);

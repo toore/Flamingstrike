@@ -57,13 +57,14 @@ namespace RISK.Domain.GamePlaying
             }
         }
 
-        public bool CanAttack(ITerritory territoryToAttack)
+        public bool CanAttack(ILocation location)
         {
             if (!IsTerritorySelected)
             {
                 return false;
             }
 
+            var territoryToAttack = GetTerritory(location);
             var isTerritoryOccupiedByEnemy = territoryToAttack.AssignedPlayer != Player;
             var isConnected = SelectedTerritory.Location.Connections.Contains(territoryToAttack.Location);
             var canAttack = isConnected && isTerritoryOccupiedByEnemy;
@@ -73,23 +74,15 @@ namespace RISK.Domain.GamePlaying
 
         public void Attack(ILocation location)
         {
-            if (!IsTerritorySelected)
+            var canAttack = CanAttack(location);
+
+            if (!canAttack)
             {
                 return;
             }
 
-            AttackFromSelected(location);
-        }
-
-        private void AttackFromSelected(ILocation location)
-        {
-            var territoryToAttack = GetTerritory(location);
-            var canAttack = CanAttack(territoryToAttack);
-
-            if (canAttack)
-            {
-                Attack(territoryToAttack);
-            }
+            var territory = GetTerritory(location);
+            Attack(territory);
         }
 
         private void Attack(ITerritory territory)

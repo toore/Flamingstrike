@@ -29,7 +29,7 @@ namespace GuiWpf.ViewModels.Gameplay
                 .Select(worldMap.GetTerritory)
                 .ToList();
 
-            WorldMapViewModel = worldMapViewModelFactory.Create(worldMap, SelectLocation);
+            WorldMapViewModel = worldMapViewModelFactory.Create(worldMap, OnLocationClick);
 
             BeginNextPlayerTurn();
         }
@@ -55,15 +55,15 @@ namespace GuiWpf.ViewModels.Gameplay
             BeginNextPlayerTurn();
         }
 
-        public void SelectLocation(ILocation location)
+        public void OnLocationClick(ILocation location)
         {
-            if (_currentTurn.IsTerritorySelected)
-            {
-                _currentTurn.Attack(location);
-            }
-            else
+            if (_currentTurn.CanSelect(location))
             {
                 _currentTurn.Select(location);
+            }
+            else if (_currentTurn.CanAttack(location))
+            {
+                _currentTurn.Attack(location);
             }
 
             UpdateWorldMap();
@@ -89,12 +89,23 @@ namespace GuiWpf.ViewModels.Gameplay
 
             territoryLayout.IsEnabled = CanClick(territory);
             territoryLayout.IsSelected = _currentTurn.SelectedTerritory == territory;
-            _territoryViewModelUpdater.UpdateColor(territoryLayout, territory);
+            _territoryViewModelUpdater.UpdateColors(territoryLayout, territory);
         }
 
         private bool CanClick(ITerritory territory)
         {
-            return _currentTurn.CanSelect(territory.Location) || _currentTurn.CanAttack(territory);
+            var location = territory.Location;
+            return _currentTurn.CanAttack(location) || CanSelect(location);
+        }
+
+        private bool CanSelect(ILocation location)
+        {
+            if (_currentTurn.IsTerritorySelected)
+            {
+                return _currentTurn.SelectedTerritory.Location == location;
+            }
+
+            return _currentTurn.CanSelect(location);
         }
 
         private void UpdateTerritoryData(ITerritory territory)

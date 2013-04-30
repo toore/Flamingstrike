@@ -1,3 +1,4 @@
+using System.Windows.Media;
 using RISK.Domain.Entities;
 
 namespace GuiWpf.Services
@@ -10,6 +11,9 @@ namespace GuiWpf.Services
         ITerritoryColors AfricaColors { get; }
         ITerritoryColors AsiaColors { get; }
         ITerritoryColors AustraliaColors { get; }
+        
         ITerritoryColors GetPlayerTerritoryColors(IPlayer player);
+
+        Color SelectedTerritoryColor { get; }
     }
 }
