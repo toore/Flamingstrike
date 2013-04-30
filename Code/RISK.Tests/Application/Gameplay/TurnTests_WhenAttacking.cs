@@ -9,7 +9,7 @@ using RISK.Domain.GamePlaying;
 namespace RISK.Tests.Application.Gameplay
 {
     [TestFixture]
-    public class TurnTests
+    public class TurnTests_WhenAttacking
     {
         private Turn _turn;
         private IPlayer _currentPlayer;
@@ -38,54 +38,6 @@ namespace RISK.Tests.Application.Gameplay
             _otherLocation = Substitute.For<ILocation>();
             _otherPlayer = Substitute.For<IPlayer>();
             _otherTerritory = GenerateTerritoryStub(_otherLocation, _otherPlayer);
-        }
-
-        [Test]
-        public void Can_select_location()
-        {
-            _turn.CanSelect(_location).Should().BeTrue();
-        }
-
-        [Test]
-        public void Can_not_select_other_location()
-        {
-            _turn.CanSelect(_otherLocation).Should().BeFalse();
-        }
-
-        [Test]
-        public void Can_not_select_when_territory_is_selected()
-        {
-            _turn.Select(_location);
-
-            _turn.CanSelect(_otherLocation).Should().BeFalse("territory is already selected");
-        }
-
-        [Test]
-        public void SelectedTerritory_should_be_territory()
-        {
-            _turn.Select(_location);
-
-            _turn.IsTerritorySelected.Should().BeTrue();
-            _turn.SelectedTerritory.Should().Be(_territory);
-        }
-
-        [Test]
-        public void No_territory_should_be_selected()
-        {
-            _turn.Select(_otherLocation);
-
-            _turn.IsTerritorySelected.Should().BeFalse();
-            _turn.SelectedTerritory.Should().BeNull();
-        }
-
-        [Test]
-        public void Selecting_already_selected_deselects()
-        {
-            _turn.Select(_location);
-            _turn.Select(_location);
-
-            _turn.IsTerritorySelected.Should().BeFalse();
-            _turn.SelectedTerritory.Should().BeNull();
         }
 
         [Test]
@@ -121,7 +73,18 @@ namespace RISK.Tests.Application.Gameplay
         }
 
         [Test]
-        public void Player_should_not_receive_a_card_when_attack_fails()
+        public void When_attack_succeeds_selected_territory_should_be_recently_occupied()
+        {
+            LocationIsConnectedToOtherLocation();
+
+            AttackSucceeds();
+            SelectAndAttack();
+
+            _turn.SelectedTerritory.Should().Be(_otherTerritory, "attack suceeded so army should be moved into territory");
+        }
+
+        [Test]
+        public void Player_should_not_receive_a_card_when_attack_fails_and_turn_ends()
         {
             SelectAndAttack();
             EndTurn();
@@ -130,15 +93,20 @@ namespace RISK.Tests.Application.Gameplay
         }
 
         [Test]
-        public void Player_should_receive_a_card_when_attack_succeeds()
+        public void Player_should_receive_a_card_when_attack_succeeds_and_turn_ends()
         {
             LocationIsConnectedToOtherLocation();
-            _battleCalculator.When(x => x.Attack(_territory, _otherTerritory)).Do(x => _otherTerritory.AssignedPlayer = _currentPlayer);
+            AttackSucceeds();
 
             SelectAndAttack();
             EndTurn();
 
             _currentPlayer.Received().AddCard(null);
+        }
+
+        private void AttackSucceeds()
+        {
+            _battleCalculator.When(x => x.Attack(_territory, _otherTerritory)).Do(x => _otherTerritory.AssignedPlayer = _currentPlayer);
         }
 
         [Test]

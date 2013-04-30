@@ -91,6 +91,7 @@ namespace RISK.Domain.GamePlaying
 
             if (HasPlayerOccupiedTerritory(territory))
             {
+                SelectedTerritory = territory;
                 _playerShouldReceiveCardWhenTurnEnds = true;
             }
         }

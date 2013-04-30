@@ -94,6 +94,7 @@ namespace RISK.Tests.Application.Specifications
             it["player 1 should occupy North Africa"] = () => _worldMap.GetTerritory(_locationProvider.NorthAfrica).AssignedPlayer.Should().Be(_player1);
             it["North Africa should have 1 army"] = () => _worldMap.GetTerritory(_locationProvider.NorthAfrica).Armies.Should().Be(1);
             it["player 1 should occupy Brazil"] = () => _worldMap.GetTerritory(_locationProvider.Brazil).AssignedPlayer.Should().Be(_player1);
+            it["Selected territory should be Brazil"] = () => GetTerritoryViewModel(_locationProvider.Brazil).IsSelected.Should().BeTrue();
             it["Brazil should have 4 armies"] = () => _worldMap.GetTerritory(_locationProvider.Brazil).Armies.Should().Be(4);
             it["player 1 should have a card when turn ends"] = () => _player1.Cards.Count().Should().Be(1);
         }
@@ -134,14 +135,19 @@ namespace RISK.Tests.Application.Specifications
             UpdateAllTerritoriesExcept(_locationProvider.NorthAfrica, _player2, 1);
         }
 
-        private void ClickOn(ILocation territory)
+        private void ClickOn(ILocation location)
+        {
+            GetTerritoryViewModel(location)
+                .OnClick();
+        }
+
+        private ITerritoryLayoutViewModel GetTerritoryViewModel(ILocation location)
         {
             var gameboardViewModel = (IGameboardViewModel)_mainGameBoardViewModel.MainViewModel;
 
-            gameboardViewModel.WorldMapViewModel.WorldMapViewModels
+            return gameboardViewModel.WorldMapViewModel.WorldMapViewModels
                 .OfType<ITerritoryLayoutViewModel>()
-                .Single(x => x.Location == territory)
-                .OnClick();
+                .Single(x => x.Location == location);
         }
 
         private void InjectDiceRollerWithReturningSixAndThenFive()

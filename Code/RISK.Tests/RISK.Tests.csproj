@@ -87,6 +87,8 @@
     <Compile Include="Application\Battle\DicesTests.cs" />
     <Compile Include="Application\Battle\CasualtyEvaluatorTests.cs" />
     <Compile Include="Application\Gameplay\TerritoryTests.cs" />
+    <Compile Include="Application\Gameplay\TurnTests_WhenAttacking.cs" />
+    <Compile Include="Application\Gameplay\TurnTests_WhenSelecting.cs" />
     <Compile Include="DebuggerShim.cs" />
     <Compile Include="GuiWpf\EnumerableExtensionsTests.cs" />
     <Compile Include="GuiWpf\GameSetupViewModelTests.cs" />
@@ -111,7 +113,6 @@
     <Compile Include="Application\Gameplay\RandomSorterTests.cs" />
     <Compile Include="GuiWpf\TerritoryViewModelFactoryTests.cs" />
     <Compile Include="Application\Gameplay\TurnFactoryTests.cs" />
-    <Compile Include="Application\Gameplay\TurnTests.cs" />
     <Compile Include="Application\Gameplay\WorldMapTests.cs" />
     <Compile Include="GuiWpf\Infrastructure\HandleInterceptorTests.cs" />
     <Compile Include="GuiWpf\Infrastructure\TypeExtensionsTests.cs" />
