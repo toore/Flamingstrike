@@ -1,5 +1,4 @@
 ﻿using System.Windows;
-using System.Windows.Input;
 using System.Windows.Media;
 
 namespace GuiWpf.Views.WorldMapViews
@@ -16,18 +15,6 @@ namespace GuiWpf.Views.WorldMapViews
         public TerritoryButtonUserControl()
         {
             InitializeComponent();
-        }
-
-        static void OnMouseEnter(object sender, MouseEventArgs e)
-        {
-            var frameworkElement = (FrameworkElement)e.Source;
-            VisualStateManager.GoToElementState(frameworkElement, "MouseEnter", true);
-        }
-
-        static void OnMouseLeave(object sender, MouseEventArgs e)
-        {
-            var frameworkElement = (FrameworkElement)e.Source;
-            VisualStateManager.GoToElementState(frameworkElement, "MouseLeave", true);
         }
 
         public Style PathStyle
