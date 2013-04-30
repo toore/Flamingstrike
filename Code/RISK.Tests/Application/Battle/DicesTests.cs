@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using FluentAssertions;
 using NSubstitute;
+using NSubstitute.Experimental;
 using NUnit.Framework;
 using RISK.Domain.GamePlaying.DiceAndCalculation;
 
@@ -31,6 +32,22 @@ namespace RISK.Tests.Application.Battle
 
             dicesResult.AttackersDices.Count().Should().Be(1);
             dicesResult.DefendersDices.Count().Should().Be(1);
+        }
+
+        [Test]
+        public void Does_not_roll_more_than_3_dices_when_attacking()
+        {
+            _dices.Roll(4, 1);
+
+            _diceRoller.Received(4).Roll();
+        }
+
+        [Test]
+        public void Does_not_roll_more_than_2_dices_when_defending()
+        {
+            _dices.Roll(1, 3);
+
+            _diceRoller.Received(3).Roll();
         }
     }
 }

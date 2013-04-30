@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace RISK.Domain.GamePlaying.DiceAndCalculation
@@ -16,7 +17,10 @@ namespace RISK.Domain.GamePlaying.DiceAndCalculation
 
         public IDicesResult Roll(int attackingArmies, int defendingArmies)
         {
-            return new DicesResult(_casualtyEvaluator, RollDices(attackingArmies), RollDices(defendingArmies));
+            var attackingDices = Math.Min(attackingArmies, 3);
+            var defendingDices = Math.Min(defendingArmies, 2);
+
+            return new DicesResult(_casualtyEvaluator, RollDices(attackingDices), RollDices(defendingDices));
         }
 
         private IEnumerable<DiceValue> RollDices(int numberOfDices)

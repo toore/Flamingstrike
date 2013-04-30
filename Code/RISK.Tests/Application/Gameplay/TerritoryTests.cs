@@ -22,5 +22,22 @@ namespace RISK.Tests.Application.Gameplay
         {
             new Territory(null).IsPlayerAssigned().Should().BeFalse();
         }
+
+        [Test]
+        public void Get_armies_to_attack_with_should_be_0()
+        {
+            AssertArmiesToAttackWith(expected: 0, totalArmies: 0);
+        }
+
+        [Test]
+        public void Get_armies_to_attack_with_should_be_1()
+        {
+            AssertArmiesToAttackWith(expected: 1, totalArmies: 2);
+        }
+
+        private static void AssertArmiesToAttackWith(int expected, int totalArmies)
+        {
+            new Territory(null) { Armies = totalArmies }.GetArmiesToAttackWith().Should().Be(expected);
+        }
     }
 }

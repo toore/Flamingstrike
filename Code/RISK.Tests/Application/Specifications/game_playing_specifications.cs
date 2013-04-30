@@ -70,7 +70,7 @@ namespace RISK.Tests.Application.Specifications
                     InjectPlayerRepository();
                     InjectLocationProvider();
                     InjectWorldMapFactory();
-                    InjectDiceRollerWithReturningSixAndThenFive();
+                    InjectDiceRollerWithReturningSixFiveFourAndThenFive();
 
                     _mainGameBoardViewModel = ObjectFactory.GetInstance<IMainGameViewModel>();
 
@@ -150,10 +150,10 @@ namespace RISK.Tests.Application.Specifications
                 .Single(x => x.Location == location);
         }
 
-        private void InjectDiceRollerWithReturningSixAndThenFive()
+        private void InjectDiceRollerWithReturningSixFiveFourAndThenFive()
         {
             var diceRoller = Substitute.For<IDiceRoller>();
-            diceRoller.Roll().Returns(DiceValue.Six, DiceValue.Five);
+            diceRoller.Roll().Returns(DiceValue.Six, DiceValue.Five, DiceValue.Four, DiceValue.Five);
             ObjectFactory.Inject(diceRoller);
         }
 

@@ -6,5 +6,6 @@
         IPlayer AssignedPlayer { get; set; }
         int Armies { get; set; }
         bool IsPlayerAssigned();
+        int GetArmiesToAttackWith();
     }
 }

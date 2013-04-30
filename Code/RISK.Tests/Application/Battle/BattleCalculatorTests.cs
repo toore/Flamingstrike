@@ -34,7 +34,7 @@ namespace RISK.Tests.Application.Battle
         public void Attack(int attackingArmies, int defendingArmies, int attackerCasualties, int defenderCasualties,
             IPlayer expectedOwnerAfterAttack, int expectedArmiesInAttackingTerritoryAfter, int expectedArmiesInDefendingTerritoryAfter)
         {
-            StubDices(attackingArmies, defendingArmies, attackerCasualties, defenderCasualties);
+            StubDices(attackingArmies - 1, defendingArmies, attackerCasualties, defenderCasualties);
 
             var attackerTerritory = new Territory(new Location("attacker territory", new Continent()))
                 {
