@@ -3,7 +3,7 @@ using GuiWpf.Properties;
 
 namespace GuiWpf.Territories
 {
-    public class BrazilViewModelsFactory : ITerritoryGui
+    public class BrazilGui : ITerritoryGui
     {
         public string Name
         {
