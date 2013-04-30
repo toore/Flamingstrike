@@ -58,6 +58,7 @@
     <Compile Include="Entities\ITerritory.cs" />
     <Compile Include="Entities\ILocation.cs" />
     <Compile Include="Entities\IPlayer.cs" />
+    <Compile Include="Entities\TerritoryExtensions.cs" />
     <Compile Include="GamePlaying\DiceAndCalculation\DiceRoller.cs" />
     <Compile Include="GamePlaying\DiceAndCalculation\IDiceRoller.cs" />
     <Compile Include="GamePlaying\Setup\AlternateGameSetup.cs" />

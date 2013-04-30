@@ -63,9 +63,20 @@ namespace RISK.Tests.Application.Gameplay
         }
 
         [Test]
+        public void Cant_attack_when_having_only_one_army()
+        {
+            LocationIsConnectedToOtherLocation();
+            _territory.Armies = 1;
+            _turn.Select(_location);
+
+            _turn.CanAttack(_otherLocation).Should().BeFalse("there is only one army in location");
+        }
+
+        [Test]
         public void Can_attack_when_territories_are_connected()
         {
             LocationIsConnectedToOtherLocation();
+            _territory.Armies = 2;
 
             SelectAndAttack();
 
@@ -73,11 +84,12 @@ namespace RISK.Tests.Application.Gameplay
         }
 
         [Test]
-        public void When_attack_succeeds_selected_territory_should_be_recently_occupied()
+        public void When_attack_succeeds_selected_territory_is_updated_to_occupied()
         {
             LocationIsConnectedToOtherLocation();
-
+            _territory.Armies = 2;
             AttackSucceeds();
+
             SelectAndAttack();
 
             _turn.SelectedTerritory.Should().Be(_otherTerritory, "attack suceeded so army should be moved into territory");
@@ -96,6 +108,7 @@ namespace RISK.Tests.Application.Gameplay
         public void Player_should_receive_a_card_when_attack_succeeds_and_turn_ends()
         {
             LocationIsConnectedToOtherLocation();
+            _territory.Armies = 2;
             AttackSucceeds();
 
             SelectAndAttack();
@@ -106,7 +119,9 @@ namespace RISK.Tests.Application.Gameplay
 
         private void AttackSucceeds()
         {
-            _battleCalculator.When(x => x.Attack(_territory, _otherTerritory)).Do(x => _otherTerritory.AssignedPlayer = _currentPlayer);
+            _battleCalculator
+                .When(x => x.Attack(_territory, _otherTerritory))
+                .Do(x => _otherTerritory.AssignedPlayer = _currentPlayer);
         }
 
         [Test]
