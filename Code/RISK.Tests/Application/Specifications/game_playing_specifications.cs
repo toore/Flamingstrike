@@ -87,8 +87,6 @@ namespace RISK.Tests.Application.Specifications
                 {
                     ClickOn(_locationProvider.NorthAfrica);
                     ClickOn(_locationProvider.Brazil);
-
-                    EndTurn();
                 };
 
             it["player 1 should occupy North Africa"] = () => _worldMap.GetTerritory(_locationProvider.NorthAfrica).AssignedPlayer.Should().Be(_player1);
@@ -96,7 +94,13 @@ namespace RISK.Tests.Application.Specifications
             it["player 1 should occupy Brazil"] = () => _worldMap.GetTerritory(_locationProvider.Brazil).AssignedPlayer.Should().Be(_player1);
             it["Selected territory should be Brazil"] = () => GetTerritoryViewModel(_locationProvider.Brazil).IsSelected.Should().BeTrue();
             it["Brazil should have 4 armies"] = () => _worldMap.GetTerritory(_locationProvider.Brazil).Armies.Should().Be(4);
-            it["player 1 should have a card when turn ends"] = () => _player1.Cards.Count().Should().Be(1);
+
+            context["when turn ends"] = () =>
+                {
+                    act = () => { EndTurn(); };
+
+                    it["player 1 should have a card when turn ends"] = () => _player1.Cards.Count().Should().Be(1);
+                };
         }
 
         private void EndTurn()
