@@ -27,6 +27,8 @@
     </UserControl.Resources>
 
     <Grid>
-        <ContentControl Content="{Binding MainViewModel}" />
+        <ContentControl
+            Content="{Binding MainViewModel}"
+            Focusable="False" />
     </Grid>
 </UserControl>

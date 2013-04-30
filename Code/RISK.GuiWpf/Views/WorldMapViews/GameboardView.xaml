@@ -20,7 +20,8 @@
 
     <Grid
         HorizontalAlignment="Stretch"
-        VerticalAlignment="Stretch">
+        VerticalAlignment="Stretch"
+        Focusable="False">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
@@ -41,7 +42,9 @@
         <Viewbox
             Stretch="Uniform"
             Grid.Row="1">
-            <ContentControl Content="{Binding WorldMapViewModel}" />
+            <ContentControl
+                Content="{Binding WorldMapViewModel}"
+                Focusable="False" />
         </Viewbox>
 
         <StackPanel
