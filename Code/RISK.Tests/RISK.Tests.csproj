@@ -87,8 +87,6 @@
     <Compile Include="Application\Battle\DicesTests.cs" />
     <Compile Include="Application\Battle\CasualtyEvaluatorTests.cs" />
     <Compile Include="Application\Gameplay\TerritoryTests.cs" />
-    <Compile Include="Base\Extensions\MaybeExtensionsTests.cs" />
-    <Compile Include="Base\Extensions\MaybeTests.cs" />
     <Compile Include="DebuggerShim.cs" />
     <Compile Include="GuiWpf\EnumerableExtensionsTests.cs" />
     <Compile Include="GuiWpf\GameSetupViewModelTests.cs" />
