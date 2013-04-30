@@ -15,7 +15,6 @@ using RISK.Domain.GamePlaying;
 using RISK.Domain.GamePlaying.DiceAndCalculation;
 using RISK.Domain.GamePlaying.Setup;
 using RISK.Domain.Repositories;
-using Rhino.Mocks;
 using StructureMap;
 
 namespace RISK.Tests.Application.Specifications
@@ -55,6 +54,10 @@ namespace RISK.Tests.Application.Specifications
                     x.For<ITerritoryTextViewModelFactory>().Use<TerritoryTextViewModelFactory>();
                     x.For<ICardFactory>().Use<CardFactory>();
                     x.For<IInitialArmyCountProvider>().Use<InitialArmyCountProvider>();
+                    x.For<IBattleCalculator>().Use<BattleCalculator>();
+                    x.For<IDices>().Use<Dices>();
+                    x.For<ICasualtyEvaluator>().Use<CasualtyEvaluator>();
+                    x.For<IDiceRoller>().Use<DiceRoller>();
 
                     x.RegisterInterceptor(new HandleInterceptor<IGameSetupEventAggregator>());
                 });
@@ -67,7 +70,7 @@ namespace RISK.Tests.Application.Specifications
                     InjectPlayerRepository();
                     InjectLocationProvider();
                     InjectWorldMapFactory();
-                    InjectBattleCalculatorWithAttackingFiveDefendingOneDefenderLosesOne();
+                    InjectDiceRollerWithReturningSixAndThenFive();
 
                     _mainGameBoardViewModel = ObjectFactory.GetInstance<IMainGameViewModel>();
 
@@ -141,15 +144,11 @@ namespace RISK.Tests.Application.Specifications
                 .OnClick();
         }
 
-        private void InjectBattleCalculatorWithAttackingFiveDefendingOneDefenderLosesOne()
+        private void InjectDiceRollerWithReturningSixAndThenFive()
         {
-            var dices = MockRepository.GenerateStub<IDices>();
-            var diceResult = MockRepository.GenerateStub<IDicesResult>();
-            diceResult.Stub(x => x.DefenderCasualties).Return(1);
-            dices.Stub(x => x.Roll(5, 1)).Return(diceResult);
-
-            var battleCalculator = new BattleCalculator(dices);
-            ObjectFactory.Inject<IBattleCalculator>(battleCalculator);
+            var diceRoller = Substitute.For<IDiceRoller>();
+            diceRoller.Roll().Returns(DiceValue.Six, DiceValue.Five);
+            ObjectFactory.Inject(diceRoller);
         }
 
         private void InjectLocationProvider()

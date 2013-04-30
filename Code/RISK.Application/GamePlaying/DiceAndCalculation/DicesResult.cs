@@ -5,7 +5,7 @@ namespace RISK.Domain.GamePlaying.DiceAndCalculation
 {
     public class DicesResult : IDicesResult
     {
-        public DicesResult(ICasualityEvaluator diceEvaluator, IEnumerable<DiceValue> attackersDices, IEnumerable<DiceValue> defendersDices)
+        public DicesResult(ICasualtyEvaluator diceEvaluator, IEnumerable<DiceValue> attackersDices, IEnumerable<DiceValue> defendersDices)
         {
             var attackerClosure = attackersDices.ToList();
             var defenderClosure = defendersDices.ToList();

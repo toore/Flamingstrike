@@ -84,6 +84,7 @@
     </ApplicationDefinition>
     <Compile Include="Application\Battle\BattleCalculatorTests.cs" />
     <Compile Include="Application\Battle\DiceRollerTests.cs" />
+    <Compile Include="Application\Battle\DicesTests.cs" />
     <Compile Include="Application\Battle\CasualtyEvaluatorTests.cs" />
     <Compile Include="Application\Gameplay\TerritoryTests.cs" />
     <Compile Include="Base\Extensions\MaybeExtensionsTests.cs" />
