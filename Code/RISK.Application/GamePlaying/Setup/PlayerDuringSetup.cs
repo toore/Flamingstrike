@@ -2,17 +2,17 @@
 
 namespace RISK.Domain.GamePlaying.Setup
 {
-    public class PlayerInSetup
+    public class PlayerDuringSetup
     {
         private readonly IPlayer _player;
 
-        public int Armies { get; set; }
-
-        public PlayerInSetup(IPlayer player, int armies)
+        public PlayerDuringSetup(IPlayer player, int armies)
         {
             _player = player;
             Armies = armies;
         }
+
+        public int Armies { get; set; }
 
         public IPlayer GetInGamePlayer()
         {

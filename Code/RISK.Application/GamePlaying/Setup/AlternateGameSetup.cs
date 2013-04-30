@@ -43,25 +43,25 @@ namespace RISK.Domain.GamePlaying.Setup
 
             var players = _playerRepository.GetAll()
                 .ToList();
-            var playerInSetup = GetPlayersInSetup(players);
+            var playersDuringSetup = GetPlayersDuringSetup(players);
 
-            var worldMap = CreateWorldMap(playerInSetup);
+            var worldMap = CreateWorldMap(playersDuringSetup);
 
-            PlaceArmies(worldMap, playerInSetup);
+            PlaceArmies(worldMap, playersDuringSetup);
 
             return worldMap;
         }
 
-        private IList<PlayerInSetup> GetPlayersInSetup(IList<IPlayer> players)
+        private IList<PlayerDuringSetup> GetPlayersDuringSetup(IList<IPlayer> players)
         {
             var armies = _initialArmyCountProvider.Get(players.Count());
 
             return _randomSorter.Sort(players)
-                .Select(x => new PlayerInSetup(x, armies))
+                .Select(x => new PlayerDuringSetup(x, armies))
                 .ToList();
         }
 
-        private IWorldMap CreateWorldMap(IList<PlayerInSetup> players)
+        private IWorldMap CreateWorldMap(IList<PlayerDuringSetup> players)
         {
             var worldMap = _worldMapFactory.Create();
 
@@ -83,9 +83,9 @@ namespace RISK.Domain.GamePlaying.Setup
             return worldMap;
         }
 
-        private void PlaceArmies(IWorldMap worldMap, IList<PlayerInSetup> players)
+        private void PlaceArmies(IWorldMap worldMap, IList<PlayerDuringSetup> players)
         {
-            while (players.Any(x => x.Armies > 0))
+            while (players.AnyArmiesLeft())
             {
                 players
                     .Where(x => x.Armies > 0)
@@ -93,9 +93,9 @@ namespace RISK.Domain.GamePlaying.Setup
             }
         }
 
-        private void PlaceArmy(PlayerInSetup playerInSetup, IWorldMap worldMap)
+        private void PlaceArmy(PlayerDuringSetup playerDuringSetup, IWorldMap worldMap)
         {
-            var player = playerInSetup.GetInGamePlayer();
+            var player = playerDuringSetup.GetInGamePlayer();
             var locations = worldMap.GetTerritoriesAssignedTo(player)
                 .Select(x => x.Location)
                 .ToList();
@@ -104,7 +104,7 @@ namespace RISK.Domain.GamePlaying.Setup
 
             var territory = worldMap.GetTerritory(selectedLocation);
             territory.Armies++;
-            playerInSetup.Armies--;
+            playerDuringSetup.Armies--;
         }
     }
 }

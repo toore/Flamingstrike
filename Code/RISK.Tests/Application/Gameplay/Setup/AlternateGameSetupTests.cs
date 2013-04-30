@@ -8,7 +8,7 @@ using RISK.Domain.GamePlaying;
 using RISK.Domain.GamePlaying.Setup;
 using RISK.Domain.Repositories;
 
-namespace RISK.Tests.Application.Gameplay
+namespace RISK.Tests.Application.Gameplay.Setup
 {
     [TestFixture]
     public class AlternateGameSetupTests
