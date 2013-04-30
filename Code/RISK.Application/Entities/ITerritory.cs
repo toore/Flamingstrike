@@ -5,6 +5,5 @@
         ILocation Location { get; }
         IPlayer AssignedPlayer { get; set; }
         int Armies { get; set; }
-        bool IsPlayerAssigned();
     }
 }

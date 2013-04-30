@@ -4,6 +4,11 @@ namespace RISK.Domain.Entities
 {
     public static class TerritoryExtensions
     {
+        public static bool IsPlayerAssigned(this ITerritory territory)
+        {
+            return territory.AssignedPlayer != null;
+        }
+
         public static bool HasArmiesToAttackWith(this ITerritory territory)
         {
             return territory.GetArmiesToAttackWith() > 0;
