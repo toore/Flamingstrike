@@ -7,26 +7,20 @@ using RISK.Domain.Repositories;
 
 namespace RISK.Domain.GamePlaying
 {
-    public class Game : IGame, ILocationSelector
+    public class Game : IGame
     {
         private readonly IWorldMap _worldMap;
         private readonly ITurnFactory _turnFactory;
         private readonly IList<IPlayer> _players;
         private IPlayer _currentPlayer;
 
-        public Game(ITurnFactory turnFactory, IPlayerRepository playerRepository, IAlternateGameSetup alternateGameSetup)
+        public Game(ITurnFactory turnFactory, IPlayerRepository playerRepository, IAlternateGameSetup alternateGameSetup, ILocationSelector locationSelector)
         {
             _turnFactory = turnFactory;
             _players = playerRepository.GetAll()
                 .ToList();
 
-            _worldMap = alternateGameSetup.Initialize(this);
-        }
-
-        public ILocation Select(IEnumerable<ILocation> locations)
-        {
-            //TODO: Select from gui?
-            return locations.First();
+            _worldMap = alternateGameSetup.Initialize(locationSelector);
         }
 
         public IWorldMap GetWorldMap()

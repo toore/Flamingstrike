@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using GuiWpf.Services;
 using GuiWpf.Territories;
 using GuiWpf.ViewModels.Gameplay.Map;
@@ -8,7 +10,7 @@ using RISK.Domain.Repositories;
 
 namespace GuiWpf.ViewModels.Gameplay
 {
-    public class GameboardViewModelTestData
+    public class GameboardViewModelTestData : ILocationSelector
     {
         public static GameboardViewModel ViewModel
         {
@@ -39,10 +41,15 @@ namespace GuiWpf.ViewModels.Gameplay
 
             var alternateGameSetup = new AlternateGameSetup(playerRepository, locationProvider, new RandomSorter(new RandomWrapper()), new WorldMapFactory(locationProvider), new InitialArmyCountProvider());
             ITurnFactory turnFactory = new TurnFactory(null, null);
-            var game = new Game(turnFactory, playerRepository, alternateGameSetup);
+            var game = new Game(turnFactory, playerRepository, alternateGameSetup, this);
             var gameboardViewModel = new GameboardViewModel(game, locationProvider, worldMapViewModelFactory, territoryViewModelUpdater);
 
             return gameboardViewModel;
+        }
+
+        public ILocation Select(IEnumerable<ILocation> locations)
+        {
+            return locations.First();
         }
     }
 }

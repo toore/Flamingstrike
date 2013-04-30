@@ -29,6 +29,7 @@ namespace RISK.Tests.Application.Gameplay
             _turnFactory = Substitute.For<ITurnFactory>();
             _playerRepository = Substitute.For<IPlayerRepository>();
             _alternateGameSetup = Substitute.For<IAlternateGameSetup>();
+            _locationSelector = Substitute.For<ILocationSelector>();
 
             _nextTurn = Substitute.For<ITurn>();
             _turnAfterNextTurn = Substitute.For<ITurn>();
@@ -39,21 +40,9 @@ namespace RISK.Tests.Application.Gameplay
 
             _playerRepository.GetAll().Returns(new[] { _player1, _player2 });
 
-            _alternateGameSetup.Initialize(Arg.Any<ILocationSelector>()).Returns(_worldMap);
-            _alternateGameSetup.WhenForAnyArgs(x => x.Initialize(null)).Do(x => AlternateGameSetupInitializerSpy(x.Arg<ILocationSelector>()));
+            _alternateGameSetup.Initialize(_locationSelector).Returns(_worldMap);
 
-            _game = new Game(_turnFactory, _playerRepository, _alternateGameSetup);
-        }
-
-        private void AlternateGameSetupInitializerSpy(ILocationSelector locationSelector)
-        {
-            _locationSelector = locationSelector;
-        }
-
-        [Test]
-        public void Alternate_game_setup_is_initialized_with_game()
-        {
-            _locationSelector.Should().Be(_game, "AlternateGameSetup must be initialized with game instance");
+            _game = new Game(_turnFactory, _playerRepository, _alternateGameSetup, _locationSelector);
         }
 
         [Test]

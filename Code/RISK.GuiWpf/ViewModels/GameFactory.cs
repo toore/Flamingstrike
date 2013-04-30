@@ -17,9 +17,9 @@ namespace GuiWpf.ViewModels
             _alternateGameSetup = alternateGameSetup;
         }
 
-        public IGame Create()
+        public IGame Create(ILocationSelector locationSelector)
         {
-            return new Game(_turnFactory, _playerRepository, _alternateGameSetup);
+            return new Game(_turnFactory, _playerRepository, _alternateGameSetup, locationSelector);
         }
     }
 }
