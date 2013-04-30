@@ -6,12 +6,14 @@ namespace GuiWpf.ViewModels
 {
     public class MainGameViewModel : ViewModelBase, IMainGameViewModel, IHandle<GameSetupMessage>
     {
+        private readonly IGameFactory _gameFactory;
         private readonly IGameSetupViewModel _gameSetupViewModel;
         private readonly IGameboardViewModelFactory _gameboardViewModelFactory;
         private readonly IPlayerRepository _playerRepository;
 
-        public MainGameViewModel(IGameSetupViewModel gameSetupViewModel, IGameboardViewModelFactory gameboardViewModelFactory, IPlayerRepository playerRepository)
+        public MainGameViewModel(IGameFactory gameFactory, IGameSetupViewModel gameSetupViewModel, IGameboardViewModelFactory gameboardViewModelFactory, IPlayerRepository playerRepository)
         {
+            _gameFactory = gameFactory;
             _gameSetupViewModel = gameSetupViewModel;
             _gameboardViewModelFactory = gameboardViewModelFactory;
             _playerRepository = playerRepository;
@@ -28,7 +30,9 @@ namespace GuiWpf.ViewModels
 
         private void StartNewGame()
         {
-            MainViewModel = _gameboardViewModelFactory.Create();
+            var game = _gameFactory.Create();
+
+            MainViewModel = _gameboardViewModelFactory.Create(game);
         }
 
         private IMainGameViewViewModel _mainViewModel;
