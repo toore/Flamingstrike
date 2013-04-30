@@ -62,7 +62,7 @@ namespace GuiWpf.Services
 
         public Color SelectedTerritoryColor
         {
-            get { return Color.FromArgb(0x32, 0xEA, 0xEA, 0x15); }
+            get { return Color.FromArgb(0x90, 0xEA, 0xEA, 0x15); }
         }
     }
 }

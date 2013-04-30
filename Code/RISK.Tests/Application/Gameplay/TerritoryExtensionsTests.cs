@@ -1,4 +1,5 @@
 ﻿using FluentAssertions;
+using NSubstitute;
 using NUnit.Framework;
 using RISK.Domain.Entities;
 
@@ -7,6 +8,20 @@ namespace RISK.Tests.Application.Gameplay
     [TestFixture]
     public class TerritoryExtensionsTests
     {
+        [Test]
+        public void Is_assigned_to_player()
+        {
+            var territory = new Territory(null) { AssignedPlayer = Substitute.For<IPlayer>() };
+
+            territory.IsPlayerAssigned().Should().BeTrue();
+        }
+
+        [Test]
+        public void Is_not_assigned_to_player()
+        {
+            new Territory(null).IsPlayerAssigned().Should().BeFalse();
+        }
+
         [Test]
         [TestCase(0, 1, TestName = "One army gives one zero armies to attack with")]
         [TestCase(1, 2, TestName = "Two armies gives one army to attack with")]

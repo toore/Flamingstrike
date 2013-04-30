@@ -9,18 +9,12 @@ namespace RISK.Tests.Application.Gameplay
     public class TerritoryTests
     {
         [Test]
-        public void Is_assigned_to_player()
+        public void Initializes_location()
         {
-            var territory = new Territory(null);
-            territory.AssignedPlayer = Substitute.For<IPlayer>();
+            var location = Substitute.For<ILocation>();
+            var territory = new Territory(location);
 
-            territory.IsPlayerAssigned().Should().BeTrue();
-        }
-
-        [Test]
-        public void Is_not_assigned_to_player()
-        {
-            new Territory(null).IsPlayerAssigned().Should().BeFalse();
+            territory.Location.Should().Be(location);
         }
     }
 }
