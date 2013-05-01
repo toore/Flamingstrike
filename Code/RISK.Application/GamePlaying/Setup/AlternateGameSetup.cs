@@ -100,7 +100,7 @@ namespace RISK.Domain.GamePlaying.Setup
                 .Select(x => x.Location)
                 .ToList();
 
-            var selectedLocation = _locationSelector.Select(locations);
+            var selectedLocation = _locationSelector.Select(new SelectLocationParameter(worldMap, locations));
 
             var territory = worldMap.GetTerritory(selectedLocation);
             territory.Armies++;

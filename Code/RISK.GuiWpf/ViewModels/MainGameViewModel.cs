@@ -45,10 +45,10 @@ namespace GuiWpf.ViewModels
             MainViewModel = gameboardViewModel;
         }
 
-        public ILocation Select(IEnumerable<ILocation> locations)
+        public ILocation Select(SelectLocationParameter selectLocationParameter)
         {
             //TODO: Select from gui?
-            return locations.First();
+            return selectLocationParameter.AvailableLocations.First();
         }
 
         private IMainGameViewViewModel _mainViewModel;

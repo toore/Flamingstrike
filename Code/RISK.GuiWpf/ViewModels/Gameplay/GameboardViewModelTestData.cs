@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Linq;
 using GuiWpf.Services;
 using GuiWpf.Territories;
@@ -47,9 +46,9 @@ namespace GuiWpf.ViewModels.Gameplay
             return gameboardViewModel;
         }
 
-        public ILocation Select(IEnumerable<ILocation> locations)
+        public ILocation Select(SelectLocationParameter selectLocationParameter)
         {
-            return locations.First();
+            return selectLocationParameter.AvailableLocations.First();
         }
     }
 }
