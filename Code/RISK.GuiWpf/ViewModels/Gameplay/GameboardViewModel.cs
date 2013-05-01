@@ -16,7 +16,6 @@ namespace GuiWpf.ViewModels.Gameplay
         private ITurn _currentTurn;
         private readonly List<ITerritory> _territories;
         private IPlayer _player;
-        public WorldMapViewModel WorldMapViewModel { get; private set; }
 
         public GameboardViewModel(IGame game, ILocationProvider locationProvider, IWorldMapViewModelFactory worldMapViewModelFactory, ITerritoryViewModelUpdater territoryViewModelUpdater)
         {
@@ -33,6 +32,8 @@ namespace GuiWpf.ViewModels.Gameplay
 
             BeginNextPlayerTurn();
         }
+
+        public WorldMapViewModel WorldMapViewModel { get; private set; }
 
         public IPlayer Player
         {
