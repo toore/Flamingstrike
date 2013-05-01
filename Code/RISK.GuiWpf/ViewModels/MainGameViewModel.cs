@@ -27,9 +27,14 @@ namespace GuiWpf.ViewModels
 
         public void Handle(GameSetupMessage message)
         {
-            message.Players.Apply(_playerRepository.Add);
+            StorePlayersInRepository(message.Players);
 
             StartNewGame();
+        }
+
+        private void StorePlayersInRepository(IEnumerable<IPlayer> players)
+        {
+            players.Apply(_playerRepository.Add);
         }
 
         private void StartNewGame()
