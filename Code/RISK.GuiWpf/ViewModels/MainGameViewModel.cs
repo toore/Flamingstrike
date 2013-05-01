@@ -40,8 +40,9 @@ namespace GuiWpf.ViewModels
         private void StartNewGame()
         {
             var game = _gameFactory.Create(this);
+            var gameboardViewModel = _gameboardViewModelFactory.Create(game);
 
-            MainViewModel = _gameboardViewModelFactory.Create(game);
+            MainViewModel = gameboardViewModel;
         }
 
         public ILocation Select(IEnumerable<ILocation> locations)
