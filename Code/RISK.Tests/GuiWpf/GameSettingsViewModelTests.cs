@@ -9,9 +9,9 @@ using RISK.Base.Extensions;
 namespace RISK.Tests.GuiWpf
 {
     [TestFixture]
-    public class GameSetupViewModelTests
+    public class GameSettingsViewModelTests
     {
-        private GameSetupViewModel _gameSetupViewModel;
+        private GameSettingsViewModel _gameSettingsViewModel;
         private IPlayerFactory _playerFactory;
         private IPlayerTypes _playerTypes;
         private IGameSetupEventAggregator _gameSetupEventAggregator;
@@ -26,42 +26,42 @@ namespace RISK.Tests.GuiWpf
             var playerType = Substitute.For<PlayerTypeBase>();
             _playerTypes.Values.Returns(playerType.AsList());
 
-            _gameSetupViewModel = new GameSetupViewModel(_playerFactory, _playerTypes, _gameSetupEventAggregator);
+            _gameSettingsViewModel = new GameSettingsViewModel(_playerFactory, _playerTypes, _gameSetupEventAggregator);
         }
 
         [Test]
         public void Has_6_players()
         {
-            _gameSetupViewModel.Players.Count.Should().Be(6);
+            _gameSettingsViewModel.Players.Count.Should().Be(6);
         }
 
         [Test]
         public void Cant_confirm_when_no_players_are_selected()
         {
-            _gameSetupViewModel.CanConfirm.Should().BeFalse();
+            _gameSettingsViewModel.CanConfirm.Should().BeFalse();
         }
 
         [Test]
         public void Cant_confirm_when_less_than_two_players_are_selected()
         {
-            _gameSetupViewModel.Players.First().IsEnabled = true;
+            _gameSettingsViewModel.Players.First().IsEnabled = true;
 
-            _gameSetupViewModel.CanConfirm.Should().BeFalse();
+            _gameSettingsViewModel.CanConfirm.Should().BeFalse();
         }
 
         [Test]
         public void Can_confirm_when_at_least_two_players_are_selected()
         {
-            _gameSetupViewModel.Players.First().IsEnabled = true;
-            _gameSetupViewModel.Players.Second().IsEnabled = true;
+            _gameSettingsViewModel.Players.First().IsEnabled = true;
+            _gameSettingsViewModel.Players.Second().IsEnabled = true;
 
-            _gameSetupViewModel.CanConfirm.Should().BeTrue();
+            _gameSettingsViewModel.CanConfirm.Should().BeTrue();
         }
 
         [Test]
         public void Confirm_publishes_message()
         {
-            _gameSetupViewModel.Confirm();
+            _gameSettingsViewModel.Confirm();
 
             _gameSetupEventAggregator.Received().Publish(Arg.Any<GameSetupMessage>());
         }

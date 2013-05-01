@@ -15,26 +15,28 @@ namespace RISK.Tests.GuiWpf
     {
         private MainGameViewModel _mainGameViewModel;
         private IGameFactory _gameFactory;
-        private IGameSetupViewModel _gameSetupViewModel;
+        private IGameSettingsViewModel _gameSettingsViewModel;
         private IGameboardViewModelFactory _gameboardViewModelFactory;
         private IPlayerRepository _playerRepository;
+        private IGameSetupViewModelFactory _gameSetupViewModelFactory;
 
         [SetUp]
         public void SetUp()
         {
             _gameFactory = Substitute.For<IGameFactory>();
-            _gameSetupViewModel = Substitute.For<IGameSetupViewModel>();
+            _gameSettingsViewModel = Substitute.For<IGameSettingsViewModel>();
             _gameboardViewModelFactory = Substitute.For<IGameboardViewModelFactory>();
             _playerRepository = Substitute.For<IPlayerRepository>();
+            _gameSetupViewModelFactory = Substitute.For<IGameSetupViewModelFactory>();
 
-            _mainGameViewModel = new MainGameViewModel(_gameFactory, _gameSetupViewModel, _gameboardViewModelFactory, _playerRepository);
+            _mainGameViewModel = new MainGameViewModel(_gameFactory, _gameSettingsViewModel, _gameboardViewModelFactory, _playerRepository, _gameSetupViewModelFactory);
         }
 
         [Test]
         public void Initialize_main_view_to_setup()
         {
 
-            _mainGameViewModel.MainViewModel.Should().Be(_gameSetupViewModel);
+            _mainGameViewModel.MainViewModel.Should().Be(_gameSettingsViewModel);
         }
 
         [Test]

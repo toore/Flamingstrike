@@ -33,11 +33,12 @@ namespace RISK.Tests.Application.Specifications
             ObjectFactory.Configure(x =>
                 {
                     x.For<IMainGameViewModel>().Use<MainGameViewModel>();
-                    x.For<IGameSetupViewModel>().Use<GameSetupViewModel>();
+                    x.For<IGameSettingsViewModel>().Use<GameSettingsViewModel>();
                     x.For<IPlayerFactory>().Use<PlayerFactory>();
                     x.For<IPlayerTypes>().Use<PlayerTypes>();
                     x.For<IGameSetupEventAggregator>().Use<GameSetupEventAggregator>();
                     x.For<IGameboardViewModelFactory>().Use<GameboardViewModelFactory>();
+                    x.For<IGameSetupViewModelFactory>().Use<GameSetupViewModelFactory>();
                     x.For<IGameFactory>().Use<GameFactory>();
                     x.For<ITurnFactory>().Use<TurnFactory>();
                     x.For<IAlternateGameSetup>().Use<AlternateGameSetup>();
@@ -121,7 +122,7 @@ namespace RISK.Tests.Application.Specifications
 
         private void SelectTwoHumanPlayersAndConfirm()
         {
-            var gameSetupViewModel = (IGameSetupViewModel)_mainGameBoardViewModel.MainViewModel;
+            var gameSetupViewModel = (IGameSettingsViewModel)_mainGameBoardViewModel.MainViewModel;
 
             gameSetupViewModel.Players.First().IsEnabled = true;
             gameSetupViewModel.Players.Second().IsEnabled = true;

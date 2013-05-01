@@ -6,13 +6,13 @@ using RISK.Domain.Entities;
 
 namespace GuiWpf.ViewModels.Setup
 {
-    public class GameSetupViewModel : ViewModelBase, IGameSetupViewModel
+    public class GameSettingsViewModel : ViewModelBase, IGameSettingsViewModel
     {
         private readonly IPlayerFactory _playerFactory;
         private readonly IPlayerTypes _playerTypes;
         private readonly IGameSetupEventAggregator _gameSetupEventAggregator;
 
-        public GameSetupViewModel(IPlayerFactory playerFactory, IPlayerTypes playerTypes, IGameSetupEventAggregator gameSetupEventAggregator)
+        public GameSettingsViewModel(IPlayerFactory playerFactory, IPlayerTypes playerTypes, IGameSetupEventAggregator gameSetupEventAggregator)
         {
             _playerFactory = playerFactory;
             _playerTypes = playerTypes;

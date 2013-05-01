@@ -11,18 +11,20 @@ namespace GuiWpf.ViewModels
     public class MainGameViewModel : ViewModelBase, IMainGameViewModel, IHandle<GameSetupMessage>, ILocationSelector
     {
         private readonly IGameFactory _gameFactory;
-        private readonly IGameSetupViewModel _gameSetupViewModel;
+        private readonly IGameSettingsViewModel _gameSettingsViewModel;
         private readonly IGameboardViewModelFactory _gameboardViewModelFactory;
         private readonly IPlayerRepository _playerRepository;
+        private readonly IGameSetupViewModelFactory _gameSetupViewModelFactory;
 
-        public MainGameViewModel(IGameFactory gameFactory, IGameSetupViewModel gameSetupViewModel, IGameboardViewModelFactory gameboardViewModelFactory, IPlayerRepository playerRepository)
+        public MainGameViewModel(IGameFactory gameFactory, IGameSettingsViewModel gameSettingsViewModel, IGameboardViewModelFactory gameboardViewModelFactory, IPlayerRepository playerRepository, IGameSetupViewModelFactory gameSetupViewModelFactory)
         {
             _gameFactory = gameFactory;
-            _gameSetupViewModel = gameSetupViewModel;
+            _gameSettingsViewModel = gameSettingsViewModel;
             _gameboardViewModelFactory = gameboardViewModelFactory;
             _playerRepository = playerRepository;
+            _gameSetupViewModelFactory = gameSetupViewModelFactory;
 
-            MainViewModel = _gameSetupViewModel;
+            MainViewModel = _gameSettingsViewModel;
         }
 
         public void Handle(GameSetupMessage message)

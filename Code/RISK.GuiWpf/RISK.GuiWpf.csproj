@@ -81,18 +81,21 @@
     <Compile Include="Services\ITerritoryColors.cs" />
     <Compile Include="Services\TerritoryColorsFactory.cs" />
     <Compile Include="Services\TerritoryViewModelUpdater.cs" />
+    <Compile Include="ViewModels\GameSetupViewModel.cs" />
     <Compile Include="ViewModels\GameboardViewModelFactory.cs" />
     <Compile Include="ViewModels\GameFactory.cs" />
     <Compile Include="ViewModels\Gameplay\Map\ITerritoryTextViewModel.cs" />
     <Compile Include="ViewModels\Gameplay\Map\WorldMapViewModelsExtensions.cs" />
     <Compile Include="ViewModels\GameSetupMessage.cs" />
+    <Compile Include="ViewModels\GameSetupViewModelFactory.cs" />
+    <Compile Include="ViewModels\IGameSetupViewModelFactory.cs" />
     <Compile Include="ViewModels\IGameboardViewModelFactory.cs" />
     <Compile Include="ViewModels\IGameFactory.cs" />
     <Compile Include="ViewModels\Setup\GameSetupEventAggregator.cs" />
-    <Compile Include="ViewModels\Setup\GameSetupViewModel.cs" />
+    <Compile Include="ViewModels\Setup\GameSettingsViewModel.cs" />
     <Compile Include="ViewModels\Setup\HumanPlayerType.cs" />
     <Compile Include="ViewModels\Setup\IGameSetupEventAggregator.cs" />
-    <Compile Include="ViewModels\Setup\IGameSetupViewModel.cs" />
+    <Compile Include="ViewModels\Setup\IGameSettingsViewModel.cs" />
     <Compile Include="ViewModels\MainGameViewModel.cs" />
     <Compile Include="ViewModels\IMainGameViewViewModel.cs" />
     <Compile Include="ViewModels\Setup\IPlayerFactory.cs" />
@@ -110,8 +113,8 @@
     <Compile Include="ViewModels\Gameplay\IGameboardViewModel.cs" />
     <Compile Include="Services\ITerritoryViewModelUpdater.cs" />
     <Compile Include="ViewModels\IMainGameViewModel.cs" />
-    <Compile Include="Views\GameSetupViews\GameSetupView.xaml.cs">
-      <DependentUpon>GameSetupView.xaml</DependentUpon>
+    <Compile Include="Views\GameSetupViews\GameSettingsView.xaml.cs">
+      <DependentUpon>GameSettingsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\MainBootstrapper.cs" />
     <Compile Include="ViewModels\Gameplay\GameboardViewModelTestData.cs" />
@@ -196,11 +199,11 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Views\GameSetupViews\GameSetupResources.xaml">
+    <Page Include="Views\GameSetupViews\GameSettingsResources.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\GameSetupViews\GameSetupView.xaml">
+    <Page Include="Views\GameSetupViews\GameSettingsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

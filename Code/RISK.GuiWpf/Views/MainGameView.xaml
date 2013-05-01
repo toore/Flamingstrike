@@ -15,8 +15,8 @@
     <UserControl.Resources>
         <ResourceDictionary>
 
-            <DataTemplate DataType="{x:Type Setup:GameSetupViewModel}">
-                <GameSetupViews:GameSetupView Players="{Binding Players}" />
+            <DataTemplate DataType="{x:Type Setup:GameSettingsViewModel}">
+                <GameSetupViews:GameSettingsView Players="{Binding Players}" />
             </DataTemplate>
 
             <DataTemplate DataType="{x:Type Gameboard:GameboardViewModel}">

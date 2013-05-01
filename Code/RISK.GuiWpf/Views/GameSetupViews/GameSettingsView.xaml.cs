@@ -4,11 +4,11 @@ using GuiWpf.ViewModels.Setup;
 
 namespace GuiWpf.Views.GameSetupViews
 {
-    public partial class GameSetupView
+    public partial class GameSettingsView
     {
-        public static readonly DependencyProperty PlayersProperty = DependencyProperty.Register("Players", typeof(ObservableCollection<PlayerSetupViewModel>), typeof(GameSetupView), new PropertyMetadata(default(ObservableCollection<PlayerSetupViewModel>)));
+        public static readonly DependencyProperty PlayersProperty = DependencyProperty.Register("Players", typeof(ObservableCollection<PlayerSetupViewModel>), typeof(GameSettingsView), new PropertyMetadata(default(ObservableCollection<PlayerSetupViewModel>)));
 
-        public GameSetupView()
+        public GameSettingsView()
         {
             InitializeComponent();
         }
