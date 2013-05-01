@@ -58,7 +58,7 @@ namespace RISK.Tests.GuiWpf
         }
 
         [Test]
-        public void Game_setup_message_starts_new_game()
+        public void Game_setup_message_starts_new_game_view()
         {
             var game = Substitute.For<IGame>();
             _gameFactory.Create(_mainGameViewModel).Returns(game);
