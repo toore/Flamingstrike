@@ -13,6 +13,7 @@
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/GuiWpf;component/Views/GameResources.xaml" />
                 <ResourceDictionary Source="WorldMapResources.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
@@ -39,13 +40,13 @@
             <Label Content="{Binding Player.Name}" />
         </StackPanel>
 
-        <Viewbox
-            Stretch="Uniform"
-            Grid.Row="1">
-            <ContentControl
-                Content="{Binding WorldMapViewModel}"
-                Focusable="False" />
-        </Viewbox>
+        <!--<WorldMapViews:WorldMapViewBoxUserControl 
+            DataContext="{Binding WorldMapViewModel}"
+            Grid.Row="1"/>-->
+
+        <ContentControl 
+            Content="{Binding WorldMapViewModel}"
+            Grid.Row="1" />
 
         <StackPanel
             Orientation="Horizontal"
