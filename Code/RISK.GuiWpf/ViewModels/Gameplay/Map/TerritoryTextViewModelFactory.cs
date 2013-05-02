@@ -20,7 +20,8 @@ namespace GuiWpf.ViewModels.Gameplay.Map
                 {
                     Location = territory.Location,
                     TerritoryName = layoutInformation.Name,
-                    Position = layoutInformation.NamePosition
+                    Position = layoutInformation.NamePosition,
+                    Armies = territory.Armies
                 };
         }
     }

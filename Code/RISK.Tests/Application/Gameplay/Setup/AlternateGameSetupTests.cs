@@ -102,7 +102,7 @@ namespace RISK.Tests.Application.Gameplay.Setup
             
             //_locationSelector.Select(Arg.Is<List<ILocation>>(x => x.SequenceEqual(player1Locations))).Returns(_location3);
             //_locationSelector.Select(Arg.Is<List<ILocation>>(x => x.SequenceEqual(player2Locations))).Returns(_location2, _location2);
-            _locationSelector.Select(null).ReturnsForAnyArgs(_location3, _location2, _location2);
+            _locationSelector.GetLocation(null).ReturnsForAnyArgs(_location3, _location2, _location2);
 
             var worldMap = Initialize();
 

@@ -58,7 +58,7 @@ namespace RISK.Tests.Application.Specifications
                     x.For<IDices>().Use<Dices>();
                     x.For<ICasualtyEvaluator>().Use<CasualtyEvaluator>();
                     x.For<IDiceRoller>().Use<DiceRoller>();
-                    x.For<IGameSetupViewModel>().Use<GameSetupViewModel>();
+                    x.For<IGameSetupViewModelFactory>().Use<GameSetupViewModelFactory>();
 
                     x.RegisterInterceptor(new HandleInterceptor<IGameSetupEventAggregator>());
                 });

@@ -7,7 +7,8 @@
     xmlns:GameSetupViews="clr-namespace:GuiWpf.Views.GameSetupViews"
     xmlns:Setup="clr-namespace:GuiWpf.ViewModels.Setup"
     xmlns:Gameboard="clr-namespace:GuiWpf.ViewModels.Gameplay"
-    xmlns:WorldMapViews="clr-namespace:GuiWpf.Views.WorldMapViews"
+    xmlns:WorldMapViews="clr-namespace:GuiWpf.Views.WorldMapViews" 
+             xmlns:ViewModels="clr-namespace:GuiWpf.ViewModels"
     mc:Ignorable="d"
     d:DesignHeight="300" d:DesignWidth="300"
     d:DataContext="{Binding Source={x:Static Views:MainGameViewTestDataFactory.ViewModel}}">
@@ -17,6 +18,10 @@
 
             <DataTemplate DataType="{x:Type Setup:GameSettingsViewModel}">
                 <GameSetupViews:GameSettingsView Players="{Binding Players}" />
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type ViewModels:GameSetupViewModel}">
+                <WorldMapViews:GameboardView />
             </DataTemplate>
 
             <DataTemplate DataType="{x:Type Gameboard:GameboardViewModel}">

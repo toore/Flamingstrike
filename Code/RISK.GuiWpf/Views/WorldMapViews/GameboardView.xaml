@@ -40,10 +40,6 @@
             <Label Content="{Binding Player.Name}" />
         </StackPanel>
 
-        <!--<WorldMapViews:WorldMapViewBoxUserControl 
-            DataContext="{Binding WorldMapViewModel}"
-            Grid.Row="1"/>-->
-
         <ContentControl 
             Content="{Binding WorldMapViewModel}"
             Grid.Row="1" />

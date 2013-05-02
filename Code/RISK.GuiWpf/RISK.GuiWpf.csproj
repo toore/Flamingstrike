@@ -87,9 +87,12 @@
     <Compile Include="ViewModels\Gameplay\Map\ITerritoryTextViewModel.cs" />
     <Compile Include="ViewModels\Gameplay\Map\WorldMapViewModelsExtensions.cs" />
     <Compile Include="ViewModels\GameSetupMessage.cs" />
+    <Compile Include="ViewModels\GameSetupViewModelFactory.cs" />
     <Compile Include="ViewModels\IGameSetupViewModel.cs" />
     <Compile Include="ViewModels\IGameboardViewModelFactory.cs" />
     <Compile Include="ViewModels\IGameFactory.cs" />
+    <Compile Include="ViewModels\IGameSetupViewModelFactory.cs" />
+    <Compile Include="ViewModels\IGameStateConductor.cs" />
     <Compile Include="ViewModels\Setup\GameSetupEventAggregator.cs" />
     <Compile Include="ViewModels\Setup\GameSettingsViewModel.cs" />
     <Compile Include="ViewModels\Setup\HumanPlayerType.cs" />

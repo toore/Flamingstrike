@@ -2,25 +2,24 @@
 using Caliburn.Micro;
 using GuiWpf.ViewModels.Setup;
 using RISK.Domain.Entities;
+using RISK.Domain.GamePlaying;
 using RISK.Domain.Repositories;
 
 namespace GuiWpf.ViewModels
 {
-    public class MainGameViewModel : ViewModelBase, IMainGameViewModel, IHandle<GameSetupMessage>
+    public class MainGameViewModel : ViewModelBase, IMainGameViewModel, IGameStateConductor, IHandle<GameSetupMessage>
     {
-        private readonly IGameFactory _gameFactory;
         private readonly IGameSettingsViewModel _gameSettingsViewModel;
         private readonly IGameboardViewModelFactory _gameboardViewModelFactory;
         private readonly IPlayerRepository _playerRepository;
-        private readonly IGameSetupViewModel _gameSetupViewModel;
+        private readonly IGameSetupViewModelFactory _gameSetupViewModelFactory;
 
-        public MainGameViewModel(IGameFactory gameFactory, IGameSettingsViewModel gameSettingsViewModel, IGameboardViewModelFactory gameboardViewModelFactory, IPlayerRepository playerRepository, IGameSetupViewModel gameSetupViewModel)
+        public MainGameViewModel(IGameSettingsViewModel gameSettingsViewModel, IGameboardViewModelFactory gameboardViewModelFactory, IPlayerRepository playerRepository, IGameSetupViewModelFactory gameSetupViewModelFactory)
         {
-            _gameFactory = gameFactory;
             _gameSettingsViewModel = gameSettingsViewModel;
             _gameboardViewModelFactory = gameboardViewModelFactory;
             _playerRepository = playerRepository;
-            _gameSetupViewModel = gameSetupViewModel;
+            _gameSetupViewModelFactory = gameSetupViewModelFactory;
 
             MainViewModel = _gameSettingsViewModel;
         }
@@ -39,12 +38,12 @@ namespace GuiWpf.ViewModels
 
         private void StartNewGame()
         {
-            MainViewModel = _gameSetupViewModel;
+            MainViewModel = _gameSetupViewModelFactory.Create(this);
+        }
 
-            var game = _gameFactory.Create(_gameSetupViewModel);
-            var gameboardViewModel = _gameboardViewModelFactory.Create(game);
-
-            MainViewModel = gameboardViewModel;
+        public void StartGamePlay(IGame game)
+        {
+            MainViewModel = _gameboardViewModelFactory.Create(game);
         }
 
         private IMainGameViewViewModel _mainViewModel;

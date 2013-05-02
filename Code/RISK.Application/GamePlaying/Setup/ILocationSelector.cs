@@ -4,6 +4,6 @@ namespace RISK.Domain.GamePlaying.Setup
 {
     public interface ILocationSelector
     {
-        ILocation Select(ISelectLocationParameter selectLocationParameter);
+        ILocation GetLocation(ILocationSelectorParameter locationSelectorParameter);
     }
 }

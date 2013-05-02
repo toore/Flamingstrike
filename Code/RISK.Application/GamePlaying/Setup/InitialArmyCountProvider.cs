@@ -1,12 +1,10 @@
-﻿using System;
-
-namespace RISK.Domain.GamePlaying.Setup
+﻿namespace RISK.Domain.GamePlaying.Setup
 {
     public class InitialArmyCountProvider : IInitialArmyCountProvider
     {
         public int Get(int numberOfPlayers)
         {
-            return 40;
+            return 30;
         }
     }
 }
