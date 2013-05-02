@@ -1,28 +1,26 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using Caliburn.Micro;
 using GuiWpf.ViewModels.Setup;
 using RISK.Domain.Entities;
-using RISK.Domain.GamePlaying.Setup;
 using RISK.Domain.Repositories;
 
 namespace GuiWpf.ViewModels
 {
-    public class MainGameViewModel : ViewModelBase, IMainGameViewModel, IHandle<GameSetupMessage>, ILocationSelector
+    public class MainGameViewModel : ViewModelBase, IMainGameViewModel, IHandle<GameSetupMessage>
     {
         private readonly IGameFactory _gameFactory;
         private readonly IGameSettingsViewModel _gameSettingsViewModel;
         private readonly IGameboardViewModelFactory _gameboardViewModelFactory;
         private readonly IPlayerRepository _playerRepository;
-        private readonly IGameSetupViewModelFactory _gameSetupViewModelFactory;
+        private readonly IGameSetupViewModel _gameSetupViewModel;
 
-        public MainGameViewModel(IGameFactory gameFactory, IGameSettingsViewModel gameSettingsViewModel, IGameboardViewModelFactory gameboardViewModelFactory, IPlayerRepository playerRepository, IGameSetupViewModelFactory gameSetupViewModelFactory)
+        public MainGameViewModel(IGameFactory gameFactory, IGameSettingsViewModel gameSettingsViewModel, IGameboardViewModelFactory gameboardViewModelFactory, IPlayerRepository playerRepository, IGameSetupViewModel gameSetupViewModel)
         {
             _gameFactory = gameFactory;
             _gameSettingsViewModel = gameSettingsViewModel;
             _gameboardViewModelFactory = gameboardViewModelFactory;
             _playerRepository = playerRepository;
-            _gameSetupViewModelFactory = gameSetupViewModelFactory;
+            _gameSetupViewModel = gameSetupViewModel;
 
             MainViewModel = _gameSettingsViewModel;
         }
@@ -41,16 +39,12 @@ namespace GuiWpf.ViewModels
 
         private void StartNewGame()
         {
-            var game = _gameFactory.Create(this);
+            MainViewModel = _gameSetupViewModel;
+
+            var game = _gameFactory.Create(_gameSetupViewModel);
             var gameboardViewModel = _gameboardViewModelFactory.Create(game);
 
             MainViewModel = gameboardViewModel;
-        }
-
-        public ILocation Select(SelectLocationParameter selectLocationParameter)
-        {
-            //TODO: Select from gui?
-            return selectLocationParameter.AvailableLocations.First();
         }
 
         private IMainGameViewViewModel _mainViewModel;

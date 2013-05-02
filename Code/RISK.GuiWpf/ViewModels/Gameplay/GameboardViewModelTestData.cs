@@ -46,7 +46,7 @@ namespace GuiWpf.ViewModels.Gameplay
             return gameboardViewModel;
         }
 
-        public ILocation Select(SelectLocationParameter selectLocationParameter)
+        public ILocation Select(ISelectLocationParameter selectLocationParameter)
         {
             return selectLocationParameter.AvailableLocations.First();
         }

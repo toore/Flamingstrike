@@ -82,6 +82,7 @@
     <Compile Include="GamePlaying\IRandomWrapper.cs" />
     <Compile Include="GamePlaying\ITurnFactory.cs" />
     <Compile Include="GamePlaying\IWorldMapFactory.cs" />
+    <Compile Include="GamePlaying\Setup\ISelectLocationParameter.cs" />
     <Compile Include="GamePlaying\Setup\PlayerDuringSetup.cs" />
     <Compile Include="GamePlaying\RandomizedPlayerRepository.cs" />
     <Compile Include="GamePlaying\RandomSorter.cs" />

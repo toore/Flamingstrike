@@ -3,7 +3,7 @@ using RISK.Domain.Entities;
 
 namespace RISK.Domain.GamePlaying.Setup
 {
-    public class SelectLocationParameter
+    public class SelectLocationParameter : ISelectLocationParameter
     {
         public SelectLocationParameter(IWorldMap worldMap, IEnumerable<ILocation> availableLocations)
         {

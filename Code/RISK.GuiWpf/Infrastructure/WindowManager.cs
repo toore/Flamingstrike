@@ -9,6 +9,11 @@ namespace GuiWpf.Infrastructure
         {
             var window = base.CreateWindow(rootModel, isDialog, context, settings);
 
+            if (isDialog)
+            {
+                window.Visibility = Visibility.Collapsed;
+            }
+
             if (!isDialog)
             {
                 window.WindowStartupLocation = WindowStartupLocation.CenterScreen;
