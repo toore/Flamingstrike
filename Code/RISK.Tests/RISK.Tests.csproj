@@ -96,6 +96,7 @@
     <Compile Include="GuiWpf\GameSettingsViewModelTests.cs" />
     <Compile Include="Application\Specifications\game_playing_specifications.cs" />
     <Compile Include="GuiWpf\MainGameViewModelTests.cs" />
+    <Compile Include="GuiWpf\TerritoryTextViewModelFactoryTests.cs" />
     <Compile Include="NSpecDebuggerShim.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
