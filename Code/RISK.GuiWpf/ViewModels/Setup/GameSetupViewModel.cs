@@ -18,7 +18,8 @@ namespace GuiWpf.ViewModels.Setup
 
         private readonly AutoResetEvent _userSelectionSignal = new AutoResetEvent(false);
 
-        public GameSetupViewModel(IWorldMapViewModelFactory worldMapViewModelFactory, IGameFactoryWorker gameFactoryWorker, IDispatcherWrapper dispatcherWrapper, IGameStateConductor gameStateConductor)
+        public GameSetupViewModel(
+            IWorldMapViewModelFactory worldMapViewModelFactory, IGameFactoryWorker gameFactoryWorker, IDispatcherWrapper dispatcherWrapper, IGameStateConductor gameStateConductor)
         {
             _worldMapViewModelFactory = worldMapViewModelFactory;
             _gameFactoryWorker = gameFactoryWorker;
