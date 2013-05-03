@@ -7,6 +7,7 @@ using GuiWpf.Territories;
 using GuiWpf.ViewModels;
 using GuiWpf.ViewModels.Gameplay;
 using GuiWpf.ViewModels.Gameplay.Map;
+using GuiWpf.ViewModels.Settings;
 using GuiWpf.ViewModels.Setup;
 using NSubstitute;
 using RISK.Base.Extensions;
@@ -36,7 +37,7 @@ namespace RISK.Tests.Application.Specifications
                     x.For<IGameSettingsViewModel>().Use<GameSettingsViewModel>();
                     x.For<IPlayerFactory>().Use<PlayerFactory>();
                     x.For<IPlayerTypes>().Use<PlayerTypes>();
-                    x.For<IGameSetupEventAggregator>().Use<GameSetupEventAggregator>();
+                    x.For<IGameSettingsEventAggregator>().Use<GameSettingsEventAggregator>();
                     x.For<IGameboardViewModelFactory>().Use<GameboardViewModelFactory>();
                     x.For<IGameFactory>().Use<GameFactory>();
                     x.For<ITurnFactory>().Use<TurnFactory>();
@@ -60,7 +61,7 @@ namespace RISK.Tests.Application.Specifications
                     x.For<IDiceRoller>().Use<DiceRoller>();
                     x.For<IGameSetupViewModelFactory>().Use<GameSetupViewModelFactory>();
 
-                    x.RegisterInterceptor(new HandleInterceptor<IGameSetupEventAggregator>());
+                    x.RegisterInterceptor(new HandleInterceptor<IGameSettingsEventAggregator>());
                 });
         }
 

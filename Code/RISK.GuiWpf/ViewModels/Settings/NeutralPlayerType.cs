@@ -1,6 +1,6 @@
 ﻿using GuiWpf.Properties;
 
-namespace GuiWpf.ViewModels.Setup
+namespace GuiWpf.ViewModels.Settings
 {
     public class NeutralPlayerType : PlayerTypeBase
     {

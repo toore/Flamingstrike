@@ -1,6 +1,6 @@
 ﻿using RISK.Domain.Entities;
 
-namespace GuiWpf.ViewModels.Setup
+namespace GuiWpf.ViewModels.Settings
 {
     public class PlayerFactory : IPlayerFactory
     {

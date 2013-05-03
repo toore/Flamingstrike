@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using GuiWpf.ViewModels.Gameplay;
-using GuiWpf.ViewModels.Setup;
+using GuiWpf.ViewModels.Settings;
 using RISK.Domain.GamePlaying;
 using RISK.Domain.Repositories;
 using StructureMap;
@@ -25,7 +25,7 @@ namespace GuiWpf.Infrastructure
 
                     x.For<ILocationProvider>().Singleton();
 
-                    x.RegisterInterceptor(new HandleInterceptor<IGameSetupEventAggregator>());
+                    x.RegisterInterceptor(new HandleInterceptor<IGameSettingsEventAggregator>());
                 });
         }
 

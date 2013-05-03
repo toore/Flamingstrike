@@ -2,7 +2,7 @@
 using RISK.Domain.GamePlaying.Setup;
 using RISK.Domain.Repositories;
 
-namespace GuiWpf.ViewModels
+namespace GuiWpf.ViewModels.Setup
 {
     public class GameFactory : IGameFactory
     {

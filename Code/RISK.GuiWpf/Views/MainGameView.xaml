@@ -5,10 +5,9 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:Views="clr-namespace:GuiWpf.Views"
     xmlns:GameSetupViews="clr-namespace:GuiWpf.Views.GameSetupViews"
-    xmlns:Setup="clr-namespace:GuiWpf.ViewModels.Setup"
     xmlns:Gameboard="clr-namespace:GuiWpf.ViewModels.Gameplay"
     xmlns:WorldMapViews="clr-namespace:GuiWpf.Views.WorldMapViews" 
-             xmlns:ViewModels="clr-namespace:GuiWpf.ViewModels"
+             xmlns:ViewModels="clr-namespace:GuiWpf.ViewModels" xmlns:Setup="clr-namespace:GuiWpf.ViewModels.Settings" xmlns:Setup2="clr-namespace:GuiWpf.ViewModels.Setup"
     mc:Ignorable="d"
     d:DesignHeight="300" d:DesignWidth="300"
     d:DataContext="{Binding Source={x:Static Views:MainGameViewTestDataFactory.ViewModel}}">
@@ -20,7 +19,7 @@
                 <GameSetupViews:GameSettingsView Players="{Binding Players}" />
             </DataTemplate>
 
-            <DataTemplate DataType="{x:Type ViewModels:GameSetupViewModel}">
+            <DataTemplate DataType="{x:Type Setup2:GameSetupViewModel}">
                 <WorldMapViews:GameboardView />
             </DataTemplate>
 

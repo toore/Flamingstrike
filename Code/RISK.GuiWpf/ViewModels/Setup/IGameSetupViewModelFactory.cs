@@ -1,7 +1,4 @@
-﻿using System;
-using RISK.Domain.GamePlaying;
-
-namespace GuiWpf.ViewModels
+﻿namespace GuiWpf.ViewModels.Setup
 {
     public interface IGameSetupViewModelFactory
     {

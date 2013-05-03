@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace GuiWpf.ViewModels.Setup
+namespace GuiWpf.ViewModels.Settings
 {
     public class PlayerSetupViewModel : ViewModelBase
     {

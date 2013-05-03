@@ -1,6 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 
-namespace GuiWpf.ViewModels.Setup
+namespace GuiWpf.ViewModels.Settings
 {
     public interface IGameSettingsViewModel : IMainGameViewViewModel
     {

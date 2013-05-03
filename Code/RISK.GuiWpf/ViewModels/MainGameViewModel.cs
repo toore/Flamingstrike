@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using Caliburn.Micro;
+using GuiWpf.ViewModels.Gameplay;
+using GuiWpf.ViewModels.Settings;
 using GuiWpf.ViewModels.Setup;
 using RISK.Domain.Entities;
 using RISK.Domain.GamePlaying;

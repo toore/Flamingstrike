@@ -1,6 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.Windows;
-using GuiWpf.ViewModels.Setup;
+using GuiWpf.ViewModels.Settings;
 
 namespace GuiWpf.Views.GameSetupViews
 {

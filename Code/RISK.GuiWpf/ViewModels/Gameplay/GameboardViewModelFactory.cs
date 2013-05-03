@@ -1,10 +1,9 @@
 ﻿using GuiWpf.Services;
-using GuiWpf.ViewModels.Gameplay;
 using GuiWpf.ViewModels.Gameplay.Map;
 using RISK.Domain.GamePlaying;
 using RISK.Domain.Repositories;
 
-namespace GuiWpf.ViewModels
+namespace GuiWpf.ViewModels.Gameplay
 {
     public class GameboardViewModelFactory : IGameboardViewModelFactory
     {
