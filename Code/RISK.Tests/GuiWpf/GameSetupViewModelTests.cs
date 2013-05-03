@@ -1,4 +1,5 @@
-﻿using FluentAssertions;
+﻿using System.Threading.Tasks;
+using FluentAssertions;
 using GuiWpf.ViewModels;
 using GuiWpf.ViewModels.Gameplay.Map;
 using GuiWpf.ViewModels.Setup;
@@ -37,8 +38,16 @@ namespace RISK.Tests.GuiWpf
             locationSelectorParameter.WorldMap.Returns(Substitute.For<IWorldMap>());
             var location = Substitute.For<ILocation>();
 
-            var actual = _gameSetupViewModel.GetLocationCallback(locationSelectorParameter);
+            ILocation actual = null;
+            var workerTask = Task.Run(() =>
+                {
+                    actual = _gameSetupViewModel.GetLocationCallback(locationSelectorParameter);
+                });
+            _gameSetupViewModel.SelectLocation(location);
 
+            var waited = workerTask.Wait(5000);
+
+            waited.Should().BeTrue("worker task did not finish in time");
             actual.Should().Be(location);
         }
     }

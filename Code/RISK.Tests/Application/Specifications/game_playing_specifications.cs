@@ -39,6 +39,8 @@ namespace RISK.Tests.Application.Specifications
                     x.For<IPlayerTypes>().Use<PlayerTypes>();
                     x.For<IGameSettingsEventAggregator>().Use<GameSettingsEventAggregator>();
                     x.For<IGameboardViewModelFactory>().Use<GameboardViewModelFactory>();
+                    x.For<IGameFactoryWorker>().Use<GameFactoryWorker>();
+                    x.For<IDispatcherWrapper>().Use<DispatcherWrapper>();
                     x.For<IGameFactory>().Use<GameFactory>();
                     x.For<ITurnFactory>().Use<TurnFactory>();
                     x.For<IAlternateGameSetup>().Use<AlternateGameSetup>();

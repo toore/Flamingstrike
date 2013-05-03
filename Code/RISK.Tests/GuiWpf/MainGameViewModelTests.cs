@@ -6,7 +6,6 @@ using GuiWpf.ViewModels.Setup;
 using NSubstitute;
 using NUnit.Framework;
 using RISK.Domain.Entities;
-using RISK.Domain.GamePlaying;
 using RISK.Domain.Repositories;
 
 namespace RISK.Tests.GuiWpf
@@ -15,7 +14,6 @@ namespace RISK.Tests.GuiWpf
     public class MainGameViewModelTests
     {
         private MainGameViewModel _mainGameViewModel;
-        private IGameFactory _gameFactory;
         private IGameSettingsViewModel _gameSettingsViewModel;
         private IGameboardViewModelFactory _gameboardViewModelFactory;
         private IPlayerRepository _playerRepository;
@@ -26,7 +24,6 @@ namespace RISK.Tests.GuiWpf
         [SetUp]
         public void SetUp()
         {
-            _gameFactory = Substitute.For<IGameFactory>();
             _gameSettingsViewModel = Substitute.For<IGameSettingsViewModel>();
             _gameboardViewModelFactory = Substitute.For<IGameboardViewModelFactory>();
             _playerRepository = Substitute.For<IPlayerRepository>();
@@ -37,7 +34,6 @@ namespace RISK.Tests.GuiWpf
             _mainGameViewModel = new MainGameViewModel(_gameSettingsViewModel, _gameboardViewModelFactory, _playerRepository, _gameSetupViewModelFactory);
 
             _gameSetupViewModelFactory.Create(_mainGameViewModel).Returns(_gameSetupViewModel);
-
 
             _gameSetupMessage = new GameSetupMessage { Players = new IPlayer[] { } };
         }
@@ -68,32 +64,17 @@ namespace RISK.Tests.GuiWpf
             _playerRepository.Received().Add(player2);
         }
 
-        //[Test]
-        //public void Game_setup_message_starts_new_game_view()
-        //{
-        //    var game = Substitute.For<IGame>();
-        //    _gameFactory.Create(_gameSetupViewModel).Returns(game);
-        //    var gameboardViewModel = Substitute.For<IGameboardViewModel>();
-        //    _gameboardViewModelFactory.Create(game).Returns(gameboardViewModel);
-        //    _mainGameViewModel.MonitorEvents();
+        [Test]
+        public void Game_setup_message_starts_new_game_view()
+        {
+            _mainGameViewModel.MonitorEvents();
+            var gameSetupviewModel = Substitute.For<IGameSetupViewModel>();
+            _gameSetupViewModelFactory.Create(_mainGameViewModel).Returns(gameSetupviewModel);
 
-        //    _mainGameViewModel.Handle(_gameSetupMessage);
+            _mainGameViewModel.Handle(_gameSetupMessage);
 
-        //    _mainGameViewModel.MainViewModel.Should().Be(gameboardViewModel);
-        //    _mainGameViewModel.ShouldRaisePropertyChangeFor(x => x.MainViewModel);
-        //}
-
-        //[Test]
-        //public void Game_setup_message_shows_game_setup_board_during_gameplay_setup()
-        //{
-        //    IMainGameViewViewModel mainViewModelDuringGameCreation = null;
-        //    _gameFactory
-        //        .When(x => x.Create(_gameSetupViewModel))
-        //        .Do(x => mainViewModelDuringGameCreation = _mainGameViewModel.MainViewModel);
-
-        //    _mainGameViewModel.Handle(_gameSetupMessage);
-
-        //    mainViewModelDuringGameCreation.Should().Be(_gameSetupViewModelFactory);
-        //}
+            _mainGameViewModel.MainViewModel.Should().Be(gameSetupviewModel);
+            _mainGameViewModel.ShouldRaisePropertyChangeFor(x => x.MainViewModel);
+        }
     }
 }

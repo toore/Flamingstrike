@@ -16,7 +16,7 @@ namespace GuiWpf.ViewModels.Setup
         private readonly IDispatcherWrapper _dispatcherWrapper;
         private ILocation _selectedLocation;
 
-        private readonly AutoResetEvent _autoResetEvent = new AutoResetEvent(false);
+        private readonly AutoResetEvent _userSelectionSignal = new AutoResetEvent(false);
 
         public GameSetupViewModel(IWorldMapViewModelFactory worldMapViewModelFactory, IGameFactoryWorker gameFactoryWorker, IDispatcherWrapper dispatcherWrapper, IGameStateConductor gameStateConductor)
         {
@@ -32,7 +32,7 @@ namespace GuiWpf.ViewModels.Setup
         {
             _dispatcherWrapper.Invoke(() => UpdateWorldMapViewModel(locationSelectorParameter));
 
-            _autoResetEvent.WaitOne();
+            _userSelectionSignal.WaitOne();
 
             return _selectedLocation;
         }
@@ -57,11 +57,11 @@ namespace GuiWpf.ViewModels.Setup
             _gameStateConductor.StartGamePlay(game);
         }
 
-        private void SelectLocation(ILocation location)
+        public void SelectLocation(ILocation location)
         {
             _selectedLocation = location;
 
-            _autoResetEvent.Set();
+            _userSelectionSignal.Set();
         }
 
         private WorldMapViewModel _worldMapViewModel;
