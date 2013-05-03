@@ -85,6 +85,9 @@ namespace RISK.Tests.Application.Specifications
 
                     PlayerOneOccupiesNorthAfricaWithFiveArmies();
                     PlayerTwoOccupiesEveryTerritoryExceptNorthAfricaWithOneArmy();
+
+                    // Make sure to place armies
+                    // ...
                 };
 
             act = () =>

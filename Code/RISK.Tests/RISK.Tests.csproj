@@ -86,6 +86,7 @@
     <Compile Include="Application\Battle\DiceRollerTests.cs" />
     <Compile Include="Application\Battle\DicesTests.cs" />
     <Compile Include="Application\Battle\CasualtyEvaluatorTests.cs" />
+    <Compile Include="Application\Gameplay\InitialArmyCountProviderTests.cs" />
     <Compile Include="Application\Gameplay\Setup\PlayerDuringSetupExtensionsTests.cs" />
     <Compile Include="Application\Gameplay\TerritoryExtensionsTests.cs" />
     <Compile Include="Application\Gameplay\TerritoryTests.cs" />
