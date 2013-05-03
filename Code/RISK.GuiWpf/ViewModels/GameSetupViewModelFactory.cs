@@ -1,6 +1,4 @@
-﻿using System;
-using GuiWpf.ViewModels.Gameplay.Map;
-using RISK.Domain.GamePlaying;
+﻿using GuiWpf.ViewModels.Gameplay.Map;
 
 namespace GuiWpf.ViewModels
 {

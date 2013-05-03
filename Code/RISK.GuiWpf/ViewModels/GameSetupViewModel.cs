@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Threading;
@@ -25,21 +24,11 @@ namespace GuiWpf.ViewModels
             _gameFactory = gameFactory;
             _gameStateConductor = gameStateConductor;
 
-            Task.Factory.StartNew(CreateGame);
-        }
-
-        private void CreateGame()
-        {
-            var game = _gameFactory.Create(this);
-
-            _gameStateConductor.StartGamePlay(game);
-        }
-
-        private WorldMapViewModel _worldMapViewModel;
-        public WorldMapViewModel WorldMapViewModel
-        {
-            get { return _worldMapViewModel; }
-            private set { NotifyOfPropertyChange(value, () => WorldMapViewModel, x => _worldMapViewModel = x); }
+            Task.Run(() =>
+                {
+                    var game = _gameFactory.Create(this);
+                    _gameStateConductor.StartGamePlay(game);
+                });
         }
 
         public ILocation GetLocation(ILocationSelectorParameter locationSelectorParameter)
@@ -47,7 +36,8 @@ namespace GuiWpf.ViewModels
             Dispatcher.CurrentDispatcher.Invoke(() =>
                 {
                     var worldMapViewModel = _worldMapViewModelFactory.Create(locationSelectorParameter.WorldMap, SelectLocation);
-                    worldMapViewModel.WorldMapViewModels.OfType<TerritoryLayoutViewModel>().Apply(x => x.IsEnabled = locationSelectorParameter.AvailableLocations.Contains(x.Location));
+                    worldMapViewModel.WorldMapViewModels.OfType<TerritoryLayoutViewModel>()
+                        .Apply(x => x.IsEnabled = locationSelectorParameter.AvailableLocations.Contains(x.Location));
                     WorldMapViewModel = worldMapViewModel;
                 });
 
@@ -61,6 +51,13 @@ namespace GuiWpf.ViewModels
             _selectedLocation = location;
 
             _autoResetEvent.Set();
+        }
+
+        private WorldMapViewModel _worldMapViewModel;
+        public WorldMapViewModel WorldMapViewModel
+        {
+            get { return _worldMapViewModel; }
+            private set { NotifyOfPropertyChange(value, () => WorldMapViewModel, x => _worldMapViewModel = x); }
         }
     }
 }
