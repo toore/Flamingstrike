@@ -4,7 +4,7 @@
     {
         public int Get(int numberOfPlayers)
         {
-            return 30;
+            return 25;
         }
     }
 }
