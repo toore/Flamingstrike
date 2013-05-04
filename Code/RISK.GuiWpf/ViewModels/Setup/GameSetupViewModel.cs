@@ -1,5 +1,4 @@
 ﻿using System.Linq;
-using System.Threading;
 using Caliburn.Micro;
 using GuiWpf.ViewModels.Gameplay.Map;
 using RISK.Domain.Entities;
@@ -13,17 +12,21 @@ namespace GuiWpf.ViewModels.Setup
         private readonly IWorldMapViewModelFactory _worldMapViewModelFactory;
         private readonly IGameFactoryWorker _gameFactoryWorker;
         private readonly IGameStateConductor _gameStateConductor;
+        private readonly IUserInputRequest _userInputRequest;
         private readonly IDispatcherWrapper _dispatcherWrapper;
         private ILocation _selectedLocation;
 
-        private readonly AutoResetEvent _userSelectionSignal = new AutoResetEvent(false);
-
         public GameSetupViewModel(
-            IWorldMapViewModelFactory worldMapViewModelFactory, IGameFactoryWorker gameFactoryWorker, IDispatcherWrapper dispatcherWrapper, IGameStateConductor gameStateConductor)
+            IWorldMapViewModelFactory worldMapViewModelFactory,
+            IGameFactoryWorker gameFactoryWorker,
+            IDispatcherWrapper dispatcherWrapper,
+            IGameStateConductor gameStateConductor, 
+            IUserInputRequest userInputRequest)
         {
             _worldMapViewModelFactory = worldMapViewModelFactory;
             _gameFactoryWorker = gameFactoryWorker;
             _gameStateConductor = gameStateConductor;
+            _userInputRequest = userInputRequest;
             _dispatcherWrapper = dispatcherWrapper;
 
             _gameFactoryWorker.BeginInvoke(this);
@@ -33,7 +36,7 @@ namespace GuiWpf.ViewModels.Setup
         {
             _dispatcherWrapper.Invoke(() => UpdateWorldMapViewModel(locationSelectorParameter));
 
-            _userSelectionSignal.WaitOne();
+            _userInputRequest.WaitForInput();
 
             return _selectedLocation;
         }
@@ -62,7 +65,7 @@ namespace GuiWpf.ViewModels.Setup
         {
             _selectedLocation = location;
 
-            _userSelectionSignal.Set();
+            _userInputRequest.InputHandled();
         }
 
         private WorldMapViewModel _worldMapViewModel;

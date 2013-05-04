@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading.Tasks;
 using FluentAssertions;
 using GuiWpf.ViewModels;
 using GuiWpf.ViewModels.Gameplay.Map;
@@ -20,6 +19,7 @@ namespace RISK.Tests.GuiWpf
         private IGameFactoryWorker _gameFactoryWorker;
         private IGameStateConductor _gameStateConductor;
         private IDispatcherWrapper _dispatcherWrapper;
+        private IUserInputRequest _userInputRequest;
 
         [SetUp]
         public void SetUp()
@@ -28,8 +28,9 @@ namespace RISK.Tests.GuiWpf
             _gameFactoryWorker = Substitute.For<IGameFactoryWorker>();
             _gameStateConductor = Substitute.For<IGameStateConductor>();
             _dispatcherWrapper = Substitute.For<IDispatcherWrapper>();
+            _userInputRequest = Substitute.For<IUserInputRequest>();
 
-            _gameSetupViewModel = new GameSetupViewModel(_worldMapViewModelFactory, _gameFactoryWorker, _dispatcherWrapper, _gameStateConductor);
+            _gameSetupViewModel = new GameSetupViewModel(_worldMapViewModelFactory, _gameFactoryWorker, _dispatcherWrapper, _gameStateConductor, _userInputRequest);
         }
 
         [Test]
@@ -43,15 +44,21 @@ namespace RISK.Tests.GuiWpf
         {
             var locationSelectorParameter = Substitute.For<ILocationSelectorParameter>();
             locationSelectorParameter.WorldMap.Returns(Substitute.For<IWorldMap>());
+            var location = WhenWaitForInputIsCalledInvokeSelectLocation();
+
+            var actual = _gameSetupViewModel.GetLocationCallback(locationSelectorParameter);
+
+            actual.Should().Be(location);
+        }
+
+        private ILocation WhenWaitForInputIsCalledInvokeSelectLocation()
+        {
             var location = Substitute.For<ILocation>();
 
-            ILocation actual = null;
-            var workerTask = Task.Run(() => { actual = _gameSetupViewModel.GetLocationCallback(locationSelectorParameter); });
-            _gameSetupViewModel.SelectLocation(location);
-            var waited = workerTask.Wait(5000);
+            _userInputRequest.When(x => x.WaitForInput())
+                .Do(x => _gameSetupViewModel.SelectLocation(location));
 
-            waited.Should().BeTrue("worker task did not finish in time");
-            actual.Should().Be(location);
+            return location;
         }
 
         [Test]
@@ -60,17 +67,19 @@ namespace RISK.Tests.GuiWpf
             var locationSelectorParameter = Substitute.For<ILocationSelectorParameter>();
             var worldMap = Substitute.For<IWorldMap>();
             locationSelectorParameter.WorldMap.Returns(worldMap);
-            var location = Substitute.For<ILocation>();
-            _gameSetupViewModel.MonitorEvents();
             DispatherRelaysAllActions();
-            var worldMapViewModel = new WorldMapViewModel();
-            _worldMapViewModelFactory.Create(worldMap, _gameSetupViewModel.SelectLocation).Returns(worldMapViewModel);
+            var expectedWorldMapViewModel = new WorldMapViewModel();
+            _worldMapViewModelFactory.Create(worldMap, _gameSetupViewModel.SelectLocation).Returns(expectedWorldMapViewModel);
+            WorldMapViewModel viewModelWhenWaitingForInput = null;
+            _userInputRequest.When(x => x.WaitForInput())
+                .Do(x => viewModelWhenWaitingForInput = _gameSetupViewModel.WorldMapViewModel);
+            _gameSetupViewModel.MonitorEvents();
 
-            var workerTask = Task.Run(() => { _gameSetupViewModel.GetLocationCallback(locationSelectorParameter); });
-            _gameSetupViewModel.SelectLocation(location);
-            var waited = workerTask.Wait(5000);
+            _gameSetupViewModel.GetLocationCallback(locationSelectorParameter);
+            _gameSetupViewModel.SelectLocation(Substitute.For<ILocation>());
 
-            waited.Should().BeTrue("worker task did not finish in time");
+            _gameSetupViewModel.WorldMapViewModel.Should().Be(viewModelWhenWaitingForInput);
+            _gameSetupViewModel.WorldMapViewModel.Should().Be(expectedWorldMapViewModel);
             _gameSetupViewModel.ShouldRaisePropertyChangeFor(x => x.WorldMapViewModel);
         }
 
@@ -87,7 +96,9 @@ namespace RISK.Tests.GuiWpf
 
         private void DispatherRelaysAllActions()
         {
-            _dispatcherWrapper.WhenForAnyArgs(x => x.Invoke(null)).Do(x => x.Arg<Action>().Invoke());
+            _dispatcherWrapper
+                .WhenForAnyArgs(x => x.Invoke(null))
+                .Do(x => x.Arg<Action>().Invoke());
         }
     }
 }
