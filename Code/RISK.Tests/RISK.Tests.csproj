@@ -99,6 +99,7 @@
     <Compile Include="GuiWpf\GameSetupViewModelTests.cs" />
     <Compile Include="GuiWpf\MainGameViewModelTests.cs" />
     <Compile Include="GuiWpf\TerritoryTextViewModelFactoryTests.cs" />
+    <Compile Include="GuiWpf\UserInputRequestHandlerTests.cs" />
     <Compile Include="NSpecDebuggerShim.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

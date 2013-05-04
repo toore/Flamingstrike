@@ -2,7 +2,7 @@
 
 namespace GuiWpf.ViewModels.Setup
 {
-    public class UserInputRequest : IUserInputRequest
+    public class UserInputRequestHandler : IUserInputRequestHandler
     {
         private readonly AutoResetEvent _autoResetEvent = new AutoResetEvent(false);
 

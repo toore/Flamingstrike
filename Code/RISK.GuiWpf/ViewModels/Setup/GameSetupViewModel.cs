@@ -12,7 +12,7 @@ namespace GuiWpf.ViewModels.Setup
         private readonly IWorldMapViewModelFactory _worldMapViewModelFactory;
         private readonly IGameFactoryWorker _gameFactoryWorker;
         private readonly IGameStateConductor _gameStateConductor;
-        private readonly IUserInputRequest _userInputRequest;
+        private readonly IUserInputRequestHandler _userInputRequestHandler;
         private readonly IDispatcherWrapper _dispatcherWrapper;
         private ILocation _selectedLocation;
 
@@ -21,12 +21,12 @@ namespace GuiWpf.ViewModels.Setup
             IGameFactoryWorker gameFactoryWorker,
             IDispatcherWrapper dispatcherWrapper,
             IGameStateConductor gameStateConductor, 
-            IUserInputRequest userInputRequest)
+            IUserInputRequestHandler userInputRequestHandler)
         {
             _worldMapViewModelFactory = worldMapViewModelFactory;
             _gameFactoryWorker = gameFactoryWorker;
             _gameStateConductor = gameStateConductor;
-            _userInputRequest = userInputRequest;
+            _userInputRequestHandler = userInputRequestHandler;
             _dispatcherWrapper = dispatcherWrapper;
 
             _gameFactoryWorker.BeginInvoke(this);
@@ -36,7 +36,7 @@ namespace GuiWpf.ViewModels.Setup
         {
             _dispatcherWrapper.Invoke(() => UpdateWorldMapViewModel(locationSelectorParameter));
 
-            _userInputRequest.WaitForInput();
+            _userInputRequestHandler.WaitForInput();
 
             return _selectedLocation;
         }
@@ -65,7 +65,7 @@ namespace GuiWpf.ViewModels.Setup
         {
             _selectedLocation = location;
 
-            _userInputRequest.InputHandled();
+            _userInputRequestHandler.InputHandled();
         }
 
         private WorldMapViewModel _worldMapViewModel;

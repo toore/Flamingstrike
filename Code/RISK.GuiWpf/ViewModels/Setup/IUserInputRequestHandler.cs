@@ -1,6 +1,6 @@
 ﻿namespace GuiWpf.ViewModels.Setup
 {
-    public interface IUserInputRequest
+    public interface IUserInputRequestHandler
     {
         void WaitForInput();
         void InputHandled();

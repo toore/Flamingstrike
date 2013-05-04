@@ -19,7 +19,7 @@ namespace RISK.Tests.GuiWpf
         private IGameFactoryWorker _gameFactoryWorker;
         private IGameStateConductor _gameStateConductor;
         private IDispatcherWrapper _dispatcherWrapper;
-        private IUserInputRequest _userInputRequest;
+        private IUserInputRequestHandler _userInputRequestHandler;
 
         [SetUp]
         public void SetUp()
@@ -28,9 +28,9 @@ namespace RISK.Tests.GuiWpf
             _gameFactoryWorker = Substitute.For<IGameFactoryWorker>();
             _gameStateConductor = Substitute.For<IGameStateConductor>();
             _dispatcherWrapper = Substitute.For<IDispatcherWrapper>();
-            _userInputRequest = Substitute.For<IUserInputRequest>();
+            _userInputRequestHandler = Substitute.For<IUserInputRequestHandler>();
 
-            _gameSetupViewModel = new GameSetupViewModel(_worldMapViewModelFactory, _gameFactoryWorker, _dispatcherWrapper, _gameStateConductor, _userInputRequest);
+            _gameSetupViewModel = new GameSetupViewModel(_worldMapViewModelFactory, _gameFactoryWorker, _dispatcherWrapper, _gameStateConductor, _userInputRequestHandler);
         }
 
         [Test]
@@ -55,7 +55,7 @@ namespace RISK.Tests.GuiWpf
         {
             var location = Substitute.For<ILocation>();
 
-            _userInputRequest.When(x => x.WaitForInput())
+            _userInputRequestHandler.When(x => x.WaitForInput())
                 .Do(x => _gameSetupViewModel.SelectLocation(location));
 
             return location;
@@ -71,7 +71,7 @@ namespace RISK.Tests.GuiWpf
             var expectedWorldMapViewModel = new WorldMapViewModel();
             _worldMapViewModelFactory.Create(worldMap, _gameSetupViewModel.SelectLocation).Returns(expectedWorldMapViewModel);
             WorldMapViewModel viewModelWhenWaitingForInput = null;
-            _userInputRequest.When(x => x.WaitForInput())
+            _userInputRequestHandler.When(x => x.WaitForInput())
                 .Do(x => viewModelWhenWaitingForInput = _gameSetupViewModel.WorldMapViewModel);
             _gameSetupViewModel.MonitorEvents();
 

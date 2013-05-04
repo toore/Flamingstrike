@@ -114,8 +114,8 @@
     <Compile Include="Territories\TerritoryGuiFactory.cs" />
     <Compile Include="ViewModels\Settings\PlayerTypeBase.cs" />
     <Compile Include="ViewModels\Settings\PlayerTypes.cs" />
-    <Compile Include="ViewModels\Setup\IUserInputRequest.cs" />
-    <Compile Include="ViewModels\Setup\UserInputRequest.cs" />
+    <Compile Include="ViewModels\Setup\IUserInputRequestHandler.cs" />
+    <Compile Include="ViewModels\Setup\UserInputRequestHandler.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="ViewModels\Gameplay\GameboardViewModel.cs" />
     <Compile Include="ViewModels\Gameplay\IGameboardViewModel.cs" />
