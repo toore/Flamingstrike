@@ -14,14 +14,18 @@ namespace GuiWpf.ViewModels.Gameplay
     {
         private readonly IGame _game;
         private readonly ITerritoryViewModelUpdater _territoryViewModelUpdater;
+        private readonly IGameOverEvaluater _gameOverEvaluater;
+        private readonly IWindowManager _windowManager;
         private ITurn _currentTurn;
         private readonly List<ITerritory> _territories;
         private IPlayer _player;
 
-        public GameboardViewModel(IGame game, ILocationProvider locationProvider, IWorldMapViewModelFactory worldMapViewModelFactory, ITerritoryViewModelUpdater territoryViewModelUpdater)
+        public GameboardViewModel(IGame game, ILocationProvider locationProvider, IWorldMapViewModelFactory worldMapViewModelFactory, ITerritoryViewModelUpdater territoryViewModelUpdater, IGameOverEvaluater gameOverEvaluater, IWindowManager windowManager)
         {
             _game = game;
             _territoryViewModelUpdater = territoryViewModelUpdater;
+            _gameOverEvaluater = gameOverEvaluater;
+            _windowManager = windowManager;
 
             var worldMap = _game.GetWorldMap();
 
@@ -51,7 +55,7 @@ namespace GuiWpf.ViewModels.Gameplay
             _currentTurn = _game.GetNextTurn();
             Player = _currentTurn.Player;
 
-            UpdateWorldMap();
+            UpdateGame();
         }
 
         public void EndTurn()
@@ -72,7 +76,17 @@ namespace GuiWpf.ViewModels.Gameplay
                 _currentTurn.Attack(location);
             }
 
+            UpdateGame();
+        }
+
+        private void UpdateGame()
+        {
             UpdateWorldMap();
+
+            if (_gameOverEvaluater.IsGameOver())
+            {
+                _windowManager.ShowDialog(this);
+            }
         }
 
         private void UpdateWorldMap()
@@ -83,7 +97,6 @@ namespace GuiWpf.ViewModels.Gameplay
         private void UpdateTerritory(ITerritory territory)
         {
             UpdateTerritoryLayout(territory);
-
             UpdateTerritoryData(territory);
         }
 

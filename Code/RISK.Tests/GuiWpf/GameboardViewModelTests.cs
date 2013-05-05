@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Caliburn.Micro;
 using FluentAssertions;
 using GuiWpf.Services;
 using GuiWpf.ViewModels.Gameplay;
@@ -35,6 +36,8 @@ namespace RISK.Tests.GuiWpf
         private ITerritory _territory2;
         private IPlayer _player1;
         private IPlayer _player2;
+        private IGameOverEvaluater _gameOverEvaluater;
+        private IWindowManager _windowManager;
 
         [SetUp]
         public void SetUp()
@@ -43,6 +46,8 @@ namespace RISK.Tests.GuiWpf
             _locationProvider = Substitute.For<ILocationProvider>();
             _worldMapViewModelFactory = Substitute.For<IWorldMapViewModelFactory>();
             _territoryViewModelUpdater = Substitute.For<ITerritoryViewModelUpdater>();
+            _gameOverEvaluater = Substitute.For<IGameOverEvaluater>();
+            _windowManager = Substitute.For<IWindowManager>();
 
             _location1 = Substitute.For<ILocation>();
             _location2 = Substitute.For<ILocation>();
@@ -82,7 +87,7 @@ namespace RISK.Tests.GuiWpf
             
             _worldMapViewModelFactory.Create(Arg.Is(_worldMap), Arg.Any<Action<ILocation>>()).Returns(_worldMapViewModel);
 
-            _gameboardViewModel = new GameboardViewModel(_game, _locationProvider, _worldMapViewModelFactory, _territoryViewModelUpdater);
+            _gameboardViewModel = new GameboardViewModel(_game, _locationProvider, _worldMapViewModelFactory, _territoryViewModelUpdater, _gameOverEvaluater, _windowManager);
         }
 
         [Test]
@@ -160,6 +165,16 @@ namespace RISK.Tests.GuiWpf
 
             _currentTurn.Received(1).EndTurn();
             _game.Received(1).GetNextTurn();
+        }
+
+        [Test]
+        public void When_winning_dialog_should_be_shown()
+        {
+            _gameOverEvaluater.IsGameOver().Returns(true);
+
+            _gameboardViewModel.OnLocationClick(null);
+
+            _windowManager.Received().ShowDialog(_gameboardViewModel);
         }
 
         private ITerritoryLayoutViewModel StubLayoutViewModel(ILocation location)

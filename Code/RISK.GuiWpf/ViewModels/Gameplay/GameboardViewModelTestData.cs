@@ -41,7 +41,7 @@ namespace GuiWpf.ViewModels.Gameplay
             var alternateGameSetup = new AlternateGameSetup(playerRepository, locationProvider, new RandomSorter(new RandomWrapper()), new WorldMapFactory(locationProvider), new InitialArmyCountProvider());
             ITurnFactory turnFactory = new TurnFactory(null, null);
             var game = new Game(turnFactory, playerRepository, alternateGameSetup, this);
-            var gameboardViewModel = new GameboardViewModel(game, locationProvider, worldMapViewModelFactory, territoryViewModelUpdater);
+            var gameboardViewModel = new GameboardViewModel(game, locationProvider, worldMapViewModelFactory, territoryViewModelUpdater, null, null);
 
             return gameboardViewModel;
         }

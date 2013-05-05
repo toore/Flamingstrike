@@ -17,6 +17,7 @@ using RISK.Domain.GamePlaying.DiceAndCalculation;
 using RISK.Domain.GamePlaying.Setup;
 using RISK.Domain.Repositories;
 using StructureMap;
+using WindowManager = Caliburn.Micro.WindowManager;
 
 namespace RISK.Tests.Application.Specifications
 {
@@ -28,6 +29,7 @@ namespace RISK.Tests.Application.Specifications
         private IMainGameViewModel _mainGameBoardViewModel;
         private IWorldMap _worldMap;
         private PlayerRepository _playerRepository;
+        private IWindowManager _windowManager;
 
         public void before_all()
         {
@@ -62,6 +64,8 @@ namespace RISK.Tests.Application.Specifications
                     x.For<IDiceRoller>().Use<DiceRoller>();
                     x.For<IGameSetupViewModelFactory>().Use<GameSetupViewModelFactory>();
                     x.For<IInputRequestHandler>().Use<InputRequestHandler>();
+                    x.For<IGameOverEvaluater>().Use<GameOverEvaluater>();
+                    x.For<IWindowManager>().Use<WindowManager>();
 
                     x.RegisterInterceptor(new HandleInterceptor<IGameSettingsEventAggregator>());
                 });
@@ -75,6 +79,7 @@ namespace RISK.Tests.Application.Specifications
                     InjectLocationProvider();
                     InjectWorldMapFactory();
                     InjectDiceRollerWithReturningSixFiveFourAndThenFiveForTwoAttacks();
+                    InjectWindowManager();
 
                     _mainGameBoardViewModel = ObjectFactory.GetInstance<IMainGameViewModel>();
 
@@ -120,6 +125,9 @@ namespace RISK.Tests.Application.Specifications
                         {
                             _worldMap.GetTerritory(_locationProvider.Venezuela).AssignedPlayer.Should().Be(_player1, "player 1 should occupy Venezuela");
                             _worldMap.GetTerritory(_locationProvider.Venezuela).Armies.Should().Be(3, "Venezuela should have 3 armies");
+
+                            //TODO
+                            //_windowManager.Received().ShowDialog()
                         };
                 };
         }
@@ -237,6 +245,12 @@ namespace RISK.Tests.Application.Specifications
                 DiceValue.Six, DiceValue.Five, DiceValue.Four, DiceValue.Five
                 );
             ObjectFactory.Inject(diceRoller);
+        }
+
+        public void InjectWindowManager()
+        {
+            _windowManager = Substitute.For<IWindowManager>();
+            ObjectFactory.Inject(_windowManager);
         }
     }
 }
