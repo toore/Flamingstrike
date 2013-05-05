@@ -16,11 +16,11 @@
     <UserControl.Resources>
         <ResourceDictionary>
 
-            <DataTemplate DataType="{x:Type Setup:SettingsViewModel}">
+            <DataTemplate DataType="{x:Type Setup:GameSettingsViewModel}">
                 <GameSetupViews:GameSettingsView Players="{Binding Players}" />
             </DataTemplate>
 
-            <DataTemplate DataType="{x:Type Setup2:SetupViewModel}">
+            <DataTemplate DataType="{x:Type Setup2:GameSetupViewModel}">
                 <WorldMapViews:GameboardView />
             </DataTemplate>
 
