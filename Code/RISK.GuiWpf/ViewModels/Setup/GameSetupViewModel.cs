@@ -47,6 +47,13 @@ namespace GuiWpf.ViewModels.Setup
             get { return Resources.PLACE_ARMY; }
         }
 
+        private IPlayer _player;
+        public IPlayer Player
+        {
+            get { return _player; }
+            private set { NotifyOfPropertyChange(value, () => Player, x => _player = x); }
+        }
+
         private void WaitForUserInputRequestAndUpdateWorldMap()
         {
             _inputRequestHandler.WaitForInputRequest();
@@ -93,6 +100,8 @@ namespace GuiWpf.ViewModels.Setup
                 .Apply(x => x.IsEnabled = locationSelectorParameter.AvailableLocations.Contains(x.Location));
 
             WorldMapViewModel = worldMapViewModel;
+
+            Player = _locationSelectorParameter.PlayerDuringSetup.GetInGamePlayer();
         }
 
         private void StartGamePlay(IGame game)

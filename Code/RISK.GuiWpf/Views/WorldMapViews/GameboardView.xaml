@@ -92,10 +92,17 @@
                     </i:Interaction.Triggers>
                 </Button>
             </StackPanel>
+
             <StackPanel
                 Orientation="Horizontal"
                 DockPanel.Dock="Right">
-                <Button Content="End game..."></Button>
+                <Button Content="End game...">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="Click">
+                            <cal:ActionMessage MethodName="EndGame" />
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </Button>
             </StackPanel>
             <Grid />
         </DockPanel>

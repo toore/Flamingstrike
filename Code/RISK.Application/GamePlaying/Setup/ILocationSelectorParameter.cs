@@ -7,5 +7,6 @@ namespace RISK.Domain.GamePlaying.Setup
     {
         IWorldMap WorldMap { get; }
         IEnumerable<ILocation> AvailableLocations { get; }
+        PlayerDuringSetup PlayerDuringSetup { get; set; }
     }
 }
