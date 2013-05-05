@@ -210,11 +210,17 @@
   <data name="PERU" xml:space="preserve">
     <value>Peru</value>
   </data>
+  <data name="PLACE_ARMY" xml:space="preserve">
+    <value>Place army</value>
+  </data>
   <data name="QUEBEC" xml:space="preserve">
     <value>Quebec</value>
   </data>
   <data name="SCANDINAVIA" xml:space="preserve">
     <value>Scandinavia</value>
+  </data>
+  <data name="SELECT_TERRITORY" xml:space="preserve">
+    <value>Select territory</value>
   </data>
   <data name="SIAM" xml:space="preserve">
     <value>Siam</value>

@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using Caliburn.Micro;
+using GuiWpf.Properties;
 using GuiWpf.ViewModels.Gameplay.Map;
 using RISK.Domain.Entities;
 using RISK.Domain.GamePlaying;
@@ -32,6 +33,18 @@ namespace GuiWpf.ViewModels.Setup
             _gameFactoryWorker.BeginInvoke(this);
 
             WaitForUserInputRequestAndUpdateWorldMap();
+        }
+
+        private WorldMapViewModel _worldMapViewModel;
+        public WorldMapViewModel WorldMapViewModel
+        {
+            get { return _worldMapViewModel; }
+            private set { NotifyOfPropertyChange(value, () => WorldMapViewModel, x => _worldMapViewModel = x); }
+        }
+
+        public string InformationText
+        {
+            get { return Resources.PLACE_ARMY; }
         }
 
         private void WaitForUserInputRequestAndUpdateWorldMap()
@@ -87,11 +100,18 @@ namespace GuiWpf.ViewModels.Setup
             _gameStateConductor.StartGamePlay(game);
         }
 
-        private WorldMapViewModel _worldMapViewModel;
-        public WorldMapViewModel WorldMapViewModel
+        public bool CanFortify()
         {
-            get { return _worldMapViewModel; }
-            private set { NotifyOfPropertyChange(value, () => WorldMapViewModel, x => _worldMapViewModel = x); }
+            return false;
         }
+
+        public void Fortify() {}
+
+        public bool CanEndTurn()
+        {
+            return false;
+        }
+
+        public void EndTurn() {}
     }
 }

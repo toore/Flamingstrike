@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Caliburn.Micro;
+using GuiWpf.Properties;
 using GuiWpf.Services;
 using GuiWpf.ViewModels.Gameplay.Map;
 using RISK.Domain.Entities;
@@ -28,6 +29,8 @@ namespace GuiWpf.ViewModels.Gameplay
                 .Select(worldMap.GetTerritory)
                 .ToList();
 
+            InformationText = Resources.SELECT_TERRITORY;
+
             WorldMapViewModel = worldMapViewModelFactory.Create(worldMap, OnLocationClick);
 
             BeginNextPlayerTurn();
@@ -40,6 +43,8 @@ namespace GuiWpf.ViewModels.Gameplay
             get { return _player; }
             set { NotifyOfPropertyChange(value, () => Player, x => _player = x); }
         }
+
+        public string InformationText { get; private set; }
 
         private void BeginNextPlayerTurn()
         {

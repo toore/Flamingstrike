@@ -340,6 +340,15 @@ namespace GuiWpf.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Place army.
+        /// </summary>
+        internal static string PLACE_ARMY {
+            get {
+                return ResourceManager.GetString("PLACE_ARMY", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Quebec.
         /// </summary>
         internal static string QUEBEC {
@@ -354,6 +363,15 @@ namespace GuiWpf.Properties {
         internal static string SCANDINAVIA {
             get {
                 return ResourceManager.GetString("SCANDINAVIA", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select territory.
+        /// </summary>
+        internal static string SELECT_TERRITORY {
+            get {
+                return ResourceManager.GetString("SELECT_TERRITORY", resourceCulture);
             }
         }
         

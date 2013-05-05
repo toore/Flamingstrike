@@ -16,6 +16,11 @@
                 <ResourceDictionary Source="/GuiWpf;component/Views/GameResources.xaml" />
                 <ResourceDictionary Source="WorldMapResources.xaml" />
             </ResourceDictionary.MergedDictionaries>
+
+            <Style x:Key="BlackControlStyle">
+                <Setter Property="Control.Background" Value="Black" />
+                <Setter Property="Control.Foreground" Value="White" />
+            </Style>
         </ResourceDictionary>
     </UserControl.Resources>
 
@@ -24,6 +29,7 @@
         VerticalAlignment="Stretch"
         Focusable="False">
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
@@ -40,27 +46,59 @@
             <Label Content="{Binding Player.Name}" />
         </StackPanel>
 
-        <ContentControl 
-            Content="{Binding WorldMapViewModel}"
-            Grid.Row="1" />
+        <Label
+            Grid.Row="1"
+            HorizontalAlignment="Stretch"
+            HorizontalContentAlignment="Center"
+            Content="{Binding InformationText}"
+            Style="{StaticResource BlackControlStyle}" />
 
-        <StackPanel
-            Orientation="Horizontal"
-            Grid.Row="2">
-            <StackPanel.Resources>
+        <ContentControl
+            Content="{Binding WorldMapViewModel}"
+            Margin="0 10 0 10"
+            Grid.Row="2" />
+
+        <DockPanel
+            Grid.Row="3"
+            HorizontalAlignment="Stretch"
+            Style="{StaticResource BlackControlStyle}">
+            <DockPanel.Resources>
                 <Style TargetType="Button" BasedOn="{StaticResource StandardButtonStyle}">
                     <Setter Property="Margin" Value="5" />
                 </Style>
-            </StackPanel.Resources>
-            <Button Content="Fortify"></Button>
-            <Button Content="End Turn">
-                <i:Interaction.Triggers>
-                    <i:EventTrigger EventName="Click">
-                        <cal:ActionMessage MethodName="EndTurn" />
-                    </i:EventTrigger>
-                </i:Interaction.Triggers>
-            </Button>
-        </StackPanel>
+            </DockPanel.Resources>
+            <StackPanel
+                Orientation="Horizontal"
+                DockPanel.Dock="Left">
+
+                <CheckBox Content="Fortify">
+                    <CheckBox.Template>
+                        <ControlTemplate>
+                            <Button
+                                Content="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type CheckBox}}, Path=Content}" />
+                        </ControlTemplate>
+                    </CheckBox.Template>
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="Click">
+                            <cal:ActionMessage MethodName="Fortify" />
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </CheckBox>
+                <Button Content="End Turn">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="Click">
+                            <cal:ActionMessage MethodName="EndTurn" />
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </Button>
+            </StackPanel>
+            <StackPanel
+                Orientation="Horizontal"
+                DockPanel.Dock="Right">
+                <Button Content="End game..."></Button>
+            </StackPanel>
+            <Grid />
+        </DockPanel>
 
     </Grid>
 </UserControl>
