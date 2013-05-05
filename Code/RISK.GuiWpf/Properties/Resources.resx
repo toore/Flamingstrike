@@ -211,7 +211,7 @@
     <value>Peru</value>
   </data>
   <data name="PLACE_ARMY" xml:space="preserve">
-    <value>Place army</value>
+    <value>Place army (left: {0})</value>
   </data>
   <data name="QUEBEC" xml:space="preserve">
     <value>Quebec</value>

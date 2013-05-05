@@ -32,7 +32,7 @@ namespace GuiWpf.ViewModels.Setup
 
             _gameFactoryWorker.BeginInvoke(this);
 
-            WaitForUserInputRequestAndUpdateWorldMap();
+            WaitForUserInputRequestAndUpdateView();
         }
 
         private WorldMapViewModel _worldMapViewModel;
@@ -42,9 +42,11 @@ namespace GuiWpf.ViewModels.Setup
             private set { NotifyOfPropertyChange(value, () => WorldMapViewModel, x => _worldMapViewModel = x); }
         }
 
+        private string _informationText;
         public string InformationText
         {
-            get { return Resources.PLACE_ARMY; }
+            get { return _informationText; }
+            set { NotifyOfPropertyChange(value, () => InformationText, x => _informationText = x); }
         }
 
         private IPlayer _player;
@@ -54,11 +56,11 @@ namespace GuiWpf.ViewModels.Setup
             private set { NotifyOfPropertyChange(value, () => Player, x => _player = x); }
         }
 
-        private void WaitForUserInputRequestAndUpdateWorldMap()
+        private void WaitForUserInputRequestAndUpdateView()
         {
             _inputRequestHandler.WaitForInputRequest();
 
-            UpdateWorldMapViewModel(_locationSelectorParameter);
+            UpdateView(_locationSelectorParameter);
         }
 
         public ILocation GetLocationCallback(ILocationSelectorParameter locationSelectorParameter)
@@ -76,7 +78,7 @@ namespace GuiWpf.ViewModels.Setup
             _selectedLocation = location;
 
             _inputRequestHandler.InputIsAvailable();
-            WaitForUserInputRequestAndUpdateWorldMap();
+            WaitForUserInputRequestAndUpdateView();
 
             if (_isGameSetupFinished)
             {
@@ -92,7 +94,7 @@ namespace GuiWpf.ViewModels.Setup
             _inputRequestHandler.RequestInput();
         }
 
-        private void UpdateWorldMapViewModel(ILocationSelectorParameter locationSelectorParameter)
+        private void UpdateView(ILocationSelectorParameter locationSelectorParameter)
         {
             var worldMapViewModel = _worldMapViewModelFactory.Create(locationSelectorParameter.WorldMap, SelectLocation);
 
@@ -102,6 +104,8 @@ namespace GuiWpf.ViewModels.Setup
             WorldMapViewModel = worldMapViewModel;
 
             Player = _locationSelectorParameter.PlayerDuringSetup.GetInGamePlayer();
+
+            InformationText = string.Format(Resources.PLACE_ARMY, locationSelectorParameter.PlayerDuringSetup.Armies);
         }
 
         private void StartGamePlay(IGame game)

@@ -1,4 +1,5 @@
-﻿using FluentAssertions;
+﻿using System;
+using FluentAssertions;
 using GuiWpf.ViewModels;
 using GuiWpf.ViewModels.Gameplay.Map;
 using GuiWpf.ViewModels.Setup;
@@ -28,7 +29,7 @@ namespace RISK.Tests.GuiWpf
             _gameStateConductor = Substitute.For<IGameStateConductor>();
             _inputRequestHandler = Substitute.For<IInputRequestHandler>();
 
-            var locationSelectorParameter = StubLocationSelectorParameter();
+            var locationSelectorParameter = StubLocationSelectorParameter(null);
 
             _gameFactoryWorker.WhenForAnyArgs(x => x.BeginInvoke(null))
                 .Do(x => x.Arg<IGameFactoryWorkerCallback>().GetLocationCallback(locationSelectorParameter));
@@ -38,13 +39,17 @@ namespace RISK.Tests.GuiWpf
             _inputRequestHandler.ClearReceivedCalls();
         }
 
-        private ILocationSelectorParameter StubLocationSelectorParameter()
+        private ILocationSelectorParameter StubLocationSelectorParameter(Action<ILocation> selectLocation)
         {
             var locationSelectorParameter = Substitute.For<ILocationSelectorParameter>();
+
             var worldMap = Substitute.For<IWorldMap>();
             locationSelectorParameter.WorldMap.Returns(worldMap);
-            var expectedWorldMapViewModel = new WorldMapViewModel();
-            _worldMapViewModelFactory.Create(worldMap, null).ReturnsForAnyArgs(expectedWorldMapViewModel);
+            var worldMapViewModel = new WorldMapViewModel();
+            _worldMapViewModelFactory.Create(worldMap, selectLocation).ReturnsForAnyArgs(worldMapViewModel);
+
+            var player = Substitute.For<IPlayer>();
+            locationSelectorParameter.PlayerDuringSetup = new PlayerDuringSetup(player, 0);
 
             return locationSelectorParameter;
         }
@@ -58,8 +63,7 @@ namespace RISK.Tests.GuiWpf
         [Test]
         public void Get_location_callback_gets_location()
         {
-            var locationSelectorParameter = Substitute.For<ILocationSelectorParameter>();
-            locationSelectorParameter.WorldMap.Returns(Substitute.For<IWorldMap>());
+            var locationSelectorParameter = StubLocationSelectorParameter(_gameSetupViewModel.SelectLocation);
             var location = WhenWaitForInputIsCalledInvokeSelectLocation();
 
             var actual = _gameSetupViewModel.GetLocationCallback(locationSelectorParameter);
@@ -78,7 +82,7 @@ namespace RISK.Tests.GuiWpf
         }
 
         [Test]
-        public void Get_location_callback_updates_viewmodel_waits_for_user_input()
+        public void Get_location_callback_waits_for_user_input()
         {
             _gameSetupViewModel.GetLocationCallback(null);
 
@@ -99,6 +103,21 @@ namespace RISK.Tests.GuiWpf
                     _inputRequestHandler.InputIsAvailable();
                     _inputRequestHandler.WaitForInputRequest();
                 });
+        }
+
+        [Test]
+        public void Select_location_updates_view_model()
+        {
+            _gameSetupViewModel.MonitorEvents();
+            var parameter = StubLocationSelectorParameter(_gameSetupViewModel.SelectLocation);
+            parameter.PlayerDuringSetup.Armies = 10;
+            _gameSetupViewModel.GetLocationCallback(parameter);
+
+            _gameSetupViewModel.SelectLocation(null);
+
+            _gameSetupViewModel.ShouldRaisePropertyChangeFor(x => x.WorldMapViewModel);
+            _gameSetupViewModel.ShouldRaisePropertyChangeFor(x => x.Player);
+            _gameSetupViewModel.ShouldRaisePropertyChangeFor(x => x.InformationText);
         }
 
         [Test]

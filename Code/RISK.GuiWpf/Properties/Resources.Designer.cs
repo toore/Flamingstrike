@@ -340,7 +340,7 @@ namespace GuiWpf.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Place army.
+        ///   Looks up a localized string similar to Place army (left: {0}).
         /// </summary>
         internal static string PLACE_ARMY {
             get {
