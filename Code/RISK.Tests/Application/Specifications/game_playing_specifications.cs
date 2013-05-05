@@ -86,7 +86,8 @@ namespace RISK.Tests.Application.Specifications
                     PlaceArmies();
 
                     PlayerOneOccupiesNorthAfricaWithFiveArmies();
-                    PlayerTwoOccupiesEveryTerritoryExceptNorthAfricaWithOneArmy();
+                    PlayerTwoOccupiesBrazilAndVenezuela();
+                    PlayerOneOccupiesEveryTerritoryExceptBrazilVenezuelaAndNorthAfrica();
                 };
 
             act = () =>
@@ -145,9 +146,36 @@ namespace RISK.Tests.Application.Specifications
             UpdateTerritory(_locationProvider.NorthAfrica, _player1, 5);
         }
 
-        private void PlayerTwoOccupiesEveryTerritoryExceptNorthAfricaWithOneArmy()
+        private void PlayerTwoOccupiesBrazilAndVenezuela()
         {
-            UpdateAllTerritoriesExcept(_locationProvider.NorthAfrica, _player2, 1);
+            UpdateTerritory(_locationProvider.Brazil, _player2, 1);
+            UpdateTerritory(_locationProvider.Venezuela, _player2, 1);
+        }
+
+        private void UpdateTerritory(ILocation location, IPlayer owner, int armies)
+        {
+            var territory = _worldMap.GetTerritory(location);
+            territory.AssignedPlayer = owner;
+            territory.Armies = armies;
+        }
+
+        private void PlayerOneOccupiesEveryTerritoryExceptBrazilVenezuelaAndNorthAfrica()
+        {
+            var excludedTerritories = new[]
+                {
+                    _locationProvider.Brazil,
+                    _locationProvider.Venezuela,
+                    _locationProvider.NorthAfrica
+                };
+
+            _locationProvider.GetAll()
+                .Where(x => !excludedTerritories.Contains(x))
+                .Select(x => _worldMap.GetTerritory(x))
+                .Apply(x =>
+                    {
+                        x.AssignedPlayer = _player1;
+                        x.Armies = 1;
+                    });
         }
 
         private void ClickOn(ILocation location)
@@ -192,24 +220,6 @@ namespace RISK.Tests.Application.Specifications
             var diceRoller = Substitute.For<IDiceRoller>();
             diceRoller.Roll().Returns(DiceValue.Six, DiceValue.Five, DiceValue.Four, DiceValue.Five);
             ObjectFactory.Inject(diceRoller);
-        }
-
-        private void UpdateTerritory(ILocation location, IPlayer owner, int armies)
-        {
-            var territory = _worldMap.GetTerritory(location);
-            territory.AssignedPlayer = owner;
-            territory.Armies = armies;
-        }
-
-        private void UpdateAllTerritoriesExcept(ILocation location, IPlayer owner, int armies)
-        {
-            _locationProvider.GetAll()
-                .Where(x => x != location)
-                .Select(x => _worldMap.GetTerritory(x)).Apply(x =>
-                    {
-                        x.AssignedPlayer = owner;
-                        x.Armies = armies;
-                    });
         }
     }
 }
