@@ -1,5 +1,4 @@
 ﻿using System.Linq;
-using System.Threading;
 using Caliburn.Micro;
 using FluentAssertions;
 using GuiWpf.Infrastructure;
@@ -29,7 +28,6 @@ namespace RISK.Tests.Application.Specifications
         private IMainGameViewModel _mainGameBoardViewModel;
         private IWorldMap _worldMap;
         private PlayerRepository _playerRepository;
-        private InputRequestHandlerSpy _inputRequestHandlerSpy;
 
         public void before_all()
         {
@@ -77,7 +75,6 @@ namespace RISK.Tests.Application.Specifications
                     InjectLocationProvider();
                     InjectWorldMapFactory();
                     InjectDiceRollerWithReturningSixFiveFourAndThenFive();
-                    InjectUserInputRequestHandler();
 
                     _mainGameBoardViewModel = ObjectFactory.GetInstance<IMainGameViewModel>();
 
@@ -118,11 +115,6 @@ namespace RISK.Tests.Application.Specifications
 
             for (int i = 0; i < numberOfArmiesToPlace; i++)
             {
-                while (!_inputRequestHandlerSpy.IsWaitingForInput)
-                {
-                    Thread.Sleep(10);
-                }
-
                 var gameSetupViewModel = (GameSetupViewModel)_mainGameBoardViewModel.MainViewModel;
                 var firstEnabledterritoryViewModel = gameSetupViewModel.WorldMapViewModel.WorldMapViewModels
                     .OfType<TerritoryLayoutViewModel>()
@@ -136,16 +128,6 @@ namespace RISK.Tests.Application.Specifications
         {
             var gameboardViewModel = (IGameboardViewModel)_mainGameBoardViewModel.MainViewModel;
             gameboardViewModel.EndTurn();
-        }
-
-        private void InjectWorldMapFactory()
-        {
-            _worldMap = new WorldMap(_locationProvider);
-
-            var worldMapFactory = Substitute.For<IWorldMapFactory>();
-            worldMapFactory.Create().Returns(_worldMap);
-
-            ObjectFactory.Inject(worldMapFactory);
         }
 
         private void SelectTwoHumanPlayersAndConfirm()
@@ -183,18 +165,10 @@ namespace RISK.Tests.Application.Specifications
                 .Single(x => x.Location == location);
         }
 
-        private void InjectUserInputRequestHandler()
+        private void InjectPlayerRepository()
         {
-            //_inputRequestHandlerSpy = new InputRequestHandlerSpy(new InputRequestHandler());
-
-            //ObjectFactory.Inject<IInputRequestHandler>(_inputRequestHandlerSpy);
-        }
-
-        private void InjectDiceRollerWithReturningSixFiveFourAndThenFive()
-        {
-            var diceRoller = Substitute.For<IDiceRoller>();
-            diceRoller.Roll().Returns(DiceValue.Six, DiceValue.Five, DiceValue.Four, DiceValue.Five);
-            ObjectFactory.Inject(diceRoller);
+            _playerRepository = new PlayerRepository();
+            ObjectFactory.Inject<IPlayerRepository>(_playerRepository);
         }
 
         private void InjectLocationProvider()
@@ -203,10 +177,21 @@ namespace RISK.Tests.Application.Specifications
             ObjectFactory.Inject(_locationProvider);
         }
 
-        private void InjectPlayerRepository()
+        private void InjectWorldMapFactory()
         {
-            _playerRepository = new PlayerRepository();
-            ObjectFactory.Inject<IPlayerRepository>(_playerRepository);
+            _worldMap = new WorldMap(_locationProvider);
+
+            var worldMapFactory = Substitute.For<IWorldMapFactory>();
+            worldMapFactory.Create().Returns(_worldMap);
+
+            ObjectFactory.Inject(worldMapFactory);
+        }
+
+        private void InjectDiceRollerWithReturningSixFiveFourAndThenFive()
+        {
+            var diceRoller = Substitute.For<IDiceRoller>();
+            diceRoller.Roll().Returns(DiceValue.Six, DiceValue.Five, DiceValue.Four, DiceValue.Five);
+            ObjectFactory.Inject(diceRoller);
         }
 
         private void UpdateTerritory(ILocation location, IPlayer owner, int armies)
