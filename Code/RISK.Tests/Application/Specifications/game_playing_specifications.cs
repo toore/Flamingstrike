@@ -74,7 +74,7 @@ namespace RISK.Tests.Application.Specifications
                     InjectPlayerRepository();
                     InjectLocationProvider();
                     InjectWorldMapFactory();
-                    InjectDiceRollerWithReturningSixFiveFourAndThenFive();
+                    InjectDiceRollerWithReturningSixFiveFourAndThenFiveForTwoAttacks();
 
                     _mainGameBoardViewModel = ObjectFactory.GetInstance<IMainGameViewModel>();
 
@@ -96,17 +96,31 @@ namespace RISK.Tests.Application.Specifications
                     ClickOn(_locationProvider.Brazil);
                 };
 
-            it["player 1 should occupy North Africa"] = () => _worldMap.GetTerritory(_locationProvider.NorthAfrica).AssignedPlayer.Should().Be(_player1);
-            it["North Africa should have 1 army"] = () => _worldMap.GetTerritory(_locationProvider.NorthAfrica).Armies.Should().Be(1);
-            it["player 1 should occupy Brazil"] = () => _worldMap.GetTerritory(_locationProvider.Brazil).AssignedPlayer.Should().Be(_player1);
-            it["Selected territory should be Brazil"] = () => GetTerritoryViewModel(_locationProvider.Brazil).IsSelected.Should().BeTrue();
-            it["Brazil should have 4 armies"] = () => _worldMap.GetTerritory(_locationProvider.Brazil).Armies.Should().Be(4);
+            it["when player 1 attacks Brazil from North Africa"] = () =>
+                {
+                    _worldMap.GetTerritory(_locationProvider.NorthAfrica).AssignedPlayer.Should().Be(_player1, "player 1 should occupy North Africa");
+                    _worldMap.GetTerritory(_locationProvider.NorthAfrica).Armies.Should().Be(1, "North Africa should have 1 army");
+                    _worldMap.GetTerritory(_locationProvider.Brazil).AssignedPlayer.Should().Be(_player1, "player 1 should occupy Brazil");
+                    GetTerritoryViewModel(_locationProvider.Brazil).IsSelected.Should().BeTrue("selected territory should be Brazil");
+                    _worldMap.GetTerritory(_locationProvider.Brazil).Armies.Should().Be(4, "Brazil should have 4 armies");
+                };
 
-            context["when turn ends"] = () =>
+            context["when player 1 turn ends"] = () =>
                 {
                     act = () => { EndTurn(); };
 
                     it["player 1 should have a card when turn ends"] = () => _player1.Cards.Count().Should().Be(1);
+                };
+
+            context["when player 1 attacks again"] = () =>
+                {
+                    act = () => ClickOn(_locationProvider.Venezuela);
+
+                    it["player 1 should occupy Venezuela with 3 armies"] = () =>
+                        {
+                            _worldMap.GetTerritory(_locationProvider.Venezuela).AssignedPlayer.Should().Be(_player1, "player 1 should occupy Venezuela");
+                            _worldMap.GetTerritory(_locationProvider.Venezuela).Armies.Should().Be(3, "Venezuela should have 3 armies");
+                        };
                 };
         }
 
@@ -215,10 +229,13 @@ namespace RISK.Tests.Application.Specifications
             ObjectFactory.Inject(worldMapFactory);
         }
 
-        private void InjectDiceRollerWithReturningSixFiveFourAndThenFive()
+        private void InjectDiceRollerWithReturningSixFiveFourAndThenFiveForTwoAttacks()
         {
             var diceRoller = Substitute.For<IDiceRoller>();
-            diceRoller.Roll().Returns(DiceValue.Six, DiceValue.Five, DiceValue.Four, DiceValue.Five);
+            diceRoller.Roll().Returns(
+                DiceValue.Six, DiceValue.Five, DiceValue.Four, DiceValue.Five,
+                DiceValue.Six, DiceValue.Five, DiceValue.Four, DiceValue.Five
+                );
             ObjectFactory.Inject(diceRoller);
         }
     }
