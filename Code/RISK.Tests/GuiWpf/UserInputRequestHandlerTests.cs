@@ -15,20 +15,20 @@ namespace RISK.Tests.GuiWpf
             _inputRequestHandler = new InputRequestHandler();
         }
 
-        //[Test]
-        //public void Waits_for_input()
-        //{
-        //    Task.Run(() => _inputRequestHandler.WaitOne());
+        [Test]
+        public void Waits_for_input()
+        {
+            Task.Run(() => _inputRequestHandler.WaitForInputAvailable());
 
-        //    _inputRequestHandler.Set();
-        //}
+            _inputRequestHandler.InputIsAvailable();
+        }
 
-        //[Test]
-        //public void Does_not_wait_for_input_when_input_already_handled()
-        //{
-        //    _inputRequestHandler.Set();
+        [Test]
+        public void Does_not_wait_for_input_when_input_already_available()
+        {
+            _inputRequestHandler.InputIsAvailable();
 
-        //    _inputRequestHandler.WaitOne();
-        //}
+            _inputRequestHandler.WaitForInputAvailable();
+        }
     }
 }
