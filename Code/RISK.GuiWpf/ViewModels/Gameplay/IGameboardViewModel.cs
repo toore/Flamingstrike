@@ -2,7 +2,7 @@
 
 namespace GuiWpf.ViewModels.Gameplay
 {
-    public interface IGameboardViewModel : IMainGameViewViewModel
+    public interface IGameboardViewModel : IMainViewModel
     {
         WorldMapViewModel WorldMapViewModel { get; }
         void EndTurn();

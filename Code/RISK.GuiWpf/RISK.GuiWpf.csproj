@@ -101,7 +101,7 @@
     <Compile Include="ViewModels\Settings\IGameSettingsEventAggregator.cs" />
     <Compile Include="ViewModels\Settings\IGameSettingsViewModel.cs" />
     <Compile Include="ViewModels\MainGameViewModel.cs" />
-    <Compile Include="ViewModels\IMainGameViewViewModel.cs" />
+    <Compile Include="ViewModels\IMainViewModel.cs" />
     <Compile Include="ViewModels\Settings\IPlayerFactory.cs" />
     <Compile Include="ViewModels\Settings\IPlayerTypes.cs" />
     <Compile Include="ViewModels\Settings\NeutralPlayerType.cs" />

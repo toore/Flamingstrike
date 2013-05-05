@@ -48,8 +48,8 @@ namespace GuiWpf.ViewModels
             MainViewModel = _gameboardViewModelFactory.Create(game);
         }
 
-        private IMainGameViewViewModel _mainViewModel;
-        public IMainGameViewViewModel MainViewModel
+        private IMainViewModel _mainViewModel;
+        public IMainViewModel MainViewModel
         {
             get { return _mainViewModel; }
             set { NotifyOfPropertyChange(value, () => MainViewModel, x => _mainViewModel = x); }

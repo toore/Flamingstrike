@@ -2,6 +2,6 @@
 {
     public interface IMainGameViewModel
     {
-        IMainGameViewViewModel MainViewModel { get; set; }
+        IMainViewModel MainViewModel { get; set; }
     }
 }

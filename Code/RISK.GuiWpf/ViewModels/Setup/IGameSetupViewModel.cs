@@ -2,7 +2,7 @@
 
 namespace GuiWpf.ViewModels.Setup
 {
-    public interface IGameSetupViewModel : IMainGameViewViewModel, IGameFactoryWorkerCallback
+    public interface IGameSetupViewModel : IMainViewModel, IGameFactoryWorkerCallback
     {
         void SelectLocation(ILocation location);
     }
