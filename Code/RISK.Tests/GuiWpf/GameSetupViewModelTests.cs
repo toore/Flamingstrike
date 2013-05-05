@@ -1,9 +1,9 @@
-﻿using System;
-using FluentAssertions;
+﻿using FluentAssertions;
 using GuiWpf.ViewModels;
 using GuiWpf.ViewModels.Gameplay.Map;
 using GuiWpf.ViewModels.Setup;
 using NSubstitute;
+using NSubstitute.Experimental;
 using NUnit.Framework;
 using RISK.Domain.Entities;
 using RISK.Domain.GamePlaying;
@@ -18,8 +18,7 @@ namespace RISK.Tests.GuiWpf
         private IWorldMapViewModelFactory _worldMapViewModelFactory;
         private IGameFactoryWorker _gameFactoryWorker;
         private IGameStateConductor _gameStateConductor;
-        private IDispatcherWrapper _dispatcherWrapper;
-        private IUserInputRequestHandler _userInputRequestHandler;
+        private IInputRequestHandler _inputRequestHandler;
 
         [SetUp]
         public void SetUp()
@@ -27,10 +26,27 @@ namespace RISK.Tests.GuiWpf
             _worldMapViewModelFactory = Substitute.For<IWorldMapViewModelFactory>();
             _gameFactoryWorker = Substitute.For<IGameFactoryWorker>();
             _gameStateConductor = Substitute.For<IGameStateConductor>();
-            _dispatcherWrapper = Substitute.For<IDispatcherWrapper>();
-            _userInputRequestHandler = Substitute.For<IUserInputRequestHandler>();
+            _inputRequestHandler = Substitute.For<IInputRequestHandler>();
 
-            _gameSetupViewModel = new GameSetupViewModel(_worldMapViewModelFactory, _gameFactoryWorker, _dispatcherWrapper, _gameStateConductor, _userInputRequestHandler);
+            var locationSelectorParameter = StubLocationSelectorParameter();
+
+            _gameFactoryWorker.WhenForAnyArgs(x => x.BeginInvoke(null))
+                .Do(x => x.Arg<IGameFactoryWorkerCallback>().GetLocationCallback(locationSelectorParameter));
+
+            _gameSetupViewModel = new GameSetupViewModel(_worldMapViewModelFactory, _gameFactoryWorker, _gameStateConductor, _inputRequestHandler);
+
+            _inputRequestHandler.ClearReceivedCalls();
+        }
+
+        private ILocationSelectorParameter StubLocationSelectorParameter()
+        {
+            var locationSelectorParameter = Substitute.For<ILocationSelectorParameter>();
+            var worldMap = Substitute.For<IWorldMap>();
+            locationSelectorParameter.WorldMap.Returns(worldMap);
+            var expectedWorldMapViewModel = new WorldMapViewModel();
+            _worldMapViewModelFactory.Create(worldMap, null).ReturnsForAnyArgs(expectedWorldMapViewModel);
+
+            return locationSelectorParameter;
         }
 
         [Test]
@@ -55,50 +71,53 @@ namespace RISK.Tests.GuiWpf
         {
             var location = Substitute.For<ILocation>();
 
-            _userInputRequestHandler.When(x => x.WaitForInput())
+            _inputRequestHandler.When(x => x.WaitForInputAvailable())
                 .Do(x => _gameSetupViewModel.SelectLocation(location));
 
             return location;
         }
 
         [Test]
-        public void Get_location_callback_updates_viewmodel()
+        public void Get_location_callback_updates_viewmodel_waits_for_user_input()
         {
-            var locationSelectorParameter = Substitute.For<ILocationSelectorParameter>();
-            var worldMap = Substitute.For<IWorldMap>();
-            locationSelectorParameter.WorldMap.Returns(worldMap);
-            DispatherRelaysAllActions();
-            var expectedWorldMapViewModel = new WorldMapViewModel();
-            _worldMapViewModelFactory.Create(worldMap, _gameSetupViewModel.SelectLocation).Returns(expectedWorldMapViewModel);
-            WorldMapViewModel viewModelWhenWaitingForInput = null;
-            _userInputRequestHandler.When(x => x.WaitForInput())
-                .Do(x => viewModelWhenWaitingForInput = _gameSetupViewModel.WorldMapViewModel);
-            _gameSetupViewModel.MonitorEvents();
+            _gameSetupViewModel.GetLocationCallback(null);
 
-            _gameSetupViewModel.GetLocationCallback(locationSelectorParameter);
-            _gameSetupViewModel.SelectLocation(Substitute.For<ILocation>());
-
-            _gameSetupViewModel.WorldMapViewModel.Should().Be(viewModelWhenWaitingForInput);
-            _gameSetupViewModel.WorldMapViewModel.Should().Be(expectedWorldMapViewModel);
-            _gameSetupViewModel.ShouldRaisePropertyChangeFor(x => x.WorldMapViewModel);
+            Received.InOrder(() =>
+                {
+                    _inputRequestHandler.RequestInput();
+                    _inputRequestHandler.WaitForInputAvailable();
+                });
         }
 
         [Test]
-        public void When_finished_game_conductor_is_notified_through_dispatcher()
+        public void Select_location_makes_input_available_and_wait_for_new_input_request()
         {
-            var game = Substitute.For<IGame>();
-            DispatherRelaysAllActions();
+            _gameSetupViewModel.SelectLocation(null);
 
-            _gameSetupViewModel.OnFinished(game);
-
-            _gameStateConductor.Received().StartGamePlay(game);
+            Received.InOrder(() =>
+                {
+                    _inputRequestHandler.InputIsAvailable();
+                    _inputRequestHandler.WaitForInputRequest();
+                });
         }
 
-        private void DispatherRelaysAllActions()
+        [Test]
+        public void When_finished_input_is_requested()
         {
-            _dispatcherWrapper
-                .WhenForAnyArgs(x => x.Invoke(null))
-                .Do(x => x.Arg<Action>().Invoke());
+            _gameSetupViewModel.OnFinished(null);
+
+            _inputRequestHandler.Received().RequestInput();
+        }
+
+        [Test]
+        public void When_finished_game_conductor_is_notified()
+        {
+            var game = Substitute.For<IGame>();
+
+            _gameSetupViewModel.OnFinished(game);
+            _gameSetupViewModel.SelectLocation(null);
+
+            _gameStateConductor.Received().StartGamePlay(game);
         }
     }
 }

@@ -7,20 +7,18 @@ namespace GuiWpf.ViewModels
     {
         private readonly IWorldMapViewModelFactory _worldMapViewModelFactory;
         private readonly IGameFactoryWorker _gameFactoryWorker;
-        private readonly IDispatcherWrapper _dispatcherWrapper;
-        private readonly IUserInputRequestHandler _userInputRequestHandler;
+        private readonly IInputRequestHandler _inputRequestHandler;
 
-        public GameSetupViewModelFactory(IWorldMapViewModelFactory worldMapViewModelFactory, IGameFactoryWorker gameFactoryWorker, IDispatcherWrapper dispatcherWrapper, IUserInputRequestHandler userInputRequestHandler)
+        public GameSetupViewModelFactory(IWorldMapViewModelFactory worldMapViewModelFactory, IGameFactoryWorker gameFactoryWorker, IInputRequestHandler inputRequestHandler)
         {
             _worldMapViewModelFactory = worldMapViewModelFactory;
             _gameFactoryWorker = gameFactoryWorker;
-            _dispatcherWrapper = dispatcherWrapper;
-            _userInputRequestHandler = userInputRequestHandler;
+            _inputRequestHandler = inputRequestHandler;
         }
 
         public IGameSetupViewModel Create(IGameStateConductor gameStateConductor)
         {
-            return new GameSetupViewModel(_worldMapViewModelFactory, _gameFactoryWorker, _dispatcherWrapper, gameStateConductor, _userInputRequestHandler);
+            return new GameSetupViewModel(_worldMapViewModelFactory, _gameFactoryWorker, gameStateConductor, _inputRequestHandler);
         }
     }
 }

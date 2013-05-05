@@ -8,6 +8,7 @@ namespace GuiWpf.ViewModels.Setup
     {
         private readonly IGameFactory _gameFactory;
         private IGameFactoryWorkerCallback _callback;
+        private Task _task;
 
         public GameFactoryWorker(IGameFactory gameFactory)
         {
@@ -18,7 +19,7 @@ namespace GuiWpf.ViewModels.Setup
         {
             _callback = callback;
 
-            Task.Run(() =>
+            _task = Task.Run(() =>
                 {
                     var game = _gameFactory.Create(this);
                     _callback.OnFinished(game);

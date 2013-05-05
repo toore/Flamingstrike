@@ -81,7 +81,6 @@
     <Compile Include="Services\ITerritoryColors.cs" />
     <Compile Include="Services\TerritoryColorsFactory.cs" />
     <Compile Include="Services\TerritoryViewModelUpdater.cs" />
-    <Compile Include="ViewModels\Setup\DispatcherWrapper.cs" />
     <Compile Include="ViewModels\Setup\GameFactoryWorker.cs" />
     <Compile Include="ViewModels\Setup\GameSetupViewModel.cs" />
     <Compile Include="ViewModels\Gameplay\GameboardViewModelFactory.cs" />
@@ -90,7 +89,6 @@
     <Compile Include="ViewModels\Gameplay\Map\WorldMapViewModelsExtensions.cs" />
     <Compile Include="ViewModels\Setup\GameSetupMessage.cs" />
     <Compile Include="ViewModels\GameSetupViewModelFactory.cs" />
-    <Compile Include="ViewModels\Setup\IDispatcherWrapper.cs" />
     <Compile Include="ViewModels\Setup\IGameFactoryWorker.cs" />
     <Compile Include="ViewModels\Setup\IGameSetupViewModel.cs" />
     <Compile Include="ViewModels\Gameplay\IGameboardViewModelFactory.cs" />
@@ -114,8 +112,8 @@
     <Compile Include="Territories\TerritoryGuiFactory.cs" />
     <Compile Include="ViewModels\Settings\PlayerTypeBase.cs" />
     <Compile Include="ViewModels\Settings\PlayerTypes.cs" />
-    <Compile Include="ViewModels\Setup\IUserInputRequestHandler.cs" />
-    <Compile Include="ViewModels\Setup\UserInputRequestHandler.cs" />
+    <Compile Include="ViewModels\Setup\IInputRequestHandler.cs" />
+    <Compile Include="ViewModels\Setup\InputRequestHandler.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="ViewModels\Gameplay\GameboardViewModel.cs" />
     <Compile Include="ViewModels\Gameplay\IGameboardViewModel.cs" />

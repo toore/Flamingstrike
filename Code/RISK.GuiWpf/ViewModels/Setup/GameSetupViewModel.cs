@@ -12,33 +12,64 @@ namespace GuiWpf.ViewModels.Setup
         private readonly IWorldMapViewModelFactory _worldMapViewModelFactory;
         private readonly IGameFactoryWorker _gameFactoryWorker;
         private readonly IGameStateConductor _gameStateConductor;
-        private readonly IUserInputRequestHandler _userInputRequestHandler;
-        private readonly IDispatcherWrapper _dispatcherWrapper;
+        private readonly IInputRequestHandler _inputRequestHandler;
         private ILocation _selectedLocation;
+        private ILocationSelectorParameter _locationSelectorParameter;
+        private bool _isGameSetupFinished;
+        private IGame _game;
 
         public GameSetupViewModel(
             IWorldMapViewModelFactory worldMapViewModelFactory,
             IGameFactoryWorker gameFactoryWorker,
-            IDispatcherWrapper dispatcherWrapper,
-            IGameStateConductor gameStateConductor, 
-            IUserInputRequestHandler userInputRequestHandler)
+            IGameStateConductor gameStateConductor,
+            IInputRequestHandler inputRequestHandler)
         {
             _worldMapViewModelFactory = worldMapViewModelFactory;
             _gameFactoryWorker = gameFactoryWorker;
             _gameStateConductor = gameStateConductor;
-            _userInputRequestHandler = userInputRequestHandler;
-            _dispatcherWrapper = dispatcherWrapper;
+            _inputRequestHandler = inputRequestHandler;
 
             _gameFactoryWorker.BeginInvoke(this);
+
+            WaitForUserInputRequestAndUpdateWorldMap();
+        }
+
+        private void WaitForUserInputRequestAndUpdateWorldMap()
+        {
+            _inputRequestHandler.WaitForInputRequest();
+
+            UpdateWorldMapViewModel(_locationSelectorParameter);
         }
 
         public ILocation GetLocationCallback(ILocationSelectorParameter locationSelectorParameter)
         {
-            _dispatcherWrapper.Invoke(() => UpdateWorldMapViewModel(locationSelectorParameter));
+            _locationSelectorParameter = locationSelectorParameter;
 
-            _userInputRequestHandler.WaitForInput();
+            _inputRequestHandler.RequestInput();
+            _inputRequestHandler.WaitForInputAvailable();
 
             return _selectedLocation;
+        }
+
+        public void SelectLocation(ILocation location)
+        {
+            _selectedLocation = location;
+
+            _inputRequestHandler.InputIsAvailable();
+            WaitForUserInputRequestAndUpdateWorldMap();
+
+            if (_isGameSetupFinished)
+            {
+                StartGamePlay(_game);
+            }
+        }
+
+        public void OnFinished(IGame game)
+        {
+            _isGameSetupFinished = true;
+            _game = game;
+
+            _inputRequestHandler.RequestInput();
         }
 
         private void UpdateWorldMapViewModel(ILocationSelectorParameter locationSelectorParameter)
@@ -51,21 +82,9 @@ namespace GuiWpf.ViewModels.Setup
             WorldMapViewModel = worldMapViewModel;
         }
 
-        public void OnFinished(IGame game)
-        {
-            _dispatcherWrapper.Invoke(() => StartGamePlay(game));
-        }
-
         private void StartGamePlay(IGame game)
         {
             _gameStateConductor.StartGamePlay(game);
-        }
-
-        public void SelectLocation(ILocation location)
-        {
-            _selectedLocation = location;
-
-            _userInputRequestHandler.InputHandled();
         }
 
         private WorldMapViewModel _worldMapViewModel;

@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Threading;
 using Caliburn.Micro;
 using FluentAssertions;
 using GuiWpf.Infrastructure;
@@ -28,6 +29,7 @@ namespace RISK.Tests.Application.Specifications
         private IMainGameViewModel _mainGameBoardViewModel;
         private IWorldMap _worldMap;
         private PlayerRepository _playerRepository;
+        private InputRequestHandlerSpy _inputRequestHandlerSpy;
 
         public void before_all()
         {
@@ -40,7 +42,6 @@ namespace RISK.Tests.Application.Specifications
                     x.For<IGameSettingsEventAggregator>().Use<GameSettingsEventAggregator>();
                     x.For<IGameboardViewModelFactory>().Use<GameboardViewModelFactory>();
                     x.For<IGameFactoryWorker>().Use<GameFactoryWorker>();
-                    x.For<IDispatcherWrapper>().Use<DispatcherWrapper>();
                     x.For<IGameFactory>().Use<GameFactory>();
                     x.For<ITurnFactory>().Use<TurnFactory>();
                     x.For<IAlternateGameSetup>().Use<AlternateGameSetup>();
@@ -62,6 +63,7 @@ namespace RISK.Tests.Application.Specifications
                     x.For<ICasualtyEvaluator>().Use<CasualtyEvaluator>();
                     x.For<IDiceRoller>().Use<DiceRoller>();
                     x.For<IGameSetupViewModelFactory>().Use<GameSetupViewModelFactory>();
+                    x.For<IInputRequestHandler>().Use<InputRequestHandler>();
 
                     x.RegisterInterceptor(new HandleInterceptor<IGameSettingsEventAggregator>());
                 });
@@ -75,6 +77,7 @@ namespace RISK.Tests.Application.Specifications
                     InjectLocationProvider();
                     InjectWorldMapFactory();
                     InjectDiceRollerWithReturningSixFiveFourAndThenFive();
+                    InjectUserInputRequestHandler();
 
                     _mainGameBoardViewModel = ObjectFactory.GetInstance<IMainGameViewModel>();
 
@@ -83,11 +86,10 @@ namespace RISK.Tests.Application.Specifications
                     _player1 = _playerRepository.GetAll().First();
                     _player2 = _playerRepository.GetAll().Second();
 
+                    PlaceArmies();
+
                     PlayerOneOccupiesNorthAfricaWithFiveArmies();
                     PlayerTwoOccupiesEveryTerritoryExceptNorthAfricaWithOneArmy();
-
-                    // Make sure to place armies
-                    // ...
                 };
 
             act = () =>
@@ -108,6 +110,26 @@ namespace RISK.Tests.Application.Specifications
 
                     it["player 1 should have a card when turn ends"] = () => _player1.Cards.Count().Should().Be(1);
                 };
+        }
+
+        private void PlaceArmies()
+        {
+            const int numberOfArmiesToPlace = (40 - 21) * 2;
+
+            for (int i = 0; i < numberOfArmiesToPlace; i++)
+            {
+                while (!_inputRequestHandlerSpy.IsWaitingForInput)
+                {
+                    Thread.Sleep(10);
+                }
+
+                var gameSetupViewModel = (GameSetupViewModel)_mainGameBoardViewModel.MainViewModel;
+                var firstEnabledterritoryViewModel = gameSetupViewModel.WorldMapViewModel.WorldMapViewModels
+                    .OfType<TerritoryLayoutViewModel>()
+                    .First(x => x.IsEnabled);
+
+                gameSetupViewModel.SelectLocation(firstEnabledterritoryViewModel.Location);
+            }
         }
 
         private void EndTurn()
@@ -161,6 +183,13 @@ namespace RISK.Tests.Application.Specifications
                 .Single(x => x.Location == location);
         }
 
+        private void InjectUserInputRequestHandler()
+        {
+            //_inputRequestHandlerSpy = new InputRequestHandlerSpy(new InputRequestHandler());
+
+            //ObjectFactory.Inject<IInputRequestHandler>(_inputRequestHandlerSpy);
+        }
+
         private void InjectDiceRollerWithReturningSixFiveFourAndThenFive()
         {
             var diceRoller = Substitute.For<IDiceRoller>();
@@ -191,8 +220,7 @@ namespace RISK.Tests.Application.Specifications
         {
             _locationProvider.GetAll()
                 .Where(x => x != location)
-                .Select(x => _worldMap.GetTerritory(x))
-                .Apply(x =>
+                .Select(x => _worldMap.GetTerritory(x)).Apply(x =>
                     {
                         x.AssignedPlayer = owner;
                         x.Armies = armies;

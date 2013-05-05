@@ -92,6 +92,7 @@
     <Compile Include="Application\Gameplay\TerritoryTests.cs" />
     <Compile Include="Application\Gameplay\TurnTests_WhenAttacking.cs" />
     <Compile Include="Application\Gameplay\TurnTests_WhenSelecting.cs" />
+    <Compile Include="Application\Specifications\InputRequestHandlerSpy.cs" />
     <Compile Include="DebuggerShim.cs" />
     <Compile Include="GuiWpf\EnumerableExtensionsTests.cs" />
     <Compile Include="GuiWpf\GameSettingsViewModelTests.cs" />
