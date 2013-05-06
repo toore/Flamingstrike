@@ -9,7 +9,7 @@ using RISK.Domain.Repositories;
 
 namespace GuiWpf.ViewModels
 {
-    public class MainGameViewModel : ViewModelBase, IMainGameViewModel, IGameStateConductor, IHandle<GameSetupMessage>
+    public class MainGameViewModel : ViewModelBase, IMainGameViewModel
     {
         private readonly IGameSettingsViewModel _gameSettingsViewModel;
         private readonly IGameboardViewModelFactory _gameboardViewModelFactory;

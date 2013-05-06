@@ -26,10 +26,11 @@ namespace RISK.Tests.Application.Specifications
         private ILocationProvider _locationProvider;
         private IPlayer _player1;
         private IPlayer _player2;
-        private IMainGameViewModel _mainGameBoardViewModel;
+        private IMainGameViewModel _mainGameViewModel;
         private IWorldMap _worldMap;
         private PlayerRepository _playerRepository;
         private IWindowManager _windowManager;
+        private IGameboardViewModel _gameboardViewModel;
 
         public void before_all()
         {
@@ -67,9 +68,35 @@ namespace RISK.Tests.Application.Specifications
                     x.For<IGameOverEvaluater>().Use<GameOverEvaluater>();
                     x.For<IWindowManager>().Use<WindowManager>();
                     x.For<IGameOverViewModelFactory>().Use<GameOverViewModelFactory>();
+                    x.For<IGameboardViewModel>().Use<GameboardViewModel>();
 
                     x.RegisterInterceptor(new HandleInterceptor<IGameSettingsEventAggregator>());
                 });
+        }
+
+        public void game_is_setup_and_started()
+        {
+            before = () =>
+                {
+                    InjectPlayerRepository();
+                    InjectLocationProvider();
+                    InjectWorldMapFactory();
+
+                    _mainGameViewModel = ObjectFactory.GetInstance<IMainGameViewModel>();
+
+                    SelectTwoHumanPlayersAndConfirm();
+
+                    _player1 = _playerRepository.GetAll().First();
+                    _player2 = _playerRepository.GetAll().Second();
+                };
+
+            it["game board is shown"] = () => _mainGameViewModel.MainViewModel.Should().BeOfType<GameSetupViewModel>();
+
+            context["Armies are placed"] = () =>
+                {
+                    act = () => PlaceArmies();
+                    it["game board view model should be visible"] = () => _mainGameViewModel.MainViewModel.Should().BeOfType<GameboardViewModel>();
+                };
         }
 
         public void selecting_North_Africa_and_attacking_Brazil_and_win_moves_armies_into_territory_and_flags_that_user_should_receive_a_card_when_turn_ends()
@@ -82,14 +109,11 @@ namespace RISK.Tests.Application.Specifications
                     InjectDiceRollerWithReturningSixFiveFourAndThenFiveForTwoAttacks();
                     InjectWindowManager();
 
-                    _mainGameBoardViewModel = ObjectFactory.GetInstance<IMainGameViewModel>();
+                    StubPlayerRepositoryWithTwoHumanPlayers();
 
-                    SelectTwoHumanPlayersAndConfirm();
+                    InjectGame();
 
-                    _player1 = _playerRepository.GetAll().First();
-                    _player2 = _playerRepository.GetAll().Second();
-
-                    PlaceArmies();
+                    _gameboardViewModel = ObjectFactory.GetInstance<IGameboardViewModel>();
 
                     PlayerOneOccupiesNorthAfricaWithFiveArmies();
                     PlayerTwoOccupiesBrazilAndVenezuela();
@@ -127,10 +151,26 @@ namespace RISK.Tests.Application.Specifications
                             _worldMap.GetTerritory(_locationProvider.Venezuela).AssignedPlayer.Should().Be(_player1, "player 1 should occupy Venezuela");
                             _worldMap.GetTerritory(_locationProvider.Venezuela).Armies.Should().Be(3, "Venezuela should have 3 armies");
 
-                            //TODO
-                            //_windowManager.Received().ShowDialog()
+                            //_windowManager.Received().ShowDialog(
                         };
                 };
+        }
+
+        private void StubPlayerRepositoryWithTwoHumanPlayers()
+        {
+            _player1 = new HumanPlayer("Player 1");
+            _player2 = new HumanPlayer("Player 2");
+            _playerRepository.Add(_player1);
+            _playerRepository.Add(_player2);
+        }
+
+        private void InjectGame()
+        {
+            var locationSelector = Substitute.For<ILocationSelector>();
+            var alternateGameSetup = Substitute.For<IAlternateGameSetup>();
+            alternateGameSetup.Initialize(locationSelector).Returns(_worldMap);
+            var game = new Game(ObjectFactory.GetInstance<ITurnFactory>(), _playerRepository, alternateGameSetup, locationSelector);
+            ObjectFactory.Inject<IGame>(game);
         }
 
         private void PlaceArmies()
@@ -139,7 +179,7 @@ namespace RISK.Tests.Application.Specifications
 
             for (int i = 0; i < numberOfArmiesToPlace; i++)
             {
-                var gameSetupViewModel = (GameSetupViewModel)_mainGameBoardViewModel.MainViewModel;
+                var gameSetupViewModel = (GameSetupViewModel)_mainGameViewModel.MainViewModel;
                 var firstEnabledterritoryViewModel = gameSetupViewModel.WorldMapViewModel.WorldMapViewModels
                     .OfType<TerritoryLayoutViewModel>()
                     .First(x => x.IsEnabled);
@@ -150,13 +190,12 @@ namespace RISK.Tests.Application.Specifications
 
         private void EndTurn()
         {
-            var gameboardViewModel = (IGameboardViewModel)_mainGameBoardViewModel.MainViewModel;
-            gameboardViewModel.EndTurn();
+            _gameboardViewModel.EndTurn();
         }
 
         private void SelectTwoHumanPlayersAndConfirm()
         {
-            var gameSetupViewModel = (IGameSettingsViewModel)_mainGameBoardViewModel.MainViewModel;
+            var gameSetupViewModel = (IGameSettingsViewModel)_mainGameViewModel.MainViewModel;
 
             gameSetupViewModel.Players.First().IsEnabled = true;
             gameSetupViewModel.Players.Second().IsEnabled = true;
@@ -209,9 +248,7 @@ namespace RISK.Tests.Application.Specifications
 
         private ITerritoryLayoutViewModel GetTerritoryViewModel(ILocation location)
         {
-            var gameboardViewModel = (IGameboardViewModel)_mainGameBoardViewModel.MainViewModel;
-
-            return gameboardViewModel.WorldMapViewModel.WorldMapViewModels
+            return _gameboardViewModel.WorldMapViewModel.WorldMapViewModels
                 .OfType<ITerritoryLayoutViewModel>()
                 .Single(x => x.Location == location);
         }
@@ -243,8 +280,7 @@ namespace RISK.Tests.Application.Specifications
             var diceRoller = Substitute.For<IDiceRoller>();
             diceRoller.Roll().Returns(
                 DiceValue.Six, DiceValue.Five, DiceValue.Four, DiceValue.Five,
-                DiceValue.Six, DiceValue.Five, DiceValue.Four, DiceValue.Five
-                );
+                DiceValue.Six, DiceValue.Five, DiceValue.Four, DiceValue.Five);
             ObjectFactory.Inject(diceRoller);
         }
 
