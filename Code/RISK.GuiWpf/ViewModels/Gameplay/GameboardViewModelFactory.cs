@@ -13,19 +13,21 @@ namespace GuiWpf.ViewModels.Gameplay
         private readonly ITerritoryViewModelUpdater _territoryViewModelUpdater;
         private readonly IGameOverEvaluater _gameOverEvaluater;
         private readonly IWindowManager _windowManager;
+        private readonly IGameOverViewModelFactory _gameOverViewModelFactory;
 
-        public GameboardViewModelFactory(ILocationProvider locationProvider, IWorldMapViewModelFactory worldMapViewModelFactory, ITerritoryViewModelUpdater territoryViewModelUpdater, IGameOverEvaluater gameOverEvaluater, IWindowManager windowManager)
+        public GameboardViewModelFactory(ILocationProvider locationProvider, IWorldMapViewModelFactory worldMapViewModelFactory, ITerritoryViewModelUpdater territoryViewModelUpdater, IGameOverEvaluater gameOverEvaluater, IWindowManager windowManager, IGameOverViewModelFactory gameOverViewModelFactory)
         {
             _locationProvider = locationProvider;
             _worldMapViewModelFactory = worldMapViewModelFactory;
             _territoryViewModelUpdater = territoryViewModelUpdater;
             _gameOverEvaluater = gameOverEvaluater;
             _windowManager = windowManager;
+            _gameOverViewModelFactory = gameOverViewModelFactory;
         }
 
         public IGameboardViewModel Create(IGame game)
         {
-            return new GameboardViewModel(game, _locationProvider, _worldMapViewModelFactory, _territoryViewModelUpdater, _gameOverEvaluater, _windowManager);
+            return new GameboardViewModel(game, _locationProvider, _worldMapViewModelFactory, _territoryViewModelUpdater, _gameOverEvaluater, _windowManager, _gameOverViewModelFactory);
         }
     }
 }

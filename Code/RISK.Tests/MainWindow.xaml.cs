@@ -1,5 +1,4 @@
-﻿using System.Windows;
-using GuiWpf.ViewModels.Gameplay;
+﻿using GuiWpf.ViewModels.Gameplay;
 
 namespace RISK.Tests
 {

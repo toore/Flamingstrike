@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Caliburn.Micro;
 using FluentAssertions;
 using GuiWpf.Services;
+using GuiWpf.ViewModels;
 using GuiWpf.ViewModels.Gameplay;
 using GuiWpf.ViewModels.Gameplay.Map;
 using NSubstitute;
@@ -38,6 +39,7 @@ namespace RISK.Tests.GuiWpf
         private IPlayer _player2;
         private IGameOverEvaluater _gameOverEvaluater;
         private IWindowManager _windowManager;
+        private IGameOverViewModelFactory _gameOverViewModelFactory;
 
         [SetUp]
         public void SetUp()
@@ -48,6 +50,7 @@ namespace RISK.Tests.GuiWpf
             _territoryViewModelUpdater = Substitute.For<ITerritoryViewModelUpdater>();
             _gameOverEvaluater = Substitute.For<IGameOverEvaluater>();
             _windowManager = Substitute.For<IWindowManager>();
+            _gameOverViewModelFactory = Substitute.For<IGameOverViewModelFactory>();
 
             _location1 = Substitute.For<ILocation>();
             _location2 = Substitute.For<ILocation>();
@@ -87,7 +90,7 @@ namespace RISK.Tests.GuiWpf
             
             _worldMapViewModelFactory.Create(Arg.Is(_worldMap), Arg.Any<Action<ILocation>>()).Returns(_worldMapViewModel);
 
-            _gameboardViewModel = new GameboardViewModel(_game, _locationProvider, _worldMapViewModelFactory, _territoryViewModelUpdater, _gameOverEvaluater, _windowManager);
+            _gameboardViewModel = new GameboardViewModel(_game, _locationProvider, _worldMapViewModelFactory, _territoryViewModelUpdater, _gameOverEvaluater, _windowManager, _gameOverViewModelFactory);
         }
 
         [Test]
@@ -171,10 +174,12 @@ namespace RISK.Tests.GuiWpf
         public void When_winning_dialog_should_be_shown()
         {
             _gameOverEvaluater.IsGameOver().Returns(true);
+            var gameOverViewModel = new GameOverViewModel();
+            _gameOverViewModelFactory.Create().Returns(gameOverViewModel);
 
             _gameboardViewModel.OnLocationClick(null);
 
-            _windowManager.Received().ShowDialog(_gameboardViewModel);
+            _windowManager.Received().ShowDialog(gameOverViewModel);
         }
 
         private ITerritoryLayoutViewModel StubLayoutViewModel(ILocation location)

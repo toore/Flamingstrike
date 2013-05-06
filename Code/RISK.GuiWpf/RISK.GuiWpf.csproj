@@ -82,7 +82,10 @@
     <Compile Include="Services\TerritoryColorsFactory.cs" />
     <Compile Include="Services\TerritoryViewModelUpdater.cs" />
     <Compile Include="ViewModels\Gameplay\GameOverEvaluater.cs" />
+    <Compile Include="ViewModels\GameOverViewModel.cs" />
+    <Compile Include="ViewModels\Gameplay\GameOverViewModelFactory.cs" />
     <Compile Include="ViewModels\Gameplay\IGameOverEvaluater.cs" />
+    <Compile Include="ViewModels\Gameplay\IGameOverViewModelFactory.cs" />
     <Compile Include="ViewModels\Setup\GameFactoryWorker.cs" />
     <Compile Include="ViewModels\Setup\GameSetupViewModel.cs" />
     <Compile Include="ViewModels\Gameplay\GameboardViewModelFactory.cs" />
@@ -121,6 +124,9 @@
     <Compile Include="ViewModels\Gameplay\IGameboardViewModel.cs" />
     <Compile Include="Services\ITerritoryViewModelUpdater.cs" />
     <Compile Include="ViewModels\IMainGameViewModel.cs" />
+    <Compile Include="Views\GameOverView.xaml.cs">
+      <DependentUpon>GameOverView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\GameSetupViews\GameSettingsView.xaml.cs">
       <DependentUpon>GameSettingsView.xaml</DependentUpon>
     </Compile>
@@ -195,6 +201,10 @@
       <DependentUpon>WorldMapTestUserControl.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Views\GameOverView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\GameResources.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

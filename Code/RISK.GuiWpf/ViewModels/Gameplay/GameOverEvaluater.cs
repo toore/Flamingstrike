@@ -6,7 +6,7 @@ namespace GuiWpf.ViewModels.Gameplay
     {
         public bool IsGameOver()
         {
-            throw new NotImplementedException();
+            return false;
         }
     }
 }

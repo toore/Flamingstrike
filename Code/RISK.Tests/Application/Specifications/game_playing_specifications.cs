@@ -66,6 +66,7 @@ namespace RISK.Tests.Application.Specifications
                     x.For<IInputRequestHandler>().Use<InputRequestHandler>();
                     x.For<IGameOverEvaluater>().Use<GameOverEvaluater>();
                     x.For<IWindowManager>().Use<WindowManager>();
+                    x.For<IGameOverViewModelFactory>().Use<GameOverViewModelFactory>();
 
                     x.RegisterInterceptor(new HandleInterceptor<IGameSettingsEventAggregator>());
                 });

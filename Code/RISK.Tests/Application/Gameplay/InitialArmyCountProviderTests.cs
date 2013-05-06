@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using FluentAssertions;
+﻿using FluentAssertions;
 using NUnit.Framework;
-using NSubstitute;
 using RISK.Domain.GamePlaying.Setup;
 
 namespace RISK.Tests.Application.Gameplay
