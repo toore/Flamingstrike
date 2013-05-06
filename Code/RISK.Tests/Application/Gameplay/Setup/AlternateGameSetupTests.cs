@@ -85,9 +85,9 @@ namespace RISK.Tests.Application.Gameplay.Setup
         {
             var worldMap = Initialize();
 
-            worldMap.GetTerritory(_location1).AssignedPlayer.Should().Be(_player1);
-            worldMap.GetTerritory(_location2).AssignedPlayer.Should().Be(_player2);
-            worldMap.GetTerritory(_location3).AssignedPlayer.Should().Be(_player1);
+            worldMap.GetTerritory(_location1).Occupant.Should().Be(_player1);
+            worldMap.GetTerritory(_location2).Occupant.Should().Be(_player2);
+            worldMap.GetTerritory(_location3).Occupant.Should().Be(_player1);
         }
 
         [Test]
@@ -97,8 +97,8 @@ namespace RISK.Tests.Application.Gameplay.Setup
             var player2Locations = new[] { _location2 };
             var player1Territories = new[] { _territory1, _territory3 };
             var player2Territories = new[] { _territory2 };
-            _worldMap.GetTerritoriesAssignedTo(_player1).Returns(player1Territories);
-            _worldMap.GetTerritoriesAssignedTo(_player2).Returns(player2Territories);
+            _worldMap.GetTerritoriesOccupiedBy(_player1).Returns(player1Territories);
+            _worldMap.GetTerritoriesOccupiedBy(_player2).Returns(player2Territories);
             
             //_locationSelector.Select(Arg.Is<List<ILocation>>(x => x.SequenceEqual(player1Locations))).Returns(_location3);
             //_locationSelector.Select(Arg.Is<List<ILocation>>(x => x.SequenceEqual(player2Locations))).Returns(_location2, _location2);

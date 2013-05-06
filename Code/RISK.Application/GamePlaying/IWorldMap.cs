@@ -6,6 +6,7 @@ namespace RISK.Domain.GamePlaying
     public interface IWorldMap
     {
         ITerritory GetTerritory(ILocation location);
-        IEnumerable<ITerritory> GetTerritoriesAssignedTo(IPlayer player);
+        IEnumerable<ITerritory> GetTerritoriesOccupiedBy(IPlayer player);
+        IEnumerable<IPlayer> GetAllPlayersOccupyingTerritories();
     }
 }

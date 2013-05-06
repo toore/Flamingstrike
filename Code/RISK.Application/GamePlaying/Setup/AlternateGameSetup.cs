@@ -73,7 +73,7 @@ namespace RISK.Domain.GamePlaying.Setup
             foreach (var location in locationsInRandomOrder)
             {
                 var territory = worldMap.GetTerritory(location);
-                territory.AssignedPlayer = player.GetInGamePlayer();
+                territory.Occupant = player.GetInGamePlayer();
                 territory.Armies = 1;
                 player.Armies--;
 
@@ -96,7 +96,7 @@ namespace RISK.Domain.GamePlaying.Setup
         private void PlaceArmy(PlayerDuringSetup playerDuringSetup, IWorldMap worldMap)
         {
             var player = playerDuringSetup.GetInGamePlayer();
-            var locations = worldMap.GetTerritoriesAssignedTo(player)
+            var locations = worldMap.GetTerritoriesOccupiedBy(player)
                 .Select(x => x.Location)
                 .ToList();
 

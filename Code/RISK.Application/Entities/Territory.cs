@@ -8,7 +8,7 @@
         }
 
         public ILocation Location { get; private set; }
-        public IPlayer AssignedPlayer { get; set; }
+        public IPlayer Occupant { get; set; }
         public int Armies { get; set; }
     }
 }

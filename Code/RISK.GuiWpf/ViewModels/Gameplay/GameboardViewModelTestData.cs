@@ -29,7 +29,7 @@ namespace GuiWpf.ViewModels.Gameplay
             var worldMap = new WorldMap(locationProvider);
             var territory = worldMap.GetTerritory(locationProvider.Brazil);
             var humanPlayer = new HumanPlayer("pelle");
-            territory.AssignedPlayer = humanPlayer;
+            territory.Occupant = humanPlayer;
             territory.Armies = 99;
 
             var textViewModelFactory = new TerritoryTextViewModelFactory(territoryLayoutInformationFactory);
@@ -41,7 +41,7 @@ namespace GuiWpf.ViewModels.Gameplay
             var alternateGameSetup = new AlternateGameSetup(playerRepository, locationProvider, new RandomSorter(new RandomWrapper()), new WorldMapFactory(locationProvider), new InitialArmyCountProvider());
             ITurnFactory turnFactory = new TurnFactory(null, null);
             var game = new Game(turnFactory, playerRepository, alternateGameSetup, this);
-            var gameboardViewModel = new GameboardViewModel(game, locationProvider, worldMapViewModelFactory, territoryViewModelUpdater, new GameOverEvaluater(), null, null);
+            var gameboardViewModel = new GameboardViewModel(game, locationProvider, worldMapViewModelFactory, territoryViewModelUpdater, null, null, null);
 
             return gameboardViewModel;
         }

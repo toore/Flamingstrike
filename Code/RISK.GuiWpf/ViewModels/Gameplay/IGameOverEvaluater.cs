@@ -1,7 +1,9 @@
-﻿namespace GuiWpf.ViewModels.Gameplay
+﻿using RISK.Domain.GamePlaying;
+
+namespace GuiWpf.ViewModels.Gameplay
 {
     public interface IGameOverEvaluater
     {
-        bool IsGameOver();
+        bool IsGameOver(IWorldMap worldMap);
     }
 }

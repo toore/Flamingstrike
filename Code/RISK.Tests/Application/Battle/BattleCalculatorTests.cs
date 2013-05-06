@@ -40,18 +40,18 @@ namespace RISK.Tests.Application.Battle
                 {
                     Armies = attackingArmies
                 };
-            attackerTerritory.AssignedPlayer = _attacker;
+            attackerTerritory.Occupant = _attacker;
             var defenderTerritory = new Territory(new Location("defender territory", new Continent()))
                 {
                     Armies = defendingArmies
                 };
-            defenderTerritory.AssignedPlayer = _defender;
+            defenderTerritory.Occupant = _defender;
 
             _battleCalculator.Attack(attackerTerritory, defenderTerritory);
 
-            attackerTerritory.AssignedPlayer.Should().Be(_attacker);
+            attackerTerritory.Occupant.Should().Be(_attacker);
             attackerTerritory.Armies.Should().Be(expectedArmiesInAttackingTerritoryAfter);
-            defenderTerritory.AssignedPlayer.Should().Be(expectedOwnerAfterAttack);
+            defenderTerritory.Occupant.Should().Be(expectedOwnerAfterAttack);
             defenderTerritory.Armies.Should().Be(expectedArmiesInDefendingTerritoryAfter);
         }
 

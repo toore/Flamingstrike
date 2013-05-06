@@ -121,7 +121,7 @@ namespace RISK.Tests.Application.Gameplay
         {
             _battleCalculator
                 .When(x => x.Attack(_territory, _otherTerritory))
-                .Do(x => _otherTerritory.AssignedPlayer = _currentPlayer);
+                .Do(x => _otherTerritory.Occupant = _currentPlayer);
         }
 
         [Test]
@@ -147,7 +147,7 @@ namespace RISK.Tests.Application.Gameplay
         {
             var territory = Substitute.For<ITerritory>();
             territory.Location.Returns(location);
-            territory.AssignedPlayer = owner;
+            territory.Occupant = owner;
 
             _worldMap.GetTerritory(location).Returns(territory);
 

@@ -21,10 +21,19 @@ namespace RISK.Domain.GamePlaying
             return _territories.Single(x => x.Location == location);
         }
 
-        public IEnumerable<ITerritory> GetTerritoriesAssignedTo(IPlayer player)
+        public IEnumerable<ITerritory> GetTerritoriesOccupiedBy(IPlayer player)
         {
             return _territories
-                .Where(x => x.AssignedPlayer == player)
+                .Where(x => x.Occupant == player)
+                .ToList();
+        }
+
+        public IEnumerable<IPlayer> GetAllPlayersOccupyingTerritories()
+        {
+            return _territories
+                .Where(x => x.IsOccupied())
+                .Select(x => x.Occupant)
+                .Distinct()
                 .ToList();
         }
     }

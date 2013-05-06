@@ -20,6 +20,7 @@ namespace GuiWpf.ViewModels.Gameplay
         private ITurn _currentTurn;
         private readonly List<ITerritory> _territories;
         private IPlayer _player;
+        private IWorldMap _worldMap;
 
         public GameboardViewModel(IGame game, ILocationProvider locationProvider, IWorldMapViewModelFactory worldMapViewModelFactory, ITerritoryViewModelUpdater territoryViewModelUpdater, IGameOverEvaluater gameOverEvaluater, IWindowManager windowManager, IGameOverViewModelFactory gameOverViewModelFactory)
         {
@@ -29,15 +30,15 @@ namespace GuiWpf.ViewModels.Gameplay
             _windowManager = windowManager;
             _gameOverViewModelFactory = gameOverViewModelFactory;
 
-            var worldMap = _game.GetWorldMap();
+            _worldMap = _game.GetWorldMap();
 
             _territories = locationProvider.GetAll()
-                .Select(worldMap.GetTerritory)
+                .Select(_worldMap.GetTerritory)
                 .ToList();
 
             InformationText = Resources.SELECT_TERRITORY;
 
-            WorldMapViewModel = worldMapViewModelFactory.Create(worldMap, OnLocationClick);
+            WorldMapViewModel = worldMapViewModelFactory.Create(_worldMap, OnLocationClick);
 
             BeginNextPlayerTurn();
         }
@@ -85,7 +86,7 @@ namespace GuiWpf.ViewModels.Gameplay
         {
             UpdateWorldMap();
 
-            if (_gameOverEvaluater.IsGameOver())
+            if (_gameOverEvaluater.IsGameOver(_worldMap))
             {
                 _windowManager.ShowDialog(_gameOverViewModelFactory.Create());
             }

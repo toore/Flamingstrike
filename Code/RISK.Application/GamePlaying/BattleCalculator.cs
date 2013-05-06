@@ -29,7 +29,7 @@ namespace RISK.Domain.GamePlaying
         {
             const int armiesLeftBehind = 1;
 
-            defender.AssignedPlayer = attacker.AssignedPlayer;
+            defender.Occupant = attacker.Occupant;
             defender.Armies = attacker.Armies - armiesLeftBehind;
             attacker.Armies = armiesLeftBehind;
         }

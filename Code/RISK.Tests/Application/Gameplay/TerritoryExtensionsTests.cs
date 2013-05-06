@@ -11,15 +11,15 @@ namespace RISK.Tests.Application.Gameplay
         [Test]
         public void Is_assigned_to_player()
         {
-            var territory = new Territory(null) { AssignedPlayer = Substitute.For<IPlayer>() };
+            var territory = new Territory(null) { Occupant = Substitute.For<IPlayer>() };
 
-            territory.IsPlayerAssigned().Should().BeTrue();
+            territory.IsOccupied().Should().BeTrue();
         }
 
         [Test]
         public void Is_not_assigned_to_player()
         {
-            new Territory(null).IsPlayerAssigned().Should().BeFalse();
+            new Territory(null).IsOccupied().Should().BeFalse();
         }
 
         [Test]

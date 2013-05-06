@@ -31,6 +31,7 @@ namespace RISK.Tests.Application.Specifications
         private PlayerRepository _playerRepository;
         private IWindowManager _windowManager;
         private IGameboardViewModel _gameboardViewModel;
+        private GameOverViewModel _gameOverViewModel;
 
         public void before_all()
         {
@@ -108,6 +109,7 @@ namespace RISK.Tests.Application.Specifications
                     InjectWorldMapFactory();
                     InjectDiceRollerWithReturningSixFiveFourAndThenFiveForTwoAttacks();
                     InjectWindowManager();
+                    InjectGameOverViewModelFactory();
 
                     StubPlayerRepositoryWithTwoHumanPlayers();
 
@@ -128,9 +130,9 @@ namespace RISK.Tests.Application.Specifications
 
             it["when player 1 attacks Brazil from North Africa"] = () =>
                 {
-                    _worldMap.GetTerritory(_locationProvider.NorthAfrica).AssignedPlayer.Should().Be(_player1, "player 1 should occupy North Africa");
+                    _worldMap.GetTerritory(_locationProvider.NorthAfrica).Occupant.Should().Be(_player1, "player 1 should occupy North Africa");
                     _worldMap.GetTerritory(_locationProvider.NorthAfrica).Armies.Should().Be(1, "North Africa should have 1 army");
-                    _worldMap.GetTerritory(_locationProvider.Brazil).AssignedPlayer.Should().Be(_player1, "player 1 should occupy Brazil");
+                    _worldMap.GetTerritory(_locationProvider.Brazil).Occupant.Should().Be(_player1, "player 1 should occupy Brazil");
                     GetTerritoryViewModel(_locationProvider.Brazil).IsSelected.Should().BeTrue("selected territory should be Brazil");
                     _worldMap.GetTerritory(_locationProvider.Brazil).Armies.Should().Be(4, "Brazil should have 4 armies");
                 };
@@ -148,12 +150,21 @@ namespace RISK.Tests.Application.Specifications
 
                     it["player 1 should occupy Venezuela with 3 armies"] = () =>
                         {
-                            _worldMap.GetTerritory(_locationProvider.Venezuela).AssignedPlayer.Should().Be(_player1, "player 1 should occupy Venezuela");
+                            _worldMap.GetTerritory(_locationProvider.Venezuela).Occupant.Should().Be(_player1, "player 1 should occupy Venezuela");
                             _worldMap.GetTerritory(_locationProvider.Venezuela).Armies.Should().Be(3, "Venezuela should have 3 armies");
 
-                            //_windowManager.Received().ShowDialog(
+                            _windowManager.Received().ShowDialog(_gameOverViewModel);
                         };
                 };
+        }
+
+        private void InjectGameOverViewModelFactory()
+        {
+            var gameOverViewModelFactory = Substitute.For<IGameOverViewModelFactory>();
+            _gameOverViewModel = new GameOverViewModel();
+            gameOverViewModelFactory.Create().Returns(_gameOverViewModel);
+
+            ObjectFactory.Inject(gameOverViewModelFactory);
         }
 
         private void StubPlayerRepositoryWithTwoHumanPlayers()
@@ -217,7 +228,7 @@ namespace RISK.Tests.Application.Specifications
         private void UpdateTerritory(ILocation location, IPlayer owner, int armies)
         {
             var territory = _worldMap.GetTerritory(location);
-            territory.AssignedPlayer = owner;
+            territory.Occupant = owner;
             territory.Armies = armies;
         }
 
@@ -235,7 +246,7 @@ namespace RISK.Tests.Application.Specifications
                 .Select(x => _worldMap.GetTerritory(x))
                 .Apply(x =>
                     {
-                        x.AssignedPlayer = _player1;
+                        x.Occupant = _player1;
                         x.Armies = 1;
                     });
         }

@@ -86,7 +86,7 @@ namespace RISK.Tests.Application.Gameplay
         {
             var territory = Substitute.For<ITerritory>();
             territory.Location.Returns(location);
-            territory.AssignedPlayer = owner;
+            territory.Occupant = owner;
 
             _worldMap.GetTerritory(location).Returns(territory);
 
