@@ -83,9 +83,9 @@
     <Compile Include="Services\TerritoryViewModelUpdater.cs" />
     <Compile Include="ViewModels\Gameplay\GameOverEvaluater.cs" />
     <Compile Include="ViewModels\GameOverViewModel.cs" />
-    <Compile Include="ViewModels\Gameplay\GameOverViewModelFactory.cs" />
+    <Compile Include="ViewModels\GameOverViewModelFactory.cs" />
     <Compile Include="ViewModels\Gameplay\IGameOverEvaluater.cs" />
-    <Compile Include="ViewModels\Gameplay\IGameOverViewModelFactory.cs" />
+    <Compile Include="ViewModels\IGameOverViewModelFactory.cs" />
     <Compile Include="ViewModels\Setup\GameFactoryWorker.cs" />
     <Compile Include="ViewModels\Setup\GameSetupViewModel.cs" />
     <Compile Include="ViewModels\Gameplay\GameboardViewModelFactory.cs" />

@@ -1,4 +1,4 @@
-﻿namespace GuiWpf.ViewModels.Gameplay
+﻿namespace GuiWpf.ViewModels
 {
     public interface IGameOverViewModelFactory
     {
