@@ -4,10 +4,10 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:WpfExtensions="clr-namespace:GuiWpf.WpfExtensions"
-    xmlns:ViewModels="clr-namespace:GuiWpf.ViewModels"
+    xmlns:TestDataFactory="clr-namespace:GuiWpf.Views.Test"
     mc:Ignorable="d"
     d:DesignHeight="300" d:DesignWidth="300"
-    d:DataContext="{d:DesignInstance Type=ViewModels:GameOverViewModel}">
+    d:DataContext="{Binding Source={x:Static TestDataFactory:GameOverViewModelTestDataFactory.ViewModel}}">
 
     <Grid Background="Transparent">
         <Grid.Resources>
@@ -33,7 +33,7 @@
         <Button
             Grid.Row="3"
             Margin="20"
-            Content="OK, to go back to start game screen!">
+            Content="OK">
         </Button>
     </Grid>
 </UserControl>

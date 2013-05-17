@@ -70,7 +70,7 @@ namespace GuiWpf.ViewModels.Gameplay
 
         public void EndGame()
         {
-            _windowManager.ShowDialog(_gameOverViewModelFactory.Create(Player));
+            //_windowManager.ShowDialog(_gameOverViewModelFactory.Create(Player));
         }
 
         public void OnLocationClick(ILocation location)
