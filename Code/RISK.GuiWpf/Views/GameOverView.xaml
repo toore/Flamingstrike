@@ -1,11 +1,39 @@
 ﻿<UserControl x:Class="GuiWpf.Views.GameOverView"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
-    <Grid>
-            <Label Content="GAME OVER!!!!"></Label>
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:WpfExtensions="clr-namespace:GuiWpf.WpfExtensions"
+    xmlns:ViewModels="clr-namespace:GuiWpf.ViewModels"
+    mc:Ignorable="d"
+    d:DesignHeight="300" d:DesignWidth="300"
+    d:DataContext="{d:DesignInstance Type=ViewModels:GameOverViewModel}">
+
+    <Grid Background="Transparent">
+        <Grid.Resources>
+            <Style TargetType="Label">
+                <Setter Property="FontSize" Value="20" />
+            </Style>
+        </Grid.Resources>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <Label
+            HorizontalAlignment="Center"
+            Content="{Binding Source={WpfExtensions:GetString GAME_OVER}}" />
+
+        <Label
+            Grid.Row="1"
+            HorizontalAlignment="Center"
+            Content="{Binding PlayerNameIsTheWinnerText}" />
+
+        <Button
+            Grid.Row="3"
+            Margin="20"
+            Content="OK, to go back to start game screen!">
+        </Button>
     </Grid>
 </UserControl>

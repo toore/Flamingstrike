@@ -1,10 +1,12 @@
-﻿namespace GuiWpf.ViewModels
+﻿using RISK.Domain.Entities;
+
+namespace GuiWpf.ViewModels
 {
     public class GameOverViewModelFactory : IGameOverViewModelFactory
     {
-        public GameOverViewModel Create()
+        public GameOverViewModel Create(IPlayer winner)
         {
-            return new GameOverViewModel();
+            return new GameOverViewModel(winner);
         }
     }
 }

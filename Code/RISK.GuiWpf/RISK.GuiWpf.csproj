@@ -71,6 +71,8 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Extensions\EnumerableExtensions.cs" />
+    <Compile Include="ViewModels\IGameOverViewModel.cs" />
+    <Compile Include="WpfExtensions\GetString.cs" />
     <Compile Include="Infrastructure\HandleInterceptor.cs" />
     <Compile Include="Infrastructure\PluginConfiguration.cs" />
     <Compile Include="Infrastructure\TypeExtensions.cs" />

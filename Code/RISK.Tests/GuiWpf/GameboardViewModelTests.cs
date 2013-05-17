@@ -171,11 +171,11 @@ namespace RISK.Tests.GuiWpf
         }
 
         [Test]
-        public void When_winning_dialog_should_be_shown()
+        public void When_winning_game_over_dialog_should_be_shown()
         {
             _gameOverEvaluater.IsGameOver(_worldMap).Returns(true);
-            var gameOverViewModel = new GameOverViewModel();
-            _gameOverViewModelFactory.Create().Returns(gameOverViewModel);
+            var gameOverViewModel = new GameOverViewModel(_player1);
+            _gameOverViewModelFactory.Create(_player1).Returns(gameOverViewModel);
 
             _gameboardViewModel.OnLocationClick(null);
 

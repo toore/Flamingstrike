@@ -1,7 +1,9 @@
-﻿namespace GuiWpf.ViewModels
+﻿using RISK.Domain.Entities;
+
+namespace GuiWpf.ViewModels
 {
     public interface IGameOverViewModelFactory
     {
-        GameOverViewModel Create();
+        GameOverViewModel Create(IPlayer winner);
     }
 }

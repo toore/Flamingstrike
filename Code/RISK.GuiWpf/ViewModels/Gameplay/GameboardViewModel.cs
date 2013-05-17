@@ -68,6 +68,11 @@ namespace GuiWpf.ViewModels.Gameplay
             BeginNextPlayerTurn();
         }
 
+        public void EndGame()
+        {
+            _windowManager.ShowDialog(_gameOverViewModelFactory.Create(Player));
+        }
+
         public void OnLocationClick(ILocation location)
         {
             if (_currentTurn.CanSelect(location))
@@ -88,7 +93,7 @@ namespace GuiWpf.ViewModels.Gameplay
 
             if (_gameOverEvaluater.IsGameOver(_worldMap))
             {
-                _windowManager.ShowDialog(_gameOverViewModelFactory.Create());
+                _windowManager.ShowDialog(_gameOverViewModelFactory.Create(Player));
             }
         }
 

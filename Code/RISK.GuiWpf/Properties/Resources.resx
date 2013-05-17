@@ -126,6 +126,9 @@
   <data name="ALBERTA" xml:space="preserve">
     <value>Alberta</value>
   </data>
+  <data name="ARG0_IS_THE_WINNER" xml:space="preserve">
+    <value>{0} is the winner!</value>
+  </data>
   <data name="ARGENTINA" xml:space="preserve">
     <value>Argentina</value>
   </data>
@@ -152,6 +155,9 @@
   </data>
   <data name="EGYPT" xml:space="preserve">
     <value>Egypt</value>
+  </data>
+  <data name="GAME_OVER" xml:space="preserve">
+    <value>Game Over</value>
   </data>
   <data name="GREAT_BRITAIN" xml:space="preserve">
     <value>Great Britain</value>

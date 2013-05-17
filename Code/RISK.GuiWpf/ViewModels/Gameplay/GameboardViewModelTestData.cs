@@ -1,4 +1,5 @@
 using System.Linq;
+using GuiWpf.Infrastructure;
 using GuiWpf.Services;
 using GuiWpf.Territories;
 using GuiWpf.ViewModels.Gameplay.Map;
@@ -41,7 +42,7 @@ namespace GuiWpf.ViewModels.Gameplay
             var alternateGameSetup = new AlternateGameSetup(playerRepository, locationProvider, new RandomSorter(new RandomWrapper()), new WorldMapFactory(locationProvider), new InitialArmyCountProvider());
             ITurnFactory turnFactory = new TurnFactory(null, null);
             var game = new Game(turnFactory, playerRepository, alternateGameSetup, this);
-            var gameboardViewModel = new GameboardViewModel(game, locationProvider, worldMapViewModelFactory, territoryViewModelUpdater, null, null, null);
+            var gameboardViewModel = new GameboardViewModel(game, locationProvider, worldMapViewModelFactory, territoryViewModelUpdater, new GameOverEvaluater(), new WindowManager(), new GameOverViewModelFactory());
 
             return gameboardViewModel;
         }

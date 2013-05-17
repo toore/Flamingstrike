@@ -1,28 +1,22 @@
-﻿using System.Diagnostics;
-using System.Linq;
-using Caliburn.Micro;
+﻿using Caliburn.Micro;
+using GuiWpf.Properties;
+using RISK.Domain.Entities;
 
 namespace GuiWpf.ViewModels
 {
-    public interface IGameOverViewModel {}
-
     public class GameOverViewModel : Screen, IGameOverViewModel
     {
-        public GameOverViewModel()
+        private readonly IPlayer _winner;
+
+        public GameOverViewModel(IPlayer winner)
         {
-            Buttons = new BindableCollection<int>(Enumerable.Range(1, 3));
+            _winner = winner;
+
+            PlayerNameIsTheWinnerText = string.Format(Resources.ARG0_IS_THE_WINNER, winner.Name);
         }
 
-        public void SomeAction()
-        {
-            Debug.Print("SomeAction called");
-        }
+        public IPlayer WinnerPlayer { get; private set; }
 
-        public void SomeActionWithParameter(int value)
-        {
-            Debug.Print("SomeActionWithParameter called through bubbling with value={0}", value);
-        }
-
-        public BindableCollection<int> Buttons { get; private set; }
+        public string PlayerNameIsTheWinnerText { get; private set; }
     }
 }

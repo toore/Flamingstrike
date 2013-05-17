@@ -109,9 +109,8 @@ namespace RISK.Tests.Application.Specifications
                     InjectWorldMapFactory();
                     InjectDiceRollerWithReturningSixFiveFourAndThenFiveForTwoAttacks();
                     InjectWindowManager();
-                    InjectGameOverViewModelFactory();
-
                     StubPlayerRepositoryWithTwoHumanPlayers();
+                    InjectGameOverViewModelFactory();
 
                     InjectGame();
 
@@ -161,8 +160,8 @@ namespace RISK.Tests.Application.Specifications
         private void InjectGameOverViewModelFactory()
         {
             var gameOverViewModelFactory = Substitute.For<IGameOverViewModelFactory>();
-            _gameOverViewModel = new GameOverViewModel();
-            gameOverViewModelFactory.Create().Returns(_gameOverViewModel);
+            _gameOverViewModel = new GameOverViewModel(_player1);
+            gameOverViewModelFactory.Create(_player1).Returns(_gameOverViewModel);
 
             ObjectFactory.Inject(gameOverViewModelFactory);
         }
