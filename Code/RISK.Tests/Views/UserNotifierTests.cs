@@ -24,16 +24,18 @@ namespace RISK.Tests.Views
         }
 
         [Test]
-        public void Confirms_dialog()
+        [TestCase(true, TestName = "Confirms")]
+        [TestCase(false, TestName = "Cancels")]
+        public void Shows_confirm_dialog(bool expected)
         {
             var confirmViewModel = new ConfirmViewModel();
             _confirmViewModelFactory.Create().Returns(confirmViewModel);
-            _windowManager.ShowDialog(confirmViewModel).Returns(true);
+            _windowManager.ShowDialog(confirmViewModel).Returns(expected);
 
             var confirm = _userNotifier.Confirm("message");
 
             _windowManager.Received(1).ShowDialog(confirmViewModel);
-            confirm.Should().BeTrue();
+            confirm.Should().Be(expected);
         }
     }
 }

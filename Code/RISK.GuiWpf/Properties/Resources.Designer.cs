@@ -88,6 +88,15 @@ namespace GuiWpf.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to end game?.
+        /// </summary>
+        internal static string ARE_YOU_SURE_YOU_WANT_TO_END_GAME {
+            get {
+                return ResourceManager.GetString("ARE_YOU_SURE_YOU_WANT_TO_END_GAME", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to {0} is the winner!.
         /// </summary>
         internal static string ARG0_IS_THE_WINNER {

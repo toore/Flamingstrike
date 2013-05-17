@@ -126,6 +126,9 @@
   <data name="ALBERTA" xml:space="preserve">
     <value>Alberta</value>
   </data>
+  <data name="ARE_YOU_SURE_YOU_WANT_TO_END_GAME" xml:space="preserve">
+    <value>Are you sure you want to end game?</value>
+  </data>
   <data name="ARG0_IS_THE_WINNER" xml:space="preserve">
     <value>{0} is the winner!</value>
   </data>

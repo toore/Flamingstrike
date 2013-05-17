@@ -1,4 +1,7 @@
 ﻿namespace GuiWpf.Services
 {
-    public interface IUserNotifier {}
+    public interface IUserNotifier
+    {
+        bool? Confirm(string message);
+    }
 }

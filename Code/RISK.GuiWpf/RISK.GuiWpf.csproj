@@ -71,6 +71,8 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Extensions\EnumerableExtensions.cs" />
+    <Compile Include="Services\IResourceManagerWrapper.cs" />
+    <Compile Include="Services\ResourceManagerWrapper.cs" />
     <Compile Include="ViewModels\ConfirmViewModel.cs" />
     <Compile Include="ViewModels\IConfirmViewModelFactory.cs" />
     <Compile Include="Services\IUserNotifier.cs" />

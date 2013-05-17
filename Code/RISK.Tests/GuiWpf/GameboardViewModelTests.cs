@@ -41,6 +41,7 @@ namespace RISK.Tests.GuiWpf
         private IWindowManager _windowManager;
         private IGameOverViewModelFactory _gameOverViewModelFactory;
         private IUserNotifier _userNotifier;
+        private IResourceManagerWrapper _resourceManagerWrapper;
 
         [SetUp]
         public void SetUp()
@@ -53,6 +54,7 @@ namespace RISK.Tests.GuiWpf
             _windowManager = Substitute.For<IWindowManager>();
             _gameOverViewModelFactory = Substitute.For<IGameOverViewModelFactory>();
             _userNotifier = Substitute.For<IUserNotifier>();
+            _resourceManagerWrapper = Substitute.For<IResourceManagerWrapper>();
 
             _location1 = Substitute.For<ILocation>();
             _location2 = Substitute.For<ILocation>();
@@ -92,7 +94,7 @@ namespace RISK.Tests.GuiWpf
             
             _worldMapViewModelFactory.Create(Arg.Is(_worldMap), Arg.Any<Action<ILocation>>()).Returns(_worldMapViewModel);
 
-            _gameboardViewModel = new GameboardViewModel(_game, _locationProvider, _worldMapViewModelFactory, _territoryViewModelUpdater, _gameOverEvaluater, _windowManager, _gameOverViewModelFactory, _userNotifier);
+            _gameboardViewModel = new GameboardViewModel(_game, _locationProvider, _worldMapViewModelFactory, _territoryViewModelUpdater, _gameOverEvaluater, _windowManager, _gameOverViewModelFactory, _userNotifier, _resourceManagerWrapper);
         }
 
         [Test]
@@ -182,6 +184,16 @@ namespace RISK.Tests.GuiWpf
             _gameboardViewModel.OnLocationClick(null);
 
             _windowManager.Received().ShowDialog(gameOverViewModel);
+        }
+
+        [Test]
+        public void End_game_shows_confirm_dialog()
+        {
+            _resourceManagerWrapper.GetString("ARE_YOU_SURE_YOU_WANT_TO_END_GAME").Returns("translated");
+
+            _gameboardViewModel.EndGame();
+
+            _userNotifier.Received(1).Confirm("translated");
         }
 
         private ITerritoryLayoutViewModel StubLayoutViewModel(ILocation location)

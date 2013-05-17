@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Windows.Markup;
-using GuiWpf.Properties;
+using GuiWpf.Services;
 
 namespace GuiWpf.WpfExtensions
 {
@@ -16,7 +16,7 @@ namespace GuiWpf.WpfExtensions
 
         public override object ProvideValue(IServiceProvider serviceProvider)
         {
-            var provideValue = Resources.ResourceManager.GetString(Key);
+            var provideValue = new ResourceManagerWrapper().GetString(Key);
 
             return provideValue;
         }

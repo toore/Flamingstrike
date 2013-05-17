@@ -15,8 +15,17 @@ namespace GuiWpf.ViewModels.Gameplay
         private readonly IWindowManager _windowManager;
         private readonly IGameOverViewModelFactory _gameOverViewModelFactory;
         private readonly IUserNotifier _userNotifier;
+        private readonly IResourceManagerWrapper _resourceManagerWrapper;
 
-        public GameboardViewModelFactory(ILocationProvider locationProvider, IWorldMapViewModelFactory worldMapViewModelFactory, ITerritoryViewModelUpdater territoryViewModelUpdater, IGameOverEvaluater gameOverEvaluater, IWindowManager windowManager, IGameOverViewModelFactory gameOverViewModelFactory, IUserNotifier userNotifier)
+        public GameboardViewModelFactory(
+            ILocationProvider locationProvider,
+            IWorldMapViewModelFactory worldMapViewModelFactory,
+            ITerritoryViewModelUpdater territoryViewModelUpdater,
+            IGameOverEvaluater gameOverEvaluater,
+            IWindowManager windowManager,
+            IGameOverViewModelFactory gameOverViewModelFactory,
+            IUserNotifier userNotifier,
+            IResourceManagerWrapper resourceManagerWrapper)
         {
             _locationProvider = locationProvider;
             _worldMapViewModelFactory = worldMapViewModelFactory;
@@ -25,11 +34,12 @@ namespace GuiWpf.ViewModels.Gameplay
             _windowManager = windowManager;
             _gameOverViewModelFactory = gameOverViewModelFactory;
             _userNotifier = userNotifier;
+            _resourceManagerWrapper = resourceManagerWrapper;
         }
 
         public IGameboardViewModel Create(IGame game)
         {
-            return new GameboardViewModel(game, _locationProvider, _worldMapViewModelFactory, _territoryViewModelUpdater, _gameOverEvaluater, _windowManager, _gameOverViewModelFactory, _userNotifier);
+            return new GameboardViewModel(game, _locationProvider, _worldMapViewModelFactory, _territoryViewModelUpdater, _gameOverEvaluater, _windowManager, _gameOverViewModelFactory, _userNotifier, _resourceManagerWrapper);
         }
     }
 }

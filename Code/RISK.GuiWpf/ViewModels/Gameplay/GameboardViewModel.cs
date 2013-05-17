@@ -17,19 +17,31 @@ namespace GuiWpf.ViewModels.Gameplay
         private readonly IGameOverEvaluater _gameOverEvaluater;
         private readonly IWindowManager _windowManager;
         private readonly IGameOverViewModelFactory _gameOverViewModelFactory;
+        private readonly IUserNotifier _userNotifier;
+        private readonly IResourceManagerWrapper _resourceManagerWrapper;
         private ITurn _currentTurn;
         private readonly List<ITerritory> _territories;
         private IPlayer _player;
-        private IWorldMap _worldMap;
+        private readonly IWorldMap _worldMap;
 
         public GameboardViewModel(
-            IGame game, ILocationProvider locationProvider, IWorldMapViewModelFactory worldMapViewModelFactory, ITerritoryViewModelUpdater territoryViewModelUpdater, IGameOverEvaluater gameOverEvaluater, IWindowManager windowManager, IGameOverViewModelFactory gameOverViewModelFactory, IUserNotifier userNotifier)
+            IGame game,
+            ILocationProvider locationProvider,
+            IWorldMapViewModelFactory worldMapViewModelFactory,
+            ITerritoryViewModelUpdater territoryViewModelUpdater,
+            IGameOverEvaluater gameOverEvaluater,
+            IWindowManager windowManager,
+            IGameOverViewModelFactory gameOverViewModelFactory,
+            IUserNotifier userNotifier,
+            IResourceManagerWrapper resourceManagerWrapper)
         {
             _game = game;
             _territoryViewModelUpdater = territoryViewModelUpdater;
             _gameOverEvaluater = gameOverEvaluater;
             _windowManager = windowManager;
             _gameOverViewModelFactory = gameOverViewModelFactory;
+            _userNotifier = userNotifier;
+            _resourceManagerWrapper = resourceManagerWrapper;
 
             _worldMap = _game.GetWorldMap();
 
@@ -71,8 +83,7 @@ namespace GuiWpf.ViewModels.Gameplay
 
         public void EndGame()
         {
-            //TODO:
-            //_windowManager.ShowDialog(_gameOverViewModelFactory.Create(Player));
+            _userNotifier.Confirm(_resourceManagerWrapper.GetString("ARE_YOU_SURE_YOU_WANT_TO_END_GAME"));
         }
 
         public void OnLocationClick(ILocation location)
