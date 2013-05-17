@@ -40,6 +40,7 @@ namespace RISK.Tests.GuiWpf
         private IGameOverEvaluater _gameOverEvaluater;
         private IWindowManager _windowManager;
         private IGameOverViewModelFactory _gameOverViewModelFactory;
+        private IUserNotifier _userNotifier;
 
         [SetUp]
         public void SetUp()
@@ -51,6 +52,7 @@ namespace RISK.Tests.GuiWpf
             _gameOverEvaluater = Substitute.For<IGameOverEvaluater>();
             _windowManager = Substitute.For<IWindowManager>();
             _gameOverViewModelFactory = Substitute.For<IGameOverViewModelFactory>();
+            _userNotifier = Substitute.For<IUserNotifier>();
 
             _location1 = Substitute.For<ILocation>();
             _location2 = Substitute.For<ILocation>();
@@ -90,7 +92,7 @@ namespace RISK.Tests.GuiWpf
             
             _worldMapViewModelFactory.Create(Arg.Is(_worldMap), Arg.Any<Action<ILocation>>()).Returns(_worldMapViewModel);
 
-            _gameboardViewModel = new GameboardViewModel(_game, _locationProvider, _worldMapViewModelFactory, _territoryViewModelUpdater, _gameOverEvaluater, _windowManager, _gameOverViewModelFactory);
+            _gameboardViewModel = new GameboardViewModel(_game, _locationProvider, _worldMapViewModelFactory, _territoryViewModelUpdater, _gameOverEvaluater, _windowManager, _gameOverViewModelFactory, _userNotifier);
         }
 
         [Test]

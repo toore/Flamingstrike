@@ -22,7 +22,8 @@ namespace GuiWpf.ViewModels.Gameplay
         private IPlayer _player;
         private IWorldMap _worldMap;
 
-        public GameboardViewModel(IGame game, ILocationProvider locationProvider, IWorldMapViewModelFactory worldMapViewModelFactory, ITerritoryViewModelUpdater territoryViewModelUpdater, IGameOverEvaluater gameOverEvaluater, IWindowManager windowManager, IGameOverViewModelFactory gameOverViewModelFactory)
+        public GameboardViewModel(
+            IGame game, ILocationProvider locationProvider, IWorldMapViewModelFactory worldMapViewModelFactory, ITerritoryViewModelUpdater territoryViewModelUpdater, IGameOverEvaluater gameOverEvaluater, IWindowManager windowManager, IGameOverViewModelFactory gameOverViewModelFactory, IUserNotifier userNotifier)
         {
             _game = game;
             _territoryViewModelUpdater = territoryViewModelUpdater;
@@ -70,6 +71,7 @@ namespace GuiWpf.ViewModels.Gameplay
 
         public void EndGame()
         {
+            //TODO:
             //_windowManager.ShowDialog(_gameOverViewModelFactory.Create(Player));
         }
 
