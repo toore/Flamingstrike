@@ -10,17 +10,23 @@
     mc:Ignorable="d"
     d:DesignHeight="300" d:DesignWidth="300"
     d:DataContext="{d:DesignInstance ViewModels:ConfirmViewModel}">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="GameResources.xaml" />
+            </ResourceDictionary.MergedDictionaries>
 
-    <Grid Background="Transparent">
-        <Grid.Resources>
             <Style TargetType="Label">
                 <Setter Property="FontSize" Value="20" />
             </Style>
-        </Grid.Resources>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <Grid Background="Transparent">
+
         <Grid.RowDefinitions>
-            <RowDefinition />
-            <RowDefinition />
-            <RowDefinition />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <Label
@@ -28,16 +34,17 @@
             Content="{Binding Message}" />
 
         <Grid
-            Grid.Row="3">
+            Grid.Row="2"
+            HorizontalAlignment="Stretch">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
 
             <Button
-            
-            Margin="20"
-            Content="OK">
+                Style="{StaticResource StandardButtonStyle}"
+                Margin="20"
+                Content="OK">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="Click">
                         <cal:ActionMessage MethodName="Confirm" />
@@ -45,9 +52,10 @@
                 </i:Interaction.Triggers>
             </Button>
             <Button
-            Grid.Column="1"
-            Margin="20"
-            Content="{Binding Source={WpfExtensions:GetString CANCEL}}">
+                Style="{StaticResource StandardButtonStyle}"
+                Grid.Column="1"
+                Margin="20"
+                Content="{Binding Source={WpfExtensions:GetString CANCEL}}">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="Click">
                         <cal:ActionMessage MethodName="Cancel" />
@@ -55,6 +63,6 @@
                 </i:Interaction.Triggers>
             </Button>
         </Grid>
-       
+
     </Grid>
 </UserControl>

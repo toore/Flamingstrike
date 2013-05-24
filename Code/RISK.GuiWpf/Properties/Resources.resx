@@ -138,6 +138,9 @@
   <data name="BRAZIL" xml:space="preserve">
     <value>Brazil</value>
   </data>
+  <data name="CANCEL" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
   <data name="CENTRAL_AMERICA" xml:space="preserve">
     <value>Central America</value>
   </data>

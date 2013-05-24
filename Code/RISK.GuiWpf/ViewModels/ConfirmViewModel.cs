@@ -7,9 +7,10 @@ namespace GuiWpf.ViewModels
     {
         private readonly IScreenService _screenService;
 
-        public ConfirmViewModel(IScreenService screenService)
+        public ConfirmViewModel(IScreenService screenService, string message)
         {
             _screenService = screenService;
+            Message = message;
         }
 
         public string Message { get; private set; }

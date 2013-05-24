@@ -1,4 +1,5 @@
-﻿using GuiWpf.Services;
+﻿using FluentAssertions;
+using GuiWpf.Services;
 using GuiWpf.ViewModels;
 using NSubstitute;
 using NUnit.Framework;
@@ -16,7 +17,13 @@ namespace RISK.Tests.Views
         {
             _screenService = Substitute.For<IScreenService>();
 
-            _confirmViewModel = new ConfirmViewModel(_screenService);
+            _confirmViewModel = new ConfirmViewModel(_screenService, "message");
+        }
+
+        [Test]
+        public void Initialize_message()
+        {
+            _confirmViewModel.Message.Should().Be("message");
         }
 
         [Test]

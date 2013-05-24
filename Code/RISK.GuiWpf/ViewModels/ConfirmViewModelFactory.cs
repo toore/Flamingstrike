@@ -11,9 +11,9 @@ namespace GuiWpf.ViewModels
             _screenService = screenService;
         }
 
-        public ConfirmViewModel Create()
+        public ConfirmViewModel Create(string message)
         {
-            return new ConfirmViewModel(_screenService);
+            return new ConfirmViewModel(_screenService, message);
         }
     }
 }

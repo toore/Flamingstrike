@@ -2,6 +2,6 @@
 {
     public interface IConfirmViewModelFactory 
     {
-        ConfirmViewModel Create();
+        ConfirmViewModel Create(string message);
     }
 }

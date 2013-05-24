@@ -4,10 +4,22 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:WpfExtensions="clr-namespace:GuiWpf.WpfExtensions"
-    xmlns:TestDataFactory="clr-namespace:GuiWpf.Views.Test"
+    xmlns:TestDataFactory="clr-namespace:GuiWpf.Views.Test" xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+    xmlns:cal="clr-namespace:Caliburn.Micro;assembly=Caliburn.Micro"
     mc:Ignorable="d"
     d:DesignHeight="300" d:DesignWidth="300"
     d:DataContext="{Binding Source={x:Static TestDataFactory:GameOverViewModelTestDataFactory.ViewModel}}">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="GameResources.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+
+            <Style TargetType="Label">
+                <Setter Property="FontSize" Value="20" />
+            </Style>
+        </ResourceDictionary>
+    </UserControl.Resources>
 
     <Grid Background="Transparent">
         <Grid.Resources>
@@ -18,7 +30,7 @@
         <Grid.RowDefinitions>
             <RowDefinition />
             <RowDefinition />
-            <RowDefinition />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <Label
@@ -33,7 +45,13 @@
         <Button
             Grid.Row="3"
             Margin="20"
+            Height="30"
             Content="OK">
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="Click">
+                    <cal:ActionMessage MethodName="Close" />
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
         </Button>
     </Grid>
 </UserControl>
