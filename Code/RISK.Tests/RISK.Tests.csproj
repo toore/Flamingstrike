@@ -99,9 +99,11 @@
     <Compile Include="Application\Specifications\game_playing_specifications.cs" />
     <Compile Include="GuiWpf\GameSetupViewModelTests.cs" />
     <Compile Include="GuiWpf\MainGameViewModelTests.cs" />
+    <Compile Include="GuiWpf\ScreenServiceTests.cs" />
     <Compile Include="GuiWpf\TerritoryTextViewModelFactoryTests.cs" />
     <Compile Include="GuiWpf\UserInputRequestHandlerTests.cs" />
     <Compile Include="NSpecDebuggerShim.cs" />
+    <Compile Include="Views\ConfirmViewModelTests.cs" />
     <Compile Include="Views\UserNotifierTests.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

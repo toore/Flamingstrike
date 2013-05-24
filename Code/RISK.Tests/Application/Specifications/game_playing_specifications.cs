@@ -70,6 +70,10 @@ namespace RISK.Tests.Application.Specifications
                     x.For<IWindowManager>().Use<WindowManager>();
                     x.For<IGameOverViewModelFactory>().Use<GameOverViewModelFactory>();
                     x.For<IGameboardViewModel>().Use<GameboardViewModel>();
+                    x.For<IUserNotifier>().Use<UserNotifier>();
+                    x.For<IConfirmViewModelFactory>().Use<ConfirmViewModelFactory>();
+                    x.For<IScreenService>().Use<ScreenService>();
+                    x.For<IResourceManagerWrapper>().Use<ResourceManagerWrapper>();
 
                     x.RegisterInterceptor(new HandleInterceptor<IGameSettingsEventAggregator>());
                 });

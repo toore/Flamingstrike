@@ -12,5 +12,10 @@ namespace GuiWpf.ViewModels
         }
 
         public string PlayerNameIsTheWinnerText { get; private set; }
+
+        public void Close()
+        {
+            TryClose();
+        }
     }
 }

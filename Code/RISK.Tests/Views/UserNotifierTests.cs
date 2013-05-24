@@ -28,7 +28,7 @@ namespace RISK.Tests.Views
         [TestCase(false, TestName = "Cancels")]
         public void Shows_confirm_dialog(bool expected)
         {
-            var confirmViewModel = new ConfirmViewModel();
+            var confirmViewModel = new ConfirmViewModel(null);
             _confirmViewModelFactory.Create().Returns(confirmViewModel);
             _windowManager.ShowDialog(confirmViewModel).Returns(expected);
 
