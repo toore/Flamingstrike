@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using Caliburn.Micro;
 using GuiWpf.Properties;
+using GuiWpf.Services;
 using GuiWpf.ViewModels.Gameplay.Map;
 using RISK.Domain.Entities;
 using RISK.Domain.GamePlaying;
@@ -14,6 +15,8 @@ namespace GuiWpf.ViewModels.Setup
         private readonly IGameFactoryWorker _gameFactoryWorker;
         private readonly IGameStateConductor _gameStateConductor;
         private readonly IInputRequestHandler _inputRequestHandler;
+        private readonly IUserNotifier _userNotifier;
+        private readonly IResourceManagerWrapper _resourceManagerWrapper;
         private ILocation _selectedLocation;
         private ILocationSelectorParameter _locationSelectorParameter;
         private bool _isGameSetupFinished;
@@ -23,12 +26,16 @@ namespace GuiWpf.ViewModels.Setup
             IWorldMapViewModelFactory worldMapViewModelFactory,
             IGameFactoryWorker gameFactoryWorker,
             IGameStateConductor gameStateConductor,
-            IInputRequestHandler inputRequestHandler)
+            IInputRequestHandler inputRequestHandler,
+            IUserNotifier userNotifier,
+            IResourceManagerWrapper resourceManagerWrapper)
         {
             _worldMapViewModelFactory = worldMapViewModelFactory;
             _gameFactoryWorker = gameFactoryWorker;
             _gameStateConductor = gameStateConductor;
             _inputRequestHandler = inputRequestHandler;
+            _userNotifier = userNotifier;
+            _resourceManagerWrapper = resourceManagerWrapper;
 
             _gameFactoryWorker.BeginInvoke(this);
 
@@ -126,5 +133,10 @@ namespace GuiWpf.ViewModels.Setup
         }
 
         public void EndTurn() {}
+
+        public void EndGame()
+        {
+            var confirm = _userNotifier.Confirm(_resourceManagerWrapper.GetString("ARE_YOU_SURE_YOU_WANT_TO_END_GAME"));
+        }
     }
 }

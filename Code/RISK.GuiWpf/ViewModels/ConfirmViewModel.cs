@@ -12,6 +12,8 @@ namespace GuiWpf.ViewModels
             _screenService = screenService;
         }
 
+        public string Message { get; private set; }
+
         public void Confirm()
         {
             _screenService.Confirm(this);

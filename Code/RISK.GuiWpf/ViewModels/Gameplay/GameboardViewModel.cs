@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Caliburn.Micro;
-using GuiWpf.Properties;
 using GuiWpf.Services;
 using GuiWpf.ViewModels.Gameplay.Map;
 using RISK.Domain.Entities;
@@ -49,7 +48,7 @@ namespace GuiWpf.ViewModels.Gameplay
                 .Select(_worldMap.GetTerritory)
                 .ToList();
 
-            InformationText = Resources.SELECT_TERRITORY;
+            InformationText = _resourceManagerWrapper.GetString("SELECT_TERRITORY");
 
             WorldMapViewModel = worldMapViewModelFactory.Create(_worldMap, OnLocationClick);
 
@@ -83,7 +82,7 @@ namespace GuiWpf.ViewModels.Gameplay
 
         public void EndGame()
         {
-            _userNotifier.Confirm(_resourceManagerWrapper.GetString("ARE_YOU_SURE_YOU_WANT_TO_END_GAME"));
+            var confirm = _userNotifier.Confirm(_resourceManagerWrapper.GetString("ARE_YOU_SURE_YOU_WANT_TO_END_GAME"));
         }
 
         public void OnLocationClick(ILocation location)

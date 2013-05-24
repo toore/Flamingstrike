@@ -4,12 +4,12 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:WpfExtensions="clr-namespace:GuiWpf.WpfExtensions"
-    xmlns:TestDataFactory="clr-namespace:GuiWpf.Views.Test"
     xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
     xmlns:cal="clr-namespace:Caliburn.Micro;assembly=Caliburn.Micro"
+    xmlns:ViewModels="clr-namespace:GuiWpf.ViewModels"
     mc:Ignorable="d"
     d:DesignHeight="300" d:DesignWidth="300"
-    d:DataContext="{Binding Source={x:Static TestDataFactory:GameOverViewModelTestDataFactory.ViewModel}}">
+    d:DataContext="{d:DesignInstance ViewModels:ConfirmViewModel}">
 
     <Grid Background="Transparent">
         <Grid.Resources>
@@ -25,28 +25,36 @@
 
         <Label
             HorizontalAlignment="Center"
-            Content="{Binding Source={WpfExtensions:GetString GAME_OVER}}" />
+            Content="{Binding Message}" />
 
-        <Label
-            Grid.Row="1"
-            HorizontalAlignment="Center"
-            Content="{Binding PlayerNameIsTheWinnerText}" />
+        <Grid
+            Grid.Row="3">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
 
-        <Button
-            Grid.Row="3"
+            <Button
+            
             Margin="20"
             Content="OK">
-            <i:Interaction.Triggers>
-                <i:EventTrigger EventName="Click">
-                    <cal:ActionMessage MethodName="Close" />
-                </i:EventTrigger>
-            </i:Interaction.Triggers>
-        </Button>
-        <Button
-            Grid.Row="3"
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="Click">
+                        <cal:ActionMessage MethodName="Confirm" />
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </Button>
+            <Button
+            Grid.Column="1"
             Margin="20"
-            Content="OK">
-
-        </Button>
+            Content="{Binding Source={WpfExtensions:GetString CANCEL}}">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="Click">
+                        <cal:ActionMessage MethodName="Cancel" />
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </Button>
+        </Grid>
+       
     </Grid>
 </UserControl>

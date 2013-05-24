@@ -1,5 +1,6 @@
 ﻿using System;
 using FluentAssertions;
+using GuiWpf.Services;
 using GuiWpf.ViewModels;
 using GuiWpf.ViewModels.Gameplay.Map;
 using GuiWpf.ViewModels.Setup;
@@ -20,6 +21,8 @@ namespace RISK.Tests.GuiWpf
         private IGameFactoryWorker _gameFactoryWorker;
         private IGameStateConductor _gameStateConductor;
         private IInputRequestHandler _inputRequestHandler;
+        private IUserNotifier _userNotifier;
+        private IResourceManagerWrapper _resourceManagerWrapper;
 
         [SetUp]
         public void SetUp()
@@ -28,13 +31,15 @@ namespace RISK.Tests.GuiWpf
             _gameFactoryWorker = Substitute.For<IGameFactoryWorker>();
             _gameStateConductor = Substitute.For<IGameStateConductor>();
             _inputRequestHandler = Substitute.For<IInputRequestHandler>();
+            _userNotifier = Substitute.For<IUserNotifier>();
+            _resourceManagerWrapper = Substitute.For<IResourceManagerWrapper>();
 
             var locationSelectorParameter = StubLocationSelectorParameter(null);
 
             _gameFactoryWorker.WhenForAnyArgs(x => x.BeginInvoke(null))
                 .Do(x => x.Arg<IGameFactoryWorkerCallback>().GetLocationCallback(locationSelectorParameter));
 
-            _gameSetupViewModel = new GameSetupViewModel(_worldMapViewModelFactory, _gameFactoryWorker, _gameStateConductor, _inputRequestHandler);
+            _gameSetupViewModel = new GameSetupViewModel(_worldMapViewModelFactory, _gameFactoryWorker, _gameStateConductor, _inputRequestHandler, _userNotifier, _resourceManagerWrapper);
 
             _inputRequestHandler.ClearReceivedCalls();
         }

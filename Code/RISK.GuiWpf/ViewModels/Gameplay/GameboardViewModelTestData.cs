@@ -42,7 +42,7 @@ namespace GuiWpf.ViewModels.Gameplay
             var alternateGameSetup = new AlternateGameSetup(playerRepository, locationProvider, new RandomSorter(new RandomWrapper()), new WorldMapFactory(locationProvider), new InitialArmyCountProvider());
             ITurnFactory turnFactory = new TurnFactory(null, null);
             var game = new Game(turnFactory, playerRepository, alternateGameSetup, this);
-            var gameboardViewModel = new GameboardViewModel(game, locationProvider, worldMapViewModelFactory, territoryViewModelUpdater, new GameOverEvaluater(), new WindowManager(), new GameOverViewModelFactory(), null, new ResourceManagerWrapper());
+            var gameboardViewModel = new GameboardViewModel(game, locationProvider, worldMapViewModelFactory, territoryViewModelUpdater, new FakeGameOverEvaluater(), null, new GameOverViewModelFactory(), null, new ResourceManagerWrapper());
 
             return gameboardViewModel;
         }
@@ -50,6 +50,14 @@ namespace GuiWpf.ViewModels.Gameplay
         public ILocation GetLocation(ILocationSelectorParameter locationSelectorParameter)
         {
             return locationSelectorParameter.AvailableLocations.First();
+        }
+
+        class FakeGameOverEvaluater : IGameOverEvaluater
+        {
+            public bool IsGameOver(IWorldMap worldMap)
+            {
+                return false;
+            }
         }
     }
 }
