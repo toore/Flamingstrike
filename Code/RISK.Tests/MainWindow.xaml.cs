@@ -1,5 +1,4 @@
-﻿using GuiWpf.ViewModels.Gameplay;
-using GuiWpf.Views.WorldMapViews;
+﻿using GuiWpf.Views.WorldMapViews;
 
 namespace RISK.Tests
 {
