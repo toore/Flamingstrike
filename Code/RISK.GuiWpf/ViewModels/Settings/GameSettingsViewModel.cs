@@ -2,7 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Linq;
 using GuiWpf.Extensions;
-using GuiWpf.ViewModels.Setup;
+using GuiWpf.ViewModels.Messages;
 using RISK.Domain.Entities;
 
 namespace GuiWpf.ViewModels.Settings
@@ -11,13 +11,13 @@ namespace GuiWpf.ViewModels.Settings
     {
         private readonly IPlayerFactory _playerFactory;
         private readonly IPlayerTypes _playerTypes;
-        private readonly IGameSettingsEventAggregator _gameSettingsEventAggregator;
+        private readonly IGameEventAggregator _gameEventAggregator;
 
-        public GameSettingsViewModel(IPlayerFactory playerFactory, IPlayerTypes playerTypes, IGameSettingsEventAggregator gameSettingsEventAggregator)
+        public GameSettingsViewModel(IPlayerFactory playerFactory, IPlayerTypes playerTypes, IGameEventAggregator gameEventAggregator)
         {
             _playerFactory = playerFactory;
             _playerTypes = playerTypes;
-            _gameSettingsEventAggregator = gameSettingsEventAggregator;
+            _gameEventAggregator = gameEventAggregator;
 
             const int maxNumberOfPlayers = 6;
             Players = Enumerable.Range(0, maxNumberOfPlayers)
@@ -53,7 +53,7 @@ namespace GuiWpf.ViewModels.Settings
                     Players = CreatePlayers()
                 };
 
-            _gameSettingsEventAggregator.Publish(gameSetup);
+            _gameEventAggregator.Publish(gameSetup);
         }
 
         private IEnumerable<IPlayer> CreatePlayers()

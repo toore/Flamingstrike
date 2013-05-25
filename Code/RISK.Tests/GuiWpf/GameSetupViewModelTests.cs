@@ -3,6 +3,7 @@ using FluentAssertions;
 using GuiWpf.Services;
 using GuiWpf.ViewModels;
 using GuiWpf.ViewModels.Gameplay.Map;
+using GuiWpf.ViewModels.Settings;
 using GuiWpf.ViewModels.Setup;
 using NSubstitute;
 using NSubstitute.Experimental;
@@ -19,25 +20,27 @@ namespace RISK.Tests.GuiWpf
         private GameSetupViewModel _gameSetupViewModel;
         private IWorldMapViewModelFactory _worldMapViewModelFactory;
         private IGameFactoryWorker _gameFactoryWorker;
-        private IGameStateConductor _gameStateConductor;
+        private IGameSettingStateConductor _gameSettingStateConductor;
         private IUserInteractionSynchronizer _userInteractionSynchronizer;
         private IDialogManager _dialogManager;
+        private IGameEventAggregator _gameEventAggregator;
 
         [SetUp]
         public void SetUp()
         {
             _worldMapViewModelFactory = Substitute.For<IWorldMapViewModelFactory>();
             _gameFactoryWorker = Substitute.For<IGameFactoryWorker>();
-            _gameStateConductor = Substitute.For<IGameStateConductor>();
+            _gameSettingStateConductor = Substitute.For<IGameSettingStateConductor>();
             _userInteractionSynchronizer = Substitute.For<IUserInteractionSynchronizer>();
             _dialogManager = Substitute.For<IDialogManager>();
+            _gameEventAggregator = Substitute.For<IGameEventAggregator>();
 
             var locationSelectorParameter = StubLocationSelectorParameter(null);
 
             _gameFactoryWorker.WhenForAnyArgs(x => x.BeginInvoke(null))
                 .Do(x => x.Arg<IGameFactoryWorkerCallback>().GetLocationCallback(locationSelectorParameter));
 
-            _gameSetupViewModel = new GameSetupViewModel(_worldMapViewModelFactory, _gameFactoryWorker, _gameStateConductor, _userInteractionSynchronizer, _dialogManager);
+            _gameSetupViewModel = new GameSetupViewModel(_worldMapViewModelFactory, _gameFactoryWorker, _gameSettingStateConductor, _userInteractionSynchronizer, _dialogManager, _gameEventAggregator);
 
             _userInteractionSynchronizer.ClearReceivedCalls();
         }
@@ -139,7 +142,7 @@ namespace RISK.Tests.GuiWpf
             _gameSetupViewModel.OnFinished(game);
             _gameSetupViewModel.SelectLocation(null);
 
-            _gameStateConductor.Received().StartGamePlay(game);
+            _gameSettingStateConductor.Received().StartGamePlay(game);
         }
     }
 }

@@ -81,7 +81,7 @@
     <Compile Include="ViewModels\IGameOverViewModel.cs" />
     <Compile Include="Services\ScreenService.cs" />
     <Compile Include="Services\IDialogManager.cs" />
-    <Compile Include="ViewModels\NewGameMessage.cs" />
+    <Compile Include="ViewModels\Messages\NewGameMessage.cs" />
     <Compile Include="ViewModels\Settings\GameSettingsViewModelFactory.cs" />
     <Compile Include="Views\ConfirmView.xaml.cs">
       <DependentUpon>ConfirmView.xaml</DependentUpon>
@@ -110,18 +110,18 @@
     <Compile Include="ViewModels\Setup\GameFactory.cs" />
     <Compile Include="ViewModels\Gameplay\Map\ITerritoryTextViewModel.cs" />
     <Compile Include="ViewModels\Gameplay\Map\WorldMapViewModelsExtensions.cs" />
-    <Compile Include="ViewModels\GameSetupMessage.cs" />
+    <Compile Include="ViewModels\Messages\GameSetupMessage.cs" />
     <Compile Include="ViewModels\GameSetupViewModelFactory.cs" />
     <Compile Include="ViewModels\Setup\IGameFactoryWorker.cs" />
     <Compile Include="ViewModels\Setup\IGameSetupViewModel.cs" />
     <Compile Include="ViewModels\Gameplay\IGameboardViewModelFactory.cs" />
     <Compile Include="ViewModels\Setup\IGameFactory.cs" />
     <Compile Include="ViewModels\Setup\IGameSetupViewModelFactory.cs" />
-    <Compile Include="ViewModels\IGameStateConductor.cs" />
-    <Compile Include="ViewModels\Settings\GameSettingsEventAggregator.cs" />
+    <Compile Include="ViewModels\IGameSettingStateConductor.cs" />
+    <Compile Include="ViewModels\Settings\GameEventAggregator.cs" />
     <Compile Include="ViewModels\Settings\GameSettingsViewModel.cs" />
     <Compile Include="ViewModels\Settings\HumanPlayerType.cs" />
-    <Compile Include="ViewModels\Settings\IGameSettingsEventAggregator.cs" />
+    <Compile Include="ViewModels\Settings\IGameEventAggregator.cs" />
     <Compile Include="ViewModels\Settings\IGameSettingsViewModel.cs" />
     <Compile Include="ViewModels\MainGameViewModel.cs" />
     <Compile Include="ViewModels\IMainViewModel.cs" />

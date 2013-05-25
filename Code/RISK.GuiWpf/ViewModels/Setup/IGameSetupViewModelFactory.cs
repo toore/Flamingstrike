@@ -2,6 +2,6 @@
 {
     public interface IGameSetupViewModelFactory
     {
-        IGameSetupViewModel Create(IGameStateConductor gameStateConductor);
+        IGameSetupViewModel Create(IGameSettingStateConductor gameSettingStateConductor);
     }
 }

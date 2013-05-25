@@ -3,6 +3,8 @@ using System.Linq;
 using Caliburn.Micro;
 using GuiWpf.Services;
 using GuiWpf.ViewModels.Gameplay.Map;
+using GuiWpf.ViewModels.Messages;
+using GuiWpf.ViewModels.Settings;
 using RISK.Domain.Entities;
 using RISK.Domain.GamePlaying;
 using RISK.Domain.Repositories;
@@ -18,6 +20,7 @@ namespace GuiWpf.ViewModels.Gameplay
         private readonly IGameOverViewModelFactory _gameOverViewModelFactory;
         private readonly IResourceManagerWrapper _resourceManagerWrapper;
         private readonly IDialogManager _dialogManager;
+        private readonly IGameEventAggregator _gameEventAggregator;
         private ITurn _currentTurn;
         private readonly List<ITerritory> _territories;
         private IPlayer _player;
@@ -32,7 +35,8 @@ namespace GuiWpf.ViewModels.Gameplay
             IWindowManager windowManager,
             IGameOverViewModelFactory gameOverViewModelFactory,
             IResourceManagerWrapper resourceManagerWrapper,
-            IDialogManager dialogManager)
+            IDialogManager dialogManager,
+            IGameEventAggregator gameEventAggregator)
         {
             _game = game;
             _territoryViewModelUpdater = territoryViewModelUpdater;
@@ -41,6 +45,7 @@ namespace GuiWpf.ViewModels.Gameplay
             _gameOverViewModelFactory = gameOverViewModelFactory;
             _resourceManagerWrapper = resourceManagerWrapper;
             _dialogManager = dialogManager;
+            _gameEventAggregator = gameEventAggregator;
 
             _worldMap = _game.GetWorldMap();
 
@@ -83,6 +88,11 @@ namespace GuiWpf.ViewModels.Gameplay
         public void EndGame()
         {
             var confirm = _dialogManager.ConfirmEndGame();
+
+            if (confirm.HasValue && confirm.Value)
+            {
+                _gameEventAggregator.Publish(new NewGameMessage());
+            }
         }
 
         public void OnLocationClick(ILocation location)

@@ -2,7 +2,7 @@
 
 namespace GuiWpf.ViewModels
 {
-    public interface IGameStateConductor
+    public interface IGameSettingStateConductor
     {
         void StartGamePlay(IGame game);
     }

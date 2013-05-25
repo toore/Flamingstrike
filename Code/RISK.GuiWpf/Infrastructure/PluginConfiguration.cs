@@ -25,7 +25,7 @@ namespace GuiWpf.Infrastructure
 
                     x.For<ILocationProvider>().Singleton();
 
-                    x.RegisterInterceptor(new HandleInterceptor<IGameSettingsEventAggregator>());
+                    x.RegisterInterceptor(new HandleInterceptor<IGameEventAggregator>());
                 });
         }
 

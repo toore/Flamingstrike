@@ -9,18 +9,18 @@
     {
         private readonly IPlayerFactory _playerFactory;
         private readonly IPlayerTypes _playerTypes;
-        private readonly IGameSettingsEventAggregator _gameSettingsEventAggregator;
+        private readonly IGameEventAggregator _gameEventAggregator;
 
-        public GameSettingsViewModelFactory(IPlayerFactory playerFactory, IPlayerTypes playerTypes, IGameSettingsEventAggregator gameSettingsEventAggregator)
+        public GameSettingsViewModelFactory(IPlayerFactory playerFactory, IPlayerTypes playerTypes, IGameEventAggregator gameEventAggregator)
         {
             _playerFactory = playerFactory;
             _playerTypes = playerTypes;
-            _gameSettingsEventAggregator = gameSettingsEventAggregator;
+            _gameEventAggregator = gameEventAggregator;
         }
 
         public IGameSettingsViewModel Create()
         {
-            return new GameSettingsViewModel(_playerFactory, _playerTypes, _gameSettingsEventAggregator);
+            return new GameSettingsViewModel(_playerFactory, _playerTypes, _gameEventAggregator);
         }
     }
 }

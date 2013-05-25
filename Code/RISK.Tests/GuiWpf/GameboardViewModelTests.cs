@@ -6,6 +6,7 @@ using GuiWpf.Services;
 using GuiWpf.ViewModels;
 using GuiWpf.ViewModels.Gameplay;
 using GuiWpf.ViewModels.Gameplay.Map;
+using GuiWpf.ViewModels.Settings;
 using NSubstitute;
 using NUnit.Framework;
 using RISK.Domain.Entities;
@@ -42,6 +43,7 @@ namespace RISK.Tests.GuiWpf
         private IGameOverViewModelFactory _gameOverViewModelFactory;
         private IResourceManagerWrapper _resourceManagerWrapper;
         private IDialogManager _dialogManager;
+        private IGameEventAggregator _gameEventAggregator;
 
         [SetUp]
         public void SetUp()
@@ -55,6 +57,7 @@ namespace RISK.Tests.GuiWpf
             _gameOverViewModelFactory = Substitute.For<IGameOverViewModelFactory>();
             _resourceManagerWrapper = Substitute.For<IResourceManagerWrapper>();
             _dialogManager = Substitute.For<IDialogManager>();
+            _gameEventAggregator = Substitute.For<IGameEventAggregator>();
 
             _location1 = Substitute.For<ILocation>();
             _location2 = Substitute.For<ILocation>();
@@ -94,7 +97,7 @@ namespace RISK.Tests.GuiWpf
             
             _worldMapViewModelFactory.Create(Arg.Is(_worldMap), Arg.Any<Action<ILocation>>()).Returns(_worldMapViewModel);
 
-            _gameboardViewModel = new GameboardViewModel(_game, _locationProvider, _worldMapViewModelFactory, _territoryViewModelUpdater, _gameOverEvaluater, _windowManager, _gameOverViewModelFactory, _resourceManagerWrapper, _dialogManager);
+            _gameboardViewModel = new GameboardViewModel(_game, _locationProvider, _worldMapViewModelFactory, _territoryViewModelUpdater, _gameOverEvaluater, _windowManager, _gameOverViewModelFactory, _resourceManagerWrapper, _dialogManager, _gameEventAggregator);
         }
 
         [Test]

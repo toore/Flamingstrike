@@ -41,7 +41,7 @@ namespace RISK.Tests.Application.Specifications
                     x.For<IGameSettingsViewModel>().Use<GameSettingsViewModel>();
                     x.For<IPlayerFactory>().Use<PlayerFactory>();
                     x.For<IPlayerTypes>().Use<PlayerTypes>();
-                    x.For<IGameSettingsEventAggregator>().Use<GameSettingsEventAggregator>();
+                    x.For<IGameEventAggregator>().Use<GameEventAggregator>();
                     x.For<IGameboardViewModelFactory>().Use<GameboardViewModelFactory>();
                     x.For<IGameFactoryWorker>().Use<GameFactoryWorker>();
                     x.For<IGameFactory>().Use<GameFactory>();
@@ -77,7 +77,7 @@ namespace RISK.Tests.Application.Specifications
                     x.For<IResourceManagerWrapper>().Use<ResourceManagerWrapper>();
                     x.For<IDialogManager>().Use<DialogManager>();
 
-                    x.RegisterInterceptor(new HandleInterceptor<IGameSettingsEventAggregator>());
+                    x.RegisterInterceptor(new HandleInterceptor<IGameEventAggregator>());
                 });
         }
 

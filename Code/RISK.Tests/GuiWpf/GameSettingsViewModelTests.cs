@@ -1,8 +1,8 @@
 ﻿using System.Linq;
 using FluentAssertions;
 using GuiWpf.ViewModels;
+using GuiWpf.ViewModels.Messages;
 using GuiWpf.ViewModels.Settings;
-using GuiWpf.ViewModels.Setup;
 using NSubstitute;
 using NUnit.Framework;
 using RISK.Base.Extensions;
@@ -15,19 +15,19 @@ namespace RISK.Tests.GuiWpf
         private GameSettingsViewModel _gameSettingsViewModel;
         private IPlayerFactory _playerFactory;
         private IPlayerTypes _playerTypes;
-        private IGameSettingsEventAggregator _gameSettingsEventAggregator;
+        private IGameEventAggregator _gameEventAggregator;
 
         [SetUp]
         public void SetUp()
         {
             _playerFactory = Substitute.For<IPlayerFactory>();
             _playerTypes = Substitute.For<IPlayerTypes>();
-            _gameSettingsEventAggregator = Substitute.For<IGameSettingsEventAggregator>();
+            _gameEventAggregator = Substitute.For<IGameEventAggregator>();
 
             var playerType = Substitute.For<PlayerTypeBase>();
             _playerTypes.Values.Returns(playerType.AsList());
 
-            _gameSettingsViewModel = new GameSettingsViewModel(_playerFactory, _playerTypes, _gameSettingsEventAggregator);
+            _gameSettingsViewModel = new GameSettingsViewModel(_playerFactory, _playerTypes, _gameEventAggregator);
         }
 
         [Test]
@@ -64,7 +64,7 @@ namespace RISK.Tests.GuiWpf
         {
             _gameSettingsViewModel.Confirm();
 
-            _gameSettingsEventAggregator.Received().Publish(Arg.Any<GameSetupMessage>());
+            _gameEventAggregator.Received().Publish(Arg.Any<GameSetupMessage>());
         }
     }
 }
