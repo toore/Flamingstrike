@@ -21,8 +21,7 @@ namespace RISK.Tests.GuiWpf
         private IGameFactoryWorker _gameFactoryWorker;
         private IGameStateConductor _gameStateConductor;
         private IUserInteractionSynchronizer _userInteractionSynchronizer;
-        private IUserNotifier _userNotifier;
-        private IResourceManagerWrapper _resourceManagerWrapper;
+        private IDialogManager _dialogManager;
 
         [SetUp]
         public void SetUp()
@@ -31,15 +30,14 @@ namespace RISK.Tests.GuiWpf
             _gameFactoryWorker = Substitute.For<IGameFactoryWorker>();
             _gameStateConductor = Substitute.For<IGameStateConductor>();
             _userInteractionSynchronizer = Substitute.For<IUserInteractionSynchronizer>();
-            _userNotifier = Substitute.For<IUserNotifier>();
-            _resourceManagerWrapper = Substitute.For<IResourceManagerWrapper>();
+            _dialogManager = Substitute.For<IDialogManager>();
 
             var locationSelectorParameter = StubLocationSelectorParameter(null);
 
             _gameFactoryWorker.WhenForAnyArgs(x => x.BeginInvoke(null))
                 .Do(x => x.Arg<IGameFactoryWorkerCallback>().GetLocationCallback(locationSelectorParameter));
 
-            _gameSetupViewModel = new GameSetupViewModel(_worldMapViewModelFactory, _gameFactoryWorker, _gameStateConductor, _userInteractionSynchronizer, _userNotifier, _resourceManagerWrapper);
+            _gameSetupViewModel = new GameSetupViewModel(_worldMapViewModelFactory, _gameFactoryWorker, _gameStateConductor, _userInteractionSynchronizer, _dialogManager);
 
             _userInteractionSynchronizer.ClearReceivedCalls();
         }

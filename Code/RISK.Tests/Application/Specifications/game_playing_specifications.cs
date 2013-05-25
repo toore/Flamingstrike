@@ -74,6 +74,7 @@ namespace RISK.Tests.Application.Specifications
                     x.For<IConfirmViewModelFactory>().Use<ConfirmViewModelFactory>();
                     x.For<IScreenService>().Use<ScreenService>();
                     x.For<IResourceManagerWrapper>().Use<ResourceManagerWrapper>();
+                    x.For<IDialogManager>().Use<DialogManager>();
 
                     x.RegisterInterceptor(new HandleInterceptor<IGameSettingsEventAggregator>());
                 });

@@ -29,10 +29,10 @@ namespace RISK.Tests.Views
         public void Shows_confirm_dialog(bool expected)
         {
             var confirmViewModel = new ConfirmViewModel(null);
-            _confirmViewModelFactory.Create("message").Returns(confirmViewModel);
+            _confirmViewModelFactory.Create("message", "display name", "confirm text", "abort text").Returns(confirmViewModel);
             _windowManager.ShowDialog(confirmViewModel).Returns(expected);
 
-            var confirm = _userNotifier.Confirm("message");
+            var confirm = _userNotifier.Confirm("message", "display name", "confirm text", "abort text");
 
             _windowManager.Received(1).ShowDialog(confirmViewModel);
             confirm.Should().Be(expected);

@@ -9,26 +9,26 @@ namespace GuiWpf.ViewModels
         private readonly IWorldMapViewModelFactory _worldMapViewModelFactory;
         private readonly IGameFactoryWorker _gameFactoryWorker;
         private readonly IUserInteractionSynchronizer _userInteractionSynchronizer;
-        private readonly IUserNotifier _userNotifier;
         private readonly IResourceManagerWrapper _resourceManagerWrapper;
+        private readonly IDialogManager _dialogManager;
 
         public GameSetupViewModelFactory(
             IWorldMapViewModelFactory worldMapViewModelFactory, 
             IGameFactoryWorker gameFactoryWorker, 
             IUserInteractionSynchronizer userInteractionSynchronizer, 
-            IUserNotifier userNotifier, 
-            IResourceManagerWrapper resourceManagerWrapper)
+            IResourceManagerWrapper resourceManagerWrapper,
+            IDialogManager dialogManager)
         {
             _worldMapViewModelFactory = worldMapViewModelFactory;
             _gameFactoryWorker = gameFactoryWorker;
             _userInteractionSynchronizer = userInteractionSynchronizer;
-            _userNotifier = userNotifier;
             _resourceManagerWrapper = resourceManagerWrapper;
+            _dialogManager = dialogManager;
         }
 
         public IGameSetupViewModel Create(IGameStateConductor gameStateConductor)
         {
-            return new GameSetupViewModel(_worldMapViewModelFactory, _gameFactoryWorker, gameStateConductor, _userInteractionSynchronizer, _userNotifier, _resourceManagerWrapper);
+            return new GameSetupViewModel(_worldMapViewModelFactory, _gameFactoryWorker, gameStateConductor, _userInteractionSynchronizer, _dialogManager);
         }
     }
 }

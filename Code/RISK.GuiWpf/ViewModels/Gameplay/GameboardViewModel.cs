@@ -16,8 +16,8 @@ namespace GuiWpf.ViewModels.Gameplay
         private readonly IGameOverEvaluater _gameOverEvaluater;
         private readonly IWindowManager _windowManager;
         private readonly IGameOverViewModelFactory _gameOverViewModelFactory;
-        private readonly IUserNotifier _userNotifier;
         private readonly IResourceManagerWrapper _resourceManagerWrapper;
+        private readonly IDialogManager _dialogManager;
         private ITurn _currentTurn;
         private readonly List<ITerritory> _territories;
         private IPlayer _player;
@@ -31,16 +31,16 @@ namespace GuiWpf.ViewModels.Gameplay
             IGameOverEvaluater gameOverEvaluater,
             IWindowManager windowManager,
             IGameOverViewModelFactory gameOverViewModelFactory,
-            IUserNotifier userNotifier,
-            IResourceManagerWrapper resourceManagerWrapper)
+            IResourceManagerWrapper resourceManagerWrapper,
+            IDialogManager dialogManager)
         {
             _game = game;
             _territoryViewModelUpdater = territoryViewModelUpdater;
             _gameOverEvaluater = gameOverEvaluater;
             _windowManager = windowManager;
             _gameOverViewModelFactory = gameOverViewModelFactory;
-            _userNotifier = userNotifier;
             _resourceManagerWrapper = resourceManagerWrapper;
+            _dialogManager = dialogManager;
 
             _worldMap = _game.GetWorldMap();
 
@@ -82,7 +82,7 @@ namespace GuiWpf.ViewModels.Gameplay
 
         public void EndGame()
         {
-            var confirm = _userNotifier.Confirm(_resourceManagerWrapper.GetString("ARE_YOU_SURE_YOU_WANT_TO_END_GAME"));
+            var confirm = _dialogManager.ConfirmEndGame();
         }
 
         public void OnLocationClick(ILocation location)

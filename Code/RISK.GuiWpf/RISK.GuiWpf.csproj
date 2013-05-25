@@ -80,6 +80,7 @@
     <Compile Include="Services\UserNotifier.cs" />
     <Compile Include="ViewModels\IGameOverViewModel.cs" />
     <Compile Include="Services\ScreenService.cs" />
+    <Compile Include="Services\IDialogManager.cs" />
     <Compile Include="Views\ConfirmView.xaml.cs">
       <DependentUpon>ConfirmView.xaml</DependentUpon>
     </Compile>

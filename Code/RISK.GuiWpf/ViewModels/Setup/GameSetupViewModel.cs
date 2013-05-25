@@ -15,8 +15,7 @@ namespace GuiWpf.ViewModels.Setup
         private readonly IGameFactoryWorker _gameFactoryWorker;
         private readonly IGameStateConductor _gameStateConductor;
         private readonly IUserInteractionSynchronizer _userInteractionSynchronizer;
-        private readonly IUserNotifier _userNotifier;
-        private readonly IResourceManagerWrapper _resourceManagerWrapper;
+        private readonly IDialogManager _dialogManager;
         private ILocation _selectedLocation;
         private ILocationSelectorParameter _locationSelectorParameter;
         private bool _isGameSetupFinished;
@@ -27,15 +26,13 @@ namespace GuiWpf.ViewModels.Setup
             IGameFactoryWorker gameFactoryWorker,
             IGameStateConductor gameStateConductor,
             IUserInteractionSynchronizer userInteractionSynchronizer,
-            IUserNotifier userNotifier,
-            IResourceManagerWrapper resourceManagerWrapper)
+            IDialogManager dialogManager)
         {
             _worldMapViewModelFactory = worldMapViewModelFactory;
             _gameFactoryWorker = gameFactoryWorker;
             _gameStateConductor = gameStateConductor;
             _userInteractionSynchronizer = userInteractionSynchronizer;
-            _userNotifier = userNotifier;
-            _resourceManagerWrapper = resourceManagerWrapper;
+            _dialogManager = dialogManager;
 
             _gameFactoryWorker.BeginInvoke(this);
 
@@ -136,7 +133,7 @@ namespace GuiWpf.ViewModels.Setup
 
         public void EndGame()
         {
-            var confirm = _userNotifier.Confirm(_resourceManagerWrapper.GetString("ARE_YOU_SURE_YOU_WANT_TO_END_GAME"));
+            var confirm = _dialogManager.ConfirmEndGame();
         }
     }
 }

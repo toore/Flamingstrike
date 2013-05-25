@@ -14,8 +14,8 @@ namespace GuiWpf.ViewModels.Gameplay
         private readonly IGameOverEvaluater _gameOverEvaluater;
         private readonly IWindowManager _windowManager;
         private readonly IGameOverViewModelFactory _gameOverViewModelFactory;
-        private readonly IUserNotifier _userNotifier;
         private readonly IResourceManagerWrapper _resourceManagerWrapper;
+        private readonly IDialogManager _dialogManager;
 
         public GameboardViewModelFactory(
             ILocationProvider locationProvider,
@@ -24,8 +24,8 @@ namespace GuiWpf.ViewModels.Gameplay
             IGameOverEvaluater gameOverEvaluater,
             IWindowManager windowManager,
             IGameOverViewModelFactory gameOverViewModelFactory,
-            IUserNotifier userNotifier,
-            IResourceManagerWrapper resourceManagerWrapper)
+            IResourceManagerWrapper resourceManagerWrapper,
+            IDialogManager dialogManager)
         {
             _locationProvider = locationProvider;
             _worldMapViewModelFactory = worldMapViewModelFactory;
@@ -33,13 +33,13 @@ namespace GuiWpf.ViewModels.Gameplay
             _gameOverEvaluater = gameOverEvaluater;
             _windowManager = windowManager;
             _gameOverViewModelFactory = gameOverViewModelFactory;
-            _userNotifier = userNotifier;
             _resourceManagerWrapper = resourceManagerWrapper;
+            _dialogManager = dialogManager;
         }
 
         public IGameboardViewModel Create(IGame game)
         {
-            return new GameboardViewModel(game, _locationProvider, _worldMapViewModelFactory, _territoryViewModelUpdater, _gameOverEvaluater, _windowManager, _gameOverViewModelFactory, _userNotifier, _resourceManagerWrapper);
+            return new GameboardViewModel(game, _locationProvider, _worldMapViewModelFactory, _territoryViewModelUpdater, _gameOverEvaluater, _windowManager, _gameOverViewModelFactory, _resourceManagerWrapper, _dialogManager);
         }
     }
 }

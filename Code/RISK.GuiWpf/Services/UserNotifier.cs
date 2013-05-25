@@ -14,9 +14,9 @@ namespace GuiWpf.Services
             _confirmViewModelFactory = confirmViewModelFactory;
         }
 
-        public bool? Confirm(string message)
+        public bool? Confirm(string message, string displayName, string confirmText, string abortText)
         {
-            var confirmViewModel = _confirmViewModelFactory.Create(message);
+            var confirmViewModel = _confirmViewModelFactory.Create(message, displayName, confirmText, abortText);
 
             return _windowManager.ShowDialog(confirmViewModel);
         }
