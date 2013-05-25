@@ -20,7 +20,7 @@ namespace RISK.Tests.GuiWpf
         private IWorldMapViewModelFactory _worldMapViewModelFactory;
         private IGameFactoryWorker _gameFactoryWorker;
         private IGameStateConductor _gameStateConductor;
-        private IInputRequestHandler _inputRequestHandler;
+        private IUserInteractionSynchronizer _userInteractionSynchronizer;
         private IUserNotifier _userNotifier;
         private IResourceManagerWrapper _resourceManagerWrapper;
 
@@ -30,7 +30,7 @@ namespace RISK.Tests.GuiWpf
             _worldMapViewModelFactory = Substitute.For<IWorldMapViewModelFactory>();
             _gameFactoryWorker = Substitute.For<IGameFactoryWorker>();
             _gameStateConductor = Substitute.For<IGameStateConductor>();
-            _inputRequestHandler = Substitute.For<IInputRequestHandler>();
+            _userInteractionSynchronizer = Substitute.For<IUserInteractionSynchronizer>();
             _userNotifier = Substitute.For<IUserNotifier>();
             _resourceManagerWrapper = Substitute.For<IResourceManagerWrapper>();
 
@@ -39,9 +39,9 @@ namespace RISK.Tests.GuiWpf
             _gameFactoryWorker.WhenForAnyArgs(x => x.BeginInvoke(null))
                 .Do(x => x.Arg<IGameFactoryWorkerCallback>().GetLocationCallback(locationSelectorParameter));
 
-            _gameSetupViewModel = new GameSetupViewModel(_worldMapViewModelFactory, _gameFactoryWorker, _gameStateConductor, _inputRequestHandler, _userNotifier, _resourceManagerWrapper);
+            _gameSetupViewModel = new GameSetupViewModel(_worldMapViewModelFactory, _gameFactoryWorker, _gameStateConductor, _userInteractionSynchronizer, _userNotifier, _resourceManagerWrapper);
 
-            _inputRequestHandler.ClearReceivedCalls();
+            _userInteractionSynchronizer.ClearReceivedCalls();
         }
 
         private ILocationSelectorParameter StubLocationSelectorParameter(Action<ILocation> selectLocation)
@@ -80,7 +80,7 @@ namespace RISK.Tests.GuiWpf
         {
             var location = Substitute.For<ILocation>();
 
-            _inputRequestHandler.When(x => x.WaitForInputAvailable())
+            _userInteractionSynchronizer.When(x => x.WaitForUserToBeDoneWithInteracting())
                 .Do(x => _gameSetupViewModel.SelectLocation(location));
 
             return location;
@@ -93,8 +93,8 @@ namespace RISK.Tests.GuiWpf
 
             Received.InOrder(() =>
                 {
-                    _inputRequestHandler.RequestInput();
-                    _inputRequestHandler.WaitForInputAvailable();
+                    _userInteractionSynchronizer.RequestUserInteraction();
+                    _userInteractionSynchronizer.WaitForUserToBeDoneWithInteracting();
                 });
         }
 
@@ -105,8 +105,8 @@ namespace RISK.Tests.GuiWpf
 
             Received.InOrder(() =>
                 {
-                    _inputRequestHandler.InputIsAvailable();
-                    _inputRequestHandler.WaitForInputRequest();
+                    _userInteractionSynchronizer.UserIsDoneInteracting();
+                    _userInteractionSynchronizer.WaitForUserInteractionRequest();
                 });
         }
 
@@ -130,7 +130,7 @@ namespace RISK.Tests.GuiWpf
         {
             _gameSetupViewModel.OnFinished(null);
 
-            _inputRequestHandler.Received().RequestInput();
+            _userInteractionSynchronizer.Received().RequestUserInteraction();
         }
 
         [Test]

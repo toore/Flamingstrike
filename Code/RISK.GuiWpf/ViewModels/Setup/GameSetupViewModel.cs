@@ -14,7 +14,7 @@ namespace GuiWpf.ViewModels.Setup
         private readonly IWorldMapViewModelFactory _worldMapViewModelFactory;
         private readonly IGameFactoryWorker _gameFactoryWorker;
         private readonly IGameStateConductor _gameStateConductor;
-        private readonly IInputRequestHandler _inputRequestHandler;
+        private readonly IUserInteractionSynchronizer _userInteractionSynchronizer;
         private readonly IUserNotifier _userNotifier;
         private readonly IResourceManagerWrapper _resourceManagerWrapper;
         private ILocation _selectedLocation;
@@ -26,14 +26,14 @@ namespace GuiWpf.ViewModels.Setup
             IWorldMapViewModelFactory worldMapViewModelFactory,
             IGameFactoryWorker gameFactoryWorker,
             IGameStateConductor gameStateConductor,
-            IInputRequestHandler inputRequestHandler,
+            IUserInteractionSynchronizer userInteractionSynchronizer,
             IUserNotifier userNotifier,
             IResourceManagerWrapper resourceManagerWrapper)
         {
             _worldMapViewModelFactory = worldMapViewModelFactory;
             _gameFactoryWorker = gameFactoryWorker;
             _gameStateConductor = gameStateConductor;
-            _inputRequestHandler = inputRequestHandler;
+            _userInteractionSynchronizer = userInteractionSynchronizer;
             _userNotifier = userNotifier;
             _resourceManagerWrapper = resourceManagerWrapper;
 
@@ -65,7 +65,7 @@ namespace GuiWpf.ViewModels.Setup
 
         private void WaitForUserInputRequestAndUpdateView()
         {
-            _inputRequestHandler.WaitForInputRequest();
+            _userInteractionSynchronizer.WaitForUserInteractionRequest();
 
             UpdateView(_locationSelectorParameter);
         }
@@ -74,8 +74,8 @@ namespace GuiWpf.ViewModels.Setup
         {
             _locationSelectorParameter = locationSelectorParameter;
 
-            _inputRequestHandler.RequestInput();
-            _inputRequestHandler.WaitForInputAvailable();
+            _userInteractionSynchronizer.RequestUserInteraction();
+            _userInteractionSynchronizer.WaitForUserToBeDoneWithInteracting();
 
             return _selectedLocation;
         }
@@ -84,7 +84,7 @@ namespace GuiWpf.ViewModels.Setup
         {
             _selectedLocation = location;
 
-            _inputRequestHandler.InputIsAvailable();
+            _userInteractionSynchronizer.UserIsDoneInteracting();
             WaitForUserInputRequestAndUpdateView();
 
             if (_isGameSetupFinished)
@@ -98,7 +98,7 @@ namespace GuiWpf.ViewModels.Setup
             _isGameSetupFinished = true;
             _game = game;
 
-            _inputRequestHandler.RequestInput();
+            _userInteractionSynchronizer.RequestUserInteraction();
         }
 
         private void UpdateView(ILocationSelectorParameter locationSelectorParameter)

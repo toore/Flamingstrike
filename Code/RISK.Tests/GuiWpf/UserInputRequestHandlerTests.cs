@@ -7,28 +7,28 @@ namespace RISK.Tests.GuiWpf
     [TestFixture]
     public class UserInputRequestHandlerTests
     {
-        private InputRequestHandler _inputRequestHandler;
+        private UserInteractionSynchronizer _userInteractionSynchronizer;
 
         [SetUp]
         public void SetUp()
         {
-            _inputRequestHandler = new InputRequestHandler();
+            _userInteractionSynchronizer = new UserInteractionSynchronizer();
         }
 
         [Test]
         public void Waits_for_input()
         {
-            Task.Run(() => _inputRequestHandler.WaitForInputAvailable());
+            Task.Run(() => _userInteractionSynchronizer.WaitForUserToBeDoneWithInteracting());
 
-            _inputRequestHandler.InputIsAvailable();
+            _userInteractionSynchronizer.UserIsDoneInteracting();
         }
 
         [Test]
         public void Does_not_wait_for_input_when_input_already_available()
         {
-            _inputRequestHandler.InputIsAvailable();
+            _userInteractionSynchronizer.UserIsDoneInteracting();
 
-            _inputRequestHandler.WaitForInputAvailable();
+            _userInteractionSynchronizer.WaitForUserToBeDoneWithInteracting();
         }
     }
 }

@@ -65,7 +65,7 @@ namespace RISK.Tests.Application.Specifications
                     x.For<ICasualtyEvaluator>().Use<CasualtyEvaluator>();
                     x.For<IDiceRoller>().Use<DiceRoller>();
                     x.For<IGameSetupViewModelFactory>().Use<GameSetupViewModelFactory>();
-                    x.For<IInputRequestHandler>().Use<InputRequestHandler>();
+                    x.For<IUserInteractionSynchronizer>().Use<UserInteractionSynchronizer>();
                     x.For<IGameOverEvaluater>().Use<GameOverEvaluater>();
                     x.For<IWindowManager>().Use<WindowManager>();
                     x.For<IGameOverViewModelFactory>().Use<GameOverViewModelFactory>();

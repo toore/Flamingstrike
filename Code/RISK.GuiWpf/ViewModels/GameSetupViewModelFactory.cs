@@ -8,27 +8,27 @@ namespace GuiWpf.ViewModels
     {
         private readonly IWorldMapViewModelFactory _worldMapViewModelFactory;
         private readonly IGameFactoryWorker _gameFactoryWorker;
-        private readonly IInputRequestHandler _inputRequestHandler;
+        private readonly IUserInteractionSynchronizer _userInteractionSynchronizer;
         private readonly IUserNotifier _userNotifier;
         private readonly IResourceManagerWrapper _resourceManagerWrapper;
 
         public GameSetupViewModelFactory(
             IWorldMapViewModelFactory worldMapViewModelFactory, 
             IGameFactoryWorker gameFactoryWorker, 
-            IInputRequestHandler inputRequestHandler, 
+            IUserInteractionSynchronizer userInteractionSynchronizer, 
             IUserNotifier userNotifier, 
             IResourceManagerWrapper resourceManagerWrapper)
         {
             _worldMapViewModelFactory = worldMapViewModelFactory;
             _gameFactoryWorker = gameFactoryWorker;
-            _inputRequestHandler = inputRequestHandler;
+            _userInteractionSynchronizer = userInteractionSynchronizer;
             _userNotifier = userNotifier;
             _resourceManagerWrapper = resourceManagerWrapper;
         }
 
         public IGameSetupViewModel Create(IGameStateConductor gameStateConductor)
         {
-            return new GameSetupViewModel(_worldMapViewModelFactory, _gameFactoryWorker, gameStateConductor, _inputRequestHandler, _userNotifier, _resourceManagerWrapper);
+            return new GameSetupViewModel(_worldMapViewModelFactory, _gameFactoryWorker, gameStateConductor, _userInteractionSynchronizer, _userNotifier, _resourceManagerWrapper);
         }
     }
 }
