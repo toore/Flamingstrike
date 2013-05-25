@@ -162,6 +162,9 @@
   <data name="EGYPT" xml:space="preserve">
     <value>Egypt</value>
   </data>
+  <data name="END_GAME" xml:space="preserve">
+    <value>End game</value>
+  </data>
   <data name="GAME_OVER" xml:space="preserve">
     <value>Game Over</value>
   </data>
@@ -206,6 +209,9 @@
   </data>
   <data name="NEW_GUINEA" xml:space="preserve">
     <value>New Guinea</value>
+  </data>
+  <data name="NO" xml:space="preserve">
+    <value>No</value>
   </data>
   <data name="NORTHERN_EUROPE" xml:space="preserve">
     <value>Northern Europe</value>
@@ -266,5 +272,8 @@
   </data>
   <data name="YAKUTSK" xml:space="preserve">
     <value>Yakutsk</value>
+  </data>
+  <data name="YES" xml:space="preserve">
+    <value>Yes</value>
   </data>
 </root>

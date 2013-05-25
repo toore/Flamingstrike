@@ -196,6 +196,15 @@ namespace GuiWpf.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to End game.
+        /// </summary>
+        internal static string END_GAME {
+            get {
+                return ResourceManager.GetString("END_GAME", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Game Over.
         /// </summary>
         internal static string GAME_OVER {
@@ -327,6 +336,15 @@ namespace GuiWpf.Properties {
         internal static string NEW_GUINEA {
             get {
                 return ResourceManager.GetString("NEW_GUINEA", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No.
+        /// </summary>
+        internal static string NO {
+            get {
+                return ResourceManager.GetString("NO", resourceCulture);
             }
         }
         
@@ -507,6 +525,15 @@ namespace GuiWpf.Properties {
         internal static string YAKUTSK {
             get {
                 return ResourceManager.GetString("YAKUTSK", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Yes.
+        /// </summary>
+        internal static string YES {
+            get {
+                return ResourceManager.GetString("YES", resourceCulture);
             }
         }
     }
