@@ -1,7 +1,7 @@
 ﻿namespace GuiWpf.ViewModels
 {
-    public interface IConfirmViewModelFactory 
+    public interface IConfirmViewModelFactory
     {
-        ConfirmViewModel Create(string message);
+        ConfirmViewModel Create(string message, string confirmText = null, string abortText = null);
     }
 }

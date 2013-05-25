@@ -103,7 +103,7 @@
     <Compile Include="GuiWpf\TerritoryTextViewModelFactoryTests.cs" />
     <Compile Include="GuiWpf\UserInputRequestHandlerTests.cs" />
     <Compile Include="NSpecDebuggerShim.cs" />
-    <Compile Include="Views\ConfirmViewModelTests.cs" />
+    <Compile Include="Views\ConfirmViewModelFactoryTests.cs" />
     <Compile Include="Views\UserNotifierTests.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
