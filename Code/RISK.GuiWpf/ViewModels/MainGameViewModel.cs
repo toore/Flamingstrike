@@ -9,7 +9,7 @@ using RISK.Domain.Repositories;
 
 namespace GuiWpf.ViewModels
 {
-    public class MainGameViewModel : ViewModelBase, IMainGameViewModel
+    public class MainGameViewModel : ViewModelBase, IMainGameViewModel, IHaveDisplayName
     {
         private readonly IGameSettingsViewModel _gameSettingsViewModel;
         private readonly IGameboardViewModelFactory _gameboardViewModelFactory;
@@ -24,6 +24,12 @@ namespace GuiWpf.ViewModels
             _gameSetupViewModelFactory = gameSetupViewModelFactory;
 
             MainViewModel = _gameSettingsViewModel;
+        }
+
+        public string DisplayName
+        {
+            get { return "CONQUER THE WORLD"; }
+            set { }
         }
 
         public void Handle(GameSetupMessage message)
