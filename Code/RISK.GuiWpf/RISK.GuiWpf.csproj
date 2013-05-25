@@ -84,6 +84,7 @@
     <Compile Include="Views\ConfirmView.xaml.cs">
       <DependentUpon>ConfirmView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\ConfirmViewModelTestDataFactory.cs" />
     <Compile Include="Views\GameOverViewModelTestDataFactory.cs" />
     <Compile Include="WpfExtensions\GetString.cs" />
     <Compile Include="Infrastructure\HandleInterceptor.cs" />
