@@ -39,7 +39,7 @@ namespace RISK.Tests.Views
         [Test]
         public void Initialize_confirm_and_abort_texts()
         {
-            var confirmViewModel = Create(null, "yes", "no");
+            var confirmViewModel = Create(null, null,  "yes", "no");
 
             confirmViewModel.ConfirmText.Should().Be("yes");
             confirmViewModel.AbortText.Should().Be("no");
@@ -65,11 +65,19 @@ namespace RISK.Tests.Views
             _screenService.Received(1).Cancel(confirmViewModel);
         }
 
-        public ConfirmViewModel Create(string message, string confirmText = null, string abortText = null)
+        [Test]
+        public void Sets_display_name()
+        {
+            var confirmViewModel = Create(null, "display name");
+
+            confirmViewModel.DisplayName.Should().Be("display name");
+        }
+
+        public ConfirmViewModel Create(string message, string displayName = null, string confirmText = null, string abortText = null)
         {
             var factory = new ConfirmViewModelFactory(_screenService, _resourceManagerWrapper);
 
-            return factory.Create(message, confirmText, abortText);
+            return factory.Create(message, displayName, confirmText, abortText);
         }
     }
 }

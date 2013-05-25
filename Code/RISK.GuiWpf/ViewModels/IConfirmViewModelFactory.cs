@@ -2,6 +2,6 @@
 {
     public interface IConfirmViewModelFactory
     {
-        ConfirmViewModel Create(string message, string confirmText = null, string abortText = null);
+        ConfirmViewModel Create(string message, string displayName = "", string confirmText = null, string abortText = null);
     }
 }

@@ -13,7 +13,7 @@ namespace GuiWpf.ViewModels
             _resourceManagerWrapper = resourceManagerWrapper;
         }
 
-        public ConfirmViewModel Create(string message, string confirmText, string abortText)
+        public ConfirmViewModel Create(string message, string displayName, string confirmText, string abortText)
         {
             if (confirmText == null)
             {
@@ -28,6 +28,7 @@ namespace GuiWpf.ViewModels
             return new ConfirmViewModel(_screenService)
                 {
                     Message = message,
+                    DisplayName = displayName,
                     ConfirmText = confirmText,
                     AbortText = abortText
                 };
