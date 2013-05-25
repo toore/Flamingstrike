@@ -1,9 +1,8 @@
 ﻿using Caliburn.Micro;
-using GuiWpf.ViewModels.Setup;
 
 namespace GuiWpf.ViewModels
 {
-    public interface IMainGameViewModel : IGameStateConductor, IHandle<GameSetupMessage>
+    public interface IMainGameViewModel : IGameStateConductor, IHandle<GameSetupMessage>, IHandle<NewGameMessage>
     {
         IMainViewModel MainViewModel { get; set; }
     }

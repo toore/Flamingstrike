@@ -11,19 +11,19 @@ namespace GuiWpf.ViewModels
 {
     public class MainGameViewModel : ViewModelBase, IMainGameViewModel, IHaveDisplayName
     {
-        private readonly IGameSettingsViewModel _gameSettingsViewModel;
+        private readonly IGameSettingsViewModelFactory _gameSettingsViewModelFactory;
         private readonly IGameboardViewModelFactory _gameboardViewModelFactory;
         private readonly IPlayerRepository _playerRepository;
         private readonly IGameSetupViewModelFactory _gameSetupViewModelFactory;
 
-        public MainGameViewModel(IGameSettingsViewModel gameSettingsViewModel, IGameboardViewModelFactory gameboardViewModelFactory, IPlayerRepository playerRepository, IGameSetupViewModelFactory gameSetupViewModelFactory)
+        public MainGameViewModel(IGameSettingsViewModelFactory gameSettingsViewModelFactory, IGameboardViewModelFactory gameboardViewModelFactory, IPlayerRepository playerRepository, IGameSetupViewModelFactory gameSetupViewModelFactory)
         {
-            _gameSettingsViewModel = gameSettingsViewModel;
+            _gameSettingsViewModelFactory = gameSettingsViewModelFactory;
             _gameboardViewModelFactory = gameboardViewModelFactory;
             _playerRepository = playerRepository;
             _gameSetupViewModelFactory = gameSetupViewModelFactory;
 
-            MainViewModel = _gameSettingsViewModel;
+            StartNewGame();
         }
 
         public string DisplayName
@@ -36,6 +36,11 @@ namespace GuiWpf.ViewModels
         {
             StorePlayersInRepository(message.Players);
 
+            StartGame();
+        }
+
+        public void Handle(NewGameMessage message)
+        {
             StartNewGame();
         }
 
@@ -45,6 +50,11 @@ namespace GuiWpf.ViewModels
         }
 
         private void StartNewGame()
+        {
+            MainViewModel = _gameSettingsViewModelFactory.Create();
+        }
+
+        private void StartGame()
         {
             MainViewModel = _gameSetupViewModelFactory.Create(this);
         }

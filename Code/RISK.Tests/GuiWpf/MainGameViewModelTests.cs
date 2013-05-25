@@ -13,35 +13,27 @@ namespace RISK.Tests.GuiWpf
     [TestFixture]
     public class MainGameViewModelTests
     {
-        private MainGameViewModel _mainGameViewModel;
-        private IGameSettingsViewModel _gameSettingsViewModel;
+        private IGameSettingsViewModelFactory _gameSettingsViewModelFactory;
         private IGameboardViewModelFactory _gameboardViewModelFactory;
         private IPlayerRepository _playerRepository;
         private IGameSetupViewModelFactory _gameSetupViewModelFactory;
-        private GameSetupMessage _gameSetupMessage;
-        private IGameSetupViewModel _gameSetupViewModel;
 
         [SetUp]
         public void SetUp()
         {
-            _gameSettingsViewModel = Substitute.For<IGameSettingsViewModel>();
+            _gameSettingsViewModelFactory = Substitute.For<IGameSettingsViewModelFactory>();
             _gameboardViewModelFactory = Substitute.For<IGameboardViewModelFactory>();
             _playerRepository = Substitute.For<IPlayerRepository>();
             _gameSetupViewModelFactory = Substitute.For<IGameSetupViewModelFactory>();
-
-            _gameSetupViewModel = Substitute.For<IGameSetupViewModel>();
-
-            _mainGameViewModel = new MainGameViewModel(_gameSettingsViewModel, _gameboardViewModelFactory, _playerRepository, _gameSetupViewModelFactory);
-
-            _gameSetupViewModelFactory.Create(_mainGameViewModel).Returns(_gameSetupViewModel);
-
-            _gameSetupMessage = new GameSetupMessage { Players = new IPlayer[] { } };
         }
 
         [Test]
         public void Initialize_main_view_to_setup()
         {
-            _mainGameViewModel.MainViewModel.Should().Be(_gameSettingsViewModel);
+            var gameSettingsViewModel = Substitute.For<IGameSettingsViewModel>();
+            _gameSettingsViewModelFactory.Create().Returns(gameSettingsViewModel);
+
+            Create().MainViewModel.Should().Be(gameSettingsViewModel);
         }
 
         [Test]
@@ -58,23 +50,43 @@ namespace RISK.Tests.GuiWpf
                         }
                 };
 
-            _mainGameViewModel.Handle(gameSetupMessage);
+            Create().Handle(gameSetupMessage);
 
             _playerRepository.Received().Add(player1);
             _playerRepository.Received().Add(player2);
         }
 
         [Test]
-        public void Game_setup_message_starts_new_game_view()
+        public void Game_setup_message_starts_game()
         {
-            _mainGameViewModel.MonitorEvents();
+            var mainGameViewModel = Create();
+            mainGameViewModel.MonitorEvents();
             var gameSetupviewModel = Substitute.For<IGameSetupViewModel>();
-            _gameSetupViewModelFactory.Create(_mainGameViewModel).Returns(gameSetupviewModel);
+            _gameSetupViewModelFactory.Create(mainGameViewModel).Returns(gameSetupviewModel);
 
-            _mainGameViewModel.Handle(_gameSetupMessage);
+            mainGameViewModel.Handle(new GameSetupMessage { Players = new IPlayer[] { } });
 
-            _mainGameViewModel.MainViewModel.Should().Be(gameSetupviewModel);
-            _mainGameViewModel.ShouldRaisePropertyChangeFor(x => x.MainViewModel);
+            mainGameViewModel.MainViewModel.Should().Be(gameSetupviewModel);
+            mainGameViewModel.ShouldRaisePropertyChangeFor(x => x.MainViewModel);
+        }
+
+        [Test]
+        public void New_game_message_starts_new_game()
+        {
+            var startingGameSettingsViewModel = Substitute.For<IGameSettingsViewModel>();
+            var newGameSettingsViewModel = Substitute.For<IGameSettingsViewModel>();
+            _gameSettingsViewModelFactory.Create().Returns(startingGameSettingsViewModel, newGameSettingsViewModel);
+            var mainGameViewModel = Create();
+
+            mainGameViewModel.Handle(new NewGameMessage());
+
+            mainGameViewModel.MainViewModel.Should().Be(newGameSettingsViewModel);
+        }
+
+        private MainGameViewModel Create()
+        {
+            return new MainGameViewModel(_gameSettingsViewModelFactory, _gameboardViewModelFactory, _playerRepository, _gameSetupViewModelFactory);
         }
     }
+
 }

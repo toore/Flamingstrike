@@ -81,6 +81,8 @@
     <Compile Include="ViewModels\IGameOverViewModel.cs" />
     <Compile Include="Services\ScreenService.cs" />
     <Compile Include="Services\IDialogManager.cs" />
+    <Compile Include="ViewModels\NewGameMessage.cs" />
+    <Compile Include="ViewModels\Settings\GameSettingsViewModelFactory.cs" />
     <Compile Include="Views\ConfirmView.xaml.cs">
       <DependentUpon>ConfirmView.xaml</DependentUpon>
     </Compile>
@@ -108,7 +110,7 @@
     <Compile Include="ViewModels\Setup\GameFactory.cs" />
     <Compile Include="ViewModels\Gameplay\Map\ITerritoryTextViewModel.cs" />
     <Compile Include="ViewModels\Gameplay\Map\WorldMapViewModelsExtensions.cs" />
-    <Compile Include="ViewModels\Setup\GameSetupMessage.cs" />
+    <Compile Include="ViewModels\GameSetupMessage.cs" />
     <Compile Include="ViewModels\GameSetupViewModelFactory.cs" />
     <Compile Include="ViewModels\Setup\IGameFactoryWorker.cs" />
     <Compile Include="ViewModels\Setup\IGameSetupViewModel.cs" />
