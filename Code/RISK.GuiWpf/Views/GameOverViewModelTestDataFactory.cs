@@ -1,7 +1,7 @@
 ﻿using GuiWpf.ViewModels;
 using RISK.Domain.Entities;
 
-namespace GuiWpf.Views.Test
+namespace GuiWpf.Views
 {
     public class GameOverViewModelTestDataFactory
     {

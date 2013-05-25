@@ -1,20 +1,21 @@
 using System.Linq;
-using GuiWpf.Infrastructure;
 using GuiWpf.Services;
 using GuiWpf.Territories;
+using GuiWpf.ViewModels;
+using GuiWpf.ViewModels.Gameplay;
 using GuiWpf.ViewModels.Gameplay.Map;
 using RISK.Domain.Entities;
 using RISK.Domain.GamePlaying;
 using RISK.Domain.GamePlaying.Setup;
 using RISK.Domain.Repositories;
 
-namespace GuiWpf.ViewModels.Gameplay
+namespace GuiWpf.Views.WorldMapViews
 {
-    public class GameboardViewModelTestData : ILocationSelector
+    public class GameboardViewModelTestDataFactory : ILocationSelector
     {
         public static GameboardViewModel ViewModel
         {
-            get { return new GameboardViewModelTestData().Create(); }
+            get { return new GameboardViewModelTestDataFactory().Create(); }
         }
 
         private GameboardViewModel Create()
@@ -42,7 +43,7 @@ namespace GuiWpf.ViewModels.Gameplay
             var alternateGameSetup = new AlternateGameSetup(playerRepository, locationProvider, new RandomSorter(new RandomWrapper()), new WorldMapFactory(locationProvider), new InitialArmyCountProvider());
             ITurnFactory turnFactory = new TurnFactory(null, null);
             var game = new Game(turnFactory, playerRepository, alternateGameSetup, this);
-            var gameboardViewModel = new GameboardViewModel(game, locationProvider, worldMapViewModelFactory, territoryViewModelUpdater, new FakeGameOverEvaluater(), null, new GameOverViewModelFactory(), null, null);
+            var gameboardViewModel = new GameboardViewModel(game, locationProvider, worldMapViewModelFactory, territoryViewModelUpdater, new FakeGameOverEvaluater(), null, new GameOverViewModelFactory(), new ResourceManagerWrapper(), null);
 
             return gameboardViewModel;
         }
@@ -52,7 +53,7 @@ namespace GuiWpf.ViewModels.Gameplay
             return locationSelectorParameter.AvailableLocations.First();
         }
 
-        class FakeGameOverEvaluater : IGameOverEvaluater
+        private class FakeGameOverEvaluater : IGameOverEvaluater
         {
             public bool IsGameOver(IWorldMap worldMap)
             {

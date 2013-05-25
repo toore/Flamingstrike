@@ -11,7 +11,7 @@
     xmlns:Setup2="clr-namespace:GuiWpf.ViewModels.Setup"
     mc:Ignorable="d"
     d:DesignHeight="300" d:DesignWidth="300"
-    d:DataContext="{Binding Source={x:Static Views:MainGameViewTestDataFactory.ViewModel}}">
+    d:DataContext="{Binding Source={x:Static Views:MainGameViewModelTestDataFactory.ViewModel}}">
 
     <UserControl.Resources>
         <ResourceDictionary>

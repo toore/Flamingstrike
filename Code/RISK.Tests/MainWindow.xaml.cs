@@ -1,4 +1,5 @@
 ﻿using GuiWpf.ViewModels.Gameplay;
+using GuiWpf.Views.WorldMapViews;
 
 namespace RISK.Tests
 {
@@ -8,7 +9,7 @@ namespace RISK.Tests
         {
             InitializeComponent();
 
-            DataContext = GameboardViewModelTestData.ViewModel;
+            DataContext = GameboardViewModelTestDataFactory.ViewModel;
         }
     }
 }

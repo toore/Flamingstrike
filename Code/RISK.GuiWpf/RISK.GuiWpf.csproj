@@ -84,7 +84,7 @@
     <Compile Include="Views\ConfirmView.xaml.cs">
       <DependentUpon>ConfirmView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Test\GameOverViewModelTestDataFactory.cs" />
+    <Compile Include="Views\GameOverViewModelTestDataFactory.cs" />
     <Compile Include="WpfExtensions\GetString.cs" />
     <Compile Include="Infrastructure\HandleInterceptor.cs" />
     <Compile Include="Infrastructure\PluginConfiguration.cs" />
@@ -146,7 +146,7 @@
       <DependentUpon>GameSettingsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\MainBootstrapper.cs" />
-    <Compile Include="ViewModels\Gameplay\GameboardViewModelTestData.cs" />
+    <Compile Include="Views\WorldMapViews\GameboardViewModelTestDataFactory.cs" />
     <Compile Include="Territories\AfhanistanGui.cs" />
     <Compile Include="Territories\AlbertaGui.cs" />
     <Compile Include="Territories\ArgentinaGui.cs" />
@@ -168,7 +168,7 @@
     <Compile Include="Views\MainGameView.xaml.cs">
       <DependentUpon>MainGameView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\MainGameViewTestDataFactory.cs" />
+    <Compile Include="Views\MainGameViewModelTestDataFactory.cs" />
     <Compile Include="ViewModels\Gameplay\Map\ITerritoryTextViewModelFactory.cs" />
     <Compile Include="ViewModels\Gameplay\Map\IWorldMapViewModelFactory.cs" />
     <Compile Include="ViewModels\Gameplay\Map\IWorldMapViewModel.cs" />
