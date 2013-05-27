@@ -4,6 +4,7 @@ using GuiWpf.Territories;
 using GuiWpf.ViewModels;
 using GuiWpf.ViewModels.Gameplay;
 using GuiWpf.ViewModels.Gameplay.Map;
+using RISK.Base.Extensions;
 using RISK.Domain.Entities;
 using RISK.Domain.GamePlaying;
 using RISK.Domain.GamePlaying.Setup;
@@ -37,12 +38,12 @@ namespace GuiWpf.Views.WorldMapViews
             var textViewModelFactory = new TerritoryTextViewModelFactory(territoryLayoutInformationFactory);
             var worldMapViewModelFactory = new WorldMapViewModelFactory(locationProvider, territoryViewModelFactory, textViewModelFactory);
 
-            var playerRepository = new PlayerRepository();
-            playerRepository.Add(humanPlayer);
+            var playerProvider = new PlayerProvider();
+            playerProvider.All = humanPlayer.AsList();
 
-            var alternateGameSetup = new AlternateGameSetup(playerRepository, locationProvider, new RandomSorter(new RandomWrapper()), new WorldMapFactory(locationProvider), new InitialArmyCountProvider());
+            var alternateGameSetup = new AlternateGameSetup(playerProvider, locationProvider, new RandomSorter(new RandomWrapper()), new WorldMapFactory(locationProvider), new InitialArmyCountProvider());
             ITurnFactory turnFactory = new TurnFactory(null, null);
-            var game = new Game(turnFactory, playerRepository, alternateGameSetup, this);
+            var game = new Game(turnFactory, playerProvider, alternateGameSetup, this);
             var gameboardViewModel = new GameboardViewModel(game, locationProvider, worldMapViewModelFactory, territoryViewModelUpdater, new FakeGameOverEvaluater(), null, new GameOverViewModelFactory(), new ResourceManagerWrapper(), null, null);
 
             return gameboardViewModel;

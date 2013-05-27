@@ -16,7 +16,7 @@ namespace RISK.Tests.GuiWpf
     {
         private IGameSettingsViewModelFactory _gameSettingsViewModelFactory;
         private IGameboardViewModelFactory _gameboardViewModelFactory;
-        private IPlayerRepository _playerRepository;
+        private IPlayerProvider _playerProvider;
         private IGameSetupViewModelFactory _gameSetupViewModelFactory;
 
         [SetUp]
@@ -24,7 +24,7 @@ namespace RISK.Tests.GuiWpf
         {
             _gameSettingsViewModelFactory = Substitute.For<IGameSettingsViewModelFactory>();
             _gameboardViewModelFactory = Substitute.For<IGameboardViewModelFactory>();
-            _playerRepository = Substitute.For<IPlayerRepository>();
+            _playerProvider = Substitute.For<IPlayerProvider>();
             _gameSetupViewModelFactory = Substitute.For<IGameSetupViewModelFactory>();
         }
 
@@ -53,8 +53,7 @@ namespace RISK.Tests.GuiWpf
 
             Create().Handle(gameSetupMessage);
 
-            _playerRepository.Received().Add(player1);
-            _playerRepository.Received().Add(player2);
+            _playerProvider.All = new[] { player1, player2 };
         }
 
         [Test]
@@ -86,7 +85,7 @@ namespace RISK.Tests.GuiWpf
 
         private MainGameViewModel Create()
         {
-            return new MainGameViewModel(_gameSettingsViewModelFactory, _gameboardViewModelFactory, _playerRepository, _gameSetupViewModelFactory);
+            return new MainGameViewModel(_gameSettingsViewModelFactory, _gameboardViewModelFactory, _playerProvider, _gameSetupViewModelFactory);
         }
     }
 

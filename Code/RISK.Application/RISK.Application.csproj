@@ -95,8 +95,8 @@
     <Compile Include="Repositories\IContinentProvider.cs" />
     <Compile Include="GamePlaying\IGame.cs" />
     <Compile Include="GamePlaying\ITurn.cs" />
-    <Compile Include="Repositories\IPlayerRepository.cs" />
-    <Compile Include="Repositories\PlayerRepository.cs" />
+    <Compile Include="Repositories\IPlayerProvider.cs" />
+    <Compile Include="Repositories\PlayerProvider.cs" />
     <Compile Include="GamePlaying\Turn.cs" />
     <Compile Include="GamePlaying\WorldMap.cs" />
     <Compile Include="GamePlaying\Game.cs" />

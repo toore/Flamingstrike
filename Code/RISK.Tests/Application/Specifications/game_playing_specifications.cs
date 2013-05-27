@@ -28,7 +28,7 @@ namespace RISK.Tests.Application.Specifications
         private IPlayer _player2;
         private IMainGameViewModel _mainGameViewModel;
         private IWorldMap _worldMap;
-        private PlayerRepository _playerRepository;
+        private PlayerProvider _playerProvider;
         private IWindowManager _windowManager;
         private IGameboardViewModel _gameboardViewModel;
         private GameOverViewModel _gameOverViewModel;
@@ -93,8 +93,8 @@ namespace RISK.Tests.Application.Specifications
 
                     SelectTwoHumanPlayersAndConfirm();
 
-                    _player1 = _playerRepository.GetAll().First();
-                    _player2 = _playerRepository.GetAll().Second();
+                    _player1 = _playerProvider.All.First();
+                    _player2 = _playerProvider.All.Second();
                 };
 
             it["game board is shown"] = () => _mainGameViewModel.MainViewModel.Should().BeOfType<GameSetupViewModel>();
@@ -176,8 +176,7 @@ namespace RISK.Tests.Application.Specifications
         {
             _player1 = new HumanPlayer("Player 1");
             _player2 = new HumanPlayer("Player 2");
-            _playerRepository.Add(_player1);
-            _playerRepository.Add(_player2);
+            _playerProvider.All = new[] { _player1, _player2 };
         }
 
         private void InjectGame()
@@ -185,7 +184,7 @@ namespace RISK.Tests.Application.Specifications
             var locationSelector = Substitute.For<ILocationSelector>();
             var alternateGameSetup = Substitute.For<IAlternateGameSetup>();
             alternateGameSetup.Initialize(locationSelector).Returns(_worldMap);
-            var game = new Game(ObjectFactory.GetInstance<ITurnFactory>(), _playerRepository, alternateGameSetup, locationSelector);
+            var game = new Game(ObjectFactory.GetInstance<ITurnFactory>(), _playerProvider, alternateGameSetup, locationSelector);
             ObjectFactory.Inject<IGame>(game);
         }
 
@@ -271,8 +270,8 @@ namespace RISK.Tests.Application.Specifications
 
         private void InjectPlayerRepository()
         {
-            _playerRepository = new PlayerRepository();
-            ObjectFactory.Inject<IPlayerRepository>(_playerRepository);
+            _playerProvider = new PlayerProvider();
+            ObjectFactory.Inject<IPlayerProvider>(_playerProvider);
         }
 
         private void InjectLocationProvider()

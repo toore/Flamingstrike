@@ -3,9 +3,8 @@ using RISK.Domain.Entities;
 
 namespace RISK.Domain.Repositories
 {
-    public interface IPlayerRepository
+    public class PlayerProvider : IPlayerProvider
     {
-        IEnumerable<IPlayer> GetAll();
-        void Add(IPlayer player);
+        public IEnumerable<IPlayer> All { get; set; }
     }
 }

@@ -14,7 +14,7 @@ namespace RISK.Tests.Application.Gameplay.Setup
     public class AlternateGameSetupTests
     {
         private AlternateGameSetup _alternateGameSetup;
-        private IPlayerRepository _playerRepository;
+        private IPlayerProvider _playerProvider;
         private ILocationProvider _locationProvider;
         private ILocation _location1;
         private ILocation _location2;
@@ -33,7 +33,7 @@ namespace RISK.Tests.Application.Gameplay.Setup
         [SetUp]
         public void SetUp()
         {
-            _playerRepository = Substitute.For<IPlayerRepository>();
+            _playerProvider = Substitute.For<IPlayerProvider>();
             _locationProvider = Substitute.For<ILocationProvider>();
             _randomSorter = Substitute.For<IRandomSorter>();
             _worldMapFactory = Substitute.For<IWorldMapFactory>();
@@ -44,7 +44,7 @@ namespace RISK.Tests.Application.Gameplay.Setup
             var playerInRepository1 = Substitute.For<IPlayer>();
             var playerInRepository2 = Substitute.For<IPlayer>();
             var playersInRepository = new[] { playerInRepository1, playerInRepository2 };
-            _playerRepository.GetAll().Returns(playersInRepository);
+            _playerProvider.All.Returns(playersInRepository);
 
             _location1 = Substitute.For<ILocation>();
             _location2 = Substitute.For<ILocation>();
@@ -64,7 +64,7 @@ namespace RISK.Tests.Application.Gameplay.Setup
 
             _initialArmyCountProvider.Get(2).Returns(3);
 
-            _alternateGameSetup = new AlternateGameSetup(_playerRepository, _locationProvider, _randomSorter, _worldMapFactory, _initialArmyCountProvider);
+            _alternateGameSetup = new AlternateGameSetup(_playerProvider, _locationProvider, _randomSorter, _worldMapFactory, _initialArmyCountProvider);
 
             _randomSorter.Sort(Arg.Is<IEnumerable<IPlayer>>(x => x.SequenceEqual(playersInRepository))).Returns(new[] { _player1, _player2 });
             _randomSorter.Sort(locations).Returns(new[] { _location3, _location2, _location1 });

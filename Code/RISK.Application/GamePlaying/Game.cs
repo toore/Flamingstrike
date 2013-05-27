@@ -14,11 +14,10 @@ namespace RISK.Domain.GamePlaying
         private readonly IList<IPlayer> _players;
         private IPlayer _currentPlayer;
 
-        public Game(ITurnFactory turnFactory, IPlayerRepository playerRepository, IAlternateGameSetup alternateGameSetup, ILocationSelector locationSelector)
+        public Game(ITurnFactory turnFactory, IPlayerProvider playerProvider, IAlternateGameSetup alternateGameSetup, ILocationSelector locationSelector)
         {
             _turnFactory = turnFactory;
-            _players = playerRepository.GetAll()
-                .ToList();
+            _players = playerProvider.All.ToList();
 
             _worldMap = alternateGameSetup.Initialize(locationSelector);
         }

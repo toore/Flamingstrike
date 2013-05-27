@@ -16,7 +16,7 @@ namespace RISK.Domain.GamePlaying.Setup
 
     public class AlternateGameSetup : IAlternateGameSetup
     {
-        private readonly IPlayerRepository _playerRepository;
+        private readonly IPlayerProvider _playerProvider;
         private readonly ILocationProvider _locationProvider;
         private readonly IRandomSorter _randomSorter;
         private readonly IWorldMapFactory _worldMapFactory;
@@ -24,13 +24,13 @@ namespace RISK.Domain.GamePlaying.Setup
         private ILocationSelector _locationSelector;
 
         public AlternateGameSetup(
-            IPlayerRepository playerRepository,
+            IPlayerProvider playerProvider,
             ILocationProvider locationProvider,
             IRandomSorter randomSorter,
             IWorldMapFactory worldMapFactory,
             IInitialArmyCountProvider initialArmyCountProvider)
         {
-            _playerRepository = playerRepository;
+            _playerProvider = playerProvider;
             _locationProvider = locationProvider;
             _randomSorter = randomSorter;
             _worldMapFactory = worldMapFactory;
@@ -41,8 +41,7 @@ namespace RISK.Domain.GamePlaying.Setup
         {
             _locationSelector = locationSelector;
 
-            var players = _playerRepository.GetAll()
-                .ToList();
+            var players = _playerProvider.All.ToList();
             var playersDuringSetup = GetPlayersDuringSetup(players);
 
             var worldMap = CreateWorldMap(playersDuringSetup);
