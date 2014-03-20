@@ -2,8 +2,6 @@
 using Caliburn.Micro;
 using FluentAssertions;
 using GuiWpf.Infrastructure;
-using GuiWpf.Services;
-using GuiWpf.Territories;
 using GuiWpf.ViewModels;
 using GuiWpf.ViewModels.Gameplay;
 using GuiWpf.ViewModels.Gameplay.Map;
@@ -17,7 +15,6 @@ using RISK.Domain.GamePlaying.DiceAndCalculation;
 using RISK.Domain.GamePlaying.Setup;
 using RISK.Domain.Repositories;
 using StructureMap;
-using WindowManager = Caliburn.Micro.WindowManager;
 
 namespace RISK.Tests.Application.Specifications
 {
@@ -35,132 +32,89 @@ namespace RISK.Tests.Application.Specifications
 
         public void before_all()
         {
-            ObjectFactory.Configure(x =>
-                {
-                    x.For<IMainGameViewModel>().Use<MainGameViewModel>();
-                    x.For<IGameSettingsViewModel>().Use<GameSettingsViewModel>();
-                    x.For<IPlayerFactory>().Use<PlayerFactory>();
-                    x.For<IPlayerTypes>().Use<PlayerTypes>();
-                    x.For<IGameEventAggregator>().Use<GameEventAggregator>();
-                    x.For<IGameboardViewModelFactory>().Use<GameboardViewModelFactory>();
-                    x.For<IGameFactoryWorker>().Use<GameFactoryWorker>();
-                    x.For<IGameFactory>().Use<GameFactory>();
-                    x.For<ITurnFactory>().Use<TurnFactory>();
-                    x.For<IAlternateGameSetup>().Use<AlternateGameSetup>();
-                    x.For<IRandomSorter>().Use<RandomSorter>();
-                    x.For<IRandomWrapper>().Use<RandomWrapper>();
-                    x.For<IMainGameViewModel>().Use<MainGameViewModel>();
-                    x.For<IWorldMapFactory>().Use<WorldMapFactory>();
-                    x.For<IWorldMapViewModelFactory>().Use<WorldMapViewModelFactory>();
-                    x.For<ITerritoryViewModelFactory>().Use<TerritoryViewModelFactory>();
-                    x.For<ITerritoryViewModelUpdater>().Use<TerritoryViewModelUpdater>();
-                    x.For<ITerritoryColorsFactory>().Use<TerritoryColorsFactory>();
-                    x.For<IColorService>().Use<ColorService>();
-                    x.For<ITerritoryGuiFactory>().Use<TerritoryGuiFactory>();
-                    x.For<ITerritoryTextViewModelFactory>().Use<TerritoryTextViewModelFactory>();
-                    x.For<ICardFactory>().Use<CardFactory>();
-                    x.For<IInitialArmyCountProvider>().Use<InitialArmyCountProvider>();
-                    x.For<IBattleCalculator>().Use<BattleCalculator>();
-                    x.For<IDices>().Use<Dices>();
-                    x.For<ICasualtyEvaluator>().Use<CasualtyEvaluator>();
-                    x.For<IDiceRoller>().Use<DiceRoller>();
-                    x.For<IGameSettingsViewModelFactory>().Use<GameSettingsViewModelFactory>();
-                    x.For<IGameSetupViewModelFactory>().Use<GameSetupViewModelFactory>();
-                    x.For<IUserInteractionSynchronizer>().Use<UserInteractionSynchronizer>();
-                    x.For<IGameOverEvaluater>().Use<GameOverEvaluater>();
-                    x.For<IWindowManager>().Use<WindowManager>();
-                    x.For<IGameOverViewModelFactory>().Use<GameOverViewModelFactory>();
-                    x.For<IGameboardViewModel>().Use<GameboardViewModel>();
-                    x.For<IUserNotifier>().Use<UserNotifier>();
-                    x.For<IConfirmViewModelFactory>().Use<ConfirmViewModelFactory>();
-                    x.For<IScreenService>().Use<ScreenService>();
-                    x.For<IResourceManagerWrapper>().Use<ResourceManagerWrapper>();
-                    x.For<IDialogManager>().Use<DialogManager>();
-
-                    x.RegisterInterceptor(new HandleInterceptor<IGameEventAggregator>());
-                });
+            new PluginConfiguration().Configure();
         }
 
         public void game_is_setup_and_started()
         {
             before = () =>
-                {
-                    InjectPlayerRepository();
-                    InjectLocationProvider();
-                    InjectWorldMapFactory();
+            {
+                InjectPlayerRepository();
+                InjectLocationProvider();
+                InjectWorldMapFactory();
 
-                    _mainGameViewModel = ObjectFactory.GetInstance<IMainGameViewModel>();
+                _mainGameViewModel = ObjectFactory.GetInstance<IMainGameViewModel>();
 
-                    SelectTwoHumanPlayersAndConfirm();
+                SelectTwoHumanPlayersAndConfirm();
 
-                    _player1 = _playerProvider.All.First();
-                    _player2 = _playerProvider.All.Second();
-                };
+                _player1 = _playerProvider.All.First();
+                _player2 = _playerProvider.All.Second();
+            };
 
             it["game board is shown"] = () => _mainGameViewModel.MainViewModel.Should().BeOfType<GameSetupViewModel>();
 
             context["Armies are placed"] = () =>
-                {
-                    act = () => PlaceArmies();
-                    it["game board view model should be visible"] = () => _mainGameViewModel.MainViewModel.Should().BeOfType<GameboardViewModel>();
-                };
+            {
+                act = () => PlaceArmies();
+                it["game board view model should be visible"] = () => _mainGameViewModel.MainViewModel.Should().BeOfType<GameboardViewModel>();
+            };
         }
 
         public void selecting_North_Africa_and_attacking_Brazil_and_win_moves_armies_into_territory_and_flags_that_user_should_receive_a_card_when_turn_ends()
         {
             before = () =>
-                {
-                    InjectPlayerRepository();
-                    InjectLocationProvider();
-                    InjectWorldMapFactory();
-                    InjectDiceRollerWithReturningSixFiveFourAndThenFiveForTwoAttacks();
-                    InjectWindowManager();
-                    StubPlayerRepositoryWithTwoHumanPlayers();
-                    InjectGameOverViewModelFactory();
+            {
+                InjectPlayerRepository();
+                InjectLocationProvider();
+                InjectWorldMapFactory();
+                InjectDiceRollerWithReturningSixFiveFourAndThenFiveForTwoAttacks();
+                InjectWindowManager();
+                StubPlayerRepositoryWithTwoHumanPlayers();
+                InjectGameOverViewModelFactory();
 
-                    InjectGame();
+                InjectGame();
 
-                    _gameboardViewModel = ObjectFactory.GetInstance<IGameboardViewModel>();
+                _gameboardViewModel = ObjectFactory.GetInstance<IGameboardViewModel>();
 
-                    PlayerOneOccupiesNorthAfricaWithFiveArmies();
-                    PlayerTwoOccupiesBrazilAndVenezuela();
-                    PlayerOneOccupiesEveryTerritoryExceptBrazilVenezuelaAndNorthAfrica();
-                };
+                PlayerOneOccupiesNorthAfricaWithFiveArmies();
+                PlayerTwoOccupiesBrazilAndVenezuela();
+                PlayerOneOccupiesEveryTerritoryExceptBrazilVenezuelaAndNorthAfrica();
+            };
 
             act = () =>
-                {
-                    ClickOn(_locationProvider.NorthAfrica);
-                    ClickOn(_locationProvider.Brazil);
-                };
+            {
+                ClickOn(_locationProvider.NorthAfrica);
+                ClickOn(_locationProvider.Brazil);
+            };
 
             it["when player 1 attacks Brazil from North Africa"] = () =>
-                {
-                    _worldMap.GetTerritory(_locationProvider.NorthAfrica).Occupant.Should().Be(_player1, "player 1 should occupy North Africa");
-                    _worldMap.GetTerritory(_locationProvider.NorthAfrica).Armies.Should().Be(1, "North Africa should have 1 army");
-                    _worldMap.GetTerritory(_locationProvider.Brazil).Occupant.Should().Be(_player1, "player 1 should occupy Brazil");
-                    GetTerritoryViewModel(_locationProvider.Brazil).IsSelected.Should().BeTrue("selected territory should be Brazil");
-                    _worldMap.GetTerritory(_locationProvider.Brazil).Armies.Should().Be(4, "Brazil should have 4 armies");
-                };
+            {
+                _worldMap.GetTerritory(_locationProvider.NorthAfrica).Occupant.Should().Be(_player1, "player 1 should occupy North Africa");
+                _worldMap.GetTerritory(_locationProvider.NorthAfrica).Armies.Should().Be(1, "North Africa should have 1 army");
+                _worldMap.GetTerritory(_locationProvider.Brazil).Occupant.Should().Be(_player1, "player 1 should occupy Brazil");
+                GetTerritoryViewModel(_locationProvider.Brazil).IsSelected.Should().BeTrue("selected territory should be Brazil");
+                _worldMap.GetTerritory(_locationProvider.Brazil).Armies.Should().Be(4, "Brazil should have 4 armies");
+            };
 
             context["when player 1 turn ends"] = () =>
-                {
-                    act = () => { EndTurn(); };
+            {
+                act = () => { EndTurn(); };
 
-                    it["player 1 should have a card when turn ends"] = () => _player1.Cards.Count().Should().Be(1);
-                };
+                it["player 1 should have a card when turn ends"] = () => _player1.Cards.Count().Should().Be(1);
+            };
 
             context["when player 1 attacks again"] = () =>
+            {
+                act = () => ClickOn(_locationProvider.Venezuela);
+
+                it["player 1 should occupy Venezuela with 3 armies"] = () =>
                 {
-                    act = () => ClickOn(_locationProvider.Venezuela);
+                    _worldMap.GetTerritory(_locationProvider.Venezuela).Occupant.Should().Be(_player1, "player 1 should occupy Venezuela");
+                    _worldMap.GetTerritory(_locationProvider.Venezuela).Armies.Should().Be(3, "Venezuela should have 3 armies");
 
-                    it["player 1 should occupy Venezuela with 3 armies"] = () =>
-                        {
-                            _worldMap.GetTerritory(_locationProvider.Venezuela).Occupant.Should().Be(_player1, "player 1 should occupy Venezuela");
-                            _worldMap.GetTerritory(_locationProvider.Venezuela).Armies.Should().Be(3, "Venezuela should have 3 armies");
-
-                            _windowManager.Received().ShowDialog(_gameOverViewModel);
-                        };
+                    _windowManager.Received().ShowDialog(_gameOverViewModel);
                 };
+            };
         }
 
         private void InjectGameOverViewModelFactory()
@@ -239,20 +193,20 @@ namespace RISK.Tests.Application.Specifications
         private void PlayerOneOccupiesEveryTerritoryExceptBrazilVenezuelaAndNorthAfrica()
         {
             var excludedTerritories = new[]
-                {
-                    _locationProvider.Brazil,
-                    _locationProvider.Venezuela,
-                    _locationProvider.NorthAfrica
-                };
+            {
+                _locationProvider.Brazil,
+                _locationProvider.Venezuela,
+                _locationProvider.NorthAfrica
+            };
 
             _locationProvider.GetAll()
                 .Where(x => !excludedTerritories.Contains(x))
                 .Select(x => _worldMap.GetTerritory(x))
                 .Apply(x =>
-                    {
-                        x.Occupant = _player1;
-                        x.Armies = 1;
-                    });
+                {
+                    x.Occupant = _player1;
+                    x.Armies = 1;
+                });
         }
 
         private void ClickOn(ILocation location)
