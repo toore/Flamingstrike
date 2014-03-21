@@ -6,15 +6,15 @@ using RISK.Domain.GamePlaying.Setup;
 namespace RISK.Tests.Application.Gameplay.Setup
 {
     [TestFixture]
-    public class PlayerDuringSetupExtensionsTests
+    public class SetupArmiesExtensionsTests
     {
         [Test]
         public void Has_armies_left()
         {
-            new List<PlayerDuringSetup>
+            new List<SetupArmies>
                 {
-                    new PlayerDuringSetup(null, 1),
-                    new PlayerDuringSetup(null, 0)
+                    new SetupArmies(null, 1),
+                    new SetupArmies(null, 0)
                 }
                 .AnyArmiesLeft().Should().BeTrue("one player has one army left");
         }
@@ -22,10 +22,10 @@ namespace RISK.Tests.Application.Gameplay.Setup
         [Test]
         public void Do_not_have_armies_left()
         {
-            new List<PlayerDuringSetup>
+            new List<SetupArmies>
                 {
-                    new PlayerDuringSetup(null, 0),
-                    new PlayerDuringSetup(null, 0)
+                    new SetupArmies(null, 0),
+                    new SetupArmies(null, 0)
                 }
                 .AnyArmiesLeft().Should().BeFalse("no player has armies left");
         }

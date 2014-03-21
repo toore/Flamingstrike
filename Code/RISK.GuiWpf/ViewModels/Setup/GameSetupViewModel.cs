@@ -111,9 +111,9 @@ namespace GuiWpf.ViewModels.Setup
 
             WorldMapViewModel = worldMapViewModel;
 
-            Player = _locationSelectorParameter.PlayerDuringSetup.GetInGamePlayer();
+            Player = _locationSelectorParameter.SetupArmies.GetPlayer();
 
-            InformationText = string.Format(Resources.PLACE_ARMY, locationSelectorParameter.PlayerDuringSetup.Armies);
+            InformationText = string.Format(Resources.PLACE_ARMY, locationSelectorParameter.SetupArmies.GetArmies());
         }
 
         private void StartGamePlay(IGame game)

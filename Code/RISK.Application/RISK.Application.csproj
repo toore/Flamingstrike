@@ -82,10 +82,10 @@
     <Compile Include="GamePlaying\ITurnFactory.cs" />
     <Compile Include="GamePlaying\IWorldMapFactory.cs" />
     <Compile Include="GamePlaying\Setup\ILocationSelectorParameter.cs" />
-    <Compile Include="GamePlaying\Setup\PlayerDuringSetup.cs" />
+    <Compile Include="GamePlaying\Setup\SetupArmies.cs" />
     <Compile Include="GamePlaying\RandomSorter.cs" />
     <Compile Include="GamePlaying\RandomWrapper.cs" />
-    <Compile Include="GamePlaying\Setup\PlayerDuringSetupExtensions.cs" />
+    <Compile Include="GamePlaying\Setup\SetupArmiesExtensions.cs" />
     <Compile Include="GamePlaying\Setup\LocationSelectorParameter.cs" />
     <Compile Include="GamePlaying\TurnFactory.cs" />
     <Compile Include="GamePlaying\WorldMapFactory.cs" />

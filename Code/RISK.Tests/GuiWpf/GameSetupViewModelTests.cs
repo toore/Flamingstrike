@@ -45,7 +45,7 @@ namespace RISK.Tests.GuiWpf
             _userInteractionSynchronizer.ClearReceivedCalls();
         }
 
-        private ILocationSelectorParameter StubLocationSelectorParameter(Action<ILocation> selectLocation)
+        private ILocationSelectorParameter StubLocationSelectorParameter(Action<ILocation> selectLocation, int initialArmies = 0)
         {
             var locationSelectorParameter = Substitute.For<ILocationSelectorParameter>();
 
@@ -55,7 +55,7 @@ namespace RISK.Tests.GuiWpf
             _worldMapViewModelFactory.Create(worldMap, selectLocation).ReturnsForAnyArgs(worldMapViewModel);
 
             var player = Substitute.For<IPlayer>();
-            locationSelectorParameter.PlayerDuringSetup = new PlayerDuringSetup(player, 0);
+            locationSelectorParameter.SetupArmies.Returns(new SetupArmies(player, initialArmies));
 
             return locationSelectorParameter;
         }
@@ -115,8 +115,7 @@ namespace RISK.Tests.GuiWpf
         public void Select_location_updates_view_model()
         {
             _gameSetupViewModel.MonitorEvents();
-            var parameter = StubLocationSelectorParameter(_gameSetupViewModel.SelectLocation);
-            parameter.PlayerDuringSetup.Armies = 10;
+            var parameter = StubLocationSelectorParameter(_gameSetupViewModel.SelectLocation, 10);
             _gameSetupViewModel.GetLocationCallback(parameter);
 
             _gameSetupViewModel.SelectLocation(null);
