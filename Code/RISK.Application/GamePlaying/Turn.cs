@@ -67,7 +67,7 @@ namespace RISK.Domain.GamePlaying
             var territoryToAttack = GetTerritory(location);
             var isTerritoryOccupiedByEnemy = territoryToAttack.Occupant != Player;
             var isConnected = SelectedTerritory.Location.Connections.Contains(territoryToAttack.Location);
-            var hasArmiesToAttackWith = SelectedTerritory.HasArmiesToAttackWith();
+            var hasArmiesToAttackWith = SelectedTerritory.HasArmiesAvailableForAttack();
 
             var canAttack = isConnected 
                 && 

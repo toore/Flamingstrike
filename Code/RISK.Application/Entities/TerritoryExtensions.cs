@@ -9,12 +9,12 @@ namespace RISK.Domain.Entities
             return territory.Occupant != null;
         }
 
-        public static bool HasArmiesToAttackWith(this ITerritory territory)
+        public static bool HasArmiesAvailableForAttack(this ITerritory territory)
         {
-            return territory.GetArmiesToAttackWith() > 0;
+            return territory.GetArmiesAvailableForAttack() > 0;
         }
 
-        public static int GetArmiesToAttackWith(this ITerritory territory)
+        public static int GetArmiesAvailableForAttack(this ITerritory territory)
         {
             return Math.Max(territory.Armies - 1, 0);
         }

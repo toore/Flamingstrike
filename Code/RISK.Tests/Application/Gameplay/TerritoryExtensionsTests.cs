@@ -28,7 +28,7 @@ namespace RISK.Tests.Application.Gameplay
         [TestCase(9, 10, TestName = "Ten armies gives nine armies to attack with")]
         public void Get_armies_to_attack_with_should_be_1(int expected, int armies)
         {
-            new Territory(null) { Armies = armies }.GetArmiesToAttackWith().Should().Be(expected);
+            new Territory(null) { Armies = armies }.GetArmiesAvailableForAttack().Should().Be(expected);
         }
 
         [Test]
@@ -37,7 +37,7 @@ namespace RISK.Tests.Application.Gameplay
         [TestCase(true, 10)]
         public void Has_armies_to_attack_with(bool expected, int armies)
         {
-            new Territory(null) { Armies = armies }.HasArmiesToAttackWith().Should().Be(expected);
+            new Territory(null) { Armies = armies }.HasArmiesAvailableForAttack().Should().Be(expected);
         }
     }
 }

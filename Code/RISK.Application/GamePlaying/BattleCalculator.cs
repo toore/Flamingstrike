@@ -14,7 +14,7 @@ namespace RISK.Domain.GamePlaying
 
         public void Attack(ITerritory attacker, ITerritory defender)
         {
-            var diceResult = _dices.Roll(attacker.GetArmiesToAttackWith(), defender.Armies);
+            var diceResult = _dices.Roll(attacker.GetArmiesAvailableForAttack(), defender.Armies);
 
             attacker.Armies -= diceResult.AttackerCasualties;
             defender.Armies -= diceResult.DefenderCasualties;
