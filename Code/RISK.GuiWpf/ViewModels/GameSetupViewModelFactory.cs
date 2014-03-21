@@ -1,6 +1,6 @@
-﻿using GuiWpf.Services;
+﻿using Caliburn.Micro;
+using GuiWpf.Services;
 using GuiWpf.ViewModels.Gameplay.Map;
-using GuiWpf.ViewModels.Settings;
 using GuiWpf.ViewModels.Setup;
 
 namespace GuiWpf.ViewModels
@@ -11,25 +11,25 @@ namespace GuiWpf.ViewModels
         private readonly IGameFactoryWorker _gameFactoryWorker;
         private readonly IUserInteractionSynchronizer _userInteractionSynchronizer;
         private readonly IDialogManager _dialogManager;
-        private readonly IGameEventAggregator _gameEventAggregator;
+        private readonly IEventAggregator _eventAggregator;
 
         public GameSetupViewModelFactory(
             IWorldMapViewModelFactory worldMapViewModelFactory,
             IGameFactoryWorker gameFactoryWorker,
             IUserInteractionSynchronizer userInteractionSynchronizer,
             IDialogManager dialogManager,
-            IGameEventAggregator gameEventAggregator)
+            IEventAggregator eventAggregator)
         {
             _worldMapViewModelFactory = worldMapViewModelFactory;
             _gameFactoryWorker = gameFactoryWorker;
             _userInteractionSynchronizer = userInteractionSynchronizer;
             _dialogManager = dialogManager;
-            _gameEventAggregator = gameEventAggregator;
+            _eventAggregator = eventAggregator;
         }
 
         public IGameSetupViewModel Create(IGameSettingStateConductor gameSettingStateConductor)
         {
-            return new GameSetupViewModel(_worldMapViewModelFactory, _gameFactoryWorker, gameSettingStateConductor, _userInteractionSynchronizer, _dialogManager, _gameEventAggregator);
+            return new GameSetupViewModel(_worldMapViewModelFactory, _gameFactoryWorker, gameSettingStateConductor, _userInteractionSynchronizer, _dialogManager, _eventAggregator);
         }
     }
 }

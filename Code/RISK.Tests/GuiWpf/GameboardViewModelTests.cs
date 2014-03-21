@@ -6,7 +6,6 @@ using GuiWpf.Services;
 using GuiWpf.ViewModels;
 using GuiWpf.ViewModels.Gameplay;
 using GuiWpf.ViewModels.Gameplay.Map;
-using GuiWpf.ViewModels.Settings;
 using NSubstitute;
 using NUnit.Framework;
 using RISK.Domain.Entities;
@@ -43,7 +42,7 @@ namespace RISK.Tests.GuiWpf
         private IGameOverViewModelFactory _gameOverViewModelFactory;
         private IResourceManagerWrapper _resourceManagerWrapper;
         private IDialogManager _dialogManager;
-        private IGameEventAggregator _gameEventAggregator;
+        private IEventAggregator _gameEventAggregator;
 
         [SetUp]
         public void SetUp()
@@ -57,15 +56,15 @@ namespace RISK.Tests.GuiWpf
             _gameOverViewModelFactory = Substitute.For<IGameOverViewModelFactory>();
             _resourceManagerWrapper = Substitute.For<IResourceManagerWrapper>();
             _dialogManager = Substitute.For<IDialogManager>();
-            _gameEventAggregator = Substitute.For<IGameEventAggregator>();
+            _gameEventAggregator = Substitute.For<IEventAggregator>();
 
             _location1 = Substitute.For<ILocation>();
             _location2 = Substitute.For<ILocation>();
             _allLocations = new List<ILocation>
-                {
-                    _location1,
-                    _location2
-                };
+            {
+                _location1,
+                _location2
+            };
             _locationProvider.GetAll().Returns(_allLocations);
 
             _worldMap = Substitute.For<IWorldMap>();
@@ -77,7 +76,7 @@ namespace RISK.Tests.GuiWpf
 
             _player1 = Substitute.For<IPlayer>();
             _player2 = Substitute.For<IPlayer>();
-            
+
             _currentTurn = Substitute.For<ITurn>();
             _currentTurn.Player.Returns(_player1);
             _nextTurn = Substitute.For<ITurn>();
@@ -94,7 +93,7 @@ namespace RISK.Tests.GuiWpf
             _worldMapViewModel.WorldMapViewModels.Add(_textViewModel1);
             _worldMapViewModel.WorldMapViewModels.Add(_layoutViewModel2);
             _worldMapViewModel.WorldMapViewModels.Add(_textViewModel2);
-            
+
             _worldMapViewModelFactory.Create(Arg.Is(_worldMap), Arg.Any<Action<ILocation>>()).Returns(_worldMapViewModel);
 
             _gameboardViewModel = new GameboardViewModel(_game, _locationProvider, _worldMapViewModelFactory, _territoryViewModelUpdater, _gameOverEvaluater, _windowManager, _gameOverViewModelFactory, _resourceManagerWrapper, _dialogManager, _gameEventAggregator);

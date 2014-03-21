@@ -1,7 +1,6 @@
 ﻿using Caliburn.Micro;
 using GuiWpf.Services;
 using GuiWpf.ViewModels.Gameplay.Map;
-using GuiWpf.ViewModels.Settings;
 using RISK.Domain.GamePlaying;
 using RISK.Domain.Repositories;
 
@@ -17,7 +16,7 @@ namespace GuiWpf.ViewModels.Gameplay
         private readonly IGameOverViewModelFactory _gameOverViewModelFactory;
         private readonly IResourceManagerWrapper _resourceManagerWrapper;
         private readonly IDialogManager _dialogManager;
-        private readonly IGameEventAggregator _gameEventAggregator;
+        private readonly IEventAggregator _eventAggregator;
 
         public GameboardViewModelFactory(
             ILocationProvider locationProvider,
@@ -28,7 +27,7 @@ namespace GuiWpf.ViewModels.Gameplay
             IGameOverViewModelFactory gameOverViewModelFactory,
             IResourceManagerWrapper resourceManagerWrapper,
             IDialogManager dialogManager,
-            IGameEventAggregator gameEventAggregator)
+            IEventAggregator eventAggregator)
         {
             _locationProvider = locationProvider;
             _worldMapViewModelFactory = worldMapViewModelFactory;
@@ -38,7 +37,7 @@ namespace GuiWpf.ViewModels.Gameplay
             _gameOverViewModelFactory = gameOverViewModelFactory;
             _resourceManagerWrapper = resourceManagerWrapper;
             _dialogManager = dialogManager;
-            _gameEventAggregator = gameEventAggregator;
+            _eventAggregator = eventAggregator;
         }
 
         public IGameboardViewModel Create(IGame game)
@@ -53,7 +52,7 @@ namespace GuiWpf.ViewModels.Gameplay
                 _gameOverViewModelFactory,
                 _resourceManagerWrapper,
                 _dialogManager,
-                _gameEventAggregator);
+                _eventAggregator);
         }
     }
 }

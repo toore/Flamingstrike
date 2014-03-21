@@ -1,10 +1,8 @@
-﻿using System.Collections.Generic;
-using Caliburn.Micro;
+﻿using Caliburn.Micro;
 using GuiWpf.ViewModels.Gameplay;
 using GuiWpf.ViewModels.Messages;
 using GuiWpf.ViewModels.Settings;
 using GuiWpf.ViewModels.Setup;
-using RISK.Domain.Entities;
 using RISK.Domain.GamePlaying;
 using RISK.Domain.Repositories;
 
@@ -35,7 +33,6 @@ namespace GuiWpf.ViewModels
 
         public void Handle(GameSetupMessage message)
         {
-            //StorePlayersInRepository(message.Players);
             _playerProvider.All = message.Players;
 
             StartGame();
@@ -45,11 +42,6 @@ namespace GuiWpf.ViewModels
         {
             StartNewGame();
         }
-
-        //private void StorePlayersInRepository(IEnumerable<IPlayer> players)
-        //{
-        //    players.Apply(_playerProvider.Add);
-        //}
 
         private void StartNewGame()
         {

@@ -1,9 +1,9 @@
 ﻿using System;
+using Caliburn.Micro;
 using FluentAssertions;
 using GuiWpf.Services;
 using GuiWpf.ViewModels;
 using GuiWpf.ViewModels.Gameplay.Map;
-using GuiWpf.ViewModels.Settings;
 using GuiWpf.ViewModels.Setup;
 using NSubstitute;
 using NSubstitute.Experimental;
@@ -23,7 +23,7 @@ namespace RISK.Tests.GuiWpf
         private IGameSettingStateConductor _gameSettingStateConductor;
         private IUserInteractionSynchronizer _userInteractionSynchronizer;
         private IDialogManager _dialogManager;
-        private IGameEventAggregator _gameEventAggregator;
+        private IEventAggregator _gameEventAggregator;
 
         [SetUp]
         public void SetUp()
@@ -33,7 +33,7 @@ namespace RISK.Tests.GuiWpf
             _gameSettingStateConductor = Substitute.For<IGameSettingStateConductor>();
             _userInteractionSynchronizer = Substitute.For<IUserInteractionSynchronizer>();
             _dialogManager = Substitute.For<IDialogManager>();
-            _gameEventAggregator = Substitute.For<IGameEventAggregator>();
+            _gameEventAggregator = Substitute.For<IEventAggregator>();
 
             var locationSelectorParameter = StubLocationSelectorParameter(null);
 
@@ -93,10 +93,10 @@ namespace RISK.Tests.GuiWpf
             _gameSetupViewModel.GetLocationCallback(null);
 
             Received.InOrder(() =>
-                {
-                    _userInteractionSynchronizer.RequestUserInteraction();
-                    _userInteractionSynchronizer.WaitForUserToBeDoneWithInteracting();
-                });
+            {
+                _userInteractionSynchronizer.RequestUserInteraction();
+                _userInteractionSynchronizer.WaitForUserToBeDoneWithInteracting();
+            });
         }
 
         [Test]
@@ -105,10 +105,10 @@ namespace RISK.Tests.GuiWpf
             _gameSetupViewModel.SelectLocation(null);
 
             Received.InOrder(() =>
-                {
-                    _userInteractionSynchronizer.UserIsDoneInteracting();
-                    _userInteractionSynchronizer.WaitForUserInteractionRequest();
-                });
+            {
+                _userInteractionSynchronizer.UserIsDoneInteracting();
+                _userInteractionSynchronizer.WaitForUserInteractionRequest();
+            });
         }
 
         [Test]

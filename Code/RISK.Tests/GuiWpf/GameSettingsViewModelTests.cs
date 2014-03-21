@@ -1,6 +1,6 @@
 ﻿using System.Linq;
+using Caliburn.Micro;
 using FluentAssertions;
-using GuiWpf.ViewModels;
 using GuiWpf.ViewModels.Messages;
 using GuiWpf.ViewModels.Settings;
 using NSubstitute;
@@ -15,14 +15,14 @@ namespace RISK.Tests.GuiWpf
         private GameSettingsViewModel _gameSettingsViewModel;
         private IPlayerFactory _playerFactory;
         private IPlayerTypes _playerTypes;
-        private IGameEventAggregator _gameEventAggregator;
+        private IEventAggregator _gameEventAggregator;
 
         [SetUp]
         public void SetUp()
         {
             _playerFactory = Substitute.For<IPlayerFactory>();
             _playerTypes = Substitute.For<IPlayerTypes>();
-            _gameEventAggregator = Substitute.For<IGameEventAggregator>();
+            _gameEventAggregator = Substitute.For<IEventAggregator>();
 
             var playerType = Substitute.For<PlayerTypeBase>();
             _playerTypes.Values.Returns(playerType.AsList());

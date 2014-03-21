@@ -4,7 +4,6 @@ using Caliburn.Micro;
 using GuiWpf.Services;
 using GuiWpf.ViewModels.Gameplay.Map;
 using GuiWpf.ViewModels.Messages;
-using GuiWpf.ViewModels.Settings;
 using RISK.Domain.Entities;
 using RISK.Domain.GamePlaying;
 using RISK.Domain.Repositories;
@@ -18,9 +17,8 @@ namespace GuiWpf.ViewModels.Gameplay
         private readonly IGameOverEvaluater _gameOverEvaluater;
         private readonly IWindowManager _windowManager;
         private readonly IGameOverViewModelFactory _gameOverViewModelFactory;
-        private readonly IResourceManagerWrapper _resourceManagerWrapper;
         private readonly IDialogManager _dialogManager;
-        private readonly IGameEventAggregator _gameEventAggregator;
+        private readonly IEventAggregator _eventAggregator;
         private ITurn _currentTurn;
         private readonly List<ITerritory> _territories;
         private IPlayer _player;
@@ -36,16 +34,15 @@ namespace GuiWpf.ViewModels.Gameplay
             IGameOverViewModelFactory gameOverViewModelFactory,
             IResourceManagerWrapper resourceManagerWrapper,
             IDialogManager dialogManager,
-            IGameEventAggregator gameEventAggregator)
+            IEventAggregator eventAggregator)
         {
             _game = game;
             _territoryViewModelUpdater = territoryViewModelUpdater;
             _gameOverEvaluater = gameOverEvaluater;
             _windowManager = windowManager;
             _gameOverViewModelFactory = gameOverViewModelFactory;
-            _resourceManagerWrapper = resourceManagerWrapper;
             _dialogManager = dialogManager;
-            _gameEventAggregator = gameEventAggregator;
+            _eventAggregator = eventAggregator;
 
             _worldMap = _game.GetWorldMap();
 
@@ -53,7 +50,7 @@ namespace GuiWpf.ViewModels.Gameplay
                 .Select(_worldMap.GetTerritory)
                 .ToList();
 
-            InformationText = _resourceManagerWrapper.GetString("SELECT_TERRITORY");
+            InformationText = resourceManagerWrapper.GetString("SELECT_TERRITORY");
 
             WorldMapViewModel = worldMapViewModelFactory.Create(_worldMap, OnLocationClick);
 
@@ -91,7 +88,7 @@ namespace GuiWpf.ViewModels.Gameplay
 
             if (confirm.HasValue && confirm.Value)
             {
-                _gameEventAggregator.Publish(new NewGameMessage());
+                _eventAggregator.Publish(new NewGameMessage());
             }
         }
 

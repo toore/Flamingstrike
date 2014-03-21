@@ -4,7 +4,6 @@ using GuiWpf.Properties;
 using GuiWpf.Services;
 using GuiWpf.ViewModels.Gameplay.Map;
 using GuiWpf.ViewModels.Messages;
-using GuiWpf.ViewModels.Settings;
 using RISK.Domain.Entities;
 using RISK.Domain.GamePlaying;
 using RISK.Domain.GamePlaying.Setup;
@@ -18,7 +17,7 @@ namespace GuiWpf.ViewModels.Setup
         private readonly IGameSettingStateConductor _gameSettingStateConductor;
         private readonly IUserInteractionSynchronizer _userInteractionSynchronizer;
         private readonly IDialogManager _dialogManager;
-        private readonly IGameEventAggregator _gameEventAggregator;
+        private readonly IEventAggregator _eventAggregator;
         private ILocation _selectedLocation;
         private ILocationSelectorParameter _locationSelectorParameter;
         private bool _isGameSetupFinished;
@@ -30,14 +29,14 @@ namespace GuiWpf.ViewModels.Setup
             IGameSettingStateConductor gameSettingStateConductor,
             IUserInteractionSynchronizer userInteractionSynchronizer,
             IDialogManager dialogManager,
-            IGameEventAggregator gameEventAggregator)
+            IEventAggregator eventAggregator)
         {
             _worldMapViewModelFactory = worldMapViewModelFactory;
             _gameFactoryWorker = gameFactoryWorker;
             _gameSettingStateConductor = gameSettingStateConductor;
             _userInteractionSynchronizer = userInteractionSynchronizer;
             _dialogManager = dialogManager;
-            _gameEventAggregator = gameEventAggregator;
+            _eventAggregator = eventAggregator;
 
             _gameFactoryWorker.BeginInvoke(this);
 
@@ -142,7 +141,7 @@ namespace GuiWpf.ViewModels.Setup
 
             if (confirm.HasValue && confirm.Value)
             {
-                _gameEventAggregator.Publish(new NewGameMessage());
+                _eventAggregator.Publish(new NewGameMessage());
             }
         }
     }

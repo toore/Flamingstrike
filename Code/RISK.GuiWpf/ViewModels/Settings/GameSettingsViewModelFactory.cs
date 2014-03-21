@@ -1,4 +1,6 @@
-﻿namespace GuiWpf.ViewModels.Settings
+﻿using Caliburn.Micro;
+
+namespace GuiWpf.ViewModels.Settings
 {
     public interface IGameSettingsViewModelFactory
     {
@@ -9,18 +11,18 @@
     {
         private readonly IPlayerFactory _playerFactory;
         private readonly IPlayerTypes _playerTypes;
-        private readonly IGameEventAggregator _gameEventAggregator;
+        private readonly IEventAggregator _eventAggregator;
 
-        public GameSettingsViewModelFactory(IPlayerFactory playerFactory, IPlayerTypes playerTypes, IGameEventAggregator gameEventAggregator)
+        public GameSettingsViewModelFactory(IPlayerFactory playerFactory, IPlayerTypes playerTypes, IEventAggregator eventAggregator)
         {
             _playerFactory = playerFactory;
             _playerTypes = playerTypes;
-            _gameEventAggregator = gameEventAggregator;
+            _eventAggregator = eventAggregator;
         }
 
         public IGameSettingsViewModel Create()
         {
-            return new GameSettingsViewModel(_playerFactory, _playerTypes, _gameEventAggregator);
+            return new GameSettingsViewModel(_playerFactory, _playerTypes, _eventAggregator);
         }
     }
 }

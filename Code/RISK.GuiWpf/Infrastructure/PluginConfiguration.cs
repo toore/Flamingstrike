@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Caliburn.Micro;
 using GuiWpf.ViewModels.Gameplay;
-using GuiWpf.ViewModels.Settings;
 using RISK.Domain.GamePlaying;
 using RISK.Domain.Repositories;
 using StructureMap;
@@ -14,19 +14,20 @@ namespace GuiWpf.Infrastructure
         public void Configure()
         {
             ObjectFactory.Configure(x =>
+            {
+                x.Scan(s =>
                 {
-                    x.Scan(s =>
-                        {
-                            s.AssemblyContainingType<IGame>();
-                            s.AssemblyContainingType<IGameboardViewModel>();
+                    s.AssemblyContainingType<IGame>();
+                    s.AssemblyContainingType<IGameboardViewModel>();
 
-                            s.WithDefaultConventions();
-                        });
-
-                    x.For<ILocationProvider>().Singleton();
-
-                    x.RegisterInterceptor(new HandleInterceptor<IGameEventAggregator>());
+                    s.WithDefaultConventions();
                 });
+
+                x.For<ILocationProvider>().Singleton();
+                x.For<IEventAggregator>().Use<EventAggregator>();
+
+                x.RegisterInterceptor(new HandleInterceptor<IEventAggregator>());
+            });
         }
 
         public void BuildUp(object target)

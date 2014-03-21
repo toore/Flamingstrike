@@ -118,10 +118,8 @@
     <Compile Include="ViewModels\Setup\IGameFactory.cs" />
     <Compile Include="ViewModels\Setup\IGameSetupViewModelFactory.cs" />
     <Compile Include="ViewModels\IGameSettingStateConductor.cs" />
-    <Compile Include="ViewModels\Settings\GameEventAggregator.cs" />
     <Compile Include="ViewModels\Settings\GameSettingsViewModel.cs" />
     <Compile Include="ViewModels\Settings\HumanPlayerType.cs" />
-    <Compile Include="ViewModels\Settings\IGameEventAggregator.cs" />
     <Compile Include="ViewModels\Settings\IGameSettingsViewModel.cs" />
     <Compile Include="ViewModels\MainGameViewModel.cs" />
     <Compile Include="ViewModels\IMainViewModel.cs" />
