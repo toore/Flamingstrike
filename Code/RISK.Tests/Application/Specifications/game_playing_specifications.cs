@@ -248,7 +248,7 @@ namespace RISK.Tests.Application.Specifications
 
         private void InjectDiceRollerWithReturningSixFiveFourAndThenFiveForTwoAttacks()
         {
-            var diceRoller = Substitute.For<IDiceRoller>();
+            var diceRoller = Substitute.For<IDice>();
             diceRoller.Roll().Returns(
                 DiceValue.Six, DiceValue.Five, DiceValue.Four, DiceValue.Five,
                 DiceValue.Six, DiceValue.Five, DiceValue.Four, DiceValue.Five);

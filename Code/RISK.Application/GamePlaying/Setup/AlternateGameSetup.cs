@@ -19,7 +19,7 @@ namespace RISK.Domain.GamePlaying.Setup
         private readonly Locations _locations;
         private readonly IRandomSorter _randomSorter;
         private readonly IWorldMapFactory _worldMapFactory;
-        private readonly IInitialArmyCountProvider _initialArmyCountProvider;
+        private readonly IInitialArmyCount _initialArmyCount;
         private ILocationSelector _locationSelector;
 
         public AlternateGameSetup(
@@ -27,13 +27,13 @@ namespace RISK.Domain.GamePlaying.Setup
             Locations locations,
             IRandomSorter randomSorter,
             IWorldMapFactory worldMapFactory,
-            IInitialArmyCountProvider initialArmyCountProvider)
+            IInitialArmyCount initialArmyCount)
         {
             _players = players;
             _locations = locations;
             _randomSorter = randomSorter;
             _worldMapFactory = worldMapFactory;
-            _initialArmyCountProvider = initialArmyCountProvider;
+            _initialArmyCount = initialArmyCount;
         }
 
         public IWorldMap Initialize(ILocationSelector locationSelector)
@@ -52,7 +52,7 @@ namespace RISK.Domain.GamePlaying.Setup
 
         private IList<SetupArmies> GetArmiesToSetup(IList<IPlayer> players)
         {
-            var armies = _initialArmyCountProvider.Get(players.Count());
+            var armies = _initialArmyCount.Get(players.Count());
 
             return _randomSorter.Sort(players)
                 .Select(x => new SetupArmies(x, armies))

@@ -1,6 +1,6 @@
 ﻿namespace RISK.Domain.GamePlaying.Setup
 {
-    public interface IInitialArmyCountProvider
+    public interface IInitialArmyCount
     {
         int Get(int numberOfPlayers);
     }

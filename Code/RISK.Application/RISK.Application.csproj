@@ -59,8 +59,8 @@
     <Compile Include="Entities\ILocation.cs" />
     <Compile Include="Entities\IPlayer.cs" />
     <Compile Include="Entities\TerritoryExtensions.cs" />
-    <Compile Include="GamePlaying\DiceAndCalculation\DiceRoller.cs" />
-    <Compile Include="GamePlaying\DiceAndCalculation\IDiceRoller.cs" />
+    <Compile Include="GamePlaying\DiceAndCalculation\Dice.cs" />
+    <Compile Include="GamePlaying\DiceAndCalculation\IDice.cs" />
     <Compile Include="GamePlaying\Setup\AlternateGameSetup.cs" />
     <Compile Include="GamePlaying\BattleCalculator.cs" />
     <Compile Include="GamePlaying\CardFactory.cs" />
@@ -74,9 +74,9 @@
     <Compile Include="GamePlaying\IBattleCalculator.cs" />
     <Compile Include="GamePlaying\DiceAndCalculation\IDices.cs" />
     <Compile Include="GamePlaying\ICardFactory.cs" />
-    <Compile Include="GamePlaying\Setup\IInitialArmyCountProvider.cs" />
+    <Compile Include="GamePlaying\Setup\IInitialArmyCount.cs" />
     <Compile Include="GamePlaying\Setup\ILocationSelector.cs" />
-    <Compile Include="GamePlaying\Setup\InitialArmyCountProvider.cs" />
+    <Compile Include="GamePlaying\Setup\InitialArmyCount.cs" />
     <Compile Include="GamePlaying\IRandomSorter.cs" />
     <Compile Include="GamePlaying\IRandomWrapper.cs" />
     <Compile Include="GamePlaying\ITurnFactory.cs" />

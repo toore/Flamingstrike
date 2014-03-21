@@ -1,10 +1,10 @@
 ﻿namespace RISK.Domain.GamePlaying.DiceAndCalculation
 {
-    public class DiceRoller : IDiceRoller
+    public class Dice : IDice
     {
         private readonly IRandomWrapper _randomWrapper;
 
-        public DiceRoller(IRandomWrapper randomWrapper)
+        public Dice(IRandomWrapper randomWrapper)
         {
             _randomWrapper = randomWrapper;
         }

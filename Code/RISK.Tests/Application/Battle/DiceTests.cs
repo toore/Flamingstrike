@@ -7,16 +7,16 @@ using RISK.Domain.GamePlaying.DiceAndCalculation;
 namespace RISK.Tests.Application.Battle
 {
     [TestFixture]
-    public class DiceRollerTests
+    public class DiceTests
     {
-        private DiceRoller _diceRoller;
+        private Dice _dice;
         private IRandomWrapper _randomWrapper;
 
         [SetUp]
         public void SetUp()
         {
             _randomWrapper = Substitute.For<IRandomWrapper>();
-            _diceRoller = new DiceRoller(_randomWrapper);
+            _dice = new Dice(_randomWrapper);
         }
 
         [Test]
@@ -36,7 +36,7 @@ namespace RISK.Tests.Application.Battle
         {
             _randomWrapper.Next(6).Returns(randomValueStub);
 
-            _diceRoller.Roll().Should().Be(expected);
+            _dice.Roll().Should().Be(expected);
         }
     }
 }

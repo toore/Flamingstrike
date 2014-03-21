@@ -1,6 +1,6 @@
 ﻿namespace RISK.Domain.GamePlaying.DiceAndCalculation
 {
-    public interface IDiceRoller
+    public interface IDice
     {
         DiceValue Roll();
     }

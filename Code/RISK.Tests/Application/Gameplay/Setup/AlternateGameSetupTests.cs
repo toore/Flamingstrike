@@ -24,7 +24,7 @@ namespace RISK.Tests.Application.Gameplay.Setup
         private IRandomSorter _randomSorter;
         private IWorldMapFactory _worldMapFactory;
         private IWorldMap _worldMap;
-        private IInitialArmyCountProvider _initialArmyCountProvider;
+        private IInitialArmyCount _initialArmyCount;
         private ILocationSelector _locationSelector;
         private ITerritory _territory1;
         private ITerritory _territory2;
@@ -37,7 +37,7 @@ namespace RISK.Tests.Application.Gameplay.Setup
             _locations = new Locations(new Continents());
             _randomSorter = Substitute.For<IRandomSorter>();
             _worldMapFactory = Substitute.For<IWorldMapFactory>();
-            _initialArmyCountProvider = Substitute.For<IInitialArmyCountProvider>();
+            _initialArmyCount = Substitute.For<IInitialArmyCount>();
 
             _player1 = Substitute.For<IPlayer>();
             _player2 = Substitute.For<IPlayer>();
@@ -60,9 +60,9 @@ namespace RISK.Tests.Application.Gameplay.Setup
             _worldMap.GetTerritory(_location2).Returns(_territory2);
             _worldMap.GetTerritory(_location3).Returns(_territory3);
 
-            _initialArmyCountProvider.Get(2).Returns(3);
+            _initialArmyCount.Get(2).Returns(3);
 
-            _alternateGameSetup = new AlternateGameSetup(_players, _locations, _randomSorter, _worldMapFactory, _initialArmyCountProvider);
+            _alternateGameSetup = new AlternateGameSetup(_players, _locations, _randomSorter, _worldMapFactory, _initialArmyCount);
 
             _randomSorter.Sort(Arg.Is<IEnumerable<IPlayer>>(x => x.SequenceEqual(playersInRepository))).Returns(new[] { _player1, _player2 });
             _randomSorter.Sort(Arg.Is<IEnumerable<ILocation>>(x => x.SequenceEqual(_locations.GetAll()))).Returns(new[] { _location3, _location2, _location1 });

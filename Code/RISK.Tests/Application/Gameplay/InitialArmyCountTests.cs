@@ -5,14 +5,14 @@ using RISK.Domain.GamePlaying.Setup;
 namespace RISK.Tests.Application.Gameplay
 {
     [TestFixture]
-    public class InitialArmyCountProviderTests
+    public class InitialArmyCountTests
     {
-        private InitialArmyCountProvider _initialArmyCountProvider;
+        private InitialArmyCount _initialArmyCount;
 
         [SetUp]
         public void SetUp()
         {
-            _initialArmyCountProvider = new InitialArmyCountProvider();
+            _initialArmyCount = new InitialArmyCount();
         }
 
         [Test]
@@ -23,7 +23,7 @@ namespace RISK.Tests.Application.Gameplay
         [TestCase(20, 6, TestName = "6 players gets 20 armies each")]
         public void Number_of_players_gets_correct_number_of_armies(int expectedArmies, int numberOfPlayers)
         {
-            _initialArmyCountProvider.Get(numberOfPlayers).Should().Be(expectedArmies);
+            _initialArmyCount.Get(numberOfPlayers).Should().Be(expectedArmies);
         }
     }
 }

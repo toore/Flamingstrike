@@ -12,21 +12,21 @@ namespace RISK.Tests.Application.Battle
     {
         private Dices _dices;
         private ICasualtyEvaluator _casualtyEvaluator;
-        private IDiceRoller _diceRoller;
+        private IDice _dice;
 
         [SetUp]
         public void SetUp()
         {
             _casualtyEvaluator = Substitute.For<ICasualtyEvaluator>();
-            _diceRoller = Substitute.For<IDiceRoller>();
+            _dice = Substitute.For<IDice>();
 
-            _dices = new Dices(_casualtyEvaluator, _diceRoller);
+            _dices = new Dices(_casualtyEvaluator, _dice);
         }
 
         [Test]
         public void Attacking_1_defending_1_has_1_attacking_dice_and_one_defending_dice()
         {
-            _diceRoller.Roll().Returns(DiceValue.One, DiceValue.Two);
+            _dice.Roll().Returns(DiceValue.One, DiceValue.Two);
 
             var dicesResult = _dices.Roll(1, 1);
 
@@ -39,7 +39,7 @@ namespace RISK.Tests.Application.Battle
         {
             _dices.Roll(4, 1);
 
-            _diceRoller.Received(4).Roll();
+            _dice.Received(4).Roll();
         }
 
         [Test]
@@ -47,7 +47,7 @@ namespace RISK.Tests.Application.Battle
         {
             _dices.Roll(1, 3);
 
-            _diceRoller.Received(3).Roll();
+            _dice.Received(3).Roll();
         }
     }
 }
