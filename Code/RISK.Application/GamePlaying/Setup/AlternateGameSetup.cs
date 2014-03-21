@@ -3,7 +3,6 @@ using System.Linq;
 using Caliburn.Micro;
 using RISK.Base.Extensions;
 using RISK.Domain.Entities;
-using RISK.Domain.Repositories;
 
 namespace RISK.Domain.GamePlaying.Setup
 {
@@ -16,7 +15,7 @@ namespace RISK.Domain.GamePlaying.Setup
 
     public class AlternateGameSetup : IAlternateGameSetup
     {
-        private readonly IPlayerProvider _playerProvider;
+        private readonly IPlayers _players;
         private readonly Locations _locations;
         private readonly IRandomSorter _randomSorter;
         private readonly IWorldMapFactory _worldMapFactory;
@@ -24,13 +23,13 @@ namespace RISK.Domain.GamePlaying.Setup
         private ILocationSelector _locationSelector;
 
         public AlternateGameSetup(
-            IPlayerProvider playerProvider,
+            IPlayers players,
             Locations locations,
             IRandomSorter randomSorter,
             IWorldMapFactory worldMapFactory,
             IInitialArmyCountProvider initialArmyCountProvider)
         {
-            _playerProvider = playerProvider;
+            _players = players;
             _locations = locations;
             _randomSorter = randomSorter;
             _worldMapFactory = worldMapFactory;
@@ -41,7 +40,7 @@ namespace RISK.Domain.GamePlaying.Setup
         {
             _locationSelector = locationSelector;
 
-            var players = _playerProvider.All.ToList();
+            var players = _players.GetAll().ToList();
             var playersDuringSetup = GetPlayersDuringSetup(players);
 
             var worldMap = CreateWorldMap(playersDuringSetup);

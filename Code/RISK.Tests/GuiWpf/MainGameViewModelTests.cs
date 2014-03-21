@@ -6,8 +6,8 @@ using GuiWpf.ViewModels.Settings;
 using GuiWpf.ViewModels.Setup;
 using NSubstitute;
 using NUnit.Framework;
+using RISK.Domain;
 using RISK.Domain.Entities;
-using RISK.Domain.Repositories;
 
 namespace RISK.Tests.GuiWpf
 {
@@ -16,7 +16,7 @@ namespace RISK.Tests.GuiWpf
     {
         private IGameSettingsViewModelFactory _gameSettingsViewModelFactory;
         private IGameboardViewModelFactory _gameboardViewModelFactory;
-        private IPlayerProvider _playerProvider;
+        private IPlayersInitializer _playersInitializer;
         private IGameSetupViewModelFactory _gameSetupViewModelFactory;
 
         [SetUp]
@@ -24,7 +24,7 @@ namespace RISK.Tests.GuiWpf
         {
             _gameSettingsViewModelFactory = Substitute.For<IGameSettingsViewModelFactory>();
             _gameboardViewModelFactory = Substitute.For<IGameboardViewModelFactory>();
-            _playerProvider = Substitute.For<IPlayerProvider>();
+            _playersInitializer = Substitute.For<IPlayersInitializer>();
             _gameSetupViewModelFactory = Substitute.For<IGameSetupViewModelFactory>();
         }
 
@@ -43,17 +43,17 @@ namespace RISK.Tests.GuiWpf
             var player1 = Substitute.For<IPlayer>();
             var player2 = Substitute.For<IPlayer>();
             var gameSetupMessage = new GameSetupMessage
+            {
+                Players = new[]
                 {
-                    Players = new[]
-                        {
-                            player1,
-                            player2
-                        }
-                };
+                    player1,
+                    player2
+                }
+            };
 
             Create().Handle(gameSetupMessage);
 
-            _playerProvider.All = new[] { player1, player2 };
+            _playersInitializer.SetPlayers(new[] { player1, player2 });
         }
 
         [Test]
@@ -85,8 +85,7 @@ namespace RISK.Tests.GuiWpf
 
         private MainGameViewModel Create()
         {
-            return new MainGameViewModel(_gameSettingsViewModelFactory, _gameboardViewModelFactory, _playerProvider, _gameSetupViewModelFactory);
+            return new MainGameViewModel(_gameSettingsViewModelFactory, _gameboardViewModelFactory, _playersInitializer, _gameSetupViewModelFactory);
         }
     }
-
 }

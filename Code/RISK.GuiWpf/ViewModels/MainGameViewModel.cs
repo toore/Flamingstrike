@@ -3,8 +3,8 @@ using GuiWpf.ViewModels.Gameplay;
 using GuiWpf.ViewModels.Messages;
 using GuiWpf.ViewModels.Settings;
 using GuiWpf.ViewModels.Setup;
+using RISK.Domain;
 using RISK.Domain.GamePlaying;
-using RISK.Domain.Repositories;
 
 namespace GuiWpf.ViewModels
 {
@@ -12,14 +12,14 @@ namespace GuiWpf.ViewModels
     {
         private readonly IGameSettingsViewModelFactory _gameSettingsViewModelFactory;
         private readonly IGameboardViewModelFactory _gameboardViewModelFactory;
-        private readonly IPlayerProvider _playerProvider;
+        private readonly IPlayersInitializer _playersInitializer;
         private readonly IGameSetupViewModelFactory _gameSetupViewModelFactory;
 
-        public MainGameViewModel(IGameSettingsViewModelFactory gameSettingsViewModelFactory, IGameboardViewModelFactory gameboardViewModelFactory, IPlayerProvider playerProvider, IGameSetupViewModelFactory gameSetupViewModelFactory)
+        public MainGameViewModel(IGameSettingsViewModelFactory gameSettingsViewModelFactory, IGameboardViewModelFactory gameboardViewModelFactory, IPlayersInitializer playersInitializer, IGameSetupViewModelFactory gameSetupViewModelFactory)
         {
             _gameSettingsViewModelFactory = gameSettingsViewModelFactory;
             _gameboardViewModelFactory = gameboardViewModelFactory;
-            _playerProvider = playerProvider;
+            _playersInitializer = playersInitializer;
             _gameSetupViewModelFactory = gameSetupViewModelFactory;
 
             StartNewGame();
@@ -33,7 +33,7 @@ namespace GuiWpf.ViewModels
 
         public void Handle(GameSetupMessage message)
         {
-            _playerProvider.All = message.Players;
+            _playersInitializer.SetPlayers(message.Players);
 
             StartGame();
         }

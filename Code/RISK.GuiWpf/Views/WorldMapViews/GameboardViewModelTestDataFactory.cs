@@ -9,7 +9,6 @@ using RISK.Domain;
 using RISK.Domain.Entities;
 using RISK.Domain.GamePlaying;
 using RISK.Domain.GamePlaying.Setup;
-using RISK.Domain.Repositories;
 
 namespace GuiWpf.Views.WorldMapViews
 {
@@ -39,8 +38,8 @@ namespace GuiWpf.Views.WorldMapViews
             var textViewModelFactory = new TerritoryTextViewModelFactory(territoryLayoutInformationFactory);
             var worldMapViewModelFactory = new WorldMapViewModelFactory(locations, territoryViewModelFactory, textViewModelFactory);
 
-            var playerProvider = new PlayerProvider();
-            playerProvider.All = humanPlayer.AsList();
+            var playerProvider = new Players();
+            playerProvider.SetPlayers(humanPlayer.AsList());
 
             var alternateGameSetup = new AlternateGameSetup(playerProvider, locations, new RandomSorter(new RandomWrapper()), new WorldMapFactory(locations), new InitialArmyCountProvider());
             ITurnFactory turnFactory = new TurnFactory(null, null);

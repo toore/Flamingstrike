@@ -24,6 +24,11 @@ namespace GuiWpf.Infrastructure
                 });
 
                 x.For<Locations>().Singleton();
+
+                x.For<Players>().Singleton();
+                x.For<IPlayers>().Singleton().Use<Players>();
+                x.Forward<IPlayers, IPlayersInitializer>();
+
                 x.For<IEventAggregator>().Use<EventAggregator>();
 
                 x.RegisterInterceptor(new HandleInterceptor<IEventAggregator>());

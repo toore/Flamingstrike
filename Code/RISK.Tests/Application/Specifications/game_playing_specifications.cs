@@ -14,7 +14,6 @@ using RISK.Domain.Entities;
 using RISK.Domain.GamePlaying;
 using RISK.Domain.GamePlaying.DiceAndCalculation;
 using RISK.Domain.GamePlaying.Setup;
-using RISK.Domain.Repositories;
 using StructureMap;
 
 namespace RISK.Tests.Application.Specifications
@@ -26,7 +25,7 @@ namespace RISK.Tests.Application.Specifications
         private IPlayer _player2;
         private IMainGameViewModel _mainGameViewModel;
         private IWorldMap _worldMap;
-        private PlayerProvider _playerProvider;
+        private Players _players;
         private IWindowManager _windowManager;
         private IGameboardViewModel _gameboardViewModel;
         private GameOverViewModel _gameOverViewModel;
@@ -48,8 +47,8 @@ namespace RISK.Tests.Application.Specifications
 
                 SelectTwoHumanPlayersAndConfirm();
 
-                _player1 = _playerProvider.All.First();
-                _player2 = _playerProvider.All.Second();
+                _player1 = _players.GetAll().First();
+                _player2 = _players.GetAll().Second();
             };
 
             it["game board is shown"] = () => _mainGameViewModel.MainViewModel.Should().BeOfType<GameSetupViewModel>();
@@ -133,7 +132,7 @@ namespace RISK.Tests.Application.Specifications
         {
             _player1 = new HumanPlayer("Player 1");
             _player2 = new HumanPlayer("Player 2");
-            _playerProvider.All = new[] { _player1, _player2 };
+            _players.SetPlayers(new[] { _player1, _player2 });
         }
 
         private void InjectGame()
@@ -141,7 +140,7 @@ namespace RISK.Tests.Application.Specifications
             var locationSelector = Substitute.For<ILocationSelector>();
             var alternateGameSetup = Substitute.For<IAlternateGameSetup>();
             alternateGameSetup.Initialize(locationSelector).Returns(_worldMap);
-            var game = new Game(ObjectFactory.GetInstance<ITurnFactory>(), _playerProvider, alternateGameSetup, locationSelector);
+            var game = new Game(ObjectFactory.GetInstance<ITurnFactory>(), _players, alternateGameSetup, locationSelector);
             ObjectFactory.Inject<IGame>(game);
         }
 
@@ -227,8 +226,8 @@ namespace RISK.Tests.Application.Specifications
 
         private void InjectPlayerRepository()
         {
-            _playerProvider = new PlayerProvider();
-            ObjectFactory.Inject<IPlayerProvider>(_playerProvider);
+            _players = new Players();
+            ObjectFactory.Inject<IPlayers>(_players);
         }
 
         private void InjectLocationProvider()

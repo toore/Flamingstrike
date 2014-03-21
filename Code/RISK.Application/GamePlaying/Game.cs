@@ -3,7 +3,6 @@ using System.Linq;
 using RISK.Base.Extensions;
 using RISK.Domain.Entities;
 using RISK.Domain.GamePlaying.Setup;
-using RISK.Domain.Repositories;
 
 namespace RISK.Domain.GamePlaying
 {
@@ -14,10 +13,10 @@ namespace RISK.Domain.GamePlaying
         private readonly IList<IPlayer> _players;
         private IPlayer _currentPlayer;
 
-        public Game(ITurnFactory turnFactory, IPlayerProvider playerProvider, IAlternateGameSetup alternateGameSetup, ILocationSelector locationSelector)
+        public Game(ITurnFactory turnFactory, IPlayers players, IAlternateGameSetup alternateGameSetup, ILocationSelector locationSelector)
         {
             _turnFactory = turnFactory;
-            _players = playerProvider.All.ToList();
+            _players = players.GetAll().ToList();
 
             _worldMap = alternateGameSetup.Initialize(locationSelector);
         }
