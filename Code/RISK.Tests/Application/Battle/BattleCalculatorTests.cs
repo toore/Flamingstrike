@@ -4,7 +4,6 @@ using NUnit.Framework;
 using RISK.Domain.Entities;
 using RISK.Domain.GamePlaying;
 using RISK.Domain.GamePlaying.DiceAndCalculation;
-using Rhino.Mocks;
 
 namespace RISK.Tests.Application.Battle
 {
@@ -19,16 +18,16 @@ namespace RISK.Tests.Application.Battle
         [SetUp]
         public void SetUp()
         {
-            _dices = MockRepository.GenerateStub<IDices>();
+            _dices = Substitute.For<IDices>();
             _battleCalculator = new BattleCalculator(_dices);
         }
 
         private static readonly object[] _attackCases =
-            {
-                new object[] { 2, 1, 0, 1, _attacker, 1, 1 },
-                new object[] { 2, 2, 0, 1, _defender, 2, 1 },
-                new object[] { 2, 2, 1, 0, _defender, 1, 2 }
-            };
+        {
+            new object[] { 2, 1, 0, 1, _attacker, 1, 1 },
+            new object[] { 2, 2, 0, 1, _defender, 2, 1 },
+            new object[] { 2, 2, 1, 0, _defender, 1, 2 }
+        };
 
         [TestCaseSource("_attackCases")]
         public void Attack(int attackingArmies, int defendingArmies, int attackerCasualties, int defenderCasualties,
@@ -37,14 +36,14 @@ namespace RISK.Tests.Application.Battle
             StubDices(attackingArmies - 1, defendingArmies, attackerCasualties, defenderCasualties);
 
             var attackerTerritory = new Territory(new Location("attacker territory", new Continent()))
-                {
-                    Armies = attackingArmies
-                };
+            {
+                Armies = attackingArmies
+            };
             attackerTerritory.Occupant = _attacker;
             var defenderTerritory = new Territory(new Location("defender territory", new Continent()))
-                {
-                    Armies = defendingArmies
-                };
+            {
+                Armies = defendingArmies
+            };
             defenderTerritory.Occupant = _defender;
 
             _battleCalculator.Attack(attackerTerritory, defenderTerritory);
@@ -57,10 +56,10 @@ namespace RISK.Tests.Application.Battle
 
         private void StubDices(int attackingArmies, int defendingArmies, int attackerCasualties, int defenderCasualties)
         {
-            var diceResult = MockRepository.GenerateStub<IDicesResult>();
-            diceResult.Stub(x => x.AttackerCasualties).Return(attackerCasualties);
-            diceResult.Stub(x => x.DefenderCasualties).Return(defenderCasualties);
-            _dices.Stub(x => x.Roll(attackingArmies, defendingArmies)).Return(diceResult);
+            var diceResult = Substitute.For<IDicesResult>();
+            diceResult.AttackerCasualties.Returns(attackerCasualties);
+            diceResult.DefenderCasualties.Returns(defenderCasualties);
+            _dices.Roll(attackingArmies, defendingArmies).Returns(diceResult);
         }
     }
 }
