@@ -6,7 +6,6 @@ using GuiWpf.ViewModels.Gameplay.Map;
 using GuiWpf.ViewModels.Messages;
 using RISK.Domain.Entities;
 using RISK.Domain.GamePlaying;
-using RISK.Domain.Repositories;
 
 namespace GuiWpf.ViewModels.Gameplay
 {
@@ -26,7 +25,7 @@ namespace GuiWpf.ViewModels.Gameplay
 
         public GameboardViewModel(
             IGame game,
-            ILocationProvider locationProvider,
+            IEnumerable<ILocation> locations,
             IWorldMapViewModelFactory worldMapViewModelFactory,
             ITerritoryViewModelUpdater territoryViewModelUpdater,
             IGameOverEvaluater gameOverEvaluater,
@@ -46,7 +45,7 @@ namespace GuiWpf.ViewModels.Gameplay
 
             _worldMap = _game.GetWorldMap();
 
-            _territories = locationProvider.GetAll()
+            _territories = locations
                 .Select(_worldMap.GetTerritory)
                 .ToList();
 

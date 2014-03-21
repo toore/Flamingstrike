@@ -3,6 +3,7 @@ using System.Linq;
 using FluentAssertions;
 using NSubstitute;
 using NUnit.Framework;
+using RISK.Domain;
 using RISK.Domain.Entities;
 using RISK.Domain.GamePlaying;
 using RISK.Domain.GamePlaying.Setup;
@@ -15,7 +16,7 @@ namespace RISK.Tests.Application.Gameplay.Setup
     {
         private AlternateGameSetup _alternateGameSetup;
         private IPlayerProvider _playerProvider;
-        private ILocationProvider _locationProvider;
+        private Locations _locations;
         private ILocation _location1;
         private ILocation _location2;
         private ILocation _location3;
@@ -34,7 +35,7 @@ namespace RISK.Tests.Application.Gameplay.Setup
         public void SetUp()
         {
             _playerProvider = Substitute.For<IPlayerProvider>();
-            _locationProvider = Substitute.For<ILocationProvider>();
+            _locations = new Locations(new Continents());
             _randomSorter = Substitute.For<IRandomSorter>();
             _worldMapFactory = Substitute.For<IWorldMapFactory>();
             _initialArmyCountProvider = Substitute.For<IInitialArmyCountProvider>();
@@ -49,8 +50,6 @@ namespace RISK.Tests.Application.Gameplay.Setup
             _location1 = Substitute.For<ILocation>();
             _location2 = Substitute.For<ILocation>();
             _location3 = Substitute.For<ILocation>();
-            var locations = new[] { _location1, _location2, _location3 };
-            _locationProvider.GetAll().Returns(locations);
 
             _territory1 = Substitute.For<ITerritory>();
             _territory2 = Substitute.For<ITerritory>();
@@ -64,10 +63,10 @@ namespace RISK.Tests.Application.Gameplay.Setup
 
             _initialArmyCountProvider.Get(2).Returns(3);
 
-            _alternateGameSetup = new AlternateGameSetup(_playerProvider, _locationProvider, _randomSorter, _worldMapFactory, _initialArmyCountProvider);
+            _alternateGameSetup = new AlternateGameSetup(_playerProvider, _locations, _randomSorter, _worldMapFactory, _initialArmyCountProvider);
 
             _randomSorter.Sort(Arg.Is<IEnumerable<IPlayer>>(x => x.SequenceEqual(playersInRepository))).Returns(new[] { _player1, _player2 });
-            _randomSorter.Sort(locations).Returns(new[] { _location3, _location2, _location1 });
+            _randomSorter.Sort(Arg.Is<IEnumerable<ILocation>>(x => x.SequenceEqual(_locations.GetAll()))).Returns(new[] { _location3, _location2, _location1 });
 
             _locationSelector = Substitute.For<ILocationSelector>();
         }
@@ -99,7 +98,7 @@ namespace RISK.Tests.Application.Gameplay.Setup
             var player2Territories = new[] { _territory2 };
             _worldMap.GetTerritoriesOccupiedBy(_player1).Returns(player1Territories);
             _worldMap.GetTerritoriesOccupiedBy(_player2).Returns(player2Territories);
-            
+
             //_locationSelector.Select(Arg.Is<List<ILocation>>(x => x.SequenceEqual(player1Locations))).Returns(_location3);
             //_locationSelector.Select(Arg.Is<List<ILocation>>(x => x.SequenceEqual(player2Locations))).Returns(_location2, _location2);
             _locationSelector.GetLocation(null).ReturnsForAnyArgs(_location3, _location2, _location2);

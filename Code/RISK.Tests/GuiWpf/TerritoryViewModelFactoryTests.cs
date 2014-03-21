@@ -5,8 +5,8 @@ using GuiWpf.Territories;
 using GuiWpf.ViewModels.Gameplay.Map;
 using NSubstitute;
 using NUnit.Framework;
+using RISK.Domain;
 using RISK.Domain.Entities;
-using RISK.Domain.Repositories;
 
 namespace RISK.Tests.GuiWpf
 {
@@ -14,19 +14,18 @@ namespace RISK.Tests.GuiWpf
     public class TerritoryViewModelFactoryTests
     {
         private TerritoryViewModelFactory _territoryViewModelFactory;
-        private ILocationProvider _locationProvider;
-        private IContinentProvider _continentProvider;
+        private Locations _locations;
         private Action<ILocation> _action;
         private ITerritoryGuiFactory _territoryGuiFactory;
         private ITerritoryViewModelUpdater _territoryViewModelUpdater;
         private ITerritory _siamTerritory;
-        private ITerritoryGui _siamGui;
+        private ITerritoryGraphics _siamGraphics;
 
         [SetUp]
         public void SetUp()
         {
-            _continentProvider = new ContinentProvider();
-            _locationProvider = new LocationProvider(_continentProvider);
+            var continents = new Continents();
+            _locations = new Locations(continents);
             _territoryViewModelUpdater = Substitute.For<ITerritoryViewModelUpdater>();
             _territoryGuiFactory = Substitute.For<ITerritoryGuiFactory>();
 
@@ -35,11 +34,11 @@ namespace RISK.Tests.GuiWpf
             _action = Substitute.For<Action<ILocation>>();
 
             _siamTerritory = Substitute.For<ITerritory>();
-            _siamTerritory.Location.Returns(_locationProvider.Siam);
+            _siamTerritory.Location.Returns(_locations.Siam);
 
-            _siamGui = Substitute.For<ITerritoryGui>();
-            _siamGui.Path.Returns("siam path");
-            _territoryGuiFactory.Create(_locationProvider.Siam).Returns(_siamGui);
+            _siamGraphics = Substitute.For<ITerritoryGraphics>();
+            _siamGraphics.Path.Returns("siam path");
+            _territoryGuiFactory.Create(_locations.Siam).Returns(_siamGraphics);
         }
 
         [Test]
@@ -48,7 +47,7 @@ namespace RISK.Tests.GuiWpf
             var viewModel = CreateSiamTerritoryViewModel();
 
             viewModel.Should().BeOfType<TerritoryLayoutViewModel>();
-            viewModel.Path.Should().Be(_siamGui.Path);
+            viewModel.Path.Should().Be(_siamGraphics.Path);
             viewModel.IsEnabled.Should().BeTrue();
 
             _territoryViewModelUpdater.Received().UpdateColors(Arg.Any<ITerritoryLayoutViewModel>(), Arg.Is(_siamTerritory));
@@ -61,7 +60,7 @@ namespace RISK.Tests.GuiWpf
 
             viewModel.OnClick();
 
-            _action.Received()(_locationProvider.Siam);
+            _action.Received()(_locations.Siam);
         }
 
         private TerritoryLayoutViewModel CreateSiamTerritoryViewModel()

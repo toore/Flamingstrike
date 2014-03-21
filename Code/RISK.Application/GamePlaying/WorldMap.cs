@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using RISK.Domain.Entities;
-using RISK.Domain.Repositories;
 
 namespace RISK.Domain.GamePlaying
 {
@@ -9,9 +8,9 @@ namespace RISK.Domain.GamePlaying
     {
         private readonly List<Territory> _territories;
 
-        public WorldMap(ILocationProvider locationProvider)
+        public WorldMap(Locations locations)
         {
-            _territories = locationProvider.GetAll()
+            _territories = locations.GetAll()
                 .Select(x => new Territory(x))
                 .ToList();
         }

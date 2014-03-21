@@ -1,14 +1,14 @@
 ﻿using Caliburn.Micro;
 using GuiWpf.Services;
 using GuiWpf.ViewModels.Gameplay.Map;
+using RISK.Domain;
 using RISK.Domain.GamePlaying;
-using RISK.Domain.Repositories;
 
 namespace GuiWpf.ViewModels.Gameplay
 {
     public class GameboardViewModelFactory : IGameboardViewModelFactory
     {
-        private readonly ILocationProvider _locationProvider;
+        private readonly Locations _locations;
         private readonly IWorldMapViewModelFactory _worldMapViewModelFactory;
         private readonly ITerritoryViewModelUpdater _territoryViewModelUpdater;
         private readonly IGameOverEvaluater _gameOverEvaluater;
@@ -19,7 +19,7 @@ namespace GuiWpf.ViewModels.Gameplay
         private readonly IEventAggregator _eventAggregator;
 
         public GameboardViewModelFactory(
-            ILocationProvider locationProvider,
+            Locations locations,
             IWorldMapViewModelFactory worldMapViewModelFactory,
             ITerritoryViewModelUpdater territoryViewModelUpdater,
             IGameOverEvaluater gameOverEvaluater,
@@ -29,7 +29,7 @@ namespace GuiWpf.ViewModels.Gameplay
             IDialogManager dialogManager,
             IEventAggregator eventAggregator)
         {
-            _locationProvider = locationProvider;
+            _locations = locations;
             _worldMapViewModelFactory = worldMapViewModelFactory;
             _territoryViewModelUpdater = territoryViewModelUpdater;
             _gameOverEvaluater = gameOverEvaluater;
@@ -44,7 +44,7 @@ namespace GuiWpf.ViewModels.Gameplay
         {
             return new GameboardViewModel(
                 game,
-                _locationProvider,
+                _locations.GetAll(),
                 _worldMapViewModelFactory,
                 _territoryViewModelUpdater,
                 _gameOverEvaluater,

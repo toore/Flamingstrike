@@ -120,7 +120,7 @@
     <Compile Include="GuiWpf\ColorServiceTests.cs" />
     <Compile Include="GuiWpf\GameboardViewModelTests.cs" />
     <Compile Include="Application\Gameplay\GameTests.cs" />
-    <Compile Include="Application\Gameplay\LocationProviderTests.cs" />
+    <Compile Include="Application\Gameplay\LocationsTests.cs" />
     <Compile Include="Application\Gameplay\RandomSorterTests.cs" />
     <Compile Include="GuiWpf\TerritoryViewModelFactoryTests.cs" />
     <Compile Include="Application\Gameplay\TurnFactoryTests.cs" />

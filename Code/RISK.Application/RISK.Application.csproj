@@ -89,10 +89,8 @@
     <Compile Include="GamePlaying\Setup\LocationSelectorParameter.cs" />
     <Compile Include="GamePlaying\TurnFactory.cs" />
     <Compile Include="GamePlaying\WorldMapFactory.cs" />
-    <Compile Include="Repositories\LocationProvider.cs" />
-    <Compile Include="Repositories\ContinentProvider.cs" />
-    <Compile Include="Repositories\ILocationProvider.cs" />
-    <Compile Include="Repositories\IContinentProvider.cs" />
+    <Compile Include="Locations.cs" />
+    <Compile Include="Continents.cs" />
     <Compile Include="GamePlaying\IGame.cs" />
     <Compile Include="GamePlaying\ITurn.cs" />
     <Compile Include="Repositories\IPlayerProvider.cs" />

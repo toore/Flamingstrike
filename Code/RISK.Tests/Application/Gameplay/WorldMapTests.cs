@@ -3,9 +3,9 @@ using System.Linq;
 using FluentAssertions;
 using NSubstitute;
 using NUnit.Framework;
+using RISK.Domain;
 using RISK.Domain.Entities;
 using RISK.Domain.GamePlaying;
-using RISK.Domain.Repositories;
 
 namespace RISK.Tests.Application.Gameplay
 {
@@ -13,49 +13,38 @@ namespace RISK.Tests.Application.Gameplay
     public class WorldMapTests
     {
         private WorldMap _worldMap;
-        private ILocationProvider _locationProvider;
-        private Location _scandinavia;
-        private Location _congo;
-        private Location _egypt;
+        private Locations _locations;
 
         [SetUp]
         public void SetUp()
         {
-            _locationProvider = Substitute.For<ILocationProvider>();
-            _scandinavia = new Location("scandinavia", new Continent());
-            _congo = new Location("congo", new Continent());
-            _egypt = new Location("egypt", new Continent());
-            _locationProvider.Scandinavia.Returns(_scandinavia);
-            _locationProvider.Congo.Returns(_congo);
-            _locationProvider.Egypt.Returns(_egypt);
-            _locationProvider.GetAll().Returns(new[] { _scandinavia, _congo, _egypt });
-
-            _worldMap = new WorldMap(_locationProvider);
+            _locations = new Locations(new Continents());
+            _worldMap = new WorldMap(_locations);
         }
 
         [Test]
         public void GetTerritory_has_territory_for_scandinavia()
         {
-            AssertGetTerritory(_locationProvider.Scandinavia);
+            AssertGetTerritory(_locations.Scandinavia);
         }
 
         [Test]
         public void GetTerritory_has_territory_for_congo()
         {
-            AssertGetTerritory(_locationProvider.Congo);
+            AssertGetTerritory(_locations.Congo);
         }
 
         [Test]
         public void GetTerritory_has_territory_for_egypt()
         {
-            AssertGetTerritory(_locationProvider.Egypt);
+            AssertGetTerritory(_locations.Egypt);
         }
 
         [Test]
         [ExpectedException(typeof(InvalidOperationException))]
         public void GetTerritory_throws_for_territory_Japan()
         {
-            GetTerritory(_locationProvider.Japan);
+            GetTerritory(new Location("unknown location", new Continent()));
         }
 
         [Test]
@@ -69,11 +58,11 @@ namespace RISK.Tests.Application.Gameplay
         {
             var player1 = Substitute.For<IPlayer>();
             var player2 = Substitute.For<IPlayer>();
-            GetTerritory(_scandinavia).Occupant = player1;
-            GetTerritory(_congo).Occupant = player2;
+            GetTerritory(_locations.Scandinavia).Occupant = player1;
+            GetTerritory(_locations.Congo).Occupant = player2;
 
-            var allPlayersOccupyingTerritories = _worldMap.GetAllPlayersOccupyingTerritories();
-            
+            var allPlayersOccupyingTerritories = _worldMap.GetAllPlayersOccupyingTerritories().ToList();
+
             allPlayersOccupyingTerritories.Count().Should().Be(2);
             allPlayersOccupyingTerritories.Should().BeEquivalentTo(player1, player2);
         }

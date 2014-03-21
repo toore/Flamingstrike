@@ -9,6 +9,7 @@ using GuiWpf.ViewModels.Settings;
 using GuiWpf.ViewModels.Setup;
 using NSubstitute;
 using RISK.Base.Extensions;
+using RISK.Domain;
 using RISK.Domain.Entities;
 using RISK.Domain.GamePlaying;
 using RISK.Domain.GamePlaying.DiceAndCalculation;
@@ -20,7 +21,7 @@ namespace RISK.Tests.Application.Specifications
 {
     public class game_playing_specifications : NSpecDebuggerShim
     {
-        private ILocationProvider _locationProvider;
+        private Locations _locations;
         private IPlayer _player1;
         private IPlayer _player2;
         private IMainGameViewModel _mainGameViewModel;
@@ -74,7 +75,9 @@ namespace RISK.Tests.Application.Specifications
 
                 InjectGame();
 
-                _gameboardViewModel = ObjectFactory.GetInstance<IGameboardViewModel>();
+                _gameboardViewModel = ObjectFactory
+                    .With(_locations.GetAll())
+                    .GetInstance<IGameboardViewModel>();
 
                 PlayerOneOccupiesNorthAfricaWithFiveArmies();
                 PlayerTwoOccupiesBrazilAndVenezuela();
@@ -83,17 +86,17 @@ namespace RISK.Tests.Application.Specifications
 
             act = () =>
             {
-                ClickOn(_locationProvider.NorthAfrica);
-                ClickOn(_locationProvider.Brazil);
+                ClickOn(_locations.NorthAfrica);
+                ClickOn(_locations.Brazil);
             };
 
             it["when player 1 attacks Brazil from North Africa"] = () =>
             {
-                _worldMap.GetTerritory(_locationProvider.NorthAfrica).Occupant.Should().Be(_player1, "player 1 should occupy North Africa");
-                _worldMap.GetTerritory(_locationProvider.NorthAfrica).Armies.Should().Be(1, "North Africa should have 1 army");
-                _worldMap.GetTerritory(_locationProvider.Brazil).Occupant.Should().Be(_player1, "player 1 should occupy Brazil");
-                GetTerritoryViewModel(_locationProvider.Brazil).IsSelected.Should().BeTrue("selected territory should be Brazil");
-                _worldMap.GetTerritory(_locationProvider.Brazil).Armies.Should().Be(4, "Brazil should have 4 armies");
+                _worldMap.GetTerritory(_locations.NorthAfrica).Occupant.Should().Be(_player1, "player 1 should occupy North Africa");
+                _worldMap.GetTerritory(_locations.NorthAfrica).Armies.Should().Be(1, "North Africa should have 1 army");
+                _worldMap.GetTerritory(_locations.Brazil).Occupant.Should().Be(_player1, "player 1 should occupy Brazil");
+                GetTerritoryViewModel(_locations.Brazil).IsSelected.Should().BeTrue("selected territory should be Brazil");
+                _worldMap.GetTerritory(_locations.Brazil).Armies.Should().Be(4, "Brazil should have 4 armies");
             };
 
             context["when player 1 turn ends"] = () =>
@@ -105,12 +108,12 @@ namespace RISK.Tests.Application.Specifications
 
             context["when player 1 attacks again"] = () =>
             {
-                act = () => ClickOn(_locationProvider.Venezuela);
+                act = () => ClickOn(_locations.Venezuela);
 
                 it["player 1 should occupy Venezuela with 3 armies"] = () =>
                 {
-                    _worldMap.GetTerritory(_locationProvider.Venezuela).Occupant.Should().Be(_player1, "player 1 should occupy Venezuela");
-                    _worldMap.GetTerritory(_locationProvider.Venezuela).Armies.Should().Be(3, "Venezuela should have 3 armies");
+                    _worldMap.GetTerritory(_locations.Venezuela).Occupant.Should().Be(_player1, "player 1 should occupy Venezuela");
+                    _worldMap.GetTerritory(_locations.Venezuela).Armies.Should().Be(3, "Venezuela should have 3 armies");
 
                     _windowManager.Received().ShowDialog(_gameOverViewModel);
                 };
@@ -174,13 +177,13 @@ namespace RISK.Tests.Application.Specifications
 
         private void PlayerOneOccupiesNorthAfricaWithFiveArmies()
         {
-            UpdateTerritory(_locationProvider.NorthAfrica, _player1, 5);
+            UpdateTerritory(_locations.NorthAfrica, _player1, 5);
         }
 
         private void PlayerTwoOccupiesBrazilAndVenezuela()
         {
-            UpdateTerritory(_locationProvider.Brazil, _player2, 1);
-            UpdateTerritory(_locationProvider.Venezuela, _player2, 1);
+            UpdateTerritory(_locations.Brazil, _player2, 1);
+            UpdateTerritory(_locations.Venezuela, _player2, 1);
         }
 
         private void UpdateTerritory(ILocation location, IPlayer owner, int armies)
@@ -194,12 +197,12 @@ namespace RISK.Tests.Application.Specifications
         {
             var excludedTerritories = new[]
             {
-                _locationProvider.Brazil,
-                _locationProvider.Venezuela,
-                _locationProvider.NorthAfrica
+                _locations.Brazil,
+                _locations.Venezuela,
+                _locations.NorthAfrica
             };
 
-            _locationProvider.GetAll()
+            _locations.GetAll()
                 .Where(x => !excludedTerritories.Contains(x))
                 .Select(x => _worldMap.GetTerritory(x))
                 .Apply(x =>
@@ -230,13 +233,13 @@ namespace RISK.Tests.Application.Specifications
 
         private void InjectLocationProvider()
         {
-            _locationProvider = new LocationProvider(new ContinentProvider());
-            ObjectFactory.Inject(_locationProvider);
+            _locations = new Locations(new Continents());
+            ObjectFactory.Inject(_locations);
         }
 
         private void InjectWorldMapFactory()
         {
-            _worldMap = new WorldMap(_locationProvider);
+            _worldMap = new WorldMap(_locations);
 
             var worldMapFactory = Substitute.For<IWorldMapFactory>();
             worldMapFactory.Create().Returns(_worldMap);

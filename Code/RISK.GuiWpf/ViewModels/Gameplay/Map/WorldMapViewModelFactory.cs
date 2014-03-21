@@ -1,9 +1,9 @@
 using System;
 using System.Linq;
 using Caliburn.Micro;
+using RISK.Domain;
 using RISK.Domain.Entities;
 using RISK.Domain.GamePlaying;
-using RISK.Domain.Repositories;
 
 namespace GuiWpf.ViewModels.Gameplay.Map
 {
@@ -11,18 +11,18 @@ namespace GuiWpf.ViewModels.Gameplay.Map
     {
         private readonly ITerritoryViewModelFactory _territoryViewModelFactory;
         private readonly ITerritoryTextViewModelFactory _territoryTextViewModelFactory;
-        private readonly ILocationProvider _locationProvider;
+        private readonly Locations _locations;
 
-        public WorldMapViewModelFactory(ILocationProvider locationProvider, ITerritoryViewModelFactory territoryViewModelFactory, ITerritoryTextViewModelFactory territoryTextViewModelFactory)
+        public WorldMapViewModelFactory(Locations locations, ITerritoryViewModelFactory territoryViewModelFactory, ITerritoryTextViewModelFactory territoryTextViewModelFactory)
         {
             _territoryViewModelFactory = territoryViewModelFactory;
             _territoryTextViewModelFactory = territoryTextViewModelFactory;
-            _locationProvider = locationProvider;
+            _locations = locations;
         }
 
         public WorldMapViewModel Create(IWorldMap worldMap, Action<ILocation> selectLocation)
         {
-            var territories = _locationProvider.GetAll()
+            var territories = _locations.GetAll()
                 .Select(worldMap.GetTerritory)
                 .ToList();
 

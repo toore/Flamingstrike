@@ -1,19 +1,17 @@
-﻿using RISK.Domain.Repositories;
-
-namespace RISK.Domain.GamePlaying
+﻿namespace RISK.Domain.GamePlaying
 {
     public class WorldMapFactory : IWorldMapFactory
     {
-        private readonly ILocationProvider _locationProvider;
+        private readonly Locations _locations;
 
-        public WorldMapFactory(ILocationProvider locationProvider)
+        public WorldMapFactory(Locations locations)
         {
-            _locationProvider = locationProvider;
+            _locations = locations;
         }
 
         public IWorldMap Create()
         {
-            return new WorldMap(_locationProvider);
+            return new WorldMap(_locations);
         }
     }
 }

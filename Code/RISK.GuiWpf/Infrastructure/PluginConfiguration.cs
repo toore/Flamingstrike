@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using Caliburn.Micro;
 using GuiWpf.ViewModels.Gameplay;
+using RISK.Domain;
 using RISK.Domain.GamePlaying;
-using RISK.Domain.Repositories;
 using StructureMap;
 
 namespace GuiWpf.Infrastructure
@@ -23,7 +23,7 @@ namespace GuiWpf.Infrastructure
                     s.WithDefaultConventions();
                 });
 
-                x.For<ILocationProvider>().Singleton();
+                x.For<Locations>().Singleton();
                 x.For<IEventAggregator>().Use<EventAggregator>();
 
                 x.RegisterInterceptor(new HandleInterceptor<IEventAggregator>());
