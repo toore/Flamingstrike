@@ -69,6 +69,9 @@
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="xunit">
+      <HintPath>..\packages\xunit.1.9.2\lib\net20\xunit.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -86,6 +89,7 @@
     <Compile Include="Application\Gameplay\TerritoryTests.cs" />
     <Compile Include="Application\Gameplay\TurnTests_WhenAttacking.cs" />
     <Compile Include="Application\Gameplay\TurnTests_WhenSelecting.cs" />
+    <Compile Include="Application\Specifications\game_setup.cs" />
     <Compile Include="DebuggerShim.cs" />
     <Compile Include="GuiWpf\EnumerableExtensionsTests.cs" />
     <Compile Include="GuiWpf\GameSettingsViewModelTests.cs" />
@@ -163,9 +167,7 @@
       <Name>RISK.GuiWpf</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="ViewModels\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

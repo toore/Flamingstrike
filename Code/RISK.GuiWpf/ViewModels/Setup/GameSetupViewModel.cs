@@ -13,7 +13,6 @@ namespace GuiWpf.ViewModels.Setup
     public class GameSetupViewModel : ViewModelBase, IGameSetupViewModel
     {
         private readonly IWorldMapViewModelFactory _worldMapViewModelFactory;
-        private readonly IGameFactoryWorker _gameFactoryWorker;
         private readonly IGameSettingStateConductor _gameSettingStateConductor;
         private readonly IUserInteractionSynchronizer _userInteractionSynchronizer;
         private readonly IDialogManager _dialogManager;
@@ -32,13 +31,12 @@ namespace GuiWpf.ViewModels.Setup
             IEventAggregator eventAggregator)
         {
             _worldMapViewModelFactory = worldMapViewModelFactory;
-            _gameFactoryWorker = gameFactoryWorker;
             _gameSettingStateConductor = gameSettingStateConductor;
             _userInteractionSynchronizer = userInteractionSynchronizer;
             _dialogManager = dialogManager;
             _eventAggregator = eventAggregator;
 
-            _gameFactoryWorker.BeginInvoke(this);
+            gameFactoryWorker.BeginInvoke(this);
 
             WaitForUserInputRequestAndUpdateView();
         }
