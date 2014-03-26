@@ -158,10 +158,6 @@
       <Project>{6de17fca-3f04-4923-8ab8-e3fa376a54ff}</Project>
       <Name>RISK.Application</Name>
     </ProjectReference>
-    <ProjectReference Include="..\RISK.Base\RISK.Base.csproj">
-      <Project>{A946654D-4A11-4B0E-9007-B773201C4BCD}</Project>
-      <Name>RISK.Base</Name>
-    </ProjectReference>
     <ProjectReference Include="..\RISK.GuiWpf\RISK.GuiWpf.csproj">
       <Project>{3b937f0e-e727-442d-b1da-e5ed6ef939d5}</Project>
       <Name>RISK.GuiWpf</Name>

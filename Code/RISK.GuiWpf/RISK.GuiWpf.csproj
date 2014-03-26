@@ -300,10 +300,6 @@
       <Project>{6DE17FCA-3F04-4923-8AB8-E3FA376A54FF}</Project>
       <Name>RISK.Application</Name>
     </ProjectReference>
-    <ProjectReference Include="..\RISK.Base\RISK.Base.csproj">
-      <Project>{A946654D-4A11-4B0E-9007-B773201C4BCD}</Project>
-      <Name>RISK.Base</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />

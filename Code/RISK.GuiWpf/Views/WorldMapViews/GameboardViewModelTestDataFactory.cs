@@ -4,9 +4,9 @@ using GuiWpf.Territories;
 using GuiWpf.ViewModels;
 using GuiWpf.ViewModels.Gameplay;
 using GuiWpf.ViewModels.Gameplay.Map;
-using RISK.Base.Extensions;
 using RISK.Domain;
 using RISK.Domain.Entities;
+using RISK.Domain.Extensions;
 using RISK.Domain.GamePlaying;
 using RISK.Domain.GamePlaying.Setup;
 

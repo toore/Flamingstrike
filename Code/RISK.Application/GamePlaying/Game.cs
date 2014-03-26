@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using RISK.Base.Extensions;
 using RISK.Domain.Entities;
+using RISK.Domain.Extensions;
 using RISK.Domain.GamePlaying.Setup;
 
 namespace RISK.Domain.GamePlaying

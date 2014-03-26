@@ -2,8 +2,8 @@
 using FluentAssertions;
 using NSubstitute;
 using NUnit.Framework;
-using RISK.Base.Extensions;
 using RISK.Domain.Entities;
+using RISK.Domain.Extensions;
 using RISK.Domain.GamePlaying;
 
 namespace RISK.Tests.Application.Gameplay

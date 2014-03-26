@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Caliburn.Micro;
-using RISK.Base.Extensions;
 using RISK.Domain.Entities;
+using RISK.Domain.Extensions;
 
 namespace RISK.Domain.GamePlaying.Setup
 {

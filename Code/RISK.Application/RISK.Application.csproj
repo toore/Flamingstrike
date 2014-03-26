@@ -59,6 +59,9 @@
     <Compile Include="Entities\ILocation.cs" />
     <Compile Include="Entities\IPlayer.cs" />
     <Compile Include="Entities\TerritoryExtensions.cs" />
+    <Compile Include="Extensions\EnumerableExtensions.cs" />
+    <Compile Include="Extensions\ListExtensions.cs" />
+    <Compile Include="Extensions\ObjectExtensions.cs" />
     <Compile Include="GamePlaying\DiceAndCalculation\Dice.cs" />
     <Compile Include="GamePlaying\DiceAndCalculation\IDice.cs" />
     <Compile Include="GamePlaying\Setup\AlternateGameSetup.cs" />
@@ -102,12 +105,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\RISK.Base\RISK.Base.csproj">
-      <Project>{A946654D-4A11-4B0E-9007-B773201C4BCD}</Project>
-      <Name>RISK.Base</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

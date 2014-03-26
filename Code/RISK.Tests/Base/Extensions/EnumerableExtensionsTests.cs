@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using FluentAssertions;
 using NUnit.Framework;
-using RISK.Base.Extensions;
+using RISK.Domain.Extensions;
 
 namespace RISK.Tests.Base.Extensions
 {

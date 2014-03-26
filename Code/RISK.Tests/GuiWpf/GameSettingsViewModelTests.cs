@@ -5,7 +5,7 @@ using GuiWpf.ViewModels.Messages;
 using GuiWpf.ViewModels.Settings;
 using NSubstitute;
 using NUnit.Framework;
-using RISK.Base.Extensions;
+using RISK.Domain.Extensions;
 
 namespace RISK.Tests.GuiWpf
 {
