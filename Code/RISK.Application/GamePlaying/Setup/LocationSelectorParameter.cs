@@ -5,15 +5,15 @@ namespace RISK.Domain.GamePlaying.Setup
 {
     public class LocationSelectorParameter : ILocationSelectorParameter
     {
-        public LocationSelectorParameter(IWorldMap worldMap, IEnumerable<ILocation> availableLocations, SetupArmies setupArmies)
+        public LocationSelectorParameter(IWorldMap worldMap, IEnumerable<ILocation> availableLocations, SetupPlayer setupPlayer)
         {
             WorldMap = worldMap;
             AvailableLocations = availableLocations;
-            SetupArmies = setupArmies;
+            SetupPlayer = setupPlayer;
         }
 
         public IWorldMap WorldMap { get; private set; }
         public IEnumerable<ILocation> AvailableLocations { get; private set; }
-        public SetupArmies SetupArmies { get; private set; }
+        public SetupPlayer SetupPlayer { get; private set; }
     }
 }

@@ -42,6 +42,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Caliburn.Micro.1.5.1\lib\net45\Caliburn.Micro.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Build.Framework" />
     <Reference Include="StructureMap">
       <HintPath>..\packages\structuremap.2.6.4.1\lib\net40\StructureMap.dll</HintPath>
     </Reference>
@@ -83,6 +84,8 @@
     <Compile Include="Services\IDialogManager.cs" />
     <Compile Include="ViewModels\Messages\NewGameMessage.cs" />
     <Compile Include="ViewModels\Settings\GameSettingsViewModelFactory.cs" />
+    <Compile Include="ViewModels\Setup\GameFactoryWorker.cs" />
+    <Compile Include="ViewModels\Setup\UserInteractor.cs" />
     <Compile Include="Views\ConfirmView.xaml.cs">
       <DependentUpon>ConfirmView.xaml</DependentUpon>
     </Compile>
@@ -104,19 +107,14 @@
     <Compile Include="ViewModels\GameOverViewModelFactory.cs" />
     <Compile Include="ViewModels\Gameplay\IGameOverEvaluater.cs" />
     <Compile Include="ViewModels\IGameOverViewModelFactory.cs" />
-    <Compile Include="ViewModels\Setup\GameFactoryWorker.cs" />
     <Compile Include="ViewModels\Setup\GameSetupViewModel.cs" />
     <Compile Include="ViewModels\Gameplay\GameboardViewModelFactory.cs" />
     <Compile Include="ViewModels\Setup\GameFactory.cs" />
     <Compile Include="ViewModels\Gameplay\Map\ITerritoryTextViewModel.cs" />
     <Compile Include="ViewModels\Gameplay\Map\WorldMapViewModelsExtensions.cs" />
     <Compile Include="ViewModels\Messages\GameSetupMessage.cs" />
-    <Compile Include="ViewModels\GameSetupViewModelFactory.cs" />
-    <Compile Include="ViewModels\Setup\IGameFactoryWorker.cs" />
-    <Compile Include="ViewModels\Setup\IGameSetupViewModel.cs" />
+    <Compile Include="ViewModels\Setup\GameSetupViewModelFactory.cs" />
     <Compile Include="ViewModels\Gameplay\IGameboardViewModelFactory.cs" />
-    <Compile Include="ViewModels\Setup\IGameFactory.cs" />
-    <Compile Include="ViewModels\Setup\IGameSetupViewModelFactory.cs" />
     <Compile Include="ViewModels\IGameSettingStateConductor.cs" />
     <Compile Include="ViewModels\Settings\GameSettingsViewModel.cs" />
     <Compile Include="ViewModels\Settings\HumanPlayerType.cs" />
@@ -133,8 +131,6 @@
     <Compile Include="Territories\TerritoryGuiFactory.cs" />
     <Compile Include="ViewModels\Settings\PlayerTypeBase.cs" />
     <Compile Include="ViewModels\Settings\PlayerTypes.cs" />
-    <Compile Include="ViewModels\Setup\IUserInteractionSynchronizer.cs" />
-    <Compile Include="ViewModels\Setup\UserInteractionSynchronizer.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="ViewModels\Gameplay\GameboardViewModel.cs" />
     <Compile Include="ViewModels\Gameplay\IGameboardViewModel.cs" />

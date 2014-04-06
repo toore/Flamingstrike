@@ -5,7 +5,7 @@ namespace RISK.Domain.GamePlaying.Setup
 {
     public static class SetupArmiesExtensions
     {
-        public static bool AnyArmiesLeft(this IList<SetupArmies> players)
+        public static bool AnyArmiesLeft(this IList<SetupPlayer> players)
         {
             return players.Any(x => x.GetArmies() > 0);
         }

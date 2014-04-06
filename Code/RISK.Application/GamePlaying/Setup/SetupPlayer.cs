@@ -2,12 +2,12 @@
 
 namespace RISK.Domain.GamePlaying.Setup
 {
-    public class SetupArmies
+    public class SetupPlayer
     {
         private readonly IPlayer _player;
         private int _armies;
 
-        public SetupArmies(IPlayer player, int armies)
+        public SetupPlayer(IPlayer player, int armies)
         {
             _player = player;
             _armies = armies;
@@ -18,7 +18,7 @@ namespace RISK.Domain.GamePlaying.Setup
             return _armies;
         }
 
-        public bool HasArmies()
+        public bool HasArmiesLeft()
         {
             return _armies > 0;
         }
@@ -28,7 +28,7 @@ namespace RISK.Domain.GamePlaying.Setup
             return _player;
         }
 
-        public void Decrease()
+        public void DecreaseArmies()
         {
             _armies--;
         }

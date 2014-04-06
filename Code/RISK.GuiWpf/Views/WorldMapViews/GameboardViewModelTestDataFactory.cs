@@ -12,7 +12,7 @@ using RISK.Domain.GamePlaying.Setup;
 
 namespace GuiWpf.Views.WorldMapViews
 {
-    public class GameboardViewModelTestDataFactory : ILocationSelector
+    public class GameboardViewModelTestDataFactory : IGameInitializerLocationSelector
     {
         public static GameboardViewModel ViewModel
         {
@@ -49,7 +49,7 @@ namespace GuiWpf.Views.WorldMapViews
             return gameboardViewModel;
         }
 
-        public ILocation GetLocation(ILocationSelectorParameter locationSelectorParameter)
+        public ILocation SelectLocation(ILocationSelectorParameter locationSelectorParameter)
         {
             return locationSelectorParameter.AvailableLocations.First();
         }
