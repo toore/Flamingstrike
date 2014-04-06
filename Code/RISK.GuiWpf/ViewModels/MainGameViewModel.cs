@@ -50,7 +50,10 @@ namespace GuiWpf.ViewModels
 
         private void StartGame()
         {
-            MainViewModel = _gameSetupViewModelFactory.Create(this);
+            var gameSetupViewModel = _gameSetupViewModelFactory.Create(this);
+            MainViewModel = gameSetupViewModel;
+
+            gameSetupViewModel.StartSetup();
         }
 
         public void StartGamePlay(IGame game)

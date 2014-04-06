@@ -4,6 +4,11 @@ using RISK.Domain.GamePlaying.Setup;
 
 namespace GuiWpf.ViewModels.Setup
 {
+    public interface IGameFactory
+    {
+        IGame Create(IGameInitializerLocationSelector gameInitializerLocationSelector);
+    }
+
     public class GameFactory : IGameFactory
     {
         private readonly ITurnFactory _turnFactory;
@@ -17,9 +22,9 @@ namespace GuiWpf.ViewModels.Setup
             _alternateGameSetup = alternateGameSetup;
         }
 
-        public IGame Create(ILocationSelector locationSelector)
+        public IGame Create(IGameInitializerLocationSelector gameInitializerLocationSelector)
         {
-            return new Game(_turnFactory, _players, _alternateGameSetup, locationSelector);
+            return new Game(_turnFactory, _players, _alternateGameSetup, gameInitializerLocationSelector);
         }
     }
 }

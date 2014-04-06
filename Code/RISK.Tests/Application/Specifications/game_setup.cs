@@ -1,16 +1,14 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using FluentAssertions;
 using GuiWpf.Infrastructure;
 using GuiWpf.ViewModels;
 using GuiWpf.ViewModels.Gameplay;
-using GuiWpf.ViewModels.Gameplay.Map;
 using GuiWpf.ViewModels.Settings;
 using GuiWpf.ViewModels.Setup;
-using NSubstitute;
-using RISK.Domain;
 using RISK.Domain.Entities;
 using RISK.Domain.Extensions;
-using RISK.Domain.GamePlaying;
+using RISK.Domain.GamePlaying.Setup;
 using StructureMap;
 using Xunit;
 
@@ -18,12 +16,9 @@ namespace RISK.Tests.Application.Specifications
 {
     public class game_setup
     {
-        private Locations _locations;
-        private IPlayer _player1;
-        private IPlayer _player2;
         private IMainGameViewModel _mainGameViewModel;
-        private IWorldMap _worldMap;
-        private Players _players;
+        private AutoRespondingUserInteractor _userInteractor;
+        private IMainViewModel _setupViewModel;
 
         public game_setup()
         {
@@ -31,14 +26,15 @@ namespace RISK.Tests.Application.Specifications
         }
 
         [Fact]
-        public void game_is_started()
+        public void game_is_setup_and_started()
         {
             Given
                 .a_new_game();
 
             When
                 .two_human_players_are_confirmed()
-                .all_armies_are_placed_on_the_map();
+                .all_armies_are_placed_on_the_map()
+                .the_main_view_is_changed();
 
             Then
                 .the_game_is_started();
@@ -46,9 +42,7 @@ namespace RISK.Tests.Application.Specifications
 
         private game_setup a_new_game()
         {
-            InjectPlayerRepository();
-            InjectLocationProvider();
-            InjectWorldMapFactory();
+            InjectUserInteractor();
 
             _mainGameViewModel = ObjectFactory.GetInstance<IMainGameViewModel>();
 
@@ -57,31 +51,30 @@ namespace RISK.Tests.Application.Specifications
 
         private game_setup two_human_players_are_confirmed()
         {
-            var gameSetupViewModel = (IGameSettingsViewModel)_mainGameViewModel.MainViewModel;
+            var gameSettingsViewModel = (IGameSettingsViewModel)_mainGameViewModel.MainViewModel;
 
-            gameSetupViewModel.Players.First().IsEnabled = true;
-            gameSetupViewModel.Players.Second().IsEnabled = true;
+            gameSettingsViewModel.Players.First().IsEnabled = true;
+            gameSettingsViewModel.Players.Second().IsEnabled = true;
 
-            gameSetupViewModel.Confirm();
+            gameSettingsViewModel.Confirm();
+
+            _setupViewModel = _mainGameViewModel.MainViewModel;
 
             return this;
         }
 
         private game_setup all_armies_are_placed_on_the_map()
         {
-            _mainGameViewModel.MainViewModel.Should().BeOfType<GameSetupViewModel>();
-
             const int numberOfArmiesToPlace = (40 - 21) * 2;
 
-            for (int i = 0; i < numberOfArmiesToPlace; i++)
-            {
-                var gameSetupViewModel = (GameSetupViewModel)_mainGameViewModel.MainViewModel;
-                var firstEnabledterritoryViewModel = gameSetupViewModel.WorldMapViewModel.WorldMapViewModels
-                    .OfType<TerritoryLayoutViewModel>()
-                    .First(x => x.IsEnabled);
+            while (_userInteractor.LocationsHasBeenSelected < numberOfArmiesToPlace) {}
 
-                gameSetupViewModel.SelectLocation(firstEnabledterritoryViewModel.Location);
-            }
+            return this;
+        }
+
+        private game_setup the_main_view_is_changed()
+        {
+            while (_mainGameViewModel.MainViewModel == _setupViewModel) {}
 
             return this;
         }
@@ -91,26 +84,10 @@ namespace RISK.Tests.Application.Specifications
             _mainGameViewModel.MainViewModel.Should().BeOfType<GameboardViewModel>();
         }
 
-        private void InjectPlayerRepository()
+        private void InjectUserInteractor()
         {
-            _players = new Players();
-            ObjectFactory.Inject<IPlayers>(_players);
-        }
-
-        private void InjectLocationProvider()
-        {
-            _locations = new Locations(new Continents());
-            ObjectFactory.Inject(_locations);
-        }
-
-        private void InjectWorldMapFactory()
-        {
-            _worldMap = new WorldMap(_locations);
-
-            var worldMapFactory = Substitute.For<IWorldMapFactory>();
-            worldMapFactory.Create().Returns(_worldMap);
-
-            ObjectFactory.Inject(worldMapFactory);
+            _userInteractor = new AutoRespondingUserInteractor();
+            ObjectFactory.Inject<IUserInteractor>(_userInteractor);
         }
 
         private game_setup Given
@@ -126,6 +103,22 @@ namespace RISK.Tests.Application.Specifications
         private game_setup Then
         {
             get { return this; }
+        }
+    }
+
+    internal class AutoRespondingUserInteractor : IUserInteractor
+    {
+        public int LocationsHasBeenSelected { get; set; }
+
+        public ILocation GetLocation(ILocationSelectorParameter locationSelector)
+        {
+            LocationsHasBeenSelected++;
+            return locationSelector.AvailableLocations.First();
+        }
+
+        public void SelectLocation(ILocation location)
+        {
+            throw new NotImplementedException();
         }
     }
 }

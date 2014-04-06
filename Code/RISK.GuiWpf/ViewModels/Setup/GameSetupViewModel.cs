@@ -10,35 +10,34 @@ using RISK.Domain.GamePlaying.Setup;
 
 namespace GuiWpf.ViewModels.Setup
 {
-    public class GameSetupViewModel : ViewModelBase, IGameSetupViewModel
+    public interface IGameSetupViewModel : IMainViewModel
+    {
+        void StartSetup();
+    }
+
+    public class GameSetupViewModel : ViewModelBase, IGameSetupViewModel, IGameInitializerLocationSelector, IGameInitializerNotifier
     {
         private readonly IWorldMapViewModelFactory _worldMapViewModelFactory;
         private readonly IGameSettingStateConductor _gameSettingStateConductor;
-        private readonly IUserInteractionSynchronizer _userInteractionSynchronizer;
         private readonly IDialogManager _dialogManager;
         private readonly IEventAggregator _eventAggregator;
-        private ILocation _selectedLocation;
-        private ILocationSelectorParameter _locationSelectorParameter;
-        private bool _isGameSetupFinished;
-        private IGame _game;
+        private readonly IUserInteractor _userInteractor;
+        private readonly IGameFactoryWorker _gameFactoryWorker;
 
         public GameSetupViewModel(
             IWorldMapViewModelFactory worldMapViewModelFactory,
-            IGameFactoryWorker gameFactoryWorker,
             IGameSettingStateConductor gameSettingStateConductor,
-            IUserInteractionSynchronizer userInteractionSynchronizer,
             IDialogManager dialogManager,
-            IEventAggregator eventAggregator)
+            IEventAggregator eventAggregator,
+            IUserInteractor userInteractor,
+            IGameFactoryWorker gameFactoryWorker)
         {
             _worldMapViewModelFactory = worldMapViewModelFactory;
             _gameSettingStateConductor = gameSettingStateConductor;
-            _userInteractionSynchronizer = userInteractionSynchronizer;
             _dialogManager = dialogManager;
             _eventAggregator = eventAggregator;
-
-            gameFactoryWorker.BeginInvoke(this);
-
-            WaitForUserInputRequestAndUpdateView();
+            _userInteractor = userInteractor;
+            _gameFactoryWorker = gameFactoryWorker;
         }
 
         private WorldMapViewModel _worldMapViewModel;
@@ -62,56 +61,35 @@ namespace GuiWpf.ViewModels.Setup
             private set { NotifyOfPropertyChange(value, () => Player, x => _player = x); }
         }
 
-        private void WaitForUserInputRequestAndUpdateView()
+        public void StartSetup()
         {
-            _userInteractionSynchronizer.WaitForUserInteractionRequest();
-
-            UpdateView(_locationSelectorParameter);
+            _gameFactoryWorker.Run(this, this);
         }
 
-        public ILocation GetLocationCallback(ILocationSelectorParameter locationSelectorParameter)
+        public ILocation SelectLocation(ILocationSelectorParameter locationSelectorParameter)
         {
-            _locationSelectorParameter = locationSelectorParameter;
+            UpdateView(locationSelectorParameter);
 
-            _userInteractionSynchronizer.RequestUserInteraction();
-            _userInteractionSynchronizer.WaitForUserToBeDoneWithInteracting();
-
-            return _selectedLocation;
+            return _userInteractor.GetLocation(locationSelectorParameter);
         }
 
-        public void SelectLocation(ILocation location)
+        public void InitializationFinished(IGame game)
         {
-            _selectedLocation = location;
-
-            _userInteractionSynchronizer.UserIsDoneInteracting();
-            WaitForUserInputRequestAndUpdateView();
-
-            if (_isGameSetupFinished)
-            {
-                StartGamePlay(_game);
-            }
-        }
-
-        public void OnFinished(IGame game)
-        {
-            _isGameSetupFinished = true;
-            _game = game;
-
-            _userInteractionSynchronizer.RequestUserInteraction();
+            StartGamePlay(game);
         }
 
         private void UpdateView(ILocationSelectorParameter locationSelectorParameter)
         {
-            var worldMapViewModel = _worldMapViewModelFactory.Create(locationSelectorParameter.WorldMap, SelectLocation);
+            var worldMapViewModel = _worldMapViewModelFactory.Create(locationSelectorParameter.WorldMap, _userInteractor.SelectLocation);
 
             worldMapViewModel.WorldMapViewModels.OfType<TerritoryLayoutViewModel>()
                 .Apply(x => x.IsEnabled = locationSelectorParameter.AvailableLocations.Contains(x.Location));
 
             WorldMapViewModel = worldMapViewModel;
 
-            Player = _locationSelectorParameter.SetupArmies.GetPlayer();
+            Player = locationSelectorParameter.SetupPlayer.GetPlayer();
 
-            InformationText = string.Format(Resources.PLACE_ARMY, locationSelectorParameter.SetupArmies.GetArmies());
+            InformationText = string.Format(Resources.PLACE_ARMY, locationSelectorParameter.SetupPlayer.GetArmies());
         }
 
         private void StartGamePlay(IGame game)

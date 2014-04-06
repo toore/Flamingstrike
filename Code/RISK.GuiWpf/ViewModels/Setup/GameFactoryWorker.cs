@@ -1,33 +1,30 @@
-﻿using System.Threading.Tasks;
-using RISK.Domain.Entities;
+using System.Threading.Tasks;
 using RISK.Domain.GamePlaying.Setup;
 
 namespace GuiWpf.ViewModels.Setup
 {
-    public class GameFactoryWorker : IGameFactoryWorker, ILocationSelector
+    public interface IGameFactoryWorker
+    {
+        void Run(IGameInitializerLocationSelector gameInitializerLocationSelector, IGameInitializerNotifier gameInitializerNotifier);
+    }
+
+    public class GameFactoryWorker : IGameFactoryWorker
     {
         private readonly IGameFactory _gameFactory;
-        private IGameFactoryWorkerCallback _callback;
 
         public GameFactoryWorker(IGameFactory gameFactory)
         {
             _gameFactory = gameFactory;
         }
 
-        public void BeginInvoke(IGameFactoryWorkerCallback callback)
+        public void Run(IGameInitializerLocationSelector gameInitializerLocationSelector, IGameInitializerNotifier gameInitializerNotifier)
         {
-            _callback = callback;
-
             Task.Run(() =>
-                {
-                    var game = _gameFactory.Create(this);
-                    _callback.OnFinished(game);
-                });
-        }
-
-        public ILocation GetLocation(ILocationSelectorParameter locationSelectorParameter)
-        {
-            return _callback.GetLocationCallback(locationSelectorParameter);
+            {
+                var game = _gameFactory.Create(gameInitializerLocationSelector);
+                gameInitializerNotifier.InitializationFinished(game);
+            }
+            );
         }
     }
 }
