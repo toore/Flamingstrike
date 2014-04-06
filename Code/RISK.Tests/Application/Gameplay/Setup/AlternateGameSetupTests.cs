@@ -25,7 +25,7 @@ namespace RISK.Tests.Application.Gameplay.Setup
         private IWorldMapFactory _worldMapFactory;
         private IWorldMap _worldMap;
         private IInitialArmyCount _initialArmyCount;
-        private ILocationSelector _locationSelector;
+        private IGameInitializerLocationSelector _gameInitializerLocationSelector;
         private ITerritory _territory1;
         private ITerritory _territory2;
         private ITerritory _territory3;
@@ -67,7 +67,7 @@ namespace RISK.Tests.Application.Gameplay.Setup
             _randomSorter.Sort(Arg.Is<IEnumerable<IPlayer>>(x => x.SequenceEqual(playersInRepository))).Returns(new[] { _player1, _player2 });
             _randomSorter.Sort(Arg.Is<IEnumerable<ILocation>>(x => x.SequenceEqual(_locations.GetAll()))).Returns(new[] { _location3, _location2, _location1 });
 
-            _locationSelector = Substitute.For<ILocationSelector>();
+            _gameInitializerLocationSelector = Substitute.For<IGameInitializerLocationSelector>();
         }
 
         [Test]
@@ -91,16 +91,12 @@ namespace RISK.Tests.Application.Gameplay.Setup
         [Test]
         public void Place_armies_on_all_territories()
         {
-            var player1Locations = new[] { _location3, _location1 };
-            var player2Locations = new[] { _location2 };
             var player1Territories = new[] { _territory1, _territory3 };
             var player2Territories = new[] { _territory2 };
             _worldMap.GetTerritoriesOccupiedBy(_player1).Returns(player1Territories);
             _worldMap.GetTerritoriesOccupiedBy(_player2).Returns(player2Territories);
 
-            //_locationSelector.Select(Arg.Is<List<ILocation>>(x => x.SequenceEqual(player1Locations))).Returns(_location3);
-            //_locationSelector.Select(Arg.Is<List<ILocation>>(x => x.SequenceEqual(player2Locations))).Returns(_location2, _location2);
-            _locationSelector.GetLocation(null).ReturnsForAnyArgs(_location3, _location2, _location2);
+            _gameInitializerLocationSelector.SelectLocation(null).ReturnsForAnyArgs(_location3, _location2, _location2);
 
             var worldMap = Initialize();
 
@@ -111,7 +107,7 @@ namespace RISK.Tests.Application.Gameplay.Setup
 
         private IWorldMap Initialize()
         {
-            return _alternateGameSetup.Initialize(_locationSelector);
+            return _alternateGameSetup.Initialize(_gameInitializerLocationSelector);
         }
     }
 }

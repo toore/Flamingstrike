@@ -11,10 +11,10 @@ namespace RISK.Tests.Application.Gameplay.Setup
         [Test]
         public void Has_armies_left()
         {
-            new List<SetupArmies>
+            new List<SetupPlayer>
                 {
-                    new SetupArmies(null, 1),
-                    new SetupArmies(null, 0)
+                    new SetupPlayer(null, 1),
+                    new SetupPlayer(null, 0)
                 }
                 .AnyArmiesLeft().Should().BeTrue("one player has one army left");
         }
@@ -22,10 +22,10 @@ namespace RISK.Tests.Application.Gameplay.Setup
         [Test]
         public void Do_not_have_armies_left()
         {
-            new List<SetupArmies>
+            new List<SetupPlayer>
                 {
-                    new SetupArmies(null, 0),
-                    new SetupArmies(null, 0)
+                    new SetupPlayer(null, 0),
+                    new SetupPlayer(null, 0)
                 }
                 .AnyArmiesLeft().Should().BeFalse("no player has armies left");
         }

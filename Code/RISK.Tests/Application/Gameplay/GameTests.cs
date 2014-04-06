@@ -20,7 +20,7 @@ namespace RISK.Tests.Application.Gameplay
         private IPlayer _player1;
         private IPlayer _player2;
         private IAlternateGameSetup _alternateGameSetup;
-        private ILocationSelector _locationSelector;
+        private IGameInitializerLocationSelector _gameInitializerLocationSelector;
 
         [SetUp]
         public void SetUp()
@@ -29,7 +29,7 @@ namespace RISK.Tests.Application.Gameplay
             _turnFactory = Substitute.For<ITurnFactory>();
             _players = Substitute.For<IPlayers>();
             _alternateGameSetup = Substitute.For<IAlternateGameSetup>();
-            _locationSelector = Substitute.For<ILocationSelector>();
+            _gameInitializerLocationSelector = Substitute.For<IGameInitializerLocationSelector>();
 
             _nextTurn = Substitute.For<ITurn>();
             _turnAfterNextTurn = Substitute.For<ITurn>();
@@ -40,9 +40,9 @@ namespace RISK.Tests.Application.Gameplay
 
             _players.GetAll().Returns(new[] { _player1, _player2 });
 
-            _alternateGameSetup.Initialize(_locationSelector).Returns(_worldMap);
+            _alternateGameSetup.Initialize(_gameInitializerLocationSelector).Returns(_worldMap);
 
-            _game = new Game(_turnFactory, _players, _alternateGameSetup, _locationSelector);
+            _game = new Game(_turnFactory, _players, _alternateGameSetup, _gameInitializerLocationSelector);
         }
 
         [Test]

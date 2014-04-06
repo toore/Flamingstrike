@@ -19,30 +19,26 @@ namespace RISK.Tests.GuiWpf
     {
         private GameSetupViewModel _gameSetupViewModel;
         private IWorldMapViewModelFactory _worldMapViewModelFactory;
-        private IGameFactoryWorker _gameFactoryWorker;
         private IGameSettingStateConductor _gameSettingStateConductor;
-        private IUserInteractionSynchronizer _userInteractionSynchronizer;
         private IDialogManager _dialogManager;
-        private IEventAggregator _gameEventAggregator;
+        private IEventAggregator _eventAggregator;
+        private IUserInteractor _userInteractor;
+        private IGameFactoryWorker _gameFactoryWorker;
 
         [SetUp]
         public void SetUp()
         {
             _worldMapViewModelFactory = Substitute.For<IWorldMapViewModelFactory>();
-            _gameFactoryWorker = Substitute.For<IGameFactoryWorker>();
             _gameSettingStateConductor = Substitute.For<IGameSettingStateConductor>();
-            _userInteractionSynchronizer = Substitute.For<IUserInteractionSynchronizer>();
             _dialogManager = Substitute.For<IDialogManager>();
-            _gameEventAggregator = Substitute.For<IEventAggregator>();
+            _eventAggregator = Substitute.For<IEventAggregator>();
 
             var locationSelectorParameter = StubLocationSelectorParameter(null);
 
-            _gameFactoryWorker.WhenForAnyArgs(x => x.BeginInvoke(null))
-                .Do(x => x.Arg<IGameFactoryWorkerCallback>().GetLocationCallback(locationSelectorParameter));
+            _gameFactoryWorker = Substitute.For<IGameFactoryWorker>();
 
-            _gameSetupViewModel = new GameSetupViewModel(_worldMapViewModelFactory, _gameFactoryWorker, _gameSettingStateConductor, _userInteractionSynchronizer, _dialogManager, _gameEventAggregator);
 
-            _userInteractionSynchronizer.ClearReceivedCalls();
+            _gameSetupViewModel = new GameSetupViewModel(_worldMapViewModelFactory, _gameSettingStateConductor, _dialogManager, _eventAggregator, _userInteractor, _gameFactoryWorker);
         }
 
         private ILocationSelectorParameter StubLocationSelectorParameter(Action<ILocation> selectLocation, int initialArmies = 0)
@@ -55,7 +51,7 @@ namespace RISK.Tests.GuiWpf
             _worldMapViewModelFactory.Create(worldMap, selectLocation).ReturnsForAnyArgs(worldMapViewModel);
 
             var player = Substitute.For<IPlayer>();
-            locationSelectorParameter.SetupArmies.Returns(new SetupArmies(player, initialArmies));
+            locationSelectorParameter.SetupPlayer.Returns(new SetupPlayer(player, initialArmies));
 
             return locationSelectorParameter;
         }
@@ -63,83 +59,85 @@ namespace RISK.Tests.GuiWpf
         [Test]
         public void Initialize_game_factory()
         {
-            _gameFactoryWorker.Received().BeginInvoke(_gameSetupViewModel);
+            _gameSetupViewModel.StartSetup();
+
+            _gameFactoryWorker.Received().Run(_gameSetupViewModel, _gameSetupViewModel);
         }
 
-        [Test]
-        public void Get_location_callback_gets_location()
-        {
-            var locationSelectorParameter = StubLocationSelectorParameter(_gameSetupViewModel.SelectLocation);
-            var location = WhenWaitForInputIsCalledInvokeSelectLocation();
+        //[Test]
+        //public void Get_location_callback_gets_location()
+        //{
+        //    var locationSelectorParameter = StubLocationSelectorParameter(_gameSetupViewModel.SelectLocation);
+        //    var location = WhenWaitForInputIsCalledInvokeSelectLocation();
 
-            var actual = _gameSetupViewModel.GetLocationCallback(locationSelectorParameter);
+        //    var actual = _gameSetupViewModel.GetLocationCallback(locationSelectorParameter);
 
-            actual.Should().Be(location);
-        }
+        //    actual.Should().Be(location);
+        //}
 
-        private ILocation WhenWaitForInputIsCalledInvokeSelectLocation()
-        {
-            var location = Substitute.For<ILocation>();
+        //private ILocation WhenWaitForInputIsCalledInvokeSelectLocation()
+        //{
+        //    var location = Substitute.For<ILocation>();
 
-            _userInteractionSynchronizer.When(x => x.WaitForUserToBeDoneWithInteracting())
-                .Do(x => _gameSetupViewModel.SelectLocation(location));
+        //    _userInteractionSynchronizer.When(x => x.WaitForUserToBeDoneWithInteracting())
+        //        .Do(x => _gameSetupViewModel.SelectLocation(location));
 
-            return location;
-        }
+        //    return location;
+        //}
 
-        [Test]
-        public void Get_location_callback_waits_for_user_input()
-        {
-            _gameSetupViewModel.GetLocationCallback(null);
+        //[Test]
+        //public void Get_location_callback_waits_for_user_input()
+        //{
+        //    _gameSetupViewModel.GetLocationCallback(null);
 
-            Received.InOrder(() =>
-            {
-                _userInteractionSynchronizer.RequestUserInteraction();
-                _userInteractionSynchronizer.WaitForUserToBeDoneWithInteracting();
-            });
-        }
+        //    Received.InOrder(() =>
+        //    {
+        //        _userInteractionSynchronizer.RequestUserInteraction();
+        //        _userInteractionSynchronizer.WaitForUserToBeDoneWithInteracting();
+        //    });
+        //}
 
-        [Test]
-        public void Select_location_makes_input_available_and_wait_for_new_input_request()
-        {
-            _gameSetupViewModel.SelectLocation(null);
+        //[Test]
+        //public void Select_location_makes_input_available_and_wait_for_new_input_request()
+        //{
+        //    _gameSetupViewModel.SelectLocation(null);
 
-            Received.InOrder(() =>
-            {
-                _userInteractionSynchronizer.UserIsDoneInteracting();
-                _userInteractionSynchronizer.WaitForUserInteractionRequest();
-            });
-        }
+        //    Received.InOrder(() =>
+        //    {
+        //        _userInteractionSynchronizer.UserIsDoneInteracting();
+        //        _userInteractionSynchronizer.WaitForUserInteractionRequest();
+        //    });
+        //}
 
-        [Test]
-        public void Select_location_updates_view_model()
-        {
-            _gameSetupViewModel.MonitorEvents();
-            var parameter = StubLocationSelectorParameter(_gameSetupViewModel.SelectLocation, 10);
-            _gameSetupViewModel.GetLocationCallback(parameter);
+        //[Test]
+        //public void Select_location_updates_view_model()
+        //{
+        //    _gameSetupViewModel.MonitorEvents();
+        //    var parameter = StubLocationSelectorParameter(_gameSetupViewModel.SelectLocation, 10);
+        //    _gameSetupViewModel.GetLocationCallback(parameter);
 
-            _gameSetupViewModel.SelectLocation(null);
+        //    _gameSetupViewModel.SelectLocation(null);
 
-            _gameSetupViewModel.ShouldRaisePropertyChangeFor(x => x.WorldMapViewModel);
-            _gameSetupViewModel.ShouldRaisePropertyChangeFor(x => x.Player);
-            _gameSetupViewModel.ShouldRaisePropertyChangeFor(x => x.InformationText);
-        }
+        //    _gameSetupViewModel.ShouldRaisePropertyChangeFor(x => x.WorldMapViewModel);
+        //    _gameSetupViewModel.ShouldRaisePropertyChangeFor(x => x.Player);
+        //    _gameSetupViewModel.ShouldRaisePropertyChangeFor(x => x.InformationText);
+        //}
 
-        [Test]
-        public void When_finished_input_is_requested()
-        {
-            _gameSetupViewModel.OnFinished(null);
+        //[Test]
+        //public void When_finished_input_is_requested()
+        //{
+        //    _gameSetupViewModel.OnFinished(null);
 
-            _userInteractionSynchronizer.Received().RequestUserInteraction();
-        }
+        //    _userInteractionSynchronizer.Received().RequestUserInteraction();
+        //}
 
         [Test]
         public void When_finished_game_conductor_is_notified()
         {
             var game = Substitute.For<IGame>();
 
-            _gameSetupViewModel.OnFinished(game);
-            _gameSetupViewModel.SelectLocation(null);
+            _gameSetupViewModel.InitializationFinished(game);
+            //_gameSetupViewModel.SelectLocation(null);
 
             _gameSettingStateConductor.Received().StartGamePlay(game);
         }
