@@ -1,12 +1,11 @@
-﻿using System;
-using Caliburn.Micro;
+﻿using Caliburn.Micro;
 using FluentAssertions;
 using GuiWpf.Services;
 using GuiWpf.ViewModels;
 using GuiWpf.ViewModels.Gameplay.Map;
+using GuiWpf.ViewModels.Messages;
 using GuiWpf.ViewModels.Setup;
 using NSubstitute;
-using NSubstitute.Experimental;
 using NUnit.Framework;
 using RISK.Domain.Entities;
 using RISK.Domain.GamePlaying;
@@ -17,13 +16,13 @@ namespace RISK.Tests.GuiWpf
     [TestFixture]
     public class GameSetupViewModelTests
     {
-        private GameSetupViewModel _gameSetupViewModel;
         private IWorldMapViewModelFactory _worldMapViewModelFactory;
         private IGameSettingStateConductor _gameSettingStateConductor;
         private IDialogManager _dialogManager;
         private IEventAggregator _eventAggregator;
         private IUserInteractor _userInteractor;
         private IGameFactoryWorker _gameFactoryWorker;
+        private GameSetupViewModelFactory _gameSetupViewModelFactory;
 
         [SetUp]
         public void SetUp()
@@ -32,114 +31,108 @@ namespace RISK.Tests.GuiWpf
             _gameSettingStateConductor = Substitute.For<IGameSettingStateConductor>();
             _dialogManager = Substitute.For<IDialogManager>();
             _eventAggregator = Substitute.For<IEventAggregator>();
-
-            var locationSelectorParameter = StubLocationSelectorParameter(null);
-
+            _userInteractor = Substitute.For<IUserInteractor>();
             _gameFactoryWorker = Substitute.For<IGameFactoryWorker>();
 
-
-            _gameSetupViewModel = new GameSetupViewModel(_worldMapViewModelFactory, _gameSettingStateConductor, _dialogManager, _eventAggregator, _userInteractor, _gameFactoryWorker);
-        }
-
-        private ILocationSelectorParameter StubLocationSelectorParameter(Action<ILocation> selectLocation, int initialArmies = 0)
-        {
-            var locationSelectorParameter = Substitute.For<ILocationSelectorParameter>();
-
-            var worldMap = Substitute.For<IWorldMap>();
-            locationSelectorParameter.WorldMap.Returns(worldMap);
-            var worldMapViewModel = new WorldMapViewModel();
-            _worldMapViewModelFactory.Create(worldMap, selectLocation).ReturnsForAnyArgs(worldMapViewModel);
-
-            var player = Substitute.For<IPlayer>();
-            locationSelectorParameter.SetupPlayer.Returns(new SetupPlayer(player, initialArmies));
-
-            return locationSelectorParameter;
+            _gameSetupViewModelFactory = new GameSetupViewModelFactory(_worldMapViewModelFactory, _dialogManager, _eventAggregator, _userInteractor, _gameFactoryWorker);
         }
 
         [Test]
-        public void Initialize_game_factory()
+        public void Initialize_game_factory_worker()
         {
-            _gameSetupViewModel.StartSetup();
+            var gameSetupViewModel = InitializeAndStartSetup();
 
-            _gameFactoryWorker.Received().Run(_gameSetupViewModel, _gameSetupViewModel);
+            _gameFactoryWorker.Received().Run(gameSetupViewModel, gameSetupViewModel);
         }
 
-        //[Test]
-        //public void Get_location_callback_gets_location()
-        //{
-        //    var locationSelectorParameter = StubLocationSelectorParameter(_gameSetupViewModel.SelectLocation);
-        //    var location = WhenWaitForInputIsCalledInvokeSelectLocation();
+        [Test]
+        public void Select_location_gets_location_from_user_interactor()
+        {
+            var locationSelectorParameter = Substitute.For<ILocationSelectorParameter>();
+            locationSelectorParameter.GetPlayerThatTakesTurn().ReturnsForAnyArgs(Substitute.For<IPlayer>());
+            var expected = Substitute.For<ILocation>();
+            _userInteractor.GetLocation(locationSelectorParameter).Returns(expected);
+            _worldMapViewModelFactory.Create(null, null).ReturnsForAnyArgs(new WorldMapViewModel());
 
-        //    var actual = _gameSetupViewModel.GetLocationCallback(locationSelectorParameter);
+            var gameSetupViewModel = InitializeAndStartSetup();
+            var actual = gameSetupViewModel.SelectLocation(locationSelectorParameter);
 
-        //    actual.Should().Be(location);
-        //}
+            actual.Should().Be(expected);
+        }
 
-        //private ILocation WhenWaitForInputIsCalledInvokeSelectLocation()
-        //{
-        //    var location = Substitute.For<ILocation>();
+        [Test]
+        public void Select_location_updates_view()
+        {
+            var worldMapViewModel = new WorldMapViewModel();
+            _worldMapViewModelFactory.Create(null, null).ReturnsForAnyArgs(worldMapViewModel);
+            var gameSetupViewModel = InitializeAndStartSetup();
+            gameSetupViewModel.MonitorEvents();
 
-        //    _userInteractionSynchronizer.When(x => x.WaitForUserToBeDoneWithInteracting())
-        //        .Do(x => _gameSetupViewModel.SelectLocation(location));
+            gameSetupViewModel.SelectLocation(Substitute.For<ILocationSelectorParameter>());
 
-        //    return location;
-        //}
-
-        //[Test]
-        //public void Get_location_callback_waits_for_user_input()
-        //{
-        //    _gameSetupViewModel.GetLocationCallback(null);
-
-        //    Received.InOrder(() =>
-        //    {
-        //        _userInteractionSynchronizer.RequestUserInteraction();
-        //        _userInteractionSynchronizer.WaitForUserToBeDoneWithInteracting();
-        //    });
-        //}
-
-        //[Test]
-        //public void Select_location_makes_input_available_and_wait_for_new_input_request()
-        //{
-        //    _gameSetupViewModel.SelectLocation(null);
-
-        //    Received.InOrder(() =>
-        //    {
-        //        _userInteractionSynchronizer.UserIsDoneInteracting();
-        //        _userInteractionSynchronizer.WaitForUserInteractionRequest();
-        //    });
-        //}
-
-        //[Test]
-        //public void Select_location_updates_view_model()
-        //{
-        //    _gameSetupViewModel.MonitorEvents();
-        //    var parameter = StubLocationSelectorParameter(_gameSetupViewModel.SelectLocation, 10);
-        //    _gameSetupViewModel.GetLocationCallback(parameter);
-
-        //    _gameSetupViewModel.SelectLocation(null);
-
-        //    _gameSetupViewModel.ShouldRaisePropertyChangeFor(x => x.WorldMapViewModel);
-        //    _gameSetupViewModel.ShouldRaisePropertyChangeFor(x => x.Player);
-        //    _gameSetupViewModel.ShouldRaisePropertyChangeFor(x => x.InformationText);
-        //}
-
-        //[Test]
-        //public void When_finished_input_is_requested()
-        //{
-        //    _gameSetupViewModel.OnFinished(null);
-
-        //    _userInteractionSynchronizer.Received().RequestUserInteraction();
-        //}
+            gameSetupViewModel.WorldMapViewModel.Should().Be(worldMapViewModel);
+            gameSetupViewModel.ShouldRaisePropertyChangeFor(x => x.WorldMapViewModel);
+            gameSetupViewModel.ShouldRaisePropertyChangeFor(x => x.Player);
+            gameSetupViewModel.ShouldRaisePropertyChangeFor(x => x.InformationText);
+        }
 
         [Test]
         public void When_finished_game_conductor_is_notified()
         {
             var game = Substitute.For<IGame>();
 
-            _gameSetupViewModel.InitializationFinished(game);
-            //_gameSetupViewModel.SelectLocation(null);
+            var gameSetupViewModel = InitializeAndStartSetup();
+            gameSetupViewModel.InitializationFinished(game);
 
             _gameSettingStateConductor.Received().StartGamePlay(game);
+        }
+
+        [Test]
+        public void Can_not_fortify()
+        {
+            var gameSetupViewModel = InitializeAndStartSetup();
+
+            gameSetupViewModel.CanFortify().Should().BeFalse();
+        }
+
+        [Test]
+        public void Can_not_end_turn()
+        {
+            var gameSetupViewModel = InitializeAndStartSetup();
+
+            gameSetupViewModel.CanEndTurn().Should().BeFalse();
+        }
+
+        [Test]
+        public void Confirm_sends_end_game_message()
+        {
+            _dialogManager.ConfirmEndGame().Returns(true);
+
+            var gameSetupViewModel = InitializeAndStartSetup();
+
+            gameSetupViewModel.EndGame();
+
+            _eventAggregator.Received().Publish(Arg.Any<NewGameMessage>());
+        }
+
+        [Test]
+        public void Cancel_does_not_send_end_game_message()
+        {
+            _dialogManager.ConfirmEndGame().Returns(false);
+
+            var gameSetupViewModel = InitializeAndStartSetup();
+
+            gameSetupViewModel.EndGame();
+
+            _eventAggregator.DidNotReceive().Publish(Arg.Any<NewGameMessage>());
+        }
+
+        private GameSetupViewModel InitializeAndStartSetup()
+        {
+            var gameSetupViewModel = _gameSetupViewModelFactory.Create(_gameSettingStateConductor);
+            gameSetupViewModel.StartSetup();
+
+            return (GameSetupViewModel)gameSetupViewModel;
         }
     }
 }

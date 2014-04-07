@@ -87,9 +87,9 @@ namespace GuiWpf.ViewModels.Setup
 
             WorldMapViewModel = worldMapViewModel;
 
-            Player = locationSelectorParameter.SetupPlayer.GetPlayer();
+            Player = locationSelectorParameter.GetPlayerThatTakesTurn();
 
-            InformationText = string.Format(Resources.PLACE_ARMY, locationSelectorParameter.SetupPlayer.GetArmies());
+            InformationText = string.Format(Resources.PLACE_ARMY, locationSelectorParameter.GetArmiesLeft());
         }
 
         private void StartGamePlay(IGame game)

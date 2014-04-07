@@ -55,16 +55,16 @@ namespace RISK.Domain.GamePlaying.Setup
             return worldMap;
         }
 
-        private IList<SetupPlayer> GetArmiesToSetup(IList<IPlayer> players)
+        private IList<PlayerDuringGameSetup> GetArmiesToSetup(IList<IPlayer> players)
         {
             var armies = _initialArmyCount.Get(players.Count());
 
             return _randomSorter.Sort(players)
-                .Select(x => new SetupPlayer(x, armies))
+                .Select(x => new PlayerDuringGameSetup(x, armies))
                 .ToList();
         }
 
-        private IWorldMap CreateWorldMap(IList<SetupPlayer> setupArmies)
+        private IWorldMap CreateWorldMap(IList<PlayerDuringGameSetup> setupArmies)
         {
             var worldMap = _worldMapFactory.Create();
 
@@ -78,7 +78,7 @@ namespace RISK.Domain.GamePlaying.Setup
                 var territory = worldMap.GetTerritory(location);
                 territory.Occupant = setupArmy.GetPlayer();
                 territory.Armies = 1;
-                setupArmy.DecreaseArmies();
+                setupArmy.ArmyHasBeenPlaced();
 
                 setupArmy = setupArmies.GetNextOrFirst(setupArmy);
             }
@@ -86,7 +86,7 @@ namespace RISK.Domain.GamePlaying.Setup
             return worldMap;
         }
 
-        private void PlaceArmies(IWorldMap worldMap, IList<SetupPlayer> players)
+        private void PlaceArmies(IWorldMap worldMap, IList<PlayerDuringGameSetup> players)
         {
             while (players.AnyArmiesLeft())
             {
@@ -96,18 +96,18 @@ namespace RISK.Domain.GamePlaying.Setup
             }
         }
 
-        private void PlaceArmy(SetupPlayer setupPlayer, IWorldMap worldMap)
+        private void PlaceArmy(PlayerDuringGameSetup playerDuringGameSetup, IWorldMap worldMap)
         {
-            var player = setupPlayer.GetPlayer();
+            var player = playerDuringGameSetup.GetPlayer();
             var locations = worldMap.GetTerritoriesOccupiedBy(player)
                 .Select(x => x.Location)
                 .ToList();
 
-            var selectedLocation = _gameInitializerLocationSelector.SelectLocation(new LocationSelectorParameter(worldMap, locations, setupPlayer));
+            var selectedLocation = _gameInitializerLocationSelector.SelectLocation(new LocationSelectorParameter(worldMap, locations, playerDuringGameSetup));
 
             var territory = worldMap.GetTerritory(selectedLocation);
             territory.Armies++;
-            setupPlayer.DecreaseArmies();
+            playerDuringGameSetup.ArmyHasBeenPlaced();
         }
     }
 }

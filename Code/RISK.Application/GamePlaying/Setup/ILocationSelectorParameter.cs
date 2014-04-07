@@ -7,6 +7,7 @@ namespace RISK.Domain.GamePlaying.Setup
     {
         IWorldMap WorldMap { get; }
         IEnumerable<ILocation> AvailableLocations { get; }
-        SetupPlayer SetupPlayer { get; }
+        IPlayer GetPlayerThatTakesTurn();
+        int GetArmiesLeft();
     }
 }
