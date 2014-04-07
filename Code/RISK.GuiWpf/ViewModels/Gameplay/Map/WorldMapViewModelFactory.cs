@@ -37,12 +37,12 @@ namespace GuiWpf.ViewModels.Gameplay.Map
             return worldMapViewModel;
         }
 
-        private IWorldMapViewModel CreateTerritoryViewModel(ITerritory territory, Action<ILocation> selectLocation)
+        private IWorldMapItemViewModel CreateTerritoryViewModel(ITerritory territory, Action<ILocation> selectLocation)
         {
             return _territoryViewModelFactory.Create(territory, selectLocation);
         }
 
-        private IWorldMapViewModel CreateTextViewModel(ITerritory territory)
+        private IWorldMapItemViewModel CreateTextViewModel(ITerritory territory)
         {
             return _territoryTextViewModelFactory.Create(territory);
         }

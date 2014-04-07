@@ -3,7 +3,7 @@ using RISK.Domain.Entities;
 
 namespace GuiWpf.ViewModels.Gameplay.Map
 {
-    public interface ITerritoryLayoutViewModel : IWorldMapViewModel
+    public interface ITerritoryLayoutViewModel : IWorldMapItemViewModel
     {
         ILocation Location { get; }
         

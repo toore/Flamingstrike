@@ -1,4 +1,4 @@
 ﻿namespace GuiWpf.ViewModels.Gameplay.Map
 {
-    public interface IWorldMapViewModel {}
+    public interface IWorldMapItemViewModel {}
 }

@@ -168,7 +168,7 @@
     <Compile Include="Views\MainGameViewModelTestDataFactory.cs" />
     <Compile Include="ViewModels\Gameplay\Map\ITerritoryTextViewModelFactory.cs" />
     <Compile Include="ViewModels\Gameplay\Map\IWorldMapViewModelFactory.cs" />
-    <Compile Include="ViewModels\Gameplay\Map\IWorldMapViewModel.cs" />
+    <Compile Include="ViewModels\Gameplay\Map\IWorldMapItemViewModel.cs" />
     <Compile Include="Territories\JapanGraphics.cs" />
     <Compile Include="Territories\KamchatkaGraphics.cs" />
     <Compile Include="Territories\MadagascarGraphics.cs" />

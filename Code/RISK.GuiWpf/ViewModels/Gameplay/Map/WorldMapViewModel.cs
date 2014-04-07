@@ -6,9 +6,9 @@ namespace GuiWpf.ViewModels.Gameplay.Map
     {
         public WorldMapViewModel()
         {
-            WorldMapViewModels = new ObservableCollection<IWorldMapViewModel>();
+            WorldMapViewModels = new ObservableCollection<IWorldMapItemViewModel>();
         }
 
-        public ObservableCollection<IWorldMapViewModel> WorldMapViewModels { get; private set; }
+        public ObservableCollection<IWorldMapItemViewModel> WorldMapViewModels { get; private set; }
     }
 }
