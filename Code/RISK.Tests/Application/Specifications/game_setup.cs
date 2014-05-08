@@ -14,7 +14,7 @@ using Xunit;
 
 namespace RISK.Tests.Application.Specifications
 {
-    public class game_setup
+    public class game_setup : AcceptanceTestsBase<game_setup>
     {
         private IMainGameViewModel _mainGameViewModel;
         private AutoRespondingUserInteractor _userInteractor;
@@ -42,7 +42,8 @@ namespace RISK.Tests.Application.Specifications
 
         private game_setup a_new_game()
         {
-            InjectUserInteractor();
+            _userInteractor = new AutoRespondingUserInteractor();
+            ObjectFactory.Inject<IUserInteractor>(_userInteractor);
 
             _mainGameViewModel = ObjectFactory.GetInstance<IMainGameViewModel>();
 
@@ -82,27 +83,6 @@ namespace RISK.Tests.Application.Specifications
         private void the_game_is_started()
         {
             _mainGameViewModel.MainViewModel.Should().BeOfType<GameboardViewModel>();
-        }
-
-        private void InjectUserInteractor()
-        {
-            _userInteractor = new AutoRespondingUserInteractor();
-            ObjectFactory.Inject<IUserInteractor>(_userInteractor);
-        }
-
-        private game_setup Given
-        {
-            get { return this; }
-        }
-
-        private game_setup When
-        {
-            get { return this; }
-        }
-
-        private game_setup Then
-        {
-            get { return this; }
         }
     }
 

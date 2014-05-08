@@ -16,7 +16,7 @@ namespace RISK.Domain
 
     public class Players : IPlayers, IPlayersInitializer
     {
-        private List<IPlayer> _players;
+        private List<IPlayer> _players = new List<IPlayer>();
 
         public IEnumerable<IPlayer> GetAll()
         {
