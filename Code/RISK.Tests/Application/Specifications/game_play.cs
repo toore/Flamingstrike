@@ -26,7 +26,7 @@ namespace RISK.Tests.Application.Specifications
         private HumanPlayer _player1;
         private HumanPlayer _player2;
         private IDice _dice;
-        private GameOverViewModel _gameOverAndPlayer1IsTheWinner;
+        private GameOverViewModel _gameOverAndPlayer1IsTheWinnerViewModel;
 
         public game_play()
         {
@@ -98,6 +98,56 @@ namespace RISK.Tests.Application.Specifications
                 player_2_should_take_turn();
         }
 
+        [Fact]
+        public void Fortifies_armies()
+        {
+            Given.
+                a_started_game_with_two_players().
+                player_1_occupies_every_territory_except_indonesia_with_ten_armies_each().
+                player_2_occupies_indonesia().
+                player_1_fortifies();
+
+            When.
+                player_1_selects_japan().
+                moves_2_armies_to_kamchatka();
+
+            Then.
+                japan_should_have_8_armies().
+                kamchatka_should_have_12_armies();
+        }
+
+        private void kamchatka_should_have_12_armies()
+        {
+            GetTerritory(_locations.Kamchatka).Armies.Should().Be(12);
+        }
+
+        private game_play japan_should_have_8_armies()
+        {
+            GetTerritory(_locations.Japan).Armies.Should().Be(8);
+            return this;
+        }
+
+        private ITerritory GetTerritory(ILocation location)
+        {
+            return _worldMap.GetTerritory(location);
+        }
+
+        private game_play player_1_selects_japan()
+        {
+            ClickOn(_locations.Japan);
+            return this;
+        }
+
+        private void moves_2_armies_to_kamchatka()
+        {
+            ClickOn(_locations.Kamchatka);
+        }
+
+        private void player_1_fortifies()
+        {
+            _gameboardViewModel.Fortify();
+        }
+
         private game_play a_started_game_with_two_players()
         {
             _players = new Players();
@@ -115,8 +165,8 @@ namespace RISK.Tests.Application.Specifications
             _players.SetPlayers(new[] { _player1, _player2 });
 
             var gameOverViewModelFactory = Substitute.For<IGameOverViewModelFactory>();
-            _gameOverAndPlayer1IsTheWinner = new GameOverViewModel(_player1);
-            gameOverViewModelFactory.Create(_player1).Returns(_gameOverAndPlayer1IsTheWinner);
+            _gameOverAndPlayer1IsTheWinnerViewModel = new GameOverViewModel(_player1);
+            gameOverViewModelFactory.Create(_player1).Returns(_gameOverAndPlayer1IsTheWinnerViewModel);
 
             var locationSelector = Substitute.For<IGameInitializerLocationSelector>();
             var alternateGameSetup = Substitute.For<IAlternateGameSetup>();
@@ -159,6 +209,18 @@ namespace RISK.Tests.Application.Specifications
         private game_play player_1_occupies_every_territory_except_iceland_with_one_army_each()
         {
             UpdateWorldMap(_player1, 1, GetAllLocationsExcept(_locations.Iceland));
+            return this;
+        }
+
+        private game_play player_1_occupies_every_territory_except_indonesia_with_ten_armies_each()
+        {
+            UpdateWorldMap(_player1, 10, GetAllLocationsExcept(_locations.Indonesia));
+            return this;
+        }
+
+        private game_play player_2_occupies_indonesia()
+        {
+            UpdateWorldMap(_player2, 1, _locations.Indonesia);
             return this;
         }
 
@@ -244,7 +306,7 @@ namespace RISK.Tests.Application.Specifications
 
         private void player_1_is_the_winner()
         {
-            _windowManager.Received().ShowDialog(_gameOverAndPlayer1IsTheWinner);
+            _windowManager.Received().ShowDialog(_gameOverAndPlayer1IsTheWinnerViewModel);
         }
 
         private game_play player_1_should_have_a_card()

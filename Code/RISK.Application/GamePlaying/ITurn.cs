@@ -10,8 +10,10 @@ namespace RISK.Domain.GamePlaying
 
         bool CanSelect(ILocation location);
         bool CanAttack(ILocation location);
+        bool CanFortify(ILocation location);
         void Select(ILocation location);
         void Attack(ILocation location);
+        void Fortify(ILocation location, int armies);
         void EndTurn();
     }
 }

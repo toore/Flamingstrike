@@ -38,6 +38,7 @@ namespace RISK.Tests.GuiWpf
         private IResourceManagerWrapper _resourceManagerWrapper;
         private IDialogManager _dialogManager;
         private IEventAggregator _gameEventAggregator;
+        private ITurnPhaseFactory _turnPhaseFactory;
 
         [SetUp]
         public void SetUp()
@@ -89,7 +90,10 @@ namespace RISK.Tests.GuiWpf
 
             worldMapViewModelFactory.Create(Arg.Is(_worldMap), Arg.Any<Action<ILocation>>()).Returns(_worldMapViewModel);
 
-            _gameboardViewModel = new GameboardViewModel(_game, _locations, worldMapViewModelFactory, _territoryViewModelUpdater, _gameOverEvaluater, _windowManager, _gameOverViewModelFactory, _resourceManagerWrapper, _dialogManager, _gameEventAggregator);
+            _turnPhaseFactory = Substitute.For<ITurnPhaseFactory>();
+
+            _gameboardViewModel = new GameboardViewModel(_game, _locations, worldMapViewModelFactory, _territoryViewModelUpdater, _gameOverEvaluater, _windowManager, 
+                _gameOverViewModelFactory, _resourceManagerWrapper, _dialogManager, _gameEventAggregator, _turnPhaseFactory);
         }
 
         [Test]
@@ -187,6 +191,31 @@ namespace RISK.Tests.GuiWpf
             _gameboardViewModel.EndGame();
 
             _dialogManager.Received(1).ConfirmEndGame();
+        }
+
+        [Test]
+        public void Can_fortify()
+        {
+            _gameboardViewModel.CanFortify().Should().BeTrue();
+        }
+
+        [Test]
+        public void Can_not_fortify_when_already_fortifying()
+        {
+            _gameboardViewModel.Fortify();
+            _gameboardViewModel.CanFortify().Should().BeFalse();
+        }
+
+        [Test]
+        public void Fortifies()
+        {
+            _currentTurn.CanSelect(_location1).Returns(true);
+            _currentTurn.CanFortify(_location2).Returns(true);
+
+            _gameboardViewModel.OnLocationClick(_location1);
+            _gameboardViewModel.OnLocationClick(_location2);
+
+            _currentTurn.Received(1).Fortify(_location2, 10);
         }
 
         private ITerritoryLayoutViewModel StubLayoutViewModel(ILocation location)

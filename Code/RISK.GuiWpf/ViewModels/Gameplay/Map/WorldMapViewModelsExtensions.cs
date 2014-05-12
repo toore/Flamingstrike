@@ -13,7 +13,7 @@ namespace GuiWpf.ViewModels.Gameplay.Map
                 .Single(x => x.Location == location);
         }
 
-        public static ITerritoryTextViewModel GetTerritoryData(this IEnumerable<IWorldMapItemViewModel> worldMapViewModels, ILocation location)
+        public static ITerritoryTextViewModel GetTerritoryTextViewModel(this IEnumerable<IWorldMapItemViewModel> worldMapViewModels, ILocation location)
         {
             return worldMapViewModels
                 .OfType<ITerritoryTextViewModel>()

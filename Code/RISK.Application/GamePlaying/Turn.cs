@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using RISK.Domain.Entities;
 
 namespace RISK.Domain.GamePlaying
@@ -26,17 +27,35 @@ namespace RISK.Domain.GamePlaying
             get { return SelectedTerritory != null; }
         }
 
-        public void EndTurn()
-        {
-            if (_playerShouldReceiveCardWhenTurnEnds)
-            {
-                Player.AddCard(_cardFactory.Create());
-            }
-        }
-
         public bool CanSelect(ILocation location)
         {
             return GetTerritory(location).Occupant == Player;
+        }
+
+        public bool CanAttack(ILocation location)
+        {
+            if (!IsTerritorySelected)
+            {
+                return false;
+            }
+
+            var territoryToAttack = GetTerritory(location);
+            var isTerritoryOccupiedByEnemy = territoryToAttack.Occupant != Player;
+            var isConnected = SelectedTerritory.Location.Connections.Contains(territoryToAttack.Location);
+            var hasArmiesToAttackWith = SelectedTerritory.HasArmiesAvailableForAttack();
+
+            var canAttack = isConnected
+                            &&
+                            isTerritoryOccupiedByEnemy
+                            &&
+                            hasArmiesToAttackWith;
+
+            return canAttack;
+        }
+
+        public bool CanFortify(ILocation location)
+        {
+            throw new NotImplementedException();
         }
 
         public void Select(ILocation location)
@@ -57,27 +76,6 @@ namespace RISK.Domain.GamePlaying
             }
         }
 
-        public bool CanAttack(ILocation location)
-        {
-            if (!IsTerritorySelected)
-            {
-                return false;
-            }
-
-            var territoryToAttack = GetTerritory(location);
-            var isTerritoryOccupiedByEnemy = territoryToAttack.Occupant != Player;
-            var isConnected = SelectedTerritory.Location.Connections.Contains(territoryToAttack.Location);
-            var hasArmiesToAttackWith = SelectedTerritory.HasArmiesAvailableForAttack();
-
-            var canAttack = isConnected 
-                && 
-                isTerritoryOccupiedByEnemy 
-                && 
-                hasArmiesToAttackWith;
-
-            return canAttack;
-        }
-
         public void Attack(ILocation location)
         {
             var canAttack = CanAttack(location);
@@ -89,6 +87,19 @@ namespace RISK.Domain.GamePlaying
 
             var territory = GetTerritory(location);
             Attack(territory);
+        }
+
+        public void Fortify(ILocation location, int armies)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void EndTurn()
+        {
+            if (_playerShouldReceiveCardWhenTurnEnds)
+            {
+                Player.AddCard(_cardFactory.Create());
+            }
         }
 
         private void Attack(ITerritory territory)
