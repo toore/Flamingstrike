@@ -26,7 +26,7 @@ namespace RISK.Tests.Application.Specifications
         }
 
         [Fact]
-        public void game_is_setup_and_started()
+        public void Game_is_started()
         {
             Given
                 .a_new_game();
