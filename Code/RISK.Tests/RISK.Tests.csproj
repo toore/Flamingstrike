@@ -37,11 +37,12 @@
     <Reference Include="Caliburn.Micro">
       <HintPath>..\packages\Caliburn.Micro.1.5.1\lib\net45\Caliburn.Micro.dll</HintPath>
     </Reference>
-    <Reference Include="FluentAssertions">
-      <HintPath>..\packages\FluentAssertions.2.0.1\lib\net45\FluentAssertions.dll</HintPath>
+    <Reference Include="FluentAssertions, Version=3.0.107.0, Culture=neutral, PublicKeyToken=33f2691a05b67b6a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\FluentAssertions.3.0.107\lib\net45\FluentAssertions.dll</HintPath>
     </Reference>
-    <Reference Include="NSpec">
-      <HintPath>..\packages\nspec.0.9.65\lib\NSpec.dll</HintPath>
+    <Reference Include="FluentAssertions.Core">
+      <HintPath>..\packages\FluentAssertions.3.0.107\lib\net45\FluentAssertions.Core.dll</HintPath>
     </Reference>
     <Reference Include="NSubstitute">
       <HintPath>..\packages\NSubstitute.1.6.0.0\lib\NET40\NSubstitute.dll</HintPath>
