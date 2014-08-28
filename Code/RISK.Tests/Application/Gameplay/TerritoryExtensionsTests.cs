@@ -1,14 +1,15 @@
 ﻿using FluentAssertions;
 using NSubstitute;
-using NUnit.Framework;
 using RISK.Domain.Entities;
+using Xunit;
+using Xunit.Extensions;
 
 namespace RISK.Tests.Application.Gameplay
 {
-    [TestFixture]
+    
     public class TerritoryExtensionsTests
     {
-        [Test]
+        [Fact]
         public void Is_assigned_to_player()
         {
             var territory = new Territory(null) { Occupant = Substitute.For<IPlayer>() };
@@ -16,25 +17,25 @@ namespace RISK.Tests.Application.Gameplay
             territory.IsOccupied().Should().BeTrue();
         }
 
-        [Test]
+        [Fact]
         public void Is_not_assigned_to_player()
         {
             new Territory(null).IsOccupied().Should().BeFalse();
         }
 
-        [Test]
-        [TestCase(0, 1, TestName = "One army gives one zero armies to attack with")]
-        [TestCase(1, 2, TestName = "Two armies gives one army to attack with")]
-        [TestCase(9, 10, TestName = "Ten armies gives nine armies to attack with")]
+        [Theory]
+        [InlineData(0, 1)]
+        [InlineData(1, 2)]
+        [InlineData(9, 10)]
         public void Get_armies_to_attack_with_should_be_1(int expected, int armies)
         {
             new Territory(null) { Armies = armies }.GetArmiesAvailableForAttack().Should().Be(expected);
         }
 
-        [Test]
-        [TestCase(false, 1)]
-        [TestCase(true, 2)]
-        [TestCase(true, 10)]
+        [Theory]
+        [InlineData(false, 1)]
+        [InlineData(true, 2)]
+        [InlineData(true, 10)]
         public void Has_armies_to_attack_with(bool expected, int armies)
         {
             new Territory(null) { Armies = armies }.HasArmiesAvailableForAttack().Should().Be(expected);

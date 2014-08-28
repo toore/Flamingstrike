@@ -1,20 +1,18 @@
 ﻿using FluentAssertions;
 using NSubstitute;
-using NUnit.Framework;
 using RISK.Domain.Entities;
 using RISK.Domain.GamePlaying;
+using Xunit;
 
 namespace RISK.Tests.Application.Gameplay
 {
-    [TestFixture]
     public class TurnFactoryTests
     {
         private TurnFactory _factory;
         private IBattleCalculator _battleCalculator;
         private ICardFactory _cardFactory;
 
-        [SetUp]
-        public void SetUp()
+        public TurnFactoryTests()
         {
             _battleCalculator = Substitute.For<IBattleCalculator>();
             _cardFactory = Substitute.For<ICardFactory>();
@@ -22,7 +20,7 @@ namespace RISK.Tests.Application.Gameplay
             _factory = new TurnFactory(_battleCalculator, _cardFactory);
         }
 
-        [Test]
+        [Fact]
         public void Create_initializes_turn()
         {
             var player = Substitute.For<IPlayer>();

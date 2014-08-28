@@ -1,26 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Caliburn.Micro;
-using FluentAssertions;
+﻿using Caliburn.Micro;
 using GuiWpf.Services;
-using NUnit.Framework;
 using NSubstitute;
+using Xunit;
 
 namespace RISK.Tests.GuiWpf
 {
-    [TestFixture]
     public class ScreenServiceTests
     {
         private ScreenService _screenService;
 
-        [SetUp]
-        public void SetUp()
+        public ScreenServiceTests()
         {
             _screenService = new ScreenService();
         }
 
-        [Test]
+        [Fact]
         public void Confirm_calls_try_close_with_dialog_result_true()
         {
             var screen = Substitute.For<Screen>();
@@ -29,7 +23,7 @@ namespace RISK.Tests.GuiWpf
             screen.Received().TryClose(true);
         }
 
-        [Test]
+        [Fact]
         public void Cancle_calls_try_close_with_dialog_result_false()
         {
             var screen = Substitute.For<Screen>();

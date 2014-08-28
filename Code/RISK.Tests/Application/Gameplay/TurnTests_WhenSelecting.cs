@@ -1,12 +1,11 @@
 ﻿using FluentAssertions;
 using NSubstitute;
-using NUnit.Framework;
 using RISK.Domain.Entities;
 using RISK.Domain.GamePlaying;
+using Xunit;
 
 namespace RISK.Tests.Application.Gameplay
 {
-    [TestFixture]
     public class TurnTests_WhenSelecting
     {
         private Turn _turn;
@@ -18,8 +17,7 @@ namespace RISK.Tests.Application.Gameplay
         private ILocation _otherLocation;
         private ICardFactory _cardFactory;
 
-        [SetUp]
-        public void SetUp()
+        public TurnTests_WhenSelecting()
         {
             _currentPlayer = Substitute.For<IPlayer>();
             _worldMap = Substitute.For<IWorldMap>();
@@ -34,19 +32,19 @@ namespace RISK.Tests.Application.Gameplay
             _otherLocation = Substitute.For<ILocation>();
         }
 
-        [Test]
+        [Fact]
         public void Can_select_location()
         {
             _turn.CanSelect(_location).Should().BeTrue();
         }
 
-        [Test]
+        [Fact]
         public void Can_not_select_other_location()
         {
             _turn.CanSelect(_otherLocation).Should().BeFalse();
         }
 
-        [Test]
+        [Fact]
         public void Can_not_select_when_territory_is_selected()
         {
             _turn.Select(_location);
@@ -54,7 +52,7 @@ namespace RISK.Tests.Application.Gameplay
             _turn.CanSelect(_otherLocation).Should().BeFalse("territory is already selected");
         }
 
-        [Test]
+        [Fact]
         public void SelectedTerritory_should_be_territory()
         {
             _turn.Select(_location);
@@ -63,7 +61,7 @@ namespace RISK.Tests.Application.Gameplay
             _turn.SelectedTerritory.Should().Be(_territory);
         }
 
-        [Test]
+        [Fact]
         public void No_territory_should_be_selected()
         {
             _turn.Select(_otherLocation);
@@ -72,7 +70,7 @@ namespace RISK.Tests.Application.Gameplay
             _turn.SelectedTerritory.Should().BeNull();
         }
 
-        [Test]
+        [Fact]
         public void Selecting_already_selected_deselects()
         {
             _turn.Select(_location);

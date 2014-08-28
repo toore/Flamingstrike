@@ -2,27 +2,25 @@
 using System.Linq;
 using FluentAssertions;
 using NSubstitute;
-using NUnit.Framework;
 using RISK.Domain.Extensions;
 using RISK.Domain.GamePlaying;
+using Xunit;
 
 namespace RISK.Tests.Application.Gameplay
 {
-    [TestFixture]
     public class RandomSorterTests
     {
         private IRandomWrapper _randomWrapper;
         private RandomSorter _randomSorter;
 
-        [SetUp]
-        public void SetUp()
+        public RandomSorterTests()
         {
             _randomWrapper = Substitute.For<IRandomWrapper>();
 
             _randomSorter = new RandomSorter(_randomWrapper);
         }
 
-        [Test]
+        [Fact]
         public void OrderByRandomOrder_randomizes_three_elements()
         {
             IEnumerable<object> sequence = new object[] { "first element", "second element", "third element" };

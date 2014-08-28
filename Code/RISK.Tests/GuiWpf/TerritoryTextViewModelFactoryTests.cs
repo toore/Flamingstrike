@@ -2,26 +2,24 @@
 using GuiWpf.Territories;
 using GuiWpf.ViewModels.Gameplay.Map;
 using NSubstitute;
-using NUnit.Framework;
 using RISK.Domain.Entities;
+using Xunit;
 
 namespace RISK.Tests.GuiWpf
 {
-    [TestFixture]
     public class TerritoryTextViewModelFactoryTests
     {
         private TerritoryTextViewModelFactory _factory;
         private ITerritoryGuiFactory _territoryGuiFactory;
 
-        [SetUp]
-        public void SetUp()
+        public TerritoryTextViewModelFactoryTests()
         {
             _territoryGuiFactory = Substitute.For<ITerritoryGuiFactory>();
 
             _factory = new TerritoryTextViewModelFactory(_territoryGuiFactory);
         }
 
-        [Test]
+        [Fact]
         public void Initialize()
         {
             var territory = Substitute.For<ITerritory>();

@@ -5,13 +5,12 @@ using GuiWpf.ViewModels.Messages;
 using GuiWpf.ViewModels.Settings;
 using GuiWpf.ViewModels.Setup;
 using NSubstitute;
-using NUnit.Framework;
 using RISK.Domain;
 using RISK.Domain.Entities;
+using Xunit;
 
 namespace RISK.Tests.GuiWpf
 {
-    [TestFixture]
     public class MainGameViewModelTests
     {
         private IGameSettingsViewModelFactory _gameSettingsViewModelFactory;
@@ -19,8 +18,7 @@ namespace RISK.Tests.GuiWpf
         private IPlayersInitializer _playersInitializer;
         private IGameSetupViewModelFactory _gameSetupViewModelFactory;
 
-        [SetUp]
-        public void SetUp()
+        public MainGameViewModelTests()
         {
             _gameSettingsViewModelFactory = Substitute.For<IGameSettingsViewModelFactory>();
             _gameboardViewModelFactory = Substitute.For<IGameboardViewModelFactory>();
@@ -28,7 +26,7 @@ namespace RISK.Tests.GuiWpf
             _gameSetupViewModelFactory = Substitute.For<IGameSetupViewModelFactory>();
         }
 
-        [Test]
+        [Fact]
         public void Initialize_main_view_to_setup()
         {
             var gameSettingsViewModel = Substitute.For<IGameSettingsViewModel>();
@@ -37,7 +35,7 @@ namespace RISK.Tests.GuiWpf
             Create().MainViewModel.Should().Be(gameSettingsViewModel);
         }
 
-        [Test]
+        [Fact]
         public void Game_setup_message_adds_players()
         {
             var player1 = Substitute.For<IPlayer>();
@@ -56,7 +54,7 @@ namespace RISK.Tests.GuiWpf
             _playersInitializer.SetPlayers(new[] { player1, player2 });
         }
 
-        [Test]
+        [Fact]
         public void Game_setup_message_starts_game()
         {
             var mainGameViewModel = Create();
@@ -70,7 +68,7 @@ namespace RISK.Tests.GuiWpf
             mainGameViewModel.ShouldRaisePropertyChangeFor(x => x.MainViewModel);
         }
 
-        [Test]
+        [Fact]
         public void New_game_message_starts_new_game()
         {
             var startingGameSettingsViewModel = Substitute.For<IGameSettingsViewModel>();

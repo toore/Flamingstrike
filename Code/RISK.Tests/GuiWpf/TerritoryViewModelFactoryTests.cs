@@ -4,13 +4,12 @@ using GuiWpf.Services;
 using GuiWpf.Territories;
 using GuiWpf.ViewModels.Gameplay.Map;
 using NSubstitute;
-using NUnit.Framework;
 using RISK.Domain;
 using RISK.Domain.Entities;
+using Xunit;
 
 namespace RISK.Tests.GuiWpf
 {
-    [TestFixture]
     public class TerritoryViewModelFactoryTests
     {
         private TerritoryViewModelFactory _territoryViewModelFactory;
@@ -21,8 +20,7 @@ namespace RISK.Tests.GuiWpf
         private ITerritory _siamTerritory;
         private ITerritoryGraphics _siamGraphics;
 
-        [SetUp]
-        public void SetUp()
+        public TerritoryViewModelFactoryTests()
         {
             var continents = new Continents();
             _locations = new Locations(continents);
@@ -41,7 +39,7 @@ namespace RISK.Tests.GuiWpf
             _territoryGuiFactory.Create(_locations.Siam).Returns(_siamGraphics);
         }
 
-        [Test]
+        [Fact]
         public void Create_Siam_view_models_factory()
         {
             var viewModel = CreateSiamTerritoryViewModel();
@@ -53,7 +51,7 @@ namespace RISK.Tests.GuiWpf
             _territoryViewModelUpdater.Received().UpdateColors(Arg.Any<ITerritoryLayoutViewModel>(), Arg.Is(_siamTerritory));
         }
 
-        [Test]
+        [Fact]
         public void OnClick_invokes_action()
         {
             var viewModel = CreateSiamTerritoryViewModel();

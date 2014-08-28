@@ -2,46 +2,44 @@
 using FluentAssertions;
 using GuiWpf.Infrastructure;
 using NSubstitute;
-using NUnit.Framework;
 using StructureMap;
+using Xunit;
 
 namespace RISK.Tests.GuiWpf.Infrastructure
 {
-    [TestFixture]
     public class HandleInterceptorTests
     {
         private HandleInterceptor<IFakeEventAggregator> _handleInterceptor;
 
-        [SetUp]
-        public void SetUp()
+        public HandleInterceptorTests()
         {
             _handleInterceptor = new HandleInterceptor<IFakeEventAggregator>();
         }
 
-        [Test]
+        [Fact]
         public void Should_match_type()
         {
             _handleInterceptor.MatchesType(typeof(FakeMessageHandler)).Should().BeTrue();
         }
 
-        [Test]
+        [Fact]
         public void Should_not_match_type()
         {
             _handleInterceptor.MatchesType(typeof(object)).Should().BeFalse();
         }
 
-        [Test]
+        [Fact]
         public void Subscribes_to_event_aggregator()
         {
             var eventAggregator = Substitute.For<IFakeEventAggregator>();
             var messageHandler = new FakeMessageHandler();
             ObjectFactory.Configure(x =>
-                {
-                    x.For<IFakeEventAggregator>().Use(eventAggregator);
-                    x.For<FakeMessageHandler>().Use(messageHandler);
-                    x.RegisterInterceptor(_handleInterceptor);
-                });
-            
+            {
+                x.For<IFakeEventAggregator>().Use(eventAggregator);
+                x.For<FakeMessageHandler>().Use(messageHandler);
+                x.RegisterInterceptor(_handleInterceptor);
+            });
+
             ObjectFactory.GetInstance<FakeMessageHandler>();
 
             eventAggregator.Received(1).Subscribe(messageHandler);

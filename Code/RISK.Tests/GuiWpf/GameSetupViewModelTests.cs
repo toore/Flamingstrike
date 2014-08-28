@@ -6,14 +6,13 @@ using GuiWpf.ViewModels.Gameplay.Map;
 using GuiWpf.ViewModels.Messages;
 using GuiWpf.ViewModels.Setup;
 using NSubstitute;
-using NUnit.Framework;
 using RISK.Domain.Entities;
 using RISK.Domain.GamePlaying;
 using RISK.Domain.GamePlaying.Setup;
+using Xunit;
 
 namespace RISK.Tests.GuiWpf
 {
-    [TestFixture]
     public class GameSetupViewModelTests
     {
         private IWorldMapViewModelFactory _worldMapViewModelFactory;
@@ -24,8 +23,7 @@ namespace RISK.Tests.GuiWpf
         private IGameFactoryWorker _gameFactoryWorker;
         private GameSetupViewModelFactory _gameSetupViewModelFactory;
 
-        [SetUp]
-        public void SetUp()
+        public GameSetupViewModelTests()
         {
             _worldMapViewModelFactory = Substitute.For<IWorldMapViewModelFactory>();
             _gameSettingStateConductor = Substitute.For<IGameSettingStateConductor>();
@@ -37,7 +35,7 @@ namespace RISK.Tests.GuiWpf
             _gameSetupViewModelFactory = new GameSetupViewModelFactory(_worldMapViewModelFactory, _dialogManager, _eventAggregator, _userInteractor, _gameFactoryWorker);
         }
 
-        [Test]
+        [Fact]
         public void Initialize_game_factory_worker()
         {
             var gameSetupViewModel = InitializeAndStartSetup();
@@ -45,7 +43,7 @@ namespace RISK.Tests.GuiWpf
             _gameFactoryWorker.Received().Run(gameSetupViewModel, gameSetupViewModel);
         }
 
-        [Test]
+        [Fact]
         public void Select_location_gets_location_from_user_interactor()
         {
             var locationSelectorParameter = Substitute.For<ILocationSelectorParameter>();
@@ -60,7 +58,7 @@ namespace RISK.Tests.GuiWpf
             actual.Should().Be(expected);
         }
 
-        [Test]
+        [Fact]
         public void Select_location_updates_view()
         {
             var worldMapViewModel = new WorldMapViewModel();
@@ -76,7 +74,7 @@ namespace RISK.Tests.GuiWpf
             gameSetupViewModel.ShouldRaisePropertyChangeFor(x => x.InformationText);
         }
 
-        [Test]
+        [Fact]
         public void When_finished_game_conductor_is_notified()
         {
             var game = Substitute.For<IGame>();
@@ -87,7 +85,7 @@ namespace RISK.Tests.GuiWpf
             _gameSettingStateConductor.Received().StartGamePlay(game);
         }
 
-        [Test]
+        [Fact]
         public void Can_not_fortify()
         {
             var gameSetupViewModel = InitializeAndStartSetup();
@@ -95,7 +93,7 @@ namespace RISK.Tests.GuiWpf
             gameSetupViewModel.CanFortify().Should().BeFalse();
         }
 
-        [Test]
+        [Fact]
         public void Can_not_end_turn()
         {
             var gameSetupViewModel = InitializeAndStartSetup();
@@ -103,7 +101,7 @@ namespace RISK.Tests.GuiWpf
             gameSetupViewModel.CanEndTurn().Should().BeFalse();
         }
 
-        [Test]
+        [Fact]
         public void Confirm_sends_end_game_message()
         {
             _dialogManager.ConfirmEndGame().Returns(true);
@@ -115,7 +113,7 @@ namespace RISK.Tests.GuiWpf
             _eventAggregator.Received().Publish(Arg.Any<NewGameMessage>());
         }
 
-        [Test]
+        [Fact]
         public void Cancel_does_not_send_end_game_message()
         {
             _dialogManager.ConfirmEndGame().Returns(false);

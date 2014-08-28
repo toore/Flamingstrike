@@ -1,26 +1,26 @@
 ﻿using System;
 using FluentAssertions;
-using NUnit.Framework;
+using Xunit;
 using TypeExtensions = GuiWpf.Infrastructure.TypeExtensions;
 
 namespace RISK.Tests.GuiWpf.Infrastructure
 {
-    [TestFixture]
+    
     public class TypeExtensionsTests
     {
-        [Test]
+        [Fact]
         public void Implements_interface()
         {
             Implements<IA>(typeof(A)).Should().BeTrue();
         }
 
-        [Test]
+        [Fact]
         public void Does_not_implement()
         {
             Implements<IA>(typeof(C)).Should().BeFalse();
         }
 
-        [Test]
+        [Fact]
         public void Derived_class_implements()
         {
             Implements<IA>(typeof(B)).Should().BeTrue();

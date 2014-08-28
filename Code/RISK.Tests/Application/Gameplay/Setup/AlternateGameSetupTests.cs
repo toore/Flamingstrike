@@ -2,15 +2,14 @@
 using System.Linq;
 using FluentAssertions;
 using NSubstitute;
-using NUnit.Framework;
 using RISK.Domain;
 using RISK.Domain.Entities;
 using RISK.Domain.GamePlaying;
 using RISK.Domain.GamePlaying.Setup;
+using Xunit;
 
 namespace RISK.Tests.Application.Gameplay.Setup
 {
-    [TestFixture]
     public class AlternateGameSetupTests
     {
         private AlternateGameSetup _alternateGameSetup;
@@ -30,8 +29,7 @@ namespace RISK.Tests.Application.Gameplay.Setup
         private ITerritory _territory2;
         private ITerritory _territory3;
 
-        [SetUp]
-        public void SetUp()
+        public AlternateGameSetupTests()
         {
             _players = Substitute.For<IPlayers>();
             _locations = new Locations(new Continents());
@@ -70,7 +68,7 @@ namespace RISK.Tests.Application.Gameplay.Setup
             _gameInitializerLocationSelector = Substitute.For<IGameInitializerLocationSelector>();
         }
 
-        [Test]
+        [Fact]
         public void Creates_world_map()
         {
             var worldMap = Initialize();
@@ -78,7 +76,7 @@ namespace RISK.Tests.Application.Gameplay.Setup
             worldMap.Should().Be(_worldMap);
         }
 
-        [Test]
+        [Fact]
         public void Assign_players_to_territories()
         {
             var worldMap = Initialize();
@@ -88,7 +86,7 @@ namespace RISK.Tests.Application.Gameplay.Setup
             worldMap.GetTerritory(_location3).Occupant.Should().Be(_player1);
         }
 
-        [Test]
+        [Fact]
         public void Place_armies_on_all_territories()
         {
             var player1Territories = new[] { _territory1, _territory3 };

@@ -1,14 +1,13 @@
 ﻿using FluentAssertions;
 using NSubstitute;
-using NUnit.Framework;
 using RISK.Domain;
 using RISK.Domain.Entities;
 using RISK.Domain.GamePlaying;
 using RISK.Domain.GamePlaying.Setup;
+using Xunit;
 
 namespace RISK.Tests.Application.Gameplay
 {
-    [TestFixture]
     public class GameTests
     {
         private Game _game;
@@ -22,8 +21,7 @@ namespace RISK.Tests.Application.Gameplay
         private IAlternateGameSetup _alternateGameSetup;
         private IGameInitializerLocationSelector _gameInitializerLocationSelector;
 
-        [SetUp]
-        public void SetUp()
+        public GameTests()
         {
             _worldMap = Substitute.For<IWorldMap>();
             _turnFactory = Substitute.For<ITurnFactory>();
@@ -45,13 +43,13 @@ namespace RISK.Tests.Application.Gameplay
             _game = new Game(_turnFactory, _players, _alternateGameSetup, _gameInitializerLocationSelector);
         }
 
-        [Test]
+        [Fact]
         public void Gets_world_map()
         {
             _game.GetWorldMap().Should().Be(_worldMap);
         }
 
-        [Test]
+        [Fact]
         public void Gets_next_turn()
         {
             var actual = _game.GetNextTurn();
@@ -59,7 +57,7 @@ namespace RISK.Tests.Application.Gameplay
             actual.Should().Be(_nextTurn);
         }
 
-        [Test]
+        [Fact]
         public void Gets_turn_after_next_turn()
         {
             _game.GetNextTurn();

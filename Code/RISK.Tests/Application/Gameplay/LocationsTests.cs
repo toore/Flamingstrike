@@ -1,58 +1,56 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using FluentAssertions;
-using NUnit.Framework;
 using RISK.Domain;
 using RISK.Domain.Entities;
+using Xunit;
 
 namespace RISK.Tests.Application.Gameplay
 {
-    [TestFixture]
     public class LocationsTests
     {
         private Locations _locations;
         private Continents _continents;
 
-        [SetUp]
-        public void SetUp()
+        public LocationsTests()
         {
             _continents = new Continents();
             _locations = new Locations(_continents);
         }
 
-        [Test]
+        [Fact]
         public void GetAll_returns_42()
         {
             GetAll().Count().Should().Be(42);
             GetAll().Should().OnlyHaveUniqueItems();
         }
 
-        [Test]
+        [Fact]
         public void GetAll_contains_alaska()
         {
             GetAll().Should().Contain(Alaska);
         }
 
-        [Test]
+        [Fact]
         public void Alaska_is_in_north_america()
         {
             Alaska.Continent.Should().Be(_continents.NorthAmerica);
         }
 
-        [Test]
+        [Fact]
         public void Alaskas_connections_are_alberta_and_northwest_territory_and_kamchatka()
         {
             Alaska.Connections.Should().BeEquivalentTo(Alberta, Northwest, Kamchatka);
         }
 
-        [Test]
+        [Fact]
         public void Alberta_is_in_north_america_and_connected_to_alaska_and_northwest_territory_and_ontario_and_western_united_states()
         {
             Alberta.Continent.Should().Be(_continents.NorthAmerica);
             Alberta.Connections.Should().BeEquivalentTo(Alaska, Northwest, Ontario, WesternUnitedStates);
         }
 
-        [Test]
+        [Fact]
         public void All_have_correct_connections()
         {
             AssertConnections(Alaska, Alberta, Northwest, Kamchatka);
@@ -104,43 +102,43 @@ namespace RISK.Tests.Application.Gameplay
             AssertConnections(WesternAustralia, EasternAustralia, Indonesia, NewGuinea);
         }
 
-        [Test]
+        [Fact]
         public void North_america_has_9()
         {
             AssertLocationsInContinent(_continents.NorthAmerica, 9, Alaska, Alberta, CentralAmerica, EasternUnitedStates, Greenland, Northwest, Ontario, Quebec, WesternUnitedStates);
         }
 
-        [Test]
+        [Fact]
         public void South_america_has_4()
         {
             AssertLocationsInContinent(_continents.SouthAmerica, 4, Argentina, Brazil, Peru, Venezuela);
         }
 
-        [Test]
+        [Fact]
         public void Europe_has_7()
         {
             AssertLocationsInContinent(_continents.Europe, 7, GreatBritain, Iceland, NorthernEurope, Scandinavia, SouthernEurope, Ukraine, WesternEurope);
         }
 
-        [Test]
+        [Fact]
         public void Africa_has_6()
         {
             AssertLocationsInContinent(_continents.Africa, 6, Congo, EastAfrica, Egypt, Madagascar, NorthAfrica, SouthAfrica);
         }
 
-        [Test]
+        [Fact]
         public void Asia_has_12()
         {
             AssertLocationsInContinent(_continents.Asia, 12, Afghanistan, China, India, Irkutsk, Japan, Kamchatka, MiddleEast, Mongolia, Siam, Siberia, Ural, Yakutsk);
         }
 
-        [Test]
+        [Fact]
         public void Australia_has_4()
         {
             AssertLocationsInContinent(_continents.Australia, 4, EasternAustralia, Indonesia, NewGuinea, WesternAustralia);
         }
 
-        [Test]
+        [Fact]
         public void GetAll_contains_all()
         {
             var expected = new[]

@@ -1,11 +1,10 @@
 ﻿using System.Collections.Generic;
 using FluentAssertions;
-using NUnit.Framework;
 using RISK.Domain.GamePlaying.DiceAndCalculation;
+using Xunit.Extensions;
 
 namespace RISK.Tests.Application.Battle
 {
-    [TestFixture]
     public class CasualtyEvaluatorTests
     {
         private CasualtyEvaluator _casualtyEvaluator;
@@ -34,19 +33,18 @@ namespace RISK.Tests.Application.Battle
                 new object[] { 1, new[] { DiceValue.Six, DiceValue.Six, DiceValue.Six }, new[] { DiceValue.Five, DiceValue.Six } }
             };
 
-        [SetUp]
-        public void SetUp()
+        public CasualtyEvaluatorTests()
         {
             _casualtyEvaluator = new CasualtyEvaluator();
         }
 
-        [TestCaseSource("_attackerCasualtiesCases")]
+        [PropertyData("_attackerCasualtiesCases")]
         public void CalculateAttackerCasualties(int expectedCasualties, IEnumerable<DiceValue> attacker, IEnumerable<DiceValue> defender)
         {
             _casualtyEvaluator.GetAttackerCasualties(attacker, defender).Should().Be(expectedCasualties);
         }
 
-        [TestCaseSource("_defenderCasualtiesCases")]
+        [PropertyData("_defenderCasualtiesCases")]
         public void CalculateDefenderCasualties(int expectedCasualties, IEnumerable<DiceValue> attacker, IEnumerable<DiceValue> defender)
         {
             _casualtyEvaluator.GetDefenderCasualties(attacker, defender).Should().Be(expectedCasualties);

@@ -2,30 +2,28 @@
 using GuiWpf.Services;
 using GuiWpf.ViewModels;
 using NSubstitute;
-using NUnit.Framework;
+using Xunit;
 
 namespace RISK.Tests.Views
 {
-    [TestFixture]
     public class ConfirmViewModelFactoryTests
     {
-        private IScreenService _screenService;
-        private IResourceManagerWrapper _resourceManagerWrapper;
+        private readonly IScreenService _screenService;
+        private readonly IResourceManagerWrapper _resourceManagerWrapper;
 
-        [SetUp]
-        public void SetUp()
+        public ConfirmViewModelFactoryTests()
         {
             _screenService = Substitute.For<IScreenService>();
             _resourceManagerWrapper = Substitute.For<IResourceManagerWrapper>();
         }
 
-        [Test]
+        [Fact]
         public void Initialize_message()
         {
             Create("message").Message.Should().Be("message");
         }
 
-        [Test]
+        [Fact]
         public void Initialize_default_confirm_and_abort_texts()
         {
             _resourceManagerWrapper.GetString("CANCEL").Returns("translated cancel text");
@@ -36,7 +34,7 @@ namespace RISK.Tests.Views
             confirmViewModel.AbortText.Should().Be("translated cancel text");
         }
 
-        [Test]
+        [Fact]
         public void Initialize_confirm_and_abort_texts()
         {
             var confirmViewModel = Create(null, null,  "yes", "no");
@@ -45,7 +43,7 @@ namespace RISK.Tests.Views
             confirmViewModel.AbortText.Should().Be("no");
         }
 
-        [Test]
+        [Fact]
         public void Confirm_closes()
         {
             var confirmViewModel = Create("message");
@@ -55,7 +53,7 @@ namespace RISK.Tests.Views
             _screenService.Received(1).Confirm(confirmViewModel);
         }
 
-        [Test]
+        [Fact]
         public void Cancel_closes()
         {
             var confirmViewModel = Create("message");
@@ -65,7 +63,7 @@ namespace RISK.Tests.Views
             _screenService.Received(1).Cancel(confirmViewModel);
         }
 
-        [Test]
+        [Fact]
         public void Sets_display_name()
         {
             var confirmViewModel = Create(null, "display name");

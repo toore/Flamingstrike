@@ -1,35 +1,43 @@
-﻿using FluentAssertions;
+﻿using System;
+using System.Collections.Generic;
+using System.Reflection;
+using FluentAssertions;
 using NSubstitute;
-using NUnit.Framework;
 using RISK.Domain.Entities;
 using RISK.Domain.GamePlaying;
 using RISK.Domain.GamePlaying.DiceAndCalculation;
+using Xunit;
+using Xunit.Extensions;
+
 
 namespace RISK.Tests.Application.Battle
 {
-    [TestFixture]
+   public class AttackCases : DataAttribute
+   {
+       public static readonly IPlayer Attacker = Substitute.For<IPlayer>();
+       public static readonly IPlayer Defender = Substitute.For<IPlayer>();
+
+       public override IEnumerable<object[]> GetData(MethodInfo methodUnderTest, Type[] parameterTypes)
+       {
+           yield return new object[] { 2, 1, 0, 1, Attacker, 1, 1 };
+           yield return new object[] { 2, 2, 0, 1, Defender, 2, 1 };
+           yield return new object[] { 2, 2, 1, 0, Defender, 1, 2 };
+       }
+   }
+
     public class BattleCalculatorTests
     {
-        private BattleCalculator _battleCalculator;
-        private IDices _dices;
-        private static readonly IPlayer _attacker = Substitute.For<IPlayer>();
-        private static readonly IPlayer _defender = Substitute.For<IPlayer>();
-
-        [SetUp]
-        public void SetUp()
+        private readonly BattleCalculator _battleCalculator;
+        private readonly IDices _dices;
+        
+        public BattleCalculatorTests()
         {
             _dices = Substitute.For<IDices>();
             _battleCalculator = new BattleCalculator(_dices);
         }
 
-        private static readonly object[] _attackCases =
-        {
-            new object[] { 2, 1, 0, 1, _attacker, 1, 1 },
-            new object[] { 2, 2, 0, 1, _defender, 2, 1 },
-            new object[] { 2, 2, 1, 0, _defender, 1, 2 }
-        };
-
-        [TestCaseSource("_attackCases")]
+        [Theory]
+        [AttackCases]
         public void Attack(int attackingArmies, int defendingArmies, int attackerCasualties, int defenderCasualties,
             IPlayer expectedOwnerAfterAttack, int expectedArmiesInAttackingTerritoryAfter, int expectedArmiesInDefendingTerritoryAfter)
         {
@@ -39,16 +47,16 @@ namespace RISK.Tests.Application.Battle
             {
                 Armies = attackingArmies
             };
-            attackerTerritory.Occupant = _attacker;
+            attackerTerritory.Occupant = AttackCases.Attacker;
             var defenderTerritory = new Territory(new Location("defender territory", new Continent()))
             {
                 Armies = defendingArmies
             };
-            defenderTerritory.Occupant = _defender;
+            defenderTerritory.Occupant = AttackCases.Defender;
 
             _battleCalculator.Attack(attackerTerritory, defenderTerritory);
 
-            attackerTerritory.Occupant.Should().Be(_attacker);
+            attackerTerritory.Occupant.Should().Be(AttackCases.Attacker);
             attackerTerritory.Armies.Should().Be(expectedArmiesInAttackingTerritoryAfter);
             defenderTerritory.Occupant.Should().Be(expectedOwnerAfterAttack);
             defenderTerritory.Armies.Should().Be(expectedArmiesInDefendingTerritoryAfter);

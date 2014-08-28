@@ -6,13 +6,12 @@ using GuiWpf.ViewModels;
 using GuiWpf.ViewModels.Gameplay;
 using GuiWpf.ViewModels.Gameplay.Map;
 using NSubstitute;
-using NUnit.Framework;
 using RISK.Domain.Entities;
 using RISK.Domain.GamePlaying;
+using Xunit;
 
 namespace RISK.Tests.GuiWpf
 {
-    [TestFixture]
     public class GameboardViewModelTests
     {
         private GameboardViewModel _gameboardViewModel;
@@ -40,8 +39,7 @@ namespace RISK.Tests.GuiWpf
         private IEventAggregator _gameEventAggregator;
         private ITurnPhaseFactory _turnPhaseFactory;
 
-        [SetUp]
-        public void SetUp()
+        public GameboardViewModelTests()
         {
             _game = Substitute.For<IGame>();
             var worldMapViewModelFactory = Substitute.For<IWorldMapViewModelFactory>();
@@ -92,23 +90,23 @@ namespace RISK.Tests.GuiWpf
 
             _turnPhaseFactory = Substitute.For<ITurnPhaseFactory>();
 
-            _gameboardViewModel = new GameboardViewModel(_game, _locations, worldMapViewModelFactory, _territoryViewModelUpdater, _gameOverEvaluater, _windowManager, 
+            _gameboardViewModel = new GameboardViewModel(_game, _locations, worldMapViewModelFactory, _territoryViewModelUpdater, _gameOverEvaluater, _windowManager,
                 _gameOverViewModelFactory, _resourceManagerWrapper, _dialogManager, _gameEventAggregator, _turnPhaseFactory);
         }
 
-        [Test]
+        [Fact]
         public void Initializes_WorldMapViewModel()
         {
             _gameboardViewModel.WorldMapViewModel.Should().Be(_worldMapViewModel);
         }
 
-        [Test]
+        [Fact]
         public void Player1_takes_first_turn()
         {
             AssertPlayer(_player1);
         }
 
-        [Test]
+        [Fact]
         public void Player2_takes_second_turn()
         {
             _gameboardViewModel.EndTurn();
@@ -121,7 +119,7 @@ namespace RISK.Tests.GuiWpf
             _gameboardViewModel.Player.Should().Be(expected);
         }
 
-        [Test]
+        [Fact]
         public void OnLocationClick_invokes_turn_select()
         {
             _currentTurn.CanSelect(_location1).Returns(true);
@@ -131,7 +129,7 @@ namespace RISK.Tests.GuiWpf
             _currentTurn.Received().Select(_location1);
         }
 
-        [Test]
+        [Fact]
         public void OnLocationClick_invokes_turn_attack()
         {
             _currentTurn.CanSelect(_location2).Returns(false);
@@ -142,7 +140,7 @@ namespace RISK.Tests.GuiWpf
             _currentTurn.Received().Attack(_location2);
         }
 
-        [Test]
+        [Fact]
         public void OnLocationClick_selects_territory()
         {
             _gameboardViewModel.OnLocationClick(_location1);
@@ -150,7 +148,7 @@ namespace RISK.Tests.GuiWpf
             _layoutViewModel1.IsSelected = true;
         }
 
-        [Test]
+        [Fact]
         public void Select_location_can_select_location_2()
         {
             _currentTurn.CanAttack(_location1).Returns(false);
@@ -162,7 +160,7 @@ namespace RISK.Tests.GuiWpf
             _layoutViewModel2.IsEnabled.Should().BeTrue("location 1 can be selected");
         }
 
-        [Test]
+        [Fact]
         public void Ends_turn_and_gets_next_turn()
         {
             _game.ClearReceivedCalls();
@@ -173,7 +171,7 @@ namespace RISK.Tests.GuiWpf
             _game.Received(1).GetNextTurn();
         }
 
-        [Test]
+        [Fact]
         public void When_winning_game_over_dialog_should_be_shown()
         {
             _gameOverEvaluater.IsGameOver(_worldMap).Returns(true);
@@ -185,7 +183,7 @@ namespace RISK.Tests.GuiWpf
             _windowManager.Received().ShowDialog(gameOverViewModel);
         }
 
-        [Test]
+        [Fact]
         public void End_game_shows_confirm_dialog()
         {
             _gameboardViewModel.EndGame();
@@ -193,20 +191,20 @@ namespace RISK.Tests.GuiWpf
             _dialogManager.Received(1).ConfirmEndGame();
         }
 
-        [Test]
+        [Fact]
         public void Can_fortify()
         {
             _gameboardViewModel.CanFortify().Should().BeTrue();
         }
 
-        [Test]
+        [Fact]
         public void Can_not_fortify_when_already_fortifying()
         {
             _gameboardViewModel.Fortify();
             _gameboardViewModel.CanFortify().Should().BeFalse();
         }
 
-        [Test]
+        [Fact]
         public void Fortifies()
         {
             _currentTurn.CanSelect(_location1).Returns(true);

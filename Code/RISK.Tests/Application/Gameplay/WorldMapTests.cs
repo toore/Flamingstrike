@@ -2,58 +2,57 @@
 using System.Linq;
 using FluentAssertions;
 using NSubstitute;
-using NUnit.Framework;
 using RISK.Domain;
 using RISK.Domain.Entities;
 using RISK.Domain.GamePlaying;
+using Xunit;
 
 namespace RISK.Tests.Application.Gameplay
 {
-    [TestFixture]
     public class WorldMapTests
     {
         private WorldMap _worldMap;
         private Locations _locations;
 
-        [SetUp]
-        public void SetUp()
+        public WorldMapTests()
         {
             _locations = new Locations(new Continents());
             _worldMap = new WorldMap(_locations);
         }
 
-        [Test]
+        [Fact]
         public void GetTerritory_has_territory_for_scandinavia()
         {
             AssertGetTerritory(_locations.Scandinavia);
         }
 
-        [Test]
+        [Fact]
         public void GetTerritory_has_territory_for_congo()
         {
             AssertGetTerritory(_locations.Congo);
         }
 
-        [Test]
+        [Fact]
         public void GetTerritory_has_territory_for_egypt()
         {
             AssertGetTerritory(_locations.Egypt);
         }
 
-        [Test]
-        [ExpectedException(typeof(InvalidOperationException))]
+        [Fact]
         public void GetTerritory_throws_for_territory_Japan()
         {
-            GetTerritory(new Location("unknown location", new Continent()));
+            Action act = ()=>GetTerritory(new Location("unknown location", new Continent()));
+
+            act.ShouldThrow<InvalidOperationException>();
         }
 
-        [Test]
+        [Fact]
         public void Get_players_occupying_territories_has_no_players()
         {
             _worldMap.GetAllPlayersOccupyingTerritories().Count().Should().Be(0);
         }
 
-        [Test]
+        [Fact]
         public void Two_players_is_occupying_territories()
         {
             var player1 = Substitute.For<IPlayer>();

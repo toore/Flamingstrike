@@ -1,26 +1,25 @@
 ﻿using FluentAssertions;
-using NUnit.Framework;
 using RISK.Domain.GamePlaying.Setup;
+using Xunit;
+using Xunit.Extensions;
 
 namespace RISK.Tests.Application.Gameplay
 {
-    [TestFixture]
     public class InitialArmyCountTests
     {
-        private InitialArmyCount _initialArmyCount;
+        private readonly InitialArmyCount _initialArmyCount;
 
-        [SetUp]
-        public void SetUp()
+        public InitialArmyCountTests()
         {
             _initialArmyCount = new InitialArmyCount();
         }
 
-        [Test]
-        [TestCase(40, 2, TestName = "2 players gets 40 armies each")]
-        [TestCase(35, 3, TestName = "3 players gets 35 armies each")]
-        [TestCase(30, 4, TestName = "4 players gets 30 armies each")]
-        [TestCase(25, 5, TestName = "5 players gets 25 armies each")]
-        [TestCase(20, 6, TestName = "6 players gets 20 armies each")]
+        [Theory]
+        [InlineData(40, 2)]
+        [InlineData(35, 3)]
+        [InlineData(30, 4)]
+        [InlineData(25, 5)]
+        [InlineData(20, 6)]
         public void Number_of_players_gets_correct_number_of_armies(int expectedArmies, int numberOfPlayers)
         {
             _initialArmyCount.Get(numberOfPlayers).Should().Be(expectedArmies);

@@ -3,19 +3,18 @@ using FluentAssertions;
 using GuiWpf.Services;
 using GuiWpf.ViewModels;
 using NSubstitute;
-using NUnit.Framework;
+using Xunit;
+using Xunit.Extensions;
 
 namespace RISK.Tests.Views
 {
-    [TestFixture]
     public class UserNotifierTests
     {
         private UserNotifier _userNotifier;
         private IWindowManager _windowManager;
         private IConfirmViewModelFactory _confirmViewModelFactory;
 
-        [SetUp]
-        public void SetUp()
+        public UserNotifierTests()
         {
             _windowManager = Substitute.For<IWindowManager>();
             _confirmViewModelFactory = Substitute.For<IConfirmViewModelFactory>();
@@ -23,19 +22,19 @@ namespace RISK.Tests.Views
             _userNotifier = new UserNotifier(_windowManager, _confirmViewModelFactory);
         }
 
-        [Test]
-        [TestCase(true, TestName = "Confirms")]
-        [TestCase(false, TestName = "Cancels")]
-        public void Shows_confirm_dialog(bool expected)
+        [Theory]
+        [InlineData(true)]
+        [InlineData(false)]
+        public void Shows_confirm_dialog(bool expectedConfirmation)
         {
             var confirmViewModel = new ConfirmViewModel(null);
             _confirmViewModelFactory.Create("message", "display name", "confirm text", "abort text").Returns(confirmViewModel);
-            _windowManager.ShowDialog(confirmViewModel).Returns(expected);
+            _windowManager.ShowDialog(confirmViewModel).Returns(expectedConfirmation);
 
             var confirm = _userNotifier.Confirm("message", "display name", "confirm text", "abort text");
 
             _windowManager.Received(1).ShowDialog(confirmViewModel);
-            confirm.Should().Be(expected);
+            confirm.Should().Be(expectedConfirmation);
         }
     }
 }

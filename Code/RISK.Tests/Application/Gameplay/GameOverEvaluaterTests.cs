@@ -1,26 +1,24 @@
 ﻿using FluentAssertions;
 using GuiWpf.ViewModels.Gameplay;
 using NSubstitute;
-using NUnit.Framework;
 using RISK.Domain.Entities;
 using RISK.Domain.GamePlaying;
+using Xunit;
 
 namespace RISK.Tests.Application.Gameplay
 {
-    [TestFixture]
     public class GameOverEvaluaterTests
     {
-        private GameOverEvaluater _gameOverEvaluater;
-        private IWorldMap _worldMap;
+        private readonly GameOverEvaluater _gameOverEvaluater;
+        private readonly IWorldMap _worldMap;
 
-        [SetUp]
-        public void SetUp()
+        public GameOverEvaluaterTests()
         {
             _worldMap = Substitute.For<IWorldMap>();
             _gameOverEvaluater = new GameOverEvaluater();
         }
 
-        [Test]
+        [Fact]
         public void Is_game_over()
         {
             _worldMap.GetAllPlayersOccupyingTerritories()
@@ -29,15 +27,15 @@ namespace RISK.Tests.Application.Gameplay
             IsGameOver().Should().BeTrue("1 player occupies territories");
         }
 
-        [Test]
+        [Fact]
         public void Is_not_game_over()
         {
             _worldMap.GetAllPlayersOccupyingTerritories()
                 .Returns(new[]
-                    {
-                        Substitute.For<IPlayer>(),
-                        Substitute.For<IPlayer>()
-                    });
+                {
+                    Substitute.For<IPlayer>(),
+                    Substitute.For<IPlayer>()
+                });
 
             IsGameOver().Should().BeFalse("2 players occupies territories");
         }

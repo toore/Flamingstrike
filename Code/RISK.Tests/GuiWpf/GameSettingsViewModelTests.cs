@@ -4,12 +4,11 @@ using FluentAssertions;
 using GuiWpf.ViewModels.Messages;
 using GuiWpf.ViewModels.Settings;
 using NSubstitute;
-using NUnit.Framework;
 using RISK.Domain.Extensions;
+using Xunit;
 
 namespace RISK.Tests.GuiWpf
 {
-    [TestFixture]
     public class GameSettingsViewModelTests
     {
         private GameSettingsViewModel _gameSettingsViewModel;
@@ -17,8 +16,7 @@ namespace RISK.Tests.GuiWpf
         private IPlayerTypes _playerTypes;
         private IEventAggregator _gameEventAggregator;
 
-        [SetUp]
-        public void SetUp()
+        public GameSettingsViewModelTests()
         {
             _playerFactory = Substitute.For<IPlayerFactory>();
             _playerTypes = Substitute.For<IPlayerTypes>();
@@ -30,19 +28,19 @@ namespace RISK.Tests.GuiWpf
             _gameSettingsViewModel = new GameSettingsViewModel(_playerFactory, _playerTypes, _gameEventAggregator);
         }
 
-        [Test]
+        [Fact]
         public void Has_6_players()
         {
             _gameSettingsViewModel.Players.Count.Should().Be(6);
         }
 
-        [Test]
+        [Fact]
         public void Cant_confirm_when_no_players_are_selected()
         {
             _gameSettingsViewModel.CanConfirm.Should().BeFalse();
         }
 
-        [Test]
+        [Fact]
         public void Cant_confirm_when_less_than_two_players_are_selected()
         {
             _gameSettingsViewModel.Players.First().IsEnabled = true;
@@ -50,7 +48,7 @@ namespace RISK.Tests.GuiWpf
             _gameSettingsViewModel.CanConfirm.Should().BeFalse();
         }
 
-        [Test]
+        [Fact]
         public void Can_confirm_when_at_least_two_players_are_selected()
         {
             _gameSettingsViewModel.Players.First().IsEnabled = true;
@@ -59,7 +57,7 @@ namespace RISK.Tests.GuiWpf
             _gameSettingsViewModel.CanConfirm.Should().BeTrue();
         }
 
-        [Test]
+        [Fact]
         public void Confirm_publishes_message()
         {
             _gameSettingsViewModel.Confirm();
