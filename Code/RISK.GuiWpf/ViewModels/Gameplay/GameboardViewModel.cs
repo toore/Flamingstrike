@@ -52,7 +52,7 @@ namespace GuiWpf.ViewModels.Gameplay
             _worldMap = _game.GetWorldMap();
 
             _territories = locations
-                .Select(_worldMap.GetTerritory)
+                .Select(x => _worldMap.GetTerritory(x))
                 .ToList();
 
             InformationText = resourceManagerWrapper.GetString("SELECT_TERRITORY");
@@ -210,11 +210,11 @@ namespace GuiWpf.ViewModels.Gameplay
         {
             if (_turn.CanFortify(location))
             {
-                _turn.Fortify(location, 99999);
+                _turn.Fortify(location, 10);
             }
             else
             {
-                
+
             }
         }
     }

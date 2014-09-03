@@ -14,7 +14,6 @@ namespace RISK.Tests.GuiWpf
 {
     public class GameboardViewModelTests
     {
-        private GameboardViewModel _gameboardViewModel;
         private IGame _game;
         private WorldMapViewModel _worldMapViewModel;
         private ILocation _location1;
@@ -25,7 +24,7 @@ namespace RISK.Tests.GuiWpf
         private ITerritoryTextViewModel _textViewModel2;
         private IWorldMap _worldMap;
         private ITerritoryViewModelUpdater _territoryViewModelUpdater;
-        private ITurn _currentTurn;
+        private ITurn _initialTurn;
         private ITurn _nextTurn;
         private ITerritory _territory1;
         private ITerritory _territory2;
@@ -38,11 +37,13 @@ namespace RISK.Tests.GuiWpf
         private IDialogManager _dialogManager;
         private IEventAggregator _gameEventAggregator;
         private ITurnPhaseFactory _turnPhaseFactory;
+        private ILocation[] _locations;
+        private IWorldMapViewModelFactory _worldMapViewModelFactory;
 
         public GameboardViewModelTests()
         {
             _game = Substitute.For<IGame>();
-            var worldMapViewModelFactory = Substitute.For<IWorldMapViewModelFactory>();
+            _worldMapViewModelFactory = Substitute.For<IWorldMapViewModelFactory>();
             _territoryViewModelUpdater = Substitute.For<ITerritoryViewModelUpdater>();
             _gameOverEvaluater = Substitute.For<IGameOverEvaluater>();
             _windowManager = Substitute.For<IWindowManager>();
@@ -53,7 +54,7 @@ namespace RISK.Tests.GuiWpf
 
             _location1 = Substitute.For<ILocation>();
             _location2 = Substitute.For<ILocation>();
-            var _locations = new[]
+            _locations = new[]
             {
                 _location1,
                 _location2
@@ -69,11 +70,11 @@ namespace RISK.Tests.GuiWpf
             _player1 = Substitute.For<IPlayer>();
             _player2 = Substitute.For<IPlayer>();
 
-            _currentTurn = Substitute.For<ITurn>();
-            _currentTurn.Player.Returns(_player1);
+            _initialTurn = Substitute.For<ITurn>();
+            _initialTurn.Player.Returns(_player1);
             _nextTurn = Substitute.For<ITurn>();
             _nextTurn.Player.Returns(_player2);
-            _game.GetNextTurn().Returns(_currentTurn, _nextTurn);
+            _game.GetNextTurn().Returns(_initialTurn, _nextTurn);
 
             _layoutViewModel1 = StubLayoutViewModel(_location1);
             _textViewModel1 = StubTextViewModel(_location1);
@@ -86,64 +87,74 @@ namespace RISK.Tests.GuiWpf
             _worldMapViewModel.WorldMapViewModels.Add(_layoutViewModel2);
             _worldMapViewModel.WorldMapViewModels.Add(_textViewModel2);
 
-            worldMapViewModelFactory.Create(Arg.Is(_worldMap), Arg.Any<Action<ILocation>>()).Returns(_worldMapViewModel);
+            _worldMapViewModelFactory.Create(Arg.Is(_worldMap), Arg.Any<Action<ILocation>>()).Returns(_worldMapViewModel);
 
             _turnPhaseFactory = Substitute.For<ITurnPhaseFactory>();
+        }
 
-            _gameboardViewModel = new GameboardViewModel(_game, _locations, worldMapViewModelFactory, _territoryViewModelUpdater, _gameOverEvaluater, _windowManager,
+        private GameboardViewModel Create()
+        {
+            return new GameboardViewModel(_game, _locations, _worldMapViewModelFactory, _territoryViewModelUpdater, _gameOverEvaluater, _windowManager,
                 _gameOverViewModelFactory, _resourceManagerWrapper, _dialogManager, _gameEventAggregator, _turnPhaseFactory);
         }
 
         [Fact]
         public void Initializes_WorldMapViewModel()
         {
-            _gameboardViewModel.WorldMapViewModel.Should().Be(_worldMapViewModel);
+            Create().WorldMapViewModel.Should().Be(_worldMapViewModel);
         }
 
         [Fact]
         public void Player1_takes_first_turn()
         {
-            AssertPlayer(_player1);
+            AssertCurrentPlayer(_player1);
         }
 
         [Fact]
         public void Player2_takes_second_turn()
         {
-            _gameboardViewModel.EndTurn();
+            Create().EndTurn();
 
-            AssertPlayer(_player2);
+            AssertCurrentPlayer(_player2);
         }
 
-        private void AssertPlayer(IPlayer expected)
+        private void AssertCurrentPlayer(IPlayer expected)
         {
-            _gameboardViewModel.Player.Should().Be(expected);
-        }
-
-        [Fact]
-        public void OnLocationClick_invokes_turn_select()
-        {
-            _currentTurn.CanSelect(_location1).Returns(true);
-
-            _gameboardViewModel.OnLocationClick(_location1);
-
-            _currentTurn.Received().Select(_location1);
+            Create().Player.Should().Be(expected);
         }
 
         [Fact]
-        public void OnLocationClick_invokes_turn_attack()
+        public void OnLocationClick_commands_select()
         {
-            _currentTurn.CanSelect(_location2).Returns(false);
-            _currentTurn.CanAttack(_location2).Returns(true);
+            _turnPhaseFactory.CreateAttackPhase(_initialTurn).Returns(new AttackPhase(_initialTurn));
+            _initialTurn.CanSelect(_location1).Returns(true);
 
-            _gameboardViewModel.OnLocationClick(_location2);
+            Create().OnLocationClick(_location1);
 
-            _currentTurn.Received().Attack(_location2);
+            _initialTurn.Received().Select(_location1);
+        }
+
+        [Fact]
+        public void OnLocationClick_commands_attack()
+        {
+            _turnPhaseFactory.CreateAttackPhase(_initialTurn).Returns(new AttackPhase(_initialTurn));
+            _initialTurn.CanSelect(_location2).Returns(false);
+            _initialTurn.CanAttack(_location2).Returns(true);
+
+            var sut = Create();
+            sut.OnLocationClick(_location1);
+            sut.OnLocationClick(_location2);
+
+            _initialTurn.Received().Attack(_location2);
         }
 
         [Fact]
         public void OnLocationClick_selects_territory()
         {
-            _gameboardViewModel.OnLocationClick(_location1);
+            _turnPhaseFactory.CreateAttackPhase(_initialTurn).Returns(new AttackPhase(_initialTurn));
+            _initialTurn.CanSelect(_location1).Returns(true);
+
+            Create().OnLocationClick(_location1);
 
             _layoutViewModel1.IsSelected = true;
         }
@@ -151,34 +162,38 @@ namespace RISK.Tests.GuiWpf
         [Fact]
         public void Select_location_can_select_location_2()
         {
-            _currentTurn.CanAttack(_location1).Returns(false);
-            _currentTurn.CanAttack(_location2).Returns(true);
+            _turnPhaseFactory.CreateAttackPhase(_initialTurn).Returns(new AttackPhase(_initialTurn));
+            _initialTurn.CanAttack(_location1).Returns(false);
+            _initialTurn.CanAttack(_location2).Returns(true);
 
-            _gameboardViewModel.OnLocationClick(_location1);
+            Create().OnLocationClick(_location1);
 
             _layoutViewModel1.IsEnabled.Should().BeFalse("location 1 can not be selected");
-            _layoutViewModel2.IsEnabled.Should().BeTrue("location 1 can be selected");
+            _layoutViewModel2.IsEnabled.Should().BeTrue("location 2 can be selected");
         }
 
         [Fact]
         public void Ends_turn_and_gets_next_turn()
         {
+            _turnPhaseFactory.CreateAttackPhase(_initialTurn).Returns(new AttackPhase(_initialTurn));
+            var sut = Create();
             _game.ClearReceivedCalls();
 
-            _gameboardViewModel.EndTurn();
+            sut.EndTurn();
 
-            _currentTurn.Received(1).EndTurn();
+            _initialTurn.Received(1).EndTurn();
             _game.Received(1).GetNextTurn();
         }
 
         [Fact]
         public void When_winning_game_over_dialog_should_be_shown()
         {
+            _turnPhaseFactory.CreateAttackPhase(_initialTurn).Returns(new AttackPhase(_initialTurn));
             _gameOverEvaluater.IsGameOver(_worldMap).Returns(true);
             var gameOverViewModel = new GameOverViewModel(_player1);
             _gameOverViewModelFactory.Create(_player1).Returns(gameOverViewModel);
 
-            _gameboardViewModel.OnLocationClick(null);
+            Create().OnLocationClick(null);
 
             _windowManager.Received().ShowDialog(gameOverViewModel);
         }
@@ -186,7 +201,7 @@ namespace RISK.Tests.GuiWpf
         [Fact]
         public void End_game_shows_confirm_dialog()
         {
-            _gameboardViewModel.EndGame();
+            Create().EndGame();
 
             _dialogManager.Received(1).ConfirmEndGame();
         }
@@ -194,26 +209,32 @@ namespace RISK.Tests.GuiWpf
         [Fact]
         public void Can_fortify()
         {
-            _gameboardViewModel.CanFortify().Should().BeTrue();
+            Create().CanFortify().Should().BeTrue();
         }
 
         [Fact]
         public void Can_not_fortify_when_already_fortifying()
         {
-            _gameboardViewModel.Fortify();
-            _gameboardViewModel.CanFortify().Should().BeFalse();
+            var sut = Create();
+            sut.Fortify();
+
+            sut.CanFortify().Should().BeFalse();
         }
 
         [Fact]
         public void Fortifies()
         {
-            _currentTurn.CanSelect(_location1).Returns(true);
-            _currentTurn.CanFortify(_location2).Returns(true);
+            _turnPhaseFactory.CreateFortifyingPhase(_initialTurn).Returns(new FortifyingPhase(_initialTurn));
+            _initialTurn.CanSelect(_location1).Returns(true);
+            _initialTurn.CanFortify(_location2).Returns(true);
 
-            _gameboardViewModel.OnLocationClick(_location1);
-            _gameboardViewModel.OnLocationClick(_location2);
+            var sut = Create();
+            sut.Fortify();
 
-            _currentTurn.Received(1).Fortify(_location2, 10);
+            sut.OnLocationClick(_location1);
+            sut.OnLocationClick(_location2);
+
+            _initialTurn.Received(1).Fortify(_location2, 10);
         }
 
         private ITerritoryLayoutViewModel StubLayoutViewModel(ILocation location)

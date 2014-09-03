@@ -16,7 +16,7 @@ using Xunit;
 
 namespace RISK.Tests.Application.Specifications
 {
-    public class game_play_spec : AcceptanceTestsBase<game_play_spec>
+    public class GamePlaySpec : AcceptanceTestsBase<GamePlaySpec>
     {
         private GameboardViewModel _gameboardViewModel;
         private Players _players;
@@ -28,7 +28,7 @@ namespace RISK.Tests.Application.Specifications
         private IDice _dice;
         private GameOverViewModel _gameOverAndPlayer1IsTheWinnerViewModel;
 
-        public game_play_spec()
+        public GamePlaySpec()
         {
             new PluginConfiguration().Configure();
         }
@@ -121,7 +121,7 @@ namespace RISK.Tests.Application.Specifications
             GetTerritory(_locations.Kamchatka).Armies.Should().Be(12);
         }
 
-        private game_play_spec japan_should_have_8_armies()
+        private GamePlaySpec japan_should_have_8_armies()
         {
             GetTerritory(_locations.Japan).Armies.Should().Be(8);
             return this;
@@ -132,7 +132,7 @@ namespace RISK.Tests.Application.Specifications
             return _worldMap.GetTerritory(location);
         }
 
-        private game_play_spec player_1_selects_japan()
+        private GamePlaySpec player_1_selects_japan()
         {
             ClickOn(_locations.Japan);
             return this;
@@ -148,7 +148,7 @@ namespace RISK.Tests.Application.Specifications
             _gameboardViewModel.Fortify();
         }
 
-        private game_play_spec a_started_game_with_two_players()
+        private GamePlaySpec a_started_game_with_two_players()
         {
             _players = new Players();
             _locations = new Locations(new Continents());
@@ -188,49 +188,49 @@ namespace RISK.Tests.Application.Specifications
             return this;
         }
 
-        private game_play_spec player_1_has_5_armies_in_north_africa()
+        private GamePlaySpec player_1_has_5_armies_in_north_africa()
         {
             UpdateWorldMap(_player1, 5, _locations.NorthAfrica);
             return this;
         }
 
-        private game_play_spec player_1_occupies_every_territory_except_brazil_and_venezuela_with_one_army_each()
+        private GamePlaySpec player_1_occupies_every_territory_except_brazil_and_venezuela_with_one_army_each()
         {
             UpdateWorldMap(_player1, 1, GetAllLocationsExcept(_locations.Brazil, _locations.Venezuela));
             return this;
         }
 
-        private game_play_spec player_2_occupies_brazil_and_venezuela_with_one_army_each()
+        private GamePlaySpec player_2_occupies_brazil_and_venezuela_with_one_army_each()
         {
             UpdateWorldMap(_player2, 1, _locations.Brazil, _locations.Venezuela);
             return this;
         }
 
-        private game_play_spec player_1_occupies_every_territory_except_iceland_with_one_army_each()
+        private GamePlaySpec player_1_occupies_every_territory_except_iceland_with_one_army_each()
         {
             UpdateWorldMap(_player1, 1, GetAllLocationsExcept(_locations.Iceland));
             return this;
         }
 
-        private game_play_spec player_1_occupies_every_territory_except_indonesia_with_ten_armies_each()
+        private GamePlaySpec player_1_occupies_every_territory_except_indonesia_with_ten_armies_each()
         {
             UpdateWorldMap(_player1, 10, GetAllLocationsExcept(_locations.Indonesia));
             return this;
         }
 
-        private game_play_spec player_2_occupies_indonesia()
+        private GamePlaySpec player_2_occupies_indonesia()
         {
             UpdateWorldMap(_player2, 1, _locations.Indonesia);
             return this;
         }
 
-        private game_play_spec player_1_has_2_armies_in_scandinavia()
+        private GamePlaySpec player_1_has_2_armies_in_scandinavia()
         {
             UpdateWorldMap(_player1, 2, _locations.Scandinavia);
             return this;
         }
 
-        private game_play_spec player_2_occupies_iceland_with_one_army()
+        private GamePlaySpec player_2_occupies_iceland_with_one_army()
         {
             UpdateWorldMap(_player2, 1, _locations.Iceland);
             return this;
@@ -252,26 +252,26 @@ namespace RISK.Tests.Application.Specifications
                 });
         }
 
-        private game_play_spec player_one_selects_north_africa()
+        private GamePlaySpec player_one_selects_north_africa()
         {
             ClickOn(_locations.NorthAfrica);
             return this;
         }
 
-        private game_play_spec and_attacks_brazil_and_wins()
+        private GamePlaySpec and_attacks_brazil_and_wins()
         {
             _dice.Roll().Returns(DiceValue.Six, DiceValue.Five, DiceValue.Four, DiceValue.Five);
             ClickOn(_locations.Brazil);
             return this;
         }
 
-        private game_play_spec player_one_selects_scandinavia()
+        private GamePlaySpec player_one_selects_scandinavia()
         {
             ClickOn(_locations.Scandinavia);
             return this;
         }
 
-        private game_play_spec and_attacks_iceland_and_wins()
+        private GamePlaySpec and_attacks_iceland_and_wins()
         {
             _dice.Roll().Returns(DiceValue.Two, DiceValue.One);
             ClickOn(_locations.Iceland);
@@ -309,13 +309,13 @@ namespace RISK.Tests.Application.Specifications
             _windowManager.Received().ShowDialog(_gameOverAndPlayer1IsTheWinnerViewModel);
         }
 
-        private game_play_spec player_1_should_have_a_card()
+        private GamePlaySpec player_1_should_have_a_card()
         {
             _player1.Cards.Count().Should().Be(1, "player 1 should have one card");
             return this;
         }
 
-        private game_play_spec player_1_should_not_have_any_card()
+        private GamePlaySpec player_1_should_not_have_any_card()
         {
             _player1.Cards.Count().Should().Be(0, "player 1 should not have any card");
             return this;
