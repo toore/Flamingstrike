@@ -9,12 +9,14 @@ namespace RISK.Tests.Views
     public class ConfirmViewModelFactoryTests
     {
         private readonly IScreenService _screenService;
-        private readonly IResourceManagerWrapper _resourceManagerWrapper;
+        private readonly ILanguageResources _languageResources;
 
         public ConfirmViewModelFactoryTests()
         {
             _screenService = Substitute.For<IScreenService>();
-            _resourceManagerWrapper = Substitute.For<IResourceManagerWrapper>();
+            _languageResources = Substitute.For<ILanguageResources>();
+
+            LanguageResources.Instance = _languageResources;
         }
 
         [Fact]
@@ -26,7 +28,7 @@ namespace RISK.Tests.Views
         [Fact]
         public void Initialize_default_confirm_and_abort_texts()
         {
-            _resourceManagerWrapper.GetString("CANCEL").Returns("translated cancel text");
+            _languageResources.GetString("CANCEL").Returns("translated cancel text");
 
             var confirmViewModel = Create(null);
 
@@ -73,7 +75,7 @@ namespace RISK.Tests.Views
 
         public ConfirmViewModel Create(string message, string displayName = null, string confirmText = null, string abortText = null)
         {
-            var factory = new ConfirmViewModelFactory(_screenService, _resourceManagerWrapper);
+            var factory = new ConfirmViewModelFactory(_screenService);
 
             return factory.Create(message, displayName, confirmText, abortText);
         }

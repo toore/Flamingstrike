@@ -33,7 +33,7 @@ namespace RISK.Tests.GuiWpf
         private IGameOverEvaluater _gameOverEvaluater;
         private IWindowManager _windowManager;
         private IGameOverViewModelFactory _gameOverViewModelFactory;
-        private IResourceManagerWrapper _resourceManagerWrapper;
+        private ILanguageResources _languageResources;
         private IDialogManager _dialogManager;
         private IEventAggregator _gameEventAggregator;
         private ITurnPhaseFactory _turnPhaseFactory;
@@ -48,9 +48,11 @@ namespace RISK.Tests.GuiWpf
             _gameOverEvaluater = Substitute.For<IGameOverEvaluater>();
             _windowManager = Substitute.For<IWindowManager>();
             _gameOverViewModelFactory = Substitute.For<IGameOverViewModelFactory>();
-            _resourceManagerWrapper = Substitute.For<IResourceManagerWrapper>();
+            _languageResources = Substitute.For<ILanguageResources>();
             _dialogManager = Substitute.For<IDialogManager>();
             _gameEventAggregator = Substitute.For<IEventAggregator>();
+
+            LanguageResources.Instance = _languageResources;
 
             _location1 = Substitute.For<ILocation>();
             _location2 = Substitute.For<ILocation>();
@@ -95,7 +97,7 @@ namespace RISK.Tests.GuiWpf
         private GameboardViewModel Create()
         {
             return new GameboardViewModel(_game, _locations, _worldMapViewModelFactory, _territoryViewModelUpdater, _gameOverEvaluater, _windowManager,
-                _gameOverViewModelFactory, _resourceManagerWrapper, _dialogManager, _gameEventAggregator, _turnPhaseFactory);
+                _gameOverViewModelFactory, _dialogManager, _gameEventAggregator, _turnPhaseFactory);
         }
 
         [Fact]

@@ -14,7 +14,6 @@ namespace GuiWpf.ViewModels.Gameplay
         private readonly IGameOverEvaluater _gameOverEvaluater;
         private readonly IWindowManager _windowManager;
         private readonly IGameOverViewModelFactory _gameOverViewModelFactory;
-        private readonly IResourceManagerWrapper _resourceManagerWrapper;
         private readonly IDialogManager _dialogManager;
         private readonly IEventAggregator _eventAggregator;
         private readonly ITurnPhaseFactory _turnPhaseFactory;
@@ -26,7 +25,6 @@ namespace GuiWpf.ViewModels.Gameplay
             IGameOverEvaluater gameOverEvaluater,
             IWindowManager windowManager,
             IGameOverViewModelFactory gameOverViewModelFactory,
-            IResourceManagerWrapper resourceManagerWrapper,
             IDialogManager dialogManager,
             IEventAggregator eventAggregator,
             ITurnPhaseFactory turnPhaseFactory)
@@ -37,7 +35,6 @@ namespace GuiWpf.ViewModels.Gameplay
             _gameOverEvaluater = gameOverEvaluater;
             _windowManager = windowManager;
             _gameOverViewModelFactory = gameOverViewModelFactory;
-            _resourceManagerWrapper = resourceManagerWrapper;
             _dialogManager = dialogManager;
             _eventAggregator = eventAggregator;
             _turnPhaseFactory = turnPhaseFactory;
@@ -53,7 +50,6 @@ namespace GuiWpf.ViewModels.Gameplay
                 _gameOverEvaluater,
                 _windowManager,
                 _gameOverViewModelFactory,
-                _resourceManagerWrapper,
                 _dialogManager,
                 _eventAggregator,
                 _turnPhaseFactory);

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Caliburn.Micro;
 using GuiWpf.Services;
@@ -35,7 +34,6 @@ namespace GuiWpf.ViewModels.Gameplay
             IGameOverEvaluater gameOverEvaluater,
             IWindowManager windowManager,
             IGameOverViewModelFactory gameOverViewModelFactory,
-            IResourceManagerWrapper resourceManagerWrapper,
             IDialogManager dialogManager,
             IEventAggregator eventAggregator,
             ITurnPhaseFactory turnPhaseFactory)
@@ -55,7 +53,7 @@ namespace GuiWpf.ViewModels.Gameplay
                 .Select(x => _worldMap.GetTerritory(x))
                 .ToList();
 
-            InformationText = resourceManagerWrapper.GetString("SELECT_TERRITORY");
+            InformationText = LanguageResources.Instance.GetString("SELECT_TERRITORY");
 
             WorldMapViewModel = worldMapViewModelFactory.Create(_worldMap, OnLocationClick);
 
