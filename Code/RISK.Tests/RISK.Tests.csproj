@@ -91,8 +91,8 @@
     <Compile Include="Application\Gameplay\TurnTests_WhenAttacking.cs" />
     <Compile Include="Application\Gameplay\TurnTests_WhenSelecting.cs" />
     <Compile Include="Application\Specifications\AcceptanceTestsBase.cs" />
-    <Compile Include="Application\Specifications\game_play.cs" />
-    <Compile Include="Application\Specifications\game_setup.cs" />
+    <Compile Include="Application\Specifications\game_play_spec.cs" />
+    <Compile Include="Application\Specifications\game_setup_spec.cs" />
     <Compile Include="GuiWpf\EnumerableExtensionsTests.cs" />
     <Compile Include="GuiWpf\GameSettingsViewModelTests.cs" />
     <Compile Include="GuiWpf\GameSetupViewModelTests.cs" />

@@ -14,13 +14,13 @@ using Xunit;
 
 namespace RISK.Tests.Application.Specifications
 {
-    public class game_setup : AcceptanceTestsBase<game_setup>
+    public class game_setup_spec : AcceptanceTestsBase<game_setup_spec>
     {
         private IMainGameViewModel _mainGameViewModel;
         private AutoRespondingUserInteractor _userInteractor;
         private IMainViewModel _setupViewModel;
 
-        public game_setup()
+        public game_setup_spec()
         {
             new PluginConfiguration().Configure();
         }
@@ -40,7 +40,7 @@ namespace RISK.Tests.Application.Specifications
                 .the_game_is_started();
         }
 
-        private game_setup a_new_game()
+        private game_setup_spec a_new_game()
         {
             _userInteractor = new AutoRespondingUserInteractor();
             ObjectFactory.Inject<IUserInteractor>(_userInteractor);
@@ -50,7 +50,7 @@ namespace RISK.Tests.Application.Specifications
             return this;
         }
 
-        private game_setup two_human_players_are_confirmed()
+        private game_setup_spec two_human_players_are_confirmed()
         {
             var gameSettingsViewModel = (IGameSettingsViewModel)_mainGameViewModel.MainViewModel;
 
@@ -64,7 +64,7 @@ namespace RISK.Tests.Application.Specifications
             return this;
         }
 
-        private game_setup all_armies_are_placed_on_the_map()
+        private game_setup_spec all_armies_are_placed_on_the_map()
         {
             const int numberOfArmiesToPlace = (40 - 21) * 2;
 
@@ -73,7 +73,7 @@ namespace RISK.Tests.Application.Specifications
             return this;
         }
 
-        private game_setup the_main_view_is_changed()
+        private game_setup_spec the_main_view_is_changed()
         {
             while (_mainGameViewModel.MainViewModel == _setupViewModel) {}
 
