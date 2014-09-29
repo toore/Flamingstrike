@@ -21,8 +21,7 @@ namespace GuiWpf.Views.WorldMapViews
 
         private GameboardViewModel Create()
         {
-            var continents = new Continents();
-            var locations = new Locations(continents);
+            var locations = new Locations();
             var colorService = new ColorService();
             var territoryColorsFactory = new TerritoryColorsFactory(locations, colorService);
             var territoryLayoutInformationFactory = new TerritoryGuiFactory(locations);

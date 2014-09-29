@@ -151,7 +151,7 @@ namespace RISK.Tests.Application.Specifications
         private GamePlaySpec a_started_game_with_two_players()
         {
             _players = new Players();
-            _locations = new Locations(new Continents());
+            _locations = new Locations();
 
             _worldMap = new WorldMap(_locations);
             var worldMapFactory = Substitute.For<IWorldMapFactory>();

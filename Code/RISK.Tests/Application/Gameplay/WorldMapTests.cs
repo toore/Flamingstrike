@@ -11,12 +11,12 @@ namespace RISK.Tests.Application.Gameplay
 {
     public class WorldMapTests
     {
-        private WorldMap _worldMap;
-        private Locations _locations;
+        private readonly WorldMap _worldMap;
+        private readonly Locations _locations;
 
         public WorldMapTests()
         {
-            _locations = new Locations(new Continents());
+            _locations = new Locations();
             _worldMap = new WorldMap(_locations);
         }
 

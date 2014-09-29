@@ -22,8 +22,7 @@ namespace RISK.Tests.GuiWpf
 
         public TerritoryViewModelFactoryTests()
         {
-            var continents = new Continents();
-            _locations = new Locations(continents);
+            _locations = new Locations();
             _territoryViewModelUpdater = Substitute.For<ITerritoryViewModelUpdater>();
             _territoryGuiFactory = Substitute.For<ITerritoryGuiFactory>();
 

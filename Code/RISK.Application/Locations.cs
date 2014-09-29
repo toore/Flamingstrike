@@ -5,55 +5,55 @@ namespace RISK.Domain
 {
     public class Locations
     {
-        public Locations(Continents continents)
+        public Locations()
         {
-            var alaska = new Location("ALASKA", continents.NorthAmerica);
-            var alberta = new Location("ALBERTA", continents.NorthAmerica);
-            var centralAmerica = new Location("CENTRAL_AMERICA", continents.NorthAmerica);
-            var easternUnitedStates = new Location("EASTERN_UNITED_STATES", continents.NorthAmerica);
-            var greenland = new Location("GREENLAND", continents.NorthAmerica);
-            var northwestTerritory = new Location("NORTHWEST_TERRITORY", continents.NorthAmerica);
-            var ontario = new Location("ONTARIO", continents.NorthAmerica);
-            var quebec = new Location("QUEBEC", continents.NorthAmerica);
-            var westernUnitedStates = new Location("WESTERN_UNITED_STATES", continents.NorthAmerica);
+            var alaska = new Location("ALASKA", Continents.NorthAmerica);
+            var alberta = new Location("ALBERTA", Continents.NorthAmerica);
+            var centralAmerica = new Location("CENTRAL_AMERICA", Continents.NorthAmerica);
+            var easternUnitedStates = new Location("EASTERN_UNITED_STATES", Continents.NorthAmerica);
+            var greenland = new Location("GREENLAND", Continents.NorthAmerica);
+            var northwestTerritory = new Location("NORTHWEST_TERRITORY", Continents.NorthAmerica);
+            var ontario = new Location("ONTARIO", Continents.NorthAmerica);
+            var quebec = new Location("QUEBEC", Continents.NorthAmerica);
+            var westernUnitedStates = new Location("WESTERN_UNITED_STATES", Continents.NorthAmerica);
 
-            var argentina = new Location("ARGENTINA", continents.SouthAmerica);
-            var brazil = new Location("BRAZIL", continents.SouthAmerica);
-            var peru = new Location("PERU", continents.SouthAmerica);
-            var venezuela = new Location("VENEZUELA", continents.SouthAmerica);
+            var argentina = new Location("ARGENTINA", Continents.SouthAmerica);
+            var brazil = new Location("BRAZIL", Continents.SouthAmerica);
+            var peru = new Location("PERU", Continents.SouthAmerica);
+            var venezuela = new Location("VENEZUELA", Continents.SouthAmerica);
 
-            var greatBritain = new Location("GREAT_BRITAIN", continents.Europe);
-            var iceland = new Location("ICELAND", continents.Europe);
-            var northernEurope = new Location("NORTHERN_EUROPE", continents.Europe);
-            var scandinavia = new Location("SCANDINAVIA", continents.Europe);
-            var southernEurope = new Location("SOUTHERN_EUROPE", continents.Europe);
-            var ukraine = new Location("UKRAINE", continents.Europe);
-            var westernEurope = new Location("WESTERN_EUROPE", continents.Europe);
+            var greatBritain = new Location("GREAT_BRITAIN", Continents.Europe);
+            var iceland = new Location("ICELAND", Continents.Europe);
+            var northernEurope = new Location("NORTHERN_EUROPE", Continents.Europe);
+            var scandinavia = new Location("SCANDINAVIA", Continents.Europe);
+            var southernEurope = new Location("SOUTHERN_EUROPE", Continents.Europe);
+            var ukraine = new Location("UKRAINE", Continents.Europe);
+            var westernEurope = new Location("WESTERN_EUROPE", Continents.Europe);
 
-            var congo = new Location("CONGO", continents.Africa);
-            var eastAfrica = new Location("EAST_AFRICA", continents.Africa);
-            var egypt = new Location("EGYPT", continents.Africa);
-            var madagascar = new Location("MADAGASCAR", continents.Africa);
-            var northAfrica = new Location("NORTH_AFRICA", continents.Africa);
-            var southAfrica = new Location("SOUTH_AFRICA", continents.Africa);
+            var congo = new Location("CONGO", Continents.Africa);
+            var eastAfrica = new Location("EAST_AFRICA", Continents.Africa);
+            var egypt = new Location("EGYPT", Continents.Africa);
+            var madagascar = new Location("MADAGASCAR", Continents.Africa);
+            var northAfrica = new Location("NORTH_AFRICA", Continents.Africa);
+            var southAfrica = new Location("SOUTH_AFRICA", Continents.Africa);
 
-            var afghanistan = new Location("AFGHANISTAN", continents.Asia);
-            var china = new Location("CHINA", continents.Asia);
-            var india = new Location("INDIA", continents.Asia);
-            var irkutsk = new Location("IRKUTSK", continents.Asia);
-            var japan = new Location("JAPAN", continents.Asia);
-            var kamchatka = new Location("KAMCHATKA", continents.Asia);
-            var middleEast = new Location("MIDDLE_EAST", continents.Asia);
-            var mongolia = new Location("MONGOLIA", continents.Asia);
-            var siam = new Location("SIAM", continents.Asia);
-            var siberia = new Location("SIBERIA", continents.Asia);
-            var ural = new Location("URAL", continents.Asia);
-            var yakutsk = new Location("YAKUTSK", continents.Asia);
+            var afghanistan = new Location("AFGHANISTAN", Continents.Asia);
+            var china = new Location("CHINA", Continents.Asia);
+            var india = new Location("INDIA", Continents.Asia);
+            var irkutsk = new Location("IRKUTSK", Continents.Asia);
+            var japan = new Location("JAPAN", Continents.Asia);
+            var kamchatka = new Location("KAMCHATKA", Continents.Asia);
+            var middleEast = new Location("MIDDLE_EAST", Continents.Asia);
+            var mongolia = new Location("MONGOLIA", Continents.Asia);
+            var siam = new Location("SIAM", Continents.Asia);
+            var siberia = new Location("SIBERIA", Continents.Asia);
+            var ural = new Location("URAL", Continents.Asia);
+            var yakutsk = new Location("YAKUTSK", Continents.Asia);
 
-            var easternAustralia = new Location("EASTERN_AUSTRALIA", continents.Australia);
-            var indonesia = new Location("INDONESIA", continents.Australia);
-            var newGuinea = new Location("NEW_GUINEA", continents.Australia);
-            var westernAustralia = new Location("WESTERN_AUSTRALIA", continents.Australia);
+            var easternAustralia = new Location("EASTERN_AUSTRALIA", Continents.Australia);
+            var indonesia = new Location("INDONESIA", Continents.Australia);
+            var newGuinea = new Location("NEW_GUINEA", Continents.Australia);
+            var westernAustralia = new Location("WESTERN_AUSTRALIA", Continents.Australia);
 
             alaska.AddConnectedTerritories(alberta, northwestTerritory, kamchatka);
             alberta.AddConnectedTerritories(alaska, northwestTerritory, ontario, westernUnitedStates);

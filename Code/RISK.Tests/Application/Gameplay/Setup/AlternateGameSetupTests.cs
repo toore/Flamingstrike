@@ -32,7 +32,7 @@ namespace RISK.Tests.Application.Gameplay.Setup
         public AlternateGameSetupTests()
         {
             _players = Substitute.For<IPlayers>();
-            _locations = new Locations(new Continents());
+            _locations = new Locations();
             _randomSorter = Substitute.For<IRandomSorter>();
             _worldMapFactory = Substitute.For<IWorldMapFactory>();
             _initialArmyCount = Substitute.For<IInitialArmyCount>();
