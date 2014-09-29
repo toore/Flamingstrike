@@ -5,13 +5,13 @@ using Xunit.Extensions;
 
 namespace RISK.Tests.Application.Battle
 {
-    public class CasualtyEvaluatorTests
+    public class CasualtiesCalculatorTests
     {
-        private readonly CasualtyEvaluator _casualtyEvaluator;
+        private readonly CasualtiesCalculator _casualtiesCalculator;
 
-        public CasualtyEvaluatorTests()
+        public CasualtiesCalculatorTests()
         {
-            _casualtyEvaluator = new CasualtyEvaluator();
+            _casualtiesCalculator = new CasualtiesCalculator();
         }
 
         public static IEnumerable<object[]> _attackerCasualtiesCases
@@ -33,7 +33,8 @@ namespace RISK.Tests.Application.Battle
         [PropertyData("_attackerCasualtiesCases")]
         public void CalculateAttackerCasualties(int expectedCasualties, IEnumerable<DiceValue> attacker, IEnumerable<DiceValue> defender)
         {
-            _casualtyEvaluator.GetAttackerCasualties(attacker, defender).Should().Be(expectedCasualties);
+            _casualtiesCalculator.CalculateCasualties(attacker, defender).AttackerCasualties
+                .Should().Be(expectedCasualties);
         }
 
         public static IEnumerable<object[]> _defenderCasualtiesCases
@@ -55,7 +56,8 @@ namespace RISK.Tests.Application.Battle
         [PropertyData("_defenderCasualtiesCases")]
         public void CalculateDefenderCasualties(int expectedCasualties, IEnumerable<DiceValue> attacker, IEnumerable<DiceValue> defender)
         {
-            _casualtyEvaluator.GetDefenderCasualties(attacker, defender).Should().Be(expectedCasualties);
+            _casualtiesCalculator.CalculateCasualties(attacker, defender).DefenderCasualties
+                .Should().Be(expectedCasualties);
         }
     }
 }

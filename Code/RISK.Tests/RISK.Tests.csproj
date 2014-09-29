@@ -82,7 +82,7 @@
     <Compile Include="Application\Battle\BattleCalculatorTests.cs" />
     <Compile Include="Application\Battle\DiceTests.cs" />
     <Compile Include="Application\Battle\DicesTests.cs" />
-    <Compile Include="Application\Battle\CasualtyEvaluatorTests.cs" />
+    <Compile Include="Application\Battle\CasualtiesCalculatorTests.cs" />
     <Compile Include="Application\Gameplay\GameOverEvaluaterTests.cs" />
     <Compile Include="Application\Gameplay\InitialArmyCountTests.cs" />
     <Compile Include="Application\Gameplay\Setup\SetupArmiesExtensionsTests.cs" />

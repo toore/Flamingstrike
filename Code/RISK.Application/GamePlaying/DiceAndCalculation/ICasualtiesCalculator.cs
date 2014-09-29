@@ -2,11 +2,13 @@
 
 namespace RISK.Domain.GamePlaying.DiceAndCalculation
 {
-    public class DicesResult : IDicesResult
+    public interface ICasualtiesCalculator
     {
-        public IEnumerable<DiceValue> AttackDices { get; set; }
-        public IEnumerable<DiceValue> DefendDices { get; set; }
+        Casualties CalculateCasualties(IEnumerable<DiceValue> attackDices, IEnumerable<DiceValue> defendDices);
+    }
 
+    public class Casualties
+    {
         public int AttackerCasualties { get; set; }
         public int DefenderCasualties { get; set; }
     }
