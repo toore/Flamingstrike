@@ -26,7 +26,7 @@ namespace RISK.Tests.Application.Gameplay
             var player = Substitute.For<IPlayer>();
             var worldMap = Substitute.For<IWorldMap>();
 
-            var turn = _factory.Create(player, worldMap);
+            var turn = _factory.CreateSelectTurn(player, worldMap);
 
             turn.Should().NotBeNull();
         }

@@ -2,52 +2,48 @@
 using FluentAssertions;
 using NSubstitute;
 using RISK.Domain.Entities;
-using RISK.Domain.Extensions;
 using RISK.Domain.GamePlaying;
 using Xunit;
 
 namespace RISK.Tests.Application.Gameplay
 {
-    public class TurnTests_WhenAttacking
+    public class TurnTests_WhenAttacking : TurnTestsBase
     {
-        private Turn _turn;
-        private IPlayer _currentPlayer;
-        private IPlayer _otherPlayer;
-        private IWorldMap _worldMap;
-        private IBattleCalculator _battleCalculator;
-        private ILocation _location;
-        private ITerritory _territory;
-        private ILocation _otherLocation;
-        private ITerritory _otherTerritory;
-        private ICardFactory _cardFactory;
+        private readonly SelectTurn _sut;
+        private readonly IPlayer _player;
+        private readonly IBattleCalculator _battleCalculator;
+        private readonly ILocation _locationOwnedByPlayer;
+        private readonly ITerritory _territoryOwnedByPlayer;
+        private readonly ILocation _otherLocation;
+        private readonly ITerritory _otherTerritory;
 
         public TurnTests_WhenAttacking()
         {
-            _currentPlayer = Substitute.For<IPlayer>();
-            _worldMap = Substitute.For<IWorldMap>();
+            _player = Substitute.For<IPlayer>();
+            var worldMap = Substitute.For<IWorldMap>();
             _battleCalculator = Substitute.For<IBattleCalculator>();
-            _cardFactory = Substitute.For<ICardFactory>();
+            var cardFactory = Substitute.For<ICardFactory>();
 
-            _turn = new Turn(_currentPlayer, _worldMap, _battleCalculator, _cardFactory);
+            _sut = new SelectTurn(_player, worldMap, _battleCalculator, cardFactory);
 
-            _location = Substitute.For<ILocation>();
-            _territory = GenerateTerritoryStub(_location, _currentPlayer);
+            _locationOwnedByPlayer = Substitute.For<ILocation>();
+            _territoryOwnedByPlayer = StubTerritory(worldMap, _locationOwnedByPlayer, _player);
 
             _otherLocation = Substitute.For<ILocation>();
-            _otherPlayer = Substitute.For<IPlayer>();
-            _otherTerritory = GenerateTerritoryStub(_otherLocation, _otherPlayer);
+            var otherPlayer = Substitute.For<IPlayer>();
+            _otherTerritory = StubTerritory(worldMap, _otherLocation, otherPlayer);
         }
 
         [Fact]
-        public void Cant_attack()
+        public void Cant_attack_when_no_location_is_selected()
         {
-            _turn.CanAttack(null).Should().BeFalse("no territory has been selected");
+            _sut.CanAttack(null).Should().BeFalse("no territory has been selected");
         }
 
         [Fact]
-        public void Cant_attack_when_no_territory_is_selected()
+        public void Attack_does_not_throw_when_no_location_is_selected()
         {
-            Action attack = () => _turn.Attack(null);
+            Action attack = () => _sut.Attack(null);
 
             attack.ShouldNotThrow();
         }
@@ -63,34 +59,34 @@ namespace RISK.Tests.Application.Gameplay
         [Fact]
         public void Cant_attack_when_having_only_one_army()
         {
-            LocationIsConnectedToOtherLocation();
-            _territory.Armies = 1;
-            _turn.Select(_location);
+            _locationOwnedByPlayer.IsConnectedTo(_otherLocation);
+            _territoryOwnedByPlayer.Armies = 1;
+            _sut.Select(_locationOwnedByPlayer);
 
-            _turn.CanAttack(_otherLocation).Should().BeFalse("there is only one army in location");
+            _sut.CanAttack(_otherLocation).Should().BeFalse("there is only one army in location");
         }
 
         [Fact]
         public void Can_attack_when_territories_are_connected()
         {
-            LocationIsConnectedToOtherLocation();
-            _territory.Armies = 2;
+            _locationOwnedByPlayer.IsConnectedTo(_otherLocation);
+            _territoryOwnedByPlayer.Armies = 2;
 
             SelectAndAttack();
 
-            _battleCalculator.Received().Attack(_territory, _otherTerritory);
+            _battleCalculator.Received().Attack(_territoryOwnedByPlayer, _otherTerritory);
         }
 
         [Fact]
         public void When_attack_succeeds_selected_territory_is_updated_to_occupied()
         {
-            LocationIsConnectedToOtherLocation();
-            _territory.Armies = 2;
-            AttackSucceeds();
+            _locationOwnedByPlayer.IsConnectedTo(_otherLocation);
+            _territoryOwnedByPlayer.Armies = 2;
+            _battleCalculator.AttackerAlwaysWins(_territoryOwnedByPlayer, _otherTerritory);
 
             SelectAndAttack();
 
-            _turn.SelectedTerritory.Should().Be(_otherTerritory, "attack suceeded so army should be moved into territory");
+            _sut.SelectedTerritory.Should().Be(_otherTerritory, "attack suceeded so army should be moved into territory");
         }
 
         [Fact]
@@ -99,62 +95,54 @@ namespace RISK.Tests.Application.Gameplay
             SelectAndAttack();
             EndTurn();
 
-            _currentPlayer.DidNotReceive().AddCard(null);
+            _player.DidNotReceive().AddCard(null);
         }
 
         [Fact]
         public void Player_should_receive_a_card_when_attack_succeeds_and_turn_ends()
         {
-            LocationIsConnectedToOtherLocation();
-            _territory.Armies = 2;
-            AttackSucceeds();
+            _locationOwnedByPlayer.IsConnectedTo(_otherLocation);
+            _territoryOwnedByPlayer.Armies = 2;
+            _battleCalculator.AttackerAlwaysWins(_territoryOwnedByPlayer, _otherTerritory);
 
             SelectAndAttack();
             EndTurn();
 
-            _currentPlayer.Received().AddCard(null);
-        }
-
-        private void AttackSucceeds()
-        {
-            _battleCalculator
-                .When(x => x.Attack(_territory, _otherTerritory))
-                .Do(x => _otherTerritory.Occupant = _currentPlayer);
+            _player.Received().AddCard(null);
         }
 
         [Fact]
         public void Player_should_not_receive_card_when_turn_ends()
         {
-            _turn.EndTurn();
+            _sut.EndTurn();
 
-            _currentPlayer.DidNotReceive().AddCard(null);
-        }
-
-        private void LocationIsConnectedToOtherLocation()
-        {
-            _location.Connections.Returns(_otherLocation.AsList());
+            _player.DidNotReceive().AddCard(null);
         }
 
         private void SelectAndAttack()
         {
-            _turn.Select(_location);
-            _turn.Attack(_otherLocation);
-        }
-
-        private ITerritory GenerateTerritoryStub(ILocation location, IPlayer owner)
-        {
-            var territory = Substitute.For<ITerritory>();
-            territory.Location.Returns(location);
-            territory.Occupant = owner;
-
-            _worldMap.GetTerritory(location).Returns(territory);
-
-            return territory;
+            _sut.Select(_locationOwnedByPlayer);
+            _sut.Attack(_otherLocation);
         }
 
         private void EndTurn()
         {
-            _turn.EndTurn();
+            _sut.EndTurn();
+        }
+    }
+
+    static class TurnTestsExtensions
+    {
+        public static void IsConnectedTo(this ILocation from, params ILocation[] to)
+        {
+            from.Connections.Returns(to);
+        }
+
+        public static void AttackerAlwaysWins(this IBattleCalculator battleCalculator, ITerritory from, ITerritory to)
+        {
+            battleCalculator
+                .When(x => x.Attack(from, to))
+                .Do(x => to.Occupant = from.Occupant);
         }
     }
 }

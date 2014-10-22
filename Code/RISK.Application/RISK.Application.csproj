@@ -97,7 +97,7 @@
     <Compile Include="GamePlaying\IGame.cs" />
     <Compile Include="GamePlaying\ITurn.cs" />
     <Compile Include="Players.cs" />
-    <Compile Include="GamePlaying\Turn.cs" />
+    <Compile Include="GamePlaying\SelectTurn.cs" />
     <Compile Include="GamePlaying\WorldMap.cs" />
     <Compile Include="GamePlaying\Game.cs" />
     <Compile Include="GamePlaying\IWorldMap.cs" />

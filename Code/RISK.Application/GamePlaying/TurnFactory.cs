@@ -13,9 +13,9 @@ namespace RISK.Domain.GamePlaying
             _cardFactory = cardFactory;
         }
 
-        public ITurn Create(IPlayer player, IWorldMap worldMap)
+        public ITurn CreateSelectTurn(IPlayer player, IWorldMap worldMap)
         {
-            return new Turn(player, worldMap, _battleCalculator, _cardFactory);
+            return new SelectTurn(player, worldMap, _battleCalculator, _cardFactory);
         }
     }
 }

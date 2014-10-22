@@ -30,7 +30,7 @@ namespace RISK.Domain.GamePlaying
         {
             _currentPlayer = _players.GetNextOrFirst(_currentPlayer);
 
-            return _turnFactory.Create(_currentPlayer, _worldMap);
+            return _turnFactory.CreateSelectTurn(_currentPlayer, _worldMap);
         }
     }
 }

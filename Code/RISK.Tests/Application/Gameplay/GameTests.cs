@@ -33,8 +33,8 @@ namespace RISK.Tests.Application.Gameplay
             _turnAfterNextTurn = Substitute.For<ITurn>();
             _player1 = Substitute.For<IPlayer>();
             _player2 = Substitute.For<IPlayer>();
-            _turnFactory.Create(_player1, _worldMap).Returns(_nextTurn);
-            _turnFactory.Create(_player2, _worldMap).Returns(_turnAfterNextTurn);
+            _turnFactory.CreateSelectTurn(_player1, _worldMap).Returns(_nextTurn);
+            _turnFactory.CreateSelectTurn(_player2, _worldMap).Returns(_turnAfterNextTurn);
 
             _players.GetAll().Returns(new[] { _player1, _player2 });
 
