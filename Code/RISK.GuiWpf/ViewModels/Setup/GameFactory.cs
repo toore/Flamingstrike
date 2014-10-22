@@ -11,20 +11,20 @@ namespace GuiWpf.ViewModels.Setup
 
     public class GameFactory : IGameFactory
     {
-        private readonly ITurnFactory _turnFactory;
+        private readonly ITurnStateFactory _turnStateFactory;
         private readonly IPlayers _players;
         private readonly IAlternateGameSetup _alternateGameSetup;
 
-        public GameFactory(ITurnFactory turnFactory, IPlayers players, IAlternateGameSetup alternateGameSetup)
+        public GameFactory(ITurnStateFactory turnStateFactory, IPlayers players, IAlternateGameSetup alternateGameSetup)
         {
-            _turnFactory = turnFactory;
+            _turnStateFactory = turnStateFactory;
             _players = players;
             _alternateGameSetup = alternateGameSetup;
         }
 
         public IGame Create(IGameInitializerLocationSelector gameInitializerLocationSelector)
         {
-            return new Game(_turnFactory, _players, _alternateGameSetup, gameInitializerLocationSelector);
+            return new Game(_turnStateFactory, _players, _alternateGameSetup, gameInitializerLocationSelector);
         }
     }
 }

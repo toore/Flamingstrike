@@ -9,7 +9,7 @@ namespace RISK.Tests.Application.Gameplay
 {
     public class TurnTests_WhenAttacking : TurnTestsBase
     {
-        private readonly SelectTurn _sut;
+        private readonly TurnSelectState _sut;
         private readonly IPlayer _player;
         private readonly IBattleCalculator _battleCalculator;
         private readonly ILocation _locationOwnedByPlayer;
@@ -24,7 +24,7 @@ namespace RISK.Tests.Application.Gameplay
             _battleCalculator = Substitute.For<IBattleCalculator>();
             var cardFactory = Substitute.For<ICardFactory>();
 
-            _sut = new SelectTurn(_player, worldMap, _battleCalculator, cardFactory);
+            _sut = new TurnSelectState(_player, worldMap, _battleCalculator, cardFactory);
 
             _locationOwnedByPlayer = Substitute.For<ILocation>();
             _territoryOwnedByPlayer = StubTerritory(worldMap, _locationOwnedByPlayer, _player);

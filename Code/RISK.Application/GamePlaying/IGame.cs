@@ -3,6 +3,6 @@
     public interface IGame
     {
         IWorldMap GetWorldMap();
-        ITurn GetNextTurn();
+        ITurnState GetNextTurn();
     }
 }

@@ -82,7 +82,7 @@
     <Compile Include="GamePlaying\Setup\InitialArmyCount.cs" />
     <Compile Include="GamePlaying\IRandomSorter.cs" />
     <Compile Include="GamePlaying\IRandomWrapper.cs" />
-    <Compile Include="GamePlaying\ITurnFactory.cs" />
+    <Compile Include="GamePlaying\ITurnStateFactory.cs" />
     <Compile Include="GamePlaying\IWorldMapFactory.cs" />
     <Compile Include="GamePlaying\Setup\ILocationSelectorParameter.cs" />
     <Compile Include="GamePlaying\Setup\PlayerDuringGameSetup.cs" />
@@ -90,14 +90,14 @@
     <Compile Include="GamePlaying\RandomWrapper.cs" />
     <Compile Include="GamePlaying\Setup\SetupArmiesExtensions.cs" />
     <Compile Include="GamePlaying\Setup\LocationSelectorParameter.cs" />
-    <Compile Include="GamePlaying\TurnFactory.cs" />
+    <Compile Include="GamePlaying\TurnStateFactory.cs" />
     <Compile Include="GamePlaying\WorldMapFactory.cs" />
     <Compile Include="Locations.cs" />
     <Compile Include="Continents.cs" />
     <Compile Include="GamePlaying\IGame.cs" />
-    <Compile Include="GamePlaying\ITurn.cs" />
+    <Compile Include="GamePlaying\ITurnState.cs" />
     <Compile Include="Players.cs" />
-    <Compile Include="GamePlaying\SelectTurn.cs" />
+    <Compile Include="GamePlaying\TurnSelectState.cs" />
     <Compile Include="GamePlaying\WorldMap.cs" />
     <Compile Include="GamePlaying\Game.cs" />
     <Compile Include="GamePlaying\IWorldMap.cs" />

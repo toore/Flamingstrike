@@ -6,21 +6,21 @@ using Xunit;
 
 namespace RISK.Tests.Application.Gameplay
 {
-    public class SelectTurnTests : TurnTestsBase
+    public class TurnSelectStateTests : TurnTestsBase
     {
-        private readonly ITurn _sut;
+        private readonly ITurnState _sut;
         private readonly ILocation _locationOwnedByPlayer;
         private readonly ITerritory _territoryOwnedByPlayer;
         private readonly ILocation _locationNotOwnedByPlayer;
 
-        public SelectTurnTests()
+        public TurnSelectStateTests()
         {
             var player = Substitute.For<IPlayer>();
             var worldMap = Substitute.For<IWorldMap>();
             var battleCalculator = Substitute.For<IBattleCalculator>();
             var cardFactory = Substitute.For<ICardFactory>();
 
-            _sut = new TurnFactory(battleCalculator, cardFactory).CreateSelectTurn(player, worldMap);
+            _sut = new TurnStateFactory(battleCalculator, cardFactory).CreateSelectState(player, worldMap);
 
             _locationOwnedByPlayer = Substitute.For<ILocation>();
             _territoryOwnedByPlayer = StubTerritory(worldMap, _locationOwnedByPlayer, player);

@@ -4,14 +4,14 @@ using RISK.Domain.Entities;
 
 namespace RISK.Domain.GamePlaying
 {
-    public class SelectTurn : ITurn
+    public class TurnSelectState : ITurnState
     {
         private readonly IWorldMap _worldMap;
         private readonly IBattleCalculator _battleCalculator;
         private readonly ICardFactory _cardFactory;
         private bool _playerShouldReceiveCardWhenTurnEnds;
 
-        public SelectTurn(IPlayer player, IWorldMap worldMap, IBattleCalculator battleCalculator, ICardFactory cardFactory)
+        public TurnSelectState(IPlayer player, IWorldMap worldMap, IBattleCalculator battleCalculator, ICardFactory cardFactory)
         {
             Player = player;
             _worldMap = worldMap;

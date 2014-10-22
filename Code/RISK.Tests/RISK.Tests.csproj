@@ -90,7 +90,7 @@
     <Compile Include="Application\Gameplay\TerritoryTests.cs" />
     <Compile Include="Application\Gameplay\TurnTestsBase.cs" />
     <Compile Include="Application\Gameplay\TurnTests_WhenAttacking.cs" />
-    <Compile Include="Application\Gameplay\SelectTurnTests.cs" />
+    <Compile Include="Application\Gameplay\TurnSelectStateTests.cs" />
     <Compile Include="Application\Specifications\SpecBase.cs" />
     <Compile Include="Application\Specifications\GamePlaySpec.cs" />
     <Compile Include="Application\Specifications\GameSetupSpec.cs" />
@@ -117,7 +117,6 @@
     <Compile Include="Application\Gameplay\LocationsTests.cs" />
     <Compile Include="Application\Gameplay\RandomSorterTests.cs" />
     <Compile Include="GuiWpf\TerritoryViewModelFactoryTests.cs" />
-    <Compile Include="Application\Gameplay\TurnFactoryTests.cs" />
     <Compile Include="Application\Gameplay\WorldMapTests.cs" />
     <Compile Include="GuiWpf\Infrastructure\HandleInterceptorTests.cs" />
     <Compile Include="GuiWpf\Infrastructure\TypeExtensionsTests.cs" />

@@ -9,13 +9,13 @@ namespace RISK.Domain.GamePlaying
     public class Game : IGame
     {
         private readonly IWorldMap _worldMap;
-        private readonly ITurnFactory _turnFactory;
+        private readonly ITurnStateFactory _turnStateFactory;
         private readonly IList<IPlayer> _players;
         private IPlayer _currentPlayer;
 
-        public Game(ITurnFactory turnFactory, IPlayers players, IAlternateGameSetup alternateGameSetup, IGameInitializerLocationSelector gameInitializerLocationSelector)
+        public Game(ITurnStateFactory turnStateFactory, IPlayers players, IAlternateGameSetup alternateGameSetup, IGameInitializerLocationSelector gameInitializerLocationSelector)
         {
-            _turnFactory = turnFactory;
+            _turnStateFactory = turnStateFactory;
             _players = players.GetAll().ToList();
 
             _worldMap = alternateGameSetup.Initialize(gameInitializerLocationSelector);
@@ -26,11 +26,11 @@ namespace RISK.Domain.GamePlaying
             return _worldMap;
         }
 
-        public ITurn GetNextTurn()
+        public ITurnState GetNextTurn()
         {
             _currentPlayer = _players.GetNextOrFirst(_currentPlayer);
 
-            return _turnFactory.CreateSelectTurn(_currentPlayer, _worldMap);
+            return _turnStateFactory.CreateSelectState(_currentPlayer, _worldMap);
         }
     }
 }

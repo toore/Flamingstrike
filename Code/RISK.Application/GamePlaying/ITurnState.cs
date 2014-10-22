@@ -2,7 +2,7 @@
 
 namespace RISK.Domain.GamePlaying
 {
-    public interface ITurn
+    public interface ITurnState
     {
         IPlayer Player { get; }
         ITerritory SelectedTerritory { get; }

@@ -12,9 +12,9 @@ namespace RISK.Tests.Application.Gameplay
     {
         private Game _game;
         private IWorldMap _worldMap;
-        private ITurnFactory _turnFactory;
-        private ITurn _nextTurn;
-        private ITurn _turnAfterNextTurn;
+        private ITurnStateFactory _turnStateFactory;
+        private ITurnState _nextTurnState;
+        private ITurnState _turnStateAfterNextTurnState;
         private IPlayers _players;
         private IPlayer _player1;
         private IPlayer _player2;
@@ -24,23 +24,23 @@ namespace RISK.Tests.Application.Gameplay
         public GameTests()
         {
             _worldMap = Substitute.For<IWorldMap>();
-            _turnFactory = Substitute.For<ITurnFactory>();
+            _turnStateFactory = Substitute.For<ITurnStateFactory>();
             _players = Substitute.For<IPlayers>();
             _alternateGameSetup = Substitute.For<IAlternateGameSetup>();
             _gameInitializerLocationSelector = Substitute.For<IGameInitializerLocationSelector>();
 
-            _nextTurn = Substitute.For<ITurn>();
-            _turnAfterNextTurn = Substitute.For<ITurn>();
+            _nextTurnState = Substitute.For<ITurnState>();
+            _turnStateAfterNextTurnState = Substitute.For<ITurnState>();
             _player1 = Substitute.For<IPlayer>();
             _player2 = Substitute.For<IPlayer>();
-            _turnFactory.CreateSelectTurn(_player1, _worldMap).Returns(_nextTurn);
-            _turnFactory.CreateSelectTurn(_player2, _worldMap).Returns(_turnAfterNextTurn);
+            _turnStateFactory.CreateSelectState(_player1, _worldMap).Returns(_nextTurnState);
+            _turnStateFactory.CreateSelectState(_player2, _worldMap).Returns(_turnStateAfterNextTurnState);
 
             _players.GetAll().Returns(new[] { _player1, _player2 });
 
             _alternateGameSetup.Initialize(_gameInitializerLocationSelector).Returns(_worldMap);
 
-            _game = new Game(_turnFactory, _players, _alternateGameSetup, _gameInitializerLocationSelector);
+            _game = new Game(_turnStateFactory, _players, _alternateGameSetup, _gameInitializerLocationSelector);
         }
 
         [Fact]
@@ -54,7 +54,7 @@ namespace RISK.Tests.Application.Gameplay
         {
             var actual = _game.GetNextTurn();
 
-            actual.Should().Be(_nextTurn);
+            actual.Should().Be(_nextTurnState);
         }
 
         [Fact]
@@ -63,7 +63,7 @@ namespace RISK.Tests.Application.Gameplay
             _game.GetNextTurn();
             var actual = _game.GetNextTurn();
 
-            actual.Should().Be(_turnAfterNextTurn);
+            actual.Should().Be(_turnStateAfterNextTurnState);
         }
     }
 }
