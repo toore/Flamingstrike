@@ -90,6 +90,8 @@
     <Compile Include="GamePlaying\RandomWrapper.cs" />
     <Compile Include="GamePlaying\Setup\SetupArmiesExtensions.cs" />
     <Compile Include="GamePlaying\Setup\LocationSelectorParameter.cs" />
+    <Compile Include="GamePlaying\StateController.cs" />
+    <Compile Include="GamePlaying\TurnAttackState.cs" />
     <Compile Include="GamePlaying\TurnStateFactory.cs" />
     <Compile Include="GamePlaying\WorldMapFactory.cs" />
     <Compile Include="Locations.cs" />

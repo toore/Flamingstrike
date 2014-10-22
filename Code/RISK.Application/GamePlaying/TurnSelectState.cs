@@ -1,25 +1,29 @@
 ﻿using System;
-using System.Linq;
 using RISK.Domain.Entities;
 
 namespace RISK.Domain.GamePlaying
 {
     public class TurnSelectState : ITurnState
     {
-        private readonly IWorldMap _worldMap;
-        private readonly IBattleCalculator _battleCalculator;
+        private readonly StateController _stateController;
+        private readonly TurnStateFactory _turnStateFactory;
         private readonly ICardFactory _cardFactory;
-        private bool _playerShouldReceiveCardWhenTurnEnds;
+        private readonly IWorldMap _worldMap;
 
-        public TurnSelectState(IPlayer player, IWorldMap worldMap, IBattleCalculator battleCalculator, ICardFactory cardFactory)
+        public TurnSelectState(StateController stateController, TurnStateFactory turnStateFactory, ICardFactory cardFactory, IPlayer player, IWorldMap worldMap)
         {
             Player = player;
-            _worldMap = worldMap;
-            _battleCalculator = battleCalculator;
+            _stateController = stateController;
+            _turnStateFactory = turnStateFactory;
             _cardFactory = cardFactory;
+            _worldMap = worldMap;
         }
 
-        public ITerritory SelectedTerritory { get; private set; }
+        public ITerritory SelectedTerritory
+        {
+            get { return null; }
+        }
+
         public IPlayer Player { get; private set; }
 
         public bool IsTerritorySelected
@@ -29,33 +33,7 @@ namespace RISK.Domain.GamePlaying
 
         public bool CanSelect(ILocation location)
         {
-            return GetTerritory(location).Occupant == Player;
-        }
-
-        public bool CanAttack(ILocation location)
-        {
-            if (!IsTerritorySelected)
-            {
-                return false;
-            }
-
-            var territoryToAttack = GetTerritory(location);
-            var isTerritoryOccupiedByEnemy = territoryToAttack.Occupant != Player;
-            var isConnected = SelectedTerritory.Location.Connections.Contains(territoryToAttack.Location);
-            var hasArmiesToAttackWith = SelectedTerritory.HasArmiesAvailableForAttack();
-
-            var canAttack = isConnected
-                            &&
-                            isTerritoryOccupiedByEnemy
-                            &&
-                            hasArmiesToAttackWith;
-
-            return canAttack;
-        }
-
-        public bool CanFortify(ILocation location)
-        {
-            throw new NotImplementedException();
+            return _worldMap.GetTerritory(location).Occupant == Player;
         }
 
         public void Select(ILocation location)
@@ -65,28 +43,28 @@ namespace RISK.Domain.GamePlaying
                 return;
             }
 
-            var territoryToSelect = GetTerritory(location);
-            if (territoryToSelect == SelectedTerritory)
-            {
-                SelectedTerritory = null;
-            }
-            else
-            {
-                SelectedTerritory = territoryToSelect;
-            }
+            var territoryToSelect = _worldMap.GetTerritory(location);
+            _stateController.CurrentState = _turnStateFactory.CreateAttackState(Player, _worldMap, territoryToSelect);
+        }
+
+        public bool CanAttack(ILocation location)
+        {
+            return false;
         }
 
         public void Attack(ILocation location)
         {
-            var canAttack = CanAttack(location);
+            throw new NotSupportedException();
+        }
 
-            if (!canAttack)
-            {
-                return;
-            }
+        public bool IsFortificationAllowedInTurn()
+        {
+            return true;
+        }
 
-            var territory = GetTerritory(location);
-            Attack(territory);
+        public bool CanFortify(ILocation location)
+        {
+            throw new NotSupportedException();
         }
 
         public void Fortify(ILocation location, int armies)
@@ -96,31 +74,10 @@ namespace RISK.Domain.GamePlaying
 
         public void EndTurn()
         {
-            if (_playerShouldReceiveCardWhenTurnEnds)
+            if (_stateController.PlayerShouldReceiveCardWhenTurnEnds)
             {
                 Player.AddCard(_cardFactory.Create());
             }
-        }
-
-        private void Attack(ITerritory territory)
-        {
-            _battleCalculator.Attack(SelectedTerritory, territory);
-
-            if (HasPlayerOccupiedTerritory(territory))
-            {
-                SelectedTerritory = territory;
-                _playerShouldReceiveCardWhenTurnEnds = true;
-            }
-        }
-
-        private bool HasPlayerOccupiedTerritory(ITerritory territoryToAttack)
-        {
-            return territoryToAttack.Occupant == Player;
-        }
-
-        private ITerritory GetTerritory(ILocation location)
-        {
-            return _worldMap.GetTerritory(location);
         }
     }
 }

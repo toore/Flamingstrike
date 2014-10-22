@@ -88,8 +88,8 @@
     <Compile Include="Application\Gameplay\Setup\SetupArmiesExtensionsTests.cs" />
     <Compile Include="Application\Gameplay\TerritoryExtensionsTests.cs" />
     <Compile Include="Application\Gameplay\TerritoryTests.cs" />
-    <Compile Include="Application\Gameplay\TurnTestsBase.cs" />
-    <Compile Include="Application\Gameplay\TurnTests_WhenAttacking.cs" />
+    <Compile Include="Application\Gameplay\TurnStateTestsBase.cs" />
+    <Compile Include="Application\Gameplay\TurnAttackStateTests.cs" />
     <Compile Include="Application\Gameplay\TurnSelectStateTests.cs" />
     <Compile Include="Application\Specifications\SpecBase.cs" />
     <Compile Include="Application\Specifications\GamePlaySpec.cs" />

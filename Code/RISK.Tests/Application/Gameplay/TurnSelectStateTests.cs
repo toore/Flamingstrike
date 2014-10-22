@@ -1,4 +1,5 @@
-﻿using FluentAssertions;
+﻿using System;
+using FluentAssertions;
 using NSubstitute;
 using RISK.Domain.Entities;
 using RISK.Domain.GamePlaying;
@@ -6,66 +7,87 @@ using Xunit;
 
 namespace RISK.Tests.Application.Gameplay
 {
-    public class TurnSelectStateTests : TurnTestsBase
+    public class TurnSelectStateTests : TurnStateTestsBase
     {
-        private readonly ITurnState _sut;
         private readonly ILocation _locationOwnedByPlayer;
         private readonly ITerritory _territoryOwnedByPlayer;
         private readonly ILocation _locationNotOwnedByPlayer;
 
         public TurnSelectStateTests()
         {
-            var player = Substitute.For<IPlayer>();
-            var worldMap = Substitute.For<IWorldMap>();
-            var battleCalculator = Substitute.For<IBattleCalculator>();
-            var cardFactory = Substitute.For<ICardFactory>();
-
-            _sut = new TurnStateFactory(battleCalculator, cardFactory).CreateSelectState(player, worldMap);
+            Sut = new TurnStateFactory(StateController, BattleCalculator, CardFactory)
+                .CreateSelectState(Player, WorldMap);
 
             _locationOwnedByPlayer = Substitute.For<ILocation>();
-            _territoryOwnedByPlayer = StubTerritory(worldMap, _locationOwnedByPlayer, player);
-
+            _territoryOwnedByPlayer = WorldMap.HasTerritory(_locationOwnedByPlayer, Player);
             _locationNotOwnedByPlayer = Substitute.For<ILocation>();
         }
 
         [Fact]
-        public void Can_select_location()
+        public void Can_select_location_owned_by_player()
         {
-            _sut.CanSelect(_locationOwnedByPlayer).Should().BeTrue();
+            Sut.CanSelect(_locationOwnedByPlayer).Should().BeTrue();
         }
 
         [Fact]
-        public void Can_not_select_location()
+        public void Can_not_select_location_not_owned_by_player()
         {
-            _sut.CanSelect(_locationNotOwnedByPlayer).Should().BeFalse();
+            Sut.CanSelect(_locationNotOwnedByPlayer).Should().BeFalse();
         }
 
         [Fact]
-        public void SelectedTerritory_should_be_territory()
+        public void Select_enters_attack_state()
         {
-            _sut.Select(_locationOwnedByPlayer);
+            Sut.Select(_locationOwnedByPlayer);
 
-            _sut.IsTerritorySelected.Should().BeTrue();
-            _sut.SelectedTerritory.Should().Be(_territoryOwnedByPlayer);
+            StateController.CurrentState.ShouldBeEquivalentTo(
+                new TurnStateStub
+                {
+                    IsTerritorySelected = true,
+                    SelectedTerritory = _territoryOwnedByPlayer,
+                    Player = Player
+                });
         }
 
         [Fact]
-        public void No_territory_should_be_selected()
+        public void Territory_is_not_selected_when_not_owned_by_player()
         {
-            _sut.Select(_locationNotOwnedByPlayer);
+            var currentState = Substitute.For<ITurnState>();
+            StateController.CurrentState = currentState;
 
-            _sut.IsTerritorySelected.Should().BeFalse();
-            _sut.SelectedTerritory.Should().BeNull();
+            Sut.Select(_locationNotOwnedByPlayer);
+
+            StateController.CurrentState.Should().Be(currentState);
+            Sut.IsTerritorySelected.Should().BeFalse();
+            Sut.SelectedTerritory.Should().BeNull();
         }
 
         [Fact]
-        public void Selecting_already_selected_deselects()
+        public void Can_not_attack()
         {
-            _sut.Select(_locationOwnedByPlayer);
-            _sut.Select(_locationOwnedByPlayer);
+            Sut.CanAttack(null).Should().BeFalse();
+        }
 
-            _sut.IsTerritorySelected.Should().BeFalse();
-            _sut.SelectedTerritory.Should().BeNull();
+        [Fact]
+        public void Attack_is_not_supported()
+        {
+            Action act = () => Sut.Attack(Substitute.For<ILocation>());
+
+            act.ShouldThrow<NotSupportedException>();
+        }
+
+        [Fact]
+        public void Fortification_is_allowed()
+        {
+            Sut.IsFortificationAllowedInTurn().Should().BeTrue();
+        }
+
+        [Fact]
+        public void Can_fortify_is_not_supported()
+        {
+            Action act = () => Sut.CanFortify(null);
+
+            act.ShouldThrow<NotSupportedException>();
         }
     }
 }
