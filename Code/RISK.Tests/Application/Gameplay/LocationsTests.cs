@@ -36,68 +36,68 @@ namespace RISK.Tests.Application.Gameplay
         }
 
         [Fact]
-        public void Alaskas_connections_are_alberta_and_northwest_territory_and_kamchatka()
+        public void Alaskas_borders_alberta_and_northwest_territory_and_kamchatka()
         {
-            Alaska.Connections.Should().BeEquivalentTo(Alberta, Northwest, Kamchatka);
+            Alaska.Borders.Should().BeEquivalentTo(Alberta, Northwest, Kamchatka);
         }
 
         [Fact]
-        public void Alberta_is_in_north_america_and_connected_to_alaska_and_northwest_territory_and_ontario_and_western_united_states()
+        public void Alberta_is_in_north_america_has_border_to_alaska_and_northwest_territory_and_ontario_and_western_united_states()
         {
             Alberta.Continent.Should().Be(Continents.NorthAmerica);
-            Alberta.Connections.Should().BeEquivalentTo(Alaska, Northwest, Ontario, WesternUnitedStates);
+            Alberta.Borders.Should().BeEquivalentTo(Alaska, Northwest, Ontario, WesternUnitedStates);
         }
 
         [Fact]
-        public void All_have_correct_connections()
+        public void All_have_correct_borders()
         {
-            AssertConnections(Alaska, Alberta, Northwest, Kamchatka);
-            AssertConnections(Alberta, Alaska, Northwest, Ontario, WesternUnitedStates);
-            AssertConnections(CentralAmerica, EasternUnitedStates, WesternUnitedStates, Venezuela);
-            AssertConnections(EasternUnitedStates, CentralAmerica, Ontario, Quebec, WesternUnitedStates);
-            AssertConnections(Greenland, Northwest, Ontario, Quebec, Iceland);
-            AssertConnections(Northwest, Alaska, Alberta, Greenland, Ontario);
-            AssertConnections(Ontario, Alberta, EasternUnitedStates, Greenland, Northwest, Quebec, WesternUnitedStates);
-            AssertConnections(Quebec, EasternUnitedStates, Greenland, Ontario);
-            AssertConnections(WesternUnitedStates, Alberta, CentralAmerica, EasternUnitedStates, Ontario);
+            AssertBorders(Alaska, Alberta, Northwest, Kamchatka);
+            AssertBorders(Alberta, Alaska, Northwest, Ontario, WesternUnitedStates);
+            AssertBorders(CentralAmerica, EasternUnitedStates, WesternUnitedStates, Venezuela);
+            AssertBorders(EasternUnitedStates, CentralAmerica, Ontario, Quebec, WesternUnitedStates);
+            AssertBorders(Greenland, Northwest, Ontario, Quebec, Iceland);
+            AssertBorders(Northwest, Alaska, Alberta, Greenland, Ontario);
+            AssertBorders(Ontario, Alberta, EasternUnitedStates, Greenland, Northwest, Quebec, WesternUnitedStates);
+            AssertBorders(Quebec, EasternUnitedStates, Greenland, Ontario);
+            AssertBorders(WesternUnitedStates, Alberta, CentralAmerica, EasternUnitedStates, Ontario);
 
-            AssertConnections(Argentina, Brazil, Peru);
-            AssertConnections(Brazil, Argentina, Peru, Venezuela, NorthAfrica);
-            AssertConnections(Peru, Argentina, Brazil, Venezuela);
-            AssertConnections(Venezuela, Brazil, Peru, CentralAmerica);
+            AssertBorders(Argentina, Brazil, Peru);
+            AssertBorders(Brazil, Argentina, Peru, Venezuela, NorthAfrica);
+            AssertBorders(Peru, Argentina, Brazil, Venezuela);
+            AssertBorders(Venezuela, Brazil, Peru, CentralAmerica);
 
-            AssertConnections(GreatBritain, Iceland, NorthernEurope, Scandinavia, WesternEurope);
-            AssertConnections(Iceland, GreatBritain, Scandinavia, Greenland);
-            AssertConnections(NorthernEurope, GreatBritain, Scandinavia, SouthernEurope, Ukraine, WesternEurope);
-            AssertConnections(Scandinavia, GreatBritain, Iceland, NorthernEurope, Ukraine);
-            AssertConnections(SouthernEurope, NorthernEurope, Ukraine, WesternEurope, Egypt, NorthAfrica, MiddleEast);
-            AssertConnections(Ukraine, NorthernEurope, Scandinavia, SouthernEurope, Afghanistan, MiddleEast, Ural);
-            AssertConnections(WesternEurope, GreatBritain, NorthernEurope, SouthernEurope, NorthAfrica);
+            AssertBorders(GreatBritain, Iceland, NorthernEurope, Scandinavia, WesternEurope);
+            AssertBorders(Iceland, GreatBritain, Scandinavia, Greenland);
+            AssertBorders(NorthernEurope, GreatBritain, Scandinavia, SouthernEurope, Ukraine, WesternEurope);
+            AssertBorders(Scandinavia, GreatBritain, Iceland, NorthernEurope, Ukraine);
+            AssertBorders(SouthernEurope, NorthernEurope, Ukraine, WesternEurope, Egypt, NorthAfrica, MiddleEast);
+            AssertBorders(Ukraine, NorthernEurope, Scandinavia, SouthernEurope, Afghanistan, MiddleEast, Ural);
+            AssertBorders(WesternEurope, GreatBritain, NorthernEurope, SouthernEurope, NorthAfrica);
 
-            AssertConnections(Congo, EastAfrica, NorthAfrica, SouthAfrica);
-            AssertConnections(EastAfrica, Congo, Egypt, Madagascar, NorthAfrica, SouthAfrica, MiddleEast);
-            AssertConnections(Egypt, EastAfrica, NorthAfrica, SouthernEurope, MiddleEast);
-            AssertConnections(Madagascar, EastAfrica, SouthAfrica);
-            AssertConnections(NorthAfrica, Congo, EastAfrica, Egypt, Brazil, SouthernEurope, WesternEurope);
-            AssertConnections(SouthAfrica, Congo, EastAfrica, Madagascar);
+            AssertBorders(Congo, EastAfrica, NorthAfrica, SouthAfrica);
+            AssertBorders(EastAfrica, Congo, Egypt, Madagascar, NorthAfrica, SouthAfrica, MiddleEast);
+            AssertBorders(Egypt, EastAfrica, NorthAfrica, SouthernEurope, MiddleEast);
+            AssertBorders(Madagascar, EastAfrica, SouthAfrica);
+            AssertBorders(NorthAfrica, Congo, EastAfrica, Egypt, Brazil, SouthernEurope, WesternEurope);
+            AssertBorders(SouthAfrica, Congo, EastAfrica, Madagascar);
 
-            AssertConnections(Afghanistan, China, India, MiddleEast, Ural, Ukraine);
-            AssertConnections(China, Afghanistan, India, Mongolia, Siam, Siberia, Ural);
-            AssertConnections(India, Afghanistan, China, MiddleEast, Siam);
-            AssertConnections(Irkutsk, Kamchatka, Mongolia, Siberia, Yakutsk);
-            AssertConnections(Japan, Kamchatka, Mongolia);
-            AssertConnections(Kamchatka, Irkutsk, Japan, Mongolia, Yakutsk, Alaska);
-            AssertConnections(MiddleEast, Afghanistan, India, SouthernEurope, Ukraine, EastAfrica, Egypt);
-            AssertConnections(Mongolia, China, Irkutsk, Japan, Kamchatka, Siberia);
-            AssertConnections(Siam, China, India, Indonesia);
-            AssertConnections(Siberia, China, Irkutsk, Mongolia, Ural, Yakutsk);
-            AssertConnections(Ural, Afghanistan, China, Siberia, Ukraine);
-            AssertConnections(Yakutsk, Irkutsk, Kamchatka, Siberia);
+            AssertBorders(Afghanistan, China, India, MiddleEast, Ural, Ukraine);
+            AssertBorders(China, Afghanistan, India, Mongolia, Siam, Siberia, Ural);
+            AssertBorders(India, Afghanistan, China, MiddleEast, Siam);
+            AssertBorders(Irkutsk, Kamchatka, Mongolia, Siberia, Yakutsk);
+            AssertBorders(Japan, Kamchatka, Mongolia);
+            AssertBorders(Kamchatka, Irkutsk, Japan, Mongolia, Yakutsk, Alaska);
+            AssertBorders(MiddleEast, Afghanistan, India, SouthernEurope, Ukraine, EastAfrica, Egypt);
+            AssertBorders(Mongolia, China, Irkutsk, Japan, Kamchatka, Siberia);
+            AssertBorders(Siam, China, India, Indonesia);
+            AssertBorders(Siberia, China, Irkutsk, Mongolia, Ural, Yakutsk);
+            AssertBorders(Ural, Afghanistan, China, Siberia, Ukraine);
+            AssertBorders(Yakutsk, Irkutsk, Kamchatka, Siberia);
 
-            AssertConnections(EasternAustralia, NewGuinea, WesternAustralia);
-            AssertConnections(Indonesia, NewGuinea, WesternAustralia, Siam);
-            AssertConnections(NewGuinea, EasternAustralia, Indonesia, WesternAustralia);
-            AssertConnections(WesternAustralia, EasternAustralia, Indonesia, NewGuinea);
+            AssertBorders(EasternAustralia, NewGuinea, WesternAustralia);
+            AssertBorders(Indonesia, NewGuinea, WesternAustralia, Siam);
+            AssertBorders(NewGuinea, EasternAustralia, Indonesia, WesternAustralia);
+            AssertBorders(WesternAustralia, EasternAustralia, Indonesia, NewGuinea);
         }
 
         [Fact]
@@ -188,16 +188,16 @@ namespace RISK.Tests.Application.Gameplay
             GetAll().Should().Contain(expected);
         }
 
-        private void AssertConnections(ILocation actual, params ILocation[] expectedItems)
+        private void AssertBorders(ILocation actual, params ILocation[] expectedItems)
         {
-            actual.Connections.Should().BeEquivalentTo(expectedItems.ToList(),
-                actual.TranslationKey + " should have connected territories " + string.Join(", ", expectedItems.Select(x => x.TranslationKey)));
+            actual.Borders.Should().BeEquivalentTo(expectedItems.ToList(),
+                actual.Name + " should have borders to " + string.Join(", ", expectedItems.Select(x => x.Name)));
 
             foreach (var expected in expectedItems)
             {
-                expected.Connections.Should().Contain(actual,
-                    expected.TranslationKey + " should recognize connection " + actual.TranslationKey +
-                    " but has connections: " + string.Join(", ", expected.Connections.Select(x => x.TranslationKey)));
+                expected.Borders.Should().Contain(actual,
+                    expected.Name + " should recognize connection " + actual.Name +
+                    " but has connections: " + string.Join(", ", expected.Borders.Select(x => x.Name)));
             }
         }
 

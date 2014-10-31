@@ -46,9 +46,9 @@ namespace RISK.Tests.Application.Gameplay
         }
 
         [Fact]
-        public void Can_attack_when_territories_are_connected()
+        public void Can_attack_when_territories_have_borders()
         {
-            SelectedLocation.IsConnectedTo(OtherLocation);
+            SelectedLocation.IsBordering(_otherLocation);
             SelectedTerritory.Armies = 2;
 
             Sut.CanAttack(OtherLocation).Should().BeTrue();
@@ -57,7 +57,7 @@ namespace RISK.Tests.Application.Gameplay
         [Fact]
         public void Can_not_attack_when_having_only_one_army()
         {
-            SelectedLocation.IsConnectedTo(OtherLocation);
+            SelectedLocation.IsBordering(_otherLocation);
             SelectedTerritory.Armies = 1;
 
             Sut.CanAttack(OtherLocation).Should().BeFalse("there is only one army in location");
@@ -73,9 +73,9 @@ namespace RISK.Tests.Application.Gameplay
         }
 
         [Fact]
-        public void Attacks_when_territories_are_connected()
+        public void Attacks_when_territories_have_borders()
         {
-            SelectedLocation.IsConnectedTo(OtherLocation);
+            SelectedLocation.IsBordering(_otherLocation);
             SelectedTerritory.Armies = 2;
 
             Sut.Attack(OtherLocation);
@@ -119,7 +119,7 @@ namespace RISK.Tests.Application.Gameplay
         [Fact]
         public void Player_will_be_awarded_a_card_when_turn_ends()
         {
-            SelectedLocation.IsConnectedTo(OtherLocation);
+            SelectedLocation.IsBordering(_otherLocation);
             SelectedTerritory.Armies = 2;
             BattleCalculator.AttackerAlwaysWins(SelectedTerritory, OtherTerritory);
 

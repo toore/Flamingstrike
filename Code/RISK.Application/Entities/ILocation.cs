@@ -4,8 +4,8 @@ namespace RISK.Domain.Entities
 {
     public interface ILocation
     {
-        string TranslationKey { get; }
+        string Name { get; }
         Continent Continent { get; }
-        IEnumerable<ILocation> Connections { get; }
+        IEnumerable<ILocation> Borders { get; }
     }
 }

@@ -43,9 +43,9 @@ namespace RISK.Tests.Application.Gameplay
 
     static class TurnTestsExtensions
     {
-        public static void IsConnectedTo(this ILocation from, params ILocation[] to)
+        public static void IsBordering(this ILocation from, params ILocation[] to)
         {
-            from.Connections.Returns(to);
+            from.Borders.Returns(to);
         }
 
         public static void AttackerAlwaysWins(this IBattleCalculator battleCalculator, ITerritory from, ITerritory to)
