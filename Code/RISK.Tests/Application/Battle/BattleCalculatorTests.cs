@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using FluentAssertions;
 using NSubstitute;
+using RISK.Domain;
 using RISK.Domain.Entities;
 using RISK.Domain.GamePlaying;
 using RISK.Domain.GamePlaying.DiceAndCalculation;
@@ -43,12 +44,12 @@ namespace RISK.Tests.Application.Battle
         {
             StubDices(attackingArmies - 1, defendingArmies, attackerCasualties, defenderCasualties);
 
-            var attackerTerritory = new Territory(new Location("attacker territory", new Continent()))
+            var attackerTerritory = new Territory(Make.Location.Build())
             {
                 Armies = attackingArmies
             };
             attackerTerritory.Occupant = AttackCases.Attacker;
-            var defenderTerritory = new Territory(new Location("defender territory", new Continent()))
+            var defenderTerritory = new Territory(Make.Location.Build())
             {
                 Armies = defendingArmies
             };

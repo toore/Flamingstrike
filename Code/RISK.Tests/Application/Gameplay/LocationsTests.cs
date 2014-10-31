@@ -32,7 +32,7 @@ namespace RISK.Tests.Application.Gameplay
         [Fact]
         public void Alaska_is_in_north_america()
         {
-            Alaska.Continent.Should().Be(Continents.NorthAmerica);
+            Alaska.Continent.Should().Be(Continent.NorthAmerica);
         }
 
         [Fact]
@@ -44,7 +44,7 @@ namespace RISK.Tests.Application.Gameplay
         [Fact]
         public void Alberta_is_in_north_america_has_border_to_alaska_and_northwest_territory_and_ontario_and_western_united_states()
         {
-            Alberta.Continent.Should().Be(Continents.NorthAmerica);
+            Alberta.Continent.Should().Be(Continent.NorthAmerica);
             Alberta.Borders.Should().BeEquivalentTo(Alaska, Northwest, Ontario, WesternUnitedStates);
         }
 
@@ -103,37 +103,37 @@ namespace RISK.Tests.Application.Gameplay
         [Fact]
         public void North_america_has_9()
         {
-            AssertLocationsInContinent(Continents.NorthAmerica, 9, Alaska, Alberta, CentralAmerica, EasternUnitedStates, Greenland, Northwest, Ontario, Quebec, WesternUnitedStates);
+            AssertLocationsInContinent(Continent.NorthAmerica, 9, Alaska, Alberta, CentralAmerica, EasternUnitedStates, Greenland, Northwest, Ontario, Quebec, WesternUnitedStates);
         }
 
         [Fact]
         public void South_america_has_4()
         {
-            AssertLocationsInContinent(Continents.SouthAmerica, 4, Argentina, Brazil, Peru, Venezuela);
+            AssertLocationsInContinent(Continent.SouthAmerica, 4, Argentina, Brazil, Peru, Venezuela);
         }
 
         [Fact]
         public void Europe_has_7()
         {
-            AssertLocationsInContinent(Continents.Europe, 7, GreatBritain, Iceland, NorthernEurope, Scandinavia, SouthernEurope, Ukraine, WesternEurope);
+            AssertLocationsInContinent(Continent.Europe, 7, GreatBritain, Iceland, NorthernEurope, Scandinavia, SouthernEurope, Ukraine, WesternEurope);
         }
 
         [Fact]
         public void Africa_has_6()
         {
-            AssertLocationsInContinent(Continents.Africa, 6, Congo, EastAfrica, Egypt, Madagascar, NorthAfrica, SouthAfrica);
+            AssertLocationsInContinent(Continent.Africa, 6, Congo, EastAfrica, Egypt, Madagascar, NorthAfrica, SouthAfrica);
         }
 
         [Fact]
         public void Asia_has_12()
         {
-            AssertLocationsInContinent(Continents.Asia, 12, Afghanistan, China, India, Irkutsk, Japan, Kamchatka, MiddleEast, Mongolia, Siam, Siberia, Ural, Yakutsk);
+            AssertLocationsInContinent(Continent.Asia, 12, Afghanistan, China, India, Irkutsk, Japan, Kamchatka, MiddleEast, Mongolia, Siam, Siberia, Ural, Yakutsk);
         }
 
         [Fact]
         public void Australia_has_4()
         {
-            AssertLocationsInContinent(Continents.Australia, 4, EasternAustralia, Indonesia, NewGuinea, WesternAustralia);
+            AssertLocationsInContinent(Continent.Australia, 4, EasternAustralia, Indonesia, NewGuinea, WesternAustralia);
         }
 
         [Fact]

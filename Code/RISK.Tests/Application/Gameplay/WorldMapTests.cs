@@ -39,9 +39,9 @@ namespace RISK.Tests.Application.Gameplay
         }
 
         [Fact]
-        public void GetTerritory_throws_for_territory_Japan()
+        public void Getting_unknown_location_throws()
         {
-            Action act = ()=>GetTerritory(new Location("unknown location", new Continent()));
+            Action act = () => GetTerritory(new Location("unknown location", Continent.Africa));
 
             act.ShouldThrow<InvalidOperationException>();
         }
