@@ -34,7 +34,7 @@ namespace RISK.Domain.GamePlaying
             attacker.Armies = armiesLeftBehind;
         }
 
-        private bool IsDefenderDefeated(ITerritory defender)
+        private static bool IsDefenderDefeated(ITerritory defender)
         {
             return defender.Armies == 0;
         }

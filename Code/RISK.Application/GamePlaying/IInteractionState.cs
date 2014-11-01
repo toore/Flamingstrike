@@ -2,7 +2,7 @@
 
 namespace RISK.Domain.GamePlaying
 {
-    public interface ITurnState
+    public interface IInteractionState
     {
         IPlayer Player { get; }
         ITerritory SelectedTerritory { get; }
@@ -12,7 +12,6 @@ namespace RISK.Domain.GamePlaying
         void Select(ILocation location);
         bool CanAttack(ILocation location);
         void Attack(ILocation location);
-        bool IsFortificationAllowedInTurn();
         bool CanFortify(ILocation location);
         void Fortify(ILocation location, int armies);
         void EndTurn();

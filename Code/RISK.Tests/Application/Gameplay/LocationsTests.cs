@@ -9,7 +9,7 @@ namespace RISK.Tests.Application.Gameplay
 {
     public class LocationsTests
     {
-        private Locations _locations;
+        private readonly Locations _locations;
 
         public LocationsTests()
         {
@@ -38,14 +38,16 @@ namespace RISK.Tests.Application.Gameplay
         [Fact]
         public void Alaskas_borders_alberta_and_northwest_territory_and_kamchatka()
         {
-            Alaska.Borders.Should().BeEquivalentTo(Alberta, Northwest, Kamchatka);
+            //Alaska.Borders.Should().BeEquivalentTo(Alberta, Northwest, Kamchatka);
+            AssertBorders(Alaska, Alberta, Northwest, Kamchatka);
         }
 
         [Fact]
         public void Alberta_is_in_north_america_has_border_to_alaska_and_northwest_territory_and_ontario_and_western_united_states()
         {
             Alberta.Continent.Should().Be(Continent.NorthAmerica);
-            Alberta.Borders.Should().BeEquivalentTo(Alaska, Northwest, Ontario, WesternUnitedStates);
+            //Alberta.Borders.Should().BeEquivalentTo(Alaska, Northwest, Ontario, WesternUnitedStates);
+            AssertBorders(Alberta, Alaska, Northwest, Ontario, WesternUnitedStates);
         }
 
         [Fact]
@@ -190,14 +192,10 @@ namespace RISK.Tests.Application.Gameplay
 
         private void AssertBorders(ILocation actual, params ILocation[] expectedItems)
         {
-            actual.Borders.Should().BeEquivalentTo(expectedItems.ToList(),
-                actual.Name + " should have borders to " + string.Join(", ", expectedItems.Select(x => x.Name)));
-
             foreach (var expected in expectedItems)
             {
-                expected.Borders.Should().Contain(actual,
-                    expected.Name + " should recognize connection " + actual.Name +
-                    " but has connections: " + string.Join(", ", expected.Borders.Select(x => x.Name)));
+                actual.IsBordering(expected).Should().BeTrue(actual.Name + " should be bordering " + expected.Name);
+                expected.IsBordering(actual).Should().BeTrue(expected.Name + " should be bordering " + actual.Name);
             }
         }
 

@@ -24,8 +24,8 @@ namespace RISK.Tests.GuiWpf
         private ITerritoryTextViewModel _textViewModel2;
         private IWorldMap _worldMap;
         private ITerritoryViewModelUpdater _territoryViewModelUpdater;
-        private ITurnState _initialTurnState;
-        private ITurnState _nextTurnState;
+        private IInteractionState _initialInteractionState;
+        private IInteractionState _nextInteractionState;
         private ITerritory _territory1;
         private ITerritory _territory2;
         private IPlayer _player1;
@@ -72,11 +72,11 @@ namespace RISK.Tests.GuiWpf
             _player1 = Substitute.For<IPlayer>();
             _player2 = Substitute.For<IPlayer>();
 
-            _initialTurnState = Substitute.For<ITurnState>();
-            _initialTurnState.Player.Returns(_player1);
-            _nextTurnState = Substitute.For<ITurnState>();
-            _nextTurnState.Player.Returns(_player2);
-            _game.GetNextTurn().Returns(_initialTurnState, _nextTurnState);
+            _initialInteractionState = Substitute.For<IInteractionState>();
+            _initialInteractionState.Player.Returns(_player1);
+            _nextInteractionState = Substitute.For<IInteractionState>();
+            _nextInteractionState.Player.Returns(_player2);
+            _game.GetNextTurn().Returns(_initialInteractionState, _nextInteractionState);
 
             _layoutViewModel1 = StubLayoutViewModel(_location1);
             _textViewModel1 = StubTextViewModel(_location1);
@@ -128,33 +128,33 @@ namespace RISK.Tests.GuiWpf
         [Fact]
         public void OnLocationClick_commands_select()
         {
-            _turnPhaseFactory.CreateAttackPhase(_initialTurnState).Returns(new AttackPhase(_initialTurnState));
-            _initialTurnState.CanSelect(_location1).Returns(true);
+            _turnPhaseFactory.CreateAttackPhase(_initialInteractionState).Returns(new AttackPhase(_initialInteractionState));
+            _initialInteractionState.CanSelect(_location1).Returns(true);
 
             Create().OnLocationClick(_location1);
 
-            _initialTurnState.Received().Select(_location1);
+            _initialInteractionState.Received().Select(_location1);
         }
 
         [Fact]
         public void OnLocationClick_commands_attack()
         {
-            _turnPhaseFactory.CreateAttackPhase(_initialTurnState).Returns(new AttackPhase(_initialTurnState));
-            _initialTurnState.CanSelect(_location2).Returns(false);
-            _initialTurnState.CanAttack(_location2).Returns(true);
+            _turnPhaseFactory.CreateAttackPhase(_initialInteractionState).Returns(new AttackPhase(_initialInteractionState));
+            _initialInteractionState.CanSelect(_location2).Returns(false);
+            _initialInteractionState.CanAttack(_location2).Returns(true);
 
             var sut = Create();
             sut.OnLocationClick(_location1);
             sut.OnLocationClick(_location2);
 
-            _initialTurnState.Received().Attack(_location2);
+            _initialInteractionState.Received().Attack(_location2);
         }
 
         [Fact]
         public void OnLocationClick_selects_territory()
         {
-            _turnPhaseFactory.CreateAttackPhase(_initialTurnState).Returns(new AttackPhase(_initialTurnState));
-            _initialTurnState.CanSelect(_location1).Returns(true);
+            _turnPhaseFactory.CreateAttackPhase(_initialInteractionState).Returns(new AttackPhase(_initialInteractionState));
+            _initialInteractionState.CanSelect(_location1).Returns(true);
 
             Create().OnLocationClick(_location1);
 
@@ -164,9 +164,9 @@ namespace RISK.Tests.GuiWpf
         [Fact]
         public void Select_location_can_select_location_2()
         {
-            _turnPhaseFactory.CreateAttackPhase(_initialTurnState).Returns(new AttackPhase(_initialTurnState));
-            _initialTurnState.CanAttack(_location1).Returns(false);
-            _initialTurnState.CanAttack(_location2).Returns(true);
+            _turnPhaseFactory.CreateAttackPhase(_initialInteractionState).Returns(new AttackPhase(_initialInteractionState));
+            _initialInteractionState.CanAttack(_location1).Returns(false);
+            _initialInteractionState.CanAttack(_location2).Returns(true);
 
             Create().OnLocationClick(_location1);
 
@@ -177,20 +177,20 @@ namespace RISK.Tests.GuiWpf
         [Fact]
         public void Ends_turn_and_gets_next_turn()
         {
-            _turnPhaseFactory.CreateAttackPhase(_initialTurnState).Returns(new AttackPhase(_initialTurnState));
+            _turnPhaseFactory.CreateAttackPhase(_initialInteractionState).Returns(new AttackPhase(_initialInteractionState));
             var sut = Create();
             _game.ClearReceivedCalls();
 
             sut.EndTurn();
 
-            _initialTurnState.Received(1).EndTurn();
+            _initialInteractionState.Received(1).EndTurn();
             _game.Received(1).GetNextTurn();
         }
 
         [Fact]
         public void When_winning_game_over_dialog_should_be_shown()
         {
-            _turnPhaseFactory.CreateAttackPhase(_initialTurnState).Returns(new AttackPhase(_initialTurnState));
+            _turnPhaseFactory.CreateAttackPhase(_initialInteractionState).Returns(new AttackPhase(_initialInteractionState));
             _gameOverEvaluater.IsGameOver(_worldMap).Returns(true);
             var gameOverViewModel = new GameOverViewModel(_player1);
             _gameOverViewModelFactory.Create(_player1).Returns(gameOverViewModel);
@@ -226,9 +226,9 @@ namespace RISK.Tests.GuiWpf
         [Fact]
         public void Fortifies()
         {
-            _turnPhaseFactory.CreateFortifyingPhase(_initialTurnState).Returns(new FortifyingPhase(_initialTurnState));
-            _initialTurnState.CanSelect(_location1).Returns(true);
-            _initialTurnState.CanFortify(_location2).Returns(true);
+            _turnPhaseFactory.CreateFortifyingPhase(_initialInteractionState).Returns(new FortifyingPhase(_initialInteractionState));
+            _initialInteractionState.CanSelect(_location1).Returns(true);
+            _initialInteractionState.CanFortify(_location2).Returns(true);
 
             var sut = Create();
             sut.Fortify();
@@ -236,7 +236,7 @@ namespace RISK.Tests.GuiWpf
             sut.OnLocationClick(_location1);
             sut.OnLocationClick(_location2);
 
-            _initialTurnState.Received(1).Fortify(_location2, 10);
+            _initialInteractionState.Received(1).Fortify(_location2, 10);
         }
 
         private ITerritoryLayoutViewModel StubLayoutViewModel(ILocation location)

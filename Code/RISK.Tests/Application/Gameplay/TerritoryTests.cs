@@ -5,7 +5,6 @@ using Xunit;
 
 namespace RISK.Tests.Application.Gameplay
 {
-    
     public class TerritoryTests
     {
         [Fact]

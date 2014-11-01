@@ -4,20 +4,26 @@ using RISK.Domain.Entities;
 
 namespace RISK.Domain.GamePlaying
 {
-    public class TurnAttackState : ITurnState
+    public class AttackState : IInteractionState
     {
         private readonly StateController _stateController;
-        private readonly TurnStateFactory _turnStateFactory;
+        private readonly IInteractionStateFactory _interactionStateFactory;
         private readonly IBattleCalculator _battleCalculator;
         private readonly ICardFactory _cardFactory;
         private readonly IWorldMap _worldMap;
 
-        public TurnAttackState(
-            StateController stateController, TurnStateFactory turnStateFactory, IBattleCalculator battleCalculator, ICardFactory cardFactory, IPlayer player, IWorldMap worldMap, ITerritory selectedTerritory)
+        public AttackState(
+            StateController stateController, 
+            IInteractionStateFactory interactionStateFactory, 
+            IBattleCalculator battleCalculator, 
+            ICardFactory cardFactory, 
+            IPlayer player, 
+            IWorldMap worldMap, 
+            ITerritory selectedTerritory)
         {
             Player = player;
             _stateController = stateController;
-            _turnStateFactory = turnStateFactory;
+            _interactionStateFactory = interactionStateFactory;
             _battleCalculator = battleCalculator;
             _cardFactory = cardFactory;
             _worldMap = worldMap;
@@ -41,7 +47,7 @@ namespace RISK.Domain.GamePlaying
         {
             if (CanSelect(location))
             {
-                _stateController.CurrentState = _turnStateFactory.CreateSelectState(Player, _worldMap);
+                _stateController.CurrentState = _interactionStateFactory.CreateSelectState(Player, _worldMap);
             }
         }
 
@@ -54,10 +60,10 @@ namespace RISK.Domain.GamePlaying
 
             var territoryToAttack = _worldMap.GetTerritory(location);
             var isTerritoryOccupiedByEnemy = territoryToAttack.Occupant != Player;
-            var isConnected = SelectedTerritory.Location.Borders.Contains(territoryToAttack.Location);
+            var isBordering = SelectedTerritory.Location.IsBordering(territoryToAttack.Location);
             var hasArmiesToAttackWith = SelectedTerritory.HasArmiesAvailableForAttack();
 
-            var canAttack = isConnected
+            var canAttack = isBordering
                             &&
                             isTerritoryOccupiedByEnemy
                             &&
@@ -85,7 +91,7 @@ namespace RISK.Domain.GamePlaying
 
             if (HasPlayerOccupiedTerritory(territory))
             {
-                _stateController.CurrentState = _turnStateFactory.CreateAttackState(Player, _worldMap, territory);
+                _stateController.CurrentState = _interactionStateFactory.CreateAttackState(Player, _worldMap, territory);
                 _stateController.PlayerShouldReceiveCardWhenTurnEnds = true;
             }
         }
@@ -95,19 +101,16 @@ namespace RISK.Domain.GamePlaying
             return territoryToAttack.Occupant == Player;
         }
 
-        public bool IsFortificationAllowedInTurn()
-        {
-            return true;
-        }
-
         public bool CanFortify(ILocation location)
         {
-            throw new NotSupportedException();
+            return SelectedTerritory.Location.IsBordering(location) 
+                && 
+                _worldMap.GetTerritory(location).Occupant == Player;
         }
 
         public void Fortify(ILocation location, int armies)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         public void EndTurn()

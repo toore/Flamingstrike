@@ -4,26 +4,26 @@ namespace RISK.Domain.Entities
 {
     public class Location : ILocation
     {
-        private readonly List<Location> _borders;
+        private readonly List<ILocation> _borders;
 
         public Location(string name, Continent continent)
         {
             Name = name;
             Continent = continent;
-            _borders = new List<Location>();
+            _borders = new List<ILocation>();
         }
 
         public string Name { get; private set; }
         public Continent Continent { get; private set; }
 
-        public IEnumerable<ILocation> Borders
+        public bool IsBordering(ILocation location)
         {
-            get { return _borders; }
+            return _borders.Contains(location);
         }
 
-        public void AddBorderingTerritories(params Location[] territories)
+        public void AddBorders(params ILocation[] locations)
         {
-            _borders.AddRange(territories);
+            _borders.AddRange(locations);
         }
     }
 }

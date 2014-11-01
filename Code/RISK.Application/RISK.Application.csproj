@@ -65,6 +65,7 @@
     <Compile Include="GamePlaying\DiceAndCalculation\Dice.cs" />
     <Compile Include="GamePlaying\DiceAndCalculation\IDice.cs" />
     <Compile Include="GamePlaying\DiceAndCalculation\IDicesResult.cs" />
+    <Compile Include="GamePlaying\FortificationState.cs" />
     <Compile Include="GamePlaying\Setup\AlternateGameSetup.cs" />
     <Compile Include="GamePlaying\BattleCalculator.cs" />
     <Compile Include="GamePlaying\CardFactory.cs" />
@@ -82,7 +83,7 @@
     <Compile Include="GamePlaying\Setup\InitialArmyCount.cs" />
     <Compile Include="GamePlaying\IRandomSorter.cs" />
     <Compile Include="GamePlaying\IRandomWrapper.cs" />
-    <Compile Include="GamePlaying\ITurnStateFactory.cs" />
+    <Compile Include="GamePlaying\IInteractionStateFactory.cs" />
     <Compile Include="GamePlaying\IWorldMapFactory.cs" />
     <Compile Include="GamePlaying\Setup\ILocationSelectorParameter.cs" />
     <Compile Include="GamePlaying\Setup\PlayerDuringGameSetup.cs" />
@@ -91,15 +92,15 @@
     <Compile Include="GamePlaying\Setup\SetupArmiesExtensions.cs" />
     <Compile Include="GamePlaying\Setup\LocationSelectorParameter.cs" />
     <Compile Include="GamePlaying\StateController.cs" />
-    <Compile Include="GamePlaying\TurnAttackState.cs" />
-    <Compile Include="GamePlaying\TurnStateFactory.cs" />
+    <Compile Include="GamePlaying\AttackState.cs" />
+    <Compile Include="GamePlaying\InteractionStateFactory.cs" />
     <Compile Include="GamePlaying\WorldMapFactory.cs" />
     <Compile Include="Locations.cs" />
     <Compile Include="Continents.cs" />
     <Compile Include="GamePlaying\IGame.cs" />
-    <Compile Include="GamePlaying\ITurnState.cs" />
+    <Compile Include="GamePlaying\IInteractionState.cs" />
     <Compile Include="Players.cs" />
-    <Compile Include="GamePlaying\TurnSelectState.cs" />
+    <Compile Include="GamePlaying\SelectState.cs" />
     <Compile Include="GamePlaying\WorldMap.cs" />
     <Compile Include="GamePlaying\Game.cs" />
     <Compile Include="GamePlaying\IWorldMap.cs" />

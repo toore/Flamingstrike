@@ -12,9 +12,9 @@ namespace RISK.Tests.Application.Gameplay
     {
         private Game _game;
         private IWorldMap _worldMap;
-        private ITurnStateFactory _turnStateFactory;
-        private ITurnState _nextTurnState;
-        private ITurnState _turnStateAfterNextTurnState;
+        private IInteractionStateFactory _interactionStateFactory;
+        private IInteractionState _nextInteractionState;
+        private IInteractionState _interactionStateAfterNextInteractionState;
         private IPlayers _players;
         private IPlayer _player1;
         private IPlayer _player2;
@@ -24,23 +24,23 @@ namespace RISK.Tests.Application.Gameplay
         public GameTests()
         {
             _worldMap = Substitute.For<IWorldMap>();
-            _turnStateFactory = Substitute.For<ITurnStateFactory>();
+            _interactionStateFactory = Substitute.For<IInteractionStateFactory>();
             _players = Substitute.For<IPlayers>();
             _alternateGameSetup = Substitute.For<IAlternateGameSetup>();
             _gameInitializerLocationSelector = Substitute.For<IGameInitializerLocationSelector>();
 
-            _nextTurnState = Substitute.For<ITurnState>();
-            _turnStateAfterNextTurnState = Substitute.For<ITurnState>();
+            _nextInteractionState = Substitute.For<IInteractionState>();
+            _interactionStateAfterNextInteractionState = Substitute.For<IInteractionState>();
             _player1 = Substitute.For<IPlayer>();
             _player2 = Substitute.For<IPlayer>();
-            _turnStateFactory.CreateSelectState(_player1, _worldMap).Returns(_nextTurnState);
-            _turnStateFactory.CreateSelectState(_player2, _worldMap).Returns(_turnStateAfterNextTurnState);
+            _interactionStateFactory.CreateSelectState(_player1, _worldMap).Returns(_nextInteractionState);
+            _interactionStateFactory.CreateSelectState(_player2, _worldMap).Returns(_interactionStateAfterNextInteractionState);
 
             _players.GetAll().Returns(new[] { _player1, _player2 });
 
             _alternateGameSetup.Initialize(_gameInitializerLocationSelector).Returns(_worldMap);
 
-            _game = new Game(_turnStateFactory, _players, _alternateGameSetup, _gameInitializerLocationSelector);
+            _game = new Game(_interactionStateFactory, _players, _alternateGameSetup, _gameInitializerLocationSelector);
         }
 
         [Fact]
@@ -54,7 +54,7 @@ namespace RISK.Tests.Application.Gameplay
         {
             var actual = _game.GetNextTurn();
 
-            actual.Should().Be(_nextTurnState);
+            actual.Should().Be(_nextInteractionState);
         }
 
         [Fact]
@@ -63,7 +63,7 @@ namespace RISK.Tests.Application.Gameplay
             _game.GetNextTurn();
             var actual = _game.GetNextTurn();
 
-            actual.Should().Be(_turnStateAfterNextTurnState);
+            actual.Should().Be(_interactionStateAfterNextInteractionState);
         }
     }
 }

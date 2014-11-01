@@ -3,18 +3,18 @@ using RISK.Domain.Entities;
 
 namespace RISK.Domain.GamePlaying
 {
-    public class TurnSelectState : ITurnState
+    public class SelectState : IInteractionState
     {
         private readonly StateController _stateController;
-        private readonly TurnStateFactory _turnStateFactory;
+        private readonly IInteractionStateFactory _interactionStateFactory;
         private readonly ICardFactory _cardFactory;
         private readonly IWorldMap _worldMap;
 
-        public TurnSelectState(StateController stateController, TurnStateFactory turnStateFactory, ICardFactory cardFactory, IPlayer player, IWorldMap worldMap)
+        public SelectState(StateController stateController, IInteractionStateFactory interactionStateFactory, ICardFactory cardFactory, IPlayer player, IWorldMap worldMap)
         {
             Player = player;
             _stateController = stateController;
-            _turnStateFactory = turnStateFactory;
+            _interactionStateFactory = interactionStateFactory;
             _cardFactory = cardFactory;
             _worldMap = worldMap;
         }
@@ -44,7 +44,7 @@ namespace RISK.Domain.GamePlaying
             }
 
             var territoryToSelect = _worldMap.GetTerritory(location);
-            _stateController.CurrentState = _turnStateFactory.CreateAttackState(Player, _worldMap, territoryToSelect);
+            _stateController.CurrentState = _interactionStateFactory.CreateAttackState(Player, _worldMap, territoryToSelect);
         }
 
         public bool CanAttack(ILocation location)
@@ -57,19 +57,14 @@ namespace RISK.Domain.GamePlaying
             throw new NotSupportedException();
         }
 
-        public bool IsFortificationAllowedInTurn()
-        {
-            return true;
-        }
-
         public bool CanFortify(ILocation location)
         {
-            throw new NotSupportedException();
+            return false;
         }
 
         public void Fortify(ILocation location, int armies)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         public void EndTurn()
