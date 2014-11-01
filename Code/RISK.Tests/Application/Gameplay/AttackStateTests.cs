@@ -1,5 +1,4 @@
-﻿using System;
-using FluentAssertions;
+﻿using FluentAssertions;
 using NSubstitute;
 using RISK.Domain.Entities;
 using RISK.Domain.GamePlaying;
@@ -16,15 +15,16 @@ namespace RISK.Tests.Application.Gameplay
         private readonly Location _borderingLocationOccupiedByPlayer;
         private readonly Territory _borderingTerritoryOccupiedByOtherPlayer;
         private readonly Location _remoteLocationOccupiedByPlayer;
+        private Territory _borderingTerritoryOccupiedByPlayer;
 
         public AttackStateTests()
         {
             _borderingLocationOccupiedByPlayer = Make.Location.Build();
-            var borderingTerritoryOccupiedByPlayer = Make.Territory
+            _borderingTerritoryOccupiedByPlayer = Make.Territory
                 .Location(_borderingLocationOccupiedByPlayer)
                 .Occupant(Player)
                 .Build();
-            WorldMap.GetTerritory(_borderingLocationOccupiedByPlayer).Returns(borderingTerritoryOccupiedByPlayer);
+            WorldMap.GetTerritory(_borderingLocationOccupiedByPlayer).Returns(_borderingTerritoryOccupiedByPlayer);
 
             _remoteLocationOccupiedByPlayer = Make.Location.Build();
             var remoteTerritoryOccupiedByPlayer = Make.Territory
@@ -171,17 +171,32 @@ namespace RISK.Tests.Application.Gameplay
         }
 
         [Fact]
-        public void Can_fortify_to_bordering_territories_occupied_by_player()
+        public void Can_fortify_to_bordering_territory_occupied_by_player()
         {
             Sut.CanFortify(_borderingLocationOccupiedByPlayer).Should().BeTrue();
         }
 
         [Fact]
-        public void Fortify_is_not_supported()
+        public void Fortifies_three_army_to_bordering_territory()
         {
-            Action act = () => Sut.Fortify(Substitute.For<ILocation>(), 0);
+            _selectedTerritory.Armies = 4;
+            _borderingTerritoryOccupiedByPlayer.Armies = 10;
 
-            act.ShouldThrow<NotSupportedException>();
+            Sut.Fortify(_borderingLocationOccupiedByPlayer, 3);
+
+            _borderingTerritoryOccupiedByPlayer.Armies.Should().Be(13);
+            _selectedTerritory.Armies.Should().Be(1);
+        }
+
+        [Fact]
+        public void Fortify_enters_fortified_state()
+        {
+            var fortifiedState = Substitute.For<IInteractionState>();
+            InteractionStateFactory.CreateFortifiedState(Player, WorldMap).Returns(fortifiedState);
+
+            Sut.Fortify(_borderingLocationOccupiedByPlayer, 1);
+
+            StateController.CurrentState.Should().Be(fortifiedState);
         }
     }
 }

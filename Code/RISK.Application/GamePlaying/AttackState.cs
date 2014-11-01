@@ -110,7 +110,10 @@ namespace RISK.Domain.GamePlaying
 
         public void Fortify(ILocation location, int armies)
         {
-            throw new NotSupportedException();
+            _worldMap.GetTerritory(location).Armies += armies;
+            SelectedTerritory.Armies -= armies;
+
+            _stateController.CurrentState = _interactionStateFactory.CreateFortifiedState(Player, _worldMap);
         }
 
         public void EndTurn()

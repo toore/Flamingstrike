@@ -6,6 +6,6 @@ namespace RISK.Domain.GamePlaying
     {
         IInteractionState CreateSelectState(IPlayer player, IWorldMap worldMap);
         IInteractionState CreateAttackState(IPlayer player, IWorldMap worldMap, ITerritory selectedTerritory);
-        IInteractionState CreateFortificationState(IPlayer player, IWorldMap worldMap);
+        IInteractionState CreateFortifiedState(IPlayer player, IWorldMap worldMap);
     }
 }

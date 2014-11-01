@@ -3,11 +3,11 @@ using RISK.Domain.Entities;
 
 namespace RISK.Domain.GamePlaying
 {
-    public class FortificationState: IInteractionState
+    public class FortifiedState: IInteractionState
     {
         private readonly StateController _stateController;
 
-        public FortificationState(StateController stateController, IPlayer player)
+        public FortifiedState(StateController stateController, IPlayer player)
         {
             _stateController = stateController;
             Player = player;
