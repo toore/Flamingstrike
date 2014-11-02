@@ -50,15 +50,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Entities\Card.cs" />
-    <Compile Include="Entities\CardSymbol.cs" />
     <Compile Include="Entities\Territory.cs" />
     <Compile Include="Entities\Location.cs" />
     <Compile Include="Entities\Continent.cs" />
-    <Compile Include="Entities\HumanPlayer.cs" />
-    <Compile Include="Entities\ITerritory.cs" />
-    <Compile Include="Entities\ILocation.cs" />
-    <Compile Include="Entities\IPlayer.cs" />
-    <Compile Include="Entities\TerritoryExtensions.cs" />
+    <Compile Include="Entities\Player.cs" />
     <Compile Include="Extensions\EnumerableExtensions.cs" />
     <Compile Include="Extensions\ListExtensions.cs" />
     <Compile Include="Extensions\ObjectExtensions.cs" />

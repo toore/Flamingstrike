@@ -9,4 +9,9 @@
 
         public CardSymbol Symbol { get; private set; }
     }
+
+    public enum CardSymbol
+    {
+        Infantry, Cavalry, Artillery
+    }
 }

@@ -2,6 +2,13 @@
 
 namespace RISK.Domain.Entities
 {
+    public interface ILocation
+    {
+        string Name { get; }
+        Continent Continent { get; }
+        bool IsBordering(ILocation location);
+    }
+
     public class Location : ILocation
     {
         private readonly List<ILocation> _borders;
