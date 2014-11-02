@@ -3,7 +3,7 @@
     public interface IGame
     {
         IWorldMap WorldMap { get; }
-        IInteractionState CurrentTurn { get; }
+        IInteractionState CurrentInteractionState { get; }
         void EndTurn();
         bool IsGameOver();
     }

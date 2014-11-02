@@ -26,14 +26,14 @@ namespace RISK.Domain.GamePlaying
         }
 
         public IWorldMap WorldMap { get; private set; }
-        public IInteractionState CurrentTurn { get; private set; }
+        public IInteractionState CurrentInteractionState { get { return _stateController.CurrentState; } }
 
         private void MoveToNextPlayer()
         {
             _currentPlayer = _players.GetNextOrFirst(_currentPlayer);
 
             _stateController = _stateControllerFactory.Create();
-            CurrentTurn = _interactionStateFactory.CreateSelectState(_stateController, _currentPlayer, WorldMap);
+            _stateController.CurrentState = _interactionStateFactory.CreateSelectState(_stateController, _currentPlayer, WorldMap);
         }
 
         public void EndTurn()
@@ -48,7 +48,7 @@ namespace RISK.Domain.GamePlaying
 
         public bool IsGameOver()
         {
-            return WorldMap.GetAllPlayersOccupyingTerritories().Count() == 1;             
+            return WorldMap.GetAllPlayersOccupyingTerritories().Count() == 1;
         }
     }
 }

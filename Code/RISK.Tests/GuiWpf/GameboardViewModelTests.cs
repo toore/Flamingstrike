@@ -14,29 +14,20 @@ namespace RISK.Tests.GuiWpf
 {
     public class GameboardViewModelTests
     {
-        private IGame _game;
-        private WorldMapViewModel _worldMapViewModel;
-        private ILocation _location1;
-        private ILocation _location2;
-        private ITerritoryLayoutViewModel _layoutViewModel1;
-        private ITerritoryTextViewModel _textViewModel1;
-        private ITerritoryLayoutViewModel _layoutViewModel2;
-        private ITerritoryTextViewModel _textViewModel2;
-        private IWorldMap _worldMap;
-        private ITerritoryViewModelUpdater _territoryViewModelUpdater;
-        private IInteractionState _initialInteractionState;
-        private IInteractionState _nextInteractionState;
-        private ITerritory _territory1;
-        private ITerritory _territory2;
-        private IPlayer _player1;
-        private IPlayer _player2;
-        private IWindowManager _windowManager;
-        private IGameOverViewModelFactory _gameOverViewModelFactory;
-        private ILanguageResources _languageResources;
-        private IDialogManager _dialogManager;
-        private IEventAggregator _gameEventAggregator;
-        private ILocation[] _locations;
-        private IWorldMapViewModelFactory _worldMapViewModelFactory;
+        private readonly IGame _game;
+        private readonly WorldMapViewModel _worldMapViewModel;
+        private readonly ILocation _location1;
+        private readonly ITerritoryViewModelUpdater _territoryViewModelUpdater;
+        private readonly IInteractionState _initialInteractionState;
+        private readonly IInteractionState _nextInteractionState;
+        private readonly IPlayer _currentPlayer;
+        private readonly IPlayer _nextPlayer;
+        private readonly IWindowManager _windowManager;
+        private readonly IGameOverViewModelFactory _gameOverViewModelFactory;
+        private readonly IDialogManager _dialogManager;
+        private readonly IEventAggregator _gameEventAggregator;
+        private readonly ILocation[] _locations;
+        private readonly IWorldMapViewModelFactory _worldMapViewModelFactory;
 
         public GameboardViewModelTests()
         {
@@ -45,48 +36,46 @@ namespace RISK.Tests.GuiWpf
             _territoryViewModelUpdater = Substitute.For<ITerritoryViewModelUpdater>();
             _windowManager = Substitute.For<IWindowManager>();
             _gameOverViewModelFactory = Substitute.For<IGameOverViewModelFactory>();
-            _languageResources = Substitute.For<ILanguageResources>();
             _dialogManager = Substitute.For<IDialogManager>();
             _gameEventAggregator = Substitute.For<IEventAggregator>();
 
-            LanguageResources.Instance = _languageResources;
+            LanguageResources.Instance = Substitute.For<ILanguageResources>();
 
             _location1 = Substitute.For<ILocation>();
-            _location2 = Substitute.For<ILocation>();
+            var location2 = Substitute.For<ILocation>();
             _locations = new[]
             {
                 _location1,
-                _location2
+                location2
             };
 
-            _worldMap = Substitute.For<IWorldMap>();
-            _territory1 = new Territory(_location1);
-            _territory2 = new Territory(_location2);
-            _worldMap.GetTerritory(_location1).Returns(_territory1);
-            _worldMap.GetTerritory(_location2).Returns(_territory2);
-            _game.WorldMap.Returns(_worldMap);
+            var worldMap = Substitute.For<IWorldMap>();
+            var territory1 = new Territory(_location1);
+            var territory2 = new Territory(location2);
+            worldMap.GetTerritory(_location1).Returns(territory1);
+            worldMap.GetTerritory(location2).Returns(territory2);
+            _game.WorldMap.Returns(worldMap);
 
-            _player1 = Substitute.For<IPlayer>();
-            _player2 = Substitute.For<IPlayer>();
+            _currentPlayer = Substitute.For<IPlayer>();
+            _nextPlayer = Substitute.For<IPlayer>();
 
             _initialInteractionState = Substitute.For<IInteractionState>();
-            _initialInteractionState.Player.Returns(_player1);
+            _initialInteractionState.Player.Returns(_currentPlayer);
             _nextInteractionState = Substitute.For<IInteractionState>();
-            _nextInteractionState.Player.Returns(_player2);
-            _game.CurrentTurn.Returns(_initialInteractionState, _nextInteractionState);
+            _nextInteractionState.Player.Returns(_nextPlayer);
 
-            _layoutViewModel1 = StubLayoutViewModel(_location1);
-            _textViewModel1 = StubTextViewModel(_location1);
-            _layoutViewModel2 = StubLayoutViewModel(_location2);
-            _textViewModel2 = StubTextViewModel(_location2);
+            var layoutViewModel1 = StubLayoutViewModel(_location1);
+            var textViewModel1 = StubTextViewModel(_location1);
+            var layoutViewModel2 = StubLayoutViewModel(location2);
+            var textViewModel2 = StubTextViewModel(location2);
 
             _worldMapViewModel = new WorldMapViewModel();
-            _worldMapViewModel.WorldMapViewModels.Add(_layoutViewModel1);
-            _worldMapViewModel.WorldMapViewModels.Add(_textViewModel1);
-            _worldMapViewModel.WorldMapViewModels.Add(_layoutViewModel2);
-            _worldMapViewModel.WorldMapViewModels.Add(_textViewModel2);
+            _worldMapViewModel.WorldMapViewModels.Add(layoutViewModel1);
+            _worldMapViewModel.WorldMapViewModels.Add(textViewModel1);
+            _worldMapViewModel.WorldMapViewModels.Add(layoutViewModel2);
+            _worldMapViewModel.WorldMapViewModels.Add(textViewModel2);
 
-            _worldMapViewModelFactory.Create(Arg.Is(_worldMap), Arg.Any<Action<ILocation>>()).Returns(_worldMapViewModel);
+            _worldMapViewModelFactory.Create(Arg.Is(worldMap), Arg.Any<Action<ILocation>>()).Returns(_worldMapViewModel);
         }
 
         private GameboardViewModel Create()
@@ -111,15 +100,19 @@ namespace RISK.Tests.GuiWpf
         [Fact]
         public void Player1_takes_first_turn()
         {
-            AssertCurrentPlayer(_player1);
+            _game.CurrentInteractionState.Returns(_initialInteractionState);
+
+            AssertCurrentPlayer(_currentPlayer);
         }
 
         [Fact]
         public void Player2_takes_second_turn()
         {
+            _game.CurrentInteractionState.Returns(_initialInteractionState, _nextInteractionState);
+
             Create().EndTurn();
 
-            AssertCurrentPlayer(_player2);
+            AssertCurrentPlayer(_nextPlayer);
         }
 
         private void AssertCurrentPlayer(IPlayer expected)
@@ -130,6 +123,8 @@ namespace RISK.Tests.GuiWpf
         [Fact]
         public void Ends_turn_and_gets_next_turn()
         {
+            _game.CurrentInteractionState.Returns(_initialInteractionState, _nextInteractionState);
+
             var sut = Create();
             _game.ClearReceivedCalls();
 
@@ -137,15 +132,17 @@ namespace RISK.Tests.GuiWpf
 
             //_initialInteractionState.Received(1).EndTurn();
             //_game.Received(1).GetNextTurn();
-            sut.Player.Should().Be(_player2);
+            sut.Player.Should().Be(_nextPlayer);
         }
 
         [Fact]
         public void When_winning_game_over_dialog_should_be_shown()
         {
+            _game.CurrentInteractionState.Returns(_initialInteractionState);
+
             _game.IsGameOver().Returns(true);
-            var gameOverViewModel = new GameOverViewModel(_player1);
-            _gameOverViewModelFactory.Create(_player1).Returns(gameOverViewModel);
+            var gameOverViewModel = new GameOverViewModel(_currentPlayer);
+            _gameOverViewModelFactory.Create(_currentPlayer).Returns(gameOverViewModel);
 
             Create().OnLocationClick(null);
 
@@ -156,7 +153,7 @@ namespace RISK.Tests.GuiWpf
         public void When_game_is_not_over_no_game_over_dialog_should_be_shown()
         {
             _game.IsGameOver().Returns(false);
-            var gameOverViewModel = new GameOverViewModel(_player1);
+            var gameOverViewModel = new GameOverViewModel(_currentPlayer);
 
             Create().OnLocationClick(null);
 
@@ -174,6 +171,8 @@ namespace RISK.Tests.GuiWpf
         [Fact]
         public void Interaction_state_receives_on_click_when_location_is_clicked()
         {
+            _game.CurrentInteractionState.Returns(_initialInteractionState);
+
             Create().OnLocationClick(_location1);
 
             _initialInteractionState.Received().OnClick(_location1);

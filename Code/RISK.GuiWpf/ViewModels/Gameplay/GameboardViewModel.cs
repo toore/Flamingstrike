@@ -19,7 +19,6 @@ namespace GuiWpf.ViewModels.Gameplay
         private readonly IEventAggregator _eventAggregator;
         private readonly List<ITerritory> _territories;
         private IPlayer _player;
-        private IInteractionState _currentTurn;
 
         public GameboardViewModel(
             IGame game,
@@ -63,8 +62,7 @@ namespace GuiWpf.ViewModels.Gameplay
 
         private void BeginNextPlayerTurn()
         {
-            _currentTurn = _game.CurrentTurn;
-            Player = _currentTurn.Player;
+            Player = _game.CurrentInteractionState.Player;
 
             UpdateGameBoard();
         }
@@ -88,7 +86,7 @@ namespace GuiWpf.ViewModels.Gameplay
 
         public void OnLocationClick(ILocation location)
         {
-            _currentTurn.OnClick(location);
+            _game.CurrentInteractionState.OnClick(location);
 
             UpdateGameBoard();
         }
@@ -121,7 +119,7 @@ namespace GuiWpf.ViewModels.Gameplay
             var location = territory.Location;
             var territoryLayout = WorldMapViewModel.WorldMapViewModels.GetTerritoryLayout(location);
 
-            var interactionState = _currentTurn;
+            var interactionState = _game.CurrentInteractionState;
             territoryLayout.IsEnabled = interactionState.CanClick(territory.Location);
             territoryLayout.IsSelected = interactionState.SelectedTerritory == territory;
             _territoryViewModelUpdater.UpdateColors(territoryLayout, territory);

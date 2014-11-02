@@ -50,11 +50,20 @@ namespace RISK.Tests.Application.Gameplay
         }
 
         [Fact]
-        public void Get_current_turn()
+        public void Gets_current_interaction_state()
         {
-            var actual = _sut.CurrentTurn;
+            var actual = _sut.CurrentInteractionState;
 
             actual.Should().Be(currentInteractionState);
+        }
+
+        [Fact]
+        public void Gets_current_interaction_state_when_state_has_changed()
+        {
+            var newInteractionState = Substitute.For<IInteractionState>();
+            _currentStateController.CurrentState = newInteractionState;
+
+            _sut.CurrentInteractionState.Should().Be(newInteractionState);
         }
 
         [Fact]
@@ -62,7 +71,7 @@ namespace RISK.Tests.Application.Gameplay
         {
             _sut.EndTurn();
 
-            var actual = _sut.CurrentTurn;
+            var actual = _sut.CurrentInteractionState;
 
             actual.Should().Be(_nextInteractionState);
         }
