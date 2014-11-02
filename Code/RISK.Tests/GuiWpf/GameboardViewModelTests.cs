@@ -30,7 +30,6 @@ namespace RISK.Tests.GuiWpf
         private ITerritory _territory2;
         private IPlayer _player1;
         private IPlayer _player2;
-        private IGameOverEvaluater _gameOverEvaluater;
         private IWindowManager _windowManager;
         private IGameOverViewModelFactory _gameOverViewModelFactory;
         private ILanguageResources _languageResources;
@@ -44,7 +43,6 @@ namespace RISK.Tests.GuiWpf
             _game = Substitute.For<IGame>();
             _worldMapViewModelFactory = Substitute.For<IWorldMapViewModelFactory>();
             _territoryViewModelUpdater = Substitute.For<ITerritoryViewModelUpdater>();
-            _gameOverEvaluater = Substitute.For<IGameOverEvaluater>();
             _windowManager = Substitute.For<IWindowManager>();
             _gameOverViewModelFactory = Substitute.For<IGameOverViewModelFactory>();
             _languageResources = Substitute.For<ILanguageResources>();
@@ -98,7 +96,6 @@ namespace RISK.Tests.GuiWpf
                 _locations, 
                 _worldMapViewModelFactory, 
                 _territoryViewModelUpdater, 
-                _gameOverEvaluater, 
                 _windowManager,
                 _gameOverViewModelFactory, 
                 _dialogManager, 
@@ -146,13 +143,24 @@ namespace RISK.Tests.GuiWpf
         [Fact]
         public void When_winning_game_over_dialog_should_be_shown()
         {
-            _gameOverEvaluater.IsGameOver(_worldMap).Returns(true);
+            _game.IsGameOver().Returns(true);
             var gameOverViewModel = new GameOverViewModel(_player1);
             _gameOverViewModelFactory.Create(_player1).Returns(gameOverViewModel);
 
             Create().OnLocationClick(null);
 
             _windowManager.Received().ShowDialog(gameOverViewModel);
+        }
+
+        [Fact]
+        public void When_game_is_not_over_no_game_over_dialog_should_be_shown()
+        {
+            _game.IsGameOver().Returns(false);
+            var gameOverViewModel = new GameOverViewModel(_player1);
+
+            Create().OnLocationClick(null);
+
+            _windowManager.DidNotReceiveWithAnyArgs().ShowDialog(gameOverViewModel);
         }
 
         [Fact]

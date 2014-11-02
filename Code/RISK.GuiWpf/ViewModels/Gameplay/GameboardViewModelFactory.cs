@@ -11,7 +11,6 @@ namespace GuiWpf.ViewModels.Gameplay
         private readonly Locations _locations;
         private readonly IWorldMapViewModelFactory _worldMapViewModelFactory;
         private readonly ITerritoryViewModelUpdater _territoryViewModelUpdater;
-        private readonly IGameOverEvaluater _gameOverEvaluater;
         private readonly IWindowManager _windowManager;
         private readonly IGameOverViewModelFactory _gameOverViewModelFactory;
         private readonly IDialogManager _dialogManager;
@@ -21,7 +20,6 @@ namespace GuiWpf.ViewModels.Gameplay
             Locations locations,
             IWorldMapViewModelFactory worldMapViewModelFactory,
             ITerritoryViewModelUpdater territoryViewModelUpdater,
-            IGameOverEvaluater gameOverEvaluater,
             IWindowManager windowManager,
             IGameOverViewModelFactory gameOverViewModelFactory,
             IDialogManager dialogManager,
@@ -30,7 +28,6 @@ namespace GuiWpf.ViewModels.Gameplay
             _locations = locations;
             _worldMapViewModelFactory = worldMapViewModelFactory;
             _territoryViewModelUpdater = territoryViewModelUpdater;
-            _gameOverEvaluater = gameOverEvaluater;
             _windowManager = windowManager;
             _gameOverViewModelFactory = gameOverViewModelFactory;
             _dialogManager = dialogManager;
@@ -44,7 +41,6 @@ namespace GuiWpf.ViewModels.Gameplay
                 _locations.GetAll(),
                 _worldMapViewModelFactory,
                 _territoryViewModelUpdater,
-                _gameOverEvaluater,
                 _windowManager,
                 _gameOverViewModelFactory,
                 _dialogManager,

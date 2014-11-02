@@ -45,5 +45,10 @@ namespace RISK.Domain.GamePlaying
 
             MoveToNextPlayer();
         }
+
+        public bool IsGameOver()
+        {
+            return WorldMap.GetAllPlayersOccupyingTerritories().Count() == 1;             
+        }
     }
 }

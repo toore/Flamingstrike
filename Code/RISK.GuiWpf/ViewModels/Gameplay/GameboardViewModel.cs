@@ -13,20 +13,19 @@ namespace GuiWpf.ViewModels.Gameplay
     {
         private readonly IGame _game;
         private readonly ITerritoryViewModelUpdater _territoryViewModelUpdater;
-        private readonly IGameOverEvaluater _gameOverEvaluater;
         private readonly IWindowManager _windowManager;
         private readonly IGameOverViewModelFactory _gameOverViewModelFactory;
         private readonly IDialogManager _dialogManager;
         private readonly IEventAggregator _eventAggregator;
         private readonly List<ITerritory> _territories;
         private IPlayer _player;
+        private IInteractionState _currentTurn;
 
         public GameboardViewModel(
             IGame game,
             IEnumerable<ILocation> locations,
             IWorldMapViewModelFactory worldMapViewModelFactory,
             ITerritoryViewModelUpdater territoryViewModelUpdater,
-            IGameOverEvaluater gameOverEvaluater,
             IWindowManager windowManager,
             IGameOverViewModelFactory gameOverViewModelFactory,
             IDialogManager dialogManager,
@@ -34,7 +33,6 @@ namespace GuiWpf.ViewModels.Gameplay
         {
             _game = game;
             _territoryViewModelUpdater = territoryViewModelUpdater;
-            _gameOverEvaluater = gameOverEvaluater;
             _windowManager = windowManager;
             _gameOverViewModelFactory = gameOverViewModelFactory;
             _dialogManager = dialogManager;
@@ -65,7 +63,8 @@ namespace GuiWpf.ViewModels.Gameplay
 
         private void BeginNextPlayerTurn()
         {
-            Player = _game.CurrentTurn.Player;
+            _currentTurn = _game.CurrentTurn;
+            Player = _currentTurn.Player;
 
             UpdateGameBoard();
         }
@@ -89,18 +88,20 @@ namespace GuiWpf.ViewModels.Gameplay
 
         public void OnLocationClick(ILocation location)
         {
-            _game.CurrentTurn.OnClick(location);
+            _currentTurn.OnClick(location);
 
             UpdateGameBoard();
         }
 
         private void UpdateGameBoard()
         {
-            UpdateWorldMap();
-
-            if (_gameOverEvaluater.IsGameOver(_game.WorldMap))
+            if (_game.IsGameOver())
             {
                 _windowManager.ShowDialog(_gameOverViewModelFactory.Create(Player));
+            }
+            else
+            {
+                UpdateWorldMap();
             }
         }
 
@@ -120,7 +121,7 @@ namespace GuiWpf.ViewModels.Gameplay
             var location = territory.Location;
             var territoryLayout = WorldMapViewModel.WorldMapViewModels.GetTerritoryLayout(location);
 
-            var interactionState = _game.CurrentTurn;
+            var interactionState = _currentTurn;
             territoryLayout.IsEnabled = interactionState.CanClick(territory.Location);
             territoryLayout.IsSelected = interactionState.SelectedTerritory == territory;
             _territoryViewModelUpdater.UpdateColors(territoryLayout, territory);

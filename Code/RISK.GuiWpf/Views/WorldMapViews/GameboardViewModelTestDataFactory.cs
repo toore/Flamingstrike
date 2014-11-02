@@ -42,7 +42,7 @@ namespace GuiWpf.Views.WorldMapViews
 
             IInteractionStateFactory interactionStateFactory = new InteractionStateFactory(null);
             var game = new Game(interactionStateFactory, new StateControllerFactory(),  playerProvider, worldMap, new CardFactory());
-            var gameboardViewModel = new GameboardViewModel(game, locations.GetAll(), worldMapViewModelFactory, territoryViewModelUpdater, new FakeGameOverEvaluater(), null, new GameOverViewModelFactory(), null, null);
+            var gameboardViewModel = new GameboardViewModel(game, locations.GetAll(), worldMapViewModelFactory, territoryViewModelUpdater, null, new GameOverViewModelFactory(), null, null);
 
             return gameboardViewModel;
         }
@@ -50,14 +50,6 @@ namespace GuiWpf.Views.WorldMapViews
         public ILocation SelectLocation(ILocationSelectorParameter locationSelectorParameter)
         {
             return locationSelectorParameter.AvailableLocations.First();
-        }
-
-        private class FakeGameOverEvaluater : IGameOverEvaluater
-        {
-            public bool IsGameOver(IWorldMap worldMap)
-            {
-                return false;
-            }
         }
     }
 }

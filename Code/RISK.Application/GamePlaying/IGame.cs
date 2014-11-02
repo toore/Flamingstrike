@@ -5,5 +5,6 @@
         IWorldMap WorldMap { get; }
         IInteractionState CurrentTurn { get; }
         void EndTurn();
+        bool IsGameOver();
     }
 }

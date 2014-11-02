@@ -88,5 +88,27 @@ namespace RISK.Tests.Application.Gameplay
 
             _currentPlayer.DidNotReceiveWithAnyArgs().AddCard(null);
         }
+
+        [Fact]
+        public void Is_game_over_when_only_one_player_has_territories()
+        {
+            _worldMap.GetAllPlayersOccupyingTerritories()
+                .Returns(new[] { Substitute.For<IPlayer>() });
+
+            _sut.IsGameOver().Should().BeTrue();
+        }
+
+        [Fact]
+        public void Is_not_game_over_when_two_players_have_territories()
+        {
+            _worldMap.GetAllPlayersOccupyingTerritories()
+                .Returns(new[]
+                {
+                    Substitute.For<IPlayer>(),
+                    Substitute.For<IPlayer>()
+                });
+
+            _sut.IsGameOver().Should().BeFalse();
+        }
     }
 }
