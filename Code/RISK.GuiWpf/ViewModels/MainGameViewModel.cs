@@ -27,7 +27,7 @@ namespace GuiWpf.ViewModels
 
         public string DisplayName
         {
-            get { return "CONQUER THE WORLD"; }
+            get { return "CONQUER THE WORLD - YARC (Yet Another Risk Clone)!"; }
             set { }
         }
 
