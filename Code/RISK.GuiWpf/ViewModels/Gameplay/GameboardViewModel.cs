@@ -18,13 +18,10 @@ namespace GuiWpf.ViewModels.Gameplay
         private readonly IGameOverViewModelFactory _gameOverViewModelFactory;
         private readonly IDialogManager _dialogManager;
         private readonly IEventAggregator _eventAggregator;
-        private readonly ITurnPhaseFactory _turnPhaseFactory;
         private IInteractionState _interactionState;
         private readonly List<ITerritory> _territories;
         private IPlayer _player;
         private readonly IWorldMap _worldMap;
-        private bool _canFortify = true;
-        private ITurnPhase _phase;
 
         public GameboardViewModel(
             IGame game,
@@ -35,8 +32,7 @@ namespace GuiWpf.ViewModels.Gameplay
             IWindowManager windowManager,
             IGameOverViewModelFactory gameOverViewModelFactory,
             IDialogManager dialogManager,
-            IEventAggregator eventAggregator,
-            ITurnPhaseFactory turnPhaseFactory)
+            IEventAggregator eventAggregator)
         {
             _game = game;
             _territoryViewModelUpdater = territoryViewModelUpdater;
@@ -45,7 +41,6 @@ namespace GuiWpf.ViewModels.Gameplay
             _gameOverViewModelFactory = gameOverViewModelFactory;
             _dialogManager = dialogManager;
             _eventAggregator = eventAggregator;
-            _turnPhaseFactory = turnPhaseFactory;
 
             _worldMap = _game.GetWorldMap();
 
@@ -73,7 +68,6 @@ namespace GuiWpf.ViewModels.Gameplay
         private void BeginNextPlayerTurn()
         {
             _interactionState = _game.GetNextTurn();
-            _phase = _turnPhaseFactory.CreateAttackPhase(_interactionState);
             Player = _interactionState.Player;
 
             UpdateGame();
@@ -98,7 +92,7 @@ namespace GuiWpf.ViewModels.Gameplay
 
         public void OnLocationClick(ILocation location)
         {
-            _phase.OnLocationClick(location);
+            _interactionState.OnClick(location);
 
             UpdateGame();
         }
@@ -129,110 +123,15 @@ namespace GuiWpf.ViewModels.Gameplay
             var location = territory.Location;
             var territoryLayout = WorldMapViewModel.WorldMapViewModels.GetTerritoryLayout(location);
 
-            territoryLayout.IsEnabled = CanClick(territory);
+            territoryLayout.IsEnabled = _interactionState.CanClick(territory.Location);
             territoryLayout.IsSelected = _interactionState.SelectedTerritory == territory;
             _territoryViewModelUpdater.UpdateColors(territoryLayout, territory);
-        }
-
-        private bool CanClick(ITerritory territory)
-        {
-            var location = territory.Location;
-            return _interactionState.CanAttack(location) || CanSelect(location);
-        }
-
-        private bool CanSelect(ILocation location)
-        {
-            if (_interactionState.IsTerritorySelected)
-            {
-                return _interactionState.SelectedTerritory.Location == location;
-            }
-
-            return _interactionState.CanSelect(location);
-        }
-
-        public bool CanFortify()
-        {
-            return _canFortify;
-        }
-
-        public void Fortify()
-        {
-            _canFortify = false;
-            _phase = _turnPhaseFactory.CreateFortifyingPhase(_interactionState);
         }
 
         private void UpdateTerritoryText(ITerritory territory)
         {
             var territoryTextViewModel = WorldMapViewModel.WorldMapViewModels.GetTerritoryTextViewModel(territory.Location);
             territoryTextViewModel.Armies = territory.Armies;
-        }
-    }
-
-    public interface ITurnPhase
-    {
-        void OnLocationClick(ILocation location);
-    }
-
-    public class AttackPhase : ITurnPhase
-    {
-        private readonly IInteractionState _interactionState;
-
-        public AttackPhase(IInteractionState interactionState)
-        {
-            _interactionState = interactionState;
-        }
-
-        public void OnLocationClick(ILocation location)
-        {
-            if (_interactionState.CanSelect(location))
-            {
-                _interactionState.Select(location);
-            }
-            else if (_interactionState.CanAttack(location))
-            {
-                _interactionState.Attack(location);
-            }
-        }
-    }
-
-    public class FortifyingPhase : ITurnPhase
-    {
-        private readonly IInteractionState _interactionState;
-
-        public FortifyingPhase(IInteractionState interactionState)
-        {
-            _interactionState = interactionState;
-        }
-
-        public void OnLocationClick(ILocation location)
-        {
-            if (_interactionState.CanFortify(location))
-            {
-                _interactionState.Fortify(location, 10);
-            }
-            else
-            {
-
-            }
-        }
-    }
-
-    public interface ITurnPhaseFactory
-    {
-        AttackPhase CreateAttackPhase(IInteractionState interactionState);
-        FortifyingPhase CreateFortifyingPhase(IInteractionState interactionState);
-    }
-
-    public class TurnPhaseFactory : ITurnPhaseFactory
-    {
-        public AttackPhase CreateAttackPhase(IInteractionState interactionState)
-        {
-            return new AttackPhase(interactionState);
-        }
-
-        public FortifyingPhase CreateFortifyingPhase(IInteractionState interactionState)
-        {
-            return new FortifyingPhase(interactionState);
         }
     }
 }

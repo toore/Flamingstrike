@@ -18,9 +18,7 @@ namespace GuiWpf.Services
 
         public string GetString(string key)
         {
-            var provideValue = Resources.ResourceManager.GetString(key);
-
-            return provideValue;
+            return Resources.ResourceManager.GetString(key);
         }
     }
 }

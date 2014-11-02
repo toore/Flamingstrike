@@ -33,17 +33,31 @@ namespace RISK.Domain.GamePlaying
         public IPlayer Player { get; private set; }
         public ITerritory SelectedTerritory { get; private set; }
 
-        public bool IsTerritorySelected
+        public bool CanClick(ILocation location)
         {
-            get { return true; }
+            return CanSelect(location)
+                   ||
+                   CanAttack(location);
         }
 
-        public bool CanSelect(ILocation location)
+        public void OnClick(ILocation location)
+        {
+            if (CanSelect(location))
+            {
+                Select(location);
+            }
+            else if (CanAttack(location))
+            {
+                Attack(location);
+            }
+        }
+
+        private bool CanSelect(ILocation location)
         {
             return location == SelectedTerritory.Location;
         }
 
-        public void Select(ILocation location)
+        private void Select(ILocation location)
         {
             if (CanSelect(location))
             {
@@ -51,13 +65,8 @@ namespace RISK.Domain.GamePlaying
             }
         }
 
-        public bool CanAttack(ILocation location)
+        private bool CanAttack(ILocation location)
         {
-            if (!IsTerritorySelected)
-            {
-                return false;
-            }
-
             var territoryToAttack = _worldMap.GetTerritory(location);
             var isTerritoryOccupiedByEnemy = territoryToAttack.Occupant != Player;
             var isBordering = SelectedTerritory.Location.IsBordering(territoryToAttack.Location);
@@ -72,7 +81,7 @@ namespace RISK.Domain.GamePlaying
             return canAttack;
         }
 
-        public void Attack(ILocation location)
+        private void Attack(ILocation location)
         {
             var canAttack = CanAttack(location);
 
@@ -101,20 +110,20 @@ namespace RISK.Domain.GamePlaying
             return territoryToAttack.Occupant == Player;
         }
 
-        public bool CanFortify(ILocation location)
-        {
-            return SelectedTerritory.Location.IsBordering(location) 
-                && 
-                _worldMap.GetTerritory(location).Occupant == Player;
-        }
+        //public bool CanFortify(ILocation location)
+        //{
+        //    return SelectedTerritory.Location.IsBordering(location) 
+        //        && 
+        //        _worldMap.GetTerritory(location).Occupant == Player;
+        //}
 
-        public void Fortify(ILocation location, int armies)
-        {
-            _worldMap.GetTerritory(location).Armies += armies;
-            SelectedTerritory.Armies -= armies;
+        //public void Fortify(ILocation location, int armies)
+        //{
+        //    _worldMap.GetTerritory(location).Armies += armies;
+        //    SelectedTerritory.Armies -= armies;
 
-            _stateController.CurrentState = _interactionStateFactory.CreateFortifiedState(Player, _worldMap);
-        }
+        //    _stateController.CurrentState = _interactionStateFactory.CreateFortifiedState(Player, _worldMap);
+        //}
 
         public void EndTurn()
         {

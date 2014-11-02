@@ -16,7 +16,6 @@ namespace GuiWpf.ViewModels.Gameplay
         private readonly IGameOverViewModelFactory _gameOverViewModelFactory;
         private readonly IDialogManager _dialogManager;
         private readonly IEventAggregator _eventAggregator;
-        private readonly ITurnPhaseFactory _turnPhaseFactory;
 
         public GameboardViewModelFactory(
             Locations locations,
@@ -26,8 +25,7 @@ namespace GuiWpf.ViewModels.Gameplay
             IWindowManager windowManager,
             IGameOverViewModelFactory gameOverViewModelFactory,
             IDialogManager dialogManager,
-            IEventAggregator eventAggregator,
-            ITurnPhaseFactory turnPhaseFactory)
+            IEventAggregator eventAggregator)
         {
             _locations = locations;
             _worldMapViewModelFactory = worldMapViewModelFactory;
@@ -37,7 +35,6 @@ namespace GuiWpf.ViewModels.Gameplay
             _gameOverViewModelFactory = gameOverViewModelFactory;
             _dialogManager = dialogManager;
             _eventAggregator = eventAggregator;
-            _turnPhaseFactory = turnPhaseFactory;
         }
 
         public IGameboardViewModel Create(IGame game)
@@ -51,8 +48,7 @@ namespace GuiWpf.ViewModels.Gameplay
                 _windowManager,
                 _gameOverViewModelFactory,
                 _dialogManager,
-                _eventAggregator,
-                _turnPhaseFactory);
+                _eventAggregator);
         }
     }
 }

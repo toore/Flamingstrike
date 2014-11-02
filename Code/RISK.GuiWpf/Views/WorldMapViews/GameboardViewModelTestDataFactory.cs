@@ -43,7 +43,7 @@ namespace GuiWpf.Views.WorldMapViews
             var alternateGameSetup = new AlternateGameSetup(playerProvider, locations, new RandomSorter(new RandomWrapper()), new WorldMapFactory(locations), new InitialArmyCount());
             IInteractionStateFactory interactionStateFactory = new InteractionStateFactory(null, null, null);
             var game = new Game(interactionStateFactory, playerProvider, alternateGameSetup, this);
-            var gameboardViewModel = new GameboardViewModel(game, locations.GetAll(), worldMapViewModelFactory, territoryViewModelUpdater, new FakeGameOverEvaluater(), null, new GameOverViewModelFactory(), null, null, null);
+            var gameboardViewModel = new GameboardViewModel(game, locations.GetAll(), worldMapViewModelFactory, territoryViewModelUpdater, new FakeGameOverEvaluater(), null, new GameOverViewModelFactory(), null, null);
 
             return gameboardViewModel;
         }

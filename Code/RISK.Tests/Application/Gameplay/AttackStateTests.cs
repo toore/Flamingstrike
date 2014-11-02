@@ -6,8 +6,15 @@ using Xunit;
 
 namespace RISK.Tests.Application.Gameplay
 {
-    public class AttackStateTests : InteractionStateTestsBase
+    public class AttackStateTests
     {
+        private readonly IInteractionState _sut;
+        private readonly IPlayer _player;
+        private readonly IBattleCalculator _battleCalculator;
+        private readonly StateController _stateController;
+        private readonly IInteractionStateFactory _interactionStateFactory;
+        private readonly IWorldMap _worldMap;
+
         private readonly ITerritory _selectedTerritory;
         private readonly ILocation _selectedLocation;
         private readonly ILocation _borderingLocationOccupiedByOtherPlayer;
@@ -15,23 +22,29 @@ namespace RISK.Tests.Application.Gameplay
         private readonly Location _borderingLocationOccupiedByPlayer;
         private readonly Territory _borderingTerritoryOccupiedByOtherPlayer;
         private readonly Location _remoteLocationOccupiedByPlayer;
-        private Territory _borderingTerritoryOccupiedByPlayer;
+        private readonly Territory _borderingTerritoryOccupiedByPlayer;
 
         public AttackStateTests()
         {
+            _stateController = new StateController();
+            _interactionStateFactory = Substitute.For<IInteractionStateFactory>();
+            _player = Substitute.For<IPlayer>();
+            _worldMap = Substitute.For<IWorldMap>();
+            _battleCalculator = Substitute.For<IBattleCalculator>();
+
             _borderingLocationOccupiedByPlayer = Make.Location.Build();
             _borderingTerritoryOccupiedByPlayer = Make.Territory
                 .Location(_borderingLocationOccupiedByPlayer)
-                .Occupant(Player)
+                .Occupant(_player)
                 .Build();
-            WorldMap.GetTerritory(_borderingLocationOccupiedByPlayer).Returns(_borderingTerritoryOccupiedByPlayer);
+            _worldMap.GetTerritory(_borderingLocationOccupiedByPlayer).Returns(_borderingTerritoryOccupiedByPlayer);
 
             _remoteLocationOccupiedByPlayer = Make.Location.Build();
             var remoteTerritoryOccupiedByPlayer = Make.Territory
                 .Location(_remoteLocationOccupiedByPlayer)
-                .Occupant(Player)
+                .Occupant(_player)
                 .Build();
-            WorldMap.GetTerritory(_remoteLocationOccupiedByPlayer).Returns(remoteTerritoryOccupiedByPlayer);
+            _worldMap.GetTerritory(_remoteLocationOccupiedByPlayer).Returns(remoteTerritoryOccupiedByPlayer);
 
             var otherPlayer = Substitute.For<IPlayer>();
             
@@ -40,14 +53,14 @@ namespace RISK.Tests.Application.Gameplay
                 .Location(_borderingLocationOccupiedByOtherPlayer)
                 .Occupant(otherPlayer)
                 .Build();
-            WorldMap.GetTerritory(_borderingLocationOccupiedByOtherPlayer).Returns(_borderingTerritoryOccupiedByOtherPlayer);
+            _worldMap.GetTerritory(_borderingLocationOccupiedByOtherPlayer).Returns(_borderingTerritoryOccupiedByOtherPlayer);
 
             _remoteLocationOccupiedByOtherPlayer = Make.Location.Build();
             var remoteTerritoryOccupiedByOtherPlayer = Make.Territory
                 .Location(_remoteLocationOccupiedByOtherPlayer)
                 .Occupant(otherPlayer)
                 .Build();
-            WorldMap.GetTerritory(_remoteLocationOccupiedByOtherPlayer).Returns(remoteTerritoryOccupiedByOtherPlayer);
+            _worldMap.GetTerritory(_remoteLocationOccupiedByOtherPlayer).Returns(remoteTerritoryOccupiedByOtherPlayer);
 
             _selectedLocation = Make.Location
                 .WithBorder(_borderingLocationOccupiedByOtherPlayer)
@@ -55,42 +68,42 @@ namespace RISK.Tests.Application.Gameplay
                 .Build();
             _selectedTerritory = Make.Territory
                 .Location(_selectedLocation)
-                .Occupant(Player)
+                .Occupant(_player)
                 .Build();
             
-            Sut = new AttackState(StateController, InteractionStateFactory, BattleCalculator, CardFactory, Player, WorldMap, _selectedTerritory);
+            _sut = new AttackState(_stateController, _interactionStateFactory, _battleCalculator, Substitute.For<ICardFactory>(), _player, _worldMap, _selectedTerritory);
         }
 
         [Fact]
-        public void Can_select_location_selected()
+        public void Can_click_on_location_already_selected()
         {
-            Sut.CanSelect(_selectedLocation).Should().BeTrue();
+            _sut.CanClick(_selectedLocation).Should().BeTrue();
         }
 
         [Fact]
         public void Can_not_select_not_selected_location()
         {
-            Sut.CanSelect(Substitute.For<ILocation>()).Should().BeFalse();
-            Sut.CanSelect(_borderingLocationOccupiedByOtherPlayer).Should().BeFalse();
+            _sut.CanClick(Substitute.For<ILocation>()).Should().BeFalse();
+            _sut.CanClick(_borderingLocationOccupiedByOtherPlayer).Should().BeFalse();
         }
 
         [Fact]
         public void Selecting_selected_location_enters_select_state()
         {
             var selectState = Substitute.For<IInteractionState>();
-            InteractionStateFactory.CreateSelectState(Player, WorldMap).Returns(selectState);
+            _interactionStateFactory.CreateSelectState(_player, _worldMap).Returns(selectState);
 
-            Sut.Select(_selectedLocation);
+            _sut.OnClick(_selectedLocation);
 
-            StateController.CurrentState.Should().Be(selectState);
+            _stateController.CurrentState.Should().Be(selectState);
         }
 
         [Fact]
-        public void Can_not_attack_bordering_location_when_having_one_army()
+        public void Can_not_click_bordering_location_when_having_one_army()
         {
             _selectedTerritory.Armies = 1;
 
-            Sut.CanAttack(_borderingLocationOccupiedByOtherPlayer).Should().BeFalse();
+            _sut.CanClick(_borderingLocationOccupiedByOtherPlayer).Should().BeFalse();
         }
 
         [Fact]
@@ -98,7 +111,7 @@ namespace RISK.Tests.Application.Gameplay
         {
             _selectedTerritory.Armies = 2;
 
-            Sut.CanAttack(_remoteLocationOccupiedByOtherPlayer).Should().BeFalse();
+            _sut.CanClick(_remoteLocationOccupiedByOtherPlayer).Should().BeFalse();
         }
 
         [Fact]
@@ -106,7 +119,7 @@ namespace RISK.Tests.Application.Gameplay
         {
             _selectedTerritory.Armies = 2;
 
-            Sut.CanAttack(_borderingLocationOccupiedByPlayer).Should().BeFalse();
+            _sut.CanClick(_borderingLocationOccupiedByPlayer).Should().BeFalse();
         }
 
         [Fact]
@@ -114,7 +127,7 @@ namespace RISK.Tests.Application.Gameplay
         {
             _selectedTerritory.Armies = 2;
 
-            Sut.CanAttack(_borderingLocationOccupiedByOtherPlayer).Should().BeTrue();
+            _sut.CanClick(_borderingLocationOccupiedByOtherPlayer).Should().BeTrue();
         }
 
         [Fact]
@@ -122,27 +135,27 @@ namespace RISK.Tests.Application.Gameplay
         {
             _selectedTerritory.Armies = 2;
 
-            Sut.Attack(_borderingLocationOccupiedByOtherPlayer);
+            _sut.OnClick(_borderingLocationOccupiedByOtherPlayer);
 
-            BattleCalculator.Received().Attack(_selectedTerritory, _borderingTerritoryOccupiedByOtherPlayer);
+            _battleCalculator.Received().Attack(_selectedTerritory, _borderingTerritoryOccupiedByOtherPlayer);
         }
 
         [Fact]
         public void After_successfull_attack_attack_enters_attack_state()
         {
             var expected = Substitute.For<IInteractionState>();
-            InteractionStateFactory.CreateAttackState(Player, WorldMap, _borderingTerritoryOccupiedByOtherPlayer).Returns(expected);
+            _interactionStateFactory.CreateAttackState(_player, _worldMap, _borderingTerritoryOccupiedByOtherPlayer).Returns(expected);
             _selectedTerritory.Armies = 2;
             AttackerWins();
 
-            Sut.Attack(_borderingLocationOccupiedByOtherPlayer);
+            _sut.OnClick(_borderingLocationOccupiedByOtherPlayer);
 
-            StateController.CurrentState.Should().Be(expected);
+            _stateController.CurrentState.Should().Be(expected);
         }
 
         private void AttackerWins()
         {
-            BattleCalculator
+            _battleCalculator
                 .When(x => x.Attack(_selectedTerritory, _borderingTerritoryOccupiedByOtherPlayer))
                 .Do(x => _borderingTerritoryOccupiedByOtherPlayer.Occupant = _selectedTerritory.Occupant);
         }
@@ -151,52 +164,52 @@ namespace RISK.Tests.Application.Gameplay
         public void Player_will_be_awarded_a_card_when_turn_ends()
         {
             _selectedTerritory.Armies = 2;
-            BattleCalculator
+            _battleCalculator
                 .When(x => x.Attack(_selectedTerritory, _borderingTerritoryOccupiedByOtherPlayer))
                 .Do(x => _borderingTerritoryOccupiedByOtherPlayer.Occupant = _selectedTerritory.Occupant);
 
-            Sut.Attack(_borderingLocationOccupiedByOtherPlayer);
-            Sut.EndTurn();
+            _sut.OnClick(_borderingLocationOccupiedByOtherPlayer);
+            _sut.EndTurn();
 
-            StateController.PlayerShouldReceiveCardWhenTurnEnds.Should().BeTrue();
+            _stateController.PlayerShouldReceiveCardWhenTurnEnds.Should().BeTrue();
         }
 
-        [Fact]
-        public void Can_not_fortify()
-        {
-            Sut.CanFortify(_selectedLocation).Should().BeFalse();
-            Sut.CanFortify(_borderingLocationOccupiedByOtherPlayer).Should().BeFalse();
-            Sut.CanFortify(_remoteLocationOccupiedByOtherPlayer).Should().BeFalse();
-            Sut.CanFortify(_remoteLocationOccupiedByPlayer).Should().BeFalse();
-        }
+        //[Fact]
+        //public void Can_not_fortify()
+        //{
+        //    _sut.CanFortify(_selectedLocation).Should().BeFalse();
+        //    _sut.CanFortify(_borderingLocationOccupiedByOtherPlayer).Should().BeFalse();
+        //    _sut.CanFortify(_remoteLocationOccupiedByOtherPlayer).Should().BeFalse();
+        //    _sut.CanFortify(_remoteLocationOccupiedByPlayer).Should().BeFalse();
+        //}
 
-        [Fact]
-        public void Can_fortify_to_bordering_territory_occupied_by_player()
-        {
-            Sut.CanFortify(_borderingLocationOccupiedByPlayer).Should().BeTrue();
-        }
+        //[Fact]
+        //public void Can_fortify_to_bordering_territory_occupied_by_player()
+        //{
+        //    _sut.CanFortify(_borderingLocationOccupiedByPlayer).Should().BeTrue();
+        //}
 
-        [Fact]
-        public void Fortifies_three_army_to_bordering_territory()
-        {
-            _selectedTerritory.Armies = 4;
-            _borderingTerritoryOccupiedByPlayer.Armies = 10;
+        //[Fact]
+        //public void Fortifies_three_army_to_bordering_territory()
+        //{
+        //    _selectedTerritory.Armies = 4;
+        //    _borderingTerritoryOccupiedByPlayer.Armies = 10;
 
-            Sut.Fortify(_borderingLocationOccupiedByPlayer, 3);
+        //    _sut.Fortify(_borderingLocationOccupiedByPlayer, 3);
 
-            _borderingTerritoryOccupiedByPlayer.Armies.Should().Be(13);
-            _selectedTerritory.Armies.Should().Be(1);
-        }
+        //    _borderingTerritoryOccupiedByPlayer.Armies.Should().Be(13);
+        //    _selectedTerritory.Armies.Should().Be(1);
+        //}
 
-        [Fact]
-        public void Fortify_enters_fortified_state()
-        {
-            var fortifiedState = Substitute.For<IInteractionState>();
-            InteractionStateFactory.CreateFortifiedState(Player, WorldMap).Returns(fortifiedState);
+        //[Fact]
+        //public void Fortify_enters_fortified_state()
+        //{
+        //    var fortifiedState = Substitute.For<IInteractionState>();
+        //    _interactionStateFactory.CreateFortifiedState(_player, _worldMap).Returns(fortifiedState);
 
-            Sut.Fortify(_borderingLocationOccupiedByPlayer, 1);
+        //    _sut.Fortify(_borderingLocationOccupiedByPlayer, 1);
 
-            StateController.CurrentState.Should().Be(fortifiedState);
-        }
+        //    _stateController.CurrentState.Should().Be(fortifiedState);
+        //}
     }
 }

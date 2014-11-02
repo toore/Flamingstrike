@@ -1,5 +1,4 @@
-﻿using System;
-using RISK.Domain.Entities;
+﻿using RISK.Domain.Entities;
 
 namespace RISK.Domain.GamePlaying
 {
@@ -26,45 +25,20 @@ namespace RISK.Domain.GamePlaying
 
         public IPlayer Player { get; private set; }
 
-        public bool IsTerritorySelected
-        {
-            get { return SelectedTerritory != null; }
-        }
-
-        public bool CanSelect(ILocation location)
+        public bool CanClick(ILocation location)
         {
             return _worldMap.GetTerritory(location).Occupant == Player;
         }
 
-        public void Select(ILocation location)
+        public void OnClick(ILocation location)
         {
-            if (!CanSelect(location))
+            if (!CanClick(location))
             {
                 return;
             }
 
             var territoryToSelect = _worldMap.GetTerritory(location);
             _stateController.CurrentState = _interactionStateFactory.CreateAttackState(Player, _worldMap, territoryToSelect);
-        }
-
-        public bool CanAttack(ILocation location)
-        {
-            return false;
-        }
-
-        public void Attack(ILocation location)
-        {
-            throw new NotSupportedException();
-        }
-
-        public bool CanFortify(ILocation location)
-        {
-            return false;
-        }
-
-        public void Fortify(ILocation location, int armies)
-        {
-            throw new NotSupportedException();
         }
 
         public void EndTurn()

@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using Caliburn.Micro;
 using FluentAssertions;
@@ -145,7 +146,8 @@ namespace RISK.Tests.Application.Specifications
 
         private void player_1_fortifies()
         {
-            _gameboardViewModel.Fortify();
+            throw new NotImplementedException();
+            //_gameboardViewModel.Fortify();
         }
 
         private GamePlaySpec a_started_game_with_two_players()

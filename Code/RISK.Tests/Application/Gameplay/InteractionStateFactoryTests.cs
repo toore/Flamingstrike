@@ -6,7 +6,7 @@ using Xunit;
 
 namespace RISK.Tests.Application.Gameplay
 {
-    public class TurnStateFactoryTests
+    public class InteractionStateFactoryTests
     {
         private readonly StateController _stateController;
         private readonly IBattleCalculator _battleCalculator;
@@ -15,7 +15,7 @@ namespace RISK.Tests.Application.Gameplay
         private IPlayer _player;
         private IWorldMap _worldMap;
 
-        public TurnStateFactoryTests()
+        public InteractionStateFactoryTests()
         {
             _stateController = new StateController();
             _battleCalculator = Substitute.For<IBattleCalculator>();
@@ -34,7 +34,7 @@ namespace RISK.Tests.Application.Gameplay
 
             actual.Should().BeOfType<SelectState>();
             actual.Player.Should().Be(_player);
-            actual.IsTerritorySelected.Should().BeFalse();
+            actual.SelectedTerritory.Should().BeNull();
         }
 
         [Fact]
@@ -45,7 +45,6 @@ namespace RISK.Tests.Application.Gameplay
 
             actual.Should().BeOfType<AttackState>();
             actual.Player.Should().Be(_player);
-            actual.IsTerritorySelected.Should().BeTrue();
             actual.SelectedTerritory.Should().Be(selectedTerritory);
         }
     }

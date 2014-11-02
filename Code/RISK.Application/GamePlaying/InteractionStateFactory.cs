@@ -25,9 +25,9 @@ namespace RISK.Domain.GamePlaying
             return new AttackState(_stateController, this, _battleCalculator, _cardFactory, player, worldMap, selectedTerritory);
         }
 
-        public IInteractionState CreateFortifiedState(IPlayer player, IWorldMap worldMap)
-        {
-            return new FortifiedState(_stateController, player);
-        }
+        //public IInteractionState CreateFortifiedState(IPlayer player, IWorldMap worldMap)
+        //{
+        //    return new FortifiedState(_stateController, player);
+        //}
     }
 }

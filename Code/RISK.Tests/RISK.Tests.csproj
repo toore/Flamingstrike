@@ -90,7 +90,7 @@
     <Compile Include="Application\Gameplay\Setup\SetupArmiesExtensionsTests.cs" />
     <Compile Include="Application\Gameplay\TerritoryExtensionsTests.cs" />
     <Compile Include="Application\Gameplay\TerritoryTests.cs" />
-    <Compile Include="Application\Gameplay\TurnStateFactoryTests.cs" />
+    <Compile Include="Application\Gameplay\InteractionStateFactoryTests.cs" />
     <Compile Include="Application\Gameplay\InteractionStateTestsBase.cs" />
     <Compile Include="Application\Gameplay\AttackStateTests.cs" />
     <Compile Include="Application\Gameplay\SelectStateTests.cs" />

@@ -36,7 +36,6 @@ namespace RISK.Tests.GuiWpf
         private ILanguageResources _languageResources;
         private IDialogManager _dialogManager;
         private IEventAggregator _gameEventAggregator;
-        private ITurnPhaseFactory _turnPhaseFactory;
         private ILocation[] _locations;
         private IWorldMapViewModelFactory _worldMapViewModelFactory;
 
@@ -90,14 +89,20 @@ namespace RISK.Tests.GuiWpf
             _worldMapViewModel.WorldMapViewModels.Add(_textViewModel2);
 
             _worldMapViewModelFactory.Create(Arg.Is(_worldMap), Arg.Any<Action<ILocation>>()).Returns(_worldMapViewModel);
-
-            _turnPhaseFactory = Substitute.For<ITurnPhaseFactory>();
         }
 
         private GameboardViewModel Create()
         {
-            return new GameboardViewModel(_game, _locations, _worldMapViewModelFactory, _territoryViewModelUpdater, _gameOverEvaluater, _windowManager,
-                _gameOverViewModelFactory, _dialogManager, _gameEventAggregator, _turnPhaseFactory);
+            return new GameboardViewModel(
+                _game, 
+                _locations, 
+                _worldMapViewModelFactory, 
+                _territoryViewModelUpdater, 
+                _gameOverEvaluater, 
+                _windowManager,
+                _gameOverViewModelFactory, 
+                _dialogManager, 
+                _gameEventAggregator);
         }
 
         [Fact]
@@ -126,71 +131,43 @@ namespace RISK.Tests.GuiWpf
         }
 
         [Fact]
-        public void OnLocationClick_commands_select()
-        {
-            _turnPhaseFactory.CreateAttackPhase(_initialInteractionState).Returns(new AttackPhase(_initialInteractionState));
-            _initialInteractionState.CanSelect(_location1).Returns(true);
-
-            Create().OnLocationClick(_location1);
-
-            _initialInteractionState.Received().Select(_location1);
-        }
-
-        [Fact]
-        public void OnLocationClick_commands_attack()
-        {
-            _turnPhaseFactory.CreateAttackPhase(_initialInteractionState).Returns(new AttackPhase(_initialInteractionState));
-            _initialInteractionState.CanSelect(_location2).Returns(false);
-            _initialInteractionState.CanAttack(_location2).Returns(true);
-
-            var sut = Create();
-            sut.OnLocationClick(_location1);
-            sut.OnLocationClick(_location2);
-
-            _initialInteractionState.Received().Attack(_location2);
-        }
-
-        [Fact]
-        public void OnLocationClick_selects_territory()
-        {
-            _turnPhaseFactory.CreateAttackPhase(_initialInteractionState).Returns(new AttackPhase(_initialInteractionState));
-            _initialInteractionState.CanSelect(_location1).Returns(true);
-
-            Create().OnLocationClick(_location1);
-
-            _layoutViewModel1.IsSelected = true;
-        }
-
-        [Fact]
-        public void Select_location_can_select_location_2()
-        {
-            _turnPhaseFactory.CreateAttackPhase(_initialInteractionState).Returns(new AttackPhase(_initialInteractionState));
-            _initialInteractionState.CanAttack(_location1).Returns(false);
-            _initialInteractionState.CanAttack(_location2).Returns(true);
-
-            Create().OnLocationClick(_location1);
-
-            _layoutViewModel1.IsEnabled.Should().BeFalse("location 1 can not be selected");
-            _layoutViewModel2.IsEnabled.Should().BeTrue("location 2 can be selected");
-        }
-
-        [Fact]
         public void Ends_turn_and_gets_next_turn()
         {
-            _turnPhaseFactory.CreateAttackPhase(_initialInteractionState).Returns(new AttackPhase(_initialInteractionState));
             var sut = Create();
             _game.ClearReceivedCalls();
 
             sut.EndTurn();
 
-            _initialInteractionState.Received(1).EndTurn();
-            _game.Received(1).GetNextTurn();
+            //_initialInteractionState.Received(1).EndTurn();
+            //_game.Received(1).GetNextTurn();
+            sut.Player.Should().Be(_player2);
+        }
+
+        [Fact]
+        public void Player_should_receive_card_when_turn_ends()
+        {
+            throw new NotImplementedException();
+            //StateController.PlayerShouldReceiveCardWhenTurnEnds = true;
+
+            //Sut.EndTurn();
+
+            //Player.ReceivedWithAnyArgs().AddCard(null);
+        }
+
+        [Fact]
+        public void Player_should_not_receive_card_when_turn_ends()
+        {
+            throw new NotImplementedException();
+            //StateController.PlayerShouldReceiveCardWhenTurnEnds = false;
+
+            //Sut.EndTurn();
+
+            //Player.DidNotReceiveWithAnyArgs().AddCard(null);
         }
 
         [Fact]
         public void When_winning_game_over_dialog_should_be_shown()
         {
-            _turnPhaseFactory.CreateAttackPhase(_initialInteractionState).Returns(new AttackPhase(_initialInteractionState));
             _gameOverEvaluater.IsGameOver(_worldMap).Returns(true);
             var gameOverViewModel = new GameOverViewModel(_player1);
             _gameOverViewModelFactory.Create(_player1).Returns(gameOverViewModel);
@@ -209,35 +186,13 @@ namespace RISK.Tests.GuiWpf
         }
 
         [Fact]
-        public void Can_fortify()
+        public void Interaction_state_receives_on_click_when_location_is_clicked()
         {
-            Create().CanFortify().Should().BeTrue();
+            Create().OnLocationClick(_location1);
+
+            _initialInteractionState.Received().OnClick(_location1);
         }
 
-        [Fact]
-        public void Can_not_fortify_when_already_fortifying()
-        {
-            var sut = Create();
-            sut.Fortify();
-
-            sut.CanFortify().Should().BeFalse();
-        }
-
-        [Fact]
-        public void Fortifies()
-        {
-            _turnPhaseFactory.CreateFortifyingPhase(_initialInteractionState).Returns(new FortifyingPhase(_initialInteractionState));
-            _initialInteractionState.CanSelect(_location1).Returns(true);
-            _initialInteractionState.CanFortify(_location2).Returns(true);
-
-            var sut = Create();
-            sut.Fortify();
-
-            sut.OnLocationClick(_location1);
-            sut.OnLocationClick(_location2);
-
-            _initialInteractionState.Received(1).Fortify(_location2, 10);
-        }
 
         private ITerritoryLayoutViewModel StubLayoutViewModel(ILocation location)
         {
