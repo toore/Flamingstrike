@@ -51,7 +51,6 @@
   <ItemGroup>
     <Compile Include="Entities\Card.cs" />
     <Compile Include="Entities\Territory.cs" />
-    <Compile Include="Entities\Location.cs" />
     <Compile Include="Entities\Continent.cs" />
     <Compile Include="Entities\Player.cs" />
     <Compile Include="Extensions\EnumerableExtensions.cs" />
@@ -78,7 +77,7 @@
     <Compile Include="GamePlaying\IRandomSorter.cs" />
     <Compile Include="GamePlaying\IRandomWrapper.cs" />
     <Compile Include="GamePlaying\IInteractionStateFactory.cs" />
-    <Compile Include="GamePlaying\IWorldMapFactory.cs" />
+    <Compile Include="GamePlaying\ITerritoriesFactory.cs" />
     <Compile Include="GamePlaying\Setup\ILocationSelectorParameter.cs" />
     <Compile Include="GamePlaying\Setup\PlayerDuringGameSetup.cs" />
     <Compile Include="GamePlaying\RandomSorter.cs" />
@@ -89,16 +88,14 @@
     <Compile Include="GamePlaying\AttackState.cs" />
     <Compile Include="GamePlaying\InteractionStateFactory.cs" />
     <Compile Include="GamePlaying\StateControllerFactory.cs" />
-    <Compile Include="GamePlaying\WorldMapFactory.cs" />
-    <Compile Include="Locations.cs" />
+    <Compile Include="GamePlaying\TerritoriesFactory.cs" />
+    <Compile Include="Territories.cs" />
     <Compile Include="Continents.cs" />
     <Compile Include="GamePlaying\IGame.cs" />
     <Compile Include="GamePlaying\IInteractionState.cs" />
     <Compile Include="Players.cs" />
     <Compile Include="GamePlaying\SelectState.cs" />
-    <Compile Include="GamePlaying\WorldMap.cs" />
     <Compile Include="GamePlaying\Game.cs" />
-    <Compile Include="GamePlaying\IWorldMap.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using RISK.Domain;
 using RISK.Domain.Entities;
 
 namespace GuiWpf.Services
@@ -8,56 +7,56 @@ namespace GuiWpf.Services
     public class TerritoryColorsFactory : ITerritoryColorsFactory
     {
         private readonly IColorService _colorService;
-        private readonly Dictionary<ILocation, Func<ITerritoryColors>> _colors;
+        private readonly Dictionary<ITerritory, Func<ITerritoryColors>> _colors;
 
-        public TerritoryColorsFactory(Locations locations, IColorService colorService)
+        public TerritoryColorsFactory(RISK.Domain.Territories territories, IColorService colorService)
         {
             _colorService = colorService;
 
-            _colors = new Dictionary<ILocation, Func<ITerritoryColors>>
+            _colors = new Dictionary<ITerritory, Func<ITerritoryColors>>
             {
-                { locations.Alaska, () => colorService.NorthAmericaColors },
-                { locations.Alberta, () => colorService.NorthAmericaColors },
-                { locations.CentralAmerica, () => colorService.NorthAmericaColors },
-                { locations.EasternUnitedStates, () => colorService.NorthAmericaColors },
-                { locations.Greenland, () => colorService.NorthAmericaColors },
-                { locations.NorthwestTerritory, () => colorService.NorthAmericaColors },
-                { locations.Ontario, () => colorService.NorthAmericaColors },
-                { locations.Quebec, () => colorService.NorthAmericaColors },
-                { locations.WesternUnitedStates, () => colorService.NorthAmericaColors },
-                { locations.Argentina, () => colorService.SouthAmericaColors },
-                { locations.Brazil, () => colorService.SouthAmericaColors },
-                { locations.Peru, () => colorService.SouthAmericaColors },
-                { locations.Venezuela, () => colorService.SouthAmericaColors },
-                { locations.GreatBritain, () => colorService.EuropeColors },
-                { locations.Iceland, () => colorService.EuropeColors },
-                { locations.NorthernEurope, () => colorService.EuropeColors },
-                { locations.Scandinavia, () => colorService.EuropeColors },
-                { locations.SouthernEurope, () => colorService.EuropeColors },
-                { locations.Ukraine, () => colorService.EuropeColors },
-                { locations.WesternEurope, () => colorService.EuropeColors },
-                { locations.Congo, () => colorService.AfricaColors },
-                { locations.EastAfrica, () => colorService.AfricaColors },
-                { locations.Egypt, () => colorService.AfricaColors },
-                { locations.Madagascar, () => colorService.AfricaColors },
-                { locations.NorthAfrica, () => colorService.AfricaColors },
-                { locations.SouthAfrica, () => colorService.AfricaColors },
-                { locations.Afghanistan, () => colorService.AsiaColors },
-                { locations.China, () => colorService.AsiaColors },
-                { locations.India, () => colorService.AsiaColors },
-                { locations.Irkutsk, () => colorService.AsiaColors },
-                { locations.Japan, () => colorService.AsiaColors },
-                { locations.Kamchatka, () => colorService.AsiaColors },
-                { locations.MiddleEast, () => colorService.AsiaColors },
-                { locations.Mongolia, () => colorService.AsiaColors },
-                { locations.Siam, () => colorService.AsiaColors },
-                { locations.Siberia, () => colorService.AsiaColors },
-                { locations.Ural, () => colorService.AsiaColors },
-                { locations.Yakutsk, () => colorService.AsiaColors },
-                { locations.EasternAustralia, () => colorService.AustraliaColors },
-                { locations.Indonesia, () => colorService.AustraliaColors },
-                { locations.NewGuinea, () => colorService.AustraliaColors },
-                { locations.WesternAustralia, () => colorService.AustraliaColors },
+                { territories.Alaska, () => colorService.NorthAmericaColors },
+                { territories.Alberta, () => colorService.NorthAmericaColors },
+                { territories.CentralAmerica, () => colorService.NorthAmericaColors },
+                { territories.EasternUnitedStates, () => colorService.NorthAmericaColors },
+                { territories.Greenland, () => colorService.NorthAmericaColors },
+                { territories.NorthwestTerritory, () => colorService.NorthAmericaColors },
+                { territories.Ontario, () => colorService.NorthAmericaColors },
+                { territories.Quebec, () => colorService.NorthAmericaColors },
+                { territories.WesternUnitedStates, () => colorService.NorthAmericaColors },
+                { territories.Argentina, () => colorService.SouthAmericaColors },
+                { territories.Brazil, () => colorService.SouthAmericaColors },
+                { territories.Peru, () => colorService.SouthAmericaColors },
+                { territories.Venezuela, () => colorService.SouthAmericaColors },
+                { territories.GreatBritain, () => colorService.EuropeColors },
+                { territories.Iceland, () => colorService.EuropeColors },
+                { territories.NorthernEurope, () => colorService.EuropeColors },
+                { territories.Scandinavia, () => colorService.EuropeColors },
+                { territories.SouthernEurope, () => colorService.EuropeColors },
+                { territories.Ukraine, () => colorService.EuropeColors },
+                { territories.WesternEurope, () => colorService.EuropeColors },
+                { territories.Congo, () => colorService.AfricaColors },
+                { territories.EastAfrica, () => colorService.AfricaColors },
+                { territories.Egypt, () => colorService.AfricaColors },
+                { territories.Madagascar, () => colorService.AfricaColors },
+                { territories.NorthAfrica, () => colorService.AfricaColors },
+                { territories.SouthAfrica, () => colorService.AfricaColors },
+                { territories.Afghanistan, () => colorService.AsiaColors },
+                { territories.China, () => colorService.AsiaColors },
+                { territories.India, () => colorService.AsiaColors },
+                { territories.Irkutsk, () => colorService.AsiaColors },
+                { territories.Japan, () => colorService.AsiaColors },
+                { territories.Kamchatka, () => colorService.AsiaColors },
+                { territories.MiddleEast, () => colorService.AsiaColors },
+                { territories.Mongolia, () => colorService.AsiaColors },
+                { territories.Siam, () => colorService.AsiaColors },
+                { territories.Siberia, () => colorService.AsiaColors },
+                { territories.Ural, () => colorService.AsiaColors },
+                { territories.Yakutsk, () => colorService.AsiaColors },
+                { territories.EasternAustralia, () => colorService.AustraliaColors },
+                { territories.Indonesia, () => colorService.AustraliaColors },
+                { territories.NewGuinea, () => colorService.AustraliaColors },
+                { territories.WesternAustralia, () => colorService.AustraliaColors },
             };
         }
 
@@ -68,7 +67,7 @@ namespace GuiWpf.Services
                 return _colorService.GetPlayerTerritoryColors(territory.Occupant);
             }
 
-            return _colors[territory.Location]();
+            return _colors[territory]();
         }
     }
 }

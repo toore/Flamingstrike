@@ -23,7 +23,7 @@ namespace GuiWpf.Infrastructure
                     s.WithDefaultConventions();
                 });
 
-                x.For<Locations>().Singleton();
+                x.For<RISK.Domain.Territories>().Singleton();
 
                 x.For<Players>().Singleton();
                 x.For<IPlayers>().Singleton().Use<Players>();

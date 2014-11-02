@@ -4,6 +4,6 @@ namespace GuiWpf.Territories
 {
     public interface ITerritoryGuiFactory
     {
-        ITerritoryGraphics Create(ILocation location);
+        ITerritoryGraphics Create(ITerritory location);
     }
 }

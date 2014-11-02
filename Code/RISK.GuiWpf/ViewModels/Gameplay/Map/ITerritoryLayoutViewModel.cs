@@ -5,7 +5,7 @@ namespace GuiWpf.ViewModels.Gameplay.Map
 {
     public interface ITerritoryLayoutViewModel : IWorldMapItemViewModel
     {
-        ILocation Location { get; }
+        ITerritory Location { get; }
         
         Color NormalStrokeColor { get; set; }
         Color NormalFillColor { get; set; }

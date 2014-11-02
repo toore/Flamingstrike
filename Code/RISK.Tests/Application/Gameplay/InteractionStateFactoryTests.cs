@@ -8,27 +8,23 @@ namespace RISK.Tests.Application.Gameplay
 {
     public class InteractionStateFactoryTests
     {
-        private readonly StateController _stateController;
         private readonly IBattleCalculator _battleCalculator;
-        private InteractionStateFactory _sut;
-        private IPlayer _player;
-        private IWorldMap _worldMap;
+        private readonly InteractionStateFactory _sut;
+        private readonly IPlayer _player;
 
         public InteractionStateFactoryTests()
         {
-            _stateController = new StateController();
             _battleCalculator = Substitute.For<IBattleCalculator>();
 
             _sut = new InteractionStateFactory(_battleCalculator);
-
+            
             _player = Substitute.For<IPlayer>();
-            _worldMap = Substitute.For<IWorldMap>();
         }
 
         [Fact]
         public void Creates_select_state()
         {
-            var actual = _sut.CreateSelectState(new StateController(), _player, _worldMap);
+            var actual = _sut.CreateSelectState(new StateController(), _player);
 
             actual.Should().BeOfType<SelectState>();
             actual.Player.Should().Be(_player);
@@ -39,7 +35,7 @@ namespace RISK.Tests.Application.Gameplay
         public void Creates_attack_state()
         {
             var selectedTerritory = Substitute.For<ITerritory>();
-            var actual = _sut.CreateAttackState(new StateController(), _player, _worldMap, selectedTerritory);
+            var actual = _sut.CreateAttackState(new StateController(), _player, selectedTerritory);
 
             actual.Should().BeOfType<AttackState>();
             actual.Player.Should().Be(_player);

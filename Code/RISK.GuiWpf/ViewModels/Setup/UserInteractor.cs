@@ -6,22 +6,22 @@ namespace GuiWpf.ViewModels.Setup
 {
     public interface IUserInteractor
     {
-        ILocation GetLocation(ILocationSelectorParameter locationSelector);
-        void SelectLocation(ILocation location);
+        ITerritory GetLocation(ILocationSelectorParameter locationSelector);
+        void SelectLocation(ITerritory location);
     }
 
     public class UserInteractor : IUserInteractor
     {
-        private ILocation _selectedLocation;
+        private ITerritory _selectedLocation;
         private readonly AutoResetEvent _locationHasBeenSelected = new AutoResetEvent(false);
 
-        public ILocation GetLocation(ILocationSelectorParameter locationSelector)
+        public ITerritory GetLocation(ILocationSelectorParameter locationSelector)
         {
             _locationHasBeenSelected.WaitOne();
             return _selectedLocation;
         }
 
-        public void SelectLocation(ILocation location)
+        public void SelectLocation(ITerritory location)
         {
             _selectedLocation = location;
             _locationHasBeenSelected.Set();

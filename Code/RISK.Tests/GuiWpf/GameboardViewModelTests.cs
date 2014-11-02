@@ -16,7 +16,7 @@ namespace RISK.Tests.GuiWpf
     {
         private readonly IGame _game;
         private readonly WorldMapViewModel _worldMapViewModel;
-        private readonly ILocation _location1;
+        private readonly ITerritory _territory1;
         private readonly ITerritoryViewModelUpdater _territoryViewModelUpdater;
         private readonly IInteractionState _initialInteractionState;
         private readonly IInteractionState _nextInteractionState;
@@ -26,7 +26,7 @@ namespace RISK.Tests.GuiWpf
         private readonly IGameOverViewModelFactory _gameOverViewModelFactory;
         private readonly IDialogManager _dialogManager;
         private readonly IEventAggregator _gameEventAggregator;
-        private readonly ILocation[] _locations;
+        private readonly ITerritory[] _locations;
         private readonly IWorldMapViewModelFactory _worldMapViewModelFactory;
 
         public GameboardViewModelTests()
@@ -41,20 +41,13 @@ namespace RISK.Tests.GuiWpf
 
             LanguageResources.Instance = Substitute.For<ILanguageResources>();
 
-            _location1 = Substitute.For<ILocation>();
-            var location2 = Substitute.For<ILocation>();
+            _territory1 = Substitute.For<ITerritory>();
+            var territory2 = Substitute.For<ITerritory>();
             _locations = new[]
             {
-                _location1,
-                location2
+                _territory1,
+                territory2
             };
-
-            var worldMap = Substitute.For<IWorldMap>();
-            var territory1 = new Territory(_location1);
-            var territory2 = new Territory(location2);
-            worldMap.GetTerritory(_location1).Returns(territory1);
-            worldMap.GetTerritory(location2).Returns(territory2);
-            _game.WorldMap.Returns(worldMap);
 
             _currentPlayer = Substitute.For<IPlayer>();
             _nextPlayer = Substitute.For<IPlayer>();
@@ -64,10 +57,10 @@ namespace RISK.Tests.GuiWpf
             _nextInteractionState = Substitute.For<IInteractionState>();
             _nextInteractionState.Player.Returns(_nextPlayer);
 
-            var layoutViewModel1 = StubLayoutViewModel(_location1);
-            var textViewModel1 = StubTextViewModel(_location1);
-            var layoutViewModel2 = StubLayoutViewModel(location2);
-            var textViewModel2 = StubTextViewModel(location2);
+            var layoutViewModel1 = StubLayoutViewModel(_territory1);
+            var textViewModel1 = StubTextViewModel(_territory1);
+            var layoutViewModel2 = StubLayoutViewModel(territory2);
+            var textViewModel2 = StubTextViewModel(territory2);
 
             _worldMapViewModel = new WorldMapViewModel();
             _worldMapViewModel.WorldMapViewModels.Add(layoutViewModel1);
@@ -75,7 +68,7 @@ namespace RISK.Tests.GuiWpf
             _worldMapViewModel.WorldMapViewModels.Add(layoutViewModel2);
             _worldMapViewModel.WorldMapViewModels.Add(textViewModel2);
 
-            _worldMapViewModelFactory.Create(Arg.Is(worldMap), Arg.Any<Action<ILocation>>()).Returns(_worldMapViewModel);
+            //_worldMapViewModelFactory.Create(Arg.Is(worldMap), Arg.Any<Action<ITerritory>>()).Returns(_worldMapViewModel);
         }
 
         private GameboardViewModel Create()
@@ -173,23 +166,23 @@ namespace RISK.Tests.GuiWpf
         {
             _game.CurrentInteractionState.Returns(_initialInteractionState);
 
-            Create().OnLocationClick(_location1);
+            Create().OnLocationClick(_territory1);
 
-            _initialInteractionState.Received().OnClick(_location1);
+            _initialInteractionState.Received().OnClick(_territory1);
         }
 
 
-        private ITerritoryLayoutViewModel StubLayoutViewModel(ILocation location)
+        private ITerritoryLayoutViewModel StubLayoutViewModel(ITerritory location)
         {
             var viewModel = Substitute.For<ITerritoryLayoutViewModel>();
             viewModel.Location.Returns(location);
             return viewModel;
         }
 
-        private ITerritoryTextViewModel StubTextViewModel(ILocation location)
+        private ITerritoryTextViewModel StubTextViewModel(ITerritory location)
         {
             var viewModel = Substitute.For<ITerritoryTextViewModel>();
-            viewModel.Location.Returns(location);
+            viewModel.Territory.Returns(location);
             return viewModel;
         }
     }

@@ -1,59 +1,60 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using RISK.Domain.Entities;
 
 namespace RISK.Domain
 {
-    public class Locations
+    public class Territories
     {
-        public Locations()
+        public Territories()
         {
-            var alaska = new Location("ALASKA", Continent.NorthAmerica);
-            var alberta = new Location("ALBERTA", Continent.NorthAmerica);
-            var centralAmerica = new Location("CENTRAL_AMERICA", Continent.NorthAmerica);
-            var easternUnitedStates = new Location("EASTERN_UNITED_STATES", Continent.NorthAmerica);
-            var greenland = new Location("GREENLAND", Continent.NorthAmerica);
-            var northwestTerritory = new Location("NORTHWEST_TERRITORY", Continent.NorthAmerica);
-            var ontario = new Location("ONTARIO", Continent.NorthAmerica);
-            var quebec = new Location("QUEBEC", Continent.NorthAmerica);
-            var westernUnitedStates = new Location("WESTERN_UNITED_STATES", Continent.NorthAmerica);
+            var alaska = new Territory("ALASKA", Continent.NorthAmerica);
+            var alberta = new Territory("ALBERTA", Continent.NorthAmerica);
+            var centralAmerica = new Territory("CENTRAL_AMERICA", Continent.NorthAmerica);
+            var easternUnitedStates = new Territory("EASTERN_UNITED_STATES", Continent.NorthAmerica);
+            var greenland = new Territory("GREENLAND", Continent.NorthAmerica);
+            var northwestTerritory = new Territory("NORTHWEST_TERRITORY", Continent.NorthAmerica);
+            var ontario = new Territory("ONTARIO", Continent.NorthAmerica);
+            var quebec = new Territory("QUEBEC", Continent.NorthAmerica);
+            var westernUnitedStates = new Territory("WESTERN_UNITED_STATES", Continent.NorthAmerica);
 
-            var argentina = new Location("ARGENTINA", Continent.SouthAmerica);
-            var brazil = new Location("BRAZIL", Continent.SouthAmerica);
-            var peru = new Location("PERU", Continent.SouthAmerica);
-            var venezuela = new Location("VENEZUELA", Continent.SouthAmerica);
+            var argentina = new Territory("ARGENTINA", Continent.SouthAmerica);
+            var brazil = new Territory("BRAZIL", Continent.SouthAmerica);
+            var peru = new Territory("PERU", Continent.SouthAmerica);
+            var venezuela = new Territory("VENEZUELA", Continent.SouthAmerica);
 
-            var greatBritain = new Location("GREAT_BRITAIN", Continent.Europe);
-            var iceland = new Location("ICELAND", Continent.Europe);
-            var northernEurope = new Location("NORTHERN_EUROPE", Continent.Europe);
-            var scandinavia = new Location("SCANDINAVIA", Continent.Europe);
-            var southernEurope = new Location("SOUTHERN_EUROPE", Continent.Europe);
-            var ukraine = new Location("UKRAINE", Continent.Europe);
-            var westernEurope = new Location("WESTERN_EUROPE", Continent.Europe);
+            var greatBritain = new Territory("GREAT_BRITAIN", Continent.Europe);
+            var iceland = new Territory("ICELAND", Continent.Europe);
+            var northernEurope = new Territory("NORTHERN_EUROPE", Continent.Europe);
+            var scandinavia = new Territory("SCANDINAVIA", Continent.Europe);
+            var southernEurope = new Territory("SOUTHERN_EUROPE", Continent.Europe);
+            var ukraine = new Territory("UKRAINE", Continent.Europe);
+            var westernEurope = new Territory("WESTERN_EUROPE", Continent.Europe);
 
-            var congo = new Location("CONGO", Continent.Africa);
-            var eastAfrica = new Location("EAST_AFRICA", Continent.Africa);
-            var egypt = new Location("EGYPT", Continent.Africa);
-            var madagascar = new Location("MADAGASCAR", Continent.Africa);
-            var northAfrica = new Location("NORTH_AFRICA", Continent.Africa);
-            var southAfrica = new Location("SOUTH_AFRICA", Continent.Africa);
+            var congo = new Territory("CONGO", Continent.Africa);
+            var eastAfrica = new Territory("EAST_AFRICA", Continent.Africa);
+            var egypt = new Territory("EGYPT", Continent.Africa);
+            var madagascar = new Territory("MADAGASCAR", Continent.Africa);
+            var northAfrica = new Territory("NORTH_AFRICA", Continent.Africa);
+            var southAfrica = new Territory("SOUTH_AFRICA", Continent.Africa);
 
-            var afghanistan = new Location("AFGHANISTAN", Continent.Asia);
-            var china = new Location("CHINA", Continent.Asia);
-            var india = new Location("INDIA", Continent.Asia);
-            var irkutsk = new Location("IRKUTSK", Continent.Asia);
-            var japan = new Location("JAPAN", Continent.Asia);
-            var kamchatka = new Location("KAMCHATKA", Continent.Asia);
-            var middleEast = new Location("MIDDLE_EAST", Continent.Asia);
-            var mongolia = new Location("MONGOLIA", Continent.Asia);
-            var siam = new Location("SIAM", Continent.Asia);
-            var siberia = new Location("SIBERIA", Continent.Asia);
-            var ural = new Location("URAL", Continent.Asia);
-            var yakutsk = new Location("YAKUTSK", Continent.Asia);
+            var afghanistan = new Territory("AFGHANISTAN", Continent.Asia);
+            var china = new Territory("CHINA", Continent.Asia);
+            var india = new Territory("INDIA", Continent.Asia);
+            var irkutsk = new Territory("IRKUTSK", Continent.Asia);
+            var japan = new Territory("JAPAN", Continent.Asia);
+            var kamchatka = new Territory("KAMCHATKA", Continent.Asia);
+            var middleEast = new Territory("MIDDLE_EAST", Continent.Asia);
+            var mongolia = new Territory("MONGOLIA", Continent.Asia);
+            var siam = new Territory("SIAM", Continent.Asia);
+            var siberia = new Territory("SIBERIA", Continent.Asia);
+            var ural = new Territory("URAL", Continent.Asia);
+            var yakutsk = new Territory("YAKUTSK", Continent.Asia);
 
-            var easternAustralia = new Location("EASTERN_AUSTRALIA", Continent.Australia);
-            var indonesia = new Location("INDONESIA", Continent.Australia);
-            var newGuinea = new Location("NEW_GUINEA", Continent.Australia);
-            var westernAustralia = new Location("WESTERN_AUSTRALIA", Continent.Australia);
+            var easternAustralia = new Territory("EASTERN_AUSTRALIA", Continent.Australia);
+            var indonesia = new Territory("INDONESIA", Continent.Australia);
+            var newGuinea = new Territory("NEW_GUINEA", Continent.Australia);
+            var westernAustralia = new Territory("WESTERN_AUSTRALIA", Continent.Australia);
 
             alaska.AddBorders(alberta, northwestTerritory, kamchatka);
             alberta.AddBorders(alaska, northwestTerritory, ontario, westernUnitedStates);
@@ -152,7 +153,7 @@ namespace RISK.Domain
             WesternAustralia = westernAustralia;
         }
 
-        public IEnumerable<ILocation> GetAll()
+        public IEnumerable<ITerritory> GetAll()
         {
             return new[]
                 {
@@ -201,52 +202,68 @@ namespace RISK.Domain
                 };
         }
 
-        public ILocation Alaska { get; private set; }
-        public ILocation Alberta { get; private set; }
-        public ILocation CentralAmerica { get; private set; }
-        public ILocation EasternUnitedStates { get; private set; }
-        public ILocation Greenland { get; private set; }
-        public ILocation NorthwestTerritory { get; private set; }
-        public ILocation Ontario { get; private set; }
-        public ILocation Quebec { get; private set; }
-        public ILocation WesternUnitedStates { get; private set; }
+        public ITerritory Alaska { get; private set; }
+        public ITerritory Alberta { get; private set; }
+        public ITerritory CentralAmerica { get; private set; }
+        public ITerritory EasternUnitedStates { get; private set; }
+        public ITerritory Greenland { get; private set; }
+        public ITerritory NorthwestTerritory { get; private set; }
+        public ITerritory Ontario { get; private set; }
+        public ITerritory Quebec { get; private set; }
+        public ITerritory WesternUnitedStates { get; private set; }
 
-        public ILocation Argentina { get; private set; }
-        public ILocation Brazil { get; private set; }
-        public ILocation Peru { get; private set; }
-        public ILocation Venezuela { get; private set; }
+        public ITerritory Argentina { get; private set; }
+        public ITerritory Brazil { get; private set; }
+        public ITerritory Peru { get; private set; }
+        public ITerritory Venezuela { get; private set; }
 
-        public ILocation GreatBritain { get; private set; }
-        public ILocation Iceland { get; private set; }
-        public ILocation NorthernEurope { get; private set; }
-        public ILocation Scandinavia { get; private set; }
-        public ILocation SouthernEurope { get; private set; }
-        public ILocation Ukraine { get; private set; }
-        public ILocation WesternEurope { get; private set; }
+        public ITerritory GreatBritain { get; private set; }
+        public ITerritory Iceland { get; private set; }
+        public ITerritory NorthernEurope { get; private set; }
+        public ITerritory Scandinavia { get; private set; }
+        public ITerritory SouthernEurope { get; private set; }
+        public ITerritory Ukraine { get; private set; }
+        public ITerritory WesternEurope { get; private set; }
 
-        public ILocation Congo { get; private set; }
-        public ILocation EastAfrica { get; private set; }
-        public ILocation Egypt { get; private set; }
-        public ILocation Madagascar { get; private set; }
-        public ILocation NorthAfrica { get; private set; }
-        public ILocation SouthAfrica { get; private set; }
+        public ITerritory Congo { get; private set; }
+        public ITerritory EastAfrica { get; private set; }
+        public ITerritory Egypt { get; private set; }
+        public ITerritory Madagascar { get; private set; }
+        public ITerritory NorthAfrica { get; private set; }
+        public ITerritory SouthAfrica { get; private set; }
 
-        public ILocation Afghanistan { get; private set; }
-        public ILocation China { get; private set; }
-        public ILocation India { get; private set; }
-        public ILocation Irkutsk { get; private set; }
-        public ILocation Japan { get; private set; }
-        public ILocation Kamchatka { get; private set; }
-        public ILocation MiddleEast { get; private set; }
-        public ILocation Mongolia { get; private set; }
-        public ILocation Siam { get; private set; }
-        public ILocation Siberia { get; private set; }
-        public ILocation Ural { get; private set; }
-        public ILocation Yakutsk { get; private set; }
+        public ITerritory Afghanistan { get; private set; }
+        public ITerritory China { get; private set; }
+        public ITerritory India { get; private set; }
+        public ITerritory Irkutsk { get; private set; }
+        public ITerritory Japan { get; private set; }
+        public ITerritory Kamchatka { get; private set; }
+        public ITerritory MiddleEast { get; private set; }
+        public ITerritory Mongolia { get; private set; }
+        public ITerritory Siam { get; private set; }
+        public ITerritory Siberia { get; private set; }
+        public ITerritory Ural { get; private set; }
+        public ITerritory Yakutsk { get; private set; }
 
-        public ILocation EasternAustralia { get; private set; }
-        public ILocation Indonesia { get; private set; }
-        public ILocation NewGuinea { get; private set; }
-        public ILocation WesternAustralia { get; private set; }
+        public ITerritory EasternAustralia { get; private set; }
+        public ITerritory Indonesia { get; private set; }
+        public ITerritory NewGuinea { get; private set; }
+        public ITerritory WesternAustralia { get; private set; }
+
+        public IEnumerable<ITerritory> GetTerritoriesOccupiedByPlayer(IPlayer player)
+        {
+            return GetAll()
+                .Where(x => x.Occupant == player)
+                .ToList();
+        }
+
+        public IEnumerable<IPlayer> GetAllPlayersOccupyingTerritories()
+        {
+            return GetAll()
+                .Where(x => x.IsOccupied())
+                .Select(x => x.Occupant)
+                .Distinct()
+                .ToList();
+        }
     }
 }

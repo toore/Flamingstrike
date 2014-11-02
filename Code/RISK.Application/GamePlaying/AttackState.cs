@@ -7,64 +7,60 @@ namespace RISK.Domain.GamePlaying
         private readonly StateController _stateController;
         private readonly IInteractionStateFactory _interactionStateFactory;
         private readonly IBattleCalculator _battleCalculator;
-        private readonly IWorldMap _worldMap;
 
         public AttackState(
             StateController stateController, 
             IInteractionStateFactory interactionStateFactory, 
             IBattleCalculator battleCalculator, 
             IPlayer player, 
-            IWorldMap worldMap, 
             ITerritory selectedTerritory)
         {
             Player = player;
             _stateController = stateController;
             _interactionStateFactory = interactionStateFactory;
             _battleCalculator = battleCalculator;
-            _worldMap = worldMap;
             SelectedTerritory = selectedTerritory;
         }
 
         public IPlayer Player { get; private set; }
         public ITerritory SelectedTerritory { get; private set; }
 
-        public bool CanClick(ILocation location)
+        public bool CanClick(ITerritory territory)
         {
-            return CanSelect(location)
+            return CanSelect(territory)
                    ||
-                   CanAttack(location);
+                   CanAttack(territory);
         }
 
-        public void OnClick(ILocation location)
+        public void OnClick(ITerritory territory)
+        {
+            if (CanSelect(territory))
+            {
+                Select(territory);
+            }
+            else if (CanAttack(territory))
+            {
+                Attack(territory);
+            }
+        }
+
+        private bool CanSelect(ITerritory location)
+        {
+            return location == SelectedTerritory;
+        }
+
+        private void Select(ITerritory location)
         {
             if (CanSelect(location))
             {
-                Select(location);
-            }
-            else if (CanAttack(location))
-            {
-                Attack(location);
+                _stateController.CurrentState = _interactionStateFactory.CreateSelectState(_stateController, Player);
             }
         }
 
-        private bool CanSelect(ILocation location)
+        private bool CanAttack(ITerritory territory)
         {
-            return location == SelectedTerritory.Location;
-        }
-
-        private void Select(ILocation location)
-        {
-            if (CanSelect(location))
-            {
-                _stateController.CurrentState = _interactionStateFactory.CreateSelectState(_stateController, Player, _worldMap);
-            }
-        }
-
-        private bool CanAttack(ILocation location)
-        {
-            var territoryToAttack = _worldMap.GetTerritory(location);
-            var isTerritoryOccupiedByEnemy = territoryToAttack.Occupant != Player;
-            var isBordering = SelectedTerritory.Location.IsBordering(territoryToAttack.Location);
+            var isTerritoryOccupiedByEnemy = territory.Occupant != Player;
+            var isBordering = SelectedTerritory.IsBordering(territory);
             var hasArmiesToAttackWith = SelectedTerritory.HasArmiesAvailableForAttack();
 
             var canAttack = isBordering
@@ -76,26 +72,20 @@ namespace RISK.Domain.GamePlaying
             return canAttack;
         }
 
-        private void Attack(ILocation location)
+        private void Attack(ITerritory territory)
         {
-            var canAttack = CanAttack(location);
+            var canAttack = CanAttack(territory);
 
             if (!canAttack)
             {
                 return;
             }
 
-            var territory = _worldMap.GetTerritory(location);
-            Attack(territory);
-        }
-
-        private void Attack(ITerritory territory)
-        {
             _battleCalculator.Attack(SelectedTerritory, territory);
 
             if (HasPlayerOccupiedTerritory(territory))
             {
-                _stateController.CurrentState = _interactionStateFactory.CreateAttackState(_stateController, Player, _worldMap, territory);
+                _stateController.CurrentState = _interactionStateFactory.CreateAttackState(_stateController, Player, territory);
                 _stateController.PlayerShouldReceiveCardWhenTurnEnds = true;
             }
         }

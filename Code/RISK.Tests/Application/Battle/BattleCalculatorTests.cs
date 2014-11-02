@@ -44,15 +44,9 @@ namespace RISK.Tests.Application.Battle
         {
             StubDices(attackingArmies - 1, defendingArmies, attackerCasualties, defenderCasualties);
 
-            var attackerTerritory = new Territory(Make.Location.Build())
-            {
-                Armies = attackingArmies
-            };
+            var attackerTerritory = Make.Territory.Armies(attackingArmies).Build();
             attackerTerritory.Occupant = AttackCases.Attacker;
-            var defenderTerritory = new Territory(Make.Location.Build())
-            {
-                Armies = defendingArmies
-            };
+            var defenderTerritory = Make.Territory.Armies(defendingArmies).Build();
             defenderTerritory.Occupant = AttackCases.Defender;
 
             _battleCalculator.Attack(attackerTerritory, defenderTerritory);

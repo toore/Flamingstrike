@@ -5,7 +5,7 @@ namespace GuiWpf.ViewModels.Gameplay.Map
 {
     public class TerritoryTextViewModel : ViewModelBase, ITerritoryTextViewModel
     {
-        public ILocation Location { get; set; }
+        public ITerritory Territory { get; set; }
 
         public Point Position { get; set; }
         public string TerritoryName { get; set; }

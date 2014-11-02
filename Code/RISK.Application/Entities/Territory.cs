@@ -1,10 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace RISK.Domain.Entities
 {
     public interface ITerritory
     {
-        ILocation Location { get; }
+        string Name { get; }
+        Continent Continent { get; }
+        bool IsBordering(ITerritory location);
+
         IPlayer Occupant { get; set; }
         int Armies { get; set; }
 
@@ -15,12 +19,29 @@ namespace RISK.Domain.Entities
 
     public class Territory : ITerritory
     {
-        public Territory(ILocation location)
+        private readonly List<ITerritory> _borders;
+
+        public Territory(string name, Continent continent)
         {
-            Location = location;
+            Name = name;
+            Continent = continent;
+            _borders = new List<ITerritory>();
         }
 
-        public ILocation Location { get; private set; }
+        public string Name { get; private set; }
+        public Continent Continent { get; private set; }
+
+        public bool IsBordering(ITerritory location)
+        {
+            return _borders.Contains(location);
+        }
+
+        public void AddBorders(params ITerritory[] locations)
+        {
+            _borders.AddRange(locations);
+        }
+
+
         public IPlayer Occupant { get; set; }
         public int Armies { get; set; }
 

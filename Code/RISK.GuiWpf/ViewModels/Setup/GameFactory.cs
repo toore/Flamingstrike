@@ -26,9 +26,9 @@ namespace GuiWpf.ViewModels.Setup
 
         public IGame Create(IGameInitializerLocationSelector gameInitializerLocationSelector)
         {
-            var worldMap = _alternateGameSetup.Initialize(gameInitializerLocationSelector);
+            var territories = _alternateGameSetup.Initialize(gameInitializerLocationSelector);
 
-            return new Game(_interactionStateFactory, new StateControllerFactory() , _players, worldMap, _cardFactory);
+            return new Game(_interactionStateFactory, new StateControllerFactory() , _players, territories, _cardFactory);
         }
     }
 }

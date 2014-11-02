@@ -8,7 +8,7 @@ namespace GuiWpf.ViewModels.Gameplay
 {
     public class GameboardViewModelFactory : IGameboardViewModelFactory
     {
-        private readonly Locations _locations;
+        private readonly RISK.Domain.Territories _territories;
         private readonly IWorldMapViewModelFactory _worldMapViewModelFactory;
         private readonly ITerritoryViewModelUpdater _territoryViewModelUpdater;
         private readonly IWindowManager _windowManager;
@@ -17,7 +17,7 @@ namespace GuiWpf.ViewModels.Gameplay
         private readonly IEventAggregator _eventAggregator;
 
         public GameboardViewModelFactory(
-            Locations locations,
+            RISK.Domain.Territories territories,
             IWorldMapViewModelFactory worldMapViewModelFactory,
             ITerritoryViewModelUpdater territoryViewModelUpdater,
             IWindowManager windowManager,
@@ -25,7 +25,7 @@ namespace GuiWpf.ViewModels.Gameplay
             IDialogManager dialogManager,
             IEventAggregator eventAggregator)
         {
-            _locations = locations;
+            _territories = territories;
             _worldMapViewModelFactory = worldMapViewModelFactory;
             _territoryViewModelUpdater = territoryViewModelUpdater;
             _windowManager = windowManager;
@@ -38,7 +38,7 @@ namespace GuiWpf.ViewModels.Gameplay
         {
             return new GameboardViewModel(
                 game,
-                _locations.GetAll(),
+                _territories.GetAll(),
                 _worldMapViewModelFactory,
                 _territoryViewModelUpdater,
                 _windowManager,

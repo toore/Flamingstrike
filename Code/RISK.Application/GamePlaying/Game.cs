@@ -14,9 +14,9 @@ namespace RISK.Domain.GamePlaying
         private IPlayer _currentPlayer;
         private StateController _stateController;
 
-        public Game(IInteractionStateFactory interactionStateFactory, IStateControllerFactory stateControllerFactory, IPlayers players, IWorldMap worldMap, ICardFactory cardFactory)
+        public Game(IInteractionStateFactory interactionStateFactory, IStateControllerFactory stateControllerFactory, IPlayers players, Territories territories, ICardFactory cardFactory)
         {
-            WorldMap = worldMap;
+            Territories = territories;
             _interactionStateFactory = interactionStateFactory;
             _stateControllerFactory = stateControllerFactory;
             _cardFactory = cardFactory;
@@ -25,7 +25,7 @@ namespace RISK.Domain.GamePlaying
             MoveToNextPlayer();
         }
 
-        public IWorldMap WorldMap { get; private set; }
+        public Territories Territories { get; private set; }
         public IInteractionState CurrentInteractionState { get { return _stateController.CurrentState; } }
 
         private void MoveToNextPlayer()
@@ -33,7 +33,7 @@ namespace RISK.Domain.GamePlaying
             _currentPlayer = _players.GetNextOrFirst(_currentPlayer);
 
             _stateController = _stateControllerFactory.Create();
-            _stateController.CurrentState = _interactionStateFactory.CreateSelectState(_stateController, _currentPlayer, WorldMap);
+            _stateController.CurrentState = _interactionStateFactory.CreateSelectState(_stateController, _currentPlayer);
         }
 
         public void EndTurn()
@@ -48,7 +48,7 @@ namespace RISK.Domain.GamePlaying
 
         public bool IsGameOver()
         {
-            return WorldMap.GetAllPlayersOccupyingTerritories().Count() == 1;
+            return Territories.GetAllPlayersOccupyingTerritories().Count() == 1;
         }
     }
 }

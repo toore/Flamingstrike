@@ -21,35 +21,34 @@ namespace GuiWpf.Views.WorldMapViews
 
         private GameboardViewModel Create()
         {
-            var locations = new Locations();
+            var territories = new RISK.Domain.Territories();
             var colorService = new ColorService();
-            var territoryColorsFactory = new TerritoryColorsFactory(locations, colorService);
-            var territoryLayoutInformationFactory = new TerritoryGuiFactory(locations);
+            var territoryColorsFactory = new TerritoryColorsFactory(territories, colorService);
+            var territoryLayoutInformationFactory = new TerritoryGuiFactory(territories);
             var territoryViewModelUpdater = new TerritoryViewModelUpdater(territoryColorsFactory, colorService);
             var territoryViewModelFactory = new TerritoryViewModelFactory(territoryViewModelUpdater, territoryLayoutInformationFactory);
 
-            var worldMap = new WorldMap(locations);
-            var territory = worldMap.GetTerritory(locations.Brazil);
+            var territory = territories.Brazil;
             var humanPlayer = new HumanPlayer("pelle");
             territory.Occupant = humanPlayer;
             territory.Armies = 99;
 
             var textViewModelFactory = new TerritoryTextViewModelFactory(territoryLayoutInformationFactory);
-            var worldMapViewModelFactory = new WorldMapViewModelFactory(locations, territoryViewModelFactory, textViewModelFactory);
+            var worldMapViewModelFactory = new WorldMapViewModelFactory(territoryViewModelFactory, textViewModelFactory);
 
             var playerProvider = new Players();
             playerProvider.SetPlayers(humanPlayer.AsList());
 
             IInteractionStateFactory interactionStateFactory = new InteractionStateFactory(null);
-            var game = new Game(interactionStateFactory, new StateControllerFactory(),  playerProvider, worldMap, new CardFactory());
-            var gameboardViewModel = new GameboardViewModel(game, locations.GetAll(), worldMapViewModelFactory, territoryViewModelUpdater, null, new GameOverViewModelFactory(), null, null);
+            var game = new Game(interactionStateFactory, new StateControllerFactory(),  playerProvider, territories, new CardFactory());
+            var gameboardViewModel = new GameboardViewModel(game, territories.GetAll(), worldMapViewModelFactory, territoryViewModelUpdater, null, new GameOverViewModelFactory(), null, null);
 
             return gameboardViewModel;
         }
 
-        public ILocation SelectLocation(ILocationSelectorParameter locationSelectorParameter)
+        public ITerritory SelectLocation(ILocationSelectorParameter locationSelectorParameter)
         {
-            return locationSelectorParameter.AvailableLocations.First();
+            return locationSelectorParameter.EnabledTerritories.First();
         }
     }
 }

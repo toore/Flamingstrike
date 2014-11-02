@@ -5,8 +5,8 @@ namespace RISK.Domain.GamePlaying.Setup
 {
     public interface ILocationSelectorParameter
     {
-        IWorldMap WorldMap { get; }
-        IEnumerable<ILocation> AvailableLocations { get; }
+        IEnumerable<ITerritory> AllTerritories { get; }
+        IEnumerable<ITerritory> EnabledTerritories { get; }
         IPlayer GetPlayerThatTakesTurn();
         int GetArmiesLeft();
     }

@@ -6,16 +6,16 @@ namespace GuiWpf.ViewModels.Gameplay.Map
 {
     public class TerritoryLayoutViewModel : ViewModelBase, ITerritoryLayoutViewModel
     {
-        private readonly Action<ILocation> _clickCommand;
+        private readonly Action<ITerritory> _clickCommand;
 
-        public TerritoryLayoutViewModel(ILocation location, string path, Action<ILocation> clickCommand)
+        public TerritoryLayoutViewModel(ITerritory location, string path, Action<ITerritory> clickCommand)
         {
             Location = location;
             Path = path;
             _clickCommand = clickCommand;
         }
 
-        public ILocation Location { get; private set; }
+        public ITerritory Location { get; private set; }
         public string Path { get; private set; }
 
         private Color _normalStrokeColor;

@@ -1,11 +1,11 @@
 using System;
+using System.Collections.Generic;
 using RISK.Domain.Entities;
-using RISK.Domain.GamePlaying;
 
 namespace GuiWpf.ViewModels.Gameplay.Map
 {
     public interface IWorldMapViewModelFactory
     {
-        WorldMapViewModel Create(IWorldMap worldMap, Action<ILocation> selectLocation);
+        WorldMapViewModel Create(IEnumerable<ITerritory> territories, Action<ITerritory> selectLocation);
     }
 }

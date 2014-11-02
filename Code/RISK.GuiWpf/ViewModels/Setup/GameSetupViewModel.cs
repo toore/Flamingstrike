@@ -66,7 +66,7 @@ namespace GuiWpf.ViewModels.Setup
             _gameFactoryWorker.Run(this, this);
         }
 
-        public ILocation SelectLocation(ILocationSelectorParameter locationSelectorParameter)
+        public ITerritory SelectLocation(ILocationSelectorParameter locationSelectorParameter)
         {
             UpdateView(locationSelectorParameter);
 
@@ -80,10 +80,10 @@ namespace GuiWpf.ViewModels.Setup
 
         private void UpdateView(ILocationSelectorParameter locationSelectorParameter)
         {
-            var worldMapViewModel = _worldMapViewModelFactory.Create(locationSelectorParameter.WorldMap, _userInteractor.SelectLocation);
+            var worldMapViewModel = _worldMapViewModelFactory.Create(locationSelectorParameter.AllTerritories, _userInteractor.SelectLocation);
 
             worldMapViewModel.WorldMapViewModels.OfType<TerritoryLayoutViewModel>()
-                .Apply(x => x.IsEnabled = locationSelectorParameter.AvailableLocations.Contains(x.Location));
+                .Apply(x => x.IsEnabled = locationSelectorParameter.EnabledTerritories.Contains(x.Location));
 
             WorldMapViewModel = worldMapViewModel;
 

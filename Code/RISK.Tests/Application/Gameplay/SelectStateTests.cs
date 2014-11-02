@@ -12,27 +12,22 @@ namespace RISK.Tests.Application.Gameplay
         private readonly IPlayer _player;
         private readonly StateController _stateController;
         private readonly IInteractionStateFactory _interactionStateFactory;
-        private readonly IWorldMap _worldMap;
 
-        private readonly ILocation _locationOccupiedByPlayer;
+        private readonly ITerritory _locationOccupiedByPlayer;
         private readonly ITerritory _territoryOccupiedByPlayer;
-        private readonly ILocation _locationOccupiedByOtherPlayer;
+        private readonly ITerritory _locationOccupiedByOtherPlayer;
 
         public SelectStateTests()
         {
             _stateController = new StateController();
             _interactionStateFactory = Substitute.For<IInteractionStateFactory>();
             _player = Substitute.For<IPlayer>();
-            _worldMap = Substitute.For<IWorldMap>();
 
-            _sut = new SelectState(_stateController, _interactionStateFactory, _player, _worldMap);
+            _sut = new SelectState(_stateController, _interactionStateFactory, _player);
 
-            _locationOccupiedByPlayer = Make.Location.Build();
             _territoryOccupiedByPlayer = Make.Territory
-                .Location(_locationOccupiedByPlayer)
                 .Occupant(_player).Build();
-            _worldMap.GetTerritory(_locationOccupiedByPlayer).Returns(_territoryOccupiedByPlayer);
-            _locationOccupiedByOtherPlayer = Substitute.For<ILocation>();
+            _locationOccupiedByOtherPlayer = Substitute.For<ITerritory>();
         }
 
         [Fact]
@@ -51,7 +46,7 @@ namespace RISK.Tests.Application.Gameplay
         public void Click_enters_attack_state()
         {
             var expected = Substitute.For<IInteractionState>();
-            _interactionStateFactory.CreateAttackState(_stateController, _player, _worldMap, _territoryOccupiedByPlayer).Returns(expected);
+            _interactionStateFactory.CreateAttackState(_stateController, _player, _territoryOccupiedByPlayer).Returns(expected);
 
             _sut.OnClick(_locationOccupiedByPlayer);
 

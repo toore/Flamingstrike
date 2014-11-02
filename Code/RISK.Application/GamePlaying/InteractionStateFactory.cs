@@ -11,14 +11,14 @@ namespace RISK.Domain.GamePlaying
             _battleCalculator = battleCalculator;
         }
 
-        public IInteractionState CreateSelectState(StateController stateController, IPlayer player, IWorldMap worldMap)
+        public IInteractionState CreateSelectState(StateController stateController, IPlayer player)
         {
-            return new SelectState(stateController, this, player, worldMap);
+            return new SelectState(stateController, this, player);
         }
 
-        public IInteractionState CreateAttackState(StateController stateController, IPlayer player, IWorldMap worldMap, ITerritory selectedTerritory)
+        public IInteractionState CreateAttackState(StateController stateController, IPlayer player, ITerritory selectedTerritory)
         {
-            return new AttackState(stateController, this, _battleCalculator, player, worldMap, selectedTerritory);
+            return new AttackState(stateController, this, _battleCalculator, player, selectedTerritory);
         }
     }
 }

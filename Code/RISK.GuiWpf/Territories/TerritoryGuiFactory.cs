@@ -6,58 +6,58 @@ namespace GuiWpf.Territories
 {
     public class TerritoryGuiFactory : ITerritoryGuiFactory
     {
-        private readonly Dictionary<ILocation, ITerritoryGraphics> _layoutInformation;
+        private readonly Dictionary<ITerritory, ITerritoryGraphics> _layoutInformation;
 
-        public TerritoryGuiFactory(Locations locations)
+        public TerritoryGuiFactory(RISK.Domain.Territories territories)
         {
-            _layoutInformation = new Dictionary<ILocation, ITerritoryGraphics>
+            _layoutInformation = new Dictionary<ITerritory, ITerritoryGraphics>
             {
-                { locations.Alaska, new AlaskaGraphics() },
-                { locations.Alberta, new AlbertaGraphics() },
-                { locations.CentralAmerica, new CentralAmericaGraphics() },
-                { locations.EasternUnitedStates, new EasternUnitedStatesGraphics() },
-                { locations.Greenland, new GreenlandGraphics() },
-                { locations.NorthwestTerritory, new NorthwestTerritoryGraphics() },
-                { locations.Ontario, new OntarioGraphics() },
-                { locations.Quebec, new QuebecGraphics() },
-                { locations.WesternUnitedStates, new WesternUnitedStatesGraphics() },
-                { locations.Argentina, new ArgentinaGraphics() },
-                { locations.Brazil, new BrazilGraphics() },
-                { locations.Peru, new PeruGraphics() },
-                { locations.Venezuela, new VenezuelaGraphics() },
-                { locations.GreatBritain, new GreatBritainGraphics() },
-                { locations.Iceland, new IcelandGraphics() },
-                { locations.NorthernEurope, new NorthernEuropeGraphics() },
-                { locations.Scandinavia, new ScandinaviaGraphics() },
-                { locations.SouthernEurope, new SouthernEuropeGraphics() },
-                { locations.Ukraine, new UkraineGraphics() },
-                { locations.WesternEurope, new WesternEuropeGraphics() },
-                { locations.Congo, new CongoGraphics() },
-                { locations.EastAfrica, new EastAfricaGraphics() },
-                { locations.Egypt, new EgyptGraphics() },
-                { locations.Madagascar, new MadagascarGraphics() },
-                { locations.NorthAfrica, new NorthAfricaGraphics() },
-                { locations.SouthAfrica, new SouthAfricaGraphics() },
-                { locations.Afghanistan, new AfhanistanGraphics() },
-                { locations.China, new ChinaGraphics() },
-                { locations.India, new IndiaGraphics() },
-                { locations.Irkutsk, new IrkutskGraphics() },
-                { locations.Japan, new JapanGraphics() },
-                { locations.Kamchatka, new KamchatkaGraphics() },
-                { locations.MiddleEast, new MiddleEastGraphics() },
-                { locations.Mongolia, new MongoliaGraphics() },
-                { locations.Siam, new SiamGraphics() },
-                { locations.Siberia, new SiberiaGraphics() },
-                { locations.Ural, new UralGraphics() },
-                { locations.Yakutsk, new YakutskGraphics() },
-                { locations.EasternAustralia, new EasternAustraliaGraphics() },
-                { locations.Indonesia, new IndonesiaGraphics() },
-                { locations.NewGuinea, new NewGuineaGraphics() },
-                { locations.WesternAustralia, new WesternAustraliaGraphics() },
+                { territories.Alaska, new AlaskaGraphics() },
+                { territories.Alberta, new AlbertaGraphics() },
+                { territories.CentralAmerica, new CentralAmericaGraphics() },
+                { territories.EasternUnitedStates, new EasternUnitedStatesGraphics() },
+                { territories.Greenland, new GreenlandGraphics() },
+                { territories.NorthwestTerritory, new NorthwestTerritoryGraphics() },
+                { territories.Ontario, new OntarioGraphics() },
+                { territories.Quebec, new QuebecGraphics() },
+                { territories.WesternUnitedStates, new WesternUnitedStatesGraphics() },
+                { territories.Argentina, new ArgentinaGraphics() },
+                { territories.Brazil, new BrazilGraphics() },
+                { territories.Peru, new PeruGraphics() },
+                { territories.Venezuela, new VenezuelaGraphics() },
+                { territories.GreatBritain, new GreatBritainGraphics() },
+                { territories.Iceland, new IcelandGraphics() },
+                { territories.NorthernEurope, new NorthernEuropeGraphics() },
+                { territories.Scandinavia, new ScandinaviaGraphics() },
+                { territories.SouthernEurope, new SouthernEuropeGraphics() },
+                { territories.Ukraine, new UkraineGraphics() },
+                { territories.WesternEurope, new WesternEuropeGraphics() },
+                { territories.Congo, new CongoGraphics() },
+                { territories.EastAfrica, new EastAfricaGraphics() },
+                { territories.Egypt, new EgyptGraphics() },
+                { territories.Madagascar, new MadagascarGraphics() },
+                { territories.NorthAfrica, new NorthAfricaGraphics() },
+                { territories.SouthAfrica, new SouthAfricaGraphics() },
+                { territories.Afghanistan, new AfhanistanGraphics() },
+                { territories.China, new ChinaGraphics() },
+                { territories.India, new IndiaGraphics() },
+                { territories.Irkutsk, new IrkutskGraphics() },
+                { territories.Japan, new JapanGraphics() },
+                { territories.Kamchatka, new KamchatkaGraphics() },
+                { territories.MiddleEast, new MiddleEastGraphics() },
+                { territories.Mongolia, new MongoliaGraphics() },
+                { territories.Siam, new SiamGraphics() },
+                { territories.Siberia, new SiberiaGraphics() },
+                { territories.Ural, new UralGraphics() },
+                { territories.Yakutsk, new YakutskGraphics() },
+                { territories.EasternAustralia, new EasternAustraliaGraphics() },
+                { territories.Indonesia, new IndonesiaGraphics() },
+                { territories.NewGuinea, new NewGuineaGraphics() },
+                { territories.WesternAustralia, new WesternAustraliaGraphics() },
             };
         }
 
-        public ITerritoryGraphics Create(ILocation location)
+        public ITerritoryGraphics Create(ITerritory location)
         {
             return _layoutInformation[location];
         }

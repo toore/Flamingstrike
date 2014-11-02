@@ -90,13 +90,13 @@ namespace RISK.Tests.Application.Specifications
     {
         public int LocationsHasBeenSelected { get; set; }
 
-        public ILocation GetLocation(ILocationSelectorParameter locationSelector)
+        public ITerritory GetLocation(ILocationSelectorParameter locationSelector)
         {
             LocationsHasBeenSelected++;
-            return locationSelector.AvailableLocations.First();
+            return locationSelector.EnabledTerritories.First();
         }
 
-        public void SelectLocation(ILocation location)
+        public void SelectLocation(ITerritory location)
         {
             throw new NotImplementedException();
         }

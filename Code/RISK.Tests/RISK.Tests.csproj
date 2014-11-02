@@ -85,13 +85,11 @@
     <Compile Include="Application\Battle\CasualtiesCalculatorTests.cs" />
     <Compile Include="Application\Gameplay\InitialArmyCountTests.cs" />
     <Compile Include="CardBuilder.cs" />
-    <Compile Include="LocationBuilder.cs" />
+    <Compile Include="TerritoryBuilder.cs" />
     <Compile Include="Make.cs" />
     <Compile Include="Application\Gameplay\Setup\SetupArmiesExtensionsTests.cs" />
     <Compile Include="Application\Gameplay\TerritoryExtensionsTests.cs" />
-    <Compile Include="Application\Gameplay\TerritoryTests.cs" />
     <Compile Include="Application\Gameplay\InteractionStateFactoryTests.cs" />
-    <Compile Include="Application\Gameplay\InteractionStateTestsBase.cs" />
     <Compile Include="Application\Gameplay\AttackStateTests.cs" />
     <Compile Include="Application\Gameplay\SelectStateTests.cs" />
     <Compile Include="Application\Specifications\SpecBase.cs" />
@@ -103,7 +101,6 @@
     <Compile Include="GuiWpf\MainGameViewModelTests.cs" />
     <Compile Include="GuiWpf\ScreenServiceTests.cs" />
     <Compile Include="GuiWpf\TerritoryTextViewModelFactoryTests.cs" />
-    <Compile Include="TerritoryBuilder.cs" />
     <Compile Include="Views\ConfirmViewModelFactoryTests.cs" />
     <Compile Include="Views\UserNotifierTests.cs" />
     <Page Include="MainWindow.xaml">
@@ -118,10 +115,9 @@
     <Compile Include="GuiWpf\ColorServiceTests.cs" />
     <Compile Include="GuiWpf\GameboardViewModelTests.cs" />
     <Compile Include="Application\Gameplay\GameTests.cs" />
-    <Compile Include="Application\Gameplay\LocationsTests.cs" />
+    <Compile Include="Application\Gameplay\TerritoriesTests.cs" />
     <Compile Include="Application\Gameplay\RandomSorterTests.cs" />
     <Compile Include="GuiWpf\TerritoryViewModelFactoryTests.cs" />
-    <Compile Include="Application\Gameplay\WorldMapTests.cs" />
     <Compile Include="GuiWpf\Infrastructure\HandleInterceptorTests.cs" />
     <Compile Include="GuiWpf\Infrastructure\TypeExtensionsTests.cs" />
     <Compile Include="MainWindow.xaml.cs">

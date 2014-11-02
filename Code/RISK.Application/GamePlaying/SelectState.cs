@@ -6,14 +6,12 @@ namespace RISK.Domain.GamePlaying
     {
         private readonly StateController _stateController;
         private readonly IInteractionStateFactory _interactionStateFactory;
-        private readonly IWorldMap _worldMap;
 
-        public SelectState(StateController stateController, IInteractionStateFactory interactionStateFactory, IPlayer player, IWorldMap worldMap)
+        public SelectState(StateController stateController, IInteractionStateFactory interactionStateFactory, IPlayer player)
         {
             Player = player;
             _stateController = stateController;
             _interactionStateFactory = interactionStateFactory;
-            _worldMap = worldMap;
         }
 
         public ITerritory SelectedTerritory
@@ -23,20 +21,19 @@ namespace RISK.Domain.GamePlaying
 
         public IPlayer Player { get; private set; }
 
-        public bool CanClick(ILocation location)
+        public bool CanClick(ITerritory territory)
         {
-            return _worldMap.GetTerritory(location).Occupant == Player;
+            return territory.Occupant == Player;
         }
 
-        public void OnClick(ILocation location)
+        public void OnClick(ITerritory territory)
         {
-            if (!CanClick(location))
+            if (!CanClick(territory))
             {
                 return;
             }
 
-            var territoryToSelect = _worldMap.GetTerritory(location);
-            _stateController.CurrentState = _interactionStateFactory.CreateAttackState(_stateController, Player, _worldMap, territoryToSelect);
+            _stateController.CurrentState = _interactionStateFactory.CreateAttackState(_stateController, Player, territory);
         }
     }
 }

@@ -23,13 +23,11 @@ namespace RISK.Tests.GuiWpf
         public void Initialize()
         {
             var territory = Substitute.For<ITerritory>();
-            var location = Substitute.For<ILocation>();
-            territory.Location.Returns(location);
             territory.Armies = 99;
 
             var territoryTextViewModel = _factory.Create(territory);
 
-            territoryTextViewModel.Location.Should().Be(location);
+            territoryTextViewModel.Territory.Should().Be(territory);
             territoryTextViewModel.Armies.Should().Be(99);
         }
     }

@@ -10,22 +10,21 @@ namespace RISK.Tests.Application.Gameplay
     public class GameTests
     {
         private readonly Game _sut;
-        private readonly IWorldMap _worldMap;
         private IInteractionStateFactory _interactionStateFactory;
         private readonly IInteractionState currentInteractionState;
         private readonly IInteractionState _nextInteractionState;
         private IPlayers _players;
-        private IPlayer _currentPlayer;
+        private readonly IPlayer _currentPlayer;
         private IPlayer _nextPlayer;
-        private StateController _currentStateController;
-        private ICardFactory _cardFactory;
+        private readonly StateController _currentStateController;
+        private readonly ICardFactory _cardFactory;
+        private Territories _territories;
 
         public GameTests()
         {
             _interactionStateFactory = Substitute.For<IInteractionStateFactory>();
             var stateControllerFactory = Substitute.For<IStateControllerFactory>();
             _players = Substitute.For<IPlayers>();
-            _worldMap = Substitute.For<IWorldMap>();
             _cardFactory = Substitute.For<ICardFactory>();
 
             currentInteractionState = Substitute.For<IInteractionState>();
@@ -35,18 +34,19 @@ namespace RISK.Tests.Application.Gameplay
             _currentStateController = new StateController();
             var nextStateController = new StateController();
             stateControllerFactory.Create().Returns(_currentStateController, nextStateController);
-            _interactionStateFactory.CreateSelectState(_currentStateController, _currentPlayer, _worldMap).Returns(currentInteractionState);
-            _interactionStateFactory.CreateSelectState(nextStateController, _nextPlayer, _worldMap).Returns(_nextInteractionState);
+            _interactionStateFactory.CreateSelectState(_currentStateController, _currentPlayer).Returns(currentInteractionState);
+            _interactionStateFactory.CreateSelectState(nextStateController, _nextPlayer).Returns(_nextInteractionState);
 
             _players.GetAll().Returns(new[] { _currentPlayer, _nextPlayer });
 
-            _sut = new Game(_interactionStateFactory, stateControllerFactory, _players, _worldMap, _cardFactory);
+            _territories = new Territories();
+            _sut = new Game(_interactionStateFactory, stateControllerFactory, _players, _territories, _cardFactory);
         }
 
         [Fact]
         public void Has_world_map()
         {
-            _sut.WorldMap.Should().Be(_worldMap);
+            _sut.Territories.Should().Be(_territories);
         }
 
         [Fact]
@@ -101,7 +101,7 @@ namespace RISK.Tests.Application.Gameplay
         [Fact]
         public void Is_game_over_when_only_one_player_has_territories()
         {
-            _worldMap.GetAllPlayersOccupyingTerritories()
+            _territories.GetAllPlayersOccupyingTerritories()
                 .Returns(new[] { Substitute.For<IPlayer>() });
 
             _sut.IsGameOver().Should().BeTrue();
@@ -110,7 +110,7 @@ namespace RISK.Tests.Application.Gameplay
         [Fact]
         public void Is_not_game_over_when_two_players_have_territories()
         {
-            _worldMap.GetAllPlayersOccupyingTerritories()
+            _territories.GetAllPlayersOccupyingTerritories()
                 .Returns(new[]
                 {
                     Substitute.For<IPlayer>(),

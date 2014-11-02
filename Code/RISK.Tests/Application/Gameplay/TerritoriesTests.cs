@@ -1,19 +1,21 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using FluentAssertions;
+using NSubstitute;
 using RISK.Domain;
 using RISK.Domain.Entities;
+using RISK.Domain.GamePlaying;
 using Xunit;
 
 namespace RISK.Tests.Application.Gameplay
 {
-    public class LocationsTests
+    public class TerritoriesTests
     {
-        private readonly Locations _locations;
+        private readonly Territories _sut;
 
-        public LocationsTests()
+        public TerritoriesTests()
         {
-            _locations = new Locations();
+            _sut = new TerritoriesFactory().Create();
         }
 
         [Fact]
@@ -38,7 +40,6 @@ namespace RISK.Tests.Application.Gameplay
         [Fact]
         public void Alaskas_borders_alberta_and_northwest_territory_and_kamchatka()
         {
-            //Alaska.Borders.Should().BeEquivalentTo(Alberta, Northwest, Kamchatka);
             AssertBorders(Alaska, Alberta, Northwest, Kamchatka);
         }
 
@@ -46,7 +47,6 @@ namespace RISK.Tests.Application.Gameplay
         public void Alberta_is_in_north_america_has_border_to_alaska_and_northwest_territory_and_ontario_and_western_united_states()
         {
             Alberta.Continent.Should().Be(Continent.NorthAmerica);
-            //Alberta.Borders.Should().BeEquivalentTo(Alaska, Northwest, Ontario, WesternUnitedStates);
             AssertBorders(Alberta, Alaska, Northwest, Ontario, WesternUnitedStates);
         }
 
@@ -190,7 +190,7 @@ namespace RISK.Tests.Application.Gameplay
             GetAll().Should().Contain(expected);
         }
 
-        private void AssertBorders(ILocation actual, params ILocation[] expectedItems)
+        private void AssertBorders(ITerritory actual, params ITerritory[] expectedItems)
         {
             foreach (var expected in expectedItems)
             {
@@ -199,7 +199,7 @@ namespace RISK.Tests.Application.Gameplay
             }
         }
 
-        private void AssertLocationsInContinent(Continent continent, int expectedTerritoriesCount, params ILocation[] expectedLocation)
+        private void AssertLocationsInContinent(Continent continent, int expectedTerritoriesCount, params ITerritory[] expectedLocation)
         {
             var actual = GetAll().Where(x => x.Continent == continent).ToList();
 
@@ -207,219 +207,239 @@ namespace RISK.Tests.Application.Gameplay
             actual.Should().BeEquivalentTo(expectedLocation.ToList());
         }
 
-        private IEnumerable<ILocation> GetAll()
+        private IEnumerable<ITerritory> GetAll()
         {
-            return _locations.GetAll();
+            return _sut.GetAll();
         }
 
-        private ILocation Alaska
+        private ITerritory Alaska
         {
-            get { return _locations.Alaska; }
+            get { return _sut.Alaska; }
         }
 
-        private ILocation Alberta
+        private ITerritory Alberta
         {
-            get { return _locations.Alberta; }
+            get { return _sut.Alberta; }
         }
 
-        private ILocation NewGuinea
+        private ITerritory NewGuinea
         {
-            get { return _locations.NewGuinea; }
+            get { return _sut.NewGuinea; }
         }
 
-        private ILocation Indonesia
+        private ITerritory Indonesia
         {
-            get { return _locations.Indonesia; }
+            get { return _sut.Indonesia; }
         }
 
-        private ILocation EasternAustralia
+        private ITerritory EasternAustralia
         {
-            get { return _locations.EasternAustralia; }
+            get { return _sut.EasternAustralia; }
         }
 
-        private ILocation Yakutsk
+        private ITerritory Yakutsk
         {
-            get { return _locations.Yakutsk; }
+            get { return _sut.Yakutsk; }
         }
 
-        private ILocation Ural
+        private ITerritory Ural
         {
-            get { return _locations.Ural; }
+            get { return _sut.Ural; }
         }
 
-        private ILocation Siberia
+        private ITerritory Siberia
         {
-            get { return _locations.Siberia; }
+            get { return _sut.Siberia; }
         }
 
-        private ILocation Siam
+        private ITerritory Siam
         {
-            get { return _locations.Siam; }
+            get { return _sut.Siam; }
         }
 
-        private ILocation Mongolia
+        private ITerritory Mongolia
         {
-            get { return _locations.Mongolia; }
+            get { return _sut.Mongolia; }
         }
 
-        private ILocation MiddleEast
+        private ITerritory MiddleEast
         {
-            get { return _locations.MiddleEast; }
+            get { return _sut.MiddleEast; }
         }
 
-        private ILocation Kamchatka
+        private ITerritory Kamchatka
         {
-            get { return _locations.Kamchatka; }
+            get { return _sut.Kamchatka; }
         }
 
-        private ILocation Japan
+        private ITerritory Japan
         {
-            get { return _locations.Japan; }
+            get { return _sut.Japan; }
         }
 
-        private ILocation Irkutsk
+        private ITerritory Irkutsk
         {
-            get { return _locations.Irkutsk; }
+            get { return _sut.Irkutsk; }
         }
 
-        private ILocation India
+        private ITerritory India
         {
-            get { return _locations.India; }
+            get { return _sut.India; }
         }
 
-        private ILocation China
+        private ITerritory China
         {
-            get { return _locations.China; }
+            get { return _sut.China; }
         }
 
-        private ILocation Afghanistan
+        private ITerritory Afghanistan
         {
-            get { return _locations.Afghanistan; }
+            get { return _sut.Afghanistan; }
         }
 
-        private ILocation SouthAfrica
+        private ITerritory SouthAfrica
         {
-            get { return _locations.SouthAfrica; }
+            get { return _sut.SouthAfrica; }
         }
 
-        private ILocation NorthAfrica
+        private ITerritory NorthAfrica
         {
-            get { return _locations.NorthAfrica; }
+            get { return _sut.NorthAfrica; }
         }
 
-        private ILocation Madagascar
+        private ITerritory Madagascar
         {
-            get { return _locations.Madagascar; }
+            get { return _sut.Madagascar; }
         }
 
-        private ILocation Egypt
+        private ITerritory Egypt
         {
-            get { return _locations.Egypt; }
+            get { return _sut.Egypt; }
         }
 
-        private ILocation EastAfrica
+        private ITerritory EastAfrica
         {
-            get { return _locations.EastAfrica; }
+            get { return _sut.EastAfrica; }
         }
 
-        private ILocation Congo
+        private ITerritory Congo
         {
-            get { return _locations.Congo; }
+            get { return _sut.Congo; }
         }
 
-        private ILocation WesternEurope
+        private ITerritory WesternEurope
         {
-            get { return _locations.WesternEurope; }
+            get { return _sut.WesternEurope; }
         }
 
-        private ILocation Ukraine
+        private ITerritory Ukraine
         {
-            get { return _locations.Ukraine; }
+            get { return _sut.Ukraine; }
         }
 
-        private ILocation SouthernEurope
+        private ITerritory SouthernEurope
         {
-            get { return _locations.SouthernEurope; }
+            get { return _sut.SouthernEurope; }
         }
 
-        private ILocation Scandinavia
+        private ITerritory Scandinavia
         {
-            get { return _locations.Scandinavia; }
+            get { return _sut.Scandinavia; }
         }
 
-        private ILocation NorthernEurope
+        private ITerritory NorthernEurope
         {
-            get { return _locations.NorthernEurope; }
+            get { return _sut.NorthernEurope; }
         }
 
-        private ILocation Iceland
+        private ITerritory Iceland
         {
-            get { return _locations.Iceland; }
+            get { return _sut.Iceland; }
         }
 
-        private ILocation GreatBritain
+        private ITerritory GreatBritain
         {
-            get { return _locations.GreatBritain; }
+            get { return _sut.GreatBritain; }
         }
 
-        private ILocation Venezuela
+        private ITerritory Venezuela
         {
-            get { return _locations.Venezuela; }
+            get { return _sut.Venezuela; }
         }
 
-        private ILocation Peru
+        private ITerritory Peru
         {
-            get { return _locations.Peru; }
+            get { return _sut.Peru; }
         }
 
-        private ILocation Brazil
+        private ITerritory Brazil
         {
-            get { return _locations.Brazil; }
+            get { return _sut.Brazil; }
         }
 
-        private ILocation Argentina
+        private ITerritory Argentina
         {
-            get { return _locations.Argentina; }
+            get { return _sut.Argentina; }
         }
 
-        private ILocation WesternUnitedStates
+        private ITerritory WesternUnitedStates
         {
-            get { return _locations.WesternUnitedStates; }
+            get { return _sut.WesternUnitedStates; }
         }
 
-        private ILocation Quebec
+        private ITerritory Quebec
         {
-            get { return _locations.Quebec; }
+            get { return _sut.Quebec; }
         }
 
-        private ILocation Ontario
+        private ITerritory Ontario
         {
-            get { return _locations.Ontario; }
+            get { return _sut.Ontario; }
         }
 
-        private ILocation Northwest
+        private ITerritory Northwest
         {
-            get { return _locations.NorthwestTerritory; }
+            get { return _sut.NorthwestTerritory; }
         }
 
-        private ILocation Greenland
+        private ITerritory Greenland
         {
-            get { return _locations.Greenland; }
+            get { return _sut.Greenland; }
         }
 
-        private ILocation EasternUnitedStates
+        private ITerritory EasternUnitedStates
         {
-            get { return _locations.EasternUnitedStates; }
+            get { return _sut.EasternUnitedStates; }
         }
 
-        private ILocation CentralAmerica
+        private ITerritory CentralAmerica
         {
-            get { return _locations.CentralAmerica; }
+            get { return _sut.CentralAmerica; }
         }
 
-        private ILocation WesternAustralia
+        private ITerritory WesternAustralia
         {
-            get { return _locations.WesternAustralia; }
+            get { return _sut.WesternAustralia; }
+        }
+
+        [Fact]
+        public void Get_players_occupying_territories_has_no_players()
+        {
+            _sut.GetAllPlayersOccupyingTerritories().Count().Should().Be(0);
+        }
+
+        [Fact]
+        public void Two_players_is_occupying_territories()
+        {
+            var player1 = Substitute.For<IPlayer>();
+            var player2 = Substitute.For<IPlayer>();
+            _sut.Scandinavia.Occupant = player1;
+            _sut.Congo.Occupant = player2;
+
+            var allPlayersOccupyingTerritories = _sut.GetAllPlayersOccupyingTerritories().ToList();
+
+            allPlayersOccupyingTerritories.Count().Should().Be(2);
+            allPlayersOccupyingTerritories.Should().BeEquivalentTo(player1, player2);
         }
     }
 }

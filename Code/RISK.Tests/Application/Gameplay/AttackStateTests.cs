@@ -13,15 +13,14 @@ namespace RISK.Tests.Application.Gameplay
         private readonly IBattleCalculator _battleCalculator;
         private readonly StateController _stateController;
         private readonly IInteractionStateFactory _interactionStateFactory;
-        private readonly IWorldMap _worldMap;
 
         private readonly ITerritory _selectedTerritory;
-        private readonly ILocation _selectedLocation;
-        private readonly ILocation _borderingLocationOccupiedByOtherPlayer;
-        private readonly Location _remoteLocationOccupiedByOtherPlayer;
-        private readonly Location _borderingLocationOccupiedByPlayer;
+        private readonly ITerritory _selectedLocation;
+        private readonly ITerritory _borderingLocationOccupiedByOtherPlayer;
+        private readonly Territory _remoteLocationOccupiedByOtherPlayer;
+        private readonly Territory _borderingLocationOccupiedByPlayer;
         private readonly Territory _borderingTerritoryOccupiedByOtherPlayer;
-        private readonly Location _remoteLocationOccupiedByPlayer;
+        private readonly Territory _remoteLocationOccupiedByPlayer;
         private readonly Territory _borderingTerritoryOccupiedByPlayer;
 
         public AttackStateTests()
@@ -29,49 +28,33 @@ namespace RISK.Tests.Application.Gameplay
             _stateController = new StateController();
             _interactionStateFactory = Substitute.For<IInteractionStateFactory>();
             _player = Substitute.For<IPlayer>();
-            _worldMap = Substitute.For<IWorldMap>();
             _battleCalculator = Substitute.For<IBattleCalculator>();
 
-            _borderingLocationOccupiedByPlayer = Make.Location.Build();
             _borderingTerritoryOccupiedByPlayer = Make.Territory
-                .Location(_borderingLocationOccupiedByPlayer)
                 .Occupant(_player)
                 .Build();
-            _worldMap.GetTerritory(_borderingLocationOccupiedByPlayer).Returns(_borderingTerritoryOccupiedByPlayer);
 
-            _remoteLocationOccupiedByPlayer = Make.Location.Build();
             var remoteTerritoryOccupiedByPlayer = Make.Territory
-                .Location(_remoteLocationOccupiedByPlayer)
                 .Occupant(_player)
                 .Build();
-            _worldMap.GetTerritory(_remoteLocationOccupiedByPlayer).Returns(remoteTerritoryOccupiedByPlayer);
 
             var otherPlayer = Substitute.For<IPlayer>();
             
-            _borderingLocationOccupiedByOtherPlayer = Make.Location.Build();
             _borderingTerritoryOccupiedByOtherPlayer = Make.Territory
-                .Location(_borderingLocationOccupiedByOtherPlayer)
                 .Occupant(otherPlayer)
                 .Build();
-            _worldMap.GetTerritory(_borderingLocationOccupiedByOtherPlayer).Returns(_borderingTerritoryOccupiedByOtherPlayer);
 
-            _remoteLocationOccupiedByOtherPlayer = Make.Location.Build();
             var remoteTerritoryOccupiedByOtherPlayer = Make.Territory
-                .Location(_remoteLocationOccupiedByOtherPlayer)
                 .Occupant(otherPlayer)
                 .Build();
-            _worldMap.GetTerritory(_remoteLocationOccupiedByOtherPlayer).Returns(remoteTerritoryOccupiedByOtherPlayer);
 
-            _selectedLocation = Make.Location
+            _selectedTerritory = Make.Territory
                 .WithBorder(_borderingLocationOccupiedByOtherPlayer)
                 .WithBorder(_borderingLocationOccupiedByPlayer)
-                .Build();
-            _selectedTerritory = Make.Territory
-                .Location(_selectedLocation)
                 .Occupant(_player)
                 .Build();
             
-            _sut = new AttackState(_stateController, _interactionStateFactory, _battleCalculator, _player, _worldMap, _selectedTerritory);
+            _sut = new AttackState(_stateController, _interactionStateFactory, _battleCalculator, _player, _selectedTerritory);
         }
 
         [Fact]
@@ -83,7 +66,7 @@ namespace RISK.Tests.Application.Gameplay
         [Fact]
         public void Can_not_select_not_selected_location()
         {
-            _sut.CanClick(Substitute.For<ILocation>()).Should().BeFalse();
+            _sut.CanClick(Substitute.For<ITerritory>()).Should().BeFalse();
             _sut.CanClick(_borderingLocationOccupiedByOtherPlayer).Should().BeFalse();
         }
 
@@ -91,7 +74,7 @@ namespace RISK.Tests.Application.Gameplay
         public void Selecting_selected_location_enters_select_state()
         {
             var selectState = Substitute.For<IInteractionState>();
-            _interactionStateFactory.CreateSelectState(_stateController, _player, _worldMap).Returns(selectState);
+            _interactionStateFactory.CreateSelectState(_stateController, _player).Returns(selectState);
 
             _sut.OnClick(_selectedLocation);
 
@@ -144,7 +127,7 @@ namespace RISK.Tests.Application.Gameplay
         public void After_successfull_attack_attack_enters_attack_state()
         {
             var expected = Substitute.For<IInteractionState>();
-            _interactionStateFactory.CreateAttackState(_stateController, _player, _worldMap, _borderingTerritoryOccupiedByOtherPlayer).Returns(expected);
+            _interactionStateFactory.CreateAttackState(_stateController, _player, _borderingTerritoryOccupiedByOtherPlayer).Returns(expected);
             _selectedTerritory.Armies = 2;
             AttackerWins();
 

@@ -7,7 +7,7 @@ namespace RISK.Domain.GamePlaying
         IPlayer Player { get; }
         ITerritory SelectedTerritory { get; }
 
-        bool CanClick(ILocation location);
-        void OnClick(ILocation location);
+        bool CanClick(ITerritory territory);
+        void OnClick(ITerritory territory);
     }
 }

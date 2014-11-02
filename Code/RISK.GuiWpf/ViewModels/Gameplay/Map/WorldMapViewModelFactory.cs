@@ -1,9 +1,8 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Caliburn.Micro;
-using RISK.Domain;
 using RISK.Domain.Entities;
-using RISK.Domain.GamePlaying;
 
 namespace GuiWpf.ViewModels.Gameplay.Map
 {
@@ -11,21 +10,15 @@ namespace GuiWpf.ViewModels.Gameplay.Map
     {
         private readonly ITerritoryViewModelFactory _territoryViewModelFactory;
         private readonly ITerritoryTextViewModelFactory _territoryTextViewModelFactory;
-        private readonly Locations _locations;
 
-        public WorldMapViewModelFactory(Locations locations, ITerritoryViewModelFactory territoryViewModelFactory, ITerritoryTextViewModelFactory territoryTextViewModelFactory)
+        public WorldMapViewModelFactory( ITerritoryViewModelFactory territoryViewModelFactory, ITerritoryTextViewModelFactory territoryTextViewModelFactory)
         {
             _territoryViewModelFactory = territoryViewModelFactory;
             _territoryTextViewModelFactory = territoryTextViewModelFactory;
-            _locations = locations;
         }
 
-        public WorldMapViewModel Create(IWorldMap worldMap, Action<ILocation> selectLocation)
+        public WorldMapViewModel Create(IEnumerable<ITerritory> territories, Action<ITerritory> selectLocation)
         {
-            var territories = _locations.GetAll()
-                .Select(worldMap.GetTerritory)
-                .ToList();
-
             var worldMapViewModels = territories
                 .Select(x => CreateTerritoryViewModel(x, selectLocation))
                 .Union(territories.Select(CreateTextViewModel))
@@ -37,7 +30,7 @@ namespace GuiWpf.ViewModels.Gameplay.Map
             return worldMapViewModel;
         }
 
-        private IWorldMapItemViewModel CreateTerritoryViewModel(ITerritory territory, Action<ILocation> selectLocation)
+        private IWorldMapItemViewModel CreateTerritoryViewModel(ITerritory territory, Action<ITerritory> selectLocation)
         {
             return _territoryViewModelFactory.Create(territory, selectLocation);
         }

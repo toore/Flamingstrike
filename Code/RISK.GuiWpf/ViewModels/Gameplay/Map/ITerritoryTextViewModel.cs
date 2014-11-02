@@ -4,7 +4,7 @@ namespace GuiWpf.ViewModels.Gameplay.Map
 {
     public interface ITerritoryTextViewModel : IWorldMapItemViewModel
     {
-        ILocation Location { get; }
+        ITerritory Territory { get; }
         int Armies { get; set; }
     }
 }
