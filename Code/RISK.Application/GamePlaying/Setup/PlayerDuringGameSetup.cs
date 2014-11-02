@@ -1,6 +1,6 @@
-﻿using RISK.Domain.Entities;
+﻿using RISK.Application.Entities;
 
-namespace RISK.Domain.GamePlaying.Setup
+namespace RISK.Application.GamePlaying.Setup
 {
     public class PlayerDuringGameSetup
     {

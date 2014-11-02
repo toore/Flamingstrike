@@ -1,6 +1,6 @@
-﻿using RISK.Domain;
-using RISK.Domain.GamePlaying;
-using RISK.Domain.GamePlaying.Setup;
+﻿using RISK.Application;
+using RISK.Application.GamePlaying;
+using RISK.Application.GamePlaying.Setup;
 
 namespace GuiWpf.ViewModels.Setup
 {

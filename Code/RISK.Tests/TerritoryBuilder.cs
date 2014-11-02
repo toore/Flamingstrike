@@ -1,6 +1,6 @@
 using System.Collections.Generic;
-using RISK.Domain;
-using RISK.Domain.Entities;
+using RISK.Application;
+using RISK.Application.Entities;
 
 namespace RISK.Tests
 {

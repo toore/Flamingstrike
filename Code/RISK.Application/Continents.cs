@@ -1,6 +1,4 @@
-﻿using RISK.Domain.Entities;
-
-namespace RISK.Domain
+﻿namespace RISK.Application
 {
     public class Continent
     {

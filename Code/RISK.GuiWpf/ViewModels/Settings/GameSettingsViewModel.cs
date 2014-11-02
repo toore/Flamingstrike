@@ -4,7 +4,7 @@ using System.Linq;
 using Caliburn.Micro;
 using GuiWpf.Extensions;
 using GuiWpf.ViewModels.Messages;
-using RISK.Domain.Entities;
+using RISK.Application.Entities;
 
 namespace GuiWpf.ViewModels.Settings
 {

@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using Caliburn.Micro;
 using GuiWpf.ViewModels.Gameplay;
-using RISK.Domain;
-using RISK.Domain.GamePlaying;
+using RISK.Application;
+using RISK.Application.GamePlaying;
 using StructureMap;
 
 namespace GuiWpf.Infrastructure
@@ -23,7 +23,7 @@ namespace GuiWpf.Infrastructure
                     s.WithDefaultConventions();
                 });
 
-                x.For<RISK.Domain.Territories>().Singleton();
+                x.For<RISK.Application.Territories>().Singleton();
 
                 x.For<Players>().Singleton();
                 x.For<IPlayers>().Singleton().Use<Players>();

@@ -1,5 +1,5 @@
 using System.Windows.Media;
-using RISK.Domain.Entities;
+using RISK.Application.Entities;
 
 namespace GuiWpf.Services
 {

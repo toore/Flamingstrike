@@ -1,6 +1,6 @@
 ﻿using Caliburn.Micro;
 using GuiWpf.Properties;
-using RISK.Domain.Entities;
+using RISK.Application.Entities;
 
 namespace GuiWpf.ViewModels
 {

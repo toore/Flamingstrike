@@ -1,6 +1,5 @@
 using System.Collections.Generic;
-using RISK.Domain;
-using RISK.Domain.Entities;
+using RISK.Application.Entities;
 
 namespace GuiWpf.Territories
 {
@@ -8,7 +7,7 @@ namespace GuiWpf.Territories
     {
         private readonly Dictionary<ITerritory, ITerritoryGraphics> _layoutInformation;
 
-        public TerritoryGuiFactory(RISK.Domain.Territories territories)
+        public TerritoryGuiFactory(RISK.Application.Territories territories)
         {
             _layoutInformation = new Dictionary<ITerritory, ITerritoryGraphics>
             {

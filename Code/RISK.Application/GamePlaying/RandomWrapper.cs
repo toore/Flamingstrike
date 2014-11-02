@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace RISK.Domain.GamePlaying
+namespace RISK.Application.GamePlaying
 {
     public class RandomWrapper : IRandomWrapper 
     {

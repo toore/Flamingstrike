@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace RISK.Domain.GamePlaying.Setup
+namespace RISK.Application.GamePlaying.Setup
 {
     public static class SetupArmiesExtensions
     {

@@ -4,9 +4,9 @@ using GuiWpf.Properties;
 using GuiWpf.Services;
 using GuiWpf.ViewModels.Gameplay.Map;
 using GuiWpf.ViewModels.Messages;
-using RISK.Domain.Entities;
-using RISK.Domain.GamePlaying;
-using RISK.Domain.GamePlaying.Setup;
+using RISK.Application.Entities;
+using RISK.Application.GamePlaying;
+using RISK.Application.GamePlaying.Setup;
 
 namespace GuiWpf.ViewModels.Setup
 {

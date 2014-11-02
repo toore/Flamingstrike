@@ -1,4 +1,4 @@
-﻿using RISK.Domain.GamePlaying;
+﻿using RISK.Application.GamePlaying;
 
 namespace GuiWpf.ViewModels
 {

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace RISK.Domain.Extensions
+namespace RISK.Application.Extensions
 {
     public static class EnumerableExtensions
     {

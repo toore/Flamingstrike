@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using RISK.Domain.Entities;
+using RISK.Application.Entities;
 
-namespace RISK.Domain
+namespace RISK.Application
 {
     public interface IPlayers
     {

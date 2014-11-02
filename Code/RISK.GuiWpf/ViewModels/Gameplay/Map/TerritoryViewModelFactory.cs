@@ -1,7 +1,7 @@
 using System;
 using GuiWpf.Services;
 using GuiWpf.Territories;
-using RISK.Domain.Entities;
+using RISK.Application.Entities;
 
 namespace GuiWpf.ViewModels.Gameplay.Map
 {

@@ -7,8 +7,8 @@
     <ProjectGuid>{6DE17FCA-3F04-4923-8AB8-E3FA376A54FF}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>RISK.Domain</RootNamespace>
-    <AssemblyName>RISK.Domain</AssemblyName>
+    <RootNamespace>RISK.Application</RootNamespace>
+    <AssemblyName>RISK.Application</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

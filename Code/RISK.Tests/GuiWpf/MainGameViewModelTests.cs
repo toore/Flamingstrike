@@ -5,8 +5,8 @@ using GuiWpf.ViewModels.Messages;
 using GuiWpf.ViewModels.Settings;
 using GuiWpf.ViewModels.Setup;
 using NSubstitute;
-using RISK.Domain;
-using RISK.Domain.Entities;
+using RISK.Application;
+using RISK.Application.Entities;
 using Xunit;
 
 namespace RISK.Tests.GuiWpf

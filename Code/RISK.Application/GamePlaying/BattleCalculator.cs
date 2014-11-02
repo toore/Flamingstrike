@@ -1,7 +1,7 @@
-﻿using RISK.Domain.Entities;
-using RISK.Domain.GamePlaying.DiceAndCalculation;
+﻿using RISK.Application.Entities;
+using RISK.Application.GamePlaying.DiceAndCalculation;
 
-namespace RISK.Domain.GamePlaying
+namespace RISK.Application.GamePlaying
 {
     public class BattleCalculator : IBattleCalculator
     {

@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using RISK.Domain.Entities;
-using RISK.Domain.Extensions;
+using RISK.Application.Entities;
+using RISK.Application.Extensions;
 
-namespace RISK.Domain.GamePlaying
+namespace RISK.Application.GamePlaying
 {
     public class Game : IGame
     {

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace RISK.Domain.GamePlaying
+namespace RISK.Application.GamePlaying
 {
     public class RandomSorter : IRandomSorter
     {

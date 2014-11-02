@@ -1,4 +1,4 @@
-﻿namespace RISK.Domain.GamePlaying.Setup
+﻿namespace RISK.Application.GamePlaying.Setup
 {
     public interface IGameInitializerNotifier
     {

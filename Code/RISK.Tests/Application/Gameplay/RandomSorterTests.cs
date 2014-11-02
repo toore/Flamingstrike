@@ -2,8 +2,8 @@
 using System.Linq;
 using FluentAssertions;
 using NSubstitute;
-using RISK.Domain.Extensions;
-using RISK.Domain.GamePlaying;
+using RISK.Application.Extensions;
+using RISK.Application.GamePlaying;
 using Xunit;
 
 namespace RISK.Tests.Application.Gameplay

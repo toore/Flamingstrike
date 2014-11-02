@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using RISK.Domain.Entities;
+using RISK.Application.Entities;
 
 namespace GuiWpf.Services
 {
@@ -9,7 +9,7 @@ namespace GuiWpf.Services
         private readonly IColorService _colorService;
         private readonly Dictionary<ITerritory, Func<ITerritoryColors>> _colors;
 
-        public TerritoryColorsFactory(RISK.Domain.Territories territories, IColorService colorService)
+        public TerritoryColorsFactory(RISK.Application.Territories territories, IColorService colorService)
         {
             _colorService = colorService;
 

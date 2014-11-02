@@ -1,5 +1,5 @@
 using System.Threading.Tasks;
-using RISK.Domain.GamePlaying.Setup;
+using RISK.Application.GamePlaying.Setup;
 
 namespace GuiWpf.ViewModels.Setup
 {

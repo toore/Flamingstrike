@@ -1,6 +1,4 @@
-﻿using RISK.Domain.Entities;
-
-namespace RISK.Domain.GamePlaying
+﻿namespace RISK.Application.GamePlaying
 {
     public interface IStateControllerFactory
     {

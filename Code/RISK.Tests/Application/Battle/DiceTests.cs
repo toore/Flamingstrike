@@ -1,7 +1,7 @@
 ﻿using FluentAssertions;
 using NSubstitute;
-using RISK.Domain.GamePlaying;
-using RISK.Domain.GamePlaying.DiceAndCalculation;
+using RISK.Application.GamePlaying;
+using RISK.Application.GamePlaying.DiceAndCalculation;
 using Xunit;
 
 namespace RISK.Tests.Application.Battle

@@ -1,6 +1,6 @@
-using RISK.Domain.Entities;
+using RISK.Application.Entities;
 
-namespace RISK.Domain.GamePlaying
+namespace RISK.Application.GamePlaying
 {
     public class AttackState : IInteractionState
     {

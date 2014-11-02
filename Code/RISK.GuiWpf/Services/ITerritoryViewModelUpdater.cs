@@ -1,5 +1,5 @@
 using GuiWpf.ViewModels.Gameplay.Map;
-using RISK.Domain.Entities;
+using RISK.Application.Entities;
 
 namespace GuiWpf.Services
 {

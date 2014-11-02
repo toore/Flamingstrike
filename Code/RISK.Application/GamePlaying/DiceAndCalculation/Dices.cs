@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace RISK.Domain.GamePlaying.DiceAndCalculation
+namespace RISK.Application.GamePlaying.DiceAndCalculation
 {
     public class Dices : IDices
     {

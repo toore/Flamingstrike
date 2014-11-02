@@ -6,9 +6,9 @@ using GuiWpf.ViewModels;
 using GuiWpf.ViewModels.Gameplay;
 using GuiWpf.ViewModels.Settings;
 using GuiWpf.ViewModels.Setup;
-using RISK.Domain.Entities;
-using RISK.Domain.Extensions;
-using RISK.Domain.GamePlaying.Setup;
+using RISK.Application.Entities;
+using RISK.Application.Extensions;
+using RISK.Application.GamePlaying.Setup;
 using StructureMap;
 using Xunit;
 

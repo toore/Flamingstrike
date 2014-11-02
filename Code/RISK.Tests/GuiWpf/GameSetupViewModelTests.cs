@@ -6,9 +6,9 @@ using GuiWpf.ViewModels.Gameplay.Map;
 using GuiWpf.ViewModels.Messages;
 using GuiWpf.ViewModels.Setup;
 using NSubstitute;
-using RISK.Domain.Entities;
-using RISK.Domain.GamePlaying;
-using RISK.Domain.GamePlaying.Setup;
+using RISK.Application.Entities;
+using RISK.Application.GamePlaying;
+using RISK.Application.GamePlaying.Setup;
 using Xunit;
 
 namespace RISK.Tests.GuiWpf

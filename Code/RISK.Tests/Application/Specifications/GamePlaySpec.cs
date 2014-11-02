@@ -7,11 +7,11 @@ using GuiWpf.ViewModels;
 using GuiWpf.ViewModels.Gameplay;
 using GuiWpf.ViewModels.Gameplay.Map;
 using NSubstitute;
-using RISK.Domain;
-using RISK.Domain.Entities;
-using RISK.Domain.GamePlaying;
-using RISK.Domain.GamePlaying.DiceAndCalculation;
-using RISK.Domain.GamePlaying.Setup;
+using RISK.Application;
+using RISK.Application.Entities;
+using RISK.Application.GamePlaying;
+using RISK.Application.GamePlaying.DiceAndCalculation;
+using RISK.Application.GamePlaying.Setup;
 using StructureMap;
 using Xunit;
 

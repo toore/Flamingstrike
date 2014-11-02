@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Caliburn.Micro;
-using RISK.Domain.Entities;
+using RISK.Application.Entities;
 
 namespace GuiWpf.ViewModels.Gameplay.Map
 {

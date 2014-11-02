@@ -1,4 +1,4 @@
-﻿namespace RISK.Domain.GamePlaying.DiceAndCalculation
+﻿namespace RISK.Application.GamePlaying.DiceAndCalculation
 {
     public interface IDicesResult
     {

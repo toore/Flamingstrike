@@ -1,4 +1,4 @@
-﻿namespace RISK.Domain.GamePlaying
+﻿namespace RISK.Application.GamePlaying
 {
     public class TerritoriesFactory : ITerritoriesFactory
     {

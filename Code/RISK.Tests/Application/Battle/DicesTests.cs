@@ -2,7 +2,7 @@
 using System.Linq;
 using FluentAssertions;
 using NSubstitute;
-using RISK.Domain.GamePlaying.DiceAndCalculation;
+using RISK.Application.GamePlaying.DiceAndCalculation;
 using Xunit;
 
 namespace RISK.Tests.Application.Battle

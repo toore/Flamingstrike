@@ -1,14 +1,13 @@
 ﻿using Caliburn.Micro;
 using GuiWpf.Services;
 using GuiWpf.ViewModels.Gameplay.Map;
-using RISK.Domain;
-using RISK.Domain.GamePlaying;
+using RISK.Application.GamePlaying;
 
 namespace GuiWpf.ViewModels.Gameplay
 {
     public class GameboardViewModelFactory : IGameboardViewModelFactory
     {
-        private readonly RISK.Domain.Territories _territories;
+        private readonly RISK.Application.Territories _territories;
         private readonly IWorldMapViewModelFactory _worldMapViewModelFactory;
         private readonly ITerritoryViewModelUpdater _territoryViewModelUpdater;
         private readonly IWindowManager _windowManager;
@@ -17,7 +16,7 @@ namespace GuiWpf.ViewModels.Gameplay
         private readonly IEventAggregator _eventAggregator;
 
         public GameboardViewModelFactory(
-            RISK.Domain.Territories territories,
+            RISK.Application.Territories territories,
             IWorldMapViewModelFactory worldMapViewModelFactory,
             ITerritoryViewModelUpdater territoryViewModelUpdater,
             IWindowManager windowManager,

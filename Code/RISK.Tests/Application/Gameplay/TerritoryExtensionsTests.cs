@@ -1,7 +1,6 @@
 ﻿using FluentAssertions;
 using NSubstitute;
-using RISK.Domain;
-using RISK.Domain.Entities;
+using RISK.Application.Entities;
 using Xunit;
 using Xunit.Extensions;
 

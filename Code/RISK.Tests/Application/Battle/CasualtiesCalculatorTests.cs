@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using FluentAssertions;
-using RISK.Domain.GamePlaying.DiceAndCalculation;
+using RISK.Application.GamePlaying.DiceAndCalculation;
 using Xunit.Extensions;
 
 namespace RISK.Tests.Application.Battle

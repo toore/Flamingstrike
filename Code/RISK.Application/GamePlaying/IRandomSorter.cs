@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace RISK.Domain.GamePlaying
+namespace RISK.Application.GamePlaying
 {
     public interface IRandomSorter
     {

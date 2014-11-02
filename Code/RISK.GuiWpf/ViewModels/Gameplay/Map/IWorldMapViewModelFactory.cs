@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using RISK.Domain.Entities;
+using RISK.Application.Entities;
 
 namespace GuiWpf.ViewModels.Gameplay.Map
 {

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using FluentAssertions;
-using RISK.Domain.GamePlaying.Setup;
+using RISK.Application.GamePlaying.Setup;
 using Xunit;
 
 namespace RISK.Tests.Application.Gameplay.Setup

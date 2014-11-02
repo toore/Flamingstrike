@@ -4,8 +4,8 @@ using GuiWpf.Services;
 using GuiWpf.Territories;
 using GuiWpf.ViewModels.Gameplay.Map;
 using NSubstitute;
-using RISK.Domain;
-using RISK.Domain.Entities;
+using RISK.Application;
+using RISK.Application.Entities;
 using Xunit;
 
 namespace RISK.Tests.GuiWpf

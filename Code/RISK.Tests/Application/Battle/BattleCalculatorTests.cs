@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using System.Reflection;
 using FluentAssertions;
 using NSubstitute;
-using RISK.Domain;
-using RISK.Domain.Entities;
-using RISK.Domain.GamePlaying;
-using RISK.Domain.GamePlaying.DiceAndCalculation;
+using RISK.Application.Entities;
+using RISK.Application.GamePlaying;
+using RISK.Application.GamePlaying.DiceAndCalculation;
 using Xunit;
 using Xunit.Extensions;
 

@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Caliburn.Micro;
-using RISK.Domain.Entities;
-using RISK.Domain.Extensions;
+using RISK.Application.Entities;
+using RISK.Application.Extensions;
 
-namespace RISK.Domain.GamePlaying.Setup
+namespace RISK.Application.GamePlaying.Setup
 {
     public interface IAlternateGameSetup
     {

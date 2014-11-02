@@ -1,5 +1,5 @@
 ﻿using FluentAssertions;
-using RISK.Domain.GamePlaying.Setup;
+using RISK.Application.GamePlaying.Setup;
 using Xunit;
 using Xunit.Extensions;
 

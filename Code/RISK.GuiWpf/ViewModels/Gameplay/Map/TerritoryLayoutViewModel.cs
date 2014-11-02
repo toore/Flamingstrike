@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Windows.Media;
-using RISK.Domain.Entities;
+using RISK.Application.Entities;
 
 namespace GuiWpf.ViewModels.Gameplay.Map
 {

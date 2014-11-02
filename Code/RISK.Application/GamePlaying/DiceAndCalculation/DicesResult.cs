@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace RISK.Domain.GamePlaying.DiceAndCalculation
+namespace RISK.Application.GamePlaying.DiceAndCalculation
 {
     public class DicesResult : IDicesResult
     {
