@@ -14,17 +14,21 @@ namespace GuiWpf.ViewModels.Setup
         private readonly IInteractionStateFactory _interactionStateFactory;
         private readonly IPlayers _players;
         private readonly IAlternateGameSetup _alternateGameSetup;
+        private readonly ICardFactory _cardFactory;
 
-        public GameFactory(IInteractionStateFactory interactionStateFactory, IPlayers players, IAlternateGameSetup alternateGameSetup)
+        public GameFactory(IInteractionStateFactory interactionStateFactory, IPlayers players, IAlternateGameSetup alternateGameSetup, ICardFactory cardFactory)
         {
             _interactionStateFactory = interactionStateFactory;
             _players = players;
             _alternateGameSetup = alternateGameSetup;
+            _cardFactory = cardFactory;
         }
 
         public IGame Create(IGameInitializerLocationSelector gameInitializerLocationSelector)
         {
-            return new Game(_interactionStateFactory, _players, _alternateGameSetup, gameInitializerLocationSelector);
+            var worldMap = _alternateGameSetup.Initialize(gameInitializerLocationSelector);
+
+            return new Game(_interactionStateFactory, new StateControllerFactory() , _players, worldMap, _cardFactory);
         }
     }
 }

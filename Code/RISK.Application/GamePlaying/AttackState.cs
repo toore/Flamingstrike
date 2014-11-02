@@ -1,5 +1,3 @@
-using System;
-using System.Linq;
 using RISK.Domain.Entities;
 
 namespace RISK.Domain.GamePlaying
@@ -9,14 +7,12 @@ namespace RISK.Domain.GamePlaying
         private readonly StateController _stateController;
         private readonly IInteractionStateFactory _interactionStateFactory;
         private readonly IBattleCalculator _battleCalculator;
-        private readonly ICardFactory _cardFactory;
         private readonly IWorldMap _worldMap;
 
         public AttackState(
             StateController stateController, 
             IInteractionStateFactory interactionStateFactory, 
             IBattleCalculator battleCalculator, 
-            ICardFactory cardFactory, 
             IPlayer player, 
             IWorldMap worldMap, 
             ITerritory selectedTerritory)
@@ -25,7 +21,6 @@ namespace RISK.Domain.GamePlaying
             _stateController = stateController;
             _interactionStateFactory = interactionStateFactory;
             _battleCalculator = battleCalculator;
-            _cardFactory = cardFactory;
             _worldMap = worldMap;
             SelectedTerritory = selectedTerritory;
         }
@@ -61,7 +56,7 @@ namespace RISK.Domain.GamePlaying
         {
             if (CanSelect(location))
             {
-                _stateController.CurrentState = _interactionStateFactory.CreateSelectState(Player, _worldMap);
+                _stateController.CurrentState = _interactionStateFactory.CreateSelectState(_stateController, Player, _worldMap);
             }
         }
 
@@ -100,7 +95,7 @@ namespace RISK.Domain.GamePlaying
 
             if (HasPlayerOccupiedTerritory(territory))
             {
-                _stateController.CurrentState = _interactionStateFactory.CreateAttackState(Player, _worldMap, territory);
+                _stateController.CurrentState = _interactionStateFactory.CreateAttackState(_stateController, Player, _worldMap, territory);
                 _stateController.PlayerShouldReceiveCardWhenTurnEnds = true;
             }
         }
@@ -124,13 +119,5 @@ namespace RISK.Domain.GamePlaying
 
         //    _stateController.CurrentState = _interactionStateFactory.CreateFortifiedState(Player, _worldMap);
         //}
-
-        public void EndTurn()
-        {
-            if (_stateController.PlayerShouldReceiveCardWhenTurnEnds)
-            {
-                Player.AddCard(_cardFactory.Create());
-            }
-        }
     }
 }

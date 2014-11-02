@@ -18,10 +18,8 @@ namespace GuiWpf.ViewModels.Gameplay
         private readonly IGameOverViewModelFactory _gameOverViewModelFactory;
         private readonly IDialogManager _dialogManager;
         private readonly IEventAggregator _eventAggregator;
-        private IInteractionState _interactionState;
         private readonly List<ITerritory> _territories;
         private IPlayer _player;
-        private readonly IWorldMap _worldMap;
 
         public GameboardViewModel(
             IGame game,
@@ -42,15 +40,15 @@ namespace GuiWpf.ViewModels.Gameplay
             _dialogManager = dialogManager;
             _eventAggregator = eventAggregator;
 
-            _worldMap = _game.GetWorldMap();
+            var worldMap = _game.WorldMap;
 
             _territories = locations
-                .Select(x => _worldMap.GetTerritory(x))
+                .Select(x => worldMap.GetTerritory(x))
                 .ToList();
 
             InformationText = LanguageResources.Instance.GetString("SELECT_TERRITORY");
 
-            WorldMapViewModel = worldMapViewModelFactory.Create(_worldMap, OnLocationClick);
+            WorldMapViewModel = worldMapViewModelFactory.Create(worldMap, OnLocationClick);
 
             BeginNextPlayerTurn();
         }
@@ -67,15 +65,14 @@ namespace GuiWpf.ViewModels.Gameplay
 
         private void BeginNextPlayerTurn()
         {
-            _interactionState = _game.GetNextTurn();
-            Player = _interactionState.Player;
+            Player = _game.CurrentTurn.Player;
 
-            UpdateGame();
+            UpdateGameBoard();
         }
 
         public void EndTurn()
         {
-            _interactionState.EndTurn();
+            _game.EndTurn();
 
             BeginNextPlayerTurn();
         }
@@ -92,16 +89,16 @@ namespace GuiWpf.ViewModels.Gameplay
 
         public void OnLocationClick(ILocation location)
         {
-            _interactionState.OnClick(location);
+            _game.CurrentTurn.OnClick(location);
 
-            UpdateGame();
+            UpdateGameBoard();
         }
 
-        private void UpdateGame()
+        private void UpdateGameBoard()
         {
             UpdateWorldMap();
 
-            if (_gameOverEvaluater.IsGameOver(_worldMap))
+            if (_gameOverEvaluater.IsGameOver(_game.WorldMap))
             {
                 _windowManager.ShowDialog(_gameOverViewModelFactory.Create(Player));
             }
@@ -123,8 +120,9 @@ namespace GuiWpf.ViewModels.Gameplay
             var location = territory.Location;
             var territoryLayout = WorldMapViewModel.WorldMapViewModels.GetTerritoryLayout(location);
 
-            territoryLayout.IsEnabled = _interactionState.CanClick(territory.Location);
-            territoryLayout.IsSelected = _interactionState.SelectedTerritory == territory;
+            var interactionState = _game.CurrentTurn;
+            territoryLayout.IsEnabled = interactionState.CanClick(territory.Location);
+            territoryLayout.IsSelected = interactionState.SelectedTerritory == territory;
             _territoryViewModelUpdater.UpdateColors(territoryLayout, territory);
         }
 

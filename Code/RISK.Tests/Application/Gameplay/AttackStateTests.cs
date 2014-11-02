@@ -71,7 +71,7 @@ namespace RISK.Tests.Application.Gameplay
                 .Occupant(_player)
                 .Build();
             
-            _sut = new AttackState(_stateController, _interactionStateFactory, _battleCalculator, Substitute.For<ICardFactory>(), _player, _worldMap, _selectedTerritory);
+            _sut = new AttackState(_stateController, _interactionStateFactory, _battleCalculator, _player, _worldMap, _selectedTerritory);
         }
 
         [Fact]
@@ -91,7 +91,7 @@ namespace RISK.Tests.Application.Gameplay
         public void Selecting_selected_location_enters_select_state()
         {
             var selectState = Substitute.For<IInteractionState>();
-            _interactionStateFactory.CreateSelectState(_player, _worldMap).Returns(selectState);
+            _interactionStateFactory.CreateSelectState(_stateController, _player, _worldMap).Returns(selectState);
 
             _sut.OnClick(_selectedLocation);
 
@@ -144,7 +144,7 @@ namespace RISK.Tests.Application.Gameplay
         public void After_successfull_attack_attack_enters_attack_state()
         {
             var expected = Substitute.For<IInteractionState>();
-            _interactionStateFactory.CreateAttackState(_player, _worldMap, _borderingTerritoryOccupiedByOtherPlayer).Returns(expected);
+            _interactionStateFactory.CreateAttackState(_stateController, _player, _worldMap, _borderingTerritoryOccupiedByOtherPlayer).Returns(expected);
             _selectedTerritory.Armies = 2;
             AttackerWins();
 
@@ -169,7 +169,6 @@ namespace RISK.Tests.Application.Gameplay
                 .Do(x => _borderingTerritoryOccupiedByOtherPlayer.Occupant = _selectedTerritory.Occupant);
 
             _sut.OnClick(_borderingLocationOccupiedByOtherPlayer);
-            _sut.EndTurn();
 
             _stateController.PlayerShouldReceiveCardWhenTurnEnds.Should().BeTrue();
         }

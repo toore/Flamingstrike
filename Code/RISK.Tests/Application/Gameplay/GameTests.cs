@@ -3,67 +3,90 @@ using NSubstitute;
 using RISK.Domain;
 using RISK.Domain.Entities;
 using RISK.Domain.GamePlaying;
-using RISK.Domain.GamePlaying.Setup;
 using Xunit;
 
 namespace RISK.Tests.Application.Gameplay
 {
     public class GameTests
     {
-        private Game _game;
-        private IWorldMap _worldMap;
+        private readonly Game _sut;
+        private readonly IWorldMap _worldMap;
         private IInteractionStateFactory _interactionStateFactory;
-        private IInteractionState _nextInteractionState;
-        private IInteractionState _interactionStateAfterNextInteractionState;
+        private readonly IInteractionState currentInteractionState;
+        private readonly IInteractionState _nextInteractionState;
         private IPlayers _players;
-        private IPlayer _player1;
-        private IPlayer _player2;
-        private IAlternateGameSetup _alternateGameSetup;
-        private IGameInitializerLocationSelector _gameInitializerLocationSelector;
+        private IPlayer _currentPlayer;
+        private IPlayer _nextPlayer;
+        private StateController _currentStateController;
+        private ICardFactory _cardFactory;
 
         public GameTests()
         {
-            _worldMap = Substitute.For<IWorldMap>();
             _interactionStateFactory = Substitute.For<IInteractionStateFactory>();
+            var stateControllerFactory = Substitute.For<IStateControllerFactory>();
             _players = Substitute.For<IPlayers>();
-            _alternateGameSetup = Substitute.For<IAlternateGameSetup>();
-            _gameInitializerLocationSelector = Substitute.For<IGameInitializerLocationSelector>();
+            _worldMap = Substitute.For<IWorldMap>();
+            _cardFactory = Substitute.For<ICardFactory>();
 
+            currentInteractionState = Substitute.For<IInteractionState>();
             _nextInteractionState = Substitute.For<IInteractionState>();
-            _interactionStateAfterNextInteractionState = Substitute.For<IInteractionState>();
-            _player1 = Substitute.For<IPlayer>();
-            _player2 = Substitute.For<IPlayer>();
-            _interactionStateFactory.CreateSelectState(_player1, _worldMap).Returns(_nextInteractionState);
-            _interactionStateFactory.CreateSelectState(_player2, _worldMap).Returns(_interactionStateAfterNextInteractionState);
+            _currentPlayer = Substitute.For<IPlayer>();
+            _nextPlayer = Substitute.For<IPlayer>();
+            _currentStateController = new StateController();
+            var nextStateController = new StateController();
+            stateControllerFactory.Create().Returns(_currentStateController, nextStateController);
+            _interactionStateFactory.CreateSelectState(_currentStateController, _currentPlayer, _worldMap).Returns(currentInteractionState);
+            _interactionStateFactory.CreateSelectState(nextStateController, _nextPlayer, _worldMap).Returns(_nextInteractionState);
 
-            _players.GetAll().Returns(new[] { _player1, _player2 });
+            _players.GetAll().Returns(new[] { _currentPlayer, _nextPlayer });
 
-            _alternateGameSetup.Initialize(_gameInitializerLocationSelector).Returns(_worldMap);
-
-            _game = new Game(_interactionStateFactory, _players, _alternateGameSetup, _gameInitializerLocationSelector);
+            _sut = new Game(_interactionStateFactory, stateControllerFactory, _players, _worldMap, _cardFactory);
         }
 
         [Fact]
-        public void Gets_world_map()
+        public void Has_world_map()
         {
-            _game.GetWorldMap().Should().Be(_worldMap);
+            _sut.WorldMap.Should().Be(_worldMap);
         }
 
         [Fact]
-        public void Gets_next_turn()
+        public void Get_current_turn()
         {
-            var actual = _game.GetNextTurn();
+            var actual = _sut.CurrentTurn;
 
-            actual.Should().Be(_nextInteractionState);
+            actual.Should().Be(currentInteractionState);
         }
 
         [Fact]
         public void Gets_turn_after_next_turn()
         {
-            _game.GetNextTurn();
-            var actual = _game.GetNextTurn();
+            _sut.EndTurn();
 
-            actual.Should().Be(_interactionStateAfterNextInteractionState);
+            var actual = _sut.CurrentTurn;
+
+            actual.Should().Be(_nextInteractionState);
+        }
+
+        [Fact]
+        public void Player_should_receive_card_when_turn_ends()
+        {
+            _currentStateController.PlayerShouldReceiveCardWhenTurnEnds = true;
+            var card = Make.Card.Build();
+            _cardFactory.Create().Returns(card);
+
+            _sut.EndTurn();
+
+            _currentPlayer.Received().AddCard(card);
+        }
+
+        [Fact]
+        public void Player_should_not_receive_card_when_turn_ends()
+        {
+            _currentStateController.PlayerShouldReceiveCardWhenTurnEnds = false;
+
+            _sut.EndTurn();
+
+            _currentPlayer.DidNotReceiveWithAnyArgs().AddCard(null);
         }
     }
 }

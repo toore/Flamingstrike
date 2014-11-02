@@ -173,7 +173,10 @@ namespace RISK.Tests.Application.Specifications
             var locationSelector = Substitute.For<IGameInitializerLocationSelector>();
             var alternateGameSetup = Substitute.For<IAlternateGameSetup>();
             alternateGameSetup.Initialize(locationSelector).Returns(_worldMap);
-            var game = new Game(new InteractionStateFactory(new StateController(), new BattleCalculator(new Dices(new CasualtiesCalculator(), _dice)), new CardFactory()), _players, alternateGameSetup, locationSelector);
+            var dices = new Dices(new CasualtiesCalculator(), _dice);
+            var battleCalculator = new BattleCalculator(dices);
+            var interactionStateFactory = new InteractionStateFactory(battleCalculator);
+            var game = new Game(interactionStateFactory, new StateControllerFactory(),  _players, _worldMap, new CardFactory());
 
             ObjectFactory.Inject<IPlayers>(_players);
             ObjectFactory.Inject(_locations);

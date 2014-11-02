@@ -93,6 +93,7 @@
     <Compile Include="GamePlaying\StateController.cs" />
     <Compile Include="GamePlaying\AttackState.cs" />
     <Compile Include="GamePlaying\InteractionStateFactory.cs" />
+    <Compile Include="GamePlaying\StateControllerFactory.cs" />
     <Compile Include="GamePlaying\WorldMapFactory.cs" />
     <Compile Include="Locations.cs" />
     <Compile Include="Continents.cs" />

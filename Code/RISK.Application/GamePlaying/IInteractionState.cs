@@ -9,8 +9,5 @@ namespace RISK.Domain.GamePlaying
 
         bool CanClick(ILocation location);
         void OnClick(ILocation location);
-
-
-        void EndTurn(); // TO BE REMOVED
     }
 }

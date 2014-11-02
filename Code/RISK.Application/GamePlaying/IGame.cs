@@ -2,7 +2,8 @@
 {
     public interface IGame
     {
-        IWorldMap GetWorldMap();
-        IInteractionState GetNextTurn();
+        IWorldMap WorldMap { get; }
+        IInteractionState CurrentTurn { get; }
+        void EndTurn();
     }
 }

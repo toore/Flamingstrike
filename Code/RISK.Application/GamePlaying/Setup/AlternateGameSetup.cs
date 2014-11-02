@@ -64,23 +64,23 @@ namespace RISK.Domain.GamePlaying.Setup
                 .ToList();
         }
 
-        private IWorldMap CreateWorldMap(IList<PlayerDuringGameSetup> setupArmies)
+        private IWorldMap CreateWorldMap(IList<PlayerDuringGameSetup> players)
         {
             var worldMap = _worldMapFactory.Create();
 
             var locationsInRandomOrder = _randomSorter.Sort(_locations.GetAll())
                 .ToList();
 
-            var setupArmy = setupArmies.First();
+            var player = players.First();
 
             foreach (var location in locationsInRandomOrder)
             {
                 var territory = worldMap.GetTerritory(location);
-                territory.Occupant = setupArmy.GetPlayer();
+                territory.Occupant = player.GetPlayer();
                 territory.Armies = 1;
-                setupArmy.ArmyHasBeenPlaced();
+                player.ArmyHasBeenPlaced();
 
-                setupArmy = setupArmies.GetNextOrFirst(setupArmy);
+                player = players.GetNextOrFirst(player);
             }
 
             return worldMap;

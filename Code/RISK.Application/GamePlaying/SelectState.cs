@@ -6,15 +6,13 @@ namespace RISK.Domain.GamePlaying
     {
         private readonly StateController _stateController;
         private readonly IInteractionStateFactory _interactionStateFactory;
-        private readonly ICardFactory _cardFactory;
         private readonly IWorldMap _worldMap;
 
-        public SelectState(StateController stateController, IInteractionStateFactory interactionStateFactory, ICardFactory cardFactory, IPlayer player, IWorldMap worldMap)
+        public SelectState(StateController stateController, IInteractionStateFactory interactionStateFactory, IPlayer player, IWorldMap worldMap)
         {
             Player = player;
             _stateController = stateController;
             _interactionStateFactory = interactionStateFactory;
-            _cardFactory = cardFactory;
             _worldMap = worldMap;
         }
 
@@ -38,15 +36,7 @@ namespace RISK.Domain.GamePlaying
             }
 
             var territoryToSelect = _worldMap.GetTerritory(location);
-            _stateController.CurrentState = _interactionStateFactory.CreateAttackState(Player, _worldMap, territoryToSelect);
-        }
-
-        public void EndTurn()
-        {
-            if (_stateController.PlayerShouldReceiveCardWhenTurnEnds)
-            {
-                Player.AddCard(_cardFactory.Create());
-            }
+            _stateController.CurrentState = _interactionStateFactory.CreateAttackState(_stateController, Player, _worldMap, territoryToSelect);
         }
     }
 }

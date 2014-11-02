@@ -66,7 +66,7 @@ namespace RISK.Tests.GuiWpf
             _territory2 = new Territory(_location2);
             _worldMap.GetTerritory(_location1).Returns(_territory1);
             _worldMap.GetTerritory(_location2).Returns(_territory2);
-            _game.GetWorldMap().Returns(_worldMap);
+            _game.WorldMap.Returns(_worldMap);
 
             _player1 = Substitute.For<IPlayer>();
             _player2 = Substitute.For<IPlayer>();
@@ -75,7 +75,7 @@ namespace RISK.Tests.GuiWpf
             _initialInteractionState.Player.Returns(_player1);
             _nextInteractionState = Substitute.For<IInteractionState>();
             _nextInteractionState.Player.Returns(_player2);
-            _game.GetNextTurn().Returns(_initialInteractionState, _nextInteractionState);
+            _game.CurrentTurn.Returns(_initialInteractionState, _nextInteractionState);
 
             _layoutViewModel1 = StubLayoutViewModel(_location1);
             _textViewModel1 = StubTextViewModel(_location1);
@@ -141,28 +141,6 @@ namespace RISK.Tests.GuiWpf
             //_initialInteractionState.Received(1).EndTurn();
             //_game.Received(1).GetNextTurn();
             sut.Player.Should().Be(_player2);
-        }
-
-        [Fact]
-        public void Player_should_receive_card_when_turn_ends()
-        {
-            throw new NotImplementedException();
-            //StateController.PlayerShouldReceiveCardWhenTurnEnds = true;
-
-            //Sut.EndTurn();
-
-            //Player.ReceivedWithAnyArgs().AddCard(null);
-        }
-
-        [Fact]
-        public void Player_should_not_receive_card_when_turn_ends()
-        {
-            throw new NotImplementedException();
-            //StateController.PlayerShouldReceiveCardWhenTurnEnds = false;
-
-            //Sut.EndTurn();
-
-            //Player.DidNotReceiveWithAnyArgs().AddCard(null);
         }
 
         [Fact]

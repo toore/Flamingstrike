@@ -25,7 +25,7 @@ namespace RISK.Tests.Application.Gameplay
             _player = Substitute.For<IPlayer>();
             _worldMap = Substitute.For<IWorldMap>();
 
-            _sut = new SelectState(_stateController, _interactionStateFactory, Substitute.For<ICardFactory>(), _player, _worldMap);
+            _sut = new SelectState(_stateController, _interactionStateFactory, _player, _worldMap);
 
             _locationOccupiedByPlayer = Make.Location.Build();
             _territoryOccupiedByPlayer = Make.Territory
@@ -51,7 +51,7 @@ namespace RISK.Tests.Application.Gameplay
         public void Click_enters_attack_state()
         {
             var expected = Substitute.For<IInteractionState>();
-            _interactionStateFactory.CreateAttackState(_player, _worldMap, _territoryOccupiedByPlayer).Returns(expected);
+            _interactionStateFactory.CreateAttackState(_stateController, _player, _worldMap, _territoryOccupiedByPlayer).Returns(expected);
 
             _sut.OnClick(_locationOccupiedByPlayer);
 
