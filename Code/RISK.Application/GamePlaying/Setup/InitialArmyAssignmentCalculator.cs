@@ -1,6 +1,6 @@
 ﻿namespace RISK.Application.GamePlaying.Setup
 {
-    public class InitialArmyCount : IInitialArmyCount
+    public class InitialArmyAssignmentCalculator : IInitialArmyAssignmentCalculator
     {
         public int Get(int numberOfPlayers)
         {

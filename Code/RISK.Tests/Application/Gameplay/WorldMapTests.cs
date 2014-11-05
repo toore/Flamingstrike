@@ -9,13 +9,13 @@ using Xunit;
 
 namespace RISK.Tests.Application.Gameplay
 {
-    public class TerritoriesTests
+    public class WorldMapTests
     {
-        private readonly Territories _sut;
+        private readonly WorldMap _sut;
 
-        public TerritoriesTests()
+        public WorldMapTests()
         {
-            _sut = new TerritoriesFactory().Create();
+            _sut = (WorldMap)new WorldMapFactory().Create();
         }
 
         [Fact]
@@ -209,7 +209,7 @@ namespace RISK.Tests.Application.Gameplay
 
         private IEnumerable<ITerritory> GetAll()
         {
-            return _sut.GetAll();
+            return _sut.GetTerritories();
         }
 
         private ITerritory Alaska

@@ -21,7 +21,7 @@ namespace RISK.Tests.Application.Specifications
     {
         private GameboardViewModel _gameboardViewModel;
         private Players _players;
-        private Territories _territories;
+        private WorldMap _worldMap;
         private IWindowManager _windowManager;
         private HumanPlayer _player1;
         private HumanPlayer _player2;
@@ -118,24 +118,24 @@ namespace RISK.Tests.Application.Specifications
 
         private void kamchatka_should_have_12_armies()
         {
-            _territories.Kamchatka.Armies.Should().Be(12);
+            _worldMap.Kamchatka.Armies.Should().Be(12);
         }
 
         private GamePlaySpec japan_should_have_8_armies()
         {
-            _territories.Japan.Armies.Should().Be(8);
+            _worldMap.Japan.Armies.Should().Be(8);
             return this;
         }
 
         private GamePlaySpec player_1_selects_japan()
         {
-            ClickOn(_territories.Japan);
+            ClickOn(_worldMap.Japan);
             return this;
         }
 
         private void moves_2_armies_to_kamchatka()
         {
-            ClickOn(_territories.Kamchatka);
+            ClickOn(_worldMap.Kamchatka);
         }
 
         private void player_1_fortifies()
@@ -147,7 +147,7 @@ namespace RISK.Tests.Application.Specifications
         private GamePlaySpec a_started_game_with_two_players()
         {
             _players = new Players();
-            _territories = new Territories();
+            _worldMap = new WorldMap();
 
             //var territoriesFactory = Substitute.For<ITerritoriesFactory>();
             //territoriesFactory.Create().Returns(_territories);
@@ -163,13 +163,13 @@ namespace RISK.Tests.Application.Specifications
             _gameOverAndPlayer1IsTheWinnerViewModel = new GameOverViewModel(_player1);
             gameOverViewModelFactory.Create(_player1).Returns(_gameOverAndPlayer1IsTheWinnerViewModel);
 
-            var locationSelector = Substitute.For<IGameInitializerLocationSelector>();
+            var locationSelector = Substitute.For<ITerritorySelector>();
             var alternateGameSetup = Substitute.For<IAlternateGameSetup>();
-            alternateGameSetup.Initialize(locationSelector).Returns(_territories);
+            alternateGameSetup.InitializeWorldMap(locationSelector).Returns(_worldMap);
             var dices = new Dices(new CasualtiesCalculator(), _dice);
             var battleCalculator = new BattleCalculator(dices);
             var interactionStateFactory = new InteractionStateFactory(battleCalculator);
-            var game = new Game(interactionStateFactory, new StateControllerFactory(),  _players, _territories, new CardFactory());
+            var game = new Game(interactionStateFactory, new StateControllerFactory(),  _players, _worldMap, new CardFactory());
 
             ObjectFactory.Inject<IPlayers>(_players);
             //ObjectFactory.Inject(_territories);
@@ -180,7 +180,7 @@ namespace RISK.Tests.Application.Specifications
             ObjectFactory.Inject<IGame>(game);
 
             _gameboardViewModel = (GameboardViewModel)ObjectFactory
-                .With(_territories.GetAll())
+                .With(_worldMap.GetTerritories())
                 .GetInstance<IGameboardViewModel>();
 
             return this;
@@ -188,53 +188,53 @@ namespace RISK.Tests.Application.Specifications
 
         private GamePlaySpec player_1_has_5_armies_in_north_africa()
         {
-            UpdateWorldMap(_player1, 5, _territories.NorthAfrica);
+            UpdateWorldMap(_player1, 5, _worldMap.NorthAfrica);
             return this;
         }
 
         private GamePlaySpec player_1_occupies_every_territory_except_brazil_and_venezuela_with_one_army_each()
         {
-            UpdateWorldMap(_player1, 1, GetAllLocationsExcept(_territories.Brazil, _territories.Venezuela));
+            UpdateWorldMap(_player1, 1, GetAllLocationsExcept(_worldMap.Brazil, _worldMap.Venezuela));
             return this;
         }
 
         private void player_2_occupies_brazil_and_venezuela_with_one_army_each()
         {
-            UpdateWorldMap(_player2, 1, _territories.Brazil, _territories.Venezuela);
+            UpdateWorldMap(_player2, 1, _worldMap.Brazil, _worldMap.Venezuela);
         }
 
         private GamePlaySpec player_1_occupies_every_territory_except_iceland_with_one_army_each()
         {
-            UpdateWorldMap(_player1, 1, GetAllLocationsExcept(_territories.Iceland));
+            UpdateWorldMap(_player1, 1, GetAllLocationsExcept(_worldMap.Iceland));
             return this;
         }
 
         private GamePlaySpec player_1_occupies_every_territory_except_indonesia_with_ten_armies_each()
         {
-            UpdateWorldMap(_player1, 10, GetAllLocationsExcept(_territories.Indonesia));
+            UpdateWorldMap(_player1, 10, GetAllLocationsExcept(_worldMap.Indonesia));
             return this;
         }
 
         private GamePlaySpec player_2_occupies_indonesia()
         {
-            UpdateWorldMap(_player2, 1, _territories.Indonesia);
+            UpdateWorldMap(_player2, 1, _worldMap.Indonesia);
             return this;
         }
 
         private GamePlaySpec player_1_has_2_armies_in_scandinavia()
         {
-            UpdateWorldMap(_player1, 2, _territories.Scandinavia);
+            UpdateWorldMap(_player1, 2, _worldMap.Scandinavia);
             return this;
         }
 
         private void player_2_occupies_iceland_with_one_army()
         {
-            UpdateWorldMap(_player2, 1, _territories.Iceland);
+            UpdateWorldMap(_player2, 1, _worldMap.Iceland);
         }
 
         private ITerritory[] GetAllLocationsExcept(params ITerritory[] excludedLocations)
         {
-            return _territories.GetAll().Except(excludedLocations).ToArray();
+            return _worldMap.GetTerritories().Except(excludedLocations).ToArray();
         }
 
         private void UpdateWorldMap(IPlayer player, int armies, params ITerritory[] territories)
@@ -249,27 +249,27 @@ namespace RISK.Tests.Application.Specifications
 
         private GamePlaySpec player_one_selects_north_africa()
         {
-            ClickOn(_territories.NorthAfrica);
+            ClickOn(_worldMap.NorthAfrica);
             return this;
         }
 
         private GamePlaySpec and_attacks_brazil_and_wins()
         {
             _dice.Roll().Returns(DiceValue.Six, DiceValue.Five, DiceValue.Four, DiceValue.Five);
-            ClickOn(_territories.Brazil);
+            ClickOn(_worldMap.Brazil);
             return this;
         }
 
         private GamePlaySpec player_one_selects_scandinavia()
         {
-            ClickOn(_territories.Scandinavia);
+            ClickOn(_worldMap.Scandinavia);
             return this;
         }
 
         private void and_attacks_iceland_and_wins()
         {
             _dice.Roll().Returns(DiceValue.Two, DiceValue.One);
-            ClickOn(_territories.Iceland);
+            ClickOn(_worldMap.Iceland);
         }
 
         private void turn_ends()
@@ -291,11 +291,11 @@ namespace RISK.Tests.Application.Specifications
 
         private void player_1_should_occupy_Brazil_with_4_armies()
         {
-            _territories.NorthAfrica.Occupant.Should().Be(_player1, "player 1 should occupy North Africa");
-            _territories.NorthAfrica.Armies.Should().Be(1, "North Africa should have 1 army");
-            _territories.Brazil.Occupant.Should().Be(_player1, "player 1 should occupy Brazil");
-            _territories.Brazil.Armies.Should().Be(4, "Brazil should have 4 armies");
-            GetTerritoryViewModel(_territories.Brazil).IsSelected.Should().BeTrue("selected territory should be Brazil");
+            _worldMap.NorthAfrica.Occupant.Should().Be(_player1, "player 1 should occupy North Africa");
+            _worldMap.NorthAfrica.Armies.Should().Be(1, "North Africa should have 1 army");
+            _worldMap.Brazil.Occupant.Should().Be(_player1, "player 1 should occupy Brazil");
+            _worldMap.Brazil.Armies.Should().Be(4, "Brazil should have 4 armies");
+            GetTerritoryViewModel(_worldMap.Brazil).IsSelected.Should().BeTrue("selected territory should be Brazil");
         }
 
         private void player_1_is_the_winner()

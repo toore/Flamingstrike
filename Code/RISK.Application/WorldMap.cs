@@ -4,9 +4,16 @@ using RISK.Application.Entities;
 
 namespace RISK.Application
 {
-    public class Territories
+    public interface IWorldMap
     {
-        public Territories()
+        IEnumerable<ITerritory> GetTerritories();
+        IEnumerable<ITerritory> GetTerritoriesOccupiedByPlayer(IPlayer player);
+        IEnumerable<IPlayer> GetAllPlayersOccupyingTerritories();
+    }
+
+    public class WorldMap : IWorldMap
+    {
+        public WorldMap()
         {
             var alaska = new Territory("ALASKA", Continent.NorthAmerica);
             var alberta = new Territory("ALBERTA", Continent.NorthAmerica);
@@ -153,53 +160,53 @@ namespace RISK.Application
             WesternAustralia = westernAustralia;
         }
 
-        public IEnumerable<ITerritory> GetAll()
+        public IEnumerable<ITerritory> GetTerritories()
         {
             return new[]
-                {
-                    Alaska,
-                    Alberta,
-                    CentralAmerica,
-                    EasternUnitedStates,
-                    Greenland,
-                    NorthwestTerritory,
-                    Ontario,
-                    Quebec,
-                    WesternUnitedStates,
-                    Argentina,
-                    Brazil,
-                    Peru,
-                    Venezuela,
-                    GreatBritain,
-                    Iceland,
-                    NorthernEurope,
-                    Scandinavia,
-                    SouthernEurope,
-                    Ukraine,
-                    WesternEurope,
-                    Congo,
-                    EastAfrica,
-                    Egypt,
-                    Madagascar,
-                    NorthAfrica,
-                    SouthAfrica,
-                    Afghanistan,
-                    China,
-                    India,
-                    Irkutsk,
-                    Japan,
-                    Kamchatka,
-                    MiddleEast,
-                    Mongolia,
-                    Siam,
-                    Siberia,
-                    Ural,
-                    Yakutsk,
-                    EasternAustralia,
-                    Indonesia,
-                    NewGuinea,
-                    WesternAustralia
-                };
+            {
+                Alaska,
+                Alberta,
+                CentralAmerica,
+                EasternUnitedStates,
+                Greenland,
+                NorthwestTerritory,
+                Ontario,
+                Quebec,
+                WesternUnitedStates,
+                Argentina,
+                Brazil,
+                Peru,
+                Venezuela,
+                GreatBritain,
+                Iceland,
+                NorthernEurope,
+                Scandinavia,
+                SouthernEurope,
+                Ukraine,
+                WesternEurope,
+                Congo,
+                EastAfrica,
+                Egypt,
+                Madagascar,
+                NorthAfrica,
+                SouthAfrica,
+                Afghanistan,
+                China,
+                India,
+                Irkutsk,
+                Japan,
+                Kamchatka,
+                MiddleEast,
+                Mongolia,
+                Siam,
+                Siberia,
+                Ural,
+                Yakutsk,
+                EasternAustralia,
+                Indonesia,
+                NewGuinea,
+                WesternAustralia
+            };
         }
 
         public ITerritory Alaska { get; private set; }
@@ -252,14 +259,14 @@ namespace RISK.Application
 
         public IEnumerable<ITerritory> GetTerritoriesOccupiedByPlayer(IPlayer player)
         {
-            return GetAll()
+            return GetTerritories()
                 .Where(x => x.Occupant == player)
                 .ToList();
         }
 
         public IEnumerable<IPlayer> GetAllPlayersOccupyingTerritories()
         {
-            return GetAll()
+            return GetTerritories()
                 .Where(x => x.IsOccupied())
                 .Select(x => x.Occupant)
                 .Distinct()

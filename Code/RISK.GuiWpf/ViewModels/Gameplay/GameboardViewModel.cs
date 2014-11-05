@@ -41,7 +41,7 @@ namespace GuiWpf.ViewModels.Gameplay
 
             InformationText = LanguageResources.Instance.GetString("SELECT_TERRITORY");
 
-            WorldMapViewModel = worldMapViewModelFactory.Create(_game.Territories.GetAll(), OnLocationClick);
+            WorldMapViewModel = worldMapViewModelFactory.Create(_game.WorldMap.GetTerritories(), OnLocationClick);
 
             BeginNextPlayerTurn();
         }

@@ -15,7 +15,7 @@ namespace GuiWpf.ViewModels.Setup
         void StartSetup();
     }
 
-    public class GameSetupViewModel : ViewModelBase, IGameSetupViewModel, IGameInitializerLocationSelector, IGameInitializerNotifier
+    public class GameSetupViewModel : ViewModelBase, IGameSetupViewModel, ITerritorySelector, IGameInitializerNotifier
     {
         private readonly IWorldMapViewModelFactory _worldMapViewModelFactory;
         private readonly IGameSettingStateConductor _gameSettingStateConductor;

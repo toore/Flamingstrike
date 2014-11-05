@@ -12,7 +12,7 @@ using RISK.Application.GamePlaying.Setup;
 
 namespace GuiWpf.Views.WorldMapViews
 {
-    public class GameboardViewModelTestDataFactory : IGameInitializerLocationSelector
+    public class GameboardViewModelTestDataFactory : ITerritorySelector
     {
         public static GameboardViewModel ViewModel
         {
@@ -21,7 +21,7 @@ namespace GuiWpf.Views.WorldMapViews
 
         private GameboardViewModel Create()
         {
-            var territories = new RISK.Application.Territories();
+            var territories = new RISK.Application.WorldMap();
             var colorService = new ColorService();
             var territoryColorsFactory = new TerritoryColorsFactory(territories, colorService);
             var territoryLayoutInformationFactory = new TerritoryGuiFactory(territories);
@@ -41,7 +41,7 @@ namespace GuiWpf.Views.WorldMapViews
 
             IInteractionStateFactory interactionStateFactory = new InteractionStateFactory(null);
             var game = new Game(interactionStateFactory, new StateControllerFactory(),  playerProvider, territories, new CardFactory());
-            var gameboardViewModel = new GameboardViewModel(game, territories.GetAll(), worldMapViewModelFactory, territoryViewModelUpdater, null, new GameOverViewModelFactory(), null, null);
+            var gameboardViewModel = new GameboardViewModel(game, territories.GetTerritories(), worldMapViewModelFactory, territoryViewModelUpdater, null, new GameOverViewModelFactory(), null, null);
 
             return gameboardViewModel;
         }

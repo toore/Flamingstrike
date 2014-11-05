@@ -13,7 +13,7 @@ namespace RISK.Tests.GuiWpf
     public class TerritoryViewModelFactoryTests
     {
         private TerritoryViewModelFactory _territoryViewModelFactory;
-        private Territories _territories;
+        private WorldMap _worldMap;
         private Action<ITerritory> _action;
         private ITerritoryGuiFactory _territoryGuiFactory;
         private ITerritoryViewModelUpdater _territoryViewModelUpdater;
@@ -22,7 +22,7 @@ namespace RISK.Tests.GuiWpf
 
         public TerritoryViewModelFactoryTests()
         {
-            _territories = new Territories();
+            _worldMap = new WorldMap();
             _territoryViewModelUpdater = Substitute.For<ITerritoryViewModelUpdater>();
             _territoryGuiFactory = Substitute.For<ITerritoryGuiFactory>();
 
@@ -30,11 +30,11 @@ namespace RISK.Tests.GuiWpf
 
             _action = Substitute.For<Action<ITerritory>>();
 
-            _siamTerritory = _territories.Siam;
+            _siamTerritory = _worldMap.Siam;
             
             _siamGraphics = Substitute.For<ITerritoryGraphics>();
             _siamGraphics.Path.Returns("siam path");
-            _territoryGuiFactory.Create(_territories.Siam).Returns(_siamGraphics);
+            _territoryGuiFactory.Create(_worldMap.Siam).Returns(_siamGraphics);
         }
 
         [Fact]
@@ -56,7 +56,7 @@ namespace RISK.Tests.GuiWpf
 
             viewModel.OnClick();
 
-            _action.Received()(_territories.Siam);
+            _action.Received()(_worldMap.Siam);
         }
 
         private TerritoryLayoutViewModel CreateSiamTerritoryViewModel()

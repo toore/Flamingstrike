@@ -7,11 +7,11 @@ namespace RISK.Tests.Application.Gameplay
 {
     public class InitialArmyCountTests
     {
-        private readonly InitialArmyCount _initialArmyCount;
+        private readonly InitialArmyAssignmentCalculator _initialArmyAssignmentCalculator;
 
         public InitialArmyCountTests()
         {
-            _initialArmyCount = new InitialArmyCount();
+            _initialArmyAssignmentCalculator = new InitialArmyAssignmentCalculator();
         }
 
         [Theory]
@@ -22,7 +22,7 @@ namespace RISK.Tests.Application.Gameplay
         [InlineData(20, 6)]
         public void Number_of_players_gets_correct_number_of_armies(int expectedArmies, int numberOfPlayers)
         {
-            _initialArmyCount.Get(numberOfPlayers).Should().Be(expectedArmies);
+            _initialArmyAssignmentCalculator.Get(numberOfPlayers).Should().Be(expectedArmies);
         }
     }
 }

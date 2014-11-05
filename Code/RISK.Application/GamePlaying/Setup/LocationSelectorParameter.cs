@@ -5,12 +5,12 @@ namespace RISK.Application.GamePlaying.Setup
 {
     public class LocationSelectorParameter : ILocationSelectorParameter
     {
-        private readonly PlayerDuringGameSetup _playerDuringGameSetup;
+        private readonly Player _player;
 
-        public LocationSelectorParameter(IEnumerable<ITerritory> allTerritories, IEnumerable<ITerritory> enabledTerritories, PlayerDuringGameSetup playerDuringGameSetup)
+        public LocationSelectorParameter(IEnumerable<ITerritory> allTerritories, IEnumerable<ITerritory> enabledTerritories, Player player)
         {
             AllTerritories = allTerritories;
-            _playerDuringGameSetup = playerDuringGameSetup;
+            _player = player;
             EnabledTerritories = enabledTerritories;
         }
 
@@ -19,12 +19,12 @@ namespace RISK.Application.GamePlaying.Setup
 
         public IPlayer GetPlayerThatTakesTurn()
         {
-            return _playerDuringGameSetup.GetPlayer();
+            return _player.GetPlayer();
         }
 
         public int GetArmiesLeft()
         {
-            return _playerDuringGameSetup.GetArmiesLeft();
+            return _player.ArmiesToPlace;
         }
 
     }

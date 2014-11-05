@@ -5,7 +5,7 @@ namespace GuiWpf.ViewModels.Setup
 {
     public interface IGameFactoryWorker
     {
-        void Run(IGameInitializerLocationSelector gameInitializerLocationSelector, IGameInitializerNotifier gameInitializerNotifier);
+        void Run(ITerritorySelector territorySelector, IGameInitializerNotifier gameInitializerNotifier);
     }
 
     public class GameFactoryWorker : IGameFactoryWorker
@@ -17,11 +17,11 @@ namespace GuiWpf.ViewModels.Setup
             _gameFactory = gameFactory;
         }
 
-        public void Run(IGameInitializerLocationSelector gameInitializerLocationSelector, IGameInitializerNotifier gameInitializerNotifier)
+        public void Run(ITerritorySelector territorySelector, IGameInitializerNotifier gameInitializerNotifier)
         {
             Task.Run(() =>
             {
-                var game = _gameFactory.Create(gameInitializerLocationSelector);
+                var game = _gameFactory.Create(territorySelector);
                 gameInitializerNotifier.InitializationFinished(game);
             }
             );

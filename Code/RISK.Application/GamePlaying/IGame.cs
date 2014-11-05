@@ -2,7 +2,7 @@
 {
     public interface IGame
     {
-        Territories Territories { get; }
+        IWorldMap WorldMap { get; }
         IInteractionState CurrentInteractionState { get; }
         void EndTurn();
         bool IsGameOver();

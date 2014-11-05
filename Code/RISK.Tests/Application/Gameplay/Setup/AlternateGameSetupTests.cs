@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using FluentAssertions;
 using NSubstitute;
@@ -12,66 +13,64 @@ namespace RISK.Tests.Application.Gameplay.Setup
 {
     public class AlternateGameSetupTests
     {
-        private AlternateGameSetup _sut;
-        private IPlayers _players;
-        private Territories _territories;
-        private ITerritory _location1;
-        private ITerritory _location2;
-        private ITerritory _location3;
-        private IPlayer _player1;
-        private IPlayer _player2;
-        private IRandomSorter _randomSorter;
-        private ITerritoriesFactory _territoriesFactory;
-        private IInitialArmyCount _initialArmyCount;
-        private IGameInitializerLocationSelector _gameInitializerLocationSelector;
-        private ITerritory _territory1;
-        private ITerritory _territory2;
-        private ITerritory _territory3;
+        private readonly AlternateGameSetup _sut;
+        private readonly IWorldMap _worldMap;
+        private readonly IPlayer _player1;
+        private readonly IPlayer _player2;
+        private readonly ITerritorySelector _territorySelector;
+        private readonly ITerritory _territory1;
+        private readonly ITerritory _territory2;
+        private readonly ITerritory _territory3;
 
         public AlternateGameSetupTests()
         {
-            _players = Substitute.For<IPlayers>();
-            _territories = new Territories();
-            _randomSorter = Substitute.For<IRandomSorter>();
-            _territoriesFactory = Substitute.For<ITerritoriesFactory>();
-            _initialArmyCount = Substitute.For<IInitialArmyCount>();
+            var players = Substitute.For<IPlayers>();
+            _worldMap = new WorldMap();
+            var randomSorter = Substitute.For<IRandomSorter>();
+            var worldMapFactory = Substitute.For<IWorldMapFactory>();
+            var initialArmyAssignmentCalculator = Substitute.For<IInitialArmyAssignmentCalculator>();
+
+            var playerInRepository1 = Substitute.For<IPlayer>();
+            var playerInRepository2 = Substitute.For<IPlayer>();
+            players.GetAll().Returns(new[] { playerInRepository1, playerInRepository2 });
+
+            var worldMapTerritory1 = Substitute.For<ITerritory>();
+            var worldMapTerritory2 = Substitute.For<ITerritory>();
+            var worldMapTerritory3 = Substitute.For<ITerritory>();
+
+            _worldMap = Substitute.For<IWorldMap>();
+            worldMapFactory.Create().Returns(_worldMap);
+            _worldMap.GetTerritories().Returns(new[] { worldMapTerritory1, worldMapTerritory2, worldMapTerritory3 });
+
+            initialArmyAssignmentCalculator.Get(2).Returns(3);
+
+            _sut = new AlternateGameSetup(players, worldMapFactory, randomSorter, initialArmyAssignmentCalculator);
 
             _player1 = Substitute.For<IPlayer>();
             _player2 = Substitute.For<IPlayer>();
-            var playerInRepository1 = Substitute.For<IPlayer>();
-            var playerInRepository2 = Substitute.For<IPlayer>();
-            var playersInRepository = new[] { playerInRepository1, playerInRepository2 };
-            _players.GetAll().Returns(playersInRepository);
+            randomSorter.Sort(Arg.Is<IEnumerable<IPlayer>>(x => x.SequenceEqual(new[] { playerInRepository1, playerInRepository2 }))).Returns(new[] { _player1, _player2 });
 
             _territory1 = Substitute.For<ITerritory>();
             _territory2 = Substitute.For<ITerritory>();
             _territory3 = Substitute.For<ITerritory>();
+            randomSorter.Sort(Arg.Is<IEnumerable<ITerritory>>(x => x.SequenceEqual(new[] { worldMapTerritory1, worldMapTerritory2, worldMapTerritory3 }))).Returns(new[] { _territory1, _territory2, _territory3 });
 
-            _territories = new Territories();
-            _territoriesFactory.Create().Returns(_territories);
-
-            _initialArmyCount.Get(2).Returns(3);
-
-            _sut = new AlternateGameSetup(_players, _territories, _randomSorter, _territoriesFactory, _initialArmyCount);
-
-            _randomSorter.Sort(Arg.Is<IEnumerable<IPlayer>>(x => x.SequenceEqual(playersInRepository))).Returns(new[] { _player1, _player2 });
-            _randomSorter.Sort(Arg.Is<IEnumerable<ITerritory>>(x => x.SequenceEqual(_territories.GetAll()))).Returns(new[] { _location3, _location2, _location1 });
-
-            _gameInitializerLocationSelector = Substitute.For<IGameInitializerLocationSelector>();
+            _territorySelector = Substitute.For<ITerritorySelector>();
         }
 
         [Fact]
         public void Initializes_territories()
         {
-            var territories = _sut.Initialize(_gameInitializerLocationSelector);
+            _territorySelector.SelectLocation(null).ReturnsForAnyArgs(Substitute.For<ITerritory>());
+            var actual = _sut.InitializeWorldMap(_territorySelector);
 
-            territories.Should().Be(_territories);
+            actual.Should().Be(_worldMap);
         }
 
         [Fact]
         public void Assign_players_to_territories()
         {
-            _sut.Initialize(_gameInitializerLocationSelector);
+            _sut.InitializeWorldMap(_territorySelector);
 
             _territory1.Occupant.Should().Be(_player1);
             _territory2.Occupant.Should().Be(_player2);
@@ -83,12 +82,12 @@ namespace RISK.Tests.Application.Gameplay.Setup
         {
             var player1Territories = new[] { _territory1, _territory3 };
             var player2Territories = new[] { _territory2 };
-            _territories.GetTerritoriesOccupiedByPlayer(_player1).Returns(player1Territories);
-            _territories.GetTerritoriesOccupiedByPlayer(_player2).Returns(player2Territories);
+            _worldMap.GetTerritoriesOccupiedByPlayer(_player1).Returns(player1Territories);
+            _worldMap.GetTerritoriesOccupiedByPlayer(_player2).Returns(player2Territories);
 
-            _gameInitializerLocationSelector.SelectLocation(null).ReturnsForAnyArgs(_location3, _location2, _location2);
+            _territorySelector.SelectLocation(null).ReturnsForAnyArgs(_territory2, _territory3, _territory2);
 
-            var worldMap = _sut.Initialize(_gameInitializerLocationSelector);
+            _sut.InitializeWorldMap(_territorySelector);
 
             _territory1.Armies.Should().Be(1);
             _territory2.Armies.Should().Be(3);

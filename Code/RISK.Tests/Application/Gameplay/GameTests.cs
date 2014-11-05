@@ -18,7 +18,7 @@ namespace RISK.Tests.Application.Gameplay
         private IPlayer _nextPlayer;
         private readonly StateController _currentStateController;
         private readonly ICardFactory _cardFactory;
-        private Territories _territories;
+        private WorldMap _worldMap;
 
         public GameTests()
         {
@@ -39,14 +39,14 @@ namespace RISK.Tests.Application.Gameplay
 
             _players.GetAll().Returns(new[] { _currentPlayer, _nextPlayer });
 
-            _territories = new Territories();
-            _sut = new Game(_interactionStateFactory, stateControllerFactory, _players, _territories, _cardFactory);
+            _worldMap = new WorldMap();
+            _sut = new Game(_interactionStateFactory, stateControllerFactory, _players, _worldMap, _cardFactory);
         }
 
         [Fact]
         public void Has_world_map()
         {
-            _sut.Territories.Should().Be(_territories);
+            _sut.WorldMap.Should().Be(_worldMap);
         }
 
         [Fact]
@@ -101,7 +101,7 @@ namespace RISK.Tests.Application.Gameplay
         [Fact]
         public void Is_game_over_when_only_one_player_has_territories()
         {
-            _territories.GetAllPlayersOccupyingTerritories()
+            _worldMap.GetAllPlayersOccupyingTerritories()
                 .Returns(new[] { Substitute.For<IPlayer>() });
 
             _sut.IsGameOver().Should().BeTrue();
@@ -110,7 +110,7 @@ namespace RISK.Tests.Application.Gameplay
         [Fact]
         public void Is_not_game_over_when_two_players_have_territories()
         {
-            _territories.GetAllPlayersOccupyingTerritories()
+            _worldMap.GetAllPlayersOccupyingTerritories()
                 .Returns(new[]
                 {
                     Substitute.For<IPlayer>(),

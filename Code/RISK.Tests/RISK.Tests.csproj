@@ -87,7 +87,6 @@
     <Compile Include="CardBuilder.cs" />
     <Compile Include="TerritoryBuilder.cs" />
     <Compile Include="Make.cs" />
-    <Compile Include="Application\Gameplay\Setup\SetupArmiesExtensionsTests.cs" />
     <Compile Include="Application\Gameplay\TerritoryExtensionsTests.cs" />
     <Compile Include="Application\Gameplay\InteractionStateFactoryTests.cs" />
     <Compile Include="Application\Gameplay\AttackStateTests.cs" />
@@ -115,7 +114,7 @@
     <Compile Include="GuiWpf\ColorServiceTests.cs" />
     <Compile Include="GuiWpf\GameboardViewModelTests.cs" />
     <Compile Include="Application\Gameplay\GameTests.cs" />
-    <Compile Include="Application\Gameplay\TerritoriesTests.cs" />
+    <Compile Include="Application\Gameplay\WorldMapTests.cs" />
     <Compile Include="Application\Gameplay\RandomSorterTests.cs" />
     <Compile Include="GuiWpf\TerritoryViewModelFactoryTests.cs" />
     <Compile Include="GuiWpf\Infrastructure\HandleInterceptorTests.cs" />
