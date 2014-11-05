@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Caliburn.Micro;
 using FluentAssertions;
 using GuiWpf.Services;
@@ -6,6 +7,7 @@ using GuiWpf.ViewModels;
 using GuiWpf.ViewModels.Gameplay;
 using GuiWpf.ViewModels.Gameplay.Map;
 using NSubstitute;
+using RISK.Application;
 using RISK.Application.Entities;
 using RISK.Application.GamePlaying;
 using Xunit;
@@ -68,7 +70,12 @@ namespace RISK.Tests.GuiWpf
             _worldMapViewModel.WorldMapViewModels.Add(layoutViewModel2);
             _worldMapViewModel.WorldMapViewModels.Add(textViewModel2);
 
-            //_worldMapViewModelFactory.Create(Arg.Is(worldMap), Arg.Any<Action<ITerritory>>()).Returns(_worldMapViewModel);
+            var worldMap = Substitute.For<IWorldMap>();
+            var worldMapTerritories = new List<ITerritory>();
+            worldMap.GetTerritories().Returns(worldMapTerritories);
+            
+            _game.WorldMap.Returns(worldMap);
+            _worldMapViewModelFactory.Create(Arg.Is(worldMapTerritories), Arg.Any<Action<ITerritory>>()).Returns(_worldMapViewModel);
         }
 
         private GameboardViewModel Create()
