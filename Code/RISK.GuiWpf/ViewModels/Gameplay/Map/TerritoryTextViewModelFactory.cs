@@ -19,13 +19,13 @@ namespace GuiWpf.ViewModels.Gameplay.Map
 
         public ITerritoryTextViewModel Create(ITerritory territory)
         {
-            var layoutInformation = _territoryGuiFactory.Create(territory);
+            var territoryModel = _territoryGuiFactory.Create(territory);
 
             return new TerritoryTextViewModel
                 {
                     Territory = territory,
-                    TerritoryName = layoutInformation.Name,
-                    Position = layoutInformation.NamePosition,
+                    TerritoryName = territoryModel.Name,
+                    Position = territoryModel.NamePosition,
                     Armies = territory.Armies
                 };
         }
