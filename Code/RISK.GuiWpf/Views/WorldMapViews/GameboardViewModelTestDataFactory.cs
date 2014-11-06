@@ -1,6 +1,6 @@
 using System.Linq;
 using GuiWpf.Services;
-using GuiWpf.Territories;
+using GuiWpf.TerritoryModels;
 using GuiWpf.ViewModels;
 using GuiWpf.ViewModels.Gameplay;
 using GuiWpf.ViewModels.Gameplay.Map;
@@ -21,7 +21,7 @@ namespace GuiWpf.Views.WorldMapViews
 
         private GameboardViewModel Create()
         {
-            var territories = new RISK.Application.WorldMap();
+            var territories = new WorldMap();
             var colorService = new ColorService();
             var territoryColorsFactory = new TerritoryColorsFactory(territories, colorService);
             var territoryLayoutInformationFactory = new TerritoryGuiFactory(territories);

@@ -1,7 +1,7 @@
 ﻿using System;
 using FluentAssertions;
 using GuiWpf.Services;
-using GuiWpf.Territories;
+using GuiWpf.TerritoryModels;
 using GuiWpf.ViewModels.Gameplay.Map;
 using NSubstitute;
 using RISK.Application;
@@ -18,7 +18,7 @@ namespace RISK.Tests.GuiWpf
         private ITerritoryGuiFactory _territoryGuiFactory;
         private ITerritoryViewModelUpdater _territoryViewModelUpdater;
         private ITerritory _siamTerritory;
-        private ITerritoryGraphics _siamGraphics;
+        private ITerritoryModel _siamModel;
 
         public TerritoryViewModelFactoryTests()
         {
@@ -32,9 +32,9 @@ namespace RISK.Tests.GuiWpf
 
             _siamTerritory = _worldMap.Siam;
             
-            _siamGraphics = Substitute.For<ITerritoryGraphics>();
-            _siamGraphics.Path.Returns("siam path");
-            _territoryGuiFactory.Create(_worldMap.Siam).Returns(_siamGraphics);
+            _siamModel = Substitute.For<ITerritoryModel>();
+            _siamModel.Path.Returns("siam path");
+            _territoryGuiFactory.Create(_worldMap.Siam).Returns(_siamModel);
         }
 
         [Fact]
@@ -43,7 +43,7 @@ namespace RISK.Tests.GuiWpf
             var viewModel = CreateSiamTerritoryViewModel();
 
             viewModel.Should().BeOfType<TerritoryLayoutViewModel>();
-            viewModel.Path.Should().Be(_siamGraphics.Path);
+            viewModel.Path.Should().Be(_siamModel.Path);
             viewModel.IsEnabled.Should().BeTrue();
 
             _territoryViewModelUpdater.Received().UpdateColors(Arg.Any<ITerritoryLayoutViewModel>(), Arg.Is(_siamTerritory));

@@ -1,5 +1,5 @@
 ﻿using FluentAssertions;
-using GuiWpf.Territories;
+using GuiWpf.TerritoryModels;
 using GuiWpf.ViewModels.Gameplay.Map;
 using NSubstitute;
 using RISK.Application.Entities;

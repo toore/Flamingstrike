@@ -1,15 +1,21 @@
 using System;
 using System.Collections.Generic;
+using RISK.Application;
 using RISK.Application.Entities;
 
 namespace GuiWpf.Services
 {
+    public interface ITerritoryColorsFactory
+    {
+        ITerritoryColors Create(ITerritory territory);
+    }
+
     public class TerritoryColorsFactory : ITerritoryColorsFactory
     {
         private readonly IColorService _colorService;
         private readonly Dictionary<ITerritory, Func<ITerritoryColors>> _colors;
 
-        public TerritoryColorsFactory(RISK.Application.WorldMap worldMap, IColorService colorService)
+        public TerritoryColorsFactory(WorldMap worldMap, IColorService colorService)
         {
             _colorService = colorService;
 
