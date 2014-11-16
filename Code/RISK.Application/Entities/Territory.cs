@@ -5,7 +5,6 @@ namespace RISK.Application.Entities
 {
     public interface ITerritory
     {
-        string Name { get; }
         Continent Continent { get; }
         bool IsBordering(ITerritory location);
 
@@ -23,12 +22,10 @@ namespace RISK.Application.Entities
 
         public Territory(string name, Continent continent)
         {
-            Name = name;
             Continent = continent;
             _borders = new List<ITerritory>();
         }
 
-        public string Name { get; private set; }
         public Continent Continent { get; private set; }
 
         public bool IsBordering(ITerritory location)

@@ -1,21 +1,24 @@
 using System.Windows;
 using GuiWpf.Properties;
+using RISK.Application.Entities;
 
 namespace GuiWpf.TerritoryModels
 {
-    public class SiberiaModel : ITerritoryModel
+    public class SiberiaModel : TerritoryModelBase
     {
-        public string Name
+        public SiberiaModel(ITerritory territory) : base(territory) {}
+
+        public override string Name
         {
             get { return Resources.SIBERIA; }
         }
 
-        public Point NamePosition
+        public override Point NamePosition
         {
             get { return new Point(930, 40); }
         }
 
-        public string Path
+        public override string Path
         {
             get { return "m 887.92409 59.377989 60.60915 -25.253814 34.34519 18.687823 36.87057 71.720832 -40.40611 51.0127 -8.58629 2.52538 -3.53554 -48.48732 z"; }
         }

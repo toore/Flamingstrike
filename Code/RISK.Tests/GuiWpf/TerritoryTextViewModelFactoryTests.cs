@@ -10,13 +10,13 @@ namespace RISK.Tests.GuiWpf
     public class TerritoryTextViewModelFactoryTests
     {
         private TerritoryTextViewModelFactory _factory;
-        private ITerritoryGuiFactory _territoryGuiFactory;
+        private IWorldMapModelFactory _worldMapModelFactory;
 
         public TerritoryTextViewModelFactoryTests()
         {
-            _territoryGuiFactory = Substitute.For<ITerritoryGuiFactory>();
+            _worldMapModelFactory = Substitute.For<IWorldMapModelFactory>();
 
-            _factory = new TerritoryTextViewModelFactory(_territoryGuiFactory);
+            _factory = new TerritoryTextViewModelFactory(_worldMapModelFactory);
         }
 
         [Fact]

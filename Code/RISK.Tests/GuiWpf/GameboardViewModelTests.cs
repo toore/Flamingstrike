@@ -71,11 +71,9 @@ namespace RISK.Tests.GuiWpf
             _worldMapViewModel.WorldMapViewModels.Add(textViewModel2);
 
             var worldMap = Substitute.For<IWorldMap>();
-            var worldMapTerritories = new List<ITerritory>();
-            worldMap.GetTerritories().Returns(worldMapTerritories);
-            
             _game.WorldMap.Returns(worldMap);
-            _worldMapViewModelFactory.Create(Arg.Is(worldMapTerritories), Arg.Any<Action<ITerritory>>()).Returns(_worldMapViewModel);
+
+            _worldMapViewModelFactory.Create(Arg.Is(worldMap), Arg.Any<Action<ITerritory>>()).Returns(_worldMapViewModel);
         }
 
         private GameboardViewModel Create()

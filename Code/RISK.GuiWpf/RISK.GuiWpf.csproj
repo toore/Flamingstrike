@@ -73,6 +73,7 @@
     </ApplicationDefinition>
     <Compile Include="Extensions\EnumerableExtensions.cs" />
     <Compile Include="Services\LanguageResources.cs" />
+    <Compile Include="TerritoryModels\TerritoryModelBase.cs" />
     <Compile Include="ViewModels\ConfirmViewModel.cs" />
     <Compile Include="ViewModels\ConfirmViewModelFactory.cs" />
     <Compile Include="ViewModels\IConfirmViewModelFactory.cs" />
@@ -124,7 +125,7 @@
     <Compile Include="ViewModels\Settings\PlayerFactory.cs" />
     <Compile Include="ViewModels\Settings\PlayerSetupViewModel.cs" />
     <Compile Include="ViewModels\Gameplay\Map\ITerritoryLayoutViewModel.cs" />
-    <Compile Include="TerritoryModels\TerritoryGuiFactory.cs" />
+    <Compile Include="TerritoryModels\WorldMapModelFactory.cs" />
     <Compile Include="ViewModels\Settings\PlayerTypeBase.cs" />
     <Compile Include="ViewModels\Settings\PlayerTypes.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
@@ -161,7 +162,6 @@
       <DependentUpon>MainGameView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\MainGameViewModelTestDataFactory.cs" />
-    <Compile Include="ViewModels\Gameplay\Map\IWorldMapViewModelFactory.cs" />
     <Compile Include="ViewModels\Gameplay\Map\IWorldMapItemViewModel.cs" />
     <Compile Include="TerritoryModels\JapanModel.cs" />
     <Compile Include="TerritoryModels\KamchatkaModel.cs" />

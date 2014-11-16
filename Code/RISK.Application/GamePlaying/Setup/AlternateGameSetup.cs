@@ -94,7 +94,7 @@ namespace RISK.Application.GamePlaying.Setup
         private void PlaceArmy(IWorldMap worldMap, Player player)
         {
             var territoriesOccupiedByPlayer = worldMap.GetTerritoriesOccupiedByPlayer(player.GetPlayer());
-            var selectedTerritory = _territorySelector.SelectLocation(new LocationSelectorParameter(worldMap.GetTerritories(), territoriesOccupiedByPlayer, player));
+            var selectedTerritory = _territorySelector.SelectLocation(new LocationSelectorParameter(worldMap, territoriesOccupiedByPlayer, player));
 
             selectedTerritory.Armies++;
             player.ArmiesToPlace--;

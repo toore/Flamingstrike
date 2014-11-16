@@ -8,23 +8,24 @@ namespace GuiWpf.ViewModels.Gameplay.Map
     public class TerritoryViewModelFactory : ITerritoryViewModelFactory
     {
         private readonly ITerritoryViewModelUpdater _territoryViewModelUpdater;
-        private readonly ITerritoryGuiFactory _territoryGuiFactory;
+        private readonly IWorldMapModelFactory _worldMapModelFactory;
 
-        public TerritoryViewModelFactory(ITerritoryViewModelUpdater territoryViewModelUpdater, ITerritoryGuiFactory territoryGuiFactory)
+        public TerritoryViewModelFactory(ITerritoryViewModelUpdater territoryViewModelUpdater, IWorldMapModelFactory worldMapModelFactory)
         {
             _territoryViewModelUpdater = territoryViewModelUpdater;
-            _territoryGuiFactory = territoryGuiFactory;
+            _worldMapModelFactory = worldMapModelFactory;
         }
 
         public TerritoryLayoutViewModel Create(ITerritory territory, Action<ITerritory> clickCommand)
         {
-            var territoryModel = _territoryGuiFactory.Create(territory);
+            throw new NotSupportedException();
+            //var territoryModel = _worldMapModelFactory.Create(territory);
 
-            var territoryViewModel = new TerritoryLayoutViewModel(territory, territoryModel.Path, clickCommand);
-            territoryViewModel.IsEnabled = true;
-            _territoryViewModelUpdater.UpdateColors(territoryViewModel, territory);
+            //var territoryViewModel = new TerritoryLayoutViewModel(territory, territoryModel.Path, clickCommand);
+            //territoryViewModel.IsEnabled = true;
+            //_territoryViewModelUpdater.UpdateColors(territoryViewModel, territory);
 
-            return territoryViewModel;
+            //return territoryViewModel;
         }
     }
 }

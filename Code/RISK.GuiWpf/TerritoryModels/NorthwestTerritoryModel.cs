@@ -1,21 +1,24 @@
 using System.Windows;
 using GuiWpf.Properties;
+using RISK.Application.Entities;
 
 namespace GuiWpf.TerritoryModels
 {
-    public class NorthwestTerritoryModel : ITerritoryModel
+    public class NorthwestTerritoryModel : TerritoryModelBase
     {
-        public string Name
+        public NorthwestTerritoryModel(ITerritory territory) : base(territory) {}
+
+        public override string Name
         {
             get { return Resources.NORTHWEST_TERRITORY; }
         }
 
-        public Point NamePosition
+        public override Point NamePosition
         {
             get { return new Point(157.07872, 40); }
         }
 
-        public string Path
+        public override string Path
         {
             get
             {

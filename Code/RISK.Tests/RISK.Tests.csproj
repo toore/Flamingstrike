@@ -85,6 +85,7 @@
     <Compile Include="Application\Battle\CasualtiesCalculatorTests.cs" />
     <Compile Include="Application\Gameplay\InitialArmyCountTests.cs" />
     <Compile Include="CardBuilder.cs" />
+    <Compile Include="GuiWpf\WorldMapModelFactoryTests.cs" />
     <Compile Include="TerritoryBuilder.cs" />
     <Compile Include="Make.cs" />
     <Compile Include="Application\Gameplay\TerritoryExtensionsTests.cs" />

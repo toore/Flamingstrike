@@ -1,21 +1,24 @@
 using System.Windows;
 using GuiWpf.Properties;
+using RISK.Application.Entities;
 
 namespace GuiWpf.TerritoryModels
 {
-    public class WesternAustraliaModel : ITerritoryModel
+    public class WesternAustraliaModel : TerritoryModelBase
     {
-        public string Name
+        public WesternAustraliaModel(ITerritory territory) : base(territory) {}
+
+        public override string Name
         {
             get { return Resources.WESTERN_AUSTRALIA; }
         }
 
-        public Point NamePosition
+        public override Point NamePosition
         {
             get { return new Point(1080, 560); }
         }
 
-        public string Path
+        public override string Path
         {
             get { return "m 1207.6374 526.06847 -74.7513 40.91117 -10.1015 68.69038 106.571 20.70812 z"; }
         }

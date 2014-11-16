@@ -1,3 +1,4 @@
+using System;
 using GuiWpf.TerritoryModels;
 using RISK.Application.Entities;
 
@@ -10,24 +11,25 @@ namespace GuiWpf.ViewModels.Gameplay.Map
 
     public class TerritoryTextViewModelFactory : ITerritoryTextViewModelFactory
     {
-        private readonly ITerritoryGuiFactory _territoryGuiFactory;
+        private readonly IWorldMapModelFactory _worldMapModelFactory;
 
-        public TerritoryTextViewModelFactory(ITerritoryGuiFactory territoryGuiFactory)
+        public TerritoryTextViewModelFactory(IWorldMapModelFactory worldMapModelFactory)
         {
-            _territoryGuiFactory = territoryGuiFactory;
+            _worldMapModelFactory = worldMapModelFactory;
         }
 
         public ITerritoryTextViewModel Create(ITerritory territory)
         {
-            var territoryModel = _territoryGuiFactory.Create(territory);
+            throw new NotSupportedException();
+            //var territoryModel = _worldMapModelFactory.Create(territory);
 
-            return new TerritoryTextViewModel
-                {
-                    Territory = territory,
-                    TerritoryName = territoryModel.Name,
-                    Position = territoryModel.NamePosition,
-                    Armies = territory.Armies
-                };
+            //return new TerritoryTextViewModel
+            //    {
+            //        Territory = territory,
+            //        TerritoryName = territoryModel.Name,
+            //        Position = territoryModel.NamePosition,
+            //        Armies = territory.Armies
+            //    };
         }
     }
 }

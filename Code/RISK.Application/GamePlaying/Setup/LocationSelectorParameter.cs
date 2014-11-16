@@ -7,14 +7,14 @@ namespace RISK.Application.GamePlaying.Setup
     {
         private readonly Player _player;
 
-        public LocationSelectorParameter(IEnumerable<ITerritory> allTerritories, IEnumerable<ITerritory> enabledTerritories, Player player)
+        public LocationSelectorParameter(IWorldMap worldMap, IEnumerable<ITerritory> enabledTerritories, Player player)
         {
-            AllTerritories = allTerritories;
+            WorldMap = worldMap;
             _player = player;
             EnabledTerritories = enabledTerritories;
         }
 
-        public IEnumerable<ITerritory> AllTerritories { get; private set; }
+        public IWorldMap WorldMap { get; private set; }
         public IEnumerable<ITerritory> EnabledTerritories { get; private set; }
 
         public IPlayer GetPlayerThatTakesTurn()

@@ -4,6 +4,7 @@ using GuiWpf.Properties;
 using GuiWpf.Services;
 using GuiWpf.ViewModels.Gameplay.Map;
 using GuiWpf.ViewModels.Messages;
+using RISK.Application;
 using RISK.Application.Entities;
 using RISK.Application.GamePlaying;
 using RISK.Application.GamePlaying.Setup;
@@ -80,7 +81,7 @@ namespace GuiWpf.ViewModels.Setup
 
         private void UpdateView(ILocationSelectorParameter locationSelectorParameter)
         {
-            var worldMapViewModel = _worldMapViewModelFactory.Create(locationSelectorParameter.AllTerritories, _userInteractor.SelectLocation);
+            var worldMapViewModel = _worldMapViewModelFactory.Create(locationSelectorParameter.WorldMap, _userInteractor.SelectLocation);
 
             worldMapViewModel.WorldMapViewModels.OfType<TerritoryLayoutViewModel>()
                 .Apply(x => x.IsEnabled = locationSelectorParameter.EnabledTerritories.Contains(x.Location));

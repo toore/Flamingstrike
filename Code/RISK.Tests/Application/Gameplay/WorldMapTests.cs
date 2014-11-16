@@ -194,8 +194,8 @@ namespace RISK.Tests.Application.Gameplay
         {
             foreach (var expected in expectedItems)
             {
-                actual.IsBordering(expected).Should().BeTrue(actual.Name + " should be bordering " + expected.Name);
-                expected.IsBordering(actual).Should().BeTrue(expected.Name + " should be bordering " + actual.Name);
+                actual.IsBordering(expected).Should().BeTrue(actual + " should be bordering " + expected);
+                expected.IsBordering(actual).Should().BeTrue(expected + " should be bordering " + actual);
             }
         }
 

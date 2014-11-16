@@ -21,27 +21,26 @@ namespace GuiWpf.Views.WorldMapViews
 
         private GameboardViewModel Create()
         {
-            var territories = new WorldMap();
+            var worldMap = new WorldMap();
             var colorService = new ColorService();
-            var territoryColorsFactory = new TerritoryColorsFactory(territories, colorService);
-            var territoryLayoutInformationFactory = new TerritoryGuiFactory(territories);
+            var territoryColorsFactory = new TerritoryColorsFactory(worldMap, colorService);
+            var territoryLayoutInformationFactory = new WorldMapModelFactory();
             var territoryViewModelUpdater = new TerritoryViewModelUpdater(territoryColorsFactory, colorService);
-            var territoryViewModelFactory = new TerritoryViewModelFactory(territoryViewModelUpdater, territoryLayoutInformationFactory);
 
-            var territory = territories.Brazil;
+            var territory = worldMap.Brazil;
             var humanPlayer = new HumanPlayer("pelle");
             territory.Occupant = humanPlayer;
             territory.Armies = 99;
 
             var textViewModelFactory = new TerritoryTextViewModelFactory(territoryLayoutInformationFactory);
-            var worldMapViewModelFactory = new WorldMapViewModelFactory(territoryViewModelFactory, textViewModelFactory);
+            var worldMapViewModelFactory = new WorldMapViewModelFactory();
 
             var playerProvider = new Players();
             playerProvider.SetPlayers(humanPlayer.AsList());
 
             IInteractionStateFactory interactionStateFactory = new InteractionStateFactory(null);
-            var game = new Game(interactionStateFactory, new StateControllerFactory(),  playerProvider, territories, new CardFactory());
-            var gameboardViewModel = new GameboardViewModel(game, territories.GetTerritories(), worldMapViewModelFactory, territoryViewModelUpdater, null, new GameOverViewModelFactory(), null, null);
+            var game = new Game(interactionStateFactory, new StateControllerFactory(),  playerProvider, worldMap, new CardFactory());
+            var gameboardViewModel = new GameboardViewModel(game, worldMap.GetTerritories(), worldMapViewModelFactory, territoryViewModelUpdater, null, new GameOverViewModelFactory(), null, null);
 
             return gameboardViewModel;
         }
