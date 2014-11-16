@@ -1,6 +1,5 @@
 using System.Linq;
 using GuiWpf.Services;
-using GuiWpf.TerritoryModels;
 using GuiWpf.ViewModels;
 using GuiWpf.ViewModels.Gameplay;
 using GuiWpf.ViewModels.Gameplay.Map;
@@ -24,7 +23,6 @@ namespace GuiWpf.Views.WorldMapViews
             var worldMap = new WorldMap();
             var colorService = new ColorService();
             var territoryColorsFactory = new TerritoryColorsFactory(worldMap, colorService);
-            var territoryLayoutInformationFactory = new WorldMapModelFactory();
             var territoryViewModelUpdater = new TerritoryViewModelUpdater(territoryColorsFactory, colorService);
 
             var territory = worldMap.Brazil;
@@ -32,13 +30,12 @@ namespace GuiWpf.Views.WorldMapViews
             territory.Occupant = humanPlayer;
             territory.Armies = 99;
 
-            var textViewModelFactory = new TerritoryTextViewModelFactory(territoryLayoutInformationFactory);
             var worldMapViewModelFactory = new WorldMapViewModelFactory();
 
             var playerProvider = new Players();
             playerProvider.SetPlayers(humanPlayer.AsList());
 
-            IInteractionStateFactory interactionStateFactory = new InteractionStateFactory(null);
+            var interactionStateFactory = new InteractionStateFactory(null);
             var game = new Game(interactionStateFactory, new StateControllerFactory(),  playerProvider, worldMap, new CardFactory());
             var gameboardViewModel = new GameboardViewModel(game, worldMap.GetTerritories(), worldMapViewModelFactory, territoryViewModelUpdater, null, new GameOverViewModelFactory(), null, null);
 

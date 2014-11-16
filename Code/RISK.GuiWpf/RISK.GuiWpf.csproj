@@ -189,7 +189,6 @@
     <Compile Include="ViewModels\Gameplay\Map\TerritoryLayoutViewModel.cs" />
     <Compile Include="TerritoryModels\ITerritoryModel.cs" />
     <Compile Include="ViewModels\Gameplay\Map\TerritoryViewModelFactory.cs" />
-    <Compile Include="ViewModels\Gameplay\Map\TerritoryTextViewModelFactory.cs" />
     <Compile Include="ViewModels\Gameplay\Map\WorldMapViewModelFactory.cs" />
     <Compile Include="ViewModels\Gameplay\Map\TerritoryTextViewModel.cs" />
     <Compile Include="TerritoryModels\UkraineModel.cs" />

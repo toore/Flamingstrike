@@ -100,7 +100,6 @@
     <Compile Include="GuiWpf\GameSetupViewModelTests.cs" />
     <Compile Include="GuiWpf\MainGameViewModelTests.cs" />
     <Compile Include="GuiWpf\ScreenServiceTests.cs" />
-    <Compile Include="GuiWpf\TerritoryTextViewModelFactoryTests.cs" />
     <Compile Include="Views\ConfirmViewModelFactoryTests.cs" />
     <Compile Include="Views\UserNotifierTests.cs" />
     <Page Include="MainWindow.xaml">
