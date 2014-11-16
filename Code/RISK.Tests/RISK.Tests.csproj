@@ -116,7 +116,6 @@
     <Compile Include="Application\Gameplay\GameTests.cs" />
     <Compile Include="Application\Gameplay\WorldMapTests.cs" />
     <Compile Include="Application\Gameplay\RandomSorterTests.cs" />
-    <Compile Include="GuiWpf\TerritoryViewModelFactoryTests.cs" />
     <Compile Include="GuiWpf\Infrastructure\HandleInterceptorTests.cs" />
     <Compile Include="GuiWpf\Infrastructure\TypeExtensionsTests.cs" />
     <Compile Include="MainWindow.xaml.cs">
