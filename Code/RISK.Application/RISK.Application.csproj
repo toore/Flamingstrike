@@ -77,11 +77,11 @@
     <Compile Include="GamePlaying\IRandomSorter.cs" />
     <Compile Include="GamePlaying\IRandomWrapper.cs" />
     <Compile Include="GamePlaying\IInteractionStateFactory.cs" />
-    <Compile Include="GamePlaying\Setup\ILocationSelectorParameter.cs" />
+    <Compile Include="GamePlaying\Setup\ITerritorySelectorParameter.cs" />
     <Compile Include="GamePlaying\Setup\Player.cs" />
     <Compile Include="GamePlaying\RandomSorter.cs" />
     <Compile Include="GamePlaying\RandomWrapper.cs" />
-    <Compile Include="GamePlaying\Setup\LocationSelectorParameter.cs" />
+    <Compile Include="GamePlaying\Setup\TerritorySelectorParameter.cs" />
     <Compile Include="GamePlaying\StateController.cs" />
     <Compile Include="GamePlaying\AttackState.cs" />
     <Compile Include="GamePlaying\InteractionStateFactory.cs" />

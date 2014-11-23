@@ -61,7 +61,7 @@ namespace RISK.Tests.Application.Gameplay.Setup
         [Fact]
         public void Initializes_territories()
         {
-            _territorySelector.SelectLocation(null).ReturnsForAnyArgs(Substitute.For<ITerritory>());
+            _territorySelector.SelectTerritory(null).ReturnsForAnyArgs(Substitute.For<ITerritory>());
             var actual = _sut.InitializeWorldMap(_territorySelector);
 
             actual.Should().Be(_worldMap);
@@ -85,7 +85,7 @@ namespace RISK.Tests.Application.Gameplay.Setup
             _worldMap.GetTerritoriesOccupiedByPlayer(_player1).Returns(player1Territories);
             _worldMap.GetTerritoriesOccupiedByPlayer(_player2).Returns(player2Territories);
 
-            _territorySelector.SelectLocation(null).ReturnsForAnyArgs(_territory2, _territory3, _territory2);
+            _territorySelector.SelectTerritory(null).ReturnsForAnyArgs(_territory2, _territory3, _territory2);
 
             _sut.InitializeWorldMap(_territorySelector);
 

@@ -1,22 +1,27 @@
 using GuiWpf.ViewModels.Gameplay.Map;
-using RISK.Application.Entities;
+using RISK.Application;
 
 namespace GuiWpf.Services
 {
-    public class TerritoryViewModelUpdater : ITerritoryViewModelUpdater
+    public interface ITerritoryViewModelColorInitializer
+    {
+        void UpdateColors(IWorldMap worldMap, ITerritoryLayoutViewModel territoryLayoutViewModel);
+    }
+
+    public class TerritoryViewModelColorInitializer : ITerritoryViewModelColorInitializer
     {
         private readonly ITerritoryColorsFactory _territoryColorsFactory;
         private readonly IColorService _colorService;
 
-        public TerritoryViewModelUpdater(ITerritoryColorsFactory territoryColorsFactory, IColorService colorService)
+        public TerritoryViewModelColorInitializer(ITerritoryColorsFactory territoryColorsFactory, IColorService colorService)
         {
             _territoryColorsFactory = territoryColorsFactory;
             _colorService = colorService;
         }
 
-        public void UpdateColors(ITerritoryLayoutViewModel territoryLayoutViewModel, ITerritory territory)
+        public void UpdateColors(IWorldMap worldMap, ITerritoryLayoutViewModel territoryLayoutViewModel)
         {
-            var territoryColors = _territoryColorsFactory.Create(territory);
+            var territoryColors = _territoryColorsFactory.Create(worldMap, territoryLayoutViewModel.Territory);
 
             var strokeColor = territoryColors.NormalStrokeColor;
             var fillColor = territoryColors.NormalFillColor;

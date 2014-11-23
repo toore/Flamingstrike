@@ -5,12 +5,12 @@ namespace GuiWpf.TerritoryModels
 {
     public interface IWorldMapModelFactory
     {
-        IEnumerable<ITerritoryModel> Create(WorldMap worldMap);
+        IEnumerable<ITerritoryModel> Create(IWorldMap worldMap);
     }
 
     public class WorldMapModelFactory : IWorldMapModelFactory
     {
-        public IEnumerable<ITerritoryModel> Create(WorldMap worldMap)
+        public IEnumerable<ITerritoryModel> Create(IWorldMap worldMap)
         {
             yield return new AlaskaModel(worldMap.Alaska);
             yield return new AlbertaModel(worldMap.Alberta);
@@ -54,55 +54,6 @@ namespace GuiWpf.TerritoryModels
             yield return new IndonesiaModel(worldMap.Indonesia);
             yield return new NewGuineaModel(worldMap.NewGuinea);
             yield return new WesternAustraliaModel(worldMap.WesternAustralia);
-
-
-            //var territoryModels = new Dictionary<ITerritory, ITerritoryModel>
-            //{
-            //    { worldMap.Alaska, new AlaskaModel() },
-            //    { worldMap.Alberta, new AlbertaModel() },
-            //    { worldMap.CentralAmerica, new CentralAmericaModel() },
-            //    { worldMap.EasternUnitedStates, new EasternUnitedStatesModel() },
-            //    { worldMap.Greenland, new GreenlandModel() },
-            //    { worldMap.NorthwestTerritory, new NorthwestTerritoryModel() },
-            //    { worldMap.Ontario, new OntarioModel() },
-            //    { worldMap.Quebec, new QuebecModel() },
-            //    { worldMap.WesternUnitedStates, new WesternUnitedStatesModel() },
-            //    { worldMap.Argentina, new ArgentinaModel() },
-            //    { worldMap.Brazil, new BrazilModel() },
-            //    { worldMap.Peru, new PeruModel() },
-            //    { worldMap.Venezuela, new VenezuelaModel() },
-            //    { worldMap.GreatBritain, new GreatBritainModel() },
-            //    { worldMap.Iceland, new IcelandModel() },
-            //    { worldMap.NorthernEurope, new NorthernEuropeModel() },
-            //    { worldMap.Scandinavia, new ScandinaviaModel() },
-            //    { worldMap.SouthernEurope, new SouthernEuropeModel() },
-            //    { worldMap.Ukraine, new UkraineModel() },
-            //    { worldMap.WesternEurope, new WesternEuropeModel() },
-            //    { worldMap.Congo, new CongoModel() },
-            //    { worldMap.EastAfrica, new EastAfricaModel() },
-            //    { worldMap.Egypt, new EgyptModel() },
-            //    { worldMap.Madagascar, new MadagascarModel() },
-            //    { worldMap.NorthAfrica, new NorthAfricaModel() },
-            //    { worldMap.SouthAfrica, new SouthAfricaModel() },
-            //    { worldMap.Afghanistan, new AfghanistanModel() },
-            //    { worldMap.China, new ChinaModel() },
-            //    { worldMap.India, new IndiaModel() },
-            //    { worldMap.Irkutsk, new IrkutskModel() },
-            //    { worldMap.Japan, new JapanModel() },
-            //    { worldMap.Kamchatka, new KamchatkaModel() },
-            //    { worldMap.MiddleEast, new MiddleEastModel() },
-            //    { worldMap.Mongolia, new MongoliaModel() },
-            //    { worldMap.Siam, new SiamModel() },
-            //    { worldMap.Siberia, new SiberiaModel() },
-            //    { worldMap.Ural, new UralModel() },
-            //    { worldMap.Yakutsk, new YakutskModel() },
-            //    { worldMap.EasternAustralia, new EasternAustraliaModel() },
-            //    { worldMap.Indonesia, new IndonesiaModel() },
-            //    { worldMap.NewGuinea, new NewGuineaModel() },
-            //    { worldMap.WesternAustralia, new WesternAustraliaModel() },
-            //};
-
-            //return 
         }
     }
 }

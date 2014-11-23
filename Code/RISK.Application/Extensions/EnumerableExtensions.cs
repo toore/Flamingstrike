@@ -14,5 +14,13 @@ namespace RISK.Application.Extensions
         {
             return sequence.ElementAt(2);
         }
+
+        public static void Add<T>(this IList<T> source, IEnumerable<T> range)
+        {
+            foreach (var r in range)
+            {
+                source.Add(r);
+            }
+        }
     }
 }

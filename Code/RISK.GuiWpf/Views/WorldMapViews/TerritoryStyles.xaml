@@ -53,7 +53,7 @@
                     <Label
                         HorizontalAlignment="Center"
                         Style="{StaticResource TerritoryNameLabelStyle}"
-                        Content="{Binding TerritoryName}" />
+                        Content="{Binding Name}" />
 
                     <Label
                         HorizontalAlignment="Center"

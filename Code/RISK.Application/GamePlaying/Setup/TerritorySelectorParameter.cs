@@ -3,11 +3,11 @@ using RISK.Application.Entities;
 
 namespace RISK.Application.GamePlaying.Setup
 {
-    public class LocationSelectorParameter : ILocationSelectorParameter
+    public class TerritorySelectorParameter : ITerritorySelectorParameter
     {
         private readonly Player _player;
 
-        public LocationSelectorParameter(IWorldMap worldMap, IEnumerable<ITerritory> enabledTerritories, Player player)
+        public TerritorySelectorParameter(IWorldMap worldMap, IEnumerable<ITerritory> enabledTerritories, Player player)
         {
             WorldMap = worldMap;
             _player = player;

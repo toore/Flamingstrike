@@ -4,7 +4,6 @@ using GuiWpf.Properties;
 using GuiWpf.Services;
 using GuiWpf.ViewModels.Gameplay.Map;
 using GuiWpf.ViewModels.Messages;
-using RISK.Application;
 using RISK.Application.Entities;
 using RISK.Application.GamePlaying;
 using RISK.Application.GamePlaying.Setup;
@@ -67,11 +66,11 @@ namespace GuiWpf.ViewModels.Setup
             _gameFactoryWorker.Run(this, this);
         }
 
-        public ITerritory SelectLocation(ILocationSelectorParameter locationSelectorParameter)
+        public ITerritory SelectTerritory(ITerritorySelectorParameter territorySelectorParameter)
         {
-            UpdateView(locationSelectorParameter);
+            UpdateView(territorySelectorParameter);
 
-            return _userInteractor.GetLocation(locationSelectorParameter);
+            return _userInteractor.GetLocation(territorySelectorParameter);
         }
 
         public void InitializationFinished(IGame game)
@@ -79,18 +78,18 @@ namespace GuiWpf.ViewModels.Setup
             StartGamePlay(game);
         }
 
-        private void UpdateView(ILocationSelectorParameter locationSelectorParameter)
+        private void UpdateView(ITerritorySelectorParameter territorySelectorParameter)
         {
-            var worldMapViewModel = _worldMapViewModelFactory.Create(locationSelectorParameter.WorldMap, _userInteractor.SelectLocation);
+            var worldMapViewModel = _worldMapViewModelFactory.Create(territorySelectorParameter.WorldMap, _userInteractor.SelectLocation);
 
             worldMapViewModel.WorldMapViewModels.OfType<TerritoryLayoutViewModel>()
-                .Apply(x => x.IsEnabled = locationSelectorParameter.EnabledTerritories.Contains(x.Location));
+                .Apply(x => x.IsEnabled = territorySelectorParameter.EnabledTerritories.Contains(x.Territory));
 
             WorldMapViewModel = worldMapViewModel;
 
-            Player = locationSelectorParameter.GetPlayerThatTakesTurn();
+            Player = territorySelectorParameter.GetPlayerThatTakesTurn();
 
-            InformationText = string.Format(Resources.PLACE_ARMY, locationSelectorParameter.GetArmiesLeft());
+            InformationText = string.Format(Resources.PLACE_ARMY, territorySelectorParameter.GetArmiesLeft());
         }
 
         private void StartGamePlay(IGame game)

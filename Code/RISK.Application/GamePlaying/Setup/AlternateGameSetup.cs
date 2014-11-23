@@ -40,7 +40,7 @@ namespace RISK.Application.GamePlaying.Setup
 
             var players = GetArmiesToSetup(_players.GetAll());
             var worldMap = CreateWorldMapWithRandomOccupants(players);
-            
+
             PlaceRestOfArmies(worldMap, players);
 
             return worldMap;
@@ -94,7 +94,7 @@ namespace RISK.Application.GamePlaying.Setup
         private void PlaceArmy(IWorldMap worldMap, Player player)
         {
             var territoriesOccupiedByPlayer = worldMap.GetTerritoriesOccupiedByPlayer(player.GetPlayer());
-            var selectedTerritory = _territorySelector.SelectLocation(new LocationSelectorParameter(worldMap, territoriesOccupiedByPlayer, player));
+            var selectedTerritory = _territorySelector.SelectTerritory(new TerritorySelectorParameter(worldMap, territoriesOccupiedByPlayer, player));
 
             selectedTerritory.Armies++;
             player.ArmiesToPlace--;

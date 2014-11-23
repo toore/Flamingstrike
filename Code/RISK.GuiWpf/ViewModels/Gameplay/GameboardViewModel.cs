@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿using System.Linq;
 using Caliburn.Micro;
 using GuiWpf.Services;
 using GuiWpf.ViewModels.Gameplay.Map;
@@ -11,32 +11,28 @@ namespace GuiWpf.ViewModels.Gameplay
     public class GameboardViewModel : ViewModelBase, IGameboardViewModel
     {
         private readonly IGame _game;
-        private readonly ITerritoryViewModelUpdater _territoryViewModelUpdater;
+        private readonly ITerritoryViewModelColorInitializer _territoryViewModelColorInitializer;
         private readonly IWindowManager _windowManager;
         private readonly IGameOverViewModelFactory _gameOverViewModelFactory;
         private readonly IDialogManager _dialogManager;
         private readonly IEventAggregator _eventAggregator;
-        private readonly IEnumerable<ITerritory> _territories;
         private IPlayer _player;
 
         public GameboardViewModel(
             IGame game,
-            IEnumerable<ITerritory> territories,
             IWorldMapViewModelFactory worldMapViewModelFactory,
-            ITerritoryViewModelUpdater territoryViewModelUpdater,
+            ITerritoryViewModelColorInitializer territoryViewModelColorInitializer,
             IWindowManager windowManager,
             IGameOverViewModelFactory gameOverViewModelFactory,
             IDialogManager dialogManager,
             IEventAggregator eventAggregator)
         {
             _game = game;
-            _territoryViewModelUpdater = territoryViewModelUpdater;
+            _territoryViewModelColorInitializer = territoryViewModelColorInitializer;
             _windowManager = windowManager;
             _gameOverViewModelFactory = gameOverViewModelFactory;
             _dialogManager = dialogManager;
             _eventAggregator = eventAggregator;
-
-            _territories = territories;
 
             InformationText = LanguageResources.Instance.GetString("SELECT_TERRITORY");
 
@@ -79,9 +75,9 @@ namespace GuiWpf.ViewModels.Gameplay
             }
         }
 
-        public void OnLocationClick(ITerritory location)
+        public void OnLocationClick(ITerritory territory)
         {
-            _game.CurrentInteractionState.OnClick(location);
+            _game.CurrentInteractionState.OnClick(territory);
 
             UpdateGameBoard();
         }
@@ -100,7 +96,10 @@ namespace GuiWpf.ViewModels.Gameplay
 
         private void UpdateWorldMap()
         {
-            _territories.Apply(UpdateTerritory);
+            foreach (var territory in _game.WorldMap.GetTerritories())
+            {
+                UpdateTerritory(territory);
+            }
         }
 
         private void UpdateTerritory(ITerritory territory)
@@ -111,18 +110,24 @@ namespace GuiWpf.ViewModels.Gameplay
 
         private void UpdateTerritoryLayout(ITerritory territory)
         {
-            var territoryLayout = WorldMapViewModel.WorldMapViewModels.GetTerritoryLayout(territory);
+            var layoutViewModel = WorldMapViewModel.WorldMapViewModels
+                .OfType<TerritoryLayoutViewModel>()
+                .Single(x => x.Territory == territory);
 
             var interactionState = _game.CurrentInteractionState;
-            territoryLayout.IsEnabled = interactionState.CanClick(territory);
-            territoryLayout.IsSelected = interactionState.SelectedTerritory == territory;
-            _territoryViewModelUpdater.UpdateColors(territoryLayout, territory);
+            layoutViewModel.IsEnabled = interactionState.CanClick(territory);
+            layoutViewModel.IsSelected = interactionState.SelectedTerritory == territory;
+
+            _territoryViewModelColorInitializer.UpdateColors(_game.WorldMap, layoutViewModel);
         }
 
         private void UpdateTerritoryText(ITerritory territory)
         {
-            var territoryTextViewModel = WorldMapViewModel.WorldMapViewModels.GetTerritoryTextViewModel(territory);
-            territoryTextViewModel.Armies = territory.Armies;
+            var textViewModel = WorldMapViewModel.WorldMapViewModels
+                .OfType<TerritoryTextViewModel>()
+                .Single(x => x.Territory == territory);
+
+            textViewModel.Armies = territory.Armies;
         }
     }
 }

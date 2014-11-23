@@ -4,6 +4,6 @@ namespace RISK.Application.GamePlaying.Setup
 {
     public interface ITerritorySelector
     {
-        ITerritory SelectLocation(ILocationSelectorParameter locationSelectorParameter);
+        ITerritory SelectTerritory(ITerritorySelectorParameter territorySelectorParameter);
     }
 }

@@ -6,6 +6,7 @@ using GuiWpf.Infrastructure;
 using GuiWpf.ViewModels;
 using GuiWpf.ViewModels.Gameplay;
 using GuiWpf.ViewModels.Gameplay.Map;
+using GuiWpf.Views.WorldMapViews;
 using NSubstitute;
 using RISK.Application;
 using RISK.Application.Entities;
@@ -36,6 +37,8 @@ namespace RISK.Tests.Application.Specifications
         [Fact]
         public void Moves_armies_into_Brazil_after_win()
         {
+            var gameboardViewModel = GameboardViewModelTestDataFactory.ViewModel;
+
             Given.
                 a_started_game_with_two_players().
                 player_1_occupies_every_territory_except_brazil_and_venezuela_with_one_army_each().
@@ -282,11 +285,11 @@ namespace RISK.Tests.Application.Specifications
             GetTerritoryViewModel(location).OnClick();
         }
 
-        private ITerritoryLayoutViewModel GetTerritoryViewModel(ITerritory location)
+        private ITerritoryLayoutViewModel GetTerritoryViewModel(ITerritory territory)
         {
             return _gameboardViewModel.WorldMapViewModel.WorldMapViewModels
-                .OfType<ITerritoryLayoutViewModel>()
-                .Single(x => x.Location == location);
+                .OfType<TerritoryLayoutViewModel>()
+                .Single(x => x.Territory == territory);
         }
 
         private void player_1_should_occupy_Brazil_with_4_armies()

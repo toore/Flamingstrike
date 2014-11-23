@@ -46,14 +46,14 @@ namespace RISK.Tests.GuiWpf
         [Fact]
         public void Select_location_gets_location_from_user_interactor()
         {
-            var locationSelectorParameter = Substitute.For<ILocationSelectorParameter>();
+            var locationSelectorParameter = Substitute.For<ITerritorySelectorParameter>();
             locationSelectorParameter.GetPlayerThatTakesTurn().ReturnsForAnyArgs(Substitute.For<IPlayer>());
             var expected = Substitute.For<ITerritory>();
             _userInteractor.GetLocation(locationSelectorParameter).Returns(expected);
             _worldMapViewModelFactory.Create(null, null).ReturnsForAnyArgs(new WorldMapViewModel());
 
             var gameSetupViewModel = InitializeAndStartSetup();
-            var actual = gameSetupViewModel.SelectLocation(locationSelectorParameter);
+            var actual = gameSetupViewModel.SelectTerritory(locationSelectorParameter);
 
             actual.Should().Be(expected);
         }
@@ -66,7 +66,7 @@ namespace RISK.Tests.GuiWpf
             var gameSetupViewModel = InitializeAndStartSetup();
             gameSetupViewModel.MonitorEvents();
 
-            gameSetupViewModel.SelectLocation(Substitute.For<ILocationSelectorParameter>());
+            gameSetupViewModel.SelectTerritory(Substitute.For<ITerritorySelectorParameter>());
 
             gameSetupViewModel.WorldMapViewModel.Should().Be(worldMapViewModel);
             gameSetupViewModel.ShouldRaisePropertyChangeFor(x => x.WorldMapViewModel);

@@ -98,7 +98,6 @@
     <Compile Include="Infrastructure\WindowManager.cs" />
     <Compile Include="Services\ColorService.cs" />
     <Compile Include="Services\TerritoryColors.cs" />
-    <Compile Include="Services\IColorService.cs" />
     <Compile Include="Services\ITerritoryColors.cs" />
     <Compile Include="Services\TerritoryColorsFactory.cs" />
     <Compile Include="Services\TerritoryViewModelUpdater.cs" />
@@ -109,7 +108,6 @@
     <Compile Include="ViewModels\Gameplay\GameboardViewModelFactory.cs" />
     <Compile Include="ViewModels\Setup\GameFactory.cs" />
     <Compile Include="ViewModels\Gameplay\Map\ITerritoryTextViewModel.cs" />
-    <Compile Include="ViewModels\Gameplay\Map\WorldMapViewModelsExtensions.cs" />
     <Compile Include="ViewModels\Messages\GameSetupMessage.cs" />
     <Compile Include="ViewModels\Setup\GameSetupViewModelFactory.cs" />
     <Compile Include="ViewModels\Gameplay\IGameboardViewModelFactory.cs" />
@@ -131,7 +129,6 @@
     <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="ViewModels\Gameplay\GameboardViewModel.cs" />
     <Compile Include="ViewModels\Gameplay\IGameboardViewModel.cs" />
-    <Compile Include="Services\ITerritoryViewModelUpdater.cs" />
     <Compile Include="ViewModels\IMainGameViewModel.cs" />
     <Compile Include="Views\GameOverView.xaml.cs">
       <DependentUpon>GameOverView.xaml</DependentUpon>

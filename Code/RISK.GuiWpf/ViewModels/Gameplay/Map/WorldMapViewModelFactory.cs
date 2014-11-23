@@ -1,51 +1,51 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.InteropServices;
+using GuiWpf.Services;
+using GuiWpf.TerritoryModels;
 using RISK.Application;
 using RISK.Application.Entities;
+using RISK.Application.Extensions;
 
 namespace GuiWpf.ViewModels.Gameplay.Map
 {
     public interface IWorldMapViewModelFactory
     {
-        WorldMapViewModel Create(IWorldMap worldMap, Action<ITerritory> selectTerritory);
+        WorldMapViewModel Create(IWorldMap worldMap, Action<ITerritory> onClick);
     }
 
     public class WorldMapViewModelFactory : IWorldMapViewModelFactory
     {
-        //private readonly ITerritoryViewModelFactory _territoryViewModelFactory;
-        //private readonly ITerritoryTextViewModelFactory _territoryTextViewModelFactory;
+        private readonly IWorldMapModelFactory _worldMapModelFactory;
+        private readonly ITerritoryViewModelColorInitializer _territoryViewModelColorInitializer;
 
-        //public WorldMapViewModelFactory( ITerritoryViewModelFactory territoryViewModelFactory, ITerritoryTextViewModelFactory territoryTextViewModelFactory)
-        //{
-        //    _territoryViewModelFactory = territoryViewModelFactory;
-        //    _territoryTextViewModelFactory = territoryTextViewModelFactory;
-        //}
-
-        public WorldMapViewModel Create(IWorldMap worldMap, Action<ITerritory> selectTerritory)
+        public WorldMapViewModelFactory(IWorldMapModelFactory worldMapModelFactory, ITerritoryViewModelColorInitializer territoryViewModelColorInitializer)
         {
-            //var worldMapViewModels = territories
-            //    .Select(x => CreateTerritoryViewModel(x, selectTerritory))
-            //    .Union(territories.Select(CreateTextViewModel))
-            //    .ToList();
+            _worldMapModelFactory = worldMapModelFactory;
+            _territoryViewModelColorInitializer = territoryViewModelColorInitializer;
+        }
 
-            //var worldMapViewModel = new WorldMapViewModel();
-            //worldMapViewModels.Apply(worldMapViewModel.WorldMapViewModels.Add);
+        public WorldMapViewModel Create(IWorldMap worldMap, Action<ITerritory> onClick)
+        {
+            var territoryModels = _worldMapModelFactory.Create(worldMap);
+            var worldMapItemViewModels = territoryModels.SelectMany(x=>CreateXamlModels(x, onClick)).ToList();
 
-            //return worldMapViewModel;
             var worldMapViewModel = new WorldMapViewModel();
+            worldMapViewModel.WorldMapViewModels.Add(worldMapItemViewModels);
 
-            //worldMap.
+            foreach (var worldMapItemViewModel in worldMapItemViewModels.OfType<ITerritoryLayoutViewModel>())
+            {
+                _territoryViewModelColorInitializer.UpdateColors(worldMap, worldMapItemViewModel);
+            }
 
             return worldMapViewModel;
         }
 
-        //private IWorldMapItemViewModel CreateTerritoryViewModel(ITerritory territory, Action<ITerritory> selectTerritory)
-        //{
-        //   return _territoryViewModelFactory.Create(territory, selectTerritory);
-        //}
-
-        //private IWorldMapItemViewModel CreateTextViewModel(ITerritory territory)
-        //{
-        //    return _territoryTextViewModelFactory.Create(territory);
-        //}
+        private IEnumerable<IWorldMapItemViewModel> CreateXamlModels(ITerritoryModel territoryModel, Action<ITerritory> onClick)
+        {
+            yield return new TerritoryLayoutViewModel(territoryModel, onClick);
+            yield return new TerritoryTextViewModel(territoryModel);
+        }
     }
 }

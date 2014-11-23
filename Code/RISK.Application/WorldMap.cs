@@ -7,6 +7,50 @@ namespace RISK.Application
     public interface IWorldMap
     {
         IEnumerable<ITerritory> GetTerritories();
+
+        ITerritory Alaska { get; }
+        ITerritory Alberta { get; }
+        ITerritory CentralAmerica { get; }
+        ITerritory EasternUnitedStates { get; }
+        ITerritory Greenland { get; }
+        ITerritory NorthwestTerritory { get; }
+        ITerritory Ontario { get; }
+        ITerritory Quebec { get; }
+        ITerritory WesternUnitedStates { get; }
+        ITerritory Argentina { get; }
+        ITerritory Brazil { get; }
+        ITerritory Peru { get; }
+        ITerritory Venezuela { get; }
+        ITerritory GreatBritain { get; }
+        ITerritory Iceland { get; }
+        ITerritory NorthernEurope { get; }
+        ITerritory Scandinavia { get; }
+        ITerritory SouthernEurope { get; }
+        ITerritory Ukraine { get; }
+        ITerritory WesternEurope { get; }
+        ITerritory Congo { get; }
+        ITerritory EastAfrica { get; }
+        ITerritory Egypt { get; }
+        ITerritory Madagascar { get; }
+        ITerritory NorthAfrica { get; }
+        ITerritory SouthAfrica { get; }
+        ITerritory Afghanistan { get; }
+        ITerritory China { get; }
+        ITerritory India { get; }
+        ITerritory Irkutsk { get; }
+        ITerritory Japan { get; }
+        ITerritory Kamchatka { get; }
+        ITerritory MiddleEast { get; }
+        ITerritory Mongolia { get; }
+        ITerritory Siam { get; }
+        ITerritory Siberia { get; }
+        ITerritory Ural { get; }
+        ITerritory Yakutsk { get; }
+        ITerritory EasternAustralia { get; }
+        ITerritory Indonesia { get; }
+        ITerritory NewGuinea { get; }
+        ITerritory WesternAustralia { get; }
+
         IEnumerable<ITerritory> GetTerritoriesOccupiedByPlayer(IPlayer player);
         IEnumerable<IPlayer> GetAllPlayersOccupyingTerritories();
     }

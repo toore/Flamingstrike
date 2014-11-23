@@ -1,14 +1,22 @@
 ﻿using System.Windows;
+using GuiWpf.TerritoryModels;
 using RISK.Application.Entities;
 
 namespace GuiWpf.ViewModels.Gameplay.Map
 {
     public class TerritoryTextViewModel : ViewModelBase, ITerritoryTextViewModel
     {
-        public ITerritory Territory { get; set; }
+        private readonly ITerritoryModel _territoryModel;
 
-        public Point Position { get; set; }
-        public string TerritoryName { get; set; }
+        public TerritoryTextViewModel(ITerritoryModel territoryModel)
+        {
+            _territoryModel = territoryModel;
+        }
+
+        public ITerritory Territory { get { return _territoryModel.Territory; } }
+
+        public string Name { get { return _territoryModel.Name; } }
+        public Point Position { get { return _territoryModel.NamePosition; } }
 
         private int _armies;
         public int Armies
