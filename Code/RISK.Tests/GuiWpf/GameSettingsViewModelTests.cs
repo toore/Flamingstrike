@@ -62,7 +62,7 @@ namespace RISK.Tests.GuiWpf
         {
             _gameSettingsViewModel.Confirm();
 
-            _gameEventAggregator.Received().Publish(Arg.Any<GameSetupMessage>());
+            _gameEventAggregator.Received().PublishOnCurrentThread(Arg.Any<GameSetupMessage>());
         }
     }
 }

@@ -54,7 +54,7 @@ namespace GuiWpf.ViewModels.Settings
                     Players = CreatePlayers()
                 };
 
-            _eventAggregator.Publish(gameSetup);
+            _eventAggregator.PublishOnCurrentThread(gameSetup);
         }
 
         private IEnumerable<IPlayer> CreatePlayers()

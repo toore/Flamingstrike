@@ -110,7 +110,7 @@ namespace RISK.Tests.GuiWpf
 
             gameSetupViewModel.EndGame();
 
-            _eventAggregator.Received().Publish(Arg.Any<NewGameMessage>());
+            _eventAggregator.Received().PublishOnCurrentThread(Arg.Any<NewGameMessage>());
         }
 
         [Fact]
@@ -122,7 +122,7 @@ namespace RISK.Tests.GuiWpf
 
             gameSetupViewModel.EndGame();
 
-            _eventAggregator.DidNotReceive().Publish(Arg.Any<NewGameMessage>());
+            _eventAggregator.DidNotReceive().PublishOnCurrentThread(Arg.Any<NewGameMessage>());
         }
 
         private GameSetupViewModel InitializeAndStartSetup()

@@ -642,6 +642,13 @@
             Stops monitoring for task requests and controlling completion messages.
             </summary>
         </member>
+        <member name="M:Caliburn.Micro.TaskController.OnTaskComplete(System.Object,System.EventArgs)">
+            <summary>
+            Called when the task is compled.
+            </summary>
+            <param name="sender">The sender.</param>
+            <param name="e">The <see cref="T:System.EventArgs"/> instance containing the event data.</param>
+        </member>
         <member name="T:Caliburn.Micro.TaskExecutionRequested">
             <summary>
             A message that is published to signify a components request for the execution of a particular task.

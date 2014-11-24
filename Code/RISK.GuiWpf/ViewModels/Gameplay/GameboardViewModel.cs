@@ -71,7 +71,7 @@ namespace GuiWpf.ViewModels.Gameplay
 
             if (confirm.HasValue && confirm.Value)
             {
-                _eventAggregator.Publish(new NewGameMessage());
+                _eventAggregator.PublishOnCurrentThread(new NewGameMessage());
             }
         }
 

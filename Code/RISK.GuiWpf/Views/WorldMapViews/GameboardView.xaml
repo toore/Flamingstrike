@@ -4,8 +4,8 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
-    xmlns:cal="clr-namespace:Caliburn.Micro;assembly=Caliburn.Micro"
     xmlns:WorldMapViews="clr-namespace:GuiWpf.Views.WorldMapViews"
+    xmlns:Micro="http://www.caliburnproject.org"
     mc:Ignorable="d"
     d:DesignHeight="768" d:DesignWidth="1366"
     d:DataContext="{Binding Source={x:Static WorldMapViews:GameboardViewModelTestDataFactory.ViewModel}}">
@@ -80,14 +80,14 @@
                     </CheckBox.Template>
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="Click">
-                            <cal:ActionMessage MethodName="Fortify" />
+                            <Micro:ActionMessage MethodName="Fortify" />
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
                 </CheckBox>
                 <Button Content="End Turn">
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="Click">
-                            <cal:ActionMessage MethodName="EndTurn" />
+                            <Micro:ActionMessage MethodName="EndTurn" />
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
                 </Button>
@@ -99,7 +99,7 @@
                 <Button Content="End game...">
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="Click">
-                            <cal:ActionMessage MethodName="EndGame" />
+                            <Micro:ActionMessage MethodName="EndGame" />
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
                 </Button>

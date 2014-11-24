@@ -1,14 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Windows;
 using Caliburn.Micro;
 using GuiWpf.Infrastructure;
 using GuiWpf.ViewModels;
 
 namespace GuiWpf.Views
 {
-    public class MainBootstrapper : Bootstrapper<IMainGameViewModel>
+    public class StructureMapBootstrapper : BootstrapperBase
     {
         private readonly PluginConfiguration _pluginConfiguration = new PluginConfiguration();
+
+        public StructureMapBootstrapper()
+        {
+            Initialize();
+        }
+
+        protected override void OnStartup(object sender, StartupEventArgs e)
+        {
+            DisplayRootViewFor<IMainGameViewModel>();
+        }
 
         protected override void Configure()
         {

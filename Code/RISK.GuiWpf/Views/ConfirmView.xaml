@@ -4,8 +4,8 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
-    xmlns:cal="clr-namespace:Caliburn.Micro;assembly=Caliburn.Micro"
     xmlns:TestDataFactory="clr-namespace:GuiWpf.Views"
+    xmlns:Micro="http://www.caliburnproject.org"
     mc:Ignorable="d"
     d:DesignHeight="300" d:DesignWidth="300"
     d:DataContext="{Binding Source={x:Static TestDataFactory:ConfirmViewModelTestDataFactory.ViewModel}}">
@@ -46,7 +46,7 @@
                 Content="{Binding ConfirmText}">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="Click">
-                        <cal:ActionMessage MethodName="Confirm" />
+                        <Micro:ActionMessage MethodName="Confirm" />
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
             </Button>
@@ -57,7 +57,7 @@
                 Content="{Binding AbortText}">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="Click">
-                        <cal:ActionMessage MethodName="Cancel" />
+                        <Micro:ActionMessage MethodName="Cancel" />
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
             </Button>

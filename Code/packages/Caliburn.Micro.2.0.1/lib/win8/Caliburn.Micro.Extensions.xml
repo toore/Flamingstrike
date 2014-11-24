@@ -4,67 +4,6 @@
         <name>Caliburn.Micro.Extensions</name>
     </assembly>
     <members>
-        <member name="T:Caliburn.Micro.UriBuilder`1">
-            <summary>
-            Builds a Uri in a strongly typed fashion, based on a ViewModel.
-            </summary>
-            <typeparam name="TViewModel"></typeparam>
-        </member>
-        <member name="M:Caliburn.Micro.UriBuilder`1.WithParam``1(System.Linq.Expressions.Expression{System.Func{`0,``0}},``0)">
-            <summary>
-            Adds a query string parameter to the Uri.
-            </summary>
-            <typeparam name="TValue">The type of the value.</typeparam>
-            <param name="property">The property.</param>
-            <param name="value">The property value.</param>
-            <returns>Itself</returns>
-        </member>
-        <member name="M:Caliburn.Micro.UriBuilder`1.AttachTo(Caliburn.Micro.INavigationService)">
-            <summary>
-            Attaches a navigation servies to this builder.
-            </summary>
-            <param name="navigationService">The navigation service.</param>
-            <returns>Itself</returns>
-        </member>
-        <member name="M:Caliburn.Micro.UriBuilder`1.Navigate">
-            <summary>
-            Navigates to the Uri represented by this builder.
-            </summary>
-        </member>
-        <member name="M:Caliburn.Micro.UriBuilder`1.BuildUri">
-            <summary>
-            Builds the URI.
-            </summary>
-            <returns>A uri constructed with the current configuration information.</returns>
-        </member>
-        <member name="T:Caliburn.Micro.CaliburnSettingsCommand">
-            <summary>
-            Represents a command registered with the <see cref="T:Caliburn.Micro.SettingsService"/>
-            </summary>
-        </member>
-        <member name="M:Caliburn.Micro.CaliburnSettingsCommand.#ctor(System.String,System.Type,System.Collections.Generic.IDictionary{System.String,System.Object})">
-            <summary>
-            Initializes a new instance of the <see cref="T:Caliburn.Micro.CaliburnSettingsCommand"/> class.
-            </summary>
-            <param name="label">The label to use in the settings charm.</param>
-            <param name="viewModelType">The view model to display.</param>
-            <param name="viewSettings">Additional settings to pass to the <see cref="T:Caliburn.Micro.ISettingsWindowManager"/>.</param>
-        </member>
-        <member name="P:Caliburn.Micro.CaliburnSettingsCommand.ViewModelType">
-            <summary>
-            The view model to display.
-            </summary>
-        </member>
-        <member name="P:Caliburn.Micro.CaliburnSettingsCommand.Label">
-            <summary>
-            The label to use in the settings charm.
-            </summary>
-        </member>
-        <member name="P:Caliburn.Micro.CaliburnSettingsCommand.ViewSettings">
-            <summary>
-            Additional settings to pass to the <see cref="T:Caliburn.Micro.ISettingsWindowManager"/>.
-            </summary>
-        </member>
         <member name="T:Caliburn.Micro.CallistoSettingsWindowManager">
             <summary>
             An implementation of the <see cref="T:Caliburn.Micro.ISettingsWindowManager"/> using Callisto
@@ -91,6 +30,56 @@
             <param name="commandLabel">The settings command label.</param>
             <param name="viewSettings">The optional dialog settings.</param>
         </member>
+        <member name="T:Caliburn.Micro.FlyoutSettingsCommand">
+            <summary>
+            Represents a flyout command registered with the <see cref="T:Caliburn.Micro.ISettingsService"/>.
+            </summary>
+        </member>
+        <member name="T:Caliburn.Micro.SettingsCommandBase">
+            <summary>
+            Represents a command registered with the <see cref="T:Caliburn.Micro.ISettingsService"/>
+            </summary>
+        </member>
+        <member name="M:Caliburn.Micro.SettingsCommandBase.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Caliburn.Micro.SettingsCommandBase"/> class.
+            </summary>
+            <param name="label">The label.</param>
+        </member>
+        <member name="M:Caliburn.Micro.SettingsCommandBase.OnSelected">
+            <summary>
+            Called when the command was selected in the Settings Charm.
+            </summary>
+        </member>
+        <member name="P:Caliburn.Micro.SettingsCommandBase.Label">
+            <summary>
+            Gets the label.
+            </summary>
+        </member>
+        <member name="M:Caliburn.Micro.FlyoutSettingsCommand.#ctor(Caliburn.Micro.ISettingsWindowManager,System.String,System.Type,System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>
+            Initializes a new instance of the <see cref="T:Caliburn.Micro.FlyoutSettingsCommand"/> class.
+            </summary>
+            <param name="settingsWindowManager"></param>
+            <param name="label">The label to use in the settings charm.</param>
+            <param name="viewModelType">The view model to display.</param>
+            <param name="viewSettings">Additional settings to pass to the <see cref="T:Caliburn.Micro.ISettingsWindowManager"/>.</param>
+        </member>
+        <member name="M:Caliburn.Micro.FlyoutSettingsCommand.OnSelected">
+            <summary>
+            Called when the command was selected in the Settings Charm.
+            </summary>
+        </member>
+        <member name="P:Caliburn.Micro.FlyoutSettingsCommand.ViewModelType">
+            <summary>
+            The view model to display.
+            </summary>
+        </member>
+        <member name="P:Caliburn.Micro.FlyoutSettingsCommand.ViewSettings">
+            <summary>
+            Additional settings to pass to the <see cref="T:Caliburn.Micro.ISettingsWindowManager"/>.
+            </summary>
+        </member>
         <member name="T:Caliburn.Micro.ISettingsService">
             <summary>
             Service that handles the Settings Charm.
@@ -101,13 +90,26 @@
             Displays the Settings Charm pane to the user.
             </summary>
         </member>
-        <member name="M:Caliburn.Micro.ISettingsService.RegisterCommand``1(System.String,System.Collections.Generic.IDictionary{System.String,System.Object})">
+        <member name="M:Caliburn.Micro.ISettingsService.RegisterFlyoutCommand``1(System.String,System.Collections.Generic.IDictionary{System.String,System.Object})">
             <summary>
-            Registers a Settings Command with the service.
+            Registers a flyout command with the service.
             </summary>
             <typeparam name="TViewModel">The commands view model.</typeparam>
             <param name="label">The command label.</param>
             <param name="viewSettings">The optional flyout view settings.</param>
+        </member>
+        <member name="M:Caliburn.Micro.ISettingsService.RegisterUriCommand(System.String,System.Uri)">
+            <summary>
+            Registers a URI command with the service.
+            </summary>
+            <param name="label">The label.</param>
+            <param name="uri">The URI.</param>
+        </member>
+        <member name="M:Caliburn.Micro.ISettingsService.RegisterCommand(Caliburn.Micro.SettingsCommandBase)">
+            <summary>
+            Registers a settings command with the service.
+            </summary>
+            <param name="command">The command to register.</param>
         </member>
         <member name="T:Caliburn.Micro.ISharingService">
             <summary>
@@ -186,13 +188,26 @@
             Displays the Settings Charm pane to the user.
             </summary>
         </member>
-        <member name="M:Caliburn.Micro.SettingsService.RegisterCommand``1(System.String,System.Collections.Generic.IDictionary{System.String,System.Object})">
+        <member name="M:Caliburn.Micro.SettingsService.RegisterFlyoutCommand``1(System.String,System.Collections.Generic.IDictionary{System.String,System.Object})">
             <summary>
-            Registers a Settings Command with the service.
+            Registers a flyout command with the service.
             </summary>
             <typeparam name="TViewModel">The commands view model.</typeparam>
             <param name="label">The command label.</param>
             <param name="viewSettings">The optional flyout view settings.</param>
+        </member>
+        <member name="M:Caliburn.Micro.SettingsService.RegisterUriCommand(System.String,System.Uri)">
+            <summary>
+            Registers a URI command with the service.
+            </summary>
+            <param name="label">The label.</param>
+            <param name="uri">The URI.</param>
+        </member>
+        <member name="M:Caliburn.Micro.SettingsService.RegisterCommand(Caliburn.Micro.SettingsCommandBase)">
+            <summary>
+            Registers a settings command with the service.
+            </summary>
+            <param name="command">The command to register.</param>
         </member>
         <member name="M:Caliburn.Micro.SettingsService.OnCommandsRequested(Windows.UI.ApplicationSettings.SettingsPane,Windows.UI.ApplicationSettings.SettingsPaneCommandsRequestedEventArgs)">
             <summary>
@@ -201,7 +216,7 @@
             <param name="sender">The sender.</param>
             <param name="args">The <see cref="T:Windows.UI.ApplicationSettings.SettingsPaneCommandsRequestedEventArgs"/> instance containing the event data.</param>
         </member>
-        <member name="M:Caliburn.Micro.SettingsService.OnCommandSelected(Caliburn.Micro.CaliburnSettingsCommand)">
+        <member name="M:Caliburn.Micro.SettingsService.OnCommandSelected(Caliburn.Micro.SettingsCommandBase)">
             <summary>
             Called when a settings command was selected in the Settings Charm.
             </summary>
@@ -234,6 +249,61 @@
             Determines the current view, checks for view first with frame and then view mode first with a shell view.
             </summary>
             <returns>The current view</returns>
+        </member>
+        <member name="T:Caliburn.Micro.UriBuilder`1">
+            <summary>
+            Builds a Uri in a strongly typed fashion, based on a ViewModel.
+            </summary>
+            <typeparam name="TViewModel"></typeparam>
+        </member>
+        <member name="M:Caliburn.Micro.UriBuilder`1.WithParam``1(System.Linq.Expressions.Expression{System.Func{`0,``0}},``0)">
+            <summary>
+            Adds a query string parameter to the Uri.
+            </summary>
+            <typeparam name="TValue">The type of the value.</typeparam>
+            <param name="property">The property.</param>
+            <param name="value">The property value.</param>
+            <returns>Itself</returns>
+        </member>
+        <member name="M:Caliburn.Micro.UriBuilder`1.AttachTo(Caliburn.Micro.INavigationService)">
+            <summary>
+            Attaches a navigation servies to this builder.
+            </summary>
+            <param name="navigationService">The navigation service.</param>
+            <returns>Itself</returns>
+        </member>
+        <member name="M:Caliburn.Micro.UriBuilder`1.Navigate">
+            <summary>
+            Navigates to the Uri represented by this builder.
+            </summary>
+        </member>
+        <member name="M:Caliburn.Micro.UriBuilder`1.BuildUri">
+            <summary>
+            Builds the URI.
+            </summary>
+            <returns>A uri constructed with the current configuration information.</returns>
+        </member>
+        <member name="T:Caliburn.Micro.UriSettingsCommand">
+            <summary>
+            Represents a URI command registered with the <see cref="T:Caliburn.Micro.ISettingsService"/>.
+            </summary>
+        </member>
+        <member name="M:Caliburn.Micro.UriSettingsCommand.#ctor(System.String,System.Uri)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Caliburn.Micro.UriSettingsCommand"/> class.
+            </summary>
+            <param name="label">The label.</param>
+            <param name="uri">The URI.</param>
+        </member>
+        <member name="M:Caliburn.Micro.UriSettingsCommand.OnSelected">
+            <summary>
+            Called when the command was selected in the Settings Charm.
+            </summary>
+        </member>
+        <member name="P:Caliburn.Micro.UriSettingsCommand.Uri">
+            <summary>
+            Gets the URI.
+            </summary>
         </member>
         <member name="T:Caliburn.Micro.WinRTContainer">
             <summary>
