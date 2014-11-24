@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using FluentAssertions;
-using GuiWpf.Infrastructure;
 using GuiWpf.ViewModels;
 using GuiWpf.ViewModels.Gameplay;
 using GuiWpf.ViewModels.Settings;
@@ -9,21 +8,15 @@ using GuiWpf.ViewModels.Setup;
 using RISK.Application.Entities;
 using RISK.Application.Extensions;
 using RISK.Application.GamePlaying.Setup;
-using StructureMap;
 using Xunit;
 
 namespace RISK.Tests.Application.Specifications
 {
     public class GameSetupSpec : AcceptanceTestsBase<GameSetupSpec>
     {
-        private IMainGameViewModel _mainGameViewModel;
+        private MainGameViewModel _mainGameViewModel;
         private AutoRespondingUserInteractor _userInteractor;
         private IMainViewModel _setupViewModel;
-
-        public GameSetupSpec()
-        {
-            new PluginConfiguration().Configure();
-        }
 
         [Fact]
         public void Game_is_started()
@@ -42,10 +35,10 @@ namespace RISK.Tests.Application.Specifications
 
         private GameSetupSpec a_new_game()
         {
-            _userInteractor = new AutoRespondingUserInteractor();
-            ObjectFactory.Inject<IUserInteractor>(_userInteractor);
+            //_userInteractor = new AutoRespondingUserInteractor();
+            //ObjectFactory.Inject<IUserInteractor>(_userInteractor);
 
-            _mainGameViewModel = ObjectFactory.GetInstance<IMainGameViewModel>();
+            //_mainGameViewModel = ObjectFactory.GetInstance<IMainGameViewModel>();
 
             return this;
         }

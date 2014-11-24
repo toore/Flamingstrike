@@ -13,7 +13,7 @@ namespace GuiWpf.ViewModels.Setup
     {
         private readonly IInteractionStateFactory _interactionStateFactory;
         private readonly IStateControllerFactory _stateControllerFactory;
-        private readonly IPlayers _players;
+        private readonly PlayerRepository _playerRepository;
         private readonly IAlternateGameSetup _alternateGameSetup;
         private readonly ICardFactory _cardFactory;
 
@@ -21,12 +21,12 @@ namespace GuiWpf.ViewModels.Setup
             IAlternateGameSetup alternateGameSetup, 
             IInteractionStateFactory interactionStateFactory, 
             IStateControllerFactory stateControllerFactory, 
-            IPlayers players, 
+            PlayerRepository playerRepository, 
             ICardFactory cardFactory)
         {
             _interactionStateFactory = interactionStateFactory;
             _stateControllerFactory = stateControllerFactory;
-            _players = players;
+            _playerRepository = playerRepository;
             _alternateGameSetup = alternateGameSetup;
             _cardFactory = cardFactory;
         }
@@ -34,8 +34,9 @@ namespace GuiWpf.ViewModels.Setup
         public IGame Create(ITerritorySelector territorySelector)
         {
             var worldMap = _alternateGameSetup.InitializeWorldMap(territorySelector);
+            var players = _playerRepository.GetAll();
 
-            return new Game(_interactionStateFactory, _stateControllerFactory , _players, worldMap, _cardFactory);
+            return new Game(_interactionStateFactory, _stateControllerFactory, players, worldMap, _cardFactory);
         }
     }
 }

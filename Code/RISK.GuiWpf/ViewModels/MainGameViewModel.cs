@@ -3,42 +3,55 @@ using GuiWpf.ViewModels.Gameplay;
 using GuiWpf.ViewModels.Messages;
 using GuiWpf.ViewModels.Settings;
 using GuiWpf.ViewModels.Setup;
-using RISK.Application;
 using RISK.Application.GamePlaying;
 
 namespace GuiWpf.ViewModels
 {
-    public class MainGameViewModel : ViewModelBase, IMainGameViewModel, IHaveDisplayName
+    public class MainGameViewModel : Screen, IGameSettingStateConductor, IHandle<GameSetupMessage>, IHandle<NewGameMessage>
     {
         private readonly IGameSettingsViewModelFactory _gameSettingsViewModelFactory;
         private readonly IGameboardViewModelFactory _gameboardViewModelFactory;
-        private readonly IPlayersInitializer _playersInitializer;
         private readonly IGameSetupViewModelFactory _gameSetupViewModelFactory;
 
-        public MainGameViewModel(IGameSettingsViewModelFactory gameSettingsViewModelFactory, IGameboardViewModelFactory gameboardViewModelFactory, IPlayersInitializer playersInitializer, IGameSetupViewModelFactory gameSetupViewModelFactory)
+        public MainGameViewModel()
+            : this(new Root())
+        { }
+
+        private MainGameViewModel(Root root)
+            : this(root.GameSettingsViewModelFactory, root.GameboardViewModelFactory, root.GameSetupViewModelFactory)
+        {
+            root.EventAggregator.Subscribe(this);
+        }
+
+        public MainGameViewModel(
+            IGameSettingsViewModelFactory gameSettingsViewModelFactory,
+            IGameboardViewModelFactory gameboardViewModelFactory,
+            IGameSetupViewModelFactory gameSetupViewModelFactory)
         {
             _gameSettingsViewModelFactory = gameSettingsViewModelFactory;
             _gameboardViewModelFactory = gameboardViewModelFactory;
-            _playersInitializer = playersInitializer;
             _gameSetupViewModelFactory = gameSetupViewModelFactory;
+        }
+
+        protected override void OnInitialize()
+        {
+            base.OnInitialize();
 
             StartNewGame();
         }
 
-        public string DisplayName
+        public override string DisplayName
         {
             get { return "CONQUER THE WORLD - YARC (Yet Another Risk Clone)!"; }
             set { }
         }
 
-        public void Handle(GameSetupMessage message)
+        public void Handle(GameSetupMessage gameSetupMessage)
         {
-            _playersInitializer.SetPlayers(message.Players);
-
             StartGame();
         }
 
-        public void Handle(NewGameMessage message)
+        public void Handle(NewGameMessage newGameMessage)
         {
             StartNewGame();
         }
@@ -65,7 +78,7 @@ namespace GuiWpf.ViewModels
         public IMainViewModel MainViewModel
         {
             get { return _mainViewModel; }
-            set { NotifyOfPropertyChange(value, () => MainViewModel, x => _mainViewModel = x); }
+            set { this.NotifyOfPropertyChange(value, () => MainViewModel, x => _mainViewModel = x); }
         }
     }
 }

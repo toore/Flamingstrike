@@ -38,9 +38,6 @@
     <Reference Include="Caliburn.Micro.Platform">
       <HintPath>..\packages\Caliburn.Micro.2.0.1\lib\net45\Caliburn.Micro.Platform.dll</HintPath>
     </Reference>
-    <Reference Include="StructureMap">
-      <HintPath>..\packages\structuremap.2.6.4.1\lib\net40\StructureMap.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -95,7 +92,7 @@
     <Compile Include="Continents.cs" />
     <Compile Include="GamePlaying\IGame.cs" />
     <Compile Include="GamePlaying\IInteractionState.cs" />
-    <Compile Include="Players.cs" />
+    <Compile Include="PlayerRepository.cs" />
     <Compile Include="GamePlaying\SelectState.cs" />
     <Compile Include="GamePlaying\Game.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

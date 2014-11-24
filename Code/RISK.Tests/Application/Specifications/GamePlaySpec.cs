@@ -2,7 +2,6 @@ using System;
 using System.Linq;
 using Caliburn.Micro;
 using FluentAssertions;
-using GuiWpf.Infrastructure;
 using GuiWpf.ViewModels;
 using GuiWpf.ViewModels.Gameplay;
 using GuiWpf.ViewModels.Gameplay.Map;
@@ -13,7 +12,6 @@ using RISK.Application.Entities;
 using RISK.Application.GamePlaying;
 using RISK.Application.GamePlaying.DiceAndCalculation;
 using RISK.Application.GamePlaying.Setup;
-using StructureMap;
 using Xunit;
 
 namespace RISK.Tests.Application.Specifications
@@ -21,18 +19,12 @@ namespace RISK.Tests.Application.Specifications
     public class GamePlaySpec : AcceptanceTestsBase<GamePlaySpec>
     {
         private GameboardViewModel _gameboardViewModel;
-        private Players _players;
         private WorldMap _worldMap;
         private IWindowManager _windowManager;
         private HumanPlayer _player1;
         private HumanPlayer _player2;
         private IDice _dice;
         private GameOverViewModel _gameOverAndPlayer1IsTheWinnerViewModel;
-
-        public GamePlaySpec()
-        {
-            new PluginConfiguration().Configure();
-        }
 
         [Fact]
         public void Moves_armies_into_Brazil_after_win()
@@ -149,7 +141,6 @@ namespace RISK.Tests.Application.Specifications
 
         private GamePlaySpec a_started_game_with_two_players()
         {
-            _players = new Players();
             _worldMap = new WorldMap();
 
             //var territoriesFactory = Substitute.For<ITerritoriesFactory>();
@@ -160,7 +151,6 @@ namespace RISK.Tests.Application.Specifications
 
             _player1 = new HumanPlayer("Player 1");
             _player2 = new HumanPlayer("Player 2");
-            _players.SetPlayers(new[] { _player1, _player2 });
 
             var gameOverViewModelFactory = Substitute.For<IGameOverViewModelFactory>();
             _gameOverAndPlayer1IsTheWinnerViewModel = new GameOverViewModel(_player1);
@@ -172,19 +162,19 @@ namespace RISK.Tests.Application.Specifications
             var dices = new Dices(new CasualtiesCalculator(), _dice);
             var battleCalculator = new BattleCalculator(dices);
             var interactionStateFactory = new InteractionStateFactory(battleCalculator);
-            var game = new Game(interactionStateFactory, new StateControllerFactory(),  _players, _worldMap, new CardFactory());
+            var game = new Game(interactionStateFactory, new StateControllerFactory(), new[] { _player1, _player2 }, _worldMap, new CardFactory());
 
-            ObjectFactory.Inject<IPlayers>(_players);
-            //ObjectFactory.Inject(_territories);
-            //ObjectFactory.Inject(territoriesFactory);
-            ObjectFactory.Inject(_dice);
-            ObjectFactory.Inject(_windowManager);
-            ObjectFactory.Inject(gameOverViewModelFactory);
-            ObjectFactory.Inject<IGame>(game);
+            //ObjectFactory.Inject<IPlayers>(_players);
+            ////ObjectFactory.Inject(_territories);
+            ////ObjectFactory.Inject(territoriesFactory);
+            //ObjectFactory.Inject(_dice);
+            //ObjectFactory.Inject(_windowManager);
+            //ObjectFactory.Inject(gameOverViewModelFactory);
+            //ObjectFactory.Inject<IGame>(game);
 
-            _gameboardViewModel = (GameboardViewModel)ObjectFactory
-                .With(_worldMap.GetTerritories())
-                .GetInstance<IGameboardViewModel>();
+            //_gameboardViewModel = (GameboardViewModel)ObjectFactory
+            //    .With(_worldMap.GetTerritories())
+            //    .GetInstance<IGameboardViewModel>();
 
             return this;
         }

@@ -20,15 +20,15 @@ namespace RISK.Application.GamePlaying.Setup
 
     public class AlternateGameSetup : IAlternateGameSetup
     {
-        private readonly IPlayers _players;
+        private readonly IPlayerRepository _playerRepository;
         private readonly IWorldMapFactory _worldMapFactory;
         private readonly IRandomSorter _randomSorter;
         private readonly IInitialArmyAssignmentCalculator _initialArmyAssignmentCalculator;
         private ITerritorySelector _territorySelector;
 
-        public AlternateGameSetup(IPlayers players, IWorldMapFactory worldMapFactory, IRandomSorter randomSorter, IInitialArmyAssignmentCalculator initialArmyAssignmentCalculator)
+        public AlternateGameSetup(IPlayerRepository playerRepository, IWorldMapFactory worldMapFactory, IRandomSorter randomSorter, IInitialArmyAssignmentCalculator initialArmyAssignmentCalculator)
         {
-            _players = players;
+            _playerRepository = playerRepository;
             _worldMapFactory = worldMapFactory;
             _randomSorter = randomSorter;
             _initialArmyAssignmentCalculator = initialArmyAssignmentCalculator;
@@ -38,7 +38,7 @@ namespace RISK.Application.GamePlaying.Setup
         {
             _territorySelector = territorySelector;
 
-            var players = GetArmiesToSetup(_players.GetAll());
+            var players = GetArmiesToSetup(_playerRepository.GetAll().ToList());
             var worldMap = CreateWorldMapWithRandomOccupants(players);
 
             PlaceRestOfArmies(worldMap, players);
@@ -46,7 +46,7 @@ namespace RISK.Application.GamePlaying.Setup
             return worldMap;
         }
 
-        private IList<Player> GetArmiesToSetup(IEnumerable<IPlayer> players)
+        private IList<Player> GetArmiesToSetup(IList<IPlayer> players)
         {
             var armies = _initialArmyAssignmentCalculator.Get(players.Count());
 

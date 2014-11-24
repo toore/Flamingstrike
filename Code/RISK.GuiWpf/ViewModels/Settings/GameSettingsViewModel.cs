@@ -4,6 +4,7 @@ using System.Linq;
 using Caliburn.Micro;
 using GuiWpf.Extensions;
 using GuiWpf.ViewModels.Messages;
+using RISK.Application;
 using RISK.Application.Entities;
 
 namespace GuiWpf.ViewModels.Settings
@@ -13,12 +14,14 @@ namespace GuiWpf.ViewModels.Settings
         private readonly IPlayerFactory _playerFactory;
         private readonly IPlayerTypes _playerTypes;
         private readonly IEventAggregator _eventAggregator;
+        private readonly IPlayerRepository _playerRepository;
 
-        public GameSettingsViewModel(IPlayerFactory playerFactory, IPlayerTypes playerTypes, IEventAggregator eventAggregator)
+        public GameSettingsViewModel(IPlayerFactory playerFactory, IPlayerTypes playerTypes, IPlayerRepository playerRepository, IEventAggregator eventAggregator)
         {
             _playerFactory = playerFactory;
             _playerTypes = playerTypes;
             _eventAggregator = eventAggregator;
+            _playerRepository = playerRepository;
 
             const int maxNumberOfPlayers = 6;
             Players = Enumerable.Range(0, maxNumberOfPlayers)
@@ -49,12 +52,14 @@ namespace GuiWpf.ViewModels.Settings
 
         public void Confirm()
         {
-            var gameSetup = new GameSetupMessage
-                {
-                    Players = CreatePlayers()
-                };
+            _playerRepository.Clear();
 
-            _eventAggregator.PublishOnCurrentThread(gameSetup);
+            foreach (var player in CreatePlayers())
+            {
+                _playerRepository.Add(player);
+            }
+
+            _eventAggregator.PublishOnCurrentThread(new GameSetupMessage());
         }
 
         private IEnumerable<IPlayer> CreatePlayers()

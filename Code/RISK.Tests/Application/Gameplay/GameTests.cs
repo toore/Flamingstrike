@@ -21,7 +21,6 @@ namespace RISK.Tests.Application.Gameplay
         {
             var interactionStateFactory = Substitute.For<IInteractionStateFactory>();
             var stateControllerFactory = Substitute.For<IStateControllerFactory>();
-            var players = Substitute.For<IPlayers>();
             _cardFactory = Substitute.For<ICardFactory>();
 
             _currentInteractionState = Substitute.For<IInteractionState>();
@@ -34,10 +33,8 @@ namespace RISK.Tests.Application.Gameplay
             interactionStateFactory.CreateSelectState(_currentStateController, _currentPlayer).Returns(_currentInteractionState);
             interactionStateFactory.CreateSelectState(nextStateController, nextPlayer).Returns(_nextInteractionState);
 
-            players.GetAll().Returns(new[] { _currentPlayer, nextPlayer });
-
             _worldMap = Substitute.For<IWorldMap>();
-            _sut = new Game(interactionStateFactory, stateControllerFactory, players, _worldMap, _cardFactory);
+            _sut = new Game(interactionStateFactory, stateControllerFactory, new[] { _currentPlayer, nextPlayer }, _worldMap, _cardFactory);
         }
 
         [Fact]

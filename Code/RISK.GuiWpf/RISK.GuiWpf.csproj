@@ -47,9 +47,6 @@
       <HintPath>..\packages\Caliburn.Micro.2.0.1\lib\net45\Caliburn.Micro.Platform.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Build.Framework" />
-    <Reference Include="StructureMap">
-      <HintPath>..\packages\structuremap.2.6.4.1\lib\net40\StructureMap.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Data" />
@@ -87,6 +84,7 @@
     <Compile Include="Services\ScreenService.cs" />
     <Compile Include="Services\IDialogManager.cs" />
     <Compile Include="ViewModels\Messages\NewGameMessage.cs" />
+    <Compile Include="ViewModels\Root.cs" />
     <Compile Include="ViewModels\Settings\GameSettingsViewModelFactory.cs" />
     <Compile Include="ViewModels\Setup\GameFactoryWorker.cs" />
     <Compile Include="ViewModels\Setup\UserInteractor.cs" />
@@ -96,9 +94,6 @@
     <Compile Include="Views\ConfirmViewModelTestDataFactory.cs" />
     <Compile Include="Views\GameOverViewModelTestDataFactory.cs" />
     <Compile Include="WpfExtensions\GetString.cs" />
-    <Compile Include="Infrastructure\HandleInterceptor.cs" />
-    <Compile Include="Infrastructure\PluginConfiguration.cs" />
-    <Compile Include="Infrastructure\TypeExtensions.cs" />
     <Compile Include="Infrastructure\WindowManager.cs" />
     <Compile Include="Services\ColorService.cs" />
     <Compile Include="Services\TerritoryColors.cs" />
@@ -133,14 +128,13 @@
     <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="ViewModels\Gameplay\GameboardViewModel.cs" />
     <Compile Include="ViewModels\Gameplay\IGameboardViewModel.cs" />
-    <Compile Include="ViewModels\IMainGameViewModel.cs" />
     <Compile Include="Views\GameOverView.xaml.cs">
       <DependentUpon>GameOverView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\GameSetupViews\GameSettingsView.xaml.cs">
       <DependentUpon>GameSettingsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\StructureMapBootstrapper.cs" />
+    <Compile Include="Views\Bootstrapper.cs" />
     <Compile Include="Views\WorldMapViews\GameboardViewModelTestDataFactory.cs" />
     <Compile Include="TerritoryModels\AfghanistanModel.cs" />
     <Compile Include="TerritoryModels\AlbertaModel.cs" />
@@ -183,7 +177,6 @@
     <Compile Include="TerritoryModels\SiberiaModel.cs" />
     <Compile Include="TerritoryModels\SouthAfricaModel.cs" />
     <Compile Include="TerritoryModels\SouthernEuropeModel.cs" />
-    <Compile Include="Views\TestDataFactoryBase.cs" />
     <Compile Include="Views\WorldMapViews\TerritoryButtonUserControl.xaml.cs">
       <DependentUpon>TerritoryButtonUserControl.xaml</DependentUpon>
     </Compile>

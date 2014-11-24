@@ -4,6 +4,7 @@ using FluentAssertions;
 using GuiWpf.ViewModels.Messages;
 using GuiWpf.ViewModels.Settings;
 using NSubstitute;
+using RISK.Application;
 using RISK.Application.Extensions;
 using Xunit;
 
@@ -11,21 +12,20 @@ namespace RISK.Tests.GuiWpf
 {
     public class GameSettingsViewModelTests
     {
-        private GameSettingsViewModel _gameSettingsViewModel;
-        private IPlayerFactory _playerFactory;
-        private IPlayerTypes _playerTypes;
-        private IEventAggregator _gameEventAggregator;
+        private readonly GameSettingsViewModel _gameSettingsViewModel;
+        private readonly IEventAggregator _gameEventAggregator;
 
         public GameSettingsViewModelTests()
         {
-            _playerFactory = Substitute.For<IPlayerFactory>();
-            _playerTypes = Substitute.For<IPlayerTypes>();
+            IPlayerFactory playerFactory = Substitute.For<IPlayerFactory>();
+            IPlayerTypes playerTypes = Substitute.For<IPlayerTypes>();
+            IPlayerRepository playerRepository = Substitute.For<IPlayerRepository>();
             _gameEventAggregator = Substitute.For<IEventAggregator>();
 
             var playerType = Substitute.For<PlayerTypeBase>();
-            _playerTypes.Values.Returns(playerType.AsList());
+            playerTypes.Values.Returns(playerType.AsList());
 
-            _gameSettingsViewModel = new GameSettingsViewModel(_playerFactory, _playerTypes, _gameEventAggregator);
+            _gameSettingsViewModel = new GameSettingsViewModel(playerFactory, playerTypes, playerRepository, _gameEventAggregator);
         }
 
         [Fact]

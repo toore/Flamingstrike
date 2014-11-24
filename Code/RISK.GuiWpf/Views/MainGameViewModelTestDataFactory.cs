@@ -2,11 +2,11 @@
 
 namespace GuiWpf.Views
 {
-    public class MainGameViewModelTestDataFactory : TestDataFactoryBase
+    public class MainGameViewModelTestDataFactory
     {
-        public static IMainGameViewModel ViewModel
+        public static MainGameViewModel ViewModel
         {
-            get { return new MainGameViewModelTestDataFactory().Create<IMainGameViewModel>(); }
+            get { return new MainGameViewModel(); }
         }
     }
 }

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using FluentAssertions;
 using NSubstitute;
@@ -24,7 +23,7 @@ namespace RISK.Tests.Application.Gameplay.Setup
 
         public AlternateGameSetupTests()
         {
-            var players = Substitute.For<IPlayers>();
+            var players = Substitute.For<IPlayerRepository>();
             _worldMap = new WorldMap();
             var randomSorter = Substitute.For<IRandomSorter>();
             var worldMapFactory = Substitute.For<IWorldMapFactory>();

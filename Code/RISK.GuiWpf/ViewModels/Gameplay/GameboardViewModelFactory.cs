@@ -1,7 +1,6 @@
 ﻿using Caliburn.Micro;
 using GuiWpf.Services;
 using GuiWpf.ViewModels.Gameplay.Map;
-using RISK.Application;
 using RISK.Application.GamePlaying;
 
 namespace GuiWpf.ViewModels.Gameplay
