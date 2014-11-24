@@ -638,14 +638,9 @@
             so that comparisons of converted <see cref="T:System.DateTime"/> instances retain the UTC/local agnostic behavior.
             </summary>
         </member>
-        <member name="T:FluentAssertions.Common.IPlatformInitializer">
+        <member name="T:FluentAssertions.Common.IProvidePlatformServices">
             <summary>
             Defines the contract the platform-specific assembly must implement to be able to get a chance to initialize itself.
-            </summary>
-        </member>
-        <member name="M:FluentAssertions.Common.IPlatformInitializer.Initialize">
-            <summary>
-            Should be used to setup the correct <see cref="T:FluentAssertions.Common.Services"/>.
             </summary>
         </member>
         <member name="T:FluentAssertions.Common.PlatformAdapter">
@@ -714,6 +709,51 @@
             <remarks>
             May throw when preconditions are not met or if it detects mismatching data.
             </remarks>
+        </member>
+        <member name="T:FluentAssertions.Equivalency.IncludePropertyByPredicateSelectionRule">
+            <summary>
+            Selection rule that includes a particular property in the structural comparison.
+            </summary>
+        </member>
+        <member name="T:FluentAssertions.Equivalency.ISelectionRule">
+            <summary>
+            Represents a rule that defines which properties of the subject-under-test to include while comparing
+            two objects for structural equality.
+            </summary>
+        </member>
+        <member name="M:FluentAssertions.Equivalency.ISelectionRule.SelectProperties(System.Collections.Generic.IEnumerable{System.Reflection.PropertyInfo},FluentAssertions.Equivalency.ISubjectInfo)">
+            <summary>
+            Adds or removes properties to/from the collection of subject properties that must be included while
+            comparing two objects for structural equality.
+            </summary>
+            <param name="selectedProperties">
+            A collection of properties that was prepopulated by other selection rules. Can be empty.</param>
+            <param name="info">
+            Type info about the subject.
+            </param>
+            <returns>
+            The collection of properties after applying this rule. Can contain less or more than was passed in.
+            </returns>
+        </member>
+        <member name="M:FluentAssertions.Equivalency.IncludePropertyByPredicateSelectionRule.SelectProperties(System.Collections.Generic.IEnumerable{System.Reflection.PropertyInfo},FluentAssertions.Equivalency.ISubjectInfo)">
+            <summary>
+            Adds or removes properties to/from the collection of subject properties that must be included while
+            comparing two objects for structural equality.
+            </summary>
+            <param name="selectedProperties">
+            A collection of properties that was prepopulated by other selection rules. Can be empty.</param>
+            <returns>
+            The collection of properties after applying this rule. Can contain less or more than was passed in.
+            </returns>
+        </member>
+        <member name="M:FluentAssertions.Equivalency.IncludePropertyByPredicateSelectionRule.ToString">
+            <summary>
+            Returns a string that represents the current object.
+            </summary>
+            <returns>
+            A string that represents the current object.
+            </returns>
+            <filterpriority>2</filterpriority>
         </member>
         <member name="M:FluentAssertions.Equivalency.StringEqualityEquivalencyStep.CanHandle(FluentAssertions.Equivalency.EquivalencyValidationContext,FluentAssertions.Equivalency.IEquivalencyAssertionOptions)">
             <summary>
@@ -1588,32 +1628,12 @@
             type. 
             </summary>
         </member>
-        <member name="T:FluentAssertions.Equivalency.ISelectionRule">
-            <summary>
-            Represents a rule that defines which properties of the subject-under-test to include while comparing
-            two objects for structural equality.
-            </summary>
-        </member>
-        <member name="M:FluentAssertions.Equivalency.ISelectionRule.SelectProperties(System.Collections.Generic.IEnumerable{System.Reflection.PropertyInfo},FluentAssertions.Equivalency.ISubjectInfo)">
-            <summary>
-            Adds or removes properties to/from the collection of subject properties that must be included while
-            comparing two objects for structural equality.
-            </summary>
-            <param name="properties">
-            A collection of properties that was prepopulated by other selection rules. Can be empty.</param>
-            <param name="info">
-            Type info about the subject.
-            </param>
-            <returns>
-            The collection of properties after applying this rule. Can contain less or more than was passed in.
-            </returns>
-        </member>
         <member name="M:FluentAssertions.Equivalency.AllDeclaredPublicPropertiesSelectionRule.SelectProperties(System.Collections.Generic.IEnumerable{System.Reflection.PropertyInfo},FluentAssertions.Equivalency.ISubjectInfo)">
             <summary>
             Adds or removes properties to/from the collection of subject properties that must be included while
             comparing two objects for structural equality.
             </summary>
-            <param name="properties">
+            <param name="selectedProperties">
             A collection of properties that was prepopulated by other selection rules. Can be empty.</param>
             <returns>
             The collection of properties after applying this rule. Can contain less or more than was passed in.
@@ -1639,7 +1659,7 @@
             Adds or removes properties to/from the collection of subject properties that must be included while
             comparing two objects for structural equality.
             </summary>
-            <param name="properties">
+            <param name="selectedProperties">
             A collection of properties that was prepopulated by other selection rules. Can be empty.</param>
             <returns>
             The collection of properties after applying this rule. Can contain less or more than was passed in.
@@ -1972,6 +1992,14 @@
             This overrides the default behavior of including all declared properties.
             </remarks>
         </member>
+        <member name="M:FluentAssertions.Equivalency.EquivalencyAssertionOptions`1.Including(System.Linq.Expressions.Expression{System.Func{FluentAssertions.Equivalency.ISubjectInfo,System.Boolean}})">
+            <summary>
+            Includes the specified property in the equality check.
+            </summary>
+            <remarks>
+            This overrides the default behavior of including all declared properties.
+            </remarks>
+        </member>
         <member name="M:FluentAssertions.Equivalency.EquivalencyAssertionOptions`1.Using``1(System.Action{FluentAssertions.Equivalency.IAssertionContext{``0}})">
             <param name="action">
             The assertion to execute when the predicate is met.
@@ -2243,7 +2271,7 @@
             Adds or removes properties to/from the collection of subject properties that must be included while
             comparing two objects for structural equality.
             </summary>
-            <param name="properties">
+            <param name="selectedProperties">
             A collection of properties that was prepopulated by other selection rules. Can be empty.
             </param>
             <returns>
@@ -2268,7 +2296,7 @@
             Adds or removes properties to/from the collection of subject properties that must be included while
             comparing two objects for structural equality.
             </summary>
-            <param name="properties">
+            <param name="selectedProperties">
             A collection of properties that was prepopulated by other selection rules. Can be empty.</param>
             <returns>
             The collection of properties after applying this rule. Can contain less or more than was passed in.
@@ -2313,23 +2341,23 @@
             if no match was found.
             </returns>
         </member>
-        <member name="T:FluentAssertions.Equivalency.IncludePropertySelectionRule">
+        <member name="T:FluentAssertions.Equivalency.IncludePropertyByPathSelectionRule">
             <summary>
             Selection rule that includes a particular property in the structural comparison.
             </summary>
         </member>
-        <member name="M:FluentAssertions.Equivalency.IncludePropertySelectionRule.SelectProperties(System.Collections.Generic.IEnumerable{System.Reflection.PropertyInfo},FluentAssertions.Equivalency.ISubjectInfo)">
+        <member name="M:FluentAssertions.Equivalency.IncludePropertyByPathSelectionRule.SelectProperties(System.Collections.Generic.IEnumerable{System.Reflection.PropertyInfo},FluentAssertions.Equivalency.ISubjectInfo)">
             <summary>
             Adds or removes properties to/from the collection of subject properties that must be included while
             comparing two objects for structural equality.
             </summary>
-            <param name="properties">
+            <param name="selectedProperties">
             A collection of properties that was prepopulated by other selection rules. Can be empty.</param>
             <returns>
             The collection of properties after applying this rule. Can contain less or more than was passed in.
             </returns>
         </member>
-        <member name="M:FluentAssertions.Equivalency.IncludePropertySelectionRule.ToString">
+        <member name="M:FluentAssertions.Equivalency.IncludePropertyByPathSelectionRule.ToString">
             <summary>
             Returns a <see cref="T:System.String"/> that represents this instance.
             </summary>
@@ -3186,11 +3214,6 @@
             Provides services for formatting an object being used in an assertion in a human readable format.
             </summary>
         </member>
-        <member name="F:FluentAssertions.Formatting.Formatter.Formatters">
-            <summary>
-            A list of objects responsible for formatting the objects represented by placeholders.
-            </summary>
-        </member>
         <member name="M:FluentAssertions.Formatting.Formatter.ToString(System.Object,System.Boolean,System.Collections.Generic.IList{System.Object},System.Int32)">
             <summary>
             Returns a human-readable representation of a particular object.
@@ -3207,9 +3230,25 @@
             A <see cref="T:System.String"/> that represents this instance.
             </returns>
         </member>
+        <member name="M:FluentAssertions.Formatting.Formatter.RemoveFormatter(FluentAssertions.Formatting.IValueFormatter)">
+            <summary>
+            Removes a custom formatter that was previously added though <see cref="M:FluentAssertions.Formatting.Formatter.AddFormatter(FluentAssertions.Formatting.IValueFormatter)"/>.
+            </summary>
+        </member>
         <member name="M:FluentAssertions.Formatting.Formatter.AddFormatter(FluentAssertions.Formatting.IValueFormatter)">
             <summary>
             Ensures a custom formatter is included in the chain, just before the default formatter is executed.
+            </summary>
+        </member>
+        <member name="M:FluentAssertions.Formatting.Formatter.AddPlatformFormatters(FluentAssertions.Formatting.IValueFormatter[])">
+            <summary>
+            Allows a platform-specific assembly to add formatters without affecting the ones added by callers of <see cref="M:FluentAssertions.Formatting.Formatter.AddFormatter(FluentAssertions.Formatting.IValueFormatter)"/>.
+            </summary>
+            <param name="formatters"></param>
+        </member>
+        <member name="P:FluentAssertions.Formatting.Formatter.Formatters">
+            <summary>
+            A list of objects responsible for formatting the objects represented by placeholders.
             </summary>
         </member>
         <member name="M:FluentAssertions.Formatting.GuidValueFormatter.CanHandle(System.Object)">
