@@ -7,9 +7,9 @@ using RISK.Application.GamePlaying;
 
 namespace GuiWpf.ViewModels
 {
-    public class MainGameViewModel : Conductor<IMainViewModel>, IHandle<GameSetupMessage>, IHandle<NewGameMessage>
+    public class MainGameViewModel : Conductor<IMainViewModel>, IHandle<SetupGameMessage>, IHandle<NewGameMessage>
     {
-        private readonly IGameSettingsViewModelFactory _gameSettingsViewModelFactory;
+        private readonly IGameInitializationViewModelFactory _gameInitializationViewModelFactory;
         private readonly IGameboardViewModelFactory _gameboardViewModelFactory;
         private readonly IGameSetupViewModelFactory _gameSetupViewModelFactory;
 
@@ -17,17 +17,17 @@ namespace GuiWpf.ViewModels
             : this(new Root()) { }
 
         private MainGameViewModel(Root root)
-            : this(root.GameSettingsViewModelFactory, root.GameboardViewModelFactory, root.GameSetupViewModelFactory)
+            : this(root.GameInitializationViewModelFactory, root.GameboardViewModelFactory, root.GameSetupViewModelFactory)
         {
             root.EventAggregator.Subscribe(this);
         }
 
         public MainGameViewModel(
-            IGameSettingsViewModelFactory gameSettingsViewModelFactory,
+            IGameInitializationViewModelFactory gameInitializationViewModelFactory,
             IGameboardViewModelFactory gameboardViewModelFactory,
             IGameSetupViewModelFactory gameSetupViewModelFactory)
         {
-            _gameSettingsViewModelFactory = gameSettingsViewModelFactory;
+            _gameInitializationViewModelFactory = gameInitializationViewModelFactory;
             _gameboardViewModelFactory = gameboardViewModelFactory;
             _gameSetupViewModelFactory = gameSetupViewModelFactory;
         }
@@ -36,7 +36,7 @@ namespace GuiWpf.ViewModels
         {
             base.OnInitialize();
 
-            StartNewGame();
+            InitializeNewGame();
         }
 
         public override string DisplayName
@@ -45,24 +45,24 @@ namespace GuiWpf.ViewModels
             set { }
         }
 
-        public void Handle(GameSetupMessage gameSetupMessage)
+        public void Handle(NewGameMessage newGameMessage)
+        {
+            InitializeNewGame();
+        }
+
+        public void Handle(SetupGameMessage setupGameMessage)
         {
             StartGame();
         }
 
-        public void Handle(NewGameMessage newGameMessage)
+        public void Handle(StartGameplayMessage gameplaySetupMessage)
         {
-            StartNewGame();
+            StartGamePlay(gameplaySetupMessage.Game);
         }
 
-        public void Handle(StartGameMessage gameSetupMessage)
+        private void InitializeNewGame()
         {
-            StartGamePlay(gameSetupMessage.Game);
-        }
-
-        private void StartNewGame()
-        {
-            ActivateItem(_gameSettingsViewModelFactory.Create());
+            ActivateItem(_gameInitializationViewModelFactory.Create());
         }
 
         private void StartGame()

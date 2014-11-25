@@ -3,19 +3,19 @@ using RISK.Application;
 
 namespace GuiWpf.ViewModels.Settings
 {
-    public interface IGameSettingsViewModelFactory
+    public interface IGameInitializationViewModelFactory
     {
-        IGameSettingsViewModel Create();
+        IGameInitializationViewModel Create();
     }
 
-    public class GameSettingsViewModelFactory : IGameSettingsViewModelFactory
+    public class GameInitializationViewModelFactory : IGameInitializationViewModelFactory
     {
         private readonly IPlayerFactory _playerFactory;
         private readonly IPlayerTypes _playerTypes;
         private readonly IPlayerRepository _playerRepository;
         private readonly IEventAggregator _eventAggregator;
 
-        public GameSettingsViewModelFactory(IPlayerFactory playerFactory, IPlayerTypes playerTypes, IPlayerRepository playerRepository, IEventAggregator eventAggregator)
+        public GameInitializationViewModelFactory(IPlayerFactory playerFactory, IPlayerTypes playerTypes, IPlayerRepository playerRepository, IEventAggregator eventAggregator)
         {
             _playerFactory = playerFactory;
             _playerTypes = playerTypes;
@@ -23,9 +23,9 @@ namespace GuiWpf.ViewModels.Settings
             _eventAggregator = eventAggregator;
         }
 
-        public IGameSettingsViewModel Create()
+        public IGameInitializationViewModel Create()
         {
-            return new GameSettingsViewModel(_playerFactory, _playerTypes, _playerRepository, _eventAggregator);
+            return new GameInitializationViewModel(_playerFactory, _playerTypes, _playerRepository, _eventAggregator);
         }
     }
 }

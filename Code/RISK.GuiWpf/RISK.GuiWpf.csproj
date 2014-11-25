@@ -93,7 +93,7 @@
     <Compile Include="ViewModels\Setup\GameSetupView.xaml.cs">
       <DependentUpon>GameSetupView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewModels\Messages\StartGameMessage.cs" />
+    <Compile Include="ViewModels\Messages\StartGameplayMessage.cs" />
     <Compile Include="ViewModels\Setup\UserInteractor.cs" />
     <Compile Include="Views\ConfirmView.xaml.cs">
       <DependentUpon>ConfirmView.xaml</DependentUpon>
@@ -117,12 +117,12 @@
     <Compile Include="ViewModels\Gameplay\GameboardViewModelFactory.cs" />
     <Compile Include="ViewModels\Setup\GameFactory.cs" />
     <Compile Include="ViewModels\Gameplay\Map\ITerritoryTextViewModel.cs" />
-    <Compile Include="ViewModels\Messages\GameSetupMessage.cs" />
+    <Compile Include="ViewModels\Messages\SetupGameMessage.cs" />
     <Compile Include="ViewModels\Setup\GameSetupViewModelFactory.cs" />
     <Compile Include="ViewModels\Gameplay\IGameboardViewModelFactory.cs" />
-    <Compile Include="ViewModels\Settings\GameSettingsViewModel.cs" />
+    <Compile Include="ViewModels\Settings\GameInitializationViewModel.cs" />
     <Compile Include="ViewModels\Settings\HumanPlayerType.cs" />
-    <Compile Include="ViewModels\Settings\IGameSettingsViewModel.cs" />
+    <Compile Include="ViewModels\Settings\IGameInitializationViewModel.cs" />
     <Compile Include="ViewModels\MainGameViewModel.cs" />
     <Compile Include="ViewModels\IMainViewModel.cs" />
     <Compile Include="ViewModels\Settings\IPlayerFactory.cs" />

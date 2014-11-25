@@ -53,13 +53,13 @@ namespace GuiWpf.ViewModels
             var gameFactory = new GameFactory(alternateGameSetup, interactionStateFactory, stateControllerFactory, playerRepository, cardFactory);
             var gameFactoryWorker = new GameFactoryWorker(gameFactory);
 
-            GameSettingsViewModelFactory = new GameSettingsViewModelFactory(playerFactory, playerTypes, playerRepository, EventAggregator);
+            GameInitializationViewModelFactory = new GameInitializationViewModelFactory(playerFactory, playerTypes, playerRepository, EventAggregator);
             GameboardViewModelFactory = new GameboardViewModelFactory(worldMapViewModelFactory, territoryViewModelColorInitializer, windowManager, gameOverViewModelFactory, dialogManager, EventAggregator);
             GameSetupViewModelFactory = new GameSetupViewModelFactory(worldMapViewModelFactory, dialogManager, EventAggregator, userInteractor, gameFactoryWorker);
 
         }
 
-        public GameSettingsViewModelFactory GameSettingsViewModelFactory { get; private set; }
+        public GameInitializationViewModelFactory GameInitializationViewModelFactory { get; private set; }
         public GameboardViewModelFactory GameboardViewModelFactory { get; private set; }
         public GameSetupViewModelFactory GameSetupViewModelFactory { get; private set; }
     }

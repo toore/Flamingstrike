@@ -9,14 +9,14 @@ using RISK.Application.Entities;
 
 namespace GuiWpf.ViewModels.Settings
 {
-    public class GameSettingsViewModel : ViewModelBase, IGameSettingsViewModel
+    public class GameInitializationViewModel : ViewModelBase, IGameInitializationViewModel
     {
         private readonly IPlayerFactory _playerFactory;
         private readonly IPlayerTypes _playerTypes;
         private readonly IEventAggregator _eventAggregator;
         private readonly IPlayerRepository _playerRepository;
 
-        public GameSettingsViewModel(IPlayerFactory playerFactory, IPlayerTypes playerTypes, IPlayerRepository playerRepository, IEventAggregator eventAggregator)
+        public GameInitializationViewModel(IPlayerFactory playerFactory, IPlayerTypes playerTypes, IPlayerRepository playerRepository, IEventAggregator eventAggregator)
         {
             _playerFactory = playerFactory;
             _playerTypes = playerTypes;
@@ -59,7 +59,7 @@ namespace GuiWpf.ViewModels.Settings
                 _playerRepository.Add(player);
             }
 
-            _eventAggregator.PublishOnCurrentThread(new GameSetupMessage());
+            _eventAggregator.PublishOnCurrentThread(new SetupGameMessage());
         }
 
         private IEnumerable<IPlayer> CreatePlayers()

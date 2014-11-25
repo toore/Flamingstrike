@@ -12,13 +12,13 @@ namespace RISK.Tests.GuiWpf
 {
     public class MainGameViewModelTests
     {
-        private readonly IGameSettingsViewModelFactory _gameSettingsViewModelFactory;
+        private readonly IGameInitializationViewModelFactory _gameInitializationViewModelFactory;
         private readonly IGameboardViewModelFactory _gameboardViewModelFactory;
         private readonly IGameSetupViewModelFactory _gameSetupViewModelFactory;
 
         public MainGameViewModelTests()
         {
-            _gameSettingsViewModelFactory = Substitute.For<IGameSettingsViewModelFactory>();
+            _gameInitializationViewModelFactory = Substitute.For<IGameInitializationViewModelFactory>();
             _gameboardViewModelFactory = Substitute.For<IGameboardViewModelFactory>();
             _gameSetupViewModelFactory = Substitute.For<IGameSetupViewModelFactory>();
         }
@@ -26,8 +26,8 @@ namespace RISK.Tests.GuiWpf
         [Fact(Skip = "OnInitialize is protected?")]
         public void OnInitialize_starts_new_game()
         {
-            var gameSettingsViewModel = Substitute.For<IGameSettingsViewModel>();
-            _gameSettingsViewModelFactory.Create().Returns(gameSettingsViewModel);
+            var gameSettingsViewModel = Substitute.For<IGameInitializationViewModel>();
+            _gameInitializationViewModelFactory.Create().Returns(gameSettingsViewModel);
 
             var actual = CreateSut().ActiveItem;
 
@@ -35,45 +35,45 @@ namespace RISK.Tests.GuiWpf
         }
 
         [Fact]
-        public void Game_setup_message_starts_game()
+        public void New_game_message_shows_game_initialization_view()
+        {
+            var gameInitializationViewModel = Substitute.For<IGameInitializationViewModel>();
+            _gameInitializationViewModelFactory.Create().Returns(gameInitializationViewModel);
+
+            var sut = CreateSut();
+            sut.Handle(new NewGameMessage());
+
+            sut.ActiveItem.Should().Be(gameInitializationViewModel);
+        }
+
+        [Fact]
+        public void Setup_game_message_shows_setup_game_phase_view()
         {
             var gameSetupviewModel = Substitute.For<IGameSetupViewModel>();
             _gameSetupViewModelFactory.Create().Returns(gameSetupviewModel);
 
             var sut = CreateSut();
-            sut.Handle(new GameSetupMessage());
+            sut.Handle(new SetupGameMessage());
 
             sut.ActiveItem.Should().Be(gameSetupviewModel);
         }
 
         [Fact]
-        public void New_game_message_starts_new_game()
-        {
-            var gameSettingsViewModel = Substitute.For<IGameSettingsViewModel>();
-            _gameSettingsViewModelFactory.Create().Returns(gameSettingsViewModel);
-
-            var sut = CreateSut();
-            sut.Handle(new NewGameMessage());
-
-            sut.ActiveItem.Should().Be(gameSettingsViewModel);
-        }
-
-        [Fact]
-        public void Start_game_start_the_game()
+        public void Start_game_play_shows_the_game_playing_view()
         {
             var game = Substitute.For<IGame>();
             var gameboardViewModel = Substitute.For<IGameboardViewModel>();
             _gameboardViewModelFactory.Create(game).Returns(gameboardViewModel);
 
             var sut = CreateSut();
-            sut.Handle(new StartGameMessage(game));
+            sut.Handle(new StartGameplayMessage(game));
 
             sut.ActiveItem.Should().Be(gameboardViewModel);
         }
 
         private MainGameViewModel CreateSut()
         {
-            return new MainGameViewModel(_gameSettingsViewModelFactory, _gameboardViewModelFactory, _gameSetupViewModelFactory);
+            return new MainGameViewModel(_gameInitializationViewModelFactory, _gameboardViewModelFactory, _gameSetupViewModelFactory);
         }
     }
 }

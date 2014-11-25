@@ -45,7 +45,7 @@ namespace RISK.Tests.Application.Specifications
 
         private GameSetupSpec two_human_players_are_confirmed()
         {
-            var gameSettingsViewModel = (IGameSettingsViewModel)_mainGameViewModel.ActiveItem;
+            var gameSettingsViewModel = (IGameInitializationViewModel)_mainGameViewModel.ActiveItem;
 
             gameSettingsViewModel.Players.First().IsEnabled = true;
             gameSettingsViewModel.Players.Second().IsEnabled = true;

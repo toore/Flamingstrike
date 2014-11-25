@@ -1,4 +1,4 @@
 ﻿namespace GuiWpf.ViewModels.Messages
 {
-    public class GameSetupMessage {}
+    public class SetupGameMessage {}
 }

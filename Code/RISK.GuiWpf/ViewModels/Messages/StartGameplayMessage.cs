@@ -2,11 +2,11 @@
 
 namespace GuiWpf.ViewModels.Messages
 {
-    public class StartGameMessage
+    public class StartGameplayMessage
     {
         public IGame Game { get; private set; }
 
-        public StartGameMessage(IGame game)
+        public StartGameplayMessage(IGame game)
         {
             Game = game;
         }
