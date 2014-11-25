@@ -14,12 +14,12 @@ namespace RISK.Tests.GuiWpf
 {
     public class GameSetupViewModelTests
     {
-        private IWorldMapViewModelFactory _worldMapViewModelFactory;
-        private IDialogManager _dialogManager;
-        private IEventAggregator _eventAggregator;
-        private IUserInteractor _userInteractor;
-        private IGameFactoryWorker _gameFactoryWorker;
-        private GameSetupViewModelFactory _gameSetupViewModelFactory;
+        private readonly IWorldMapViewModelFactory _worldMapViewModelFactory;
+        private readonly IDialogManager _dialogManager;
+        private readonly IEventAggregator _eventAggregator;
+        private readonly IUserInteractor _userInteractor;
+        private readonly IGameFactoryWorker _gameFactoryWorker;
+        private readonly GameSetupViewModelFactory _gameSetupViewModelFactory;
 
         public GameSetupViewModelTests()
         {
@@ -74,12 +74,15 @@ namespace RISK.Tests.GuiWpf
         [Fact]
         public void When_finished_game_conductor_is_notified()
         {
-            var game = Substitute.For<IGame>();
+            var expectedGame = Substitute.For<IGame>();
+            IGame actualGame = null;
+            _eventAggregator.WhenForAnyArgs(x => x.PublishOnUIThread(null)).Do(ci => actualGame = ci.Arg<StartGameplayMessage>().Game);
 
             var gameSetupViewModel = InitializeAndStartSetup();
-            gameSetupViewModel.InitializationFinished(game);
+            gameSetupViewModel.InitializationFinished(expectedGame);
 
-            //_gameSettingStateConductor.Received().StartGamePlay(game);
+            _eventAggregator.ReceivedWithAnyArgs().PublishOnUIThread(new StartGameplayMessage(expectedGame));
+            actualGame.Should().Be(expectedGame);
         }
 
         [Fact]
@@ -115,7 +118,7 @@ namespace RISK.Tests.GuiWpf
         {
             _dialogManager.ConfirmEndGame().Returns(false);
 
-            var gameSetupViewModel = InitializeAndStartSetup(); 
+            var gameSetupViewModel = InitializeAndStartSetup();
 
             gameSetupViewModel.EndGame();
 

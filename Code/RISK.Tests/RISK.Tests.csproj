@@ -96,7 +96,7 @@
     <Compile Include="Application\Specifications\GamePlaySpec.cs" />
     <Compile Include="Application\Specifications\GameSetupSpec.cs" />
     <Compile Include="GuiWpf\EnumerableExtensionsTests.cs" />
-    <Compile Include="GuiWpf\GameSettingsViewModelTests.cs" />
+    <Compile Include="GuiWpf\GameInitializationViewModelTests.cs" />
     <Compile Include="GuiWpf\GameSetupViewModelTests.cs" />
     <Compile Include="GuiWpf\MainGameViewModelTests.cs" />
     <Compile Include="GuiWpf\ScreenServiceTests.cs" />

@@ -60,7 +60,7 @@ namespace GuiWpf.ViewModels.Setup
 
         public void Activate()
         {
-            throw new System.NotImplementedException();
+            OnActivate();
         }
 
         protected override void OnActivate()
