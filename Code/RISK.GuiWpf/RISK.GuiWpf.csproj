@@ -77,6 +77,9 @@
     <Compile Include="TerritoryModels\TerritoryModelBase.cs" />
     <Compile Include="ViewModels\ConfirmViewModel.cs" />
     <Compile Include="ViewModels\ConfirmViewModelFactory.cs" />
+    <Compile Include="ViewModels\Gameplay\GameSetupView.xaml.cs">
+      <DependentUpon>GameSetupView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewModels\IConfirmViewModelFactory.cs" />
     <Compile Include="Services\IUserNotifier.cs" />
     <Compile Include="Services\UserNotifier.cs" />
@@ -87,12 +90,18 @@
     <Compile Include="ViewModels\Root.cs" />
     <Compile Include="ViewModels\Settings\GameSettingsViewModelFactory.cs" />
     <Compile Include="ViewModels\Setup\GameFactoryWorker.cs" />
+    <Compile Include="ViewModels\Setup\GameSetupView.xaml.cs">
+      <DependentUpon>GameSetupView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewModels\Setup\UserInteractor.cs" />
     <Compile Include="Views\ConfirmView.xaml.cs">
       <DependentUpon>ConfirmView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ConfirmViewModelTestDataFactory.cs" />
     <Compile Include="Views\GameOverViewModelTestDataFactory.cs" />
+    <Compile Include="ViewModels\Settings\GameSettingsView.xaml.cs">
+      <DependentUpon>GameSettingsView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="WpfExtensions\GetString.cs" />
     <Compile Include="Infrastructure\WindowManager.cs" />
     <Compile Include="Services\ColorService.cs" />
@@ -156,7 +165,6 @@
     <Compile Include="Views\MainGameView.xaml.cs">
       <DependentUpon>MainGameView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\MainGameViewModelTestDataFactory.cs" />
     <Compile Include="ViewModels\Gameplay\Map\IWorldMapItemViewModel.cs" />
     <Compile Include="TerritoryModels\JapanModel.cs" />
     <Compile Include="TerritoryModels\KamchatkaModel.cs" />
@@ -199,6 +207,14 @@
       <DependentUpon>WorldMapTestUserControl.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="ViewModels\Gameplay\GameSetupView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ViewModels\Setup\GameSetupView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Views\ConfirmView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -210,6 +226,10 @@
     <Page Include="Views\GameResources.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ViewModels\Settings\GameSettingsView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\WorldMapViews\GameboardView.xaml">
       <SubType>Designer</SubType>

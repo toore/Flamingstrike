@@ -12,10 +12,10 @@ namespace GuiWpf.ViewModels.Setup
 {
     public interface IGameSetupViewModel : IMainViewModel
     {
-        void StartSetup();
+        void Activate();
     }
 
-    public class GameSetupViewModel : ViewModelBase, IGameSetupViewModel, ITerritorySelector, IGameInitializerNotifier
+    public class GameSetupViewModel : Screen, ITerritorySelector, IGameInitializerNotifier, IGameSetupViewModel
     {
         private readonly IWorldMapViewModelFactory _worldMapViewModelFactory;
         private readonly IGameSettingStateConductor _gameSettingStateConductor;
@@ -44,24 +44,29 @@ namespace GuiWpf.ViewModels.Setup
         public WorldMapViewModel WorldMapViewModel
         {
             get { return _worldMapViewModel; }
-            private set { NotifyOfPropertyChange(value, () => WorldMapViewModel, x => _worldMapViewModel = x); }
+            private set { this.NotifyOfPropertyChange(value, () => WorldMapViewModel, x => _worldMapViewModel = x); }
         }
 
         private string _informationText;
         public string InformationText
         {
             get { return _informationText; }
-            set { NotifyOfPropertyChange(value, () => InformationText, x => _informationText = x); }
+            set { this.NotifyOfPropertyChange(value, () => InformationText, x => _informationText = x); }
         }
 
         private IPlayer _player;
         public IPlayer Player
         {
             get { return _player; }
-            private set { NotifyOfPropertyChange(value, () => Player, x => _player = x); }
+            private set { this.NotifyOfPropertyChange(value, () => Player, x => _player = x); }
         }
 
-        public void StartSetup()
+        public void Activate()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        protected override void OnActivate()
         {
             _gameFactoryWorker.Run(this, this);
         }
@@ -102,14 +107,14 @@ namespace GuiWpf.ViewModels.Setup
             return false;
         }
 
-        public void Fortify() {}
+        public void Fortify() { }
 
         public bool CanEndTurn()
         {
             return false;
         }
 
-        public void EndTurn() {}
+        public void EndTurn() { }
 
         public void EndGame()
         {

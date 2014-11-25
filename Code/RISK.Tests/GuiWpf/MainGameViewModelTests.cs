@@ -28,7 +28,7 @@ namespace RISK.Tests.GuiWpf
             var gameSettingsViewModel = Substitute.For<IGameSettingsViewModel>();
             _gameSettingsViewModelFactory.Create().Returns(gameSettingsViewModel);
 
-            var actual = CreateSut().MainViewModel;
+            var actual = CreateSut().ActiveItem;
 
             actual.Should().Be(gameSettingsViewModel);
         }
@@ -43,8 +43,8 @@ namespace RISK.Tests.GuiWpf
 
             mainGameViewModel.Handle(new GameSetupMessage());
 
-            mainGameViewModel.MainViewModel.Should().Be(gameSetupviewModel);
-            mainGameViewModel.ShouldRaisePropertyChangeFor(x => x.MainViewModel);
+            mainGameViewModel.ActiveItem.Should().Be(gameSetupviewModel);
+            mainGameViewModel.ShouldRaisePropertyChangeFor(x => x.ActiveItem);
         }
 
         [Fact]
@@ -57,7 +57,7 @@ namespace RISK.Tests.GuiWpf
 
             mainGameViewModel.Handle(new NewGameMessage());
 
-            mainGameViewModel.MainViewModel.Should().Be(newGameSettingsViewModel);
+            mainGameViewModel.ActiveItem.Should().Be(newGameSettingsViewModel);
         }
 
         private MainGameViewModel CreateSut()

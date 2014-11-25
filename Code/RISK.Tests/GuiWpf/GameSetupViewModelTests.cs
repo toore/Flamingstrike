@@ -128,7 +128,8 @@ namespace RISK.Tests.GuiWpf
         private GameSetupViewModel InitializeAndStartSetup()
         {
             var gameSetupViewModel = _gameSetupViewModelFactory.Create(_gameSettingStateConductor);
-            gameSetupViewModel.StartSetup();
+            gameSetupViewModel.Activate();
+
 
             return (GameSetupViewModel)gameSetupViewModel;
         }

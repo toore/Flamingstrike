@@ -45,14 +45,14 @@ namespace RISK.Tests.Application.Specifications
 
         private GameSetupSpec two_human_players_are_confirmed()
         {
-            var gameSettingsViewModel = (IGameSettingsViewModel)_mainGameViewModel.MainViewModel;
+            var gameSettingsViewModel = (IGameSettingsViewModel)_mainGameViewModel.ActiveItem;
 
             gameSettingsViewModel.Players.First().IsEnabled = true;
             gameSettingsViewModel.Players.Second().IsEnabled = true;
 
             gameSettingsViewModel.Confirm();
 
-            _setupViewModel = _mainGameViewModel.MainViewModel;
+            _setupViewModel = _mainGameViewModel.ActiveItem;
 
             return this;
         }
@@ -68,14 +68,14 @@ namespace RISK.Tests.Application.Specifications
 
         private GameSetupSpec the_main_view_is_changed()
         {
-            while (_mainGameViewModel.MainViewModel == _setupViewModel) {}
+            while (_mainGameViewModel.ActiveItem == _setupViewModel) { }
 
             return this;
         }
 
         private void the_game_is_started()
         {
-            _mainGameViewModel.MainViewModel.Should().BeOfType<GameboardViewModel>();
+            _mainGameViewModel.ActiveItem.Should().BeOfType<GameboardViewModel>();
         }
     }
 

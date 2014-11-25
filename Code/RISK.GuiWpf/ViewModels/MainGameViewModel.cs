@@ -7,15 +7,14 @@ using RISK.Application.GamePlaying;
 
 namespace GuiWpf.ViewModels
 {
-    public class MainGameViewModel : Screen, IGameSettingStateConductor, IHandle<GameSetupMessage>, IHandle<NewGameMessage>
+    public class MainGameViewModel : Conductor<IMainViewModel>, IGameSettingStateConductor, IHandle<GameSetupMessage>, IHandle<NewGameMessage>
     {
         private readonly IGameSettingsViewModelFactory _gameSettingsViewModelFactory;
         private readonly IGameboardViewModelFactory _gameboardViewModelFactory;
         private readonly IGameSetupViewModelFactory _gameSetupViewModelFactory;
 
         public MainGameViewModel()
-            : this(new Root())
-        { }
+            : this(new Root()) {}
 
         private MainGameViewModel(Root root)
             : this(root.GameSettingsViewModelFactory, root.GameboardViewModelFactory, root.GameSetupViewModelFactory)
@@ -42,7 +41,7 @@ namespace GuiWpf.ViewModels
 
         public override string DisplayName
         {
-            get { return "CONQUER THE WORLD - YARC (Yet Another Risk Clone)!"; }
+            get { return "Yarc"; }
             set { }
         }
 
@@ -58,27 +57,17 @@ namespace GuiWpf.ViewModels
 
         private void StartNewGame()
         {
-            MainViewModel = _gameSettingsViewModelFactory.Create();
+            ActivateItem(_gameSettingsViewModelFactory.Create());
         }
 
         private void StartGame()
         {
-            var gameSetupViewModel = _gameSetupViewModelFactory.Create(this);
-            MainViewModel = gameSetupViewModel;
-
-            gameSetupViewModel.StartSetup();
+            ActivateItem(_gameSetupViewModelFactory.Create(this));
         }
 
         public void StartGamePlay(IGame game)
         {
-            MainViewModel = _gameboardViewModelFactory.Create(game);
-        }
-
-        private IMainViewModel _mainViewModel;
-        public IMainViewModel MainViewModel
-        {
-            get { return _mainViewModel; }
-            set { this.NotifyOfPropertyChange(value, () => MainViewModel, x => _mainViewModel = x); }
+            ActivateItem(_gameboardViewModelFactory.Create(game));
         }
     }
 }
