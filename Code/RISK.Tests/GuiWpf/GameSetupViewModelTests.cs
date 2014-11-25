@@ -1,7 +1,6 @@
 ﻿using Caliburn.Micro;
 using FluentAssertions;
 using GuiWpf.Services;
-using GuiWpf.ViewModels;
 using GuiWpf.ViewModels.Gameplay.Map;
 using GuiWpf.ViewModels.Messages;
 using GuiWpf.ViewModels.Setup;
@@ -16,7 +15,6 @@ namespace RISK.Tests.GuiWpf
     public class GameSetupViewModelTests
     {
         private IWorldMapViewModelFactory _worldMapViewModelFactory;
-        private IGameSettingStateConductor _gameSettingStateConductor;
         private IDialogManager _dialogManager;
         private IEventAggregator _eventAggregator;
         private IUserInteractor _userInteractor;
@@ -26,7 +24,6 @@ namespace RISK.Tests.GuiWpf
         public GameSetupViewModelTests()
         {
             _worldMapViewModelFactory = Substitute.For<IWorldMapViewModelFactory>();
-            _gameSettingStateConductor = Substitute.For<IGameSettingStateConductor>();
             _dialogManager = Substitute.For<IDialogManager>();
             _eventAggregator = Substitute.For<IEventAggregator>();
             _userInteractor = Substitute.For<IUserInteractor>();
@@ -82,7 +79,7 @@ namespace RISK.Tests.GuiWpf
             var gameSetupViewModel = InitializeAndStartSetup();
             gameSetupViewModel.InitializationFinished(game);
 
-            _gameSettingStateConductor.Received().StartGamePlay(game);
+            //_gameSettingStateConductor.Received().StartGamePlay(game);
         }
 
         [Fact]
@@ -118,7 +115,7 @@ namespace RISK.Tests.GuiWpf
         {
             _dialogManager.ConfirmEndGame().Returns(false);
 
-            var gameSetupViewModel = InitializeAndStartSetup();
+            var gameSetupViewModel = InitializeAndStartSetup(); 
 
             gameSetupViewModel.EndGame();
 
@@ -127,7 +124,7 @@ namespace RISK.Tests.GuiWpf
 
         private GameSetupViewModel InitializeAndStartSetup()
         {
-            var gameSetupViewModel = _gameSetupViewModelFactory.Create(_gameSettingStateConductor);
+            var gameSetupViewModel = _gameSetupViewModelFactory.Create();
             gameSetupViewModel.Activate();
 
 

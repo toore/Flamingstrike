@@ -6,7 +6,7 @@ namespace GuiWpf.ViewModels.Setup
 {
     public interface IGameSetupViewModelFactory
     {
-        IGameSetupViewModel Create(IGameSettingStateConductor gameSettingStateConductor);
+        IGameSetupViewModel Create();
     }
 
     public class GameSetupViewModelFactory : IGameSetupViewModelFactory
@@ -31,9 +31,9 @@ namespace GuiWpf.ViewModels.Setup
             _gameFactoryWorker = gameFactoryWorker;
         }
 
-        public IGameSetupViewModel Create(IGameSettingStateConductor gameSettingStateConductor)
+        public IGameSetupViewModel Create()
         {
-            return new GameSetupViewModel(_worldMapViewModelFactory, gameSettingStateConductor, _dialogManager, _eventAggregator, _userInteractor, _gameFactoryWorker);
+            return new GameSetupViewModel(_worldMapViewModelFactory, _dialogManager, _eventAggregator, _userInteractor, _gameFactoryWorker);
         }
     }
 }

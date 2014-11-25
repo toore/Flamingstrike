@@ -18,7 +18,6 @@ namespace GuiWpf.ViewModels.Setup
     public class GameSetupViewModel : Screen, ITerritorySelector, IGameInitializerNotifier, IGameSetupViewModel
     {
         private readonly IWorldMapViewModelFactory _worldMapViewModelFactory;
-        private readonly IGameSettingStateConductor _gameSettingStateConductor;
         private readonly IDialogManager _dialogManager;
         private readonly IEventAggregator _eventAggregator;
         private readonly IUserInteractor _userInteractor;
@@ -26,14 +25,12 @@ namespace GuiWpf.ViewModels.Setup
 
         public GameSetupViewModel(
             IWorldMapViewModelFactory worldMapViewModelFactory,
-            IGameSettingStateConductor gameSettingStateConductor,
             IDialogManager dialogManager,
             IEventAggregator eventAggregator,
             IUserInteractor userInteractor,
             IGameFactoryWorker gameFactoryWorker)
         {
             _worldMapViewModelFactory = worldMapViewModelFactory;
-            _gameSettingStateConductor = gameSettingStateConductor;
             _dialogManager = dialogManager;
             _eventAggregator = eventAggregator;
             _userInteractor = userInteractor;
@@ -99,7 +96,7 @@ namespace GuiWpf.ViewModels.Setup
 
         private void StartGamePlay(IGame game)
         {
-            _gameSettingStateConductor.StartGamePlay(game);
+            _eventAggregator.PublishOnUIThread(new StartGameMessage(game));
         }
 
         public bool CanFortify()

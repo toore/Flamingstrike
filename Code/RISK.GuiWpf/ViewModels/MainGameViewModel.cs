@@ -7,14 +7,14 @@ using RISK.Application.GamePlaying;
 
 namespace GuiWpf.ViewModels
 {
-    public class MainGameViewModel : Conductor<IMainViewModel>, IGameSettingStateConductor, IHandle<GameSetupMessage>, IHandle<NewGameMessage>
+    public class MainGameViewModel : Conductor<IMainViewModel>, IHandle<GameSetupMessage>, IHandle<NewGameMessage>
     {
         private readonly IGameSettingsViewModelFactory _gameSettingsViewModelFactory;
         private readonly IGameboardViewModelFactory _gameboardViewModelFactory;
         private readonly IGameSetupViewModelFactory _gameSetupViewModelFactory;
 
         public MainGameViewModel()
-            : this(new Root()) {}
+            : this(new Root()) { }
 
         private MainGameViewModel(Root root)
             : this(root.GameSettingsViewModelFactory, root.GameboardViewModelFactory, root.GameSetupViewModelFactory)
@@ -55,6 +55,11 @@ namespace GuiWpf.ViewModels
             StartNewGame();
         }
 
+        public void Handle(StartGameMessage gameSetupMessage)
+        {
+            StartGamePlay(gameSetupMessage.Game);
+        }
+
         private void StartNewGame()
         {
             ActivateItem(_gameSettingsViewModelFactory.Create());
@@ -62,12 +67,13 @@ namespace GuiWpf.ViewModels
 
         private void StartGame()
         {
-            ActivateItem(_gameSetupViewModelFactory.Create(this));
+            ActivateItem(_gameSetupViewModelFactory.Create());
         }
 
-        public void StartGamePlay(IGame game)
+        private void StartGamePlay(IGame game)
         {
-            ActivateItem(_gameboardViewModelFactory.Create(game));
+            var gameboardViewModel = _gameboardViewModelFactory.Create(game);
+            ActivateItem(gameboardViewModel);
         }
     }
 }
