@@ -16,8 +16,28 @@ namespace GuiWpf.ViewModels
         public MainGameViewModel()
             : this(new Root()) { }
 
-        private MainGameViewModel(Root root)
-            : this(root.GameInitializationViewModelFactory, root.GameboardViewModelFactory, root.GameSetupViewModelFactory)
+        protected MainGameViewModel(Root root)
+            : this(
+                new GameInitializationViewModelFactory(
+                root.PlayerFactory,
+                root.PlayerTypes,
+                root.PlayerRepository,
+                root.EventAggregator),
+
+                new GameboardViewModelFactory(
+                root.WorldMapViewModelFactory,
+                root.TerritoryViewModelColorInitializer,
+                root.WindowManager,
+                root.GameOverViewModelFactory,
+                root.DialogManager,
+                root.EventAggregator),
+
+                new GameSetupViewModelFactory(
+                root.WorldMapViewModelFactory,
+                root.DialogManager,
+                root.EventAggregator,
+                root.UserInteractor,
+                root.GameFactoryWorker))
         {
             root.EventAggregator.Subscribe(this);
         }
@@ -74,6 +94,11 @@ namespace GuiWpf.ViewModels
         {
             var gameboardViewModel = _gameboardViewModelFactory.Create(game);
             ActivateItem(gameboardViewModel);
+        }
+
+        public void OnInitializeFromChild()
+        {
+            OnInitialize();
         }
     }
 }

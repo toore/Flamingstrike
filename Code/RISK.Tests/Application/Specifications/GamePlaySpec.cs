@@ -2,10 +2,11 @@ using System;
 using System.Linq;
 using Caliburn.Micro;
 using FluentAssertions;
+using GuiWpf.Services;
+using GuiWpf.TerritoryModels;
 using GuiWpf.ViewModels;
 using GuiWpf.ViewModels.Gameplay;
 using GuiWpf.ViewModels.Gameplay.Map;
-using GuiWpf.Views.WorldMapViews;
 using NSubstitute;
 using RISK.Application;
 using RISK.Application.Entities;
@@ -29,8 +30,6 @@ namespace RISK.Tests.Application.Specifications
         [Fact]
         public void Moves_armies_into_Brazil_after_win()
         {
-            var gameboardViewModel = GameboardViewModelTestDataFactory.ViewModel;
-
             Given.
                 a_started_game_with_two_players().
                 player_1_occupies_every_territory_except_brazil_and_venezuela_with_one_army_each().
@@ -143,9 +142,6 @@ namespace RISK.Tests.Application.Specifications
         {
             _worldMap = new WorldMap();
 
-            //var territoriesFactory = Substitute.For<ITerritoriesFactory>();
-            //territoriesFactory.Create().Returns(_territories);
-
             _dice = Substitute.For<IDice>();
             _windowManager = Substitute.For<IWindowManager>();
 
@@ -164,17 +160,25 @@ namespace RISK.Tests.Application.Specifications
             var interactionStateFactory = new InteractionStateFactory(battleCalculator);
             var game = new Game(interactionStateFactory, new StateControllerFactory(), new[] { _player1, _player2 }, _worldMap, new CardFactory());
 
-            //ObjectFactory.Inject<IPlayers>(_players);
-            ////ObjectFactory.Inject(_territories);
-            ////ObjectFactory.Inject(territoriesFactory);
-            //ObjectFactory.Inject(_dice);
-            //ObjectFactory.Inject(_windowManager);
-            //ObjectFactory.Inject(gameOverViewModelFactory);
-            //ObjectFactory.Inject<IGame>(game);
+            var worldMapModelFactory = new WorldMapModelFactory();
+            var colorService = new ColorService();
+            var eventAggregator = new EventAggregator();
+            var territoryColorsFactory = new TerritoryColorsFactory(colorService);
+            var territoryViewModelColorInitializer = new TerritoryViewModelColorInitializer(territoryColorsFactory, colorService);
+            var screenService = new ScreenService();
+            var confirmViewModelFactory = new ConfirmViewModelFactory(screenService);
+            var userNotifier = new UserNotifier(_windowManager, confirmViewModelFactory);
+            var dialogManager = new DialogManager(userNotifier);
+            var worldMapViewModelFactory = new WorldMapViewModelFactory(worldMapModelFactory, territoryViewModelColorInitializer);
 
-            //_gameboardViewModel = (GameboardViewModel)ObjectFactory
-            //    .With(_worldMap.GetTerritories())
-            //    .GetInstance<IGameboardViewModel>();
+            _gameboardViewModel = new GameboardViewModel(
+                game,
+                worldMapViewModelFactory, 
+                territoryViewModelColorInitializer, 
+                _windowManager, 
+                gameOverViewModelFactory, 
+                dialogManager, 
+                eventAggregator);
 
             return this;
         }

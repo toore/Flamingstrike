@@ -40,6 +40,13 @@ namespace RISK.Tests.Application.Specifications
 
             //_mainGameViewModel = ObjectFactory.GetInstance<IMainGameViewModel>();
 
+            var root = new Root();
+            _userInteractor = new AutoRespondingUserInteractor();
+            root.UserInteractor = _userInteractor;
+            
+            _mainGameViewModel = new MainGameViewModelAdapter(root);
+            _mainGameViewModel.OnInitializeFromChild();
+
             return this;
         }
 
@@ -61,7 +68,7 @@ namespace RISK.Tests.Application.Specifications
         {
             const int numberOfArmiesToPlace = (40 - 21) * 2;
 
-            while (_userInteractor.LocationsHasBeenSelected < numberOfArmiesToPlace) {}
+            while (_userInteractor.LocationsHasBeenSelected < numberOfArmiesToPlace) { }
 
             return this;
         }
@@ -76,6 +83,14 @@ namespace RISK.Tests.Application.Specifications
         private void the_game_is_started()
         {
             _mainGameViewModel.ActiveItem.Should().BeOfType<GameboardViewModel>();
+        }
+    }
+
+    internal class MainGameViewModelAdapter : MainGameViewModel
+    {
+        public MainGameViewModelAdapter(Root root)
+            : base(root)
+        {
         }
     }
 
