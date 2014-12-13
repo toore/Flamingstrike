@@ -172,16 +172,9 @@ namespace RISK.Tests.GuiWpf
         [Fact]
         public void Fortifies_armies()
         {
-            _game.CurrentInteractionState.Returns(_firstPlayerInteractionState);
-
             Create().Fortify();
-            _game.CurrentInteractionState.OnClick(_territory1);
 
-            Received.InOrder(() =>
-            {
-                _game.Received().Fortify();
-                _firstPlayerInteractionState.Received().OnClick(_territory1);
-            });
+            _game.Received().Fortify();
         }
     }
 }
