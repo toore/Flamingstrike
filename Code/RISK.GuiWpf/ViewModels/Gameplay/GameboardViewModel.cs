@@ -36,7 +36,7 @@ namespace GuiWpf.ViewModels.Gameplay
 
             InformationText = LanguageResources.Instance.GetString("SELECT_TERRITORY");
 
-            WorldMapViewModel = worldMapViewModelFactory.Create(_game.WorldMap, OnLocationClick);
+            WorldMapViewModel = worldMapViewModelFactory.Create(_game.WorldMap, OnTerritoryClick);
 
             BeginNextPlayerTurn();
         }
@@ -58,6 +58,11 @@ namespace GuiWpf.ViewModels.Gameplay
             UpdateGameBoard();
         }
 
+        public void Fortify()
+        {
+            _game.Fortify();
+        }
+
         public void EndTurn()
         {
             _game.EndTurn();
@@ -75,7 +80,7 @@ namespace GuiWpf.ViewModels.Gameplay
             }
         }
 
-        public void OnLocationClick(ITerritory territory)
+        public void OnTerritoryClick(ITerritory territory)
         {
             _game.CurrentInteractionState.OnClick(territory);
 

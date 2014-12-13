@@ -6,5 +6,6 @@
         IInteractionState CurrentInteractionState { get; }
         void EndTurn();
         bool IsGameOver();
+        void Fortify();
     }
 }

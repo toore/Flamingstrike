@@ -19,8 +19,8 @@ namespace RISK.Tests.GuiWpf
         private readonly WorldMapViewModel _worldMapViewModel;
         private readonly ITerritory _territory1;
         private readonly ITerritoryViewModelColorInitializer _territoryViewModelColorInitializer;
-        private readonly IInteractionState _initialInteractionState;
-        private readonly IInteractionState _nextInteractionState;
+        private readonly IInteractionState _firstPlayerInteractionState;
+        private readonly IInteractionState _nextPlayerInteractionState;
         private readonly IPlayer _currentPlayer;
         private readonly IPlayer _nextPlayer;
         private readonly IWindowManager _windowManager;
@@ -46,10 +46,10 @@ namespace RISK.Tests.GuiWpf
             _currentPlayer = Substitute.For<IPlayer>();
             _nextPlayer = Substitute.For<IPlayer>();
 
-            _initialInteractionState = Substitute.For<IInteractionState>();
-            _initialInteractionState.Player.Returns(_currentPlayer);
-            _nextInteractionState = Substitute.For<IInteractionState>();
-            _nextInteractionState.Player.Returns(_nextPlayer);
+            _firstPlayerInteractionState = Substitute.For<IInteractionState>();
+            _firstPlayerInteractionState.Player.Returns(_currentPlayer);
+            _nextPlayerInteractionState = Substitute.For<IInteractionState>();
+            _nextPlayerInteractionState.Player.Returns(_nextPlayer);
 
             var viewModel = Substitute.For<ITerritoryLayoutViewModel>();
             var layoutViewModel1 = viewModel;
@@ -93,7 +93,7 @@ namespace RISK.Tests.GuiWpf
         [Fact]
         public void Player1_takes_first_turn()
         {
-            _game.CurrentInteractionState.Returns(_initialInteractionState);
+            _game.CurrentInteractionState.Returns(_firstPlayerInteractionState);
 
             AssertCurrentPlayer(_currentPlayer);
         }
@@ -101,7 +101,7 @@ namespace RISK.Tests.GuiWpf
         [Fact]
         public void Player2_takes_second_turn()
         {
-            _game.CurrentInteractionState.Returns(_initialInteractionState, _nextInteractionState);
+            _game.CurrentInteractionState.Returns(_firstPlayerInteractionState, _nextPlayerInteractionState);
 
             Create().EndTurn();
 
@@ -116,28 +116,26 @@ namespace RISK.Tests.GuiWpf
         [Fact]
         public void Ends_turn_and_gets_next_turn()
         {
-            _game.CurrentInteractionState.Returns(_initialInteractionState, _nextInteractionState);
+            _game.CurrentInteractionState.Returns(_firstPlayerInteractionState, _nextPlayerInteractionState);
 
             var sut = Create();
             _game.ClearReceivedCalls();
 
             sut.EndTurn();
 
-            //_initialInteractionState.Received(1).EndTurn();
-            //_game.Received(1).GetNextTurn();
             sut.Player.Should().Be(_nextPlayer);
         }
 
         [Fact]
         public void When_winning_game_over_dialog_should_be_shown()
         {
-            _game.CurrentInteractionState.Returns(_initialInteractionState);
+            _game.CurrentInteractionState.Returns(_firstPlayerInteractionState);
 
             _game.IsGameOver().Returns(true);
             var gameOverViewModel = new GameOverViewModel(_currentPlayer);
             _gameOverViewModelFactory.Create(_currentPlayer).Returns(gameOverViewModel);
 
-            Create().OnLocationClick(null);
+            Create().OnTerritoryClick(null);
 
             _windowManager.Received().ShowDialog(gameOverViewModel);
         }
@@ -148,7 +146,7 @@ namespace RISK.Tests.GuiWpf
             _game.IsGameOver().Returns(false);
             var gameOverViewModel = new GameOverViewModel(_currentPlayer);
 
-            Create().OnLocationClick(null);
+            Create().OnTerritoryClick(null);
 
             _windowManager.DidNotReceiveWithAnyArgs().ShowDialog(gameOverViewModel);
         }
@@ -164,11 +162,26 @@ namespace RISK.Tests.GuiWpf
         [Fact]
         public void Interaction_state_receives_on_click_when_location_is_clicked()
         {
-            _game.CurrentInteractionState.Returns(_initialInteractionState);
+            _game.CurrentInteractionState.Returns(_firstPlayerInteractionState);
 
-            Create().OnLocationClick(_territory1);
+            Create().OnTerritoryClick(_territory1);
 
-            _initialInteractionState.Received().OnClick(_territory1);
+            _firstPlayerInteractionState.Received().OnClick(_territory1);
+        }
+
+        [Fact]
+        public void Fortifies_armies()
+        {
+            _game.CurrentInteractionState.Returns(_firstPlayerInteractionState);
+
+            Create().Fortify();
+            _game.CurrentInteractionState.OnClick(_territory1);
+
+            Received.InOrder(() =>
+            {
+                _game.Received().Fortify();
+                _firstPlayerInteractionState.Received().OnClick(_territory1);
+            });
         }
     }
 }

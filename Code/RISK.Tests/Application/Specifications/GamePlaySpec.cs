@@ -134,8 +134,7 @@ namespace RISK.Tests.Application.Specifications
 
         private void player_1_fortifies()
         {
-            throw new NotImplementedException();
-            //_gameboardViewModel.Fortify();
+            _gameboardViewModel.Fortify();
         }
 
         private GamePlaySpec a_started_game_with_two_players()

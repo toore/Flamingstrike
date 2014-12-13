@@ -94,20 +94,5 @@ namespace RISK.Application.GamePlaying
         {
             return territoryToAttack.Occupant == Player;
         }
-
-        //public bool CanFortify(ILocation location)
-        //{
-        //    return SelectedTerritory.Location.IsBordering(location) 
-        //        && 
-        //        _worldMap.GetTerritory(location).Occupant == Player;
-        //}
-
-        //public void Fortify(ILocation location, int armies)
-        //{
-        //    _worldMap.GetTerritory(location).Armies += armies;
-        //    SelectedTerritory.Armies -= armies;
-
-        //    _stateController.CurrentState = _interactionStateFactory.CreateFortifiedState(Player, _worldMap);
-        //}
     }
 }

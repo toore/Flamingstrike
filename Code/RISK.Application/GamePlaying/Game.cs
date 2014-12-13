@@ -50,5 +50,10 @@ namespace RISK.Application.GamePlaying
         {
             return WorldMap.GetAllPlayersOccupyingTerritories().Count() == 1;
         }
+
+        public void Fortify()
+        {
+            _stateController.CurrentState = new FortifyState();
+        }
     }
 }

@@ -60,6 +60,7 @@
     <Compile Include="GamePlaying\DiceAndCalculation\Dice.cs" />
     <Compile Include="GamePlaying\DiceAndCalculation\IDice.cs" />
     <Compile Include="GamePlaying\DiceAndCalculation\IDicesResult.cs" />
+    <Compile Include="GamePlaying\FortifyState.cs" />
     <Compile Include="GamePlaying\Setup\AlternateGameSetup.cs" />
     <Compile Include="GamePlaying\BattleCalculator.cs" />
     <Compile Include="GamePlaying\CardFactory.cs" />
