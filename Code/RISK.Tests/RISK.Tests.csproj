@@ -83,6 +83,7 @@
     <Compile Include="Application\Battle\DiceTests.cs" />
     <Compile Include="Application\Battle\DicesTests.cs" />
     <Compile Include="Application\Battle\CasualtiesCalculatorTests.cs" />
+    <Compile Include="Application\Gameplay\FortifyStateTests.cs" />
     <Compile Include="Application\Gameplay\InitialArmyCountTests.cs" />
     <Compile Include="CardBuilder.cs" />
     <Compile Include="GuiWpf\WorldMapModelFactoryTests.cs" />
