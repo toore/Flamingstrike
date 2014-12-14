@@ -1,4 +1,5 @@
-﻿using RISK.Application.Entities;
+﻿using System;
+using RISK.Application.Entities;
 
 namespace RISK.Application.GamePlaying
 {
@@ -30,7 +31,7 @@ namespace RISK.Application.GamePlaying
         {
             if (!CanClick(territory))
             {
-                return;
+                throw new InvalidOperationException();
             }
 
             _stateController.CurrentState = _interactionStateFactory.CreateAttackState(_stateController, Player, territory);

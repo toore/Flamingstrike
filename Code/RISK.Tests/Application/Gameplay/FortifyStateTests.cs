@@ -1,3 +1,4 @@
+using System;
 using FluentAssertions;
 using NSubstitute;
 using RISK.Application.Entities;
@@ -63,14 +64,24 @@ namespace RISK.Tests.Application.Gameplay
         }
 
         [Fact]
-        public void Clicking_territory_enters_fortify_to_state()
+        public void Clicking_occupied_territory_enters_fortify_state()
         {
-            var fortifyToState = Substitute.For<IInteractionState>();
-            _interactionStateFactory.CreateFortifyState(_stateController, _player, _territoryOccupiedByPlayer).Returns(fortifyToState);
+            var fortifyState = Substitute.For<IInteractionState>();
+            _interactionStateFactory.CreateFortifyState(_stateController, _player, _territoryOccupiedByPlayer).Returns(fortifyState);
 
             _sut.OnClick(_territoryOccupiedByPlayer);
 
-            _stateController.CurrentState.Should().Be(fortifyToState);
+            _stateController.CurrentState.Should().Be(fortifyState);
+        }
+
+        [Fact]
+        public void Clicking_not_occupied_territory_throws()
+        {
+            var territory = Make.Territory.Build();
+
+            Action act = () => _sut.OnClick(territory);
+
+            act.ShouldThrow<InvalidOperationException>();
         }
 
         //[Fact]

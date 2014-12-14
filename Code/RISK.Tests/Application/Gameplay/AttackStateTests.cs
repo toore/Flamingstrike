@@ -1,4 +1,5 @@
-﻿using FluentAssertions;
+﻿using System;
+using FluentAssertions;
 using NSubstitute;
 using RISK.Application.Entities;
 using RISK.Application.GamePlaying;
@@ -58,12 +59,12 @@ namespace RISK.Tests.Application.Gameplay
         [Fact]
         public void Can_not_select_not_selected_location()
         {
-            _sut.CanClick(Substitute.For<ITerritory>()).Should().BeFalse();
-            _sut.CanClick(_borderingTerritoryOccupiedByOtherPlayer).Should().BeFalse();
+            AssertCanNotClick(Substitute.For<ITerritory>());
+            AssertCanNotClick(_borderingTerritoryOccupiedByOtherPlayer);
         }
 
         [Fact]
-        public void Selecting_selected_location_enters_select_state()
+        public void Selecting_selected_territory_enters_select_state()
         {
             var selectState = Substitute.For<IInteractionState>();
             _interactionStateFactory.CreateSelectState(_stateController, _player).Returns(selectState);
@@ -78,7 +79,7 @@ namespace RISK.Tests.Application.Gameplay
         {
             _selectedTerritory.Armies = 1;
 
-            _sut.CanClick(_borderingTerritoryOccupiedByOtherPlayer).Should().BeFalse();
+            AssertCanNotClick(_borderingTerritoryOccupiedByOtherPlayer);
         }
 
         [Fact]
@@ -86,7 +87,7 @@ namespace RISK.Tests.Application.Gameplay
         {
             _selectedTerritory.Armies = 2;
 
-            _sut.CanClick(_remoteTerritoryOccupiedByOtherPlayer).Should().BeFalse();
+            AssertCanNotClick(_remoteTerritoryOccupiedByOtherPlayer);
         }
 
         [Fact]
@@ -94,7 +95,7 @@ namespace RISK.Tests.Application.Gameplay
         {
             _selectedTerritory.Armies = 2;
 
-            _sut.CanClick(_borderingTerritoryOccupiedByPlayer).Should().BeFalse();
+            AssertCanNotClick(_borderingTerritoryOccupiedByPlayer);
         }
 
         [Fact]
@@ -146,6 +147,14 @@ namespace RISK.Tests.Application.Gameplay
             _sut.OnClick(_borderingTerritoryOccupiedByOtherPlayer);
 
             _stateController.PlayerShouldReceiveCardWhenTurnEnds.Should().BeTrue();
+        }
+
+        private void AssertCanNotClick(ITerritory territory)
+        {
+            _sut.CanClick(territory).Should().BeFalse();
+
+            Action act = () => _sut.OnClick(territory);
+            act.ShouldThrow<InvalidOperationException>();
         }
     }
 }

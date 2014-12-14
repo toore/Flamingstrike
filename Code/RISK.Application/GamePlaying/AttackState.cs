@@ -1,3 +1,4 @@
+using System;
 using RISK.Application.Entities;
 
 namespace RISK.Application.GamePlaying
@@ -34,6 +35,11 @@ namespace RISK.Application.GamePlaying
 
         public void OnClick(ITerritory territory)
         {
+            if (!CanSelect(territory) && !CanAttack(territory))
+            {
+                throw new InvalidOperationException();                
+            }
+
             if (CanSelect(territory))
             {
                 Select(territory);
@@ -44,9 +50,9 @@ namespace RISK.Application.GamePlaying
             }
         }
 
-        private bool CanSelect(ITerritory location)
+        private bool CanSelect(ITerritory territory)
         {
-            return location == SelectedTerritory;
+            return territory == SelectedTerritory;
         }
 
         private void Select(ITerritory location)
@@ -74,12 +80,12 @@ namespace RISK.Application.GamePlaying
 
         private void Attack(ITerritory territory)
         {
-            var canAttack = CanAttack(territory);
+            //var canAttack = CanAttack(territory);
 
-            if (!canAttack)
-            {
-                return;
-            }
+            //if (!canAttack)
+            //{
+            //    return;
+            //}
 
             _battleCalculator.Attack(SelectedTerritory, territory);
 

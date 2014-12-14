@@ -1,4 +1,5 @@
-﻿using FluentAssertions;
+﻿using System;
+using FluentAssertions;
 using NSubstitute;
 using RISK.Application.Entities;
 using RISK.Application.GamePlaying;
@@ -54,15 +55,11 @@ namespace RISK.Tests.Application.Gameplay
         }
 
         [Fact]
-        public void Territory_is_not_selected_when_not_occupied_by_player()
+        public void Clicking_not_occupied_territory_throws()
         {
-            var currentState = Substitute.For<IInteractionState>();
-            _stateController.CurrentState = currentState;
+            Action act = () => _sut.OnClick(_locationOccupiedByOtherPlayer);
 
-            _sut.OnClick(_locationOccupiedByOtherPlayer);
-
-            _stateController.CurrentState.Should().Be(currentState);
-            _sut.SelectedTerritory.Should().BeNull();
+            act.ShouldThrow<InvalidOperationException>();
         }
     }
 }

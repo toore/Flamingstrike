@@ -25,6 +25,11 @@ namespace RISK.Application.GamePlaying
 
         public void OnClick(ITerritory territory)
         {
+            if (territory.Occupant != Player)
+            {
+                throw new InvalidOperationException();
+            }
+
             _stateController.CurrentState = _interactionStateFactory.CreateFortifyState(_stateController, Player, territory);
         }
     }
