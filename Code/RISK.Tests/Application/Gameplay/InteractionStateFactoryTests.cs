@@ -8,15 +8,14 @@ namespace RISK.Tests.Application.Gameplay
 {
     public class InteractionStateFactoryTests
     {
-        private readonly IBattleCalculator _battleCalculator;
         private readonly InteractionStateFactory _sut;
         private readonly IPlayer _player;
 
         public InteractionStateFactoryTests()
         {
-            _battleCalculator = Substitute.For<IBattleCalculator>();
+            var battleCalculator = Substitute.For<IBattleCalculator>();
 
-            _sut = new InteractionStateFactory(_battleCalculator);
+            _sut = new InteractionStateFactory(battleCalculator);
             
             _player = Substitute.For<IPlayer>();
         }
@@ -40,6 +39,17 @@ namespace RISK.Tests.Application.Gameplay
             actual.Should().BeOfType<AttackState>();
             actual.Player.Should().Be(_player);
             actual.SelectedTerritory.Should().Be(selectedTerritory);
+        }
+
+        [Fact]
+        public void Creates_fortify_select_state()
+        {
+            var player = Substitute.For<IPlayer>();
+
+            var interactionState = _sut.CreateFortifyState(new StateController(), player);
+
+            interactionState.Should().BeOfType<FortifyState>();
+            interactionState.Player.Should().Be(player);
         }
     }
 }

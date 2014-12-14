@@ -20,5 +20,15 @@ namespace RISK.Application.GamePlaying
         {
             return new AttackState(stateController, this, _battleCalculator, player, selectedTerritory);
         }
+
+        public IInteractionState CreateFortifyState(StateController stateController, IPlayer player)
+        {
+            return new FortifyState(stateController, this, player);
+        }
+
+        public IInteractionState CreateFortifyState(StateController stateController, IPlayer player, ITerritory selectedTerritory)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

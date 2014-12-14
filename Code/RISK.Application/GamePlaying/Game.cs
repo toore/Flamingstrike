@@ -53,7 +53,7 @@ namespace RISK.Application.GamePlaying
 
         public void Fortify()
         {
-            _stateController.CurrentState = new FortifyState();
+            _stateController.CurrentState = _interactionStateFactory.CreateFortifyState(_stateController, _currentPlayer);
         }
     }
 }

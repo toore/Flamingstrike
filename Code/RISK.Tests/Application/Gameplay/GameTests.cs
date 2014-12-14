@@ -10,31 +10,32 @@ namespace RISK.Tests.Application.Gameplay
     public class GameTests
     {
         private readonly Game _sut;
-        private readonly IInteractionState _currentInteractionState;
-        private readonly IInteractionState _nextInteractionState;
+        private readonly IInteractionState _currentPlayerInteractionState;
+        private readonly IInteractionState _nextPlayerInteractionState;
         private readonly IPlayer _currentPlayer;
         private readonly StateController _currentStateController;
         private readonly ICardFactory _cardFactory;
         private readonly IWorldMap _worldMap;
+        private readonly IInteractionStateFactory _interactionStateFactory;
 
         public GameTests()
         {
-            var interactionStateFactory = Substitute.For<IInteractionStateFactory>();
+            _interactionStateFactory = Substitute.For<IInteractionStateFactory>();
             var stateControllerFactory = Substitute.For<IStateControllerFactory>();
             _cardFactory = Substitute.For<ICardFactory>();
 
-            _currentInteractionState = Substitute.For<IInteractionState>();
-            _nextInteractionState = Substitute.For<IInteractionState>();
+            _currentPlayerInteractionState = Substitute.For<IInteractionState>();
+            _nextPlayerInteractionState = Substitute.For<IInteractionState>();
             _currentPlayer = Substitute.For<IPlayer>();
             var nextPlayer = Substitute.For<IPlayer>();
             _currentStateController = new StateController();
             var nextStateController = new StateController();
             stateControllerFactory.Create().Returns(_currentStateController, nextStateController);
-            interactionStateFactory.CreateSelectState(_currentStateController, _currentPlayer).Returns(_currentInteractionState);
-            interactionStateFactory.CreateSelectState(nextStateController, nextPlayer).Returns(_nextInteractionState);
+            _interactionStateFactory.CreateSelectState(_currentStateController, _currentPlayer).Returns(_currentPlayerInteractionState);
+            _interactionStateFactory.CreateSelectState(nextStateController, nextPlayer).Returns(_nextPlayerInteractionState);
 
             _worldMap = Substitute.For<IWorldMap>();
-            _sut = new Game(interactionStateFactory, stateControllerFactory, new[] { _currentPlayer, nextPlayer }, _worldMap, _cardFactory);
+            _sut = new Game(_interactionStateFactory, stateControllerFactory, new[] { _currentPlayer, nextPlayer }, _worldMap, _cardFactory);
         }
 
         [Fact]
@@ -48,7 +49,7 @@ namespace RISK.Tests.Application.Gameplay
         {
             var actual = _sut.CurrentInteractionState;
 
-            actual.Should().Be(_currentInteractionState);
+            actual.Should().Be(_currentPlayerInteractionState);
         }
 
         [Fact]
@@ -67,7 +68,7 @@ namespace RISK.Tests.Application.Gameplay
 
             var actual = _sut.CurrentInteractionState;
 
-            actual.Should().Be(_nextInteractionState);
+            actual.Should().Be(_nextPlayerInteractionState);
         }
 
         [Fact]
@@ -112,6 +113,17 @@ namespace RISK.Tests.Application.Gameplay
                 });
 
             _sut.IsGameOver().Should().BeFalse();
+        }
+
+        [Fact]
+        public void Game_enters_fortify_state()
+        {
+            var fortify = Substitute.For<IInteractionState>();
+            _interactionStateFactory.CreateFortifyState(_currentStateController, _currentPlayer).Returns(fortify);
+            
+            _sut.Fortify();
+
+            _sut.CurrentInteractionState.Should().Be(fortify);
         }
     }
 }
