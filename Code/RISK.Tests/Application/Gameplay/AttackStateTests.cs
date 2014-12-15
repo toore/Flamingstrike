@@ -32,7 +32,7 @@ namespace RISK.Tests.Application.Gameplay
                 .Build();
 
             var otherPlayer = Substitute.For<IPlayer>();
-            
+
             _borderingTerritoryOccupiedByOtherPlayer = Make.Territory
                 .Occupant(otherPlayer)
                 .Build();
@@ -46,7 +46,7 @@ namespace RISK.Tests.Application.Gameplay
                 .WithBorder(_borderingTerritoryOccupiedByPlayer)
                 .Occupant(_player)
                 .Build();
-            
+
             _sut = new AttackState(_stateController, _interactionStateFactory, _battleCalculator, _player, _selectedTerritory);
         }
 
@@ -59,8 +59,8 @@ namespace RISK.Tests.Application.Gameplay
         [Fact]
         public void Can_not_select_not_selected_location()
         {
-            AssertCanNotClick(Substitute.For<ITerritory>());
-            AssertCanNotClick(_borderingTerritoryOccupiedByOtherPlayer);
+            _sut.AssertCanNotClick(Substitute.For<ITerritory>());
+            _sut.AssertCanNotClick(_borderingTerritoryOccupiedByOtherPlayer);
         }
 
         [Fact]
@@ -79,7 +79,7 @@ namespace RISK.Tests.Application.Gameplay
         {
             _selectedTerritory.Armies = 1;
 
-            AssertCanNotClick(_borderingTerritoryOccupiedByOtherPlayer);
+            _sut.AssertCanNotClick(_borderingTerritoryOccupiedByOtherPlayer);
         }
 
         [Fact]
@@ -87,7 +87,7 @@ namespace RISK.Tests.Application.Gameplay
         {
             _selectedTerritory.Armies = 2;
 
-            AssertCanNotClick(_remoteTerritoryOccupiedByOtherPlayer);
+            _sut.AssertCanNotClick(_remoteTerritoryOccupiedByOtherPlayer);
         }
 
         [Fact]
@@ -95,7 +95,7 @@ namespace RISK.Tests.Application.Gameplay
         {
             _selectedTerritory.Armies = 2;
 
-            AssertCanNotClick(_borderingTerritoryOccupiedByPlayer);
+            _sut.AssertCanNotClick(_borderingTerritoryOccupiedByPlayer);
         }
 
         [Fact]
@@ -148,12 +148,15 @@ namespace RISK.Tests.Application.Gameplay
 
             _stateController.PlayerShouldReceiveCardWhenTurnEnds.Should().BeTrue();
         }
+        }
 
-        private void AssertCanNotClick(ITerritory territory)
+    public static class GameStateAssertionExtensions
+    {
+        public static void AssertCanNotClick(this IInteractionState state, ITerritory territory)
         {
-            _sut.CanClick(territory).Should().BeFalse();
+            state.CanClick(territory).Should().BeFalse();
 
-            Action act = () => _sut.OnClick(territory);
+            Action act = () => state.OnClick(territory);
             act.ShouldThrow<InvalidOperationException>();
         }
     }

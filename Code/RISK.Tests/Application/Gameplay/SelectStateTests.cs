@@ -1,5 +1,4 @@
-﻿using System;
-using FluentAssertions;
+﻿using FluentAssertions;
 using NSubstitute;
 using RISK.Application.Entities;
 using RISK.Application.GamePlaying;
@@ -40,7 +39,7 @@ namespace RISK.Tests.Application.Gameplay
         [Fact]
         public void Can_not_click_location_not_occupied_by_player()
         {
-            _sut.CanClick(_locationOccupiedByOtherPlayer).Should().BeFalse();
+            _sut.AssertCanNotClick(_locationOccupiedByOtherPlayer);
         }
 
         [Fact]
@@ -52,14 +51,6 @@ namespace RISK.Tests.Application.Gameplay
             _sut.OnClick(_territoryOccupiedByPlayer);
 
             _stateController.CurrentState.Should().Be(expected);
-        }
-
-        [Fact]
-        public void Clicking_not_occupied_territory_throws()
-        {
-            Action act = () => _sut.OnClick(_locationOccupiedByOtherPlayer);
-
-            act.ShouldThrow<InvalidOperationException>();
         }
     }
 }

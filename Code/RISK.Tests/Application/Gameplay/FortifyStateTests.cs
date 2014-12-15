@@ -1,4 +1,3 @@
-using System;
 using FluentAssertions;
 using NSubstitute;
 using RISK.Application.Entities;
@@ -13,7 +12,7 @@ namespace RISK.Tests.Application.Gameplay
         private readonly IPlayer _player;
         private readonly IInteractionStateFactory _interactionStateFactory;
         private readonly StateController _stateController;
-        private Territory _territoryOccupiedByPlayer;
+        private readonly Territory _territoryOccupiedByPlayer;
 
         //private readonly ITerritory _selectedTerritory;
         //private readonly Territory _remoteTerritoryOccupiedByOtherPlayer;
@@ -51,7 +50,6 @@ namespace RISK.Tests.Application.Gameplay
         [Fact]
         public void Can_click_occupied_territory()
         {
-
             _sut.CanClick(_territoryOccupiedByPlayer).Should().BeTrue();
         }
 
@@ -60,7 +58,7 @@ namespace RISK.Tests.Application.Gameplay
         {
             var territory = Make.Territory.Build();
 
-            _sut.CanClick(territory).Should().BeFalse();
+            _sut.AssertCanNotClick(territory);
         }
 
         [Fact]
@@ -72,16 +70,6 @@ namespace RISK.Tests.Application.Gameplay
             _sut.OnClick(_territoryOccupiedByPlayer);
 
             _stateController.CurrentState.Should().Be(fortifyState);
-        }
-
-        [Fact]
-        public void Clicking_not_occupied_territory_throws()
-        {
-            var territory = Make.Territory.Build();
-
-            Action act = () => _sut.OnClick(territory);
-
-            act.ShouldThrow<InvalidOperationException>();
         }
 
         //[Fact]
