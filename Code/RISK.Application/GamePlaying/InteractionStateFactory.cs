@@ -23,12 +23,12 @@ namespace RISK.Application.GamePlaying
 
         public IInteractionState CreateFortifyState(StateController stateController, IPlayer player)
         {
-            return new FortifyState(stateController, this, player);
+            return new FortifySelectState(stateController, this, player);
         }
 
         public IInteractionState CreateFortifyState(StateController stateController, IPlayer player, ITerritory selectedTerritory)
         {
-            throw new System.NotImplementedException();
+            return new FortifyMoveState(player, selectedTerritory);
         }
     }
 }

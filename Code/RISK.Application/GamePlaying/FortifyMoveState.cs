@@ -3,39 +3,14 @@ using RISK.Application.Entities;
 
 namespace RISK.Application.GamePlaying
 {
-    public class FortifyState : IInteractionState
+    public class FortifyMoveState : IInteractionState
     {
-        private readonly StateController _stateController;
-        private readonly IInteractionStateFactory _interactionStateFactory;
-
-        public FortifyState(StateController stateController, IInteractionStateFactory interactionStateFactory, IPlayer player)
+        public FortifyMoveState(IPlayer player, ITerritory selectedTerritory)
         {
-            _stateController = stateController;
-            _interactionStateFactory = interactionStateFactory;
             Player = player;
+            SelectedTerritory = selectedTerritory;
         }
 
-        public IPlayer Player { get; private set; }
-        public ITerritory SelectedTerritory { get; private set; }
-
-        public bool CanClick(ITerritory territory)
-        {
-            return territory.Occupant == Player;
-        }
-
-        public void OnClick(ITerritory territory)
-        {
-            if (territory.Occupant != Player)
-            {
-                throw new InvalidOperationException();
-            }
-
-            _stateController.CurrentState = _interactionStateFactory.CreateFortifyState(_stateController, Player, territory);
-        }
-    }
-
-    public class FortifyToTerritoryState : IInteractionState
-    {
         public IPlayer Player { get; private set; }
         public ITerritory SelectedTerritory { get; private set; }
         public bool CanClick(ITerritory territory)

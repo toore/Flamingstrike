@@ -42,14 +42,28 @@ namespace RISK.Tests.Application.Gameplay
         }
 
         [Fact]
-        public void Creates_fortify_select_state()
+        public void Creates_fortify_state()
         {
             var player = Substitute.For<IPlayer>();
 
             var interactionState = _sut.CreateFortifyState(new StateController(), player);
 
-            interactionState.Should().BeOfType<FortifyState>();
+            interactionState.Should().BeOfType<FortifySelectState>();
             interactionState.Player.Should().Be(player);
+            interactionState.SelectedTerritory.Should().BeNull("user will select which territory to fortify from");
+        }
+
+        [Fact]
+        public void Creates_fortify_with_selected_territory_state()
+        {
+            var player = Substitute.For<IPlayer>();
+            var selectedTerritory = Substitute.For<ITerritory>();
+
+            var interactionState = _sut.CreateFortifyState(new StateController(), player, selectedTerritory);
+
+            interactionState.Should().BeOfType<FortifyMoveState>();
+            interactionState.Player.Should().Be(player);
+            interactionState.SelectedTerritory.Should().Be(selectedTerritory);
         }
     }
 }

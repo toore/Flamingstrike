@@ -6,7 +6,7 @@ using Xunit;
 
 namespace RISK.Tests.Application.Gameplay
 {
-    public class FortifyStateTests
+    public class FortifySelectStateTests
     {
         private readonly IInteractionState _sut;
         private readonly IPlayer _player;
@@ -20,7 +20,7 @@ namespace RISK.Tests.Application.Gameplay
         //private readonly Territory _borderingTerritoryOccupiedByPlayer;
         //private readonly Territory _remoteTerritoryOccupiedByPlayer;
 
-        public FortifyStateTests()
+        public FortifySelectStateTests()
         {
             _stateController = new StateController();
             _interactionStateFactory = Substitute.For<IInteractionStateFactory>();
@@ -44,7 +44,7 @@ namespace RISK.Tests.Application.Gameplay
             //    .Occupant(_player)
             //    .Build();
 
-            _sut = new FortifyState(_stateController, _interactionStateFactory, _player);
+            _sut = new FortifySelectState(_stateController, _interactionStateFactory, _player);
         }
 
         [Fact]
