@@ -19,12 +19,15 @@ namespace GuiWpf.ViewModels.Setup
 
         public void Run(ITerritorySelector territorySelector, IGameInitializerNotifier gameInitializerNotifier)
         {
-            Task.Run(() =>
-            {
-                var game = _gameFactory.Create(territorySelector);
-                gameInitializerNotifier.InitializationFinished(game);
-            }
-            );
+            var game = _gameFactory.Create(territorySelector);
+            gameInitializerNotifier.InitializationFinished(game);
+
+            //Task.Run(() =>
+            //{
+            //    var game = _gameFactory.Create(territorySelector);
+            //    gameInitializerNotifier.InitializationFinished(game);
+            //}
+            //);
         }
     }
 }

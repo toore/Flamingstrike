@@ -7,7 +7,7 @@ using RISK.Application.GamePlaying;
 
 namespace GuiWpf.ViewModels
 {
-    public class MainGameViewModel : Conductor<IMainViewModel>, IHandle<SetupGameMessage>, IHandle<NewGameMessage>
+    public class MainGameViewModel : Conductor<IMainViewModel>, IHandle<SetupGameMessage>, IHandle<StartGameplayMessage>, IHandle<NewGameMessage>
     {
         private readonly IGameInitializationViewModelFactory _gameInitializationViewModelFactory;
         private readonly IGameboardViewModelFactory _gameboardViewModelFactory;

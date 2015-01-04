@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Linq;
-using System.Threading;
 using FluentAssertions;
 using GuiWpf.ViewModels;
-using GuiWpf.ViewModels.Messages;
+using GuiWpf.ViewModels.Gameplay;
 using GuiWpf.ViewModels.Settings;
 using GuiWpf.ViewModels.Setup;
 using RISK.Application.Entities;
@@ -15,7 +14,7 @@ namespace RISK.Tests.Application.Specifications
 {
     public class GameSetupSpec : AcceptanceTestsBase<GameSetupSpec>
     {
-        private MainGameViewModelSpy _mainGameViewModel;
+        private MainGameViewModelAdapter _mainGameViewModel;
         private IGameSetupViewModel _setupViewModel;
         private AutoRespondingUserInteractor _userInteractor;
 
@@ -28,7 +27,6 @@ namespace RISK.Tests.Application.Specifications
             When
                 .two_human_players_are_confirmed()
                 .all_armies_are_placed_on_the_map();
-                //.the_main_view_is_changed();
 
             Then
                 .the_game_is_started();
@@ -36,16 +34,11 @@ namespace RISK.Tests.Application.Specifications
 
         private GameSetupSpec a_new_game()
         {
-            //_userInteractor = new AutoRespondingUserInteractor();
-            //ObjectFactory.Inject<IUserInteractor>(_userInteractor);
-
-            //_mainGameViewModel = ObjectFactory.GetInstance<IMainGameViewModel>();
-
             _userInteractor = new AutoRespondingUserInteractor();
 
             var root = new Root();
             root.UserInteractor = _userInteractor;
-            _mainGameViewModel = new MainGameViewModelSpy(root);
+            _mainGameViewModel = new MainGameViewModelAdapter(root);
             _mainGameViewModel.FrameworkCallsOnInitialize();
 
             return this;
@@ -70,60 +63,37 @@ namespace RISK.Tests.Application.Specifications
         {
             const int numberOfArmiesToPlace = (40 - 21) * 2;
 
-            while (_userInteractor.LocationsHasBeenSelected < numberOfArmiesToPlace)
-            {
-                
-            }
-
-            return this;
-        }
-
-        private GameSetupSpec the_main_view_is_changed()
-        {
-            while (_mainGameViewModel.ActiveItem == _setupViewModel) { }
+            _userInteractor.NumberOfSelectTerritoryRequests.Should().Be(numberOfArmiesToPlace);
 
             return this;
         }
 
         private void the_game_is_started()
         {
-            //while (!_mainGameViewModel.StartGameplayMessageReceived)
-            //{
-            //    Thread.Sleep(100);
-            //}
-
-            //_mainGameViewModel.ActiveItem.Should().BeOfType<GameboardViewModel>();
-            _mainGameViewModel.StartGameplayMessageReceived.Should().BeTrue();
+            _mainGameViewModel.ActiveItem.Should().BeOfType<GameboardViewModel>();
         }
     }
 
-    internal class MainGameViewModelSpy : MainGameViewModel
+    internal class MainGameViewModelAdapter : MainGameViewModel
     {
-        public MainGameViewModelSpy(Root root)
+        public MainGameViewModelAdapter(Root root)
             : base(root)
         {
-        }
-
-        public new void Handle(StartGameplayMessage startGameplayMessage)
-        {
-            StartGameplayMessageReceived = true;
         }
 
         public void FrameworkCallsOnInitialize()
         {
             OnInitialize();
         }
-
-        public bool StartGameplayMessageReceived { get; private set; }
     }
 
     internal class AutoRespondingUserInteractor : IUserInteractor
     {
-        public int LocationsHasBeenSelected { get; set; }
+        public int NumberOfSelectTerritoryRequests { get; set; }
 
         public ITerritory GetLocation(ITerritorySelectorParameter territorySelector)
         {
-            LocationsHasBeenSelected++;
+            NumberOfSelectTerritoryRequests++;
             return territorySelector.EnabledTerritories.First();
         }
 
