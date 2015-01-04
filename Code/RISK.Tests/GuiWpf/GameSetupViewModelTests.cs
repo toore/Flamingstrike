@@ -46,7 +46,7 @@ namespace RISK.Tests.GuiWpf
             var locationSelectorParameter = Substitute.For<ITerritorySelectorParameter>();
             locationSelectorParameter.GetPlayerThatTakesTurn().ReturnsForAnyArgs(Substitute.For<IPlayer>());
             var expected = Substitute.For<ITerritory>();
-            _userInteractor.GetLocation(locationSelectorParameter).Returns(expected);
+            _userInteractor.GetSelectedTerritory(locationSelectorParameter).Returns(expected);
             _worldMapViewModelFactory.Create(null, null).ReturnsForAnyArgs(new WorldMapViewModel());
 
             var gameSetupViewModel = InitializeAndActivate();

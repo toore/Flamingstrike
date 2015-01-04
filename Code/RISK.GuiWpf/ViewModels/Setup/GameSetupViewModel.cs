@@ -80,7 +80,7 @@ namespace GuiWpf.ViewModels.Setup
         {
             new GuiThreadDispatcher().Invoke(() => UpdateView(territorySelectorParameter));
 
-            return _userInteractor.GetLocation(territorySelectorParameter);
+            return _userInteractor.GetSelectedTerritory(territorySelectorParameter);
         }
 
         private void StartGameplay(IGame game)
@@ -90,7 +90,7 @@ namespace GuiWpf.ViewModels.Setup
 
         private void UpdateView(ITerritorySelectorParameter territorySelectorParameter)
         {
-            var worldMapViewModel = _worldMapViewModelFactory.Create(territorySelectorParameter.WorldMap, _userInteractor.SelectLocation);
+            var worldMapViewModel = _worldMapViewModelFactory.Create(territorySelectorParameter.WorldMap, _userInteractor.SelectTerritory);
 
             worldMapViewModel.WorldMapViewModels.OfType<TerritoryLayoutViewModel>()
                 .Apply(x => x.IsEnabled = territorySelectorParameter.EnabledTerritories.Contains(x.Territory));

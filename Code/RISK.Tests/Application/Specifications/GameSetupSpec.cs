@@ -91,13 +91,13 @@ namespace RISK.Tests.Application.Specifications
     {
         public int NumberOfSelectTerritoryRequests { get; set; }
 
-        public ITerritory GetLocation(ITerritorySelectorParameter territorySelector)
+        public ITerritory GetSelectedTerritory(ITerritorySelectorParameter territorySelector)
         {
             NumberOfSelectTerritoryRequests++;
             return territorySelector.EnabledTerritories.First();
         }
 
-        public void SelectLocation(ITerritory location)
+        public void SelectTerritory(ITerritory location)
         {
             throw new NotImplementedException();
         }

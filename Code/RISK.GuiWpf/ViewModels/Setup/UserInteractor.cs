@@ -6,8 +6,8 @@ namespace GuiWpf.ViewModels.Setup
 {
     public interface IUserInteractor
     {
-        ITerritory GetLocation(ITerritorySelectorParameter territorySelector);
-        void SelectLocation(ITerritory location);
+        ITerritory GetSelectedTerritory(ITerritorySelectorParameter territorySelector);
+        void SelectTerritory(ITerritory location);
     }
 
     public class UserInteractor : IUserInteractor
@@ -15,13 +15,13 @@ namespace GuiWpf.ViewModels.Setup
         private ITerritory _selectedLocation;
         private readonly AutoResetEvent _locationHasBeenSelected = new AutoResetEvent(false);
 
-        public ITerritory GetLocation(ITerritorySelectorParameter territorySelector)
+        public ITerritory GetSelectedTerritory(ITerritorySelectorParameter territorySelector)
         {
             _locationHasBeenSelected.WaitOne();
             return _selectedLocation;
         }
 
-        public void SelectLocation(ITerritory location)
+        public void SelectTerritory(ITerritory location)
         {
             _selectedLocation = location;
             _locationHasBeenSelected.Set();
