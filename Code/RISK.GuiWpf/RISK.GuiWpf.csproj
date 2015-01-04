@@ -73,6 +73,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Extensions\EnumerableExtensions.cs" />
+    <Compile Include="Services\GuiThreadDispatcher.cs" />
     <Compile Include="Services\LanguageResources.cs" />
     <Compile Include="TerritoryModels\TerritoryModelBase.cs" />
     <Compile Include="ViewModels\ConfirmViewModel.cs" />

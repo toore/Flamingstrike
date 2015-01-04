@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Threading.Tasks;
 using Caliburn.Micro;
 using GuiWpf.Properties;
 using GuiWpf.Services;
@@ -66,14 +67,18 @@ namespace GuiWpf.ViewModels.Setup
         protected override void OnActivate()
         {
             var territorySelector = this;
-            var game = _gameFactory.Create(territorySelector);
 
-            StartGameplay(game);
+            Task.Run(() =>
+            {
+                var game = _gameFactory.Create(territorySelector);
+
+                StartGameplay(game);
+            });
         }
 
         public ITerritory SelectTerritory(ITerritorySelectorParameter territorySelectorParameter)
         {
-            UpdateView(territorySelectorParameter);
+            new GuiThreadDispatcher().Invoke(() => UpdateView(territorySelectorParameter));
 
             return _userInteractor.GetLocation(territorySelectorParameter);
         }
