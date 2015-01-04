@@ -23,7 +23,7 @@ namespace GuiWpf.ViewModels
         public PlayerFactory PlayerFactory { get; private set; }
         public PlayerTypes PlayerTypes { get; private set; }
         public PlayerRepository PlayerRepository { get; private set; }
-        public EventAggregator EventAggregator { get; private set; }
+        public IEventAggregator EventAggregator { get; private set; }
 
         public Root()
         {

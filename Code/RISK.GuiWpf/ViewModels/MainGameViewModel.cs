@@ -95,10 +95,5 @@ namespace GuiWpf.ViewModels
             var gameboardViewModel = _gameboardViewModelFactory.Create(game);
             ActivateItem(gameboardViewModel);
         }
-
-        public void OnInitializeFromChild()
-        {
-            OnInitialize();
-        }
     }
 }

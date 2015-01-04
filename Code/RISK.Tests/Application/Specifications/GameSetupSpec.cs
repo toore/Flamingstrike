@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Threading;
+using FluentAssertions;
 using GuiWpf.ViewModels;
 using GuiWpf.ViewModels.Messages;
 using GuiWpf.ViewModels.Settings;
@@ -15,8 +16,8 @@ namespace RISK.Tests.Application.Specifications
     public class GameSetupSpec : AcceptanceTestsBase<GameSetupSpec>
     {
         private MainGameViewModelSpy _mainGameViewModel;
-        private AutoRespondingUserInteractor _userInteractor;
         private IGameSetupViewModel _setupViewModel;
+        private AutoRespondingUserInteractor _userInteractor;
 
         [Fact]
         public void Game_is_started()
@@ -40,11 +41,12 @@ namespace RISK.Tests.Application.Specifications
 
             //_mainGameViewModel = ObjectFactory.GetInstance<IMainGameViewModel>();
 
-            var root = new Root();
             _userInteractor = new AutoRespondingUserInteractor();
+
+            var root = new Root();
             root.UserInteractor = _userInteractor;
             _mainGameViewModel = new MainGameViewModelSpy(root);
-            _mainGameViewModel.OnInitializeFromChild();
+            _mainGameViewModel.FrameworkCallsOnInitialize();
 
             return this;
         }
@@ -68,7 +70,10 @@ namespace RISK.Tests.Application.Specifications
         {
             const int numberOfArmiesToPlace = (40 - 21) * 2;
 
-            while (_userInteractor.LocationsHasBeenSelected < numberOfArmiesToPlace) { }
+            while (_userInteractor.LocationsHasBeenSelected < numberOfArmiesToPlace)
+            {
+                
+            }
 
             return this;
         }
@@ -82,15 +87,13 @@ namespace RISK.Tests.Application.Specifications
 
         private void the_game_is_started()
         {
-            
-
-            while (!_mainGameViewModel.StartGameplayMessageReceived)
-            {
-                Thread.Sleep(100);
-            }
+            //while (!_mainGameViewModel.StartGameplayMessageReceived)
+            //{
+            //    Thread.Sleep(100);
+            //}
 
             //_mainGameViewModel.ActiveItem.Should().BeOfType<GameboardViewModel>();
-            //_mainGameViewModel.StartGameplayMessageReceived.Should().BeTrue();
+            _mainGameViewModel.StartGameplayMessageReceived.Should().BeTrue();
         }
     }
 
@@ -104,6 +107,11 @@ namespace RISK.Tests.Application.Specifications
         public new void Handle(StartGameplayMessage startGameplayMessage)
         {
             StartGameplayMessageReceived = true;
+        }
+
+        public void FrameworkCallsOnInitialize()
+        {
+            OnInitialize();
         }
 
         public bool StartGameplayMessageReceived { get; private set; }
