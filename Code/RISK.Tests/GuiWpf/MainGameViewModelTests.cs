@@ -26,7 +26,7 @@ namespace RISK.Tests.GuiWpf
         [Fact(Skip = "OnInitialize is protected?")]
         public void OnInitialize_starts_new_game()
         {
-            var gameSettingsViewModel = Substitute.For<IGameInitializationViewModel>();
+            var gameSettingsViewModel = Substitute.For<IGameSettingsViewModel>();
             _gameInitializationViewModelFactory.Create().Returns(gameSettingsViewModel);
 
             var actual = CreateSut().ActiveItem;
@@ -37,7 +37,7 @@ namespace RISK.Tests.GuiWpf
         [Fact]
         public void New_game_message_shows_game_initialization_view()
         {
-            var gameInitializationViewModel = Substitute.For<IGameInitializationViewModel>();
+            var gameInitializationViewModel = Substitute.For<IGameSettingsViewModel>();
             _gameInitializationViewModelFactory.Create().Returns(gameInitializationViewModel);
 
             var sut = CreateSut();

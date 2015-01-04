@@ -75,9 +75,9 @@ namespace GuiWpf.ViewModels
             StartGame();
         }
 
-        public void Handle(StartGameplayMessage gameplaySetupMessage)
+        public void Handle(StartGameplayMessage startGameplayMessage)
         {
-            StartGamePlay(gameplaySetupMessage.Game);
+            StartGamePlay(startGameplayMessage.Game);
         }
 
         private void InitializeNewGame()

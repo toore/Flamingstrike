@@ -76,12 +76,12 @@ namespace RISK.Tests.GuiWpf
         {
             var expectedGame = Substitute.For<IGame>();
             IGame actualGame = null;
-            _eventAggregator.WhenForAnyArgs(x => x.PublishOnUIThread(null)).Do(ci => actualGame = ci.Arg<StartGameplayMessage>().Game);
+            _eventAggregator.WhenForAnyArgs(x => x.PublishOnCurrentThread(null)).Do(ci => actualGame = ci.Arg<StartGameplayMessage>().Game);
 
             var gameSetupViewModel = InitializeAndStartSetup();
             gameSetupViewModel.InitializationFinished(expectedGame);
 
-            _eventAggregator.ReceivedWithAnyArgs().PublishOnUIThread(new StartGameplayMessage(expectedGame));
+            _eventAggregator.ReceivedWithAnyArgs().PublishOnCurrentThread(new StartGameplayMessage(expectedGame));
             actualGame.Should().Be(expectedGame);
         }
 

@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Linq;
-using FluentAssertions;
+using System.Threading;
 using GuiWpf.ViewModels;
-using GuiWpf.ViewModels.Gameplay;
+using GuiWpf.ViewModels.Messages;
 using GuiWpf.ViewModels.Settings;
 using GuiWpf.ViewModels.Setup;
 using RISK.Application.Entities;
@@ -14,7 +14,7 @@ namespace RISK.Tests.Application.Specifications
 {
     public class GameSetupSpec : AcceptanceTestsBase<GameSetupSpec>
     {
-        private MainGameViewModel _mainGameViewModel;
+        private MainGameViewModelSpy _mainGameViewModel;
         private AutoRespondingUserInteractor _userInteractor;
         private IGameSetupViewModel _setupViewModel;
 
@@ -43,8 +43,7 @@ namespace RISK.Tests.Application.Specifications
             var root = new Root();
             _userInteractor = new AutoRespondingUserInteractor();
             root.UserInteractor = _userInteractor;
-            
-            _mainGameViewModel = new MainGameViewModelAdapter(root);
+            _mainGameViewModel = new MainGameViewModelSpy(root);
             _mainGameViewModel.OnInitializeFromChild();
 
             return this;
@@ -52,7 +51,7 @@ namespace RISK.Tests.Application.Specifications
 
         private GameSetupSpec two_human_players_are_confirmed()
         {
-            var gameSettingsViewModel = (IGameInitializationViewModel)_mainGameViewModel.ActiveItem;
+            var gameSettingsViewModel = (IGameSettingsViewModel)_mainGameViewModel.ActiveItem;
 
             gameSettingsViewModel.Players.First().IsEnabled = true;
             gameSettingsViewModel.Players.Second().IsEnabled = true;
@@ -83,16 +82,31 @@ namespace RISK.Tests.Application.Specifications
 
         private void the_game_is_started()
         {
-            _mainGameViewModel.ActiveItem.Should().BeOfType<GameboardViewModel>();
+            
+
+            while (!_mainGameViewModel.StartGameplayMessageReceived)
+            {
+                Thread.Sleep(100);
+            }
+
+            //_mainGameViewModel.ActiveItem.Should().BeOfType<GameboardViewModel>();
+            //_mainGameViewModel.StartGameplayMessageReceived.Should().BeTrue();
         }
     }
 
-    internal class MainGameViewModelAdapter : MainGameViewModel
+    internal class MainGameViewModelSpy : MainGameViewModel
     {
-        public MainGameViewModelAdapter(Root root)
+        public MainGameViewModelSpy(Root root)
             : base(root)
         {
         }
+
+        public new void Handle(StartGameplayMessage startGameplayMessage)
+        {
+            StartGameplayMessageReceived = true;
+        }
+
+        public bool StartGameplayMessageReceived { get; private set; }
     }
 
     internal class AutoRespondingUserInteractor : IUserInteractor

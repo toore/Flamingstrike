@@ -96,7 +96,7 @@ namespace GuiWpf.ViewModels.Setup
 
         private void StartGamePlay(IGame game)
         {
-            _eventAggregator.PublishOnUIThread(new StartGameplayMessage(game));
+            _eventAggregator.PublishOnCurrentThread(new StartGameplayMessage(game));
         }
 
         public bool CanFortify()

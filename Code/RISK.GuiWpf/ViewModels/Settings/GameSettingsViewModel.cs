@@ -9,7 +9,7 @@ using RISK.Application.Entities;
 
 namespace GuiWpf.ViewModels.Settings
 {
-    public class GameSettingsViewModel : ViewModelBase, IGameInitializationViewModel
+    public class GameSettingsViewModel : ViewModelBase, IGameSettingsViewModel
     {
         private readonly IPlayerFactory _playerFactory;
         private readonly IPlayerTypes _playerTypes;
