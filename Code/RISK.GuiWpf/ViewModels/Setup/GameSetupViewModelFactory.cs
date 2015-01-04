@@ -15,25 +15,25 @@ namespace GuiWpf.ViewModels.Setup
         private readonly IDialogManager _dialogManager;
         private readonly IEventAggregator _eventAggregator;
         private readonly IUserInteractor _userInteractor;
-        private readonly IGameFactoryWorker _gameFactoryWorker;
+        private readonly IGameFactory _gameFactory;
 
         public GameSetupViewModelFactory(
             IWorldMapViewModelFactory worldMapViewModelFactory,
             IDialogManager dialogManager,
             IEventAggregator eventAggregator,
             IUserInteractor userInteractor,
-            IGameFactoryWorker gameFactoryWorker)
+            IGameFactory gameFactory)
         {
             _worldMapViewModelFactory = worldMapViewModelFactory;
             _dialogManager = dialogManager;
             _eventAggregator = eventAggregator;
             _userInteractor = userInteractor;
-            _gameFactoryWorker = gameFactoryWorker;
+            _gameFactory = gameFactory;
         }
 
         public IGameSetupViewModel Create()
         {
-            return new GameSetupViewModel(_worldMapViewModelFactory, _dialogManager, _eventAggregator, _userInteractor, _gameFactoryWorker);
+            return new GameSetupViewModel(_worldMapViewModelFactory, _dialogManager, _eventAggregator, _userInteractor, _gameFactory);
         }
     }
 }

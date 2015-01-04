@@ -37,7 +37,7 @@ namespace GuiWpf.ViewModels
                 root.DialogManager,
                 root.EventAggregator,
                 root.UserInteractor,
-                root.GameFactoryWorker))
+                root.GameFactory))
         {
             root.EventAggregator.Subscribe(this);
         }

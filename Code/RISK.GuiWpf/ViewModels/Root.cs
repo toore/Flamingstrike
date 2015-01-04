@@ -14,7 +14,7 @@ namespace GuiWpf.ViewModels
     public class Root
     {
         public IUserInteractor UserInteractor { get; set; }
-        public GameFactoryWorker GameFactoryWorker { get; private set; }
+        public GameFactory GameFactory { get; private set; }
         public DialogManager DialogManager { get; private set; }
         public GameOverViewModelFactory GameOverViewModelFactory { get; private set; }
         public WindowManager WindowManager { get; private set; }
@@ -54,8 +54,7 @@ namespace GuiWpf.ViewModels
             var userNotifier = new UserNotifier(WindowManager, confirmViewModelFactory);
             DialogManager = new DialogManager(userNotifier);
 
-            var gameFactory = new GameFactory(alternateGameSetup, interactionStateFactory, stateControllerFactory, PlayerRepository, cardFactory);
-            GameFactoryWorker = new GameFactoryWorker(gameFactory);
+            GameFactory = new GameFactory(alternateGameSetup, interactionStateFactory, stateControllerFactory, PlayerRepository, cardFactory);
 
             PlayerFactory = new PlayerFactory();
             PlayerTypes = new PlayerTypes();

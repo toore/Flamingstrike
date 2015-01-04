@@ -21,20 +21,20 @@ namespace GuiWpf.ViewModels.Setup
         private readonly IDialogManager _dialogManager;
         private readonly IEventAggregator _eventAggregator;
         private readonly IUserInteractor _userInteractor;
-        private readonly IGameFactoryWorker _gameFactoryWorker;
+        private readonly IGameFactory _gameFactory;
 
         public GameSetupViewModel(
             IWorldMapViewModelFactory worldMapViewModelFactory,
             IDialogManager dialogManager,
             IEventAggregator eventAggregator,
             IUserInteractor userInteractor,
-            IGameFactoryWorker gameFactoryWorker)
+            IGameFactory gameFactory)
         {
             _worldMapViewModelFactory = worldMapViewModelFactory;
             _dialogManager = dialogManager;
             _eventAggregator = eventAggregator;
             _userInteractor = userInteractor;
-            _gameFactoryWorker = gameFactoryWorker;
+            _gameFactory = gameFactory;
         }
 
         private WorldMapViewModel _worldMapViewModel;
@@ -65,7 +65,9 @@ namespace GuiWpf.ViewModels.Setup
 
         protected override void OnActivate()
         {
-            _gameFactoryWorker.Run(this, this);
+            var territorySelector = this;
+            var game = _gameFactory.Create(territorySelector);
+            InitializationFinished(game);
         }
 
         public ITerritory SelectTerritory(ITerritorySelectorParameter territorySelectorParameter)

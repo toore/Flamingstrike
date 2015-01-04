@@ -89,7 +89,6 @@
     <Compile Include="ViewModels\Messages\NewGameMessage.cs" />
     <Compile Include="ViewModels\Root.cs" />
     <Compile Include="ViewModels\Settings\GameSettingsViewModelFactory.cs" />
-    <Compile Include="ViewModels\Setup\GameFactoryWorker.cs" />
     <Compile Include="ViewModels\Setup\GameSetupView.xaml.cs">
       <DependentUpon>GameSetupView.xaml</DependentUpon>
     </Compile>
