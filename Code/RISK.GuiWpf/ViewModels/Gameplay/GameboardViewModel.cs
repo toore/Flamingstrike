@@ -53,7 +53,6 @@ namespace GuiWpf.ViewModels.Gameplay
 
         private void BeginNextPlayerTurn()
         {
-            //Player = _game.CurrentInteractionState.Player;
             Player = _game.Player;
 
             UpdateGameBoard();
