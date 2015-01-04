@@ -9,6 +9,7 @@ using RISK.Application.Entities;
 using RISK.Application.GamePlaying;
 using RISK.Application.GamePlaying.Setup;
 using Xunit;
+using Action = System.Action;
 
 namespace RISK.Tests.GuiWpf
 {
@@ -28,8 +29,9 @@ namespace RISK.Tests.GuiWpf
             _eventAggregator = Substitute.For<IEventAggregator>();
             _userInteractor = Substitute.For<IUserInteractor>();
             _gameFactory = Substitute.For<IGameFactory>();
+            IGuiThreadDispatcher guiThreadDispatcher = new SameThreadDispatcher();
 
-            _gameSetupViewModelFactory = new GameSetupViewModelFactory(_worldMapViewModelFactory, _dialogManager, _eventAggregator, _userInteractor, _gameFactory);
+            _gameSetupViewModelFactory = new GameSetupViewModelFactory(_worldMapViewModelFactory, _dialogManager, _eventAggregator, _userInteractor, _gameFactory, guiThreadDispatcher);
         }
 
         [Fact]
@@ -83,6 +85,10 @@ namespace RISK.Tests.GuiWpf
 
             _eventAggregator.ReceivedWithAnyArgs().PublishOnCurrentThread(new StartGameplayMessage(expectedGame));
             actualGame.Should().Be(expectedGame);
+
+            //InitializeAndActivate();
+
+            //_eventAggregator.Received().PublishOnCurrentThread(Arg.Any<StartGameplayMessage>());
         }
 
         [Fact]
@@ -131,6 +137,14 @@ namespace RISK.Tests.GuiWpf
             gameSetupViewModel.Activate();
 
             return (GameSetupViewModel)gameSetupViewModel;
+        }
+    }
+
+    public class SameThreadDispatcher : IGuiThreadDispatcher
+    {
+        public void Invoke(Action action)
+        {
+            action.Invoke();
         }
     }
 }

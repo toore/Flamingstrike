@@ -24,6 +24,7 @@ namespace GuiWpf.ViewModels
         public PlayerTypes PlayerTypes { get; private set; }
         public PlayerRepository PlayerRepository { get; private set; }
         public IEventAggregator EventAggregator { get; private set; }
+        public IGuiThreadDispatcher GuiThreadDispatcher { get; set; }
 
         public Root()
         {

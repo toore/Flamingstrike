@@ -23,19 +23,22 @@ namespace GuiWpf.ViewModels.Setup
         private readonly IEventAggregator _eventAggregator;
         private readonly IUserInteractor _userInteractor;
         private readonly IGameFactory _gameFactory;
+        private readonly IGuiThreadDispatcher _guiThreadDispatcher;
 
         public GameSetupViewModel(
             IWorldMapViewModelFactory worldMapViewModelFactory,
             IDialogManager dialogManager,
             IEventAggregator eventAggregator,
             IUserInteractor userInteractor,
-            IGameFactory gameFactory)
+            IGameFactory gameFactory,
+            IGuiThreadDispatcher guiThreadDispatcher)
         {
             _worldMapViewModelFactory = worldMapViewModelFactory;
             _dialogManager = dialogManager;
             _eventAggregator = eventAggregator;
             _userInteractor = userInteractor;
             _gameFactory = gameFactory;
+            _guiThreadDispatcher = guiThreadDispatcher;
         }
 
         private WorldMapViewModel _worldMapViewModel;
@@ -78,7 +81,7 @@ namespace GuiWpf.ViewModels.Setup
 
         public ITerritory SelectTerritory(ITerritorySelectorParameter territorySelectorParameter)
         {
-            new GuiThreadDispatcher().Invoke(() => UpdateView(territorySelectorParameter));
+            _guiThreadDispatcher.Invoke(() => UpdateView(territorySelectorParameter));
 
             return _userInteractor.GetSelectedTerritory(territorySelectorParameter);
         }

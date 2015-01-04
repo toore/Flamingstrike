@@ -16,24 +16,27 @@ namespace GuiWpf.ViewModels.Setup
         private readonly IEventAggregator _eventAggregator;
         private readonly IUserInteractor _userInteractor;
         private readonly IGameFactory _gameFactory;
+        private readonly IGuiThreadDispatcher _guiThreadDispatcher;
 
         public GameSetupViewModelFactory(
             IWorldMapViewModelFactory worldMapViewModelFactory,
             IDialogManager dialogManager,
             IEventAggregator eventAggregator,
             IUserInteractor userInteractor,
-            IGameFactory gameFactory)
+            IGameFactory gameFactory,
+            IGuiThreadDispatcher guiThreadDispatcher)
         {
             _worldMapViewModelFactory = worldMapViewModelFactory;
             _dialogManager = dialogManager;
             _eventAggregator = eventAggregator;
             _userInteractor = userInteractor;
             _gameFactory = gameFactory;
+            _guiThreadDispatcher = guiThreadDispatcher;
         }
 
         public IGameSetupViewModel Create()
         {
-            return new GameSetupViewModel(_worldMapViewModelFactory, _dialogManager, _eventAggregator, _userInteractor, _gameFactory);
+            return new GameSetupViewModel(_worldMapViewModelFactory, _dialogManager, _eventAggregator, _userInteractor, _gameFactory, _guiThreadDispatcher);
         }
     }
 }
