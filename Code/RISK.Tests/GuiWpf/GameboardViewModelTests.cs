@@ -91,17 +91,17 @@ namespace RISK.Tests.GuiWpf
         }
 
         [Fact]
-        public void Player1_takes_first_turn()
+        public void First_player_takes_first_turn()
         {
-            _game.CurrentInteractionState.Returns(_firstPlayerInteractionState);
+            _game.Player.Returns(_currentPlayer);
 
             AssertCurrentPlayer(_currentPlayer);
         }
 
         [Fact]
-        public void Player2_takes_second_turn()
+        public void Next_player_takes_second_turn()
         {
-            _game.CurrentInteractionState.Returns(_firstPlayerInteractionState, _nextPlayerInteractionState);
+            _game.Player.Returns(_nextPlayer);
 
             Create().EndTurn();
 
@@ -116,11 +116,9 @@ namespace RISK.Tests.GuiWpf
         [Fact]
         public void Ends_turn_and_gets_next_turn()
         {
-            _game.CurrentInteractionState.Returns(_firstPlayerInteractionState, _nextPlayerInteractionState);
+            _game.Player.Returns(_nextPlayer);            
 
             var sut = Create();
-            _game.ClearReceivedCalls();
-
             sut.EndTurn();
 
             sut.Player.Should().Be(_nextPlayer);
@@ -129,7 +127,7 @@ namespace RISK.Tests.GuiWpf
         [Fact]
         public void When_winning_game_over_dialog_should_be_shown()
         {
-            _game.CurrentInteractionState.Returns(_firstPlayerInteractionState);
+            //_game.CurrentInteractionState.Returns(_firstPlayerInteractionState);
 
             _game.IsGameOver().Returns(true);
             var gameOverViewModel = new GameOverViewModel(_currentPlayer);
@@ -162,11 +160,9 @@ namespace RISK.Tests.GuiWpf
         [Fact]
         public void Interaction_state_receives_on_click_when_location_is_clicked()
         {
-            _game.CurrentInteractionState.Returns(_firstPlayerInteractionState);
-
             Create().OnTerritoryClick(_territory1);
 
-            _firstPlayerInteractionState.Received().OnClick(_territory1);
+            _game.Received().OnClick(_territory1);
         }
 
         [Fact]

@@ -37,7 +37,7 @@ namespace GuiWpf.Views.WorldMapViews
             var worldMapViewModelFactory = new WorldMapViewModelFactory(new WorldMapModelFactory(), new TerritoryViewModelColorInitializer(territoryColorsFactory, colorService));
 
             var interactionStateFactory = new InteractionStateFactory(null);
-            var game = new Game(interactionStateFactory, new StateControllerFactory(), new[] { humanPlayer, humanPlayer2 }, worldMap, new CardFactory());
+            var game = new Game(interactionStateFactory, new StateControllerFactory(interactionStateFactory), new[] { humanPlayer, humanPlayer2 }, worldMap, new CardFactory());
             var gameboardViewModel = new GameboardViewModel(game, worldMapViewModelFactory, territoryViewModelUpdater, null, new GameOverViewModelFactory(), null, null);
 
             return gameboardViewModel;

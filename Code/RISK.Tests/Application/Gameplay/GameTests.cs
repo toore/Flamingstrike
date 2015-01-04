@@ -13,7 +13,8 @@ namespace RISK.Tests.Application.Gameplay
         private readonly IInteractionState _currentPlayerInteractionState;
         private readonly IInteractionState _nextPlayerInteractionState;
         private readonly IPlayer _currentPlayer;
-        private readonly StateController _currentStateController;
+        private readonly IPlayer _nextPlayer;
+        private readonly IStateController _currentStateController;
         private readonly ICardFactory _cardFactory;
         private readonly IWorldMap _worldMap;
         private readonly IInteractionStateFactory _interactionStateFactory;
@@ -24,18 +25,21 @@ namespace RISK.Tests.Application.Gameplay
             var stateControllerFactory = Substitute.For<IStateControllerFactory>();
             _cardFactory = Substitute.For<ICardFactory>();
 
-            _currentPlayerInteractionState = Substitute.For<IInteractionState>();
-            _nextPlayerInteractionState = Substitute.For<IInteractionState>();
+            //_currentPlayerInteractionState = Substitute.For<IInteractionState>();
+            //_nextPlayerInteractionState = Substitute.For<IInteractionState>();
             _currentPlayer = Substitute.For<IPlayer>();
-            var nextPlayer = Substitute.For<IPlayer>();
-            _currentStateController = new StateController();
-            var nextStateController = new StateController();
-            stateControllerFactory.Create().Returns(_currentStateController, nextStateController);
+            _nextPlayer = Substitute.For<IPlayer>();
+
+            _currentStateController = Substitute.For<IStateController>();
+            var nextStateController = Substitute.For<IStateController>();
+            
+            stateControllerFactory.Create(_currentPlayer).Returns(_currentStateController);
+            stateControllerFactory.Create(_nextPlayer).Returns(nextStateController);
             _interactionStateFactory.CreateSelectState(_currentStateController, _currentPlayer).Returns(_currentPlayerInteractionState);
-            _interactionStateFactory.CreateSelectState(nextStateController, nextPlayer).Returns(_nextPlayerInteractionState);
+            _interactionStateFactory.CreateSelectState(nextStateController, _nextPlayer).Returns(_nextPlayerInteractionState);
 
             _worldMap = Substitute.For<IWorldMap>();
-            _sut = new Game(_interactionStateFactory, stateControllerFactory, new[] { _currentPlayer, nextPlayer }, _worldMap, _cardFactory);
+            _sut = new Game(_interactionStateFactory, stateControllerFactory, new[] { _currentPlayer, _nextPlayer }, _worldMap, _cardFactory);
         }
 
         [Fact]
@@ -44,31 +48,39 @@ namespace RISK.Tests.Application.Gameplay
             _sut.WorldMap.Should().Be(_worldMap);
         }
 
+        //[Fact]
+        //public void Gets_current_interaction_state()
+        //{
+        //    var actual = _sut.CurrentInteractionState;
+
+        //    actual.Should().Be(_currentPlayerInteractionState);
+        //}
+
+        //[Fact]
+        //public void Gets_current_interaction_state_when_state_has_changed()
+        //{
+        //    var newInteractionState = Substitute.For<IInteractionState>();
+        //    _currentStateController.CurrentState = newInteractionState;
+
+        //    _sut.CurrentInteractionState.Should().Be(newInteractionState);
+        //}
+
+        //[Fact]
+        //public void Gets_turn_after_next_turn()
+        //{
+        //    _sut.EndTurn();
+
+        //    var actual = _sut.CurrentInteractionState;
+
+        //    actual.Should().Be(_nextPlayerInteractionState);
+        //}
+
         [Fact]
-        public void Gets_current_interaction_state()
-        {
-            var actual = _sut.CurrentInteractionState;
-
-            actual.Should().Be(_currentPlayerInteractionState);
-        }
-
-        [Fact]
-        public void Gets_current_interaction_state_when_state_has_changed()
-        {
-            var newInteractionState = Substitute.For<IInteractionState>();
-            _currentStateController.CurrentState = newInteractionState;
-
-            _sut.CurrentInteractionState.Should().Be(newInteractionState);
-        }
-
-        [Fact]
-        public void Gets_turn_after_next_turn()
+        public void Ending_turn_()
         {
             _sut.EndTurn();
 
-            var actual = _sut.CurrentInteractionState;
-
-            actual.Should().Be(_nextPlayerInteractionState);
+            _sut.Player.Should().Be(_nextPlayer);
         }
 
         [Fact]
@@ -123,7 +135,7 @@ namespace RISK.Tests.Application.Gameplay
             
             _sut.Fortify();
 
-            _sut.CurrentInteractionState.Should().Be(fortify);
+            _currentStateController.CurrentState.Should().Be(fortify);
         }
     }
 }

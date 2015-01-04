@@ -15,7 +15,7 @@ namespace RISK.Application.GamePlaying
         public ITerritory SelectedTerritory { get; private set; }
         public bool CanClick(ITerritory territory)
         {
-            throw new NotImplementedException();
+            return true;
 
             //return
             //    SelectedTerritory.IsBordering(territory)

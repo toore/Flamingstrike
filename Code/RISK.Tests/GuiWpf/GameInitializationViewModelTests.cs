@@ -12,7 +12,7 @@ namespace RISK.Tests.GuiWpf
 {
     public class GameInitializationViewModelTests
     {
-        private readonly GameInitializationViewModel _gameInitializationViewModel;
+        private readonly GameSettingsViewModel _gameInitializationViewModel;
         private readonly IEventAggregator _gameEventAggregator;
 
         public GameInitializationViewModelTests()
@@ -25,7 +25,7 @@ namespace RISK.Tests.GuiWpf
             var playerType = Substitute.For<PlayerTypeBase>();
             playerTypes.Values.Returns(playerType.AsList());
 
-            _gameInitializationViewModel = new GameInitializationViewModel(playerFactory, playerTypes, playerRepository, _gameEventAggregator);
+            _gameInitializationViewModel = new GameSettingsViewModel(playerFactory, playerTypes, playerRepository, _gameEventAggregator);
         }
 
         [Fact]

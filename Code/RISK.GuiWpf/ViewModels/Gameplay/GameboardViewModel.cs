@@ -53,7 +53,8 @@ namespace GuiWpf.ViewModels.Gameplay
 
         private void BeginNextPlayerTurn()
         {
-            Player = _game.CurrentInteractionState.Player;
+            //Player = _game.CurrentInteractionState.Player;
+            Player = _game.Player;
 
             UpdateGameBoard();
         }
@@ -82,7 +83,7 @@ namespace GuiWpf.ViewModels.Gameplay
 
         public void OnTerritoryClick(ITerritory territory)
         {
-            _game.CurrentInteractionState.OnClick(territory);
+            _game.OnClick(territory);
 
             UpdateGameBoard();
         }
@@ -119,9 +120,8 @@ namespace GuiWpf.ViewModels.Gameplay
                 .OfType<TerritoryLayoutViewModel>()
                 .Single(x => x.Territory == territory);
 
-            var interactionState = _game.CurrentInteractionState;
-            layoutViewModel.IsEnabled = interactionState.CanClick(territory);
-            layoutViewModel.IsSelected = interactionState.SelectedTerritory == territory;
+            layoutViewModel.IsEnabled = _game.CanClick(territory);
+            layoutViewModel.IsSelected = _game.SelectedTerritory == territory;
 
             _territoryViewModelColorInitializer.UpdateColors(_game.WorldMap, layoutViewModel);
         }

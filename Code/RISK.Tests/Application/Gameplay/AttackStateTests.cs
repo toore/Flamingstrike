@@ -22,7 +22,7 @@ namespace RISK.Tests.Application.Gameplay
 
         public AttackStateTests()
         {
-            _stateController = new StateController();
+            _stateController = new StateController(_interactionStateFactory, _player);
             _interactionStateFactory = Substitute.For<IInteractionStateFactory>();
             _player = Substitute.For<IPlayer>();
             _battleCalculator = Substitute.For<IBattleCalculator>();

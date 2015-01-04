@@ -16,14 +16,14 @@ namespace RISK.Tests.Application.Gameplay
             var battleCalculator = Substitute.For<IBattleCalculator>();
 
             _sut = new InteractionStateFactory(battleCalculator);
-            
+
             _player = Substitute.For<IPlayer>();
         }
 
         [Fact]
         public void Creates_select_state()
         {
-            var actual = _sut.CreateSelectState(new StateController(), _player);
+            var actual = _sut.CreateSelectState(null, _player);
 
             actual.Should().BeOfType<SelectState>();
             actual.Player.Should().Be(_player);
@@ -34,7 +34,7 @@ namespace RISK.Tests.Application.Gameplay
         public void Creates_attack_state()
         {
             var selectedTerritory = Substitute.For<ITerritory>();
-            var actual = _sut.CreateAttackState(new StateController(), _player, selectedTerritory);
+            var actual = _sut.CreateAttackState(Substitute.For<IStateController>(), _player, selectedTerritory);
 
             actual.Should().BeOfType<AttackState>();
             actual.Player.Should().Be(_player);
@@ -46,7 +46,7 @@ namespace RISK.Tests.Application.Gameplay
         {
             var player = Substitute.For<IPlayer>();
 
-            var interactionState = _sut.CreateFortifyState(new StateController(), player);
+            var interactionState = _sut.CreateFortifyState(Substitute.For<IStateController>(), player);
 
             interactionState.Should().BeOfType<FortifySelectState>();
             interactionState.Player.Should().Be(player);
@@ -59,7 +59,7 @@ namespace RISK.Tests.Application.Gameplay
             var player = Substitute.For<IPlayer>();
             var selectedTerritory = Substitute.For<ITerritory>();
 
-            var interactionState = _sut.CreateFortifyState(new StateController(), player, selectedTerritory);
+            var interactionState = _sut.CreateFortifyState(Substitute.For<IStateController>(), player, selectedTerritory);
 
             interactionState.Should().BeOfType<FortifyMoveState>();
             interactionState.Player.Should().Be(player);

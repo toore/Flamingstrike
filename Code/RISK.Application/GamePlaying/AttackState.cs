@@ -5,12 +5,12 @@ namespace RISK.Application.GamePlaying
 {
     public class AttackState : IInteractionState
     {
-        private readonly StateController _stateController;
+        private readonly IStateController _stateController;
         private readonly IInteractionStateFactory _interactionStateFactory;
         private readonly IBattleCalculator _battleCalculator;
 
         public AttackState(
-            StateController stateController, 
+            IStateController stateController, 
             IInteractionStateFactory interactionStateFactory, 
             IBattleCalculator battleCalculator, 
             IPlayer player, 

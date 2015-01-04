@@ -11,8 +11,7 @@ namespace RISK.Application.GamePlaying
         private readonly IStateControllerFactory _stateControllerFactory;
         private readonly ICardFactory _cardFactory;
         private readonly IList<IPlayer> _players;
-        private IPlayer _currentPlayer;
-        private StateController _stateController;
+        private IStateController _stateController;
 
         public Game(IInteractionStateFactory interactionStateFactory, IStateControllerFactory stateControllerFactory, IEnumerable<IPlayer> players, IWorldMap worldMap, ICardFactory cardFactory)
         {
@@ -26,21 +25,22 @@ namespace RISK.Application.GamePlaying
         }
 
         public IWorldMap WorldMap { get; private set; }
-        public IInteractionState CurrentInteractionState { get { return _stateController.CurrentState; } }
+        public IPlayer Player { get; private set; }
+        public ITerritory SelectedTerritory { get { return _stateController.CurrentState.SelectedTerritory; }}
 
         private void MoveToNextPlayer()
         {
-            _currentPlayer = _players.GetNextOrFirst(_currentPlayer);
+            Player = _players.GetNextOrFirst(Player);
 
-            _stateController = _stateControllerFactory.Create();
-            _stateController.CurrentState = _interactionStateFactory.CreateSelectState(_stateController, _currentPlayer);
-        }
+            _stateController = _stateControllerFactory.Create(Player);
+            _stateController.SetInitialState();
+        } 
 
         public void EndTurn()
         {
             if (_stateController.PlayerShouldReceiveCardWhenTurnEnds)
             {
-                _currentPlayer.AddCard(_cardFactory.Create());
+                Player.AddCard(_cardFactory.Create());
             }
 
             MoveToNextPlayer();
@@ -53,7 +53,17 @@ namespace RISK.Application.GamePlaying
 
         public void Fortify()
         {
-            _stateController.CurrentState = _interactionStateFactory.CreateFortifyState(_stateController, _currentPlayer);
+            _stateController.CurrentState = _interactionStateFactory.CreateFortifyState(_stateController, Player);
+        }
+
+        public void OnClick(ITerritory territory)
+        {
+            _stateController.CurrentState.OnClick(territory);
+        }
+
+        public bool CanClick(ITerritory territory)
+        {
+            return _stateController.CurrentState.CanClick(territory);
         }
     }
 }

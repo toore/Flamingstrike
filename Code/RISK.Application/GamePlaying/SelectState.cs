@@ -5,10 +5,10 @@ namespace RISK.Application.GamePlaying
 {
     public class SelectState : IInteractionState
     {
-        private readonly StateController _stateController;
+        private readonly IStateController _stateController;
         private readonly IInteractionStateFactory _interactionStateFactory;
 
-        public SelectState(StateController stateController, IInteractionStateFactory interactionStateFactory, IPlayer player)
+        public SelectState(IStateController stateController, IInteractionStateFactory interactionStateFactory, IPlayer player)
         {
             Player = player;
             _stateController = stateController;

@@ -1,15 +1,24 @@
-﻿namespace RISK.Application.GamePlaying
+﻿using RISK.Application.Entities;
+
+namespace RISK.Application.GamePlaying
 {
     public interface IStateControllerFactory
     {
-        StateController Create();
+        IStateController Create(IPlayer currentPlayer);
     }
 
     public class StateControllerFactory : IStateControllerFactory
     {
-        public StateController Create()
+        private readonly IInteractionStateFactory _interactionStateFactory;
+
+        public StateControllerFactory(IInteractionStateFactory interactionStateFactory)
         {
-            return new StateController();
+            _interactionStateFactory = interactionStateFactory;
+        }
+
+        public IStateController Create(IPlayer currentPlayer)
+        {
+            return new StateController(_interactionStateFactory, currentPlayer);
         }
     }
 }

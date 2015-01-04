@@ -18,7 +18,7 @@ namespace RISK.Tests.Application.Gameplay
 
         public SelectStateTests()
         {
-            _stateController = new StateController();
+            _stateController = new StateController(_interactionStateFactory, _player);
             _interactionStateFactory = Substitute.For<IInteractionStateFactory>();
             _player = Substitute.For<IPlayer>();
 

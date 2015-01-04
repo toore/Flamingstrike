@@ -41,11 +41,12 @@ namespace GuiWpf.ViewModels
             var dice = new Dice(randomWrapper);
             var dices = new Dices(casualtiesCalculator, dice);
             var cardFactory = new CardFactory();
-            var stateControllerFactory = new StateControllerFactory();
             var battleCalculator = new BattleCalculator(dices);
             var interactionStateFactory = new InteractionStateFactory(battleCalculator);
+            var stateControllerFactory = new StateControllerFactory(interactionStateFactory);
             var initialArmyAssignmentCalculator = new InitialArmyAssignmentCalculator();
             var worldMapFactory = new WorldMapFactory();
+            PlayerRepository = new PlayerRepository();
             var alternateGameSetup = new AlternateGameSetup(PlayerRepository, worldMapFactory, randomSorter, initialArmyAssignmentCalculator);
 
             WindowManager = new WindowManager();
@@ -56,11 +57,9 @@ namespace GuiWpf.ViewModels
             var gameFactory = new GameFactory(alternateGameSetup, interactionStateFactory, stateControllerFactory, PlayerRepository, cardFactory);
             GameFactoryWorker = new GameFactoryWorker(gameFactory);
 
-
             PlayerFactory = new PlayerFactory();
             PlayerTypes = new PlayerTypes();
             EventAggregator = new EventAggregator();
-            PlayerRepository = new PlayerRepository();
 
             UserInteractor = new UserInteractor();
         }

@@ -11,22 +11,22 @@ namespace RISK.Application.GamePlaying
             _battleCalculator = battleCalculator;
         }
 
-        public IInteractionState CreateSelectState(StateController stateController, IPlayer player)
+        public IInteractionState CreateSelectState(IStateController stateController, IPlayer player)
         {
             return new SelectState(stateController, this, player);
         }
 
-        public IInteractionState CreateAttackState(StateController stateController, IPlayer player, ITerritory selectedTerritory)
+        public IInteractionState CreateAttackState(IStateController stateController, IPlayer player, ITerritory selectedTerritory)
         {
             return new AttackState(stateController, this, _battleCalculator, player, selectedTerritory);
         }
 
-        public IInteractionState CreateFortifyState(StateController stateController, IPlayer player)
+        public IInteractionState CreateFortifyState(IStateController stateController, IPlayer player)
         {
             return new FortifySelectState(stateController, this, player);
         }
 
-        public IInteractionState CreateFortifyState(StateController stateController, IPlayer player, ITerritory selectedTerritory)
+        public IInteractionState CreateFortifyState(IStateController stateController, IPlayer player, ITerritory selectedTerritory)
         {
             return new FortifyMoveState(player, selectedTerritory);
         }

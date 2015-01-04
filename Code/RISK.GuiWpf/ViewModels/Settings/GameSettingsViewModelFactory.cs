@@ -25,7 +25,7 @@ namespace GuiWpf.ViewModels.Settings
 
         public IGameInitializationViewModel Create()
         {
-            return new GameInitializationViewModel(_playerFactory, _playerTypes, _playerRepository, _eventAggregator);
+            return new GameSettingsViewModel(_playerFactory, _playerTypes, _playerRepository, _eventAggregator);
         }
     }
 }

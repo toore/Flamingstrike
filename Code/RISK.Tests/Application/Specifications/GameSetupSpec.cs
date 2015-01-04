@@ -16,7 +16,7 @@ namespace RISK.Tests.Application.Specifications
     {
         private MainGameViewModel _mainGameViewModel;
         private AutoRespondingUserInteractor _userInteractor;
-        private IMainViewModel _setupViewModel;
+        private IGameSetupViewModel _setupViewModel;
 
         [Fact]
         public void Game_is_started()
@@ -26,8 +26,8 @@ namespace RISK.Tests.Application.Specifications
 
             When
                 .two_human_players_are_confirmed()
-                .all_armies_are_placed_on_the_map()
-                .the_main_view_is_changed();
+                .all_armies_are_placed_on_the_map();
+                //.the_main_view_is_changed();
 
             Then
                 .the_game_is_started();
@@ -59,7 +59,8 @@ namespace RISK.Tests.Application.Specifications
 
             gameSettingsViewModel.Confirm();
 
-            _setupViewModel = _mainGameViewModel.ActiveItem;
+            _setupViewModel = (IGameSetupViewModel)_mainGameViewModel.ActiveItem;
+            _setupViewModel.Activate();
 
             return this;
         }

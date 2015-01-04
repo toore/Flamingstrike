@@ -1,4 +1,3 @@
-using System;
 using System.Linq;
 using Caliburn.Micro;
 using FluentAssertions;
@@ -157,7 +156,7 @@ namespace RISK.Tests.Application.Specifications
             var dices = new Dices(new CasualtiesCalculator(), _dice);
             var battleCalculator = new BattleCalculator(dices);
             var interactionStateFactory = new InteractionStateFactory(battleCalculator);
-            var game = new Game(interactionStateFactory, new StateControllerFactory(), new[] { _player1, _player2 }, _worldMap, new CardFactory());
+            var game = new Game(interactionStateFactory, new StateControllerFactory(interactionStateFactory), new[] { _player1, _player2 }, _worldMap, new CardFactory());
 
             var worldMapModelFactory = new WorldMapModelFactory();
             var colorService = new ColorService();
@@ -172,11 +171,11 @@ namespace RISK.Tests.Application.Specifications
 
             _gameboardViewModel = new GameboardViewModel(
                 game,
-                worldMapViewModelFactory, 
-                territoryViewModelColorInitializer, 
-                _windowManager, 
-                gameOverViewModelFactory, 
-                dialogManager, 
+                worldMapViewModelFactory,
+                territoryViewModelColorInitializer,
+                _windowManager,
+                gameOverViewModelFactory,
+                dialogManager,
                 eventAggregator);
 
             return this;

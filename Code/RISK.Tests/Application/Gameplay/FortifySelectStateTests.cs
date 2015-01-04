@@ -8,41 +8,21 @@ namespace RISK.Tests.Application.Gameplay
 {
     public class FortifySelectStateTests
     {
-        private readonly IInteractionState _sut;
+        private readonly FortifySelectState _sut;
         private readonly IPlayer _player;
         private readonly IInteractionStateFactory _interactionStateFactory;
         private readonly StateController _stateController;
         private readonly Territory _territoryOccupiedByPlayer;
 
-        //private readonly ITerritory _selectedTerritory;
-        //private readonly Territory _remoteTerritoryOccupiedByOtherPlayer;
-        //private readonly Territory _borderingTerritoryOccupiedByOtherPlayer;
-        //private readonly Territory _borderingTerritoryOccupiedByPlayer;
-        //private readonly Territory _remoteTerritoryOccupiedByPlayer;
-
         public FortifySelectStateTests()
         {
-            _stateController = new StateController();
+            _stateController = new StateController(_interactionStateFactory, _player);
             _interactionStateFactory = Substitute.For<IInteractionStateFactory>();
             _player = Substitute.For<IPlayer>();
 
             _territoryOccupiedByPlayer = Make.Territory
                 .Occupant(_player)
                 .Build();
-
-            //_borderingTerritoryOccupiedByPlayer = Make.Territory
-            //    .Occupant(_player)
-            //    .Build();
-
-            //_remoteTerritoryOccupiedByPlayer = Make.Territory
-            //    .Occupant(_player)
-            //    .Build();
-
-            //_selectedTerritory = Make.Territory
-            //    .WithBorder(_borderingTerritoryOccupiedByOtherPlayer)
-            //    .WithBorder(_borderingTerritoryOccupiedByPlayer)
-            //    .Occupant(_player)
-            //    .Build();
 
             _sut = new FortifySelectState(_stateController, _interactionStateFactory, _player);
         }
@@ -71,43 +51,78 @@ namespace RISK.Tests.Application.Gameplay
 
             _stateController.CurrentState.Should().Be(fortifyState);
         }
+    }
 
-        //[Fact]
-        //public void Can_not_fortify()
-        //{
-        //    _sut.CanClick(_selectedTerritory).Should().BeFalse();
-        //    _sut.CanClick(_borderingTerritoryOccupiedByOtherPlayer).Should().BeFalse();
-        //    _sut.CanClick(_remoteTerritoryOccupiedByOtherPlayer).Should().BeFalse();
-        //    _sut.CanClick(_remoteTerritoryOccupiedByPlayer).Should().BeFalse();
-        //}
+    public class FortifyMoveTests
+    {
+        private readonly FortifyMoveState _sut;
+        private readonly StateController _stateController;
+        private readonly IInteractionStateFactory _interactionStateFactory;
+        private readonly IPlayer _player;
+        private readonly ITerritory _selectedTerritory;
+        private readonly Territory _remoteTerritoryOccupiedByOtherPlayer;
+        private readonly Territory _borderingTerritoryOccupiedByOtherPlayer;
+        private readonly Territory _borderingTerritoryOccupiedByPlayer;
+        private readonly Territory _remoteTerritoryOccupiedByPlayer;
 
-        //[Fact]
-        //public void Can_fortify_to_bordering_territory_occupied_by_player()
-        //{
-        //    _sut.CanClick(_borderingTerritoryOccupiedByPlayer).Should().BeTrue();
-        //}
+        public FortifyMoveTests()
+        {
+            _stateController = new StateController(_interactionStateFactory, _player);
+            _interactionStateFactory = Substitute.For<IInteractionStateFactory>();
+            _player = Substitute.For<IPlayer>();
 
-        //[Fact]
-        //public void Fortifies_three_army_to_bordering_territory()
-        //{
-        //    _selectedTerritory.Armies = 4;
-        //    _borderingTerritoryOccupiedByPlayer.Armies = 10;
+            _borderingTerritoryOccupiedByPlayer = Make.Territory
+                .Occupant(_player)
+                .Build();
 
-        //    _sut.OnClick(_borderingTerritoryOccupiedByPlayer); //3 armies how?
+            _remoteTerritoryOccupiedByPlayer = Make.Territory
+                .Occupant(_player)
+                .Build();
 
-        //    _borderingTerritoryOccupiedByPlayer.Armies.Should().Be(13);
-        //    _selectedTerritory.Armies.Should().Be(1);
-        //}
+            _selectedTerritory = Make.Territory
+                .WithBorder(_borderingTerritoryOccupiedByOtherPlayer)
+                .WithBorder(_borderingTerritoryOccupiedByPlayer)
+                .Occupant(_player)
+                .Build();
 
-        //[Fact]
-        //public void Fortify_enters_fortified_state()
-        //{
-        //    var fortifiedState = Substitute.For<IInteractionState>();
-        //    _interactionStateFactory.CreateFortifiedState(_player, _worldMap).Returns(fortifiedState);
+            _sut = new FortifyMoveState(_player, _selectedTerritory);
+        }
 
-        //    _sut.Fortify(_borderingTerritoryOccupiedByPlayer, 1);
+        [Fact]
+        public void Can_not_fortify()
+        {
+            _sut.CanClick(_selectedTerritory).Should().BeFalse();
+            _sut.CanClick(_borderingTerritoryOccupiedByOtherPlayer).Should().BeFalse();
+            _sut.CanClick(_remoteTerritoryOccupiedByOtherPlayer).Should().BeFalse();
+            _sut.CanClick(_remoteTerritoryOccupiedByPlayer).Should().BeFalse();
+        }
 
-        //    _stateController.CurrentState.Should().Be(fortifiedState);
-        //}
+        [Fact]
+        public void Can_fortify_to_bordering_territory_occupied_by_player()
+        {
+            _sut.CanClick(_borderingTerritoryOccupiedByPlayer).Should().BeTrue();
+        }
+
+        [Fact]
+        public void Fortifies_three_army_to_bordering_territory()
+        {
+            _selectedTerritory.Armies = 4;
+            _borderingTerritoryOccupiedByPlayer.Armies = 10;
+
+            _sut.OnClick(_borderingTerritoryOccupiedByPlayer); //3 armies how?
+
+            _borderingTerritoryOccupiedByPlayer.Armies.Should().Be(13);
+            _selectedTerritory.Armies.Should().Be(1);
+        }
+
+        [Fact]
+        public void Enters_turn_end_state()
+        {
+            _sut.OnClick(_borderingTerritoryOccupiedByPlayer);
+
+            _sut.OnClick(_borderingTerritoryOccupiedByPlayer);
+
+            _stateController.CurrentState.Should().BeOfType<TurnEndState>();
+        }
     }
 }

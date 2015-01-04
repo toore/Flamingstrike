@@ -5,10 +5,10 @@ namespace RISK.Application.GamePlaying
 {
     public class FortifySelectState : IInteractionState
     {
-        private readonly StateController _stateController;
+        private readonly IStateController _stateController;
         private readonly IInteractionStateFactory _interactionStateFactory;
 
-        public FortifySelectState(StateController stateController, IInteractionStateFactory interactionStateFactory, IPlayer player)
+        public FortifySelectState(IStateController stateController, IInteractionStateFactory interactionStateFactory, IPlayer player)
         {
             _stateController = stateController;
             _interactionStateFactory = interactionStateFactory;

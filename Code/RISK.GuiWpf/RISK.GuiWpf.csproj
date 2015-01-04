@@ -120,7 +120,7 @@
     <Compile Include="ViewModels\Messages\SetupGameMessage.cs" />
     <Compile Include="ViewModels\Setup\GameSetupViewModelFactory.cs" />
     <Compile Include="ViewModels\Gameplay\IGameboardViewModelFactory.cs" />
-    <Compile Include="ViewModels\Settings\GameInitializationViewModel.cs" />
+    <Compile Include="ViewModels\Settings\GameSettingsViewModel.cs" />
     <Compile Include="ViewModels\Settings\HumanPlayerType.cs" />
     <Compile Include="ViewModels\Settings\IGameInitializationViewModel.cs" />
     <Compile Include="ViewModels\MainGameViewModel.cs" />
