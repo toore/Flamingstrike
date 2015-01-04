@@ -38,7 +38,8 @@ namespace GuiWpf.ViewModels
                 root.EventAggregator,
                 root.UserInteractor,
                 root.GameFactory,
-                root.GuiThreadDispatcher))
+                root.GuiThreadDispatcher,
+                root.TaskEx))
         {
             root.EventAggregator.Subscribe(this);
         }

@@ -94,6 +94,7 @@
       <DependentUpon>GameSetupView.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\Messages\StartGameplayMessage.cs" />
+    <Compile Include="Services\TaskEx.cs" />
     <Compile Include="ViewModels\Setup\UserInteractor.cs" />
     <Compile Include="Views\ConfirmView.xaml.cs">
       <DependentUpon>ConfirmView.xaml</DependentUpon>

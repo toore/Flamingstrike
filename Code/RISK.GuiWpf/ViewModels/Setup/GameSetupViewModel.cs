@@ -24,6 +24,7 @@ namespace GuiWpf.ViewModels.Setup
         private readonly IUserInteractor _userInteractor;
         private readonly IGameFactory _gameFactory;
         private readonly IGuiThreadDispatcher _guiThreadDispatcher;
+        private readonly ITaskEx _taskEx;
 
         public GameSetupViewModel(
             IWorldMapViewModelFactory worldMapViewModelFactory,
@@ -31,7 +32,8 @@ namespace GuiWpf.ViewModels.Setup
             IEventAggregator eventAggregator,
             IUserInteractor userInteractor,
             IGameFactory gameFactory,
-            IGuiThreadDispatcher guiThreadDispatcher)
+            IGuiThreadDispatcher guiThreadDispatcher,
+            ITaskEx taskEx)
         {
             _worldMapViewModelFactory = worldMapViewModelFactory;
             _dialogManager = dialogManager;
@@ -39,6 +41,7 @@ namespace GuiWpf.ViewModels.Setup
             _userInteractor = userInteractor;
             _gameFactory = gameFactory;
             _guiThreadDispatcher = guiThreadDispatcher;
+            _taskEx = taskEx;
         }
 
         private WorldMapViewModel _worldMapViewModel;
@@ -71,7 +74,7 @@ namespace GuiWpf.ViewModels.Setup
         {
             var territorySelector = this;
 
-            Task.Run(() =>
+            _taskEx.Run(() =>
             {
                 var game = _gameFactory.Create(territorySelector);
 
@@ -88,7 +91,7 @@ namespace GuiWpf.ViewModels.Setup
 
         private void StartGameplay(IGame game)
         {
-            _eventAggregator.PublishOnCurrentThread(new StartGameplayMessage(game));
+            _eventAggregator.PublishOnUIThread(new StartGameplayMessage(game));
         }
 
         private void UpdateView(ITerritorySelectorParameter territorySelectorParameter)
@@ -125,7 +128,7 @@ namespace GuiWpf.ViewModels.Setup
 
             if (confirm.HasValue && confirm.Value)
             {
-                _eventAggregator.PublishOnCurrentThread(new NewGameMessage());
+                _eventAggregator.PublishOnUIThread(new NewGameMessage());
             }
         }
     }

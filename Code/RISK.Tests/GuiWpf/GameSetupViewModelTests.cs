@@ -1,4 +1,5 @@
-﻿using Caliburn.Micro;
+﻿using System.Threading.Tasks;
+using Caliburn.Micro;
 using FluentAssertions;
 using GuiWpf.Services;
 using GuiWpf.ViewModels.Gameplay.Map;
@@ -30,8 +31,9 @@ namespace RISK.Tests.GuiWpf
             _userInteractor = Substitute.For<IUserInteractor>();
             _gameFactory = Substitute.For<IGameFactory>();
             IGuiThreadDispatcher guiThreadDispatcher = new SameThreadDispatcher();
+            var taskScheduler = new SameThreadTaskEx();
 
-            _gameSetupViewModelFactory = new GameSetupViewModelFactory(_worldMapViewModelFactory, _dialogManager, _eventAggregator, _userInteractor, _gameFactory, guiThreadDispatcher);
+            _gameSetupViewModelFactory = new GameSetupViewModelFactory(_worldMapViewModelFactory, _dialogManager, _eventAggregator, _userInteractor, _gameFactory, guiThreadDispatcher, taskScheduler);
         }
 
         [Fact]
@@ -79,16 +81,12 @@ namespace RISK.Tests.GuiWpf
             var expectedGame = Substitute.For<IGame>();
             _gameFactory.Create(null).ReturnsForAnyArgs(expectedGame);
             IGame actualGame = null;
-            _eventAggregator.WhenForAnyArgs(x => x.PublishOnCurrentThread(null)).Do(ci => actualGame = ci.Arg<StartGameplayMessage>().Game);
+            _eventAggregator.WhenForAnyArgs(x => x.PublishOnUIThread(null)).Do(ci => actualGame = ci.Arg<StartGameplayMessage>().Game);
 
             InitializeAndActivate();
 
-            _eventAggregator.ReceivedWithAnyArgs().PublishOnCurrentThread(new StartGameplayMessage(expectedGame));
+            _eventAggregator.ReceivedWithAnyArgs().PublishOnUIThread(new StartGameplayMessage(expectedGame));
             actualGame.Should().Be(expectedGame);
-
-            //InitializeAndActivate();
-
-            //_eventAggregator.Received().PublishOnCurrentThread(Arg.Any<StartGameplayMessage>());
         }
 
         [Fact]
@@ -116,7 +114,7 @@ namespace RISK.Tests.GuiWpf
 
             gameSetupViewModel.EndGame();
 
-            _eventAggregator.Received().PublishOnCurrentThread(Arg.Any<NewGameMessage>());
+            _eventAggregator.Received().PublishOnUIThread(Arg.Any<NewGameMessage>());
         }
 
         [Fact]
@@ -128,7 +126,7 @@ namespace RISK.Tests.GuiWpf
 
             gameSetupViewModel.EndGame();
 
-            _eventAggregator.DidNotReceive().PublishOnCurrentThread(Arg.Any<NewGameMessage>());
+            _eventAggregator.DidNotReceive().PublishOnUIThread(Arg.Any<NewGameMessage>());
         }
 
         private GameSetupViewModel InitializeAndActivate()
@@ -137,6 +135,16 @@ namespace RISK.Tests.GuiWpf
             gameSetupViewModel.Activate();
 
             return (GameSetupViewModel)gameSetupViewModel;
+        }
+    }
+
+    public class SameThreadTaskEx : ITaskEx
+    {
+        public Task Run(Action action)
+        {
+            var task = new Task(action);
+            task.RunSynchronously();
+            return task;
         }
     }
 

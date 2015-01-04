@@ -59,7 +59,7 @@ namespace GuiWpf.ViewModels.Settings
                 _playerRepository.Add(player);
             }
 
-            _eventAggregator.PublishOnCurrentThread(new SetupGameMessage());
+            _eventAggregator.PublishOnUIThread(new SetupGameMessage());
         }
 
         private IEnumerable<IPlayer> CreatePlayers()

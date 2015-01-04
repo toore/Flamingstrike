@@ -25,6 +25,7 @@ namespace GuiWpf.ViewModels
         public PlayerRepository PlayerRepository { get; private set; }
         public IEventAggregator EventAggregator { get; private set; }
         public IGuiThreadDispatcher GuiThreadDispatcher { get; set; }
+        public ITaskEx TaskEx { get; set; }
 
         public Root()
         {
@@ -62,6 +63,9 @@ namespace GuiWpf.ViewModels
             EventAggregator = new EventAggregator();
 
             UserInteractor = new UserInteractor();
+
+            GuiThreadDispatcher = new GuiThreadDispatcher();
+            TaskEx = new TaskEx();
         }
     }
 }
