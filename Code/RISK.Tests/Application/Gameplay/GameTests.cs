@@ -39,7 +39,8 @@ namespace RISK.Tests.Application.Gameplay
             _interactionStateFactory.CreateSelectState(nextStateController, _nextPlayer).Returns(_nextPlayerInteractionState);
 
             _worldMap = Substitute.For<IWorldMap>();
-            _sut = new Game(_interactionStateFactory, stateControllerFactory, new[] { _currentPlayer, _nextPlayer }, _worldMap, _cardFactory);
+            var players = new[] { _currentPlayer, _nextPlayer };
+            _sut = new Game(_interactionStateFactory, stateControllerFactory, players, _worldMap, _cardFactory);
         }
 
         [Fact]

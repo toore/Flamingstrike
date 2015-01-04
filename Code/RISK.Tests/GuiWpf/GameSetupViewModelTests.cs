@@ -75,11 +75,11 @@ namespace RISK.Tests.GuiWpf
         public void When_finished_game_conductor_is_notified()
         {
             var expectedGame = Substitute.For<IGame>();
+            _gameFactory.Create(null).ReturnsForAnyArgs(expectedGame);
             IGame actualGame = null;
             _eventAggregator.WhenForAnyArgs(x => x.PublishOnCurrentThread(null)).Do(ci => actualGame = ci.Arg<StartGameplayMessage>().Game);
 
-            var gameSetupViewModel = InitializeAndActivate();
-            gameSetupViewModel.InitializationFinished(expectedGame);
+            InitializeAndActivate();
 
             _eventAggregator.ReceivedWithAnyArgs().PublishOnCurrentThread(new StartGameplayMessage(expectedGame));
             actualGame.Should().Be(expectedGame);

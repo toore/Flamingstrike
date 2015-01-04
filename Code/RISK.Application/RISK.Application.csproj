@@ -73,7 +73,6 @@
     <Compile Include="GamePlaying\IBattleCalculator.cs" />
     <Compile Include="GamePlaying\DiceAndCalculation\IDices.cs" />
     <Compile Include="GamePlaying\ICardFactory.cs" />
-    <Compile Include="GamePlaying\Setup\IGameInitializerNotifier.cs" />
     <Compile Include="GamePlaying\Setup\IInitialArmyAssignmentCalculator.cs" />
     <Compile Include="GamePlaying\Setup\ITerritorySelector.cs" />
     <Compile Include="GamePlaying\Setup\InitialArmyAssignmentCalculator.cs" />

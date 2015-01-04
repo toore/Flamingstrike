@@ -15,7 +15,7 @@ namespace GuiWpf.ViewModels.Setup
         void Activate();
     }
 
-    public class GameSetupViewModel : Screen, ITerritorySelector, IGameInitializerNotifier, IGameSetupViewModel
+    public class GameSetupViewModel : Screen, ITerritorySelector, IGameSetupViewModel
     {
         private readonly IWorldMapViewModelFactory _worldMapViewModelFactory;
         private readonly IDialogManager _dialogManager;
@@ -67,7 +67,8 @@ namespace GuiWpf.ViewModels.Setup
         {
             var territorySelector = this;
             var game = _gameFactory.Create(territorySelector);
-            InitializationFinished(game);
+
+            StartGameplay(game);
         }
 
         public ITerritory SelectTerritory(ITerritorySelectorParameter territorySelectorParameter)
@@ -77,9 +78,9 @@ namespace GuiWpf.ViewModels.Setup
             return _userInteractor.GetLocation(territorySelectorParameter);
         }
 
-        public void InitializationFinished(IGame game)
+        private void StartGameplay(IGame game)
         {
-            StartGamePlay(game);
+            _eventAggregator.PublishOnCurrentThread(new StartGameplayMessage(game));
         }
 
         private void UpdateView(ITerritorySelectorParameter territorySelectorParameter)
@@ -94,11 +95,6 @@ namespace GuiWpf.ViewModels.Setup
             Player = territorySelectorParameter.GetPlayerThatTakesTurn();
 
             InformationText = string.Format(Resources.PLACE_ARMY, territorySelectorParameter.GetArmiesLeft());
-        }
-
-        private void StartGamePlay(IGame game)
-        {
-            _eventAggregator.PublishOnCurrentThread(new StartGameplayMessage(game));
         }
 
         public bool CanFortify()
