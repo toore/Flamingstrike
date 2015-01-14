@@ -11,7 +11,7 @@ namespace GuiWpf.ViewModels.Gameplay
     public class GameboardViewModel : ViewModelBase, IGameboardViewModel
     {
         private readonly IGame _game;
-        private readonly ITerritoryViewModelColorInitializer _territoryViewModelColorInitializer;
+        private readonly IWorldMapViewModelFactory _worldMapViewModelFactory;
         private readonly IWindowManager _windowManager;
         private readonly IGameOverViewModelFactory _gameOverViewModelFactory;
         private readonly IDialogManager _dialogManager;
@@ -21,14 +21,13 @@ namespace GuiWpf.ViewModels.Gameplay
         public GameboardViewModel(
             IGame game,
             IWorldMapViewModelFactory worldMapViewModelFactory,
-            ITerritoryViewModelColorInitializer territoryViewModelColorInitializer,
             IWindowManager windowManager,
             IGameOverViewModelFactory gameOverViewModelFactory,
             IDialogManager dialogManager,
             IEventAggregator eventAggregator)
         {
             _game = game;
-            _territoryViewModelColorInitializer = territoryViewModelColorInitializer;
+            _worldMapViewModelFactory = worldMapViewModelFactory;
             _windowManager = windowManager;
             _gameOverViewModelFactory = gameOverViewModelFactory;
             _dialogManager = dialogManager;
@@ -36,7 +35,7 @@ namespace GuiWpf.ViewModels.Gameplay
 
             InformationText = LanguageResources.Instance.GetString("SELECT_TERRITORY");
 
-            WorldMapViewModel = worldMapViewModelFactory.Create(_game.WorldMap, OnTerritoryClick);
+            WorldMapViewModel = _worldMapViewModelFactory.Create(_game.WorldMap, x => OnTerritoryClick(x), Enumerable.Empty<ITerritory>());
 
             BeginNextPlayerTurn();
         }
@@ -101,37 +100,11 @@ namespace GuiWpf.ViewModels.Gameplay
 
         private void UpdateWorldMap()
         {
-            foreach (var territory in _game.WorldMap.GetTerritories())
-            {
-                UpdateTerritory(territory);
-            }
-        }
+            var enabledTerritories = _game.WorldMap.GetTerritories()
+                .Where(x => _game.CanClick(x))
+                .ToList();
 
-        private void UpdateTerritory(ITerritory territory)
-        {
-            UpdateTerritoryLayout(territory);
-            UpdateTerritoryText(territory);
-        }
-
-        private void UpdateTerritoryLayout(ITerritory territory)
-        {
-            var layoutViewModel = WorldMapViewModel.WorldMapViewModels
-                .OfType<TerritoryLayoutViewModel>()
-                .Single(x => x.Territory == territory);
-
-            layoutViewModel.IsEnabled = _game.CanClick(territory);
-            layoutViewModel.IsSelected = _game.SelectedTerritory == territory;
-
-            _territoryViewModelColorInitializer.UpdateColors(_game.WorldMap, layoutViewModel);
-        }
-
-        private void UpdateTerritoryText(ITerritory territory)
-        {
-            var textViewModel = WorldMapViewModel.WorldMapViewModels
-                .OfType<TerritoryTextViewModel>()
-                .Single(x => x.Territory == territory);
-
-            textViewModel.Armies = territory.Armies;
+            _worldMapViewModelFactory.Update(WorldMapViewModel, _game.WorldMap, _game.SelectedTerritory, enabledTerritories);
         }
     }
 }

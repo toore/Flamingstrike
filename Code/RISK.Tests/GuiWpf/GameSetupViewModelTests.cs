@@ -51,7 +51,7 @@ namespace RISK.Tests.GuiWpf
             locationSelectorParameter.GetPlayerThatTakesTurn().ReturnsForAnyArgs(Substitute.For<IPlayer>());
             var expected = Substitute.For<ITerritory>();
             _userInteractor.GetSelectedTerritory(locationSelectorParameter).Returns(expected);
-            _worldMapViewModelFactory.Create(null, null).ReturnsForAnyArgs(new WorldMapViewModel());
+            _worldMapViewModelFactory.Create(null, null, null).ReturnsForAnyArgs(new WorldMapViewModel());
 
             var gameSetupViewModel = InitializeAndActivate();
             var actual = gameSetupViewModel.SelectTerritory(locationSelectorParameter);
@@ -63,7 +63,7 @@ namespace RISK.Tests.GuiWpf
         public void Select_location_updates_view()
         {
             var worldMapViewModel = new WorldMapViewModel();
-            _worldMapViewModelFactory.Create(null, null).ReturnsForAnyArgs(worldMapViewModel);
+            _worldMapViewModelFactory.Create(null, null, null).ReturnsForAnyArgs(worldMapViewModel);
             var gameSetupViewModel = InitializeAndActivate();
             gameSetupViewModel.MonitorEvents();
 

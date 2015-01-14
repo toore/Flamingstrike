@@ -8,7 +8,6 @@ namespace GuiWpf.ViewModels.Gameplay
     public class GameboardViewModelFactory : IGameboardViewModelFactory
     {
         private readonly IWorldMapViewModelFactory _worldMapViewModelFactory;
-        private readonly ITerritoryViewModelColorInitializer _territoryViewModelColorInitializer;
         private readonly IWindowManager _windowManager;
         private readonly IGameOverViewModelFactory _gameOverViewModelFactory;
         private readonly IDialogManager _dialogManager;
@@ -16,14 +15,12 @@ namespace GuiWpf.ViewModels.Gameplay
 
         public GameboardViewModelFactory(
             IWorldMapViewModelFactory worldMapViewModelFactory,
-            ITerritoryViewModelColorInitializer territoryViewModelColorInitializer,
             IWindowManager windowManager,
             IGameOverViewModelFactory gameOverViewModelFactory,
             IDialogManager dialogManager,
             IEventAggregator eventAggregator)
         {
             _worldMapViewModelFactory = worldMapViewModelFactory;
-            _territoryViewModelColorInitializer = territoryViewModelColorInitializer;
             _windowManager = windowManager;
             _gameOverViewModelFactory = gameOverViewModelFactory;
             _dialogManager = dialogManager;
@@ -35,7 +32,6 @@ namespace GuiWpf.ViewModels.Gameplay
             return new GameboardViewModel(
                 game,
                 _worldMapViewModelFactory,
-                _territoryViewModelColorInitializer,
                 _windowManager,
                 _gameOverViewModelFactory,
                 _dialogManager,

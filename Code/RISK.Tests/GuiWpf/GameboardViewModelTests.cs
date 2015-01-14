@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Caliburn.Micro;
 using FluentAssertions;
 using GuiWpf.Services;
@@ -18,7 +19,6 @@ namespace RISK.Tests.GuiWpf
         private readonly IGame _game;
         private readonly WorldMapViewModel _worldMapViewModel;
         private readonly ITerritory _territory1;
-        private readonly ITerritoryViewModelColorInitializer _territoryViewModelColorInitializer;
         private readonly IInteractionState _firstPlayerInteractionState;
         private readonly IInteractionState _nextPlayerInteractionState;
         private readonly IPlayer _currentPlayer;
@@ -33,7 +33,6 @@ namespace RISK.Tests.GuiWpf
         {
             _game = Substitute.For<IGame>();
             _worldMapViewModelFactory = Substitute.For<IWorldMapViewModelFactory>();
-            _territoryViewModelColorInitializer = Substitute.For<ITerritoryViewModelColorInitializer>();
             _windowManager = Substitute.For<IWindowManager>();
             _gameOverViewModelFactory = Substitute.For<IGameOverViewModelFactory>();
             _dialogManager = Substitute.For<IDialogManager>();
@@ -53,11 +52,11 @@ namespace RISK.Tests.GuiWpf
 
             var viewModel = Substitute.For<ITerritoryLayoutViewModel>();
             var layoutViewModel1 = viewModel;
-            var viewModel2 = Substitute.For<ITerritoryTextViewModel>();
+            var viewModel2 = Substitute.For<IWorldMapItemViewModel>();
             var textViewModel1 = viewModel2;
             var viewModel1 = Substitute.For<ITerritoryLayoutViewModel>();
             var layoutViewModel2 = viewModel1;
-            var viewModel3 = Substitute.For<ITerritoryTextViewModel>();
+            var viewModel3 = Substitute.For<IWorldMapItemViewModel>();
             var textViewModel2 = viewModel3;
 
             _worldMapViewModel = new WorldMapViewModel();
@@ -69,7 +68,7 @@ namespace RISK.Tests.GuiWpf
             var worldMap = Substitute.For<IWorldMap>();
             _game.WorldMap.Returns(worldMap);
 
-            _worldMapViewModelFactory.Create(Arg.Is(worldMap), Arg.Any<Action<ITerritory>>()).Returns(_worldMapViewModel);
+            _worldMapViewModelFactory.Create(Arg.Is(worldMap), Arg.Any<Action<ITerritory>>(), Arg.Any<IEnumerable<ITerritory>>()).Returns(_worldMapViewModel);
         }
 
         private GameboardViewModel Create()
@@ -77,7 +76,6 @@ namespace RISK.Tests.GuiWpf
             return new GameboardViewModel(
                 _game, 
                 _worldMapViewModelFactory, 
-                _territoryViewModelColorInitializer, 
                 _windowManager,
                 _gameOverViewModelFactory, 
                 _dialogManager, 

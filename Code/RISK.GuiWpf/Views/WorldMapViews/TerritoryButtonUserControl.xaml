@@ -37,10 +37,10 @@
                 <Canvas>
                     <Path StrokeThickness="3">
                         <Path.Fill>
-                            <SolidColorBrush x:Name="fill" Color="{Binding Path=NormalFillColor, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" />
+                            <SolidColorBrush x:Name="fill" Color="{Binding Path=FillColor, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" />
                         </Path.Fill>
                         <Path.Stroke>
-                            <SolidColorBrush x:Name="stroke" Color="{Binding Path=NormalStrokeColor, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" />
+                            <SolidColorBrush x:Name="stroke" Color="{Binding Path=StrokeColor, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" />
                         </Path.Stroke>
 
                         <Path.Data>

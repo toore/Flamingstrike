@@ -81,6 +81,8 @@
     <Compile Include="ViewModels\Gameplay\GameSetupView.xaml.cs">
       <DependentUpon>GameSetupView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ViewModels\Gameplay\Map\IWorldMapItemViewModelVisitor.cs" />
+    <Compile Include="ViewModels\Gameplay\Map\WorldMapItemUpdater.cs" />
     <Compile Include="ViewModels\IConfirmViewModelFactory.cs" />
     <Compile Include="Services\IUserNotifier.cs" />
     <Compile Include="Services\UserNotifier.cs" />
@@ -110,14 +112,12 @@
     <Compile Include="Services\TerritoryColors.cs" />
     <Compile Include="Services\ITerritoryColors.cs" />
     <Compile Include="Services\TerritoryColorsFactory.cs" />
-    <Compile Include="Services\TerritoryViewModelUpdater.cs" />
     <Compile Include="ViewModels\GameOverViewModel.cs" />
     <Compile Include="ViewModels\GameOverViewModelFactory.cs" />
     <Compile Include="ViewModels\IGameOverViewModelFactory.cs" />
     <Compile Include="ViewModels\Setup\GameSetupViewModel.cs" />
     <Compile Include="ViewModels\Gameplay\GameboardViewModelFactory.cs" />
     <Compile Include="ViewModels\Setup\GameFactory.cs" />
-    <Compile Include="ViewModels\Gameplay\Map\ITerritoryTextViewModel.cs" />
     <Compile Include="ViewModels\Messages\SetupGameMessage.cs" />
     <Compile Include="ViewModels\Setup\GameSetupViewModelFactory.cs" />
     <Compile Include="ViewModels\Gameplay\IGameboardViewModelFactory.cs" />

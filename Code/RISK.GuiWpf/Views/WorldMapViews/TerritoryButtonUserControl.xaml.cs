@@ -5,10 +5,9 @@ namespace GuiWpf.Views.WorldMapViews
 {
     public partial class TerritoryButtonUserControl
     {
-        public static readonly DependencyProperty PathStyleProperty = DependencyProperty.Register("PathStyle", typeof(Style), typeof(TerritoryButtonUserControl), new PropertyMetadata(default(Style)));
         public static readonly DependencyProperty GeometryChildrenProperty = DependencyProperty.Register("GeometryChildren", typeof(GeometryCollection), typeof(TerritoryButtonUserControl), new PropertyMetadata(default(GeometryCollection)));
-        public static readonly DependencyProperty NormalFillColorProperty = DependencyProperty.Register("NormalFillColor", typeof(Color), typeof(TerritoryButtonUserControl), new PropertyMetadata(default(Color)));
-        public static readonly DependencyProperty NormalStrokeColorProperty = DependencyProperty.Register("NormalStrokeColor", typeof(Color), typeof(TerritoryButtonUserControl), new PropertyMetadata(default(Color)));
+        public static readonly DependencyProperty FillColorProperty = DependencyProperty.Register("FillColor", typeof(Color), typeof(TerritoryButtonUserControl), new PropertyMetadata(default(Color)));
+        public static readonly DependencyProperty StrokeColorProperty = DependencyProperty.Register("StrokeColor", typeof(Color), typeof(TerritoryButtonUserControl), new PropertyMetadata(default(Color)));
         public static readonly DependencyProperty MouseOverFillColorProperty = DependencyProperty.Register("MouseOverFillColor", typeof(Color), typeof(TerritoryButtonUserControl), new PropertyMetadata(default(Color)));
         public static readonly DependencyProperty MouseOverStrokeColorProperty = DependencyProperty.Register("MouseOverStrokeColor", typeof(Color), typeof(TerritoryButtonUserControl), new PropertyMetadata(default(Color)));
 
@@ -17,28 +16,22 @@ namespace GuiWpf.Views.WorldMapViews
             InitializeComponent();
         }
 
-        public Style PathStyle
-        {
-            get { return (Style)GetValue(PathStyleProperty); }
-            set { SetValue(PathStyleProperty, value); }
-        }
-
         public GeometryCollection GeometryChildren
         {
             get { return (GeometryCollection)GetValue(GeometryChildrenProperty); }
             set { SetValue(GeometryChildrenProperty, value); }
         }
 
-        public Color NormalFillColor
+        public Color FillColor
         {
-            get { return (Color)GetValue(NormalFillColorProperty); }
-            set { SetValue(NormalFillColorProperty, value); }
+            get { return (Color)GetValue(FillColorProperty); }
+            set { SetValue(FillColorProperty, value); }
         }
 
-        public Color NormalStrokeColor
+        public Color StrokeColor
         {
-            get { return (Color)GetValue(NormalStrokeColorProperty); }
-            set { SetValue(NormalStrokeColorProperty, value); }
+            get { return (Color)GetValue(StrokeColorProperty); }
+            set { SetValue(StrokeColorProperty, value); }
         }
 
         public Color MouseOverFillColor

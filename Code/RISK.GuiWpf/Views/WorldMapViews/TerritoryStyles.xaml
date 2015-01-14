@@ -9,12 +9,12 @@
             ZIndex="0">
             <MapViews:TerritoryButtonUserControl
                 Name="button"
-                NormalFillColor="{Binding NormalFillColor}"
-                NormalStrokeColor="{Binding NormalStrokeColor}"
+                FillColor="{Binding FillColor}"
+                StrokeColor="{Binding StrokeColor}"
                 MouseOverFillColor="{Binding MouseOverFillColor}"
                 MouseOverStrokeColor="{Binding MouseOverStrokeColor}"
                 IsEnabled="{Binding IsEnabled}">
-
+                
                 <MapViews:TerritoryButtonUserControl.GeometryChildren>
                     <GeometryCollection>
                         <PathGeometry

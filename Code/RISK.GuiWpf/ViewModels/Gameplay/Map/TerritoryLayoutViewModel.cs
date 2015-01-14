@@ -17,21 +17,20 @@ namespace GuiWpf.ViewModels.Gameplay.Map
         }
 
         public string Path { get { return _territoryModel.Path; } }
+        public ITerritory Territory { get { return _territoryModel.Territory; } }
 
-        public ITerritory Territory { get { return _territoryModel.Territory; }}
-
-        private Color _normalStrokeColor;
-        public Color NormalStrokeColor
+        private Color _strokeColor;
+        public Color StrokeColor
         {
-            get { return _normalStrokeColor; }
-            set { NotifyOfPropertyChange(value, () => NormalStrokeColor, x => _normalStrokeColor = x); }
+            get { return _strokeColor; }
+            set { NotifyOfPropertyChange(value, () => StrokeColor, x => _strokeColor = x); }
         }
 
-        private Color _normalFillColor;
-        public Color NormalFillColor
+        private Color _fillColor;
+        public Color FillColor
         {
-            get { return _normalFillColor; }
-            set { NotifyOfPropertyChange(value, () => NormalFillColor, x => _normalFillColor = x); }
+            get { return _fillColor; }
+            set { NotifyOfPropertyChange(value, () => FillColor, x => _fillColor = x); }
         }
 
         private Color _mouseOverStrokeColor;
@@ -55,16 +54,14 @@ namespace GuiWpf.ViewModels.Gameplay.Map
             set { NotifyOfPropertyChange(value, () => IsEnabled, x => _isEnabled = x); }
         }
 
-        private bool _isSelected;
-        public bool IsSelected
-        {
-            get { return _isSelected; }
-            set { NotifyOfPropertyChange(value, () => IsSelected, x => _isSelected = x); }
-        }
-
         public void OnClick()
         {
             _onClick(_territoryModel.Territory);
+        }
+
+        public void Accept(IWorldMapItemViewModelVisitor worldMapItemViewModelVisitor)
+        {
+            worldMapItemViewModelVisitor.Visit(this);
         }
     }
 }

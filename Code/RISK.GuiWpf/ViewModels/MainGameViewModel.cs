@@ -26,7 +26,6 @@ namespace GuiWpf.ViewModels
 
                 new GameboardViewModelFactory(
                 root.WorldMapViewModelFactory,
-                root.TerritoryViewModelColorInitializer,
                 root.WindowManager,
                 root.GameOverViewModelFactory,
                 root.DialogManager,

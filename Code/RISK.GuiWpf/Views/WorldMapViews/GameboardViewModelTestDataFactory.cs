@@ -23,7 +23,6 @@ namespace GuiWpf.Views.WorldMapViews
             var worldMap = new WorldMap();
             var colorService = new ColorService();
             var territoryColorsFactory = new TerritoryColorsFactory(colorService);
-            var territoryViewModelUpdater = new TerritoryViewModelColorInitializer(territoryColorsFactory, colorService);
 
             var brazil = worldMap.Brazil;
             var humanPlayer = new HumanPlayer("pelle");
@@ -34,11 +33,12 @@ namespace GuiWpf.Views.WorldMapViews
             alaska.Occupant = humanPlayer2;
             alaska.Armies = 11;
 
-            var worldMapViewModelFactory = new WorldMapViewModelFactory(new WorldMapModelFactory(), new TerritoryViewModelColorInitializer(territoryColorsFactory, colorService));
+            var worldMapViewModelFactory = new WorldMapViewModelFactory(new WorldMapModelFactory(), territoryColorsFactory, colorService);
 
             var interactionStateFactory = new InteractionStateFactory(null);
-            var game = new Game(interactionStateFactory, new StateControllerFactory(interactionStateFactory), new[] { humanPlayer, humanPlayer2 }, worldMap, new CardFactory());
-            var gameboardViewModel = new GameboardViewModel(game, worldMapViewModelFactory, territoryViewModelUpdater, null, new GameOverViewModelFactory(), null, null);
+            var players = new[] { humanPlayer, humanPlayer2 };
+            var game = new Game(interactionStateFactory, new StateControllerFactory(interactionStateFactory), players, worldMap, new CardFactory());
+            var gameboardViewModel = new GameboardViewModel(game, worldMapViewModelFactory, null, new GameOverViewModelFactory(), null, null);
 
             return gameboardViewModel;
         }

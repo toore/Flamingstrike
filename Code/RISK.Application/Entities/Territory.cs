@@ -6,7 +6,7 @@ namespace RISK.Application.Entities
     public interface ITerritory
     {
         Continent Continent { get; }
-        bool IsBordering(ITerritory location);
+        bool IsBordering(ITerritory territory);
 
         IPlayer Occupant { get; set; }
         int Armies { get; set; }
@@ -28,16 +28,15 @@ namespace RISK.Application.Entities
 
         public Continent Continent { get; private set; }
 
-        public bool IsBordering(ITerritory location)
+        public bool IsBordering(ITerritory territory)
         {
-            return _borders.Contains(location);
+            return _borders.Contains(territory);
         }
 
         public void AddBorders(params ITerritory[] locations)
         {
             _borders.AddRange(locations);
         }
-
 
         public IPlayer Occupant { get; set; }
         public int Armies { get; set; }

@@ -1,4 +1,7 @@
 ﻿namespace GuiWpf.ViewModels.Gameplay.Map
 {
-    public interface IWorldMapItemViewModel {}
+    public interface IWorldMapItemViewModel
+    {
+        void Accept(IWorldMapItemViewModelVisitor worldMapItemViewModelVisitor);
+    }
 }

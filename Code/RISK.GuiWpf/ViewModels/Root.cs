@@ -18,7 +18,6 @@ namespace GuiWpf.ViewModels
         public DialogManager DialogManager { get; private set; }
         public GameOverViewModelFactory GameOverViewModelFactory { get; private set; }
         public WindowManager WindowManager { get; private set; }
-        public TerritoryViewModelColorInitializer TerritoryViewModelColorInitializer { get; private set; }
         public WorldMapViewModelFactory WorldMapViewModelFactory { get; private set; }
         public PlayerFactory PlayerFactory { get; private set; }
         public PlayerTypes PlayerTypes { get; private set; }
@@ -32,8 +31,7 @@ namespace GuiWpf.ViewModels
             var colorService = new ColorService();
             var territoryColorsFactory = new TerritoryColorsFactory(colorService);
             var worldMapModelFactory = new WorldMapModelFactory();
-            TerritoryViewModelColorInitializer = new TerritoryViewModelColorInitializer(territoryColorsFactory, colorService);
-            WorldMapViewModelFactory = new WorldMapViewModelFactory(worldMapModelFactory, TerritoryViewModelColorInitializer);
+            WorldMapViewModelFactory = new WorldMapViewModelFactory(worldMapModelFactory, territoryColorsFactory, colorService);
             GameOverViewModelFactory = new GameOverViewModelFactory();
 
             var screenService = new ScreenService();

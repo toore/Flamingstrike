@@ -25,6 +25,7 @@ namespace RISK.Tests.Application.Specifications
         private HumanPlayer _player2;
         private IDice _dice;
         private GameOverViewModel _gameOverAndPlayer1IsTheWinnerViewModel;
+        private Game _game;
 
         [Fact]
         public void Moves_armies_into_Brazil_after_win()
@@ -156,23 +157,21 @@ namespace RISK.Tests.Application.Specifications
             var dices = new Dices(new CasualtiesCalculator(), _dice);
             var battleCalculator = new BattleCalculator(dices);
             var interactionStateFactory = new InteractionStateFactory(battleCalculator);
-            var game = new Game(interactionStateFactory, new StateControllerFactory(interactionStateFactory), new[] { _player1, _player2 }, _worldMap, new CardFactory());
+            _game = new Game(interactionStateFactory, new StateControllerFactory(interactionStateFactory), new[] { _player1, _player2 }, _worldMap, new CardFactory());
 
             var worldMapModelFactory = new WorldMapModelFactory();
             var colorService = new ColorService();
             var eventAggregator = new EventAggregator();
             var territoryColorsFactory = new TerritoryColorsFactory(colorService);
-            var territoryViewModelColorInitializer = new TerritoryViewModelColorInitializer(territoryColorsFactory, colorService);
             var screenService = new ScreenService();
             var confirmViewModelFactory = new ConfirmViewModelFactory(screenService);
             var userNotifier = new UserNotifier(_windowManager, confirmViewModelFactory);
             var dialogManager = new DialogManager(userNotifier);
-            var worldMapViewModelFactory = new WorldMapViewModelFactory(worldMapModelFactory, territoryViewModelColorInitializer);
+            var worldMapViewModelFactory = new WorldMapViewModelFactory(worldMapModelFactory, territoryColorsFactory, colorService);
 
             _gameboardViewModel = new GameboardViewModel(
-                game,
+                _game,
                 worldMapViewModelFactory,
-                territoryViewModelColorInitializer,
                 _windowManager,
                 gameOverViewModelFactory,
                 dialogManager,
@@ -290,7 +289,7 @@ namespace RISK.Tests.Application.Specifications
             _worldMap.NorthAfrica.Armies.Should().Be(1, "North Africa should have 1 army");
             _worldMap.Brazil.Occupant.Should().Be(_player1, "player 1 should occupy Brazil");
             _worldMap.Brazil.Armies.Should().Be(4, "Brazil should have 4 armies");
-            GetTerritoryViewModel(_worldMap.Brazil).IsSelected.Should().BeTrue("selected territory should be Brazil");
+            _game.SelectedTerritory.Should().Be(_worldMap.Brazil);
         }
 
         private void player_1_is_the_winner()
