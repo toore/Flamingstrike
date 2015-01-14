@@ -8,6 +8,7 @@ using GuiWpf.ViewModels.Setup;
 using RISK.Application.Entities;
 using RISK.Application.Extensions;
 using RISK.Application.GamePlaying.Setup;
+using RISK.Tests.GuiWpf;
 using Xunit;
 
 namespace RISK.Tests.Application.Specifications
@@ -38,6 +39,8 @@ namespace RISK.Tests.Application.Specifications
 
             var root = new Root();
             root.UserInteractor = _userInteractor;
+            root.GuiThreadDispatcher = new SameThreadDispatcher();
+            root.TaskEx = new SynchronousTaskEx();
             _mainGameViewModel = new MainGameViewModelAdapter(root);
             _mainGameViewModel.FrameworkCallsOnInitialize();
 

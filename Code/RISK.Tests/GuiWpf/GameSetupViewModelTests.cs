@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using Caliburn.Micro;
+﻿using Caliburn.Micro;
 using FluentAssertions;
 using GuiWpf.Services;
 using GuiWpf.ViewModels.Gameplay.Map;
@@ -10,7 +9,6 @@ using RISK.Application.Entities;
 using RISK.Application.GamePlaying;
 using RISK.Application.GamePlaying.Setup;
 using Xunit;
-using Action = System.Action;
 
 namespace RISK.Tests.GuiWpf
 {
@@ -31,7 +29,7 @@ namespace RISK.Tests.GuiWpf
             _userInteractor = Substitute.For<IUserInteractor>();
             _gameFactory = Substitute.For<IGameFactory>();
             IGuiThreadDispatcher guiThreadDispatcher = new SameThreadDispatcher();
-            var taskScheduler = new SameThreadTaskEx();
+            var taskScheduler = new SynchronousTaskEx();
 
             _gameSetupViewModelFactory = new GameSetupViewModelFactory(_worldMapViewModelFactory, _dialogManager, _eventAggregator, _userInteractor, _gameFactory, guiThreadDispatcher, taskScheduler);
         }
@@ -135,24 +133,6 @@ namespace RISK.Tests.GuiWpf
             gameSetupViewModel.Activate();
 
             return (GameSetupViewModel)gameSetupViewModel;
-        }
-    }
-
-    public class SameThreadTaskEx : ITaskEx
-    {
-        public Task Run(Action action)
-        {
-            var task = new Task(action);
-            task.RunSynchronously();
-            return task;
-        }
-    }
-
-    public class SameThreadDispatcher : IGuiThreadDispatcher
-    {
-        public void Invoke(Action action)
-        {
-            action.Invoke();
         }
     }
 }

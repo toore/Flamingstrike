@@ -14,31 +14,29 @@ namespace GuiWpf.ViewModels
         private readonly IGameSetupViewModelFactory _gameSetupViewModelFactory;
 
         public MainGameViewModel()
-            : this(new Root()) { }
+            : this(new Root()) {}
 
         protected MainGameViewModel(Root root)
             : this(
                 new GameInitializationViewModelFactory(
-                root.PlayerFactory,
-                root.PlayerTypes,
-                root.PlayerRepository,
-                root.EventAggregator),
-
+                    root.PlayerFactory,
+                    root.PlayerTypes,
+                    root.PlayerRepository,
+                    root.EventAggregator),
                 new GameboardViewModelFactory(
-                root.WorldMapViewModelFactory,
-                root.WindowManager,
-                root.GameOverViewModelFactory,
-                root.DialogManager,
-                root.EventAggregator),
-
+                    root.WorldMapViewModelFactory,
+                    root.WindowManager,
+                    root.GameOverViewModelFactory,
+                    root.DialogManager,
+                    root.EventAggregator),
                 new GameSetupViewModelFactory(
-                root.WorldMapViewModelFactory,
-                root.DialogManager,
-                root.EventAggregator,
-                root.UserInteractor,
-                root.GameFactory,
-                root.GuiThreadDispatcher,
-                root.TaskEx))
+                    root.WorldMapViewModelFactory,
+                    root.DialogManager,
+                    root.EventAggregator,
+                    root.UserInteractor,
+                    root.GameFactory,
+                    root.GuiThreadDispatcher,
+                    root.TaskEx))
         {
             root.EventAggregator.Subscribe(this);
         }
