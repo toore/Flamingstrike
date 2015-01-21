@@ -177,6 +177,8 @@ namespace RISK.Tests.Application.Specifications
                 dialogManager,
                 eventAggregator);
 
+            _gameboardViewModel.Activate();
+
             return this;
         }
 
