@@ -28,6 +28,7 @@ namespace RISK.Tests.GuiWpf
         private readonly IDialogManager _dialogManager;
         private readonly IEventAggregator _gameEventAggregator;
         private readonly IWorldMapViewModelFactory _worldMapViewModelFactory;
+        private GameboardViewModel _sut;
 
         public GameboardViewModelTests()
         {
@@ -69,29 +70,30 @@ namespace RISK.Tests.GuiWpf
             _game.WorldMap.Returns(worldMap);
 
             _worldMapViewModelFactory.Create(Arg.Is(worldMap), Arg.Any<Action<ITerritory>>(), Arg.Any<IEnumerable<ITerritory>>()).Returns(_worldMapViewModel);
-        }
 
-        private GameboardViewModel Create()
-        {
-            return new GameboardViewModel(
-                _game, 
-                _worldMapViewModelFactory, 
+            _sut = new GameboardViewModel(
+                _game,
+                _worldMapViewModelFactory,
                 _windowManager,
-                _gameOverViewModelFactory, 
-                _dialogManager, 
+                _gameOverViewModelFactory,
+                _dialogManager,
                 _gameEventAggregator);
         }
 
         [Fact]
-        public void Initializes_WorldMapViewModel()
+        public void Initializes_WorldMapViewModel_upon_activation()
         {
-            Create().WorldMapViewModel.Should().Be(_worldMapViewModel);
+            _sut.Activate();
+
+            _sut.WorldMapViewModel.Should().Be(_worldMapViewModel);
         }
 
         [Fact]
         public void First_player_takes_first_turn()
         {
             _game.Player.Returns(_currentPlayer);
+
+            _sut.Activate();
 
             AssertCurrentPlayer(_currentPlayer);
         }
@@ -101,14 +103,14 @@ namespace RISK.Tests.GuiWpf
         {
             _game.Player.Returns(_nextPlayer);
 
-            Create().EndTurn();
+            _sut.EndTurn();
 
             AssertCurrentPlayer(_nextPlayer);
         }
 
         private void AssertCurrentPlayer(IPlayer expected)
         {
-            Create().Player.Should().Be(expected);
+            _sut.Player.Should().Be(expected);
         }
 
         [Fact]
@@ -116,22 +118,23 @@ namespace RISK.Tests.GuiWpf
         {
             _game.Player.Returns(_nextPlayer);            
 
-            var sut = Create();
+            var sut = _sut;
             sut.EndTurn();
 
             sut.Player.Should().Be(_nextPlayer);
         }
 
         [Fact]
-        public void When_winning_game_over_dialog_should_be_shown()
+        public void Show_game_over_when_game_is_updated()
         {
-            //_game.CurrentInteractionState.Returns(_firstPlayerInteractionState);
+            _game.Player.Returns(_currentPlayer);
 
-            _game.IsGameOver().Returns(true);
             var gameOverViewModel = new GameOverViewModel(_currentPlayer);
             _gameOverViewModelFactory.Create(_currentPlayer).Returns(gameOverViewModel);
 
-            Create().OnTerritoryClick(null);
+            _game.IsGameOver().Returns(true);
+
+            _sut.OnTerritoryClick(null);
 
             _windowManager.Received().ShowDialog(gameOverViewModel);
         }
@@ -142,7 +145,7 @@ namespace RISK.Tests.GuiWpf
             _game.IsGameOver().Returns(false);
             var gameOverViewModel = new GameOverViewModel(_currentPlayer);
 
-            Create().OnTerritoryClick(null);
+            _sut.OnTerritoryClick(null);
 
             _windowManager.DidNotReceiveWithAnyArgs().ShowDialog(gameOverViewModel);
         }
@@ -150,7 +153,7 @@ namespace RISK.Tests.GuiWpf
         [Fact]
         public void End_game_shows_confirm_dialog()
         {
-            Create().EndGame();
+            _sut.EndGame();
 
             _dialogManager.Received(1).ConfirmEndGame();
         }
@@ -158,7 +161,7 @@ namespace RISK.Tests.GuiWpf
         [Fact]
         public void Interaction_state_receives_on_click_when_location_is_clicked()
         {
-            Create().OnTerritoryClick(_territory1);
+            _sut.OnTerritoryClick(_territory1);
 
             _game.Received().OnClick(_territory1);
         }
@@ -166,7 +169,7 @@ namespace RISK.Tests.GuiWpf
         [Fact]
         public void Fortifies_armies()
         {
-            Create().Fortify();
+            _sut.Fortify();
 
             _game.Received().Fortify();
         }

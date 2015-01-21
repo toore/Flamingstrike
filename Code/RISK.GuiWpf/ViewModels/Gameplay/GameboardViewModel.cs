@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Caliburn.Micro;
 using GuiWpf.Services;
 using GuiWpf.ViewModels.Gameplay.Map;
@@ -8,7 +9,7 @@ using RISK.Application.GamePlaying;
 
 namespace GuiWpf.ViewModels.Gameplay
 {
-    public class GameboardViewModel : ViewModelBase, IGameboardViewModel
+    public class GameboardViewModel : ViewModelBase, IGameboardViewModel, IActivate
     {
         private readonly IGame _game;
         private readonly IWorldMapViewModelFactory _worldMapViewModelFactory;
@@ -34,13 +35,9 @@ namespace GuiWpf.ViewModels.Gameplay
             _eventAggregator = eventAggregator;
 
             InformationText = LanguageResources.Instance.GetString("SELECT_TERRITORY");
-
-            WorldMapViewModel = _worldMapViewModelFactory.Create(_game.WorldMap, x => OnTerritoryClick(x), Enumerable.Empty<ITerritory>());
-
-            BeginNextPlayerTurn();
         }
 
-        public WorldMapViewModel WorldMapViewModel { get; private set; }
+        public WorldMapViewModel WorldMapViewModel { get; set; }
 
         public IPlayer Player
         {
@@ -50,11 +47,18 @@ namespace GuiWpf.ViewModels.Gameplay
 
         public string InformationText { get; private set; }
 
-        private void BeginNextPlayerTurn()
+        public void Activate()
         {
-            Player = _game.Player;
+            InitializeWorld();
+        }
+        public bool IsActive { get; private set; }
+        public event EventHandler<ActivationEventArgs> Activated;
 
-            UpdateGameBoard();
+        private void InitializeWorld()
+        {
+            WorldMapViewModel = _worldMapViewModelFactory.Create(_game.WorldMap, x => OnTerritoryClick(x), Enumerable.Empty<ITerritory>());
+
+            UpdateGame();
         }
 
         public void Fortify()
@@ -66,7 +70,7 @@ namespace GuiWpf.ViewModels.Gameplay
         {
             _game.EndTurn();
 
-            BeginNextPlayerTurn();
+            UpdateGame();
         }
 
         public void EndGame()
@@ -83,11 +87,13 @@ namespace GuiWpf.ViewModels.Gameplay
         {
             _game.OnClick(territory);
 
-            UpdateGameBoard();
+            UpdateGame();
         }
 
-        private void UpdateGameBoard()
+        private void UpdateGame()
         {
+            Player = _game.Player;
+
             if (_game.IsGameOver())
             {
                 _windowManager.ShowDialog(_gameOverViewModelFactory.Create(Player));

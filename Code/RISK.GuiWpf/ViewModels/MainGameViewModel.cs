@@ -81,12 +81,14 @@ namespace GuiWpf.ViewModels
 
         private void InitializeNewGame()
         {
-            ActivateItem(_gameInitializationViewModelFactory.Create());
+            var gameSettingsViewModel = _gameInitializationViewModelFactory.Create();
+            ActivateItem(gameSettingsViewModel);
         }
 
         private void StartGame()
         {
-            ActivateItem(_gameSetupViewModelFactory.Create());
+            var gameSetupViewModel = _gameSetupViewModelFactory.Create();
+            ActivateItem(gameSetupViewModel);
         }
 
         private void StartGamePlay(IGame game)
