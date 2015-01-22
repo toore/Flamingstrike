@@ -16,7 +16,7 @@ namespace RISK.Tests.GuiWpf
 {
     public class GameboardViewModelTests
     {
-        private readonly IGame _game;
+        private readonly IGameAdapter _gameAdapter;
         private readonly WorldMapViewModel _worldMapViewModel;
         private readonly ITerritory _territory1;
         private readonly IInteractionState _firstPlayerInteractionState;
@@ -32,7 +32,7 @@ namespace RISK.Tests.GuiWpf
 
         public GameboardViewModelTests()
         {
-            _game = Substitute.For<IGame>();
+            _gameAdapter = Substitute.For<IGameAdapter>();
             _worldMapViewModelFactory = Substitute.For<IWorldMapViewModelFactory>();
             _windowManager = Substitute.For<IWindowManager>();
             _gameOverViewModelFactory = Substitute.For<IGameOverViewModelFactory>();
@@ -67,12 +67,12 @@ namespace RISK.Tests.GuiWpf
             _worldMapViewModel.WorldMapViewModels.Add(textViewModel2);
 
             var worldMap = Substitute.For<IWorldMap>();
-            _game.WorldMap.Returns(worldMap);
+            _gameAdapter.WorldMap.Returns(worldMap);
 
             _worldMapViewModelFactory.Create(Arg.Is(worldMap), Arg.Any<Action<ITerritory>>(), Arg.Any<IEnumerable<ITerritory>>()).Returns(_worldMapViewModel);
 
             _sut = new GameboardViewModel(
-                _game,
+                _gameAdapter,
                 _worldMapViewModelFactory,
                 _windowManager,
                 _gameOverViewModelFactory,
@@ -91,7 +91,7 @@ namespace RISK.Tests.GuiWpf
         [Fact]
         public void First_player_takes_first_turn()
         {
-            _game.Player.Returns(_currentPlayer);
+            _gameAdapter.Player.Returns(_currentPlayer);
 
             _sut.Activate();
 
@@ -101,7 +101,7 @@ namespace RISK.Tests.GuiWpf
         [Fact]
         public void Next_player_takes_second_turn()
         {
-            _game.Player.Returns(_nextPlayer);
+            _gameAdapter.Player.Returns(_nextPlayer);
 
             _sut.EndTurn();
 
@@ -116,7 +116,7 @@ namespace RISK.Tests.GuiWpf
         [Fact]
         public void Ends_turn_and_gets_next_turn()
         {
-            _game.Player.Returns(_nextPlayer);            
+            _gameAdapter.Player.Returns(_nextPlayer);            
 
             var sut = _sut;
             sut.EndTurn();
@@ -127,12 +127,12 @@ namespace RISK.Tests.GuiWpf
         [Fact]
         public void Show_game_over_when_game_is_updated()
         {
-            _game.Player.Returns(_currentPlayer);
+            _gameAdapter.Player.Returns(_currentPlayer);
 
             var gameOverViewModel = new GameOverViewModel(_currentPlayer);
             _gameOverViewModelFactory.Create(_currentPlayer).Returns(gameOverViewModel);
 
-            _game.IsGameOver().Returns(true);
+            _gameAdapter.IsGameOver().Returns(true);
 
             _sut.OnTerritoryClick(null);
 
@@ -142,7 +142,7 @@ namespace RISK.Tests.GuiWpf
         [Fact]
         public void When_game_is_not_over_no_game_over_dialog_should_be_shown()
         {
-            _game.IsGameOver().Returns(false);
+            _gameAdapter.IsGameOver().Returns(false);
             var gameOverViewModel = new GameOverViewModel(_currentPlayer);
 
             _sut.OnTerritoryClick(null);
@@ -163,7 +163,7 @@ namespace RISK.Tests.GuiWpf
         {
             _sut.OnTerritoryClick(_territory1);
 
-            _game.Received().OnClick(_territory1);
+            _gameAdapter.Received().OnClick(_territory1);
         }
 
         [Fact]
@@ -171,7 +171,7 @@ namespace RISK.Tests.GuiWpf
         {
             _sut.Fortify();
 
-            _game.Received().Fortify();
+            _gameAdapter.Received().Fortify();
         }
     }
 }

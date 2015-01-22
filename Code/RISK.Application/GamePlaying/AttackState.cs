@@ -7,19 +7,16 @@ namespace RISK.Application.GamePlaying
     {
         private readonly IStateController _stateController;
         private readonly IInteractionStateFactory _interactionStateFactory;
-        private readonly IBattleCalculator _battleCalculator;
 
         public AttackState(
             IStateController stateController, 
             IInteractionStateFactory interactionStateFactory, 
-            IBattleCalculator battleCalculator, 
             IPlayer player, 
             ITerritory selectedTerritory)
         {
             Player = player;
             _stateController = stateController;
             _interactionStateFactory = interactionStateFactory;
-            _battleCalculator = battleCalculator;
             SelectedTerritory = selectedTerritory;
         }
 
@@ -65,17 +62,7 @@ namespace RISK.Application.GamePlaying
 
         private bool CanAttack(ITerritory territory)
         {
-            var isTerritoryOccupiedByEnemy = territory.Occupant != Player;
-            var isBordering = SelectedTerritory.IsBordering(territory);
-            var hasArmiesToAttackWith = SelectedTerritory.HasArmiesAvailableForAttack();
-
-            var canAttack = isBordering
-                            &&
-                            isTerritoryOccupiedByEnemy
-                            &&
-                            hasArmiesToAttackWith;
-
-            return canAttack;
+            return _stateController.Game.CanAttack(SelectedTerritory, territory);
         }
 
         private void Attack(ITerritory territory)
@@ -87,18 +74,14 @@ namespace RISK.Application.GamePlaying
             //    return;
             //}
 
-            _battleCalculator.Attack(SelectedTerritory, territory);
+            var attack = _stateController.Game.Attack(SelectedTerritory, territory);
 
-            if (HasPlayerOccupiedTerritory(territory))
+            if (attack == AttackResult.SucceededAndOccupying)
             {
                 _stateController.CurrentState = _interactionStateFactory.CreateAttackState(_stateController, Player, territory);
-                _stateController.PlayerShouldReceiveCardWhenTurnEnds = true;
             }
         }
 
-        private bool HasPlayerOccupiedTerritory(ITerritory territoryToAttack)
-        {
-            return territoryToAttack.Occupant == Player;
-        }
+        
     }
 }

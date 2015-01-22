@@ -61,7 +61,7 @@ namespace RISK.Tests.GuiWpf
         [Fact]
         public void Start_game_play_shows_the_game_playing_view()
         {
-            var game = Substitute.For<IGame>();
+            var game = Substitute.For<IGameAdapter>();
             var gameboardViewModel = Substitute.For<IGameboardViewModel>();
             _gameboardViewModelFactory.Create(game).Returns(gameboardViewModel);
 

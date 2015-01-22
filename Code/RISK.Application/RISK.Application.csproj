@@ -62,6 +62,7 @@
     <Compile Include="GamePlaying\DiceAndCalculation\IDicesResult.cs" />
     <Compile Include="GamePlaying\FortifyMoveState.cs" />
     <Compile Include="GamePlaying\FortifySelectState.cs" />
+    <Compile Include="GamePlaying\Game.cs" />
     <Compile Include="GamePlaying\Setup\AlternateGameSetup.cs" />
     <Compile Include="GamePlaying\BattleCalculator.cs" />
     <Compile Include="GamePlaying\CardFactory.cs" />
@@ -91,11 +92,10 @@
     <Compile Include="GamePlaying\WorldMapFactory.cs" />
     <Compile Include="WorldMap.cs" />
     <Compile Include="Continents.cs" />
-    <Compile Include="GamePlaying\IGame.cs" />
     <Compile Include="GamePlaying\IInteractionState.cs" />
     <Compile Include="PlayerRepository.cs" />
     <Compile Include="GamePlaying\SelectState.cs" />
-    <Compile Include="GamePlaying\Game.cs" />
+    <Compile Include="GamePlaying\GameAdapter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

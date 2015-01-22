@@ -87,9 +87,9 @@ namespace GuiWpf.ViewModels.Setup
             return _userInteractor.GetSelectedTerritory(territorySelectorParameter);
         }
 
-        private void StartGameplay(IGame game)
+        private void StartGameplay(IGameAdapter gameAdapter)
         {
-            _eventAggregator.PublishOnUIThread(new StartGameplayMessage(game));
+            _eventAggregator.PublishOnUIThread(new StartGameplayMessage(gameAdapter));
         }
 
         private void UpdateView(ITerritorySelectorParameter territorySelectorParameter)

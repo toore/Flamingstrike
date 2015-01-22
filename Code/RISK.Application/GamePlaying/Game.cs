@@ -1,69 +1,82 @@
-﻿using System.Collections.Generic;
 using System.Linq;
 using RISK.Application.Entities;
 using RISK.Application.Extensions;
 
 namespace RISK.Application.GamePlaying
 {
-    public class Game : IGame
+    public enum AttackResult
     {
-        private readonly IInteractionStateFactory _interactionStateFactory;
-        private readonly IStateControllerFactory _stateControllerFactory;
+        SucceededAndOccupying,
+        Other
+    };
+
+    public class Game
+    {
+        private readonly IOrderedEnumerable<IPlayer> _players;
         private readonly ICardFactory _cardFactory;
-        private readonly IList<IPlayer> _players;
-        private IStateController _stateController;
+        private readonly IBattleCalculator _battleCalculator;
 
-        public Game(IInteractionStateFactory interactionStateFactory, IStateControllerFactory stateControllerFactory, IEnumerable<IPlayer> players, IWorldMap worldMap, ICardFactory cardFactory)
+        private bool _playerShouldReceiveCardWhenTurnEnds;
+
+        public Game(IOrderedEnumerable<IPlayer> players, IWorldMap worldMap, ICardFactory cardFactory, IBattleCalculator battleCalculator)
         {
+            _players = players;
+            Player = players.First();
             WorldMap = worldMap;
-            _interactionStateFactory = interactionStateFactory;
-            _stateControllerFactory = stateControllerFactory;
             _cardFactory = cardFactory;
-            _players = players.ToList();
-
-            MoveToNextPlayer();
+            _battleCalculator = battleCalculator;
         }
 
-        public IWorldMap WorldMap { get; private set; }
         public IPlayer Player { get; private set; }
-        public ITerritory SelectedTerritory { get { return _stateController.CurrentState.SelectedTerritory; }}
-
-        private void MoveToNextPlayer()
-        {
-            Player = _players.GetNextOrFirst(Player);
-
-            _stateController = _stateControllerFactory.Create(Player);
-            _stateController.SetInitialState();
-        } 
+        public IWorldMap WorldMap { get; private set; }
 
         public void EndTurn()
         {
-            if (_stateController.PlayerShouldReceiveCardWhenTurnEnds)
+            if (_playerShouldReceiveCardWhenTurnEnds)
             {
                 Player.AddCard(_cardFactory.Create());
             }
 
-            MoveToNextPlayer();
+            _playerShouldReceiveCardWhenTurnEnds = false;
+            Player = _players.ToList().GetNextOrFirst(Player);
+        }
+
+        public bool CanAttack(ITerritory from, ITerritory to)
+        {
+            var isTerritoryOccupiedByEnemy = from.Occupant != Player;
+            var isBordering = from.IsBordering(to);
+            var hasArmiesToAttackWith = from.HasArmiesAvailableForAttack();
+
+            var canAttack = isBordering
+                            &&
+                            isTerritoryOccupiedByEnemy
+                            &&
+                            hasArmiesToAttackWith;
+
+            return canAttack;
+        }
+
+        public AttackResult Attack(ITerritory from, ITerritory to)
+        {
+            _battleCalculator.Attack(from, to);
+
+            if (HasPlayerOccupiedTerritory(to))
+            {
+                _playerShouldReceiveCardWhenTurnEnds = true;
+                return AttackResult.SucceededAndOccupying;
+            }
+
+            return AttackResult.Other;
+        }
+
+        private bool HasPlayerOccupiedTerritory(ITerritory territoryToAttack)
+        {
+            return territoryToAttack.Occupant == Player;
         }
 
         public bool IsGameOver()
         {
             return WorldMap.GetAllPlayersOccupyingTerritories().Count() == 1;
-        }
-
-        public void Fortify()
-        {
-            _stateController.CurrentState = _interactionStateFactory.CreateFortifyState(_stateController, Player);
-        }
-
-        public void OnClick(ITerritory territory)
-        {
-            _stateController.CurrentState.OnClick(territory);
-        }
-
-        public bool CanClick(ITerritory territory)
-        {
-            return _stateController.CurrentState.CanClick(territory);
         }
     }
 }

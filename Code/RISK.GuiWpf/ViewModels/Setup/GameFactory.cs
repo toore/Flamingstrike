@@ -1,4 +1,5 @@
-﻿using RISK.Application;
+﻿using System.Linq;
+using RISK.Application;
 using RISK.Application.GamePlaying;
 using RISK.Application.GamePlaying.Setup;
 
@@ -6,7 +7,7 @@ namespace GuiWpf.ViewModels.Setup
 {
     public interface IGameFactory
     {
-        IGame Create(ITerritorySelector territorySelector);
+        IGameAdapter Create(ITerritorySelector territorySelector);
     }
 
     public class GameFactory : IGameFactory
@@ -16,27 +17,33 @@ namespace GuiWpf.ViewModels.Setup
         private readonly PlayerRepository _playerRepository;
         private readonly IAlternateGameSetup _alternateGameSetup;
         private readonly ICardFactory _cardFactory;
+        private readonly IBattleCalculator _battleCalculator;
 
         public GameFactory(
-            IAlternateGameSetup alternateGameSetup, 
-            IInteractionStateFactory interactionStateFactory, 
-            IStateControllerFactory stateControllerFactory, 
-            PlayerRepository playerRepository, 
-            ICardFactory cardFactory)
+            IAlternateGameSetup alternateGameSetup,
+            IInteractionStateFactory interactionStateFactory,
+            IStateControllerFactory stateControllerFactory,
+            PlayerRepository playerRepository,
+            ICardFactory cardFactory,
+            IBattleCalculator battleCalculator)
         {
             _interactionStateFactory = interactionStateFactory;
             _stateControllerFactory = stateControllerFactory;
             _playerRepository = playerRepository;
             _alternateGameSetup = alternateGameSetup;
             _cardFactory = cardFactory;
+            _battleCalculator = battleCalculator;
         }
 
-        public IGame Create(ITerritorySelector territorySelector)
+        public IGameAdapter Create(ITerritorySelector territorySelector)
         {
             var worldMap = _alternateGameSetup.InitializeWorldMap(territorySelector);
-            var players = _playerRepository.GetAll();
+            var players = _playerRepository.GetAll()
+                .OrderBy(x=>x.PlayerOrderIndex);
 
-            return new Game(_interactionStateFactory, _stateControllerFactory, players, worldMap, _cardFactory);
+            var game = new Game(players, worldMap, _cardFactory, _battleCalculator);
+            
+            return new GameAdapter(_interactionStateFactory, _stateControllerFactory, game);
         }
     }
 }

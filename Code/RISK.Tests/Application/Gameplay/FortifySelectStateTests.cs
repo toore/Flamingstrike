@@ -16,7 +16,7 @@ namespace RISK.Tests.Application.Gameplay
 
         public FortifySelectStateTests()
         {
-            _stateController = new StateController(_interactionStateFactory, _player);
+            _stateController = new StateController(_interactionStateFactory, _player, null);
             _interactionStateFactory = Substitute.For<IInteractionStateFactory>();
             _player = Substitute.For<IPlayer>();
 
@@ -67,7 +67,7 @@ namespace RISK.Tests.Application.Gameplay
 
         public FortifyMoveTests()
         {
-            _stateController = new StateController(_interactionStateFactory, _player);
+            _stateController = new StateController(_interactionStateFactory, _player, null);
             _interactionStateFactory = Substitute.For<IInteractionStateFactory>();
             _player = Substitute.For<IPlayer>();
 

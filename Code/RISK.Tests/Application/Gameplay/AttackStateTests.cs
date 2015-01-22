@@ -9,7 +9,7 @@ namespace RISK.Tests.Application.Gameplay
 {
     public class AttackStateTests
     {
-        private readonly IInteractionState _sut;
+        private readonly AttackState _sut;
         private readonly IPlayer _player;
         private readonly IInteractionStateFactory _interactionStateFactory;
         private readonly StateController _stateController;
@@ -22,7 +22,7 @@ namespace RISK.Tests.Application.Gameplay
 
         public AttackStateTests()
         {
-            _stateController = new StateController(_interactionStateFactory, _player);
+            _stateController = new StateController(_interactionStateFactory, _player, null);
             _interactionStateFactory = Substitute.For<IInteractionStateFactory>();
             _player = Substitute.For<IPlayer>();
             _battleCalculator = Substitute.For<IBattleCalculator>();
@@ -47,7 +47,7 @@ namespace RISK.Tests.Application.Gameplay
                 .Occupant(_player)
                 .Build();
 
-            _sut = new AttackState(_stateController, _interactionStateFactory, _battleCalculator, _player, _selectedTerritory);
+            _sut = new AttackState(_stateController, _interactionStateFactory, _player, _selectedTerritory);
         }
 
         [Fact]
@@ -146,9 +146,10 @@ namespace RISK.Tests.Application.Gameplay
 
             _sut.OnClick(_borderingTerritoryOccupiedByOtherPlayer);
 
-            _stateController.PlayerShouldReceiveCardWhenTurnEnds.Should().BeTrue();
+            //_stateController.PlayerShouldReceiveCardWhenTurnEnds.Should().BeTrue();
+            throw new NotImplementedException();
         }
-        }
+    }
 
     public static class GameStateAssertionExtensions
     {

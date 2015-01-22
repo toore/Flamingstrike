@@ -4,13 +4,6 @@ namespace RISK.Application.GamePlaying
 {
     public class InteractionStateFactory : IInteractionStateFactory
     {
-        private readonly IBattleCalculator _battleCalculator;
-
-        public InteractionStateFactory(IBattleCalculator battleCalculator)
-        {
-            _battleCalculator = battleCalculator;
-        }
-
         public IInteractionState CreateSelectState(IStateController stateController, IPlayer player)
         {
             return new SelectState(stateController, this, player);
@@ -18,7 +11,7 @@ namespace RISK.Application.GamePlaying
 
         public IInteractionState CreateAttackState(IStateController stateController, IPlayer player, ITerritory selectedTerritory)
         {
-            return new AttackState(stateController, this, _battleCalculator, player, selectedTerritory);
+            return new AttackState(stateController, this, player, selectedTerritory);
         }
 
         public IInteractionState CreateFortifyState(IStateController stateController, IPlayer player)

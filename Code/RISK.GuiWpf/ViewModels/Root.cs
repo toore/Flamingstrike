@@ -42,7 +42,7 @@ namespace GuiWpf.ViewModels
             var dices = new Dices(casualtiesCalculator, dice);
             var cardFactory = new CardFactory();
             var battleCalculator = new BattleCalculator(dices);
-            var interactionStateFactory = new InteractionStateFactory(battleCalculator);
+            var interactionStateFactory = new InteractionStateFactory();
             var stateControllerFactory = new StateControllerFactory(interactionStateFactory);
             var initialArmyAssignmentCalculator = new InitialArmyAssignmentCalculator();
             var worldMapFactory = new WorldMapFactory();
@@ -54,7 +54,7 @@ namespace GuiWpf.ViewModels
             var userNotifier = new UserNotifier(WindowManager, confirmViewModelFactory);
             DialogManager = new DialogManager(userNotifier);
 
-            GameFactory = new GameFactory(alternateGameSetup, interactionStateFactory, stateControllerFactory, PlayerRepository, cardFactory);
+            GameFactory = new GameFactory(alternateGameSetup, interactionStateFactory, stateControllerFactory, PlayerRepository, cardFactory, battleCalculator);
 
             PlayerFactory = new PlayerFactory();
             PlayerTypes = new PlayerTypes();

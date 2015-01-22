@@ -11,7 +11,7 @@ namespace GuiWpf.ViewModels.Gameplay
 {
     public class GameboardViewModel : ViewModelBase, IGameboardViewModel, IActivate
     {
-        private readonly IGame _game;
+        private readonly IGameAdapter _gameAdapter;
         private readonly IWorldMapViewModelFactory _worldMapViewModelFactory;
         private readonly IWindowManager _windowManager;
         private readonly IGameOverViewModelFactory _gameOverViewModelFactory;
@@ -20,14 +20,14 @@ namespace GuiWpf.ViewModels.Gameplay
         private IPlayer _player;
 
         public GameboardViewModel(
-            IGame game,
+            IGameAdapter gameAdapter,
             IWorldMapViewModelFactory worldMapViewModelFactory,
             IWindowManager windowManager,
             IGameOverViewModelFactory gameOverViewModelFactory,
             IDialogManager dialogManager,
             IEventAggregator eventAggregator)
         {
-            _game = game;
+            _gameAdapter = gameAdapter;
             _worldMapViewModelFactory = worldMapViewModelFactory;
             _windowManager = windowManager;
             _gameOverViewModelFactory = gameOverViewModelFactory;
@@ -56,19 +56,19 @@ namespace GuiWpf.ViewModels.Gameplay
 
         private void InitializeWorld()
         {
-            WorldMapViewModel = _worldMapViewModelFactory.Create(_game.WorldMap, x => OnTerritoryClick(x), Enumerable.Empty<ITerritory>());
+            WorldMapViewModel = _worldMapViewModelFactory.Create(_gameAdapter.WorldMap, x => OnTerritoryClick(x), Enumerable.Empty<ITerritory>());
 
             UpdateGame();
         }
 
         public void Fortify()
         {
-            _game.Fortify();
+            _gameAdapter.Fortify();
         }
 
         public void EndTurn()
         {
-            _game.EndTurn();
+            _gameAdapter.EndTurn();
 
             UpdateGame();
         }
@@ -85,16 +85,16 @@ namespace GuiWpf.ViewModels.Gameplay
 
         public void OnTerritoryClick(ITerritory territory)
         {
-            _game.OnClick(territory);
+            _gameAdapter.OnClick(territory);
 
             UpdateGame();
         }
 
         private void UpdateGame()
         {
-            Player = _game.Player;
+            Player = _gameAdapter.Player;
 
-            if (_game.IsGameOver())
+            if (_gameAdapter.IsGameOver())
             {
                 _windowManager.ShowDialog(_gameOverViewModelFactory.Create(Player));
             }
@@ -106,11 +106,11 @@ namespace GuiWpf.ViewModels.Gameplay
 
         private void UpdateWorldMap()
         {
-            var enabledTerritories = _game.WorldMap.GetTerritories()
-                .Where(x => _game.CanClick(x))
+            var enabledTerritories = _gameAdapter.WorldMap.GetTerritories()
+                .Where(x => _gameAdapter.CanClick(x))
                 .ToList();
 
-            _worldMapViewModelFactory.Update(WorldMapViewModel, _game.WorldMap, _game.SelectedTerritory, enabledTerritories);
+            _worldMapViewModelFactory.Update(WorldMapViewModel, _gameAdapter.WorldMap, _gameAdapter.SelectedTerritory, enabledTerritories);
         }
     }
 }

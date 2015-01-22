@@ -15,7 +15,7 @@ namespace RISK.Tests.Application.Gameplay
         {
             var battleCalculator = Substitute.For<IBattleCalculator>();
 
-            _sut = new InteractionStateFactory(battleCalculator);
+            _sut = new InteractionStateFactory();
 
             _player = Substitute.For<IPlayer>();
         }

@@ -76,15 +76,15 @@ namespace RISK.Tests.GuiWpf
         [Fact]
         public void When_finished_game_conductor_is_notified()
         {
-            var expectedGame = Substitute.For<IGame>();
+            var expectedGame = Substitute.For<IGameAdapter>();
             _gameFactory.Create(null).ReturnsForAnyArgs(expectedGame);
-            IGame actualGame = null;
-            _eventAggregator.WhenForAnyArgs(x => x.PublishOnUIThread(null)).Do(ci => actualGame = ci.Arg<StartGameplayMessage>().Game);
+            IGameAdapter actualGameAdapter = null;
+            _eventAggregator.WhenForAnyArgs(x => x.PublishOnUIThread(null)).Do(ci => actualGameAdapter = ci.Arg<StartGameplayMessage>().GameAdapter);
 
             InitializeAndActivate();
 
             _eventAggregator.ReceivedWithAnyArgs().PublishOnUIThread(new StartGameplayMessage(expectedGame));
-            actualGame.Should().Be(expectedGame);
+            actualGameAdapter.Should().Be(expectedGame);
         }
 
         [Fact]

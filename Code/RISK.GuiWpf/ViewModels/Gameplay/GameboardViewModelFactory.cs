@@ -27,10 +27,10 @@ namespace GuiWpf.ViewModels.Gameplay
             _eventAggregator = eventAggregator;
         }
 
-        public IGameboardViewModel Create(IGame game)
+        public IGameboardViewModel Create(IGameAdapter gameAdapter)
         {
             return new GameboardViewModel(
-                game,
+                gameAdapter,
                 _worldMapViewModelFactory,
                 _windowManager,
                 _gameOverViewModelFactory,

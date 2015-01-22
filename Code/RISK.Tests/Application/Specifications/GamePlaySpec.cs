@@ -25,7 +25,7 @@ namespace RISK.Tests.Application.Specifications
         private HumanPlayer _player2;
         private IDice _dice;
         private GameOverViewModel _gameOverAndPlayer1IsTheWinnerViewModel;
-        private Game _game;
+        private GameAdapter _gameAdapter;
 
         [Fact]
         public void Moves_armies_into_Brazil_after_win()
@@ -156,8 +156,9 @@ namespace RISK.Tests.Application.Specifications
             alternateGameSetup.InitializeWorldMap(locationSelector).Returns(_worldMap);
             var dices = new Dices(new CasualtiesCalculator(), _dice);
             var battleCalculator = new BattleCalculator(dices);
-            var interactionStateFactory = new InteractionStateFactory(battleCalculator);
-            _game = new Game(interactionStateFactory, new StateControllerFactory(interactionStateFactory), new[] { _player1, _player2 }, _worldMap, new CardFactory());
+            var interactionStateFactory = new InteractionStateFactory();
+            var game = new Game(new IPlayer[] { _player1, _player2 }.OrderBy(x => x.PlayerOrderIndex), _worldMap, new CardFactory(), battleCalculator);
+            _gameAdapter = new GameAdapter(interactionStateFactory, new StateControllerFactory(interactionStateFactory), game);
 
             var worldMapModelFactory = new WorldMapModelFactory();
             var colorService = new ColorService();
@@ -170,7 +171,7 @@ namespace RISK.Tests.Application.Specifications
             var worldMapViewModelFactory = new WorldMapViewModelFactory(worldMapModelFactory, territoryColorsFactory, colorService);
 
             _gameboardViewModel = new GameboardViewModel(
-                _game,
+                _gameAdapter,
                 worldMapViewModelFactory,
                 _windowManager,
                 gameOverViewModelFactory,
@@ -291,7 +292,7 @@ namespace RISK.Tests.Application.Specifications
             _worldMap.NorthAfrica.Armies.Should().Be(1, "North Africa should have 1 army");
             _worldMap.Brazil.Occupant.Should().Be(_player1, "player 1 should occupy Brazil");
             _worldMap.Brazil.Armies.Should().Be(4, "Brazil should have 4 armies");
-            _game.SelectedTerritory.Should().Be(_worldMap.Brazil);
+            _gameAdapter.SelectedTerritory.Should().Be(_worldMap.Brazil);
         }
 
         private void player_1_is_the_winner()

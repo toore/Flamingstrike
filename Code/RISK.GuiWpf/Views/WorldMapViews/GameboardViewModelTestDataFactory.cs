@@ -35,10 +35,11 @@ namespace GuiWpf.Views.WorldMapViews
 
             var worldMapViewModelFactory = new WorldMapViewModelFactory(new WorldMapModelFactory(), territoryColorsFactory, colorService);
 
-            var interactionStateFactory = new InteractionStateFactory(null);
-            var players = new[] { humanPlayer, humanPlayer2 };
-            var game = new Game(interactionStateFactory, new StateControllerFactory(interactionStateFactory), players, worldMap, new CardFactory());
-            var gameboardViewModel = new GameboardViewModel(game, worldMapViewModelFactory, null, new GameOverViewModelFactory(), null, null);
+            var players = new IPlayer[] { humanPlayer, humanPlayer2 }.OrderBy(x => x.PlayerOrderIndex);
+            var game = new Game(players, worldMap, new CardFactory(), null);
+            var interactionStateFactory = new InteractionStateFactory();
+            var gameAdapter = new GameAdapter(interactionStateFactory, new StateControllerFactory(interactionStateFactory), game);
+            var gameboardViewModel = new GameboardViewModel(gameAdapter, worldMapViewModelFactory, null, new GameOverViewModelFactory(), null, null);
 
             return gameboardViewModel;
         }

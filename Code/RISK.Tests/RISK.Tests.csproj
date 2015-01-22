@@ -84,6 +84,7 @@
     <Compile Include="Application\Battle\DicesTests.cs" />
     <Compile Include="Application\Battle\CasualtiesCalculatorTests.cs" />
     <Compile Include="Application\Gameplay\FortifySelectStateTests.cs" />
+    <Compile Include="Application\Gameplay\GameTests.cs" />
     <Compile Include="Application\Gameplay\InitialArmyCountTests.cs" />
     <Compile Include="CardBuilder.cs" />
     <Compile Include="GuiWpf\SameThreadDispatcher.cs" />
@@ -116,7 +117,7 @@
     <Compile Include="Application\Gameplay\Setup\AlternateGameSetupTests.cs" />
     <Compile Include="GuiWpf\ColorServiceTests.cs" />
     <Compile Include="GuiWpf\GameboardViewModelTests.cs" />
-    <Compile Include="Application\Gameplay\GameTests.cs" />
+    <Compile Include="Application\Gameplay\GameAdapterTests.cs" />
     <Compile Include="Application\Gameplay\WorldMapTests.cs" />
     <Compile Include="Application\Gameplay\RandomSorterTests.cs" />
     <Compile Include="MainWindow.xaml.cs">

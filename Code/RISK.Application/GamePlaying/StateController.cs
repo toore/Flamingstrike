@@ -5,7 +5,7 @@ namespace RISK.Application.GamePlaying
     public interface IStateController
     {
         IInteractionState CurrentState { get; set; }
-        bool PlayerShouldReceiveCardWhenTurnEnds { get; set; }
+        Game Game { get; }
         void SetInitialState();
     }
 
@@ -15,13 +15,15 @@ namespace RISK.Application.GamePlaying
         private readonly IPlayer _player;
 
         public IInteractionState CurrentState { get; set; }
-        public bool PlayerShouldReceiveCardWhenTurnEnds { get; set; }
 
-        public StateController(IInteractionStateFactory interactionStateFactory, IPlayer player)
+        public StateController(IInteractionStateFactory interactionStateFactory, IPlayer player, Game game)
         {
+            Game = game;
             _interactionStateFactory = interactionStateFactory;
             _player = player;
         }
+
+        public Game Game { get; private set; }
 
         public void SetInitialState()
         {

@@ -4,7 +4,7 @@ namespace RISK.Application.GamePlaying
 {
     public interface IStateControllerFactory
     {
-        IStateController Create(IPlayer currentPlayer);
+        IStateController Create(IPlayer currentPlayer, Game game);
     }
 
     public class StateControllerFactory : IStateControllerFactory
@@ -16,9 +16,9 @@ namespace RISK.Application.GamePlaying
             _interactionStateFactory = interactionStateFactory;
         }
 
-        public IStateController Create(IPlayer currentPlayer)
+        public IStateController Create(IPlayer currentPlayer, Game game)
         {
-            return new StateController(_interactionStateFactory, currentPlayer);
+            return new StateController(_interactionStateFactory, currentPlayer, game);
         }
     }
 }
