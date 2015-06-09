@@ -26,10 +26,10 @@ namespace RISK.Tests.Application.Battle
         {
             var expectedCasualties = new Casualties { AttackerCasualties = 11, DefenderCasualties = 22 };
             _casualtiesCalculator.CalculateCasualties(
-                Arg.Is<IEnumerable<DiceValue>>(x => x.SequenceEqual(new[] { DiceValue.One })),
-                Arg.Is<IEnumerable<DiceValue>>(x => x.SequenceEqual(new[] { DiceValue.Two })))
+                Arg.Is<IEnumerable<int>>(x => x.SequenceEqual(new[] { 1 })),
+                Arg.Is<IEnumerable<int>>(x => x.SequenceEqual(new[] { 2 })))
                 .Returns(expectedCasualties);
-            _dice.Roll().Returns(DiceValue.One, DiceValue.Two);
+            _dice.Roll().Returns(1, 2);
 
             var dicesResult = _dices.Roll(1, 1);
 

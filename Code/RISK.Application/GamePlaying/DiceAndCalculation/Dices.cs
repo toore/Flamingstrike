@@ -4,6 +4,11 @@ using System.Linq;
 
 namespace RISK.Application.GamePlaying.DiceAndCalculation
 {
+    public interface IDices
+    {
+        IDicesResult Roll(int attackingArmies, int defendingArmies);
+    }
+
     public class Dices : IDices
     {
         private readonly ICasualtiesCalculator _casualtiesCalculator;
@@ -17,24 +22,22 @@ namespace RISK.Application.GamePlaying.DiceAndCalculation
 
         public IDicesResult Roll(int attackingArmies, int defendingArmies)
         {
-            var noOfAttackingDices = Math.Min(attackingArmies, 3);
-            var noOfDefendingDices = Math.Min(defendingArmies, 2);
+            var numberOfAttackingDices = Math.Min(attackingArmies, 3);
+            var numberOfDefendingDices = Math.Min(defendingArmies, 2);
 
-            var attackDices = RollDices(noOfAttackingDices).ToList();
-            var defendDices = RollDices(noOfDefendingDices).ToList();
+            var attackDices = RollDices(numberOfAttackingDices);
+            var defendDices = RollDices(numberOfDefendingDices);
 
             var casualties = _casualtiesCalculator.CalculateCasualties(attackDices, defendDices);
 
             return new DicesResult
             {
-                AttackDices = attackDices,
-                DefendDices = defendDices,
                 AttackerCasualties = casualties.AttackerCasualties,
                 DefenderCasualties = casualties.DefenderCasualties
             };
         }
 
-        private IEnumerable<DiceValue> RollDices(int numberOfDices)
+        private IList<int> RollDices(int numberOfDices)
         {
             return Enumerable.Range(0, numberOfDices)
                 .Select(x => _dice.Roll())

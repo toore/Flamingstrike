@@ -18,22 +18,22 @@ namespace RISK.Tests.Application.Battle
         {
             get
             {
-                yield return new object[] { 1, new[] { DiceValue.Two, DiceValue.One, DiceValue.One }, new[] { DiceValue.One, DiceValue.One } };
-                yield return new object[] { 1, new[] { DiceValue.One, DiceValue.One, DiceValue.Two }, new[] { DiceValue.One, DiceValue.One } };
-                yield return new object[] { 1, new[] { DiceValue.Two, DiceValue.One }, new[] { DiceValue.One, DiceValue.One } };
-                yield return new object[] { 1, new[] { DiceValue.One }, new[] { DiceValue.One, DiceValue.One } };
-                yield return new object[] { 1, new[] { DiceValue.One }, new[] { DiceValue.One } };
-                yield return new object[] { 2, new[] { DiceValue.One, DiceValue.One, DiceValue.One }, new[] { DiceValue.One, DiceValue.One } };
-                yield return new object[] { 2, new[] { DiceValue.Six, DiceValue.Six, DiceValue.Six }, new[] { DiceValue.Six, DiceValue.Six } };
-                yield return new object[] { 1, new[] { DiceValue.Six, DiceValue.Six, DiceValue.Six }, new[] { DiceValue.Five, DiceValue.Six } };
+                yield return new object[] { 1, new[] { 2, 1, 1 }, new[] { 1, 1 } };
+                yield return new object[] { 1, new[] { 1, 1, 2 }, new[] { 1, 1 } };
+                yield return new object[] { 1, new[] { 2, 1 }, new[] { 1, 1 } };
+                yield return new object[] { 1, new[] { 1 }, new[] { 1, 1 } };
+                yield return new object[] { 1, new[] { 1 }, new[] { 1 } };
+                yield return new object[] { 2, new[] { 1, 1, 1 }, new[] { 1, 1 } };
+                yield return new object[] { 2, new[] { 6, 6, 6 }, new[] { 6, 6 } };
+                yield return new object[] { 1, new[] { 6, 6, 6 }, new[] { 5, 6 } };
             }
         }
 
         [Theory]
         [MemberData("_attackerCasualtiesCases")]
-        public void CalculateAttackerCasualties(int expectedCasualties, IEnumerable<DiceValue> attacker, IEnumerable<DiceValue> defender)
+        public void CalculateAttackerCasualties(int expectedCasualties, IEnumerable<int> attack, IEnumerable<int> defence)
         {
-            _casualtiesCalculator.CalculateCasualties(attacker, defender).AttackerCasualties
+            _casualtiesCalculator.CalculateCasualties(attack, defence).AttackerCasualties
                 .Should().Be(expectedCasualties);
         }
 
@@ -41,22 +41,22 @@ namespace RISK.Tests.Application.Battle
         {
             get
             {
-                yield return new object[] { 1, new[] { DiceValue.Two, DiceValue.One, DiceValue.One }, new[] { DiceValue.One, DiceValue.One } };
-                yield return new object[] { 1, new[] { DiceValue.One, DiceValue.One, DiceValue.Two }, new[] { DiceValue.One, DiceValue.One } };
-                yield return new object[] { 1, new[] { DiceValue.Two, DiceValue.One }, new[] { DiceValue.One, DiceValue.One } };
-                yield return new object[] { 0, new[] { DiceValue.One }, new[] { DiceValue.One, DiceValue.One } };
-                yield return new object[] { 0, new[] { DiceValue.One }, new[] { DiceValue.One } };
-                yield return new object[] { 0, new[] { DiceValue.One, DiceValue.One, DiceValue.One }, new[] { DiceValue.One, DiceValue.One } };
-                yield return new object[] { 0, new[] { DiceValue.Six, DiceValue.Six, DiceValue.Six }, new[] { DiceValue.Six, DiceValue.Six } };
-                yield return new object[] { 1, new[] { DiceValue.Six, DiceValue.Six, DiceValue.Six }, new[] { DiceValue.Five, DiceValue.Six } };
+                yield return new object[] { 1, new[] { 2, 1, 1 }, new[] { 1, 1 } };
+                yield return new object[] { 1, new[] { 1, 1, 2 }, new[] { 1, 1 } };
+                yield return new object[] { 1, new[] { 2, 1 }, new[] { 1, 1 } };
+                yield return new object[] { 0, new[] { 1 }, new[] { 1, 1 } };
+                yield return new object[] { 0, new[] { 1 }, new[] { 1 } };
+                yield return new object[] { 0, new[] { 1, 1, 1 }, new[] { 1, 1 } };
+                yield return new object[] { 0, new[] { 6, 6, 6 }, new[] { 6, 6 } };
+                yield return new object[] { 1, new[] { 6, 6, 6 }, new[] { 5, 6 } };
             }
         }
 
         [Theory]
         [MemberData("_defenderCasualtiesCases")]
-        public void CalculateDefenderCasualties(int expectedCasualties, IEnumerable<DiceValue> attacker, IEnumerable<DiceValue> defender)
+        public void CalculateDefenderCasualties(int expectedCasualties, IEnumerable<int> attack, IEnumerable<int> defence)
         {
-            _casualtiesCalculator.CalculateCasualties(attacker, defender).DefenderCasualties
+            _casualtiesCalculator.CalculateCasualties(attack, defence).DefenderCasualties
                 .Should().Be(expectedCasualties);
         }
     }

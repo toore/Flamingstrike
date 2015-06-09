@@ -2,6 +2,6 @@
 {
     public interface IDice
     {
-        DiceValue Roll();
+        int Roll();
     }
 }

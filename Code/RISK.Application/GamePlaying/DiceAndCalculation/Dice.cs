@@ -11,9 +11,9 @@ namespace RISK.Application.GamePlaying.DiceAndCalculation
             _randomWrapper = randomWrapper;
         }
 
-        public DiceValue Roll()
+        public int Roll()
         {
-            return (DiceValue)(_randomWrapper.Next(1, 7));
+            return _randomWrapper.Next(1, 7);
         }
     }
 }

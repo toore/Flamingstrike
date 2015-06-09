@@ -252,7 +252,7 @@ namespace RISK.Tests.Application.Specifications
 
         private GamePlaySpec and_attacks_brazil_and_wins()
         {
-            _dice.Roll().Returns(DiceValue.Six, DiceValue.Five, DiceValue.Four, DiceValue.Five);
+            _dice.Roll().Returns(6, 5, 4, 5);
             ClickOn(_worldMap.Brazil);
             return this;
         }
@@ -265,7 +265,7 @@ namespace RISK.Tests.Application.Specifications
 
         private void and_attacks_iceland_and_wins()
         {
-            _dice.Roll().Returns(DiceValue.Two, DiceValue.One);
+            _dice.Roll().Returns(2, 1);
             ClickOn(_worldMap.Iceland);
         }
 

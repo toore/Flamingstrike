@@ -4,68 +4,79 @@ using System.Linq;
 
 namespace RISK.Application.GamePlaying.DiceAndCalculation
 {
+    public interface ICasualtiesCalculator
+    {
+        Casualties CalculateCasualties(IEnumerable<int> attack, IEnumerable<int> defence);
+    }
+
+    public class Casualties
+    {
+        public int AttackerCasualties { get; set; }
+        public int DefenderCasualties { get; set; }
+    }
+
     public class CasualtiesCalculator : ICasualtiesCalculator
     {
-        public Casualties CalculateCasualties(IEnumerable<DiceValue> attackDices, IEnumerable<DiceValue> defendDices)
+        public Casualties CalculateCasualties(IEnumerable<int> attack, IEnumerable<int> defence)
         {
-            var matchedDices = MatchDices(attackDices,defendDices).ToList();
+            var matchedAttackAndDefenceValues = MatchAttackAndDefenceValues(attack.ToList(), defence.ToList())
+                .ToList();
 
             return new Casualties
             {
-                AttackerCasualties = GetAttackerCasualties(matchedDices),
-                DefenderCasualties = GetDefenderCasualties(matchedDices)
+                AttackerCasualties = GetAttackerCasualties(matchedAttackAndDefenceValues),
+                DefenderCasualties = GetDefenderCasualties(matchedAttackAndDefenceValues)
             };
         }
 
-        private static int GetAttackerCasualties(IEnumerable<DicePair> matchedDices)
+        private static int GetAttackerCasualties(IEnumerable<AttackAndDefenceMatch> attackAndDefenceMatches)
         {
-            return matchedDices.Count(x => HasDefenderWon(x.AttackerStrength, x.DefenderStrength));
+            return attackAndDefenceMatches.Count(x => HasDefenderWon(x.Attack, x.Defence));
         }
 
-        private static int GetDefenderCasualties(IEnumerable<DicePair> matchedDices)
+        private static int GetDefenderCasualties(IEnumerable<AttackAndDefenceMatch> attackAndDefenceMatches)
         {
-            return matchedDices.Count(x => HasAttackerWon(x.AttackerStrength, x.DefenderStrength));
+            return attackAndDefenceMatches.Count(x => HasAttackerWon(x.Attack, x.Defence));
         }
 
-        private static IEnumerable<DicePair> MatchDices(IEnumerable<DiceValue> attackDices, IEnumerable<DiceValue> defendDices)
+        private static IEnumerable<AttackAndDefenceMatch> MatchAttackAndDefenceValues(ICollection<int> attackValues, ICollection<int> defenceValues)
         {
-            var attackDicesClosure = attackDices.ToList();
-            var defendDicesClosure = defendDices.ToList();
+            var numberOfUsedValues = Math.Min(attackValues.Count, defenceValues.Count);
 
-            var usedDices = Math.Min(attackDicesClosure.Count, defendDicesClosure.Count);
-
-            var defendersValuesUsed = defendDicesClosure
+            var defendersValuesUsed = defenceValues
                 .OrderByDescending(x => x)
-                .Take(usedDices);
+                .Take(numberOfUsedValues);
 
-            var defendersValuesStack = new Stack<DiceValue>(defendersValuesUsed);
+            var defendersValuesStack = new Stack<int>(defendersValuesUsed);
 
-            return attackDicesClosure
+            var matchedAttackAndDefenceValues = attackValues
                 .OrderByDescending(x => x)
-                .Take(usedDices)
-                .Select(x => new DicePair(x, defendersValuesStack.Pop()));
+                .Take(numberOfUsedValues)
+                .Select(x => new AttackAndDefenceMatch(x, defendersValuesStack.Pop()));
+
+            return matchedAttackAndDefenceValues;
         }
 
-        private static bool HasDefenderWon(DiceValue attacker, DiceValue defender)
+        private static bool HasDefenderWon(int attack, int defence)
         {
-            return defender >= attacker;
+            return defence >= attack;
         }
 
-        private static bool HasAttackerWon(DiceValue attacker, DiceValue defender)
+        private static bool HasAttackerWon(int attack, int defence)
         {
-            return attacker > defender;
+            return attack > defence;
         }
 
-        private class DicePair
+        private class AttackAndDefenceMatch
         {
-            public DicePair(DiceValue attackerStrength, DiceValue defenderStrength)
+            public AttackAndDefenceMatch(int attack, int defence)
             {
-                AttackerStrength = attackerStrength;
-                DefenderStrength = defenderStrength;
+                Attack = attack;
+                Defence = defence;
             }
 
-            public DiceValue AttackerStrength { get; private set; }
-            public DiceValue DefenderStrength { get; private set; }
+            public int Attack { get; }
+            public int Defence { get; }
         }
     }
 }
