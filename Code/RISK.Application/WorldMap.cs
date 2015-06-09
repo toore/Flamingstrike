@@ -253,53 +253,53 @@ namespace RISK.Application
             };
         }
 
-        public ITerritory Alaska { get; private set; }
-        public ITerritory Alberta { get; private set; }
-        public ITerritory CentralAmerica { get; private set; }
-        public ITerritory EasternUnitedStates { get; private set; }
-        public ITerritory Greenland { get; private set; }
-        public ITerritory NorthwestTerritory { get; private set; }
-        public ITerritory Ontario { get; private set; }
-        public ITerritory Quebec { get; private set; }
-        public ITerritory WesternUnitedStates { get; private set; }
+        public ITerritory Alaska { get; }
+        public ITerritory Alberta { get; }
+        public ITerritory CentralAmerica { get; }
+        public ITerritory EasternUnitedStates { get; }
+        public ITerritory Greenland { get; }
+        public ITerritory NorthwestTerritory { get; }
+        public ITerritory Ontario { get; }
+        public ITerritory Quebec { get; }
+        public ITerritory WesternUnitedStates { get; }
 
-        public ITerritory Argentina { get; private set; }
-        public ITerritory Brazil { get; private set; }
-        public ITerritory Peru { get; private set; }
-        public ITerritory Venezuela { get; private set; }
+        public ITerritory Argentina { get; }
+        public ITerritory Brazil { get; }
+        public ITerritory Peru { get; }
+        public ITerritory Venezuela { get; }
 
-        public ITerritory GreatBritain { get; private set; }
-        public ITerritory Iceland { get; private set; }
-        public ITerritory NorthernEurope { get; private set; }
-        public ITerritory Scandinavia { get; private set; }
-        public ITerritory SouthernEurope { get; private set; }
-        public ITerritory Ukraine { get; private set; }
-        public ITerritory WesternEurope { get; private set; }
+        public ITerritory GreatBritain { get; }
+        public ITerritory Iceland { get; }
+        public ITerritory NorthernEurope { get; }
+        public ITerritory Scandinavia { get; }
+        public ITerritory SouthernEurope { get; }
+        public ITerritory Ukraine { get; }
+        public ITerritory WesternEurope { get; }
 
-        public ITerritory Congo { get; private set; }
-        public ITerritory EastAfrica { get; private set; }
-        public ITerritory Egypt { get; private set; }
-        public ITerritory Madagascar { get; private set; }
-        public ITerritory NorthAfrica { get; private set; }
-        public ITerritory SouthAfrica { get; private set; }
+        public ITerritory Congo { get; }
+        public ITerritory EastAfrica { get; }
+        public ITerritory Egypt { get; }
+        public ITerritory Madagascar { get; }
+        public ITerritory NorthAfrica { get; }
+        public ITerritory SouthAfrica { get; }
 
-        public ITerritory Afghanistan { get; private set; }
-        public ITerritory China { get; private set; }
-        public ITerritory India { get; private set; }
-        public ITerritory Irkutsk { get; private set; }
-        public ITerritory Japan { get; private set; }
-        public ITerritory Kamchatka { get; private set; }
-        public ITerritory MiddleEast { get; private set; }
-        public ITerritory Mongolia { get; private set; }
-        public ITerritory Siam { get; private set; }
-        public ITerritory Siberia { get; private set; }
-        public ITerritory Ural { get; private set; }
-        public ITerritory Yakutsk { get; private set; }
+        public ITerritory Afghanistan { get; }
+        public ITerritory China { get; }
+        public ITerritory India { get; }
+        public ITerritory Irkutsk { get; }
+        public ITerritory Japan { get; }
+        public ITerritory Kamchatka { get; }
+        public ITerritory MiddleEast { get; }
+        public ITerritory Mongolia { get; }
+        public ITerritory Siam { get; }
+        public ITerritory Siberia { get; }
+        public ITerritory Ural { get; }
+        public ITerritory Yakutsk { get; }
 
-        public ITerritory EasternAustralia { get; private set; }
-        public ITerritory Indonesia { get; private set; }
-        public ITerritory NewGuinea { get; private set; }
-        public ITerritory WesternAustralia { get; private set; }
+        public ITerritory EasternAustralia { get; }
+        public ITerritory Indonesia { get; }
+        public ITerritory NewGuinea { get; }
+        public ITerritory WesternAustralia { get; }
 
         public IEnumerable<ITerritory> GetTerritoriesOccupiedByPlayer(IPlayer player)
         {
