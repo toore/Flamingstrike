@@ -52,7 +52,7 @@ namespace RISK.Tests.Application.Specifications
             var gameSettingsViewModel = (IGameSettingsViewModel)_mainGameViewModel.ActiveItem;
 
             gameSettingsViewModel.Players.First().IsEnabled = true;
-            gameSettingsViewModel.Players.Second().IsEnabled = true;
+            gameSettingsViewModel.Players.ElementAt(1).IsEnabled = true;
 
             gameSettingsViewModel.Confirm();
 

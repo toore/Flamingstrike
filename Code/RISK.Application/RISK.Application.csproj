@@ -53,9 +53,7 @@
     <Compile Include="Entities\Territory.cs" />
     <Compile Include="Entities\Continent.cs" />
     <Compile Include="Entities\Player.cs" />
-    <Compile Include="Extensions\EnumerableExtensions.cs" />
     <Compile Include="Extensions\ListExtensions.cs" />
-    <Compile Include="Extensions\ObjectExtensions.cs" />
     <Compile Include="GamePlaying\DiceAndCalculation\Dice.cs" />
     <Compile Include="GamePlaying\DiceAndCalculation\IDice.cs" />
     <Compile Include="GamePlaying\DiceAndCalculation\IDicesResult.cs" />

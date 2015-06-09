@@ -23,7 +23,7 @@ namespace RISK.Tests.GuiWpf
             _gameEventAggregator = Substitute.For<IEventAggregator>();
 
             var playerType = Substitute.For<PlayerTypeBase>();
-            playerTypes.Values.Returns(playerType.AsList());
+            playerTypes.Values.Returns(new[] { playerType }.ToList());
 
             _gameInitializationViewModel = new GameSettingsViewModel(playerFactory, playerTypes, playerRepository, _gameEventAggregator);
         }
@@ -52,7 +52,7 @@ namespace RISK.Tests.GuiWpf
         public void Can_confirm_when_at_least_two_players_are_selected()
         {
             _gameInitializationViewModel.Players.First().IsEnabled = true;
-            _gameInitializationViewModel.Players.Second().IsEnabled = true;
+            _gameInitializationViewModel.Players.ElementAt(1).IsEnabled = true;
 
             _gameInitializationViewModel.CanConfirm.Should().BeTrue();
         }

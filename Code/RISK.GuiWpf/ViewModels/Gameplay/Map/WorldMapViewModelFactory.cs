@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using GuiWpf.Extensions;
 using GuiWpf.Services;
 using GuiWpf.TerritoryModels;
 using RISK.Application;
 using RISK.Application.Entities;
-using RISK.Application.Extensions;
 
 namespace GuiWpf.ViewModels.Gameplay.Map
 {
