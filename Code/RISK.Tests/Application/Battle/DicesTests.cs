@@ -36,25 +36,5 @@ namespace RISK.Tests.Application.Battle
             dicesResult.AttackerCasualties.Should().Be(11);
             dicesResult.DefenderCasualties.Should().Be(22);
         }
-
-        [Fact]
-        public void Does_not_roll_more_than_3_dices_when_attacking()
-        {
-            _casualtiesCalculator.CalculateCasualties(null, null).ReturnsForAnyArgs(new Casualties());
-
-            _dices.Roll(4, 1);
-
-            _dice.Received(4).Roll();
-        }
-
-        [Fact]
-        public void Does_not_roll_more_than_2_dices_when_defending()
-        {
-            _casualtiesCalculator.CalculateCasualties(null, null).ReturnsForAnyArgs(new Casualties());
-
-            _dices.Roll(1, 3);
-
-            _dice.Received(3).Roll();
-        }
     }
 }

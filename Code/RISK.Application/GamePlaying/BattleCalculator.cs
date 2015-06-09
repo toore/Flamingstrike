@@ -1,4 +1,5 @@
-﻿using RISK.Application.Entities;
+﻿using System;
+using RISK.Application.Entities;
 using RISK.Application.GamePlaying.DiceAndCalculation;
 
 namespace RISK.Application.GamePlaying
@@ -14,7 +15,10 @@ namespace RISK.Application.GamePlaying
 
         public void Attack(ITerritory attacker, ITerritory defender)
         {
-            var diceResult = _dices.Roll(attacker.GetArmiesAvailableForAttack(), defender.Armies);
+            var attackingArmies = Math.Min(attacker.GetArmiesAvailableForAttack(), 3);
+            var defendingArmies = Math.Min(defender.Armies, 2);
+
+            var diceResult = _dices.Roll(attackingArmies, defendingArmies);
 
             attacker.Armies -= diceResult.AttackerCasualties;
             defender.Armies -= diceResult.DefenderCasualties;

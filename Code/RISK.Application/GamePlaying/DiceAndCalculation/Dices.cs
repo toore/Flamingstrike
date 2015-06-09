@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
 namespace RISK.Application.GamePlaying.DiceAndCalculation
@@ -22,11 +21,8 @@ namespace RISK.Application.GamePlaying.DiceAndCalculation
 
         public IDicesResult Roll(int attackingArmies, int defendingArmies)
         {
-            var numberOfAttackingDices = Math.Min(attackingArmies, 3);
-            var numberOfDefendingDices = Math.Min(defendingArmies, 2);
-
-            var attackDices = RollDices(numberOfAttackingDices);
-            var defendDices = RollDices(numberOfDefendingDices);
+            var attackDices = RollDices(attackingArmies);
+            var defendDices = RollDices(defendingArmies);
 
             var casualties = _casualtiesCalculator.CalculateCasualties(attackDices, defendDices);
 
@@ -37,7 +33,7 @@ namespace RISK.Application.GamePlaying.DiceAndCalculation
             };
         }
 
-        private IList<int> RollDices(int numberOfDices)
+        private IEnumerable<int> RollDices(int numberOfDices)
         {
             return Enumerable.Range(0, numberOfDices)
                 .Select(x => _dice.Roll())

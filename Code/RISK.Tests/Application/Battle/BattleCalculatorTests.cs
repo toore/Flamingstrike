@@ -26,13 +26,40 @@ namespace RISK.Tests.Application.Battle
 
     public class BattleCalculatorTests
     {
-        private readonly BattleCalculator _battleCalculator;
+        private readonly BattleCalculator _sut;
         private readonly IDices _dices;
         
         public BattleCalculatorTests()
         {
             _dices = Substitute.For<IDices>();
-            _battleCalculator = new BattleCalculator(_dices);
+
+            _sut = new BattleCalculator(_dices);
+        }
+
+        [Fact]
+        public void Does_not_attack_with_more_than_three_armies()
+        {
+            var attacker = Substitute.For<ITerritory>();
+            attacker.GetArmiesAvailableForAttack().Returns(4);
+            var defender = Substitute.For<ITerritory>();
+            defender.Armies = 1;
+
+            _sut.Attack(attacker, defender);
+
+            _dices.Received().Roll(3, 1);
+        }
+
+        [Fact]
+        public void Does_not_defend_with_more_than_two_armies()
+        {
+            var attacker = Substitute.For<ITerritory>();
+            attacker.GetArmiesAvailableForAttack().Returns(1);
+            var defender = Substitute.For<ITerritory>();
+            defender.Armies = 3;
+
+            _sut.Attack(attacker, defender);
+
+            _dices.Received().Roll(1, 2);
         }
 
         [Theory]
@@ -47,7 +74,7 @@ namespace RISK.Tests.Application.Battle
             var defenderTerritory = Make.Territory.Armies(defendingArmies).Build();
             defenderTerritory.Occupant = AttackCases.Defender;
 
-            _battleCalculator.Attack(attackerTerritory, defenderTerritory);
+            _sut.Attack(attackerTerritory, defenderTerritory);
 
             attackerTerritory.Occupant.Should().Be(AttackCases.Attacker);
             attackerTerritory.Armies.Should().Be(expectedArmiesInAttackingTerritoryAfter);
