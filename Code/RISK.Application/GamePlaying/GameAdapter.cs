@@ -30,9 +30,9 @@ namespace RISK.Application.GamePlaying
             MoveToNextPlayer();
         }
 
-        public IWorldMap WorldMap { get { return _game.WorldMap; }}
-        public IPlayer Player { get { return _game.Player; } }
-        public ITerritory SelectedTerritory { get { return _stateController.CurrentState.SelectedTerritory; } }
+        public IWorldMap WorldMap => _game.WorldMap;
+        public IPlayer Player => _game.Player;
+        public ITerritory SelectedTerritory => _stateController.CurrentState.SelectedTerritory;
 
         private void MoveToNextPlayer()
         {
