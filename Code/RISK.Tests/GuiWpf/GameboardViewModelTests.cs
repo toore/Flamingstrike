@@ -5,6 +5,7 @@ using FluentAssertions;
 using GuiWpf.Services;
 using GuiWpf.ViewModels;
 using GuiWpf.ViewModels.Gameplay;
+using GuiWpf.ViewModels.Gameplay.Interaction;
 using GuiWpf.ViewModels.Gameplay.Map;
 using NSubstitute;
 using RISK.Application;

@@ -3,6 +3,7 @@ using GuiWpf.Services;
 using GuiWpf.TerritoryModels;
 using GuiWpf.ViewModels;
 using GuiWpf.ViewModels.Gameplay;
+using GuiWpf.ViewModels.Gameplay.Interaction;
 using GuiWpf.ViewModels.Gameplay.Map;
 using RISK.Application;
 using RISK.Application.Entities;

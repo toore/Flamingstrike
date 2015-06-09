@@ -1,6 +1,7 @@
 ﻿using RISK.Application.Entities;
+using RISK.Application.GamePlaying;
 
-namespace RISK.Application.GamePlaying
+namespace GuiWpf.ViewModels.Gameplay.Interaction
 {
     public interface IStateControllerFactory
     {

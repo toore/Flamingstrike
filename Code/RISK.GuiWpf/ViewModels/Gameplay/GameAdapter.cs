@@ -1,6 +1,9 @@
-﻿using RISK.Application.Entities;
+﻿using GuiWpf.ViewModels.Gameplay.Interaction;
+using RISK.Application;
+using RISK.Application.Entities;
+using RISK.Application.GamePlaying;
 
-namespace RISK.Application.GamePlaying
+namespace GuiWpf.ViewModels.Gameplay
 {
     public interface IGameAdapter
     {

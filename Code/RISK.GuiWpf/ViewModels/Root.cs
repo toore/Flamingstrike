@@ -1,6 +1,7 @@
 ﻿using Caliburn.Micro;
 using GuiWpf.Services;
 using GuiWpf.TerritoryModels;
+using GuiWpf.ViewModels.Gameplay.Interaction;
 using GuiWpf.ViewModels.Gameplay.Map;
 using GuiWpf.ViewModels.Settings;
 using GuiWpf.ViewModels.Setup;

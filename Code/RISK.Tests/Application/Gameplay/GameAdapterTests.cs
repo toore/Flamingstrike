@@ -1,5 +1,7 @@
 ﻿using System.Linq;
 using FluentAssertions;
+using GuiWpf.ViewModels.Gameplay;
+using GuiWpf.ViewModels.Gameplay.Interaction;
 using NSubstitute;
 using RISK.Application;
 using RISK.Application.Entities;

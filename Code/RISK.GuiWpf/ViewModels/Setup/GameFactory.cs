@@ -1,4 +1,6 @@
 ﻿using System.Linq;
+using GuiWpf.ViewModels.Gameplay;
+using GuiWpf.ViewModels.Gameplay.Interaction;
 using RISK.Application;
 using RISK.Application.GamePlaying;
 using RISK.Application.GamePlaying.Setup;

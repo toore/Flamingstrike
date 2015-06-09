@@ -59,8 +59,6 @@
     <Compile Include="GamePlaying\DiceAndCalculation\Dice.cs" />
     <Compile Include="GamePlaying\DiceAndCalculation\IDice.cs" />
     <Compile Include="GamePlaying\DiceAndCalculation\IDicesResult.cs" />
-    <Compile Include="GamePlaying\FortifyMoveState.cs" />
-    <Compile Include="GamePlaying\FortifySelectState.cs" />
     <Compile Include="GamePlaying\Game.cs" />
     <Compile Include="GamePlaying\Setup\AlternateGameSetup.cs" />
     <Compile Include="GamePlaying\BattleCalculator.cs" />
@@ -73,14 +71,9 @@
     <Compile Include="GamePlaying\Setup\IInitialArmyAssignmentCalculator.cs" />
     <Compile Include="GamePlaying\Setup\ITerritorySelector.cs" />
     <Compile Include="GamePlaying\Setup\InitialArmyAssignmentCalculator.cs" />
-    <Compile Include="GamePlaying\IInteractionStateFactory.cs" />
     <Compile Include="GamePlaying\Setup\ITerritorySelectorParameter.cs" />
     <Compile Include="GamePlaying\Setup\Player.cs" />
     <Compile Include="GamePlaying\Setup\TerritorySelectorParameter.cs" />
-    <Compile Include="GamePlaying\StateController.cs" />
-    <Compile Include="GamePlaying\AttackState.cs" />
-    <Compile Include="GamePlaying\InteractionStateFactory.cs" />
-    <Compile Include="GamePlaying\StateControllerFactory.cs" />
     <Compile Include="GamePlaying\WorldMapFactory.cs" />
     <Compile Include="Shuffling\FisherYatesShuffle.cs" />
     <Compile Include="Shuffling\IShuffle.cs" />
@@ -88,10 +81,7 @@
     <Compile Include="Shuffling\ShuffleExtensions.cs" />
     <Compile Include="WorldMap.cs" />
     <Compile Include="Continents.cs" />
-    <Compile Include="GamePlaying\IInteractionState.cs" />
     <Compile Include="PlayerRepository.cs" />
-    <Compile Include="GamePlaying\SelectState.cs" />
-    <Compile Include="GamePlaying\GameAdapter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

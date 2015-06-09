@@ -1,4 +1,5 @@
 ﻿using FluentAssertions;
+using GuiWpf.ViewModels.Gameplay.Interaction;
 using NSubstitute;
 using RISK.Application.Entities;
 using RISK.Application.GamePlaying;

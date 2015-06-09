@@ -1,16 +1,7 @@
 ﻿using RISK.Application.Entities;
 
-namespace RISK.Application.GamePlaying
+namespace GuiWpf.ViewModels.Gameplay.Interaction
 {
-    public interface IInteractionState
-    {
-        IPlayer Player { get; }
-        ITerritory SelectedTerritory { get; }
-
-        bool CanClick(ITerritory territory);
-        void OnClick(ITerritory territory);
-    }
-
     public class TurnEndState : IInteractionState
     {
         public IPlayer Player { get; private set; }

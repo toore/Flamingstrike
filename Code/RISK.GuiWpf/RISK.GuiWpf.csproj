@@ -77,9 +77,19 @@
     <Compile Include="TerritoryModels\TerritoryModelBase.cs" />
     <Compile Include="ViewModels\ConfirmViewModel.cs" />
     <Compile Include="ViewModels\ConfirmViewModelFactory.cs" />
+    <Compile Include="ViewModels\Gameplay\GameAdapter.cs" />
     <Compile Include="ViewModels\Gameplay\GameSetupView.xaml.cs">
       <DependentUpon>GameSetupView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ViewModels\Gameplay\Interaction\AttackState.cs" />
+    <Compile Include="ViewModels\Gameplay\Interaction\FortifyMoveState.cs" />
+    <Compile Include="ViewModels\Gameplay\Interaction\FortifySelectState.cs" />
+    <Compile Include="ViewModels\Gameplay\Interaction\IInteractionState.cs" />
+    <Compile Include="ViewModels\Gameplay\Interaction\InteractionStateFactory.cs" />
+    <Compile Include="ViewModels\Gameplay\Interaction\SelectState.cs" />
+    <Compile Include="ViewModels\Gameplay\Interaction\StateController.cs" />
+    <Compile Include="ViewModels\Gameplay\Interaction\StateControllerFactory.cs" />
+    <Compile Include="ViewModels\Gameplay\Interaction\TurnEndState.cs" />
     <Compile Include="ViewModels\Gameplay\Map\IWorldMapItemViewModelVisitor.cs" />
     <Compile Include="ViewModels\Gameplay\Map\WorldMapItemUpdater.cs" />
     <Compile Include="ViewModels\IConfirmViewModelFactory.cs" />

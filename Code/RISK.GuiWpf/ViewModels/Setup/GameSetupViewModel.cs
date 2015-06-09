@@ -1,6 +1,7 @@
 ﻿using Caliburn.Micro;
 using GuiWpf.Properties;
 using GuiWpf.Services;
+using GuiWpf.ViewModels.Gameplay;
 using GuiWpf.ViewModels.Gameplay.Map;
 using GuiWpf.ViewModels.Messages;
 using RISK.Application.Entities;

@@ -1,7 +1,7 @@
 ﻿using System;
 using RISK.Application.Entities;
 
-namespace RISK.Application.GamePlaying
+namespace GuiWpf.ViewModels.Gameplay.Interaction
 {
     public class SelectState : IInteractionState
     {

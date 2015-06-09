@@ -1,7 +1,15 @@
 using RISK.Application.Entities;
 
-namespace RISK.Application.GamePlaying
+namespace GuiWpf.ViewModels.Gameplay.Interaction
 {
+    public interface IInteractionStateFactory
+    {
+        IInteractionState CreateSelectState(IStateController stateController, IPlayer player);
+        IInteractionState CreateAttackState(IStateController stateController, IPlayer player, ITerritory selectedTerritory);
+        IInteractionState CreateFortifyState(IStateController stateController, IPlayer player);
+        IInteractionState CreateFortifyState(IStateController stateController, IPlayer player, ITerritory selectedTerritory);
+    }
+
     public class InteractionStateFactory : IInteractionStateFactory
     {
         public IInteractionState CreateSelectState(IStateController stateController, IPlayer player)
