@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using FluentAssertions;
 using RISK.Application.GamePlaying.DiceAndCalculation;
-using Xunit.Extensions;
+using Xunit;
 
 namespace RISK.Tests.Application.Battle
 {
@@ -30,7 +30,7 @@ namespace RISK.Tests.Application.Battle
         }
 
         [Theory]
-        [PropertyData("_attackerCasualtiesCases")]
+        [MemberData("_attackerCasualtiesCases")]
         public void CalculateAttackerCasualties(int expectedCasualties, IEnumerable<DiceValue> attacker, IEnumerable<DiceValue> defender)
         {
             _casualtiesCalculator.CalculateCasualties(attacker, defender).AttackerCasualties
@@ -53,7 +53,7 @@ namespace RISK.Tests.Application.Battle
         }
 
         [Theory]
-        [PropertyData("_defenderCasualtiesCases")]
+        [MemberData("_defenderCasualtiesCases")]
         public void CalculateDefenderCasualties(int expectedCasualties, IEnumerable<DiceValue> attacker, IEnumerable<DiceValue> defender)
         {
             _casualtiesCalculator.CalculateCasualties(attacker, defender).DefenderCasualties

@@ -1,4 +1,6 @@
-﻿namespace RISK.Application.GamePlaying.DiceAndCalculation
+﻿using Toore.Shuffling;
+
+namespace RISK.Application.GamePlaying.DiceAndCalculation
 {
     public class Dice : IDice
     {
@@ -11,7 +13,7 @@
 
         public DiceValue Roll()
         {
-            return (DiceValue)(_randomWrapper.Next(6) + 1);
+            return (DiceValue)(_randomWrapper.Next(1, 7));
         }
     }
 }

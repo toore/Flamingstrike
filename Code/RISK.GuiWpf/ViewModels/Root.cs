@@ -8,6 +8,7 @@ using RISK.Application;
 using RISK.Application.GamePlaying;
 using RISK.Application.GamePlaying.DiceAndCalculation;
 using RISK.Application.GamePlaying.Setup;
+using Toore.Shuffling;
 
 namespace GuiWpf.ViewModels
 {
@@ -36,7 +37,7 @@ namespace GuiWpf.ViewModels
 
             var screenService = new ScreenService();
             var randomWrapper = new RandomWrapper();
-            var randomSorter = new RandomSorter(randomWrapper);
+            var randomSorter = new FisherYatesShuffle(randomWrapper);
             var casualtiesCalculator = new CasualtiesCalculator();
             var dice = new Dice(randomWrapper);
             var dices = new Dices(casualtiesCalculator, dice);

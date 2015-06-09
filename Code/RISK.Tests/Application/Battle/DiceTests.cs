@@ -1,39 +1,29 @@
 ﻿using FluentAssertions;
 using NSubstitute;
-using RISK.Application.GamePlaying;
 using RISK.Application.GamePlaying.DiceAndCalculation;
+using Toore.Shuffling;
 using Xunit;
 
 namespace RISK.Tests.Application.Battle
 {
     public class DiceTests
     {
-        private readonly Dice _dice;
+        private readonly Dice _sut;
         private readonly IRandomWrapper _randomWrapper;
 
         public DiceTests()
         {
             _randomWrapper = Substitute.For<IRandomWrapper>();
-            _dice = new Dice(_randomWrapper);
+
+            _sut = new Dice(_randomWrapper);
         }
 
         [Fact]
-        public void Roll_returns_a_six()
+        public void Six_face_dice_is_rolled()
         {
-            AssertDice(DiceValue.Six, randomValueStub: 5);
-        }
+            _sut.Roll();
 
-        [Fact]
-        public void Roll_returns_a_one()
-        {
-            AssertDice(DiceValue.One, randomValueStub: 0);
-        }
-
-        private void AssertDice(DiceValue expected, int randomValueStub)
-        {
-            _randomWrapper.Next(6).Returns(randomValueStub);
-
-            _dice.Roll().Should().Be(expected);
+            _randomWrapper.Received().Next(1, 7);
         }
     }
 }

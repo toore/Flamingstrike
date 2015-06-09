@@ -31,18 +31,17 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Caliburn.Micro, Version=2.0.1.0, Culture=neutral, PublicKeyToken=8e5891231f2ed21f, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Caliburn.Micro.Core.2.0.1\lib\net45\Caliburn.Micro.dll</HintPath>
+    <Reference Include="Caliburn.Micro, Version=2.0.2.0, Culture=neutral, PublicKeyToken=8e5891231f2ed21f, processorArchitecture=MSIL">
+      <HintPath>..\packages\Caliburn.Micro.Core.2.0.2\lib\net45\Caliburn.Micro.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Caliburn.Micro.Platform">
-      <HintPath>..\packages\Caliburn.Micro.2.0.1\lib\net45\Caliburn.Micro.Platform.dll</HintPath>
+    <Reference Include="Caliburn.Micro.Platform, Version=2.0.2.0, Culture=neutral, PublicKeyToken=8e5891231f2ed21f, processorArchitecture=MSIL">
+      <HintPath>..\packages\Caliburn.Micro.2.0.2\lib\net45\Caliburn.Micro.Platform.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Caliburn.Micro.2.0.1\lib\net45\System.Windows.Interactivity.dll</HintPath>
-    </Reference>
+    <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -77,19 +76,19 @@
     <Compile Include="GamePlaying\Setup\IInitialArmyAssignmentCalculator.cs" />
     <Compile Include="GamePlaying\Setup\ITerritorySelector.cs" />
     <Compile Include="GamePlaying\Setup\InitialArmyAssignmentCalculator.cs" />
-    <Compile Include="GamePlaying\IRandomSorter.cs" />
-    <Compile Include="GamePlaying\IRandomWrapper.cs" />
     <Compile Include="GamePlaying\IInteractionStateFactory.cs" />
     <Compile Include="GamePlaying\Setup\ITerritorySelectorParameter.cs" />
     <Compile Include="GamePlaying\Setup\Player.cs" />
-    <Compile Include="GamePlaying\RandomSorter.cs" />
-    <Compile Include="GamePlaying\RandomWrapper.cs" />
     <Compile Include="GamePlaying\Setup\TerritorySelectorParameter.cs" />
     <Compile Include="GamePlaying\StateController.cs" />
     <Compile Include="GamePlaying\AttackState.cs" />
     <Compile Include="GamePlaying\InteractionStateFactory.cs" />
     <Compile Include="GamePlaying\StateControllerFactory.cs" />
     <Compile Include="GamePlaying\WorldMapFactory.cs" />
+    <Compile Include="Shuffling\FisherYatesShuffle.cs" />
+    <Compile Include="Shuffling\IShuffle.cs" />
+    <Compile Include="Shuffling\RandomWrapper.cs" />
+    <Compile Include="Shuffling\ShuffleExtensions.cs" />
     <Compile Include="WorldMap.cs" />
     <Compile Include="Continents.cs" />
     <Compile Include="GamePlaying\IInteractionState.cs" />

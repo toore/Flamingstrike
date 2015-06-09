@@ -6,6 +6,7 @@ using RISK.Application;
 using RISK.Application.Entities;
 using RISK.Application.GamePlaying;
 using RISK.Application.GamePlaying.Setup;
+using Toore.Shuffling;
 using Xunit;
 
 namespace RISK.Tests.Application.Gameplay.Setup
@@ -25,7 +26,7 @@ namespace RISK.Tests.Application.Gameplay.Setup
         {
             var players = Substitute.For<IPlayerRepository>();
             _worldMap = new WorldMap();
-            var randomSorter = Substitute.For<IRandomSorter>();
+            var shuffleAlgorithm = Substitute.For<IShuffle>();
             var worldMapFactory = Substitute.For<IWorldMapFactory>();
             var initialArmyAssignmentCalculator = Substitute.For<IInitialArmyAssignmentCalculator>();
 
@@ -43,16 +44,16 @@ namespace RISK.Tests.Application.Gameplay.Setup
 
             initialArmyAssignmentCalculator.Get(2).Returns(3);
 
-            _sut = new AlternateGameSetup(players, worldMapFactory, randomSorter, initialArmyAssignmentCalculator);
+            _sut = new AlternateGameSetup(players, worldMapFactory, shuffleAlgorithm, initialArmyAssignmentCalculator);
 
             _player1 = Substitute.For<IPlayer>();
             _player2 = Substitute.For<IPlayer>();
-            randomSorter.Sort(Arg.Is<IEnumerable<IPlayer>>(x => x.SequenceEqual(new[] { playerInRepository1, playerInRepository2 }))).Returns(new[] { _player1, _player2 });
+            shuffleAlgorithm.Shuffle(Arg.Is<IEnumerable<IPlayer>>(x => x.SequenceEqual(new[] { playerInRepository1, playerInRepository2 }))).Returns(new[] { _player1, _player2 });
 
             _territory1 = Substitute.For<ITerritory>();
             _territory2 = Substitute.For<ITerritory>();
             _territory3 = Substitute.For<ITerritory>();
-            randomSorter.Sort(Arg.Is<IEnumerable<ITerritory>>(x => x.SequenceEqual(new[] { worldMapTerritory1, worldMapTerritory2, worldMapTerritory3 }))).Returns(new[] { _territory1, _territory2, _territory3 });
+            shuffleAlgorithm.Shuffle(Arg.Is<IEnumerable<ITerritory>>(x => x.SequenceEqual(new[] { worldMapTerritory1, worldMapTerritory2, worldMapTerritory3 }))).Returns(new[] { _territory1, _territory2, _territory3 });
 
             _territorySelector = Substitute.For<ITerritorySelector>();
         }

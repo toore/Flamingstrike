@@ -7,8 +7,7 @@ using RISK.Application.Entities;
 using RISK.Application.GamePlaying;
 using RISK.Application.GamePlaying.DiceAndCalculation;
 using Xunit;
-using Xunit.Extensions;
-
+using Xunit.Sdk;
 
 namespace RISK.Tests.Application.Battle
 {
@@ -17,7 +16,7 @@ namespace RISK.Tests.Application.Battle
        public static readonly IPlayer Attacker = Substitute.For<IPlayer>();
        public static readonly IPlayer Defender = Substitute.For<IPlayer>();
 
-       public override IEnumerable<object[]> GetData(MethodInfo methodUnderTest, Type[] parameterTypes)
+       public override IEnumerable<object[]> GetData(MethodInfo methodUnderTest)
        {
            yield return new object[] { 2, 1, 0, 1, Attacker, 1, 1 };
            yield return new object[] { 2, 2, 0, 1, Defender, 2, 1 };

@@ -3,6 +3,7 @@ using System.Linq;
 using Caliburn.Micro;
 using RISK.Application.Entities;
 using RISK.Application.Extensions;
+using Toore.Shuffling;
 
 namespace RISK.Application.GamePlaying.Setup
 {
@@ -22,15 +23,15 @@ namespace RISK.Application.GamePlaying.Setup
     {
         private readonly IPlayerRepository _playerRepository;
         private readonly IWorldMapFactory _worldMapFactory;
-        private readonly IRandomSorter _randomSorter;
+        private readonly IShuffle _shuffleAlgorithm;
         private readonly IInitialArmyAssignmentCalculator _initialArmyAssignmentCalculator;
         private ITerritorySelector _territorySelector;
 
-        public AlternateGameSetup(IPlayerRepository playerRepository, IWorldMapFactory worldMapFactory, IRandomSorter randomSorter, IInitialArmyAssignmentCalculator initialArmyAssignmentCalculator)
+        public AlternateGameSetup(IPlayerRepository playerRepository, IWorldMapFactory worldMapFactory, IShuffle shuffleAlgorithm, IInitialArmyAssignmentCalculator initialArmyAssignmentCalculator)
         {
             _playerRepository = playerRepository;
             _worldMapFactory = worldMapFactory;
-            _randomSorter = randomSorter;
+            _shuffleAlgorithm = shuffleAlgorithm;
             _initialArmyAssignmentCalculator = initialArmyAssignmentCalculator;
         }
 
@@ -50,7 +51,7 @@ namespace RISK.Application.GamePlaying.Setup
         {
             var armies = _initialArmyAssignmentCalculator.Get(players.Count());
 
-            return _randomSorter.Sort(players)
+            return _shuffleAlgorithm.Shuffle(players)
                 .Select(x => new Player(x, armies))
                 .ToList();
         }
@@ -59,7 +60,7 @@ namespace RISK.Application.GamePlaying.Setup
         {
             var worldMap = _worldMapFactory.Create();
 
-            var territoriesInRandomOrder = _randomSorter.Sort(worldMap.GetTerritories())
+            var territoriesInRandomOrder = worldMap.GetTerritories().Shuffle(_shuffleAlgorithm)
                 .ToList();
 
             var player = players.First();
