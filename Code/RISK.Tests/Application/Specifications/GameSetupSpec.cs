@@ -5,7 +5,7 @@ using GuiWpf.ViewModels;
 using GuiWpf.ViewModels.Gameplay;
 using GuiWpf.ViewModels.Settings;
 using GuiWpf.ViewModels.Setup;
-using RISK.Application.Entities;
+using RISK.Application;
 using RISK.Application.Extensions;
 using RISK.Application.GamePlaying.Setup;
 using RISK.Tests.GuiWpf;

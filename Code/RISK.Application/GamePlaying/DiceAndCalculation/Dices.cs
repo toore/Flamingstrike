@@ -5,7 +5,7 @@ namespace RISK.Application.GamePlaying.DiceAndCalculation
 {
     public interface IDices
     {
-        IDicesResult Roll(int attackingArmies, int defendingArmies);
+        IDicesResult Roll(int numberOfAttackDices, int numberOfDefenceDices);
     }
 
     public class Dices : IDices
@@ -19,12 +19,12 @@ namespace RISK.Application.GamePlaying.DiceAndCalculation
             _dice = dice;
         }
 
-        public IDicesResult Roll(int attackingArmies, int defendingArmies)
+        public IDicesResult Roll(int numberOfAttackDices, int numberOfDefenceDices)
         {
-            var attackDices = RollDices(attackingArmies);
-            var defendDices = RollDices(defendingArmies);
+            var attackValues = RollDices(numberOfAttackDices);
+            var defenceValues = RollDices(numberOfDefenceDices);
 
-            var casualties = _casualtiesCalculator.CalculateCasualties(attackDices, defendDices);
+            var casualties = _casualtiesCalculator.CalculateCasualties(attackValues, defenceValues);
 
             return new DicesResult
             {

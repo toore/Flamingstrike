@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using RISK.Application.Entities;
 
 namespace RISK.Application
 {

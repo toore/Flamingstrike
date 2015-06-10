@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using RISK.Application;
-using RISK.Application.Entities;
 
 namespace GuiWpf.Services
 {

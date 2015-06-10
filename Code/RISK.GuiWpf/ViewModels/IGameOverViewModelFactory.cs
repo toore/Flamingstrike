@@ -1,4 +1,4 @@
-﻿using RISK.Application.Entities;
+﻿using RISK.Application;
 
 namespace GuiWpf.ViewModels
 {

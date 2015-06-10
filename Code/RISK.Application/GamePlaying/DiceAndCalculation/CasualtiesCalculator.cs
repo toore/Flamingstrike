@@ -6,7 +6,7 @@ namespace RISK.Application.GamePlaying.DiceAndCalculation
 {
     public interface ICasualtiesCalculator
     {
-        Casualties CalculateCasualties(IEnumerable<int> attack, IEnumerable<int> defence);
+        Casualties CalculateCasualties(IEnumerable<int> attackValues, IEnumerable<int> defenceValues);
     }
 
     public class Casualties
@@ -17,9 +17,9 @@ namespace RISK.Application.GamePlaying.DiceAndCalculation
 
     public class CasualtiesCalculator : ICasualtiesCalculator
     {
-        public Casualties CalculateCasualties(IEnumerable<int> attack, IEnumerable<int> defence)
+        public Casualties CalculateCasualties(IEnumerable<int> attackValues, IEnumerable<int> defenceValues)
         {
-            var matchedAttackAndDefenceValues = MatchAttackAndDefenceValues(attack.ToList(), defence.ToList())
+            var matchedAttackAndDefenceValues = MatchAttackAndDefenceValues(attackValues.ToList(), defenceValues.ToList())
                 .ToList();
 
             return new Casualties

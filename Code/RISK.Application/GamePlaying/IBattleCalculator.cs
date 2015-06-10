@@ -1,6 +1,4 @@
-﻿using RISK.Application.Entities;
-
-namespace RISK.Application.GamePlaying
+﻿namespace RISK.Application.GamePlaying
 {
     public interface IBattleCalculator
     {

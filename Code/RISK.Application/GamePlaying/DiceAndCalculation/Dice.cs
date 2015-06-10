@@ -2,6 +2,11 @@
 
 namespace RISK.Application.GamePlaying.DiceAndCalculation
 {
+    public interface IDice
+    {
+        int Roll();
+    }
+
     public class Dice : IDice
     {
         private readonly IRandomWrapper _randomWrapper;

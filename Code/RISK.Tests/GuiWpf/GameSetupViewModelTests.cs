@@ -6,7 +6,7 @@ using GuiWpf.ViewModels.Gameplay.Map;
 using GuiWpf.ViewModels.Messages;
 using GuiWpf.ViewModels.Setup;
 using NSubstitute;
-using RISK.Application.Entities;
+using RISK.Application;
 using RISK.Application.GamePlaying;
 using RISK.Application.GamePlaying.Setup;
 using Xunit;

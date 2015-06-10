@@ -9,7 +9,6 @@ using GuiWpf.ViewModels.Gameplay.Interaction;
 using GuiWpf.ViewModels.Gameplay.Map;
 using NSubstitute;
 using RISK.Application;
-using RISK.Application.Entities;
 using RISK.Application.GamePlaying;
 using Xunit;
 

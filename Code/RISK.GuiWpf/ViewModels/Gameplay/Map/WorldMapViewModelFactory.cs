@@ -5,7 +5,6 @@ using GuiWpf.Extensions;
 using GuiWpf.Services;
 using GuiWpf.TerritoryModels;
 using RISK.Application;
-using RISK.Application.Entities;
 
 namespace GuiWpf.ViewModels.Gameplay.Map
 {

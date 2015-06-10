@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Linq;
 using GuiWpf.Services;
 using RISK.Application;
-using RISK.Application.Entities;
 
 namespace GuiWpf.ViewModels.Gameplay.Map
 {

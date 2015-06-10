@@ -3,7 +3,6 @@ using System.Linq;
 using FluentAssertions;
 using NSubstitute;
 using RISK.Application;
-using RISK.Application.Entities;
 using RISK.Application.GamePlaying;
 using RISK.Application.GamePlaying.Setup;
 using Toore.Shuffling;

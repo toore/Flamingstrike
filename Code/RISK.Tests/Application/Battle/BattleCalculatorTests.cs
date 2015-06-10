@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using FluentAssertions;
 using NSubstitute;
-using RISK.Application.Entities;
+using RISK.Application;
 using RISK.Application.GamePlaying;
 using RISK.Application.GamePlaying.DiceAndCalculation;
 using Xunit;

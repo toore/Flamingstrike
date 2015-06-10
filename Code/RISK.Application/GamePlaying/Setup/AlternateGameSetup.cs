@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Caliburn.Micro;
-using RISK.Application.Entities;
 using RISK.Application.Extensions;
 using Toore.Shuffling;
 

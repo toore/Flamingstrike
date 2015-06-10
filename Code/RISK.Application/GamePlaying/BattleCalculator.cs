@@ -1,5 +1,4 @@
 ﻿using System;
-using RISK.Application.Entities;
 using RISK.Application.GamePlaying.DiceAndCalculation;
 
 namespace RISK.Application.GamePlaying

@@ -1,5 +1,5 @@
 ﻿using GuiWpf.ViewModels;
-using RISK.Application.Entities;
+using RISK.Application;
 
 namespace GuiWpf.Views
 {

@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace RISK.Application.GamePlaying.DiceAndCalculation
+﻿namespace RISK.Application.GamePlaying.DiceAndCalculation
 {
     public interface IDicesResult
     {

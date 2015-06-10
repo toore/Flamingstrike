@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace RISK.Application.Entities
+namespace RISK.Application
 {
     public interface IPlayer
     {

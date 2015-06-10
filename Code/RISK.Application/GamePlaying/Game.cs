@@ -1,5 +1,4 @@
 using System.Linq;
-using RISK.Application.Entities;
 using RISK.Application.Extensions;
 
 namespace RISK.Application.GamePlaying

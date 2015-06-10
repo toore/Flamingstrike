@@ -49,14 +49,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Entities\Card.cs" />
-    <Compile Include="Entities\Territory.cs" />
-    <Compile Include="Entities\Continent.cs" />
-    <Compile Include="Entities\Player.cs" />
+    <Compile Include="Card.cs" />
+    <Compile Include="Territory.cs" />
+    <Compile Include="Player.cs" />
     <Compile Include="Extensions\ListExtensions.cs" />
     <Compile Include="GamePlaying\DiceAndCalculation\Dice.cs" />
-    <Compile Include="GamePlaying\DiceAndCalculation\IDice.cs" />
-    <Compile Include="GamePlaying\DiceAndCalculation\IDicesResult.cs" />
     <Compile Include="GamePlaying\Game.cs" />
     <Compile Include="GamePlaying\Setup\AlternateGameSetup.cs" />
     <Compile Include="GamePlaying\BattleCalculator.cs" />
@@ -66,10 +63,8 @@
     <Compile Include="GamePlaying\DiceAndCalculation\CasualtiesCalculator.cs" />
     <Compile Include="GamePlaying\IBattleCalculator.cs" />
     <Compile Include="GamePlaying\ICardFactory.cs" />
-    <Compile Include="GamePlaying\Setup\IInitialArmyAssignmentCalculator.cs" />
     <Compile Include="GamePlaying\Setup\ITerritorySelector.cs" />
     <Compile Include="GamePlaying\Setup\InitialArmyAssignmentCalculator.cs" />
-    <Compile Include="GamePlaying\Setup\ITerritorySelectorParameter.cs" />
     <Compile Include="GamePlaying\Setup\Player.cs" />
     <Compile Include="GamePlaying\Setup\TerritorySelectorParameter.cs" />
     <Compile Include="GamePlaying\WorldMapFactory.cs" />
