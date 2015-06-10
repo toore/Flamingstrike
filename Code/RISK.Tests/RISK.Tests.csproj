@@ -96,7 +96,7 @@
     <Compile Include="Application\Battle\CasualtiesCalculatorTests.cs" />
     <Compile Include="Application\Gameplay\FortifySelectStateTests.cs" />
     <Compile Include="Application\Gameplay\GameTests.cs" />
-    <Compile Include="Application\Gameplay\InitialArmyCountTests.cs" />
+    <Compile Include="Application\Gameplay\InitialArmyForceTests.cs" />
     <Compile Include="CardBuilder.cs" />
     <Compile Include="GuiWpf\SameThreadDispatcher.cs" />
     <Compile Include="GuiWpf\SynchronousTaskEx.cs" />

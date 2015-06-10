@@ -26,7 +26,7 @@ namespace RISK.Application
             _borders = new List<ITerritory>();
         }
 
-        public Continent Continent { get; private set; }
+        public Continent Continent { get; }
 
         public bool IsBordering(ITerritory territory)
         {

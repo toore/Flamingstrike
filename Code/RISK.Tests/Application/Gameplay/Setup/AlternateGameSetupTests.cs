@@ -23,15 +23,15 @@ namespace RISK.Tests.Application.Gameplay.Setup
 
         public AlternateGameSetupTests()
         {
-            var players = Substitute.For<IPlayerRepository>();
+            var playerRepository = Substitute.For<IPlayerRepository>();
             _worldMap = new WorldMap();
-            var shuffleAlgorithm = Substitute.For<IShuffle>();
+            var shuffle = Substitute.For<IShuffle>();
             var worldMapFactory = Substitute.For<IWorldMapFactory>();
-            var initialArmyAssignmentCalculator = Substitute.For<IInitialArmyForce>();
+            var initialArmyForce = Substitute.For<IInitialArmyForce>();
 
             var playerInRepository1 = Substitute.For<IPlayer>();
             var playerInRepository2 = Substitute.For<IPlayer>();
-            players.GetAll().Returns(new[] { playerInRepository1, playerInRepository2 });
+            playerRepository.GetAll().Returns(new[] { playerInRepository1, playerInRepository2 });
 
             var worldMapTerritory1 = Substitute.For<ITerritory>();
             var worldMapTerritory2 = Substitute.For<ITerritory>();
@@ -41,18 +41,18 @@ namespace RISK.Tests.Application.Gameplay.Setup
             worldMapFactory.Create().Returns(_worldMap);
             _worldMap.GetTerritories().Returns(new[] { worldMapTerritory1, worldMapTerritory2, worldMapTerritory3 });
 
-            initialArmyAssignmentCalculator.Get(2).Returns(3);
+            initialArmyForce.Get(2).Returns(3);
 
-            _sut = new AlternateGameSetup(players, worldMapFactory, shuffleAlgorithm, initialArmyAssignmentCalculator);
+            _sut = new AlternateGameSetup(playerRepository, worldMapFactory, shuffle, initialArmyForce);
 
             _player1 = Substitute.For<IPlayer>();
             _player2 = Substitute.For<IPlayer>();
-            shuffleAlgorithm.Shuffle(Arg.Is<IEnumerable<IPlayer>>(x => x.SequenceEqual(new[] { playerInRepository1, playerInRepository2 }))).Returns(new[] { _player1, _player2 });
+            shuffle.Shuffle(Arg.Is<IEnumerable<IPlayer>>(x => x.SequenceEqual(new[] { playerInRepository1, playerInRepository2 }))).Returns(new[] { _player1, _player2 });
 
             _territory1 = Substitute.For<ITerritory>();
             _territory2 = Substitute.For<ITerritory>();
             _territory3 = Substitute.For<ITerritory>();
-            shuffleAlgorithm.Shuffle(Arg.Is<IEnumerable<ITerritory>>(x => x.SequenceEqual(new[] { worldMapTerritory1, worldMapTerritory2, worldMapTerritory3 }))).Returns(new[] { _territory1, _territory2, _territory3 });
+            shuffle.Shuffle(Arg.Is<IEnumerable<ITerritory>>(x => x.SequenceEqual(new[] { worldMapTerritory1, worldMapTerritory2, worldMapTerritory3 }))).Returns(new[] { _territory1, _territory2, _territory3 });
 
             _territorySelector = Substitute.For<ITerritorySelector>();
         }

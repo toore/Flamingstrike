@@ -61,8 +61,6 @@
     <Compile Include="GamePlaying\DiceAndCalculation\Dices.cs" />
     <Compile Include="GamePlaying\DiceAndCalculation\DicesResult.cs" />
     <Compile Include="GamePlaying\DiceAndCalculation\CasualtiesCalculator.cs" />
-    <Compile Include="GamePlaying\IBattleCalculator.cs" />
-    <Compile Include="GamePlaying\ICardFactory.cs" />
     <Compile Include="GamePlaying\Setup\ITerritorySelector.cs" />
     <Compile Include="GamePlaying\Setup\InitialArmyForce.cs" />
     <Compile Include="GamePlaying\Setup\Player.cs" />

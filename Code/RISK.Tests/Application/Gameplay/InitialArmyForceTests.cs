@@ -1,15 +1,14 @@
 ﻿using FluentAssertions;
 using RISK.Application.GamePlaying.Setup;
 using Xunit;
-using Xunit.Extensions;
 
 namespace RISK.Tests.Application.Gameplay
 {
-    public class InitialArmyCountTests
+    public class InitialArmyForceTests
     {
         private readonly InitialArmyForce _initialArmyForce;
 
-        public InitialArmyCountTests()
+        public InitialArmyForceTests()
         {
             _initialArmyForce = new InitialArmyForce();
         }
