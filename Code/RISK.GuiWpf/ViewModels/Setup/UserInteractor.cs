@@ -17,6 +17,7 @@ namespace GuiWpf.ViewModels.Setup
 
         public ITerritory GetSelectedTerritory(ITerritorySelectorParameter territorySelector)
         {
+            // territorySelector is not used!
             _locationHasBeenSelected.WaitOne();
             return _selectedLocation;
         }
