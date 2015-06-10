@@ -27,7 +27,7 @@ namespace RISK.Tests.Application.Gameplay.Setup
             _worldMap = new WorldMap();
             var shuffleAlgorithm = Substitute.For<IShuffle>();
             var worldMapFactory = Substitute.For<IWorldMapFactory>();
-            var initialArmyAssignmentCalculator = Substitute.For<IInitialArmyAssignmentCalculator>();
+            var initialArmyAssignmentCalculator = Substitute.For<IInitialArmyForce>();
 
             var playerInRepository1 = Substitute.For<IPlayer>();
             var playerInRepository2 = Substitute.For<IPlayer>();

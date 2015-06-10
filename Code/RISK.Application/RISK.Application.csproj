@@ -64,7 +64,7 @@
     <Compile Include="GamePlaying\IBattleCalculator.cs" />
     <Compile Include="GamePlaying\ICardFactory.cs" />
     <Compile Include="GamePlaying\Setup\ITerritorySelector.cs" />
-    <Compile Include="GamePlaying\Setup\InitialArmyAssignmentCalculator.cs" />
+    <Compile Include="GamePlaying\Setup\InitialArmyForce.cs" />
     <Compile Include="GamePlaying\Setup\Player.cs" />
     <Compile Include="GamePlaying\Setup\TerritorySelectorParameter.cs" />
     <Compile Include="GamePlaying\WorldMapFactory.cs" />

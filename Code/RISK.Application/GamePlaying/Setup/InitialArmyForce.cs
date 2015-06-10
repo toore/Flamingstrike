@@ -1,11 +1,11 @@
 ﻿namespace RISK.Application.GamePlaying.Setup
 {
-    public interface IInitialArmyAssignmentCalculator
+    public interface IInitialArmyForce
     {
         int Get(int numberOfPlayers);
     }
 
-    public class InitialArmyAssignmentCalculator : IInitialArmyAssignmentCalculator
+    public class InitialArmyForce : IInitialArmyForce
     {
         public int Get(int numberOfPlayers)
         {

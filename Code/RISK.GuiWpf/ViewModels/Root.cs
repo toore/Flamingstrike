@@ -46,7 +46,7 @@ namespace GuiWpf.ViewModels
             var battleCalculator = new BattleCalculator(dices);
             var interactionStateFactory = new InteractionStateFactory();
             var stateControllerFactory = new StateControllerFactory(interactionStateFactory);
-            var initialArmyAssignmentCalculator = new InitialArmyAssignmentCalculator();
+            var initialArmyAssignmentCalculator = new InitialArmyForce();
             var worldMapFactory = new WorldMapFactory();
             PlayerRepository = new PlayerRepository();
             var alternateGameSetup = new AlternateGameSetup(PlayerRepository, worldMapFactory, randomSorter, initialArmyAssignmentCalculator);

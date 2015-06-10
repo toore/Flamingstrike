@@ -23,15 +23,15 @@ namespace RISK.Application.GamePlaying.Setup
         private readonly IPlayerRepository _playerRepository;
         private readonly IWorldMapFactory _worldMapFactory;
         private readonly IShuffle _shuffleAlgorithm;
-        private readonly IInitialArmyAssignmentCalculator _initialArmyAssignmentCalculator;
+        private readonly IInitialArmyForce _initialArmyForce;
         private ITerritorySelector _territorySelector;
 
-        public AlternateGameSetup(IPlayerRepository playerRepository, IWorldMapFactory worldMapFactory, IShuffle shuffleAlgorithm, IInitialArmyAssignmentCalculator initialArmyAssignmentCalculator)
+        public AlternateGameSetup(IPlayerRepository playerRepository, IWorldMapFactory worldMapFactory, IShuffle shuffleAlgorithm, IInitialArmyForce initialArmyForce)
         {
             _playerRepository = playerRepository;
             _worldMapFactory = worldMapFactory;
             _shuffleAlgorithm = shuffleAlgorithm;
-            _initialArmyAssignmentCalculator = initialArmyAssignmentCalculator;
+            _initialArmyForce = initialArmyForce;
         }
 
         public IWorldMap InitializeWorldMap(ITerritorySelector territorySelector)
@@ -48,7 +48,7 @@ namespace RISK.Application.GamePlaying.Setup
 
         private IList<Player> GetArmiesToSetup(IList<IPlayer> players)
         {
-            var armies = _initialArmyAssignmentCalculator.Get(players.Count());
+            var armies = _initialArmyForce.Get(players.Count());
 
             return _shuffleAlgorithm.Shuffle(players)
                 .Select(x => new Player(x, armies))
