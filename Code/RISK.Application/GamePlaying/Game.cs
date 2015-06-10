@@ -27,7 +27,7 @@ namespace RISK.Application.GamePlaying
         }
 
         public IPlayer Player { get; private set; }
-        public IWorldMap WorldMap { get; private set; }
+        public IWorldMap WorldMap { get; }
 
         public void EndTurn()
         {
