@@ -7,15 +7,14 @@ namespace RISK.Application.Extensions
     {
         public static T GetNextOrFirst<T>(this IList<T> collection, T element)
         {
-            var elementIndex = collection.IndexOf(element);
-            var lastIndex = collection.Count - 1;
-            if (elementIndex == lastIndex)
+            var nextIndex = collection.IndexOf(element) + 1;
+
+            if (nextIndex >= collection.Count)
             {
                 return collection.First();
             }
 
-            var nextIndex = elementIndex + 1;
-            return collection.ElementAtOrDefault(nextIndex);
+            return collection.ElementAt(nextIndex);
         } 
     }
 }
