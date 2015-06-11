@@ -21,8 +21,8 @@ namespace RISK.Application.GamePlaying.Setup
             EnabledTerritories = enabledTerritories;
         }
 
-        public IWorldMap WorldMap { get; private set; }
-        public IEnumerable<ITerritory> EnabledTerritories { get; private set; }
+        public IWorldMap WorldMap { get; }
+        public IEnumerable<ITerritory> EnabledTerritories { get; }
 
         public IPlayer GetPlayerThatTakesTurn()
         {
