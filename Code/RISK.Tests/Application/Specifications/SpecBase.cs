@@ -1,20 +1,9 @@
 ﻿namespace RISK.Tests.Application.Specifications
 {
-    public class AcceptanceTestsBase<T> where T : AcceptanceTestsBase<T>
+    public class SpecBase<T> where T : SpecBase<T>
     {
-        protected T Given
-        {
-            get { return (T)this; }
-        }
-
-        protected T When
-        {
-            get { return (T)this; }
-        }
-
-        protected T Then
-        {
-            get { return (T)this; }
-        }
+        protected T Given => (T)this;
+        protected T When => (T)this;
+        protected T Then => (T)this;
     }
 }

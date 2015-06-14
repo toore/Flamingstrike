@@ -2,7 +2,8 @@
 using GuiWpf.ViewModels.Gameplay.Interaction;
 using NSubstitute;
 using RISK.Application;
-using RISK.Application.GamePlaying;
+using RISK.Application.GamePlay;
+using RISK.Application.World;
 using Xunit;
 
 namespace RISK.Tests.Application.Gameplay
@@ -10,7 +11,7 @@ namespace RISK.Tests.Application.Gameplay
     public class SelectStateTests
     {
         private readonly SelectState _sut;
-        private readonly IPlayer _player;
+        private readonly IPlayerId _playerId;
         private readonly StateController _stateController;
         private readonly IInteractionStateFactory _interactionStateFactory;
 
@@ -19,14 +20,14 @@ namespace RISK.Tests.Application.Gameplay
 
         public SelectStateTests()
         {
-            _stateController = new StateController(_interactionStateFactory, _player, null);
+            _stateController = new StateController(_interactionStateFactory, _playerId, null);
             _interactionStateFactory = Substitute.For<IInteractionStateFactory>();
-            _player = Substitute.For<IPlayer>();
+            _playerId = Substitute.For<IPlayerId>();
 
-            _sut = new SelectState(_stateController, _interactionStateFactory, _player);
+            _sut = new SelectState(_stateController, _interactionStateFactory, _playerId);
 
             _territoryOccupiedByPlayer = Make.Territory
-                .Occupant(_player)
+                .Occupant(_playerId)
                 .Build();
             _locationOccupiedByOtherPlayer = Substitute.For<ITerritory>();
         }
@@ -47,7 +48,7 @@ namespace RISK.Tests.Application.Gameplay
         public void Click_enters_attack_state()
         {
             var expected = Substitute.For<IInteractionState>();
-            _interactionStateFactory.CreateAttackState(_stateController, _player, _territoryOccupiedByPlayer).Returns(expected);
+            _interactionStateFactory.CreateAttackState(_stateController, _playerId, _territoryOccupiedByPlayer).Returns(expected);
 
             _sut.OnClick(_territoryOccupiedByPlayer);
 

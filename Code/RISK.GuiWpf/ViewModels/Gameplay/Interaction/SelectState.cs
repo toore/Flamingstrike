@@ -1,5 +1,7 @@
 ﻿using System;
 using RISK.Application;
+using RISK.Application.GamePlay;
+using RISK.Application.World;
 
 namespace GuiWpf.ViewModels.Gameplay.Interaction
 {
@@ -8,9 +10,9 @@ namespace GuiWpf.ViewModels.Gameplay.Interaction
         private readonly IStateController _stateController;
         private readonly IInteractionStateFactory _interactionStateFactory;
 
-        public SelectState(IStateController stateController, IInteractionStateFactory interactionStateFactory, IPlayer player)
+        public SelectState(IStateController stateController, IInteractionStateFactory interactionStateFactory, IPlayerId playerId)
         {
-            Player = player;
+            PlayerId = playerId;
             _stateController = stateController;
             _interactionStateFactory = interactionStateFactory;
         }
@@ -20,11 +22,12 @@ namespace GuiWpf.ViewModels.Gameplay.Interaction
             get { return null; }
         }
 
-        public IPlayer Player { get; private set; }
+        public IPlayerId PlayerId { get; private set; }
 
         public bool CanClick(ITerritory territory)
         {
-            return territory.Occupant == Player;
+            //return territory.Occupant == PlayerId;
+            return false;
         }
 
         public void OnClick(ITerritory territory)
@@ -34,7 +37,7 @@ namespace GuiWpf.ViewModels.Gameplay.Interaction
                 throw new InvalidOperationException();
             }
 
-            _stateController.CurrentState = _interactionStateFactory.CreateAttackState(_stateController, Player, territory);
+            _stateController.CurrentState = _interactionStateFactory.CreateAttackState(_stateController, PlayerId, territory);
         }
     }
 }

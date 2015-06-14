@@ -1,5 +1,6 @@
 using System.Windows.Media;
 using RISK.Application;
+using RISK.Application.GamePlay;
 
 namespace GuiWpf.Services
 {
@@ -12,7 +13,7 @@ namespace GuiWpf.Services
         ITerritoryColors AsiaColors { get; }
         ITerritoryColors AustraliaColors { get; }
 
-        ITerritoryColors GetPlayerTerritoryColors(IPlayer player);
+        ITerritoryColors GetPlayerTerritoryColors(IPlayerId playerId);
 
         Color SelectedTerritoryColor { get; }
     }
@@ -65,7 +66,7 @@ namespace GuiWpf.Services
                 mouseOverFillColor: Color.FromArgb(255, 255, 237, 230));
         }
 
-        public ITerritoryColors GetPlayerTerritoryColors(IPlayer player)
+        public ITerritoryColors GetPlayerTerritoryColors(IPlayerId playerId)
         {
             return new TerritoryColors(
                 normalStrokeColor: Colors.Black,

@@ -5,14 +5,11 @@ namespace GuiWpf.Views
 {
     public class GameOverViewModelTestDataFactory
     {
-        public static GameOverViewModel ViewModel
-        {
-            get { return new GameOverViewModelTestDataFactory().Create(); }
-        }
+        public static GameOverViewModel ViewModel => new GameOverViewModelTestDataFactory().Create();
 
         private GameOverViewModel Create()
         {
-            return new GameOverViewModel(new HumanPlayer("TEST_PLAYER"));
+            return new GameOverViewModel(new PlayerId("TEST_PLAYER"));
         }
     }
 }

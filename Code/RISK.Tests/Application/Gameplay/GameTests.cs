@@ -1,7 +1,10 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using NSubstitute;
 using RISK.Application;
-using RISK.Application.GamePlaying;
+using RISK.Application.GamePlay;
+using RISK.Application.GamePlay.Battling;
+using RISK.Application.World;
 using Xunit;
 
 namespace RISK.Tests.Application.Gameplay
@@ -9,21 +12,20 @@ namespace RISK.Tests.Application.Gameplay
     public class GameTests
     {
         private Game _sut;
-        private IOrderedEnumerable<IPlayer> _players;
         private IWorldMap _worldMap;
         private ICardFactory _cardFactory;
-        private IBattleCalculator _battleCalculator;
-        private IPlayer _currentPlayer;
-        private IPlayer _nextPlayer;
+        private IBattle _battle;
+        private IPlayerId _currentPlayerId;
+        private IPlayerId _nextPlayerId;
 
         public GameTests()
         {
-            _currentPlayer = Substitute.For<IPlayer>();
-            _nextPlayer = Substitute.For<IPlayer>();
+            _currentPlayerId = Substitute.For<IPlayerId>();
+            _nextPlayerId = Substitute.For<IPlayerId>();
 
-            var players = new[] { _currentPlayer, _nextPlayer }.OrderBy(x => x.PlayerOrderIndex);
+            var players = new[] { _currentPlayerId, _nextPlayerId };
 
-            _sut = new Game(_players, _worldMap, _cardFactory, _battleCalculator);
+            _sut = new Game(players, _worldMap, _cardFactory, _battle);
         }
 
         // can not attack territories if any not in map
@@ -37,7 +39,8 @@ namespace RISK.Tests.Application.Gameplay
 
             _sut.EndTurn();
 
-            _currentPlayer.DidNotReceiveWithAnyArgs().AddCard(null);
+            //_currentPlayerId.DidNotReceiveWithAnyArgs().AddCard(null);
+            throw new NotImplementedException();
         }
 
         [Fact]
@@ -49,7 +52,8 @@ namespace RISK.Tests.Application.Gameplay
 
             _sut.EndTurn();
 
-            _currentPlayer.Received().AddCard(card);
+            //_currentPlayerId.Received().AddCard(card);
+            throw new NotImplementedException();
         }
     }
 }

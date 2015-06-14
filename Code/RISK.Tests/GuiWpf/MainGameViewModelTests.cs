@@ -1,11 +1,11 @@
-﻿using FluentAssertions;
+﻿using System;
+using FluentAssertions;
 using GuiWpf.ViewModels;
 using GuiWpf.ViewModels.Gameplay;
 using GuiWpf.ViewModels.Messages;
 using GuiWpf.ViewModels.Settings;
 using GuiWpf.ViewModels.Setup;
 using NSubstitute;
-using RISK.Application.GamePlaying;
 using Xunit;
 
 namespace RISK.Tests.GuiWpf
@@ -50,7 +50,7 @@ namespace RISK.Tests.GuiWpf
         public void Setup_game_message_shows_setup_game_phase_view()
         {
             var gameSetupviewModel = Substitute.For<IGameSetupViewModel>();
-            _gameSetupViewModelFactory.Create().Returns(gameSetupviewModel);
+            //_gameSetupViewModelFactory.Create().Returns(gameSetupviewModel);
 
             var sut = CreateSut();
             sut.Handle(new SetupGameMessage());
@@ -73,7 +73,8 @@ namespace RISK.Tests.GuiWpf
 
         private MainGameViewModel CreateSut()
         {
-            return new MainGameViewModel(_gameInitializationViewModelFactory, _gameboardViewModelFactory, _gameSetupViewModelFactory);
+            throw new NotImplementedException();
+            //return new MainGameViewModel(_gameInitializationViewModelFactory, _gameboardViewModelFactory, _gameSetupViewModelFactory);
         }
     }
 }

@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using RISK.Application;
+using RISK.Application.GamePlay;
+using RISK.Application.World;
 
 namespace RISK.Tests
 {
@@ -8,14 +10,14 @@ namespace RISK.Tests
         private string _name = "";
         private Continent _continent = Continent.Europe;
         private readonly List<ITerritory> _borders = new List<ITerritory>();
-        private IPlayer _occupant;
+        private IPlayerId _occupant;
         private int _armies;
 
         public Territory Build()
         {
             var territory = new Territory(_name, _continent);
-            territory.Occupant = _occupant;
-            territory.Armies = _armies;
+            //territory.Occupant = _occupant;
+            //territory.Armies = _armies;
             territory.AddBorders(_borders.ToArray());
 
             return territory;
@@ -27,7 +29,7 @@ namespace RISK.Tests
             return this;
         }
 
-        public TerritoryBuilder Occupant(IPlayer occupant)
+        public TerritoryBuilder Occupant(IPlayerId occupant)
         {
             _occupant = occupant;
             return this;

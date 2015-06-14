@@ -1,9 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using FluentAssertions;
 using NSubstitute;
 using RISK.Application;
-using RISK.Application.GamePlaying;
+using RISK.Application.GamePlay;
+using RISK.Application.World;
 using Xunit;
 
 namespace RISK.Tests.Application.Gameplay
@@ -14,7 +16,8 @@ namespace RISK.Tests.Application.Gameplay
 
         public WorldMapTests()
         {
-            _sut = (WorldMap)new WorldMapFactory().Create();
+            //_sut = (WorldMap)new WorldMapFactory().Create();
+            _sut = new WorldMap();
         }
 
         [Fact]
@@ -424,21 +427,23 @@ namespace RISK.Tests.Application.Gameplay
         [Fact]
         public void Get_players_occupying_territories_has_no_players()
         {
-            _sut.GetAllPlayersOccupyingTerritories().Count().Should().Be(0);
+            //_sut.GetAllPlayersOccupyingTerritories().Count().Should().Be(0);
+            throw new NotImplementedException();
         }
 
         [Fact]
         public void Two_players_is_occupying_territories()
         {
-            var player1 = Substitute.For<IPlayer>();
-            var player2 = Substitute.For<IPlayer>();
-            _sut.Scandinavia.Occupant = player1;
-            _sut.Congo.Occupant = player2;
+            //var player1 = Substitute.For<IPlayerId>();
+            //var player2 = Substitute.For<IPlayerId>();
+            //_sut.Scandinavia.Occupant = player1;
+            //_sut.Congo.Occupant = player2;
 
-            var allPlayersOccupyingTerritories = _sut.GetAllPlayersOccupyingTerritories().ToList();
+            //var allPlayersOccupyingTerritories = _sut.GetAllPlayersOccupyingTerritories().ToList();
 
-            allPlayersOccupyingTerritories.Count().Should().Be(2);
-            allPlayersOccupyingTerritories.Should().BeEquivalentTo(player1, player2);
+            //allPlayersOccupyingTerritories.Count().Should().Be(2);
+            //allPlayersOccupyingTerritories.Should().BeEquivalentTo(player1, player2);
+            throw new NotImplementedException();
         }
     }
 }

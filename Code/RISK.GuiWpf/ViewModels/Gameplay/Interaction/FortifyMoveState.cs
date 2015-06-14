@@ -1,17 +1,19 @@
 ﻿using System;
 using RISK.Application;
+using RISK.Application.GamePlay;
+using RISK.Application.World;
 
 namespace GuiWpf.ViewModels.Gameplay.Interaction
 {
     public class FortifyMoveState : IInteractionState
     {
-        public FortifyMoveState(IPlayer player, ITerritory selectedTerritory)
+        public FortifyMoveState(IPlayerId playerId, ITerritory selectedTerritory)
         {
-            Player = player;
+            PlayerId = playerId;
             SelectedTerritory = selectedTerritory;
         }
 
-        public IPlayer Player { get; private set; }
+        public IPlayerId PlayerId { get; private set; }
         public ITerritory SelectedTerritory { get; private set; }
         public bool CanClick(ITerritory territory)
         {

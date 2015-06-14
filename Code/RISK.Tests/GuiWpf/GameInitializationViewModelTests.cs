@@ -17,7 +17,7 @@ namespace RISK.Tests.GuiWpf
 
         public GameInitializationViewModelTests()
         {
-            IPlayerFactory playerFactory = Substitute.For<IPlayerFactory>();
+            IPlayerIdFactory playerIdFactory = Substitute.For<IPlayerIdFactory>();
             IPlayerTypes playerTypes = Substitute.For<IPlayerTypes>();
             IPlayerRepository playerRepository = Substitute.For<IPlayerRepository>();
             _gameEventAggregator = Substitute.For<IEventAggregator>();
@@ -25,7 +25,7 @@ namespace RISK.Tests.GuiWpf
             var playerType = Substitute.For<PlayerTypeBase>();
             playerTypes.Values.Returns(new[] { playerType }.ToList());
 
-            _gameInitializationViewModel = new GameSettingsViewModel(playerFactory, playerTypes, playerRepository, _gameEventAggregator);
+            _gameInitializationViewModel = new GameSettingsViewModel(playerIdFactory, playerTypes, playerRepository, _gameEventAggregator);
         }
 
         [Fact]

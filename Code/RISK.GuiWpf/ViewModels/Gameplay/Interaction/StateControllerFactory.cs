@@ -1,11 +1,11 @@
 ﻿using RISK.Application;
-using RISK.Application.GamePlaying;
+using RISK.Application.GamePlay;
 
 namespace GuiWpf.ViewModels.Gameplay.Interaction
 {
     public interface IStateControllerFactory
     {
-        IStateController Create(IPlayer currentPlayer, Game game);
+        IStateController Create(IPlayerId currentPlayerId, Game game);
     }
 
     public class StateControllerFactory : IStateControllerFactory
@@ -17,9 +17,9 @@ namespace GuiWpf.ViewModels.Gameplay.Interaction
             _interactionStateFactory = interactionStateFactory;
         }
 
-        public IStateController Create(IPlayer currentPlayer, Game game)
+        public IStateController Create(IPlayerId currentPlayerId, Game game)
         {
-            return new StateController(_interactionStateFactory, currentPlayer, game);
+            return new StateController(_interactionStateFactory, currentPlayerId, game);
         }
     }
 }

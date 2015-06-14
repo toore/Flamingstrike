@@ -5,10 +5,11 @@ using GuiWpf.ViewModels.Gameplay.Interaction;
 using GuiWpf.ViewModels.Gameplay.Map;
 using GuiWpf.ViewModels.Settings;
 using GuiWpf.ViewModels.Setup;
-using RISK.Application;
-using RISK.Application.GamePlaying;
-using RISK.Application.GamePlaying.DiceAndCalculation;
-using RISK.Application.GamePlaying.Setup;
+using RISK.Application.GamePlay;
+using RISK.Application.GamePlay.Battling;
+using RISK.Application.GameSetup;
+using RISK.Application.Shuffling;
+using RISK.Application.World;
 using Toore.Shuffling;
 
 namespace GuiWpf.ViewModels
@@ -16,17 +17,17 @@ namespace GuiWpf.ViewModels
     public class Root
     {
         public IUserInteractor UserInteractor { get; set; }
-        public GameFactory GameFactory { get; private set; }
         public DialogManager DialogManager { get; private set; }
         public GameOverViewModelFactory GameOverViewModelFactory { get; private set; }
-        public WindowManager WindowManager { get; private set; }
+        public WindowManager WindowManager { get; }
         public WorldMapViewModelFactory WorldMapViewModelFactory { get; private set; }
-        public PlayerFactory PlayerFactory { get; private set; }
+        public PlayerIdFactory PlayerIdFactory { get; private set; }
         public PlayerTypes PlayerTypes { get; private set; }
-        public PlayerRepository PlayerRepository { get; private set; }
+        public PlayerRepository PlayerRepository { get; }
         public IEventAggregator EventAggregator { get; private set; }
         public IGuiThreadDispatcher GuiThreadDispatcher { get; set; }
         public ITaskEx TaskEx { get; set; }
+        public AlternateGameSetupFactory AlternateGameSetupFactory { get; set; }
 
         public Root()
         {
@@ -38,27 +39,26 @@ namespace GuiWpf.ViewModels
 
             var screenService = new ScreenService();
             var randomWrapper = new RandomWrapper();
-            var randomSorter = new FisherYatesShuffle(randomWrapper);
-            var casualtiesCalculator = new CasualtiesCalculator();
+            var shuffler = new FisherYatesShuffler(randomWrapper);
             var dice = new Dice(randomWrapper);
-            var dices = new Dices(casualtiesCalculator, dice);
+            var diceRoller = new DiceRoller(dice);
             var cardFactory = new CardFactory();
-            var battleCalculator = new BattleCalculator(dices);
+            var battle = new Battle(diceRoller, new BattleCalculator());
             var interactionStateFactory = new InteractionStateFactory();
             var stateControllerFactory = new StateControllerFactory(interactionStateFactory);
-            var initialArmyAssignmentCalculator = new InitialArmyForce();
-            var worldMapFactory = new WorldMapFactory();
+            var startingInfantryCalculator = new StartingInfantryCalculator();
+
             PlayerRepository = new PlayerRepository();
-            var alternateGameSetup = new AlternateGameSetup(PlayerRepository, worldMapFactory, randomSorter, initialArmyAssignmentCalculator);
+
+            var worldMap = new WorldMap();
+            AlternateGameSetupFactory = new AlternateGameSetupFactory(worldMap, shuffler, startingInfantryCalculator);
 
             WindowManager = new WindowManager();
             var confirmViewModelFactory = new ConfirmViewModelFactory(screenService);
             var userNotifier = new UserNotifier(WindowManager, confirmViewModelFactory);
             DialogManager = new DialogManager(userNotifier);
 
-            GameFactory = new GameFactory(alternateGameSetup, interactionStateFactory, stateControllerFactory, PlayerRepository, cardFactory, battleCalculator);
-
-            PlayerFactory = new PlayerFactory();
+            PlayerIdFactory = new PlayerIdFactory();
             PlayerTypes = new PlayerTypes();
             EventAggregator = new EventAggregator();
 

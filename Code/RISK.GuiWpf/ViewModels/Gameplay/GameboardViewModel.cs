@@ -5,7 +5,8 @@ using GuiWpf.Services;
 using GuiWpf.ViewModels.Gameplay.Map;
 using GuiWpf.ViewModels.Messages;
 using RISK.Application;
-using RISK.Application.GamePlaying;
+using RISK.Application.GamePlay;
+using RISK.Application.World;
 
 namespace GuiWpf.ViewModels.Gameplay
 {
@@ -17,7 +18,7 @@ namespace GuiWpf.ViewModels.Gameplay
         private readonly IGameOverViewModelFactory _gameOverViewModelFactory;
         private readonly IDialogManager _dialogManager;
         private readonly IEventAggregator _eventAggregator;
-        private IPlayer _player;
+        private IPlayerId _playerId;
 
         public GameboardViewModel(
             IGameAdapter gameAdapter,
@@ -39,10 +40,10 @@ namespace GuiWpf.ViewModels.Gameplay
 
         public WorldMapViewModel WorldMapViewModel { get; set; }
 
-        public IPlayer Player
+        public IPlayerId PlayerId
         {
-            get { return _player; }
-            set { NotifyOfPropertyChange(value, () => Player, x => _player = x); }
+            get { return _playerId; }
+            set { NotifyOfPropertyChange(value, () => PlayerId, x => _playerId = x); }
         }
 
         public string InformationText { get; private set; }
@@ -56,7 +57,7 @@ namespace GuiWpf.ViewModels.Gameplay
 
         private void InitializeWorld()
         {
-            WorldMapViewModel = _worldMapViewModelFactory.Create(_gameAdapter.WorldMap, x => OnTerritoryClick(x), Enumerable.Empty<ITerritory>());
+            //WorldMapViewModel = _worldMapViewModelFactory.Create(_gameAdapter.WorldMap, x => OnTerritoryClick(x), Enumerable.Empty<ITerritory>());
 
             UpdateGame();
         }
@@ -92,11 +93,11 @@ namespace GuiWpf.ViewModels.Gameplay
 
         private void UpdateGame()
         {
-            Player = _gameAdapter.Player;
+            PlayerId = _gameAdapter.PlayerId;
 
             if (_gameAdapter.IsGameOver())
             {
-                _windowManager.ShowDialog(_gameOverViewModelFactory.Create(Player));
+                _windowManager.ShowDialog(_gameOverViewModelFactory.Create(PlayerId));
             }
             else
             {

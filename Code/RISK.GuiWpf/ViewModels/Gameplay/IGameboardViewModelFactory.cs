@@ -1,6 +1,4 @@
-﻿using RISK.Application.GamePlaying;
-
-namespace GuiWpf.ViewModels.Gameplay
+﻿namespace GuiWpf.ViewModels.Gameplay
 {
     public interface IGameboardViewModelFactory
     {

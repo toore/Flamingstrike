@@ -75,6 +75,7 @@
     <Compile Include="Services\GuiThreadDispatcher.cs" />
     <Compile Include="Services\LanguageResources.cs" />
     <Compile Include="TerritoryModels\TerritoryModelBase.cs" />
+    <Compile Include="ViewModels\AlternateGameSetupFactory.cs" />
     <Compile Include="ViewModels\ConfirmViewModel.cs" />
     <Compile Include="ViewModels\ConfirmViewModelFactory.cs" />
     <Compile Include="ViewModels\Gameplay\GameAdapter.cs" />
@@ -101,6 +102,7 @@
     <Compile Include="ViewModels\Messages\NewGameMessage.cs" />
     <Compile Include="ViewModels\Root.cs" />
     <Compile Include="ViewModels\Settings\GameSettingsViewModelFactory.cs" />
+    <Compile Include="ViewModels\Settings\PlayerRepository.cs" />
     <Compile Include="ViewModels\Setup\GameSetupView.xaml.cs">
       <DependentUpon>GameSetupView.xaml</DependentUpon>
     </Compile>
@@ -135,10 +137,9 @@
     <Compile Include="ViewModels\Settings\IGameSettingsViewModel.cs" />
     <Compile Include="ViewModels\MainGameViewModel.cs" />
     <Compile Include="ViewModels\IMainViewModel.cs" />
-    <Compile Include="ViewModels\Settings\IPlayerFactory.cs" />
     <Compile Include="ViewModels\Settings\IPlayerTypes.cs" />
     <Compile Include="ViewModels\Settings\NeutralPlayerType.cs" />
-    <Compile Include="ViewModels\Settings\PlayerFactory.cs" />
+    <Compile Include="ViewModels\Settings\PlayerIdFactory.cs" />
     <Compile Include="ViewModels\Settings\PlayerSetupViewModel.cs" />
     <Compile Include="ViewModels\Gameplay\Map\ITerritoryLayoutViewModel.cs" />
     <Compile Include="TerritoryModels\WorldMapModelFactory.cs" />

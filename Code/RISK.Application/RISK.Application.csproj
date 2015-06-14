@@ -49,30 +49,32 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Card.cs" />
-    <Compile Include="Territory.cs" />
-    <Compile Include="Player.cs" />
+    <Compile Include="GamePlay\Card.cs" />
+    <Compile Include="GamePlay\Gameboard.cs" />
+    <Compile Include="GamePlay\GameboardTerritory.cs" />
+    <Compile Include="GameboardTerritory.cs" />
+    <Compile Include="GameSetup\GameSetupState.cs" />
+    <Compile Include="PlayerId.cs" />
+    <Compile Include="World\Territory.cs" />
+    <Compile Include="PlayerType.cs" />
     <Compile Include="Extensions\ListExtensions.cs" />
-    <Compile Include="GamePlaying\DiceAndCalculation\Dice.cs" />
-    <Compile Include="GamePlaying\Game.cs" />
-    <Compile Include="GamePlaying\Setup\AlternateGameSetup.cs" />
-    <Compile Include="GamePlaying\BattleCalculator.cs" />
-    <Compile Include="GamePlaying\CardFactory.cs" />
-    <Compile Include="GamePlaying\DiceAndCalculation\Dices.cs" />
-    <Compile Include="GamePlaying\DiceAndCalculation\DicesResult.cs" />
-    <Compile Include="GamePlaying\DiceAndCalculation\CasualtiesCalculator.cs" />
-    <Compile Include="GamePlaying\Setup\ITerritorySelector.cs" />
-    <Compile Include="GamePlaying\Setup\InitialArmyForce.cs" />
-    <Compile Include="GamePlaying\Setup\Player.cs" />
-    <Compile Include="GamePlaying\Setup\TerritorySelectorParameter.cs" />
-    <Compile Include="GamePlaying\WorldMapFactory.cs" />
-    <Compile Include="Shuffling\FisherYatesShuffle.cs" />
-    <Compile Include="Shuffling\IShuffle.cs" />
+    <Compile Include="GamePlay\Battling\Dice.cs" />
+    <Compile Include="GamePlay\Game.cs" />
+    <Compile Include="GameSetup\AlternateGameSetup.cs" />
+    <Compile Include="GamePlay\Battling\Battle.cs" />
+    <Compile Include="GamePlay\CardFactory.cs" />
+    <Compile Include="GamePlay\Battling\Dices.cs" />
+    <Compile Include="GamePlay\Battling\BattleCalculator.cs" />
+    <Compile Include="GameSetup\ITerritoryRequestHandler.cs" />
+    <Compile Include="GameSetup\StartingInfantryCalculator.cs" />
+    <Compile Include="Player.cs" />
+    <Compile Include="GameSetup\TerritorySelectorParameter.cs" />
+    <Compile Include="Shuffling\FisherYatesShuffler.cs" />
+    <Compile Include="Shuffling\IShuffler.cs" />
     <Compile Include="Shuffling\RandomWrapper.cs" />
     <Compile Include="Shuffling\ShuffleExtensions.cs" />
-    <Compile Include="WorldMap.cs" />
-    <Compile Include="Continents.cs" />
-    <Compile Include="PlayerRepository.cs" />
+    <Compile Include="World\WorldMap.cs" />
+    <Compile Include="World\Continents.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -2,6 +2,7 @@
 using System.Windows.Media;
 using GuiWpf.TerritoryModels;
 using RISK.Application;
+using RISK.Application.World;
 
 namespace GuiWpf.ViewModels.Gameplay.Map
 {

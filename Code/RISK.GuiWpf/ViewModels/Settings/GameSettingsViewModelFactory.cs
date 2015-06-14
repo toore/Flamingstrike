@@ -10,14 +10,14 @@ namespace GuiWpf.ViewModels.Settings
 
     public class GameInitializationViewModelFactory : IGameInitializationViewModelFactory
     {
-        private readonly IPlayerFactory _playerFactory;
+        private readonly IPlayerIdFactory _playerIdFactory;
         private readonly IPlayerTypes _playerTypes;
         private readonly IPlayerRepository _playerRepository;
         private readonly IEventAggregator _eventAggregator;
 
-        public GameInitializationViewModelFactory(IPlayerFactory playerFactory, IPlayerTypes playerTypes, IPlayerRepository playerRepository, IEventAggregator eventAggregator)
+        public GameInitializationViewModelFactory(IPlayerIdFactory playerIdFactory, IPlayerTypes playerTypes, IPlayerRepository playerRepository, IEventAggregator eventAggregator)
         {
-            _playerFactory = playerFactory;
+            _playerIdFactory = playerIdFactory;
             _playerTypes = playerTypes;
             _playerRepository = playerRepository;
             _eventAggregator = eventAggregator;
@@ -25,7 +25,7 @@ namespace GuiWpf.ViewModels.Settings
 
         public IGameSettingsViewModel Create()
         {
-            return new GameSettingsViewModel(_playerFactory, _playerTypes, _playerRepository, _eventAggregator);
+            return new GameSettingsViewModel(_playerIdFactory, _playerTypes, _playerRepository, _eventAggregator);
         }
     }
 }

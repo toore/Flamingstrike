@@ -1,12 +1,12 @@
 ﻿using System.Threading;
-using RISK.Application;
-using RISK.Application.GamePlaying.Setup;
+using RISK.Application.GameSetup;
+using RISK.Application.World;
 
 namespace GuiWpf.ViewModels.Setup
 {
     public interface IUserInteractor
     {
-        ITerritory GetSelectedTerritory(ITerritorySelectorParameter territorySelector);
+        ITerritory GetSelectedTerritory(ITerritoryRequestParameter territoryRequest);
         void SelectTerritory(ITerritory location);
     }
 
@@ -15,7 +15,7 @@ namespace GuiWpf.ViewModels.Setup
         private ITerritory _selectedLocation;
         private readonly AutoResetEvent _locationHasBeenSelected = new AutoResetEvent(false);
 
-        public ITerritory GetSelectedTerritory(ITerritorySelectorParameter territorySelector)
+        public ITerritory GetSelectedTerritory(ITerritoryRequestParameter territoryRequest)
         {
             // territorySelector is not used!
             _locationHasBeenSelected.WaitOne();

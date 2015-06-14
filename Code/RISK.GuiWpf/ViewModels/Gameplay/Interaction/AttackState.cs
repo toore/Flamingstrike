@@ -1,6 +1,7 @@
 using System;
 using RISK.Application;
-using RISK.Application.GamePlaying;
+using RISK.Application.GamePlay;
+using RISK.Application.World;
 
 namespace GuiWpf.ViewModels.Gameplay.Interaction
 {
@@ -12,17 +13,17 @@ namespace GuiWpf.ViewModels.Gameplay.Interaction
         public AttackState(
             IStateController stateController, 
             IInteractionStateFactory interactionStateFactory, 
-            IPlayer player, 
+            IPlayerId playerId, 
             ITerritory selectedTerritory)
         {
-            Player = player;
+            PlayerId = playerId;
             _stateController = stateController;
             _interactionStateFactory = interactionStateFactory;
             SelectedTerritory = selectedTerritory;
         }
 
-        public IPlayer Player { get; private set; }
-        public ITerritory SelectedTerritory { get; private set; }
+        public IPlayerId PlayerId { get; }
+        public ITerritory SelectedTerritory { get; }
 
         public bool CanClick(ITerritory territory)
         {
@@ -57,7 +58,7 @@ namespace GuiWpf.ViewModels.Gameplay.Interaction
         {
             if (CanSelect(location))
             {
-                _stateController.CurrentState = _interactionStateFactory.CreateSelectState(_stateController, Player);
+                _stateController.CurrentState = _interactionStateFactory.CreateSelectState(_stateController, PlayerId);
             }
         }
 
@@ -79,7 +80,7 @@ namespace GuiWpf.ViewModels.Gameplay.Interaction
 
             if (attack == AttackResult.SucceededAndOccupying)
             {
-                _stateController.CurrentState = _interactionStateFactory.CreateAttackState(_stateController, Player, territory);
+                _stateController.CurrentState = _interactionStateFactory.CreateAttackState(_stateController, PlayerId, territory);
             }
         }
 

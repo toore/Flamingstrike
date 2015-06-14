@@ -3,6 +3,7 @@ using System.Linq;
 using FluentAssertions;
 using GuiWpf.TerritoryModels;
 using RISK.Application;
+using RISK.Application.World;
 using Xunit;
 
 namespace RISK.Tests.GuiWpf

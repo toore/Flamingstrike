@@ -1,36 +1,30 @@
-﻿using System.Collections.Generic;
-
-namespace RISK.Application
+﻿namespace RISK.Application
 {
     public interface IPlayer
     {
-        string Name { get; }
-        IEnumerable<Card> Cards { get; }
-        int PlayerOrderIndex { get; set; }
-        void AddCard(Card card);
+        IPlayerId PlayerId { get; }
     }
 
-    public class HumanPlayer : IPlayer
+    public class Player : IPlayer
     {
-        private readonly List<Card> _cards;
+        private readonly int _armiesToPlace;
 
-        public HumanPlayer(string name)
+        public Player(IPlayerId playerId, int armiesToPlace)
         {
-            Name = name;
-            _cards = new List<Card>();
+            PlayerId = playerId;
+            _armiesToPlace = armiesToPlace;
         }
 
-        public string Name { get; private set; }
-        public int PlayerOrderIndex { get; set; }
+        public IPlayerId PlayerId { get; }
 
-        public IEnumerable<Card> Cards
+        public bool HasArmiesLeftToPlace()
         {
-            get { return _cards; }
+            return _armiesToPlace > 0;
         }
 
-        public void AddCard(Card card)
+        public int GetNumberOfArmiesLeftToPlace()
         {
-            _cards.Add(card);
+            return _armiesToPlace;
         }
     }
 }

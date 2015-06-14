@@ -1,5 +1,6 @@
 using System.Windows;
 using RISK.Application;
+using RISK.Application.World;
 
 namespace GuiWpf.TerritoryModels
 {

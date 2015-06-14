@@ -1,5 +1,5 @@
 using RISK.Application;
-using RISK.Application.GamePlaying;
+using RISK.Application.GamePlay;
 
 namespace GuiWpf.ViewModels.Gameplay.Interaction
 {
@@ -13,22 +13,22 @@ namespace GuiWpf.ViewModels.Gameplay.Interaction
     public class StateController : IStateController
     {
         private readonly IInteractionStateFactory _interactionStateFactory;
-        private readonly IPlayer _player;
+        private readonly IPlayerId _playerId;
 
         public IInteractionState CurrentState { get; set; }
 
-        public StateController(IInteractionStateFactory interactionStateFactory, IPlayer player, Game game)
+        public StateController(IInteractionStateFactory interactionStateFactory, IPlayerId playerId, Game game)
         {
             Game = game;
             _interactionStateFactory = interactionStateFactory;
-            _player = player;
+            _playerId = playerId;
         }
 
         public Game Game { get; private set; }
 
         public void SetInitialState()
         {
-            CurrentState = _interactionStateFactory.CreateSelectState(this, _player);
+            CurrentState = _interactionStateFactory.CreateSelectState(this, _playerId);
         }
     }
 }

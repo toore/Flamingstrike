@@ -5,15 +5,14 @@ using GuiWpf.ViewModels;
 using GuiWpf.ViewModels.Gameplay;
 using GuiWpf.ViewModels.Settings;
 using GuiWpf.ViewModels.Setup;
-using RISK.Application;
-using RISK.Application.Extensions;
-using RISK.Application.GamePlaying.Setup;
+using RISK.Application.GameSetup;
+using RISK.Application.World;
 using RISK.Tests.GuiWpf;
 using Xunit;
 
 namespace RISK.Tests.Application.Specifications
 {
-    public class GameSetupSpec : AcceptanceTestsBase<GameSetupSpec>
+    public class GameSetupSpec : SpecBase<GameSetupSpec>
     {
         private MainGameViewModelAdapter _mainGameViewModel;
         private IGameSetupViewModel _setupViewModel;
@@ -39,10 +38,10 @@ namespace RISK.Tests.Application.Specifications
 
             var root = new Root();
             root.UserInteractor = _userInteractor;
-            root.GuiThreadDispatcher = new SameThreadDispatcher();
+            root.GuiThreadDispatcher = new BypassGuiThreadDispatcher();
             root.TaskEx = new SynchronousTaskEx();
             _mainGameViewModel = new MainGameViewModelAdapter(root);
-            _mainGameViewModel.FrameworkCallsOnInitialize();
+            _mainGameViewModel.OnInitialize();
 
             return this;
         }
@@ -84,9 +83,9 @@ namespace RISK.Tests.Application.Specifications
         {
         }
 
-        public void FrameworkCallsOnInitialize()
+        public new void OnInitialize()
         {
-            OnInitialize();
+            base.OnInitialize();
         }
     }
 
@@ -94,10 +93,10 @@ namespace RISK.Tests.Application.Specifications
     {
         public int NumberOfSelectTerritoryRequests { get; set; }
 
-        public ITerritory GetSelectedTerritory(ITerritorySelectorParameter territorySelector)
+        public ITerritory GetSelectedTerritory(ITerritoryRequestParameter territoryRequest)
         {
             NumberOfSelectTerritoryRequests++;
-            return territorySelector.EnabledTerritories.First();
+            return territoryRequest.EnabledTerritories.First();
         }
 
         public void SelectTerritory(ITerritory location)

@@ -1,6 +1,8 @@
-﻿using FluentAssertions;
+﻿using System;
+using FluentAssertions;
 using NSubstitute;
 using RISK.Application;
+using RISK.Application.GamePlay;
 using Xunit;
 using Xunit.Extensions;
 
@@ -12,15 +14,17 @@ namespace RISK.Tests.Application.Gameplay
         [Fact]
         public void Is_assigned_to_player()
         {
-            var territory = Make.Territory.Occupant(Substitute.For<IPlayer>()).Build();
+            var territory = Make.Territory.Occupant(Substitute.For<IPlayerId>()).Build();
 
-            territory.IsOccupied().Should().BeTrue();
+            //territory.IsOccupied().Should().BeTrue();
+            throw new NotImplementedException();
         }
 
         [Fact]
         public void Is_not_assigned_to_player()
         {
-            Make.Territory.Build().IsOccupied().Should().BeFalse();
+            //Make.Territory.Build().IsOccupied().Should().BeFalse();
+            throw new NotImplementedException();
         }
 
         [Theory]
@@ -29,7 +33,8 @@ namespace RISK.Tests.Application.Gameplay
         [InlineData(9, 10)]
         public void Get_armies_to_attack_with_should_be_1(int expected, int armies)
         {
-            Make.Territory.Armies(armies).Build().GetArmiesAvailableForAttack().Should().Be(expected);
+            //Make.Territory.Armies(armies).Build().GetArmiesAvailableForAttack().Should().Be(expected);
+            throw new NotImplementedException();
         }
 
         [Theory]
@@ -38,7 +43,8 @@ namespace RISK.Tests.Application.Gameplay
         [InlineData(true, 10)]
         public void Has_armies_to_attack_with(bool expected, int armies)
         {
-            Make.Territory.Armies(armies).Build().HasArmiesAvailableForAttack().Should().Be(expected);
+            //Make.Territory.Armies(armies).Build().HasArmiesAvailableForAttack().Should().Be(expected);
+            throw new NotImplementedException();
         }
     }
 }

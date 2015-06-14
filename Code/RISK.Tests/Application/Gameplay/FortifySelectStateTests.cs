@@ -1,8 +1,10 @@
+using System;
 using FluentAssertions;
 using GuiWpf.ViewModels.Gameplay.Interaction;
 using NSubstitute;
 using RISK.Application;
-using RISK.Application.GamePlaying;
+using RISK.Application.GamePlay;
+using RISK.Application.World;
 using Xunit;
 
 namespace RISK.Tests.Application.Gameplay
@@ -10,22 +12,22 @@ namespace RISK.Tests.Application.Gameplay
     public class FortifySelectStateTests
     {
         private readonly FortifySelectState _sut;
-        private readonly IPlayer _player;
+        private readonly IPlayerId _playerId;
         private readonly IInteractionStateFactory _interactionStateFactory;
         private readonly StateController _stateController;
         private readonly Territory _territoryOccupiedByPlayer;
 
         public FortifySelectStateTests()
         {
-            _stateController = new StateController(_interactionStateFactory, _player, null);
+            _stateController = new StateController(_interactionStateFactory, _playerId, null);
             _interactionStateFactory = Substitute.For<IInteractionStateFactory>();
-            _player = Substitute.For<IPlayer>();
+            _playerId = Substitute.For<IPlayerId>();
 
             _territoryOccupiedByPlayer = Make.Territory
-                .Occupant(_player)
+                .Occupant(_playerId)
                 .Build();
 
-            _sut = new FortifySelectState(_stateController, _interactionStateFactory, _player);
+            _sut = new FortifySelectState(_stateController, _interactionStateFactory, _playerId);
         }
 
         [Fact]
@@ -46,7 +48,7 @@ namespace RISK.Tests.Application.Gameplay
         public void Clicking_occupied_territory_enters_fortify_state()
         {
             var fortifyState = Substitute.For<IInteractionState>();
-            _interactionStateFactory.CreateFortifyState(_stateController, _player, _territoryOccupiedByPlayer).Returns(fortifyState);
+            _interactionStateFactory.CreateFortifyState(_stateController, _playerId, _territoryOccupiedByPlayer).Returns(fortifyState);
 
             _sut.OnClick(_territoryOccupiedByPlayer);
 
@@ -59,7 +61,7 @@ namespace RISK.Tests.Application.Gameplay
         private readonly FortifyMoveState _sut;
         private readonly StateController _stateController;
         private readonly IInteractionStateFactory _interactionStateFactory;
-        private readonly IPlayer _player;
+        private readonly IPlayerId _playerId;
         private readonly ITerritory _selectedTerritory;
         private readonly Territory _remoteTerritoryOccupiedByOtherPlayer;
         private readonly Territory _borderingTerritoryOccupiedByOtherPlayer;
@@ -68,25 +70,25 @@ namespace RISK.Tests.Application.Gameplay
 
         public FortifyMoveTests()
         {
-            _stateController = new StateController(_interactionStateFactory, _player, null);
+            _stateController = new StateController(_interactionStateFactory, _playerId, null);
             _interactionStateFactory = Substitute.For<IInteractionStateFactory>();
-            _player = Substitute.For<IPlayer>();
+            _playerId = Substitute.For<IPlayerId>();
 
             _borderingTerritoryOccupiedByPlayer = Make.Territory
-                .Occupant(_player)
+                .Occupant(_playerId)
                 .Build();
 
             _remoteTerritoryOccupiedByPlayer = Make.Territory
-                .Occupant(_player)
+                .Occupant(_playerId)
                 .Build();
 
             _selectedTerritory = Make.Territory
                 .WithBorder(_borderingTerritoryOccupiedByOtherPlayer)
                 .WithBorder(_borderingTerritoryOccupiedByPlayer)
-                .Occupant(_player)
+                .Occupant(_playerId)
                 .Build();
 
-            _sut = new FortifyMoveState(_player, _selectedTerritory);
+            _sut = new FortifyMoveState(_playerId, _selectedTerritory);
         }
 
         [Fact]
@@ -107,13 +109,14 @@ namespace RISK.Tests.Application.Gameplay
         [Fact]
         public void Fortifies_three_army_to_bordering_territory()
         {
-            _selectedTerritory.Armies = 4;
-            _borderingTerritoryOccupiedByPlayer.Armies = 10;
+            //_selectedTerritory.Armies = 4;
+            //_borderingTerritoryOccupiedByPlayer.Armies = 10;
 
-            _sut.OnClick(_borderingTerritoryOccupiedByPlayer); //3 armies how?
+            //_sut.OnClick(_borderingTerritoryOccupiedByPlayer); //3 armies how?
 
-            _borderingTerritoryOccupiedByPlayer.Armies.Should().Be(13);
-            _selectedTerritory.Armies.Should().Be(1);
+            //_borderingTerritoryOccupiedByPlayer.Armies.Should().Be(13);
+            //_selectedTerritory.Armies.Should().Be(1);
+            throw new NotImplementedException();
         }
 
         [Fact]

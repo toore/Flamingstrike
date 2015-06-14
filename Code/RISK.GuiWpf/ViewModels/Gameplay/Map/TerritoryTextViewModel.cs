@@ -12,8 +12,8 @@ namespace GuiWpf.ViewModels.Gameplay.Map
             _territoryModel = territoryModel;
         }
 
-        public string Name { get { return _territoryModel.Name; } }
-        public Point Position { get { return _territoryModel.NamePosition; } }
+        public string Name => _territoryModel.Name;
+        public Point Position => _territoryModel.NamePosition;
 
         private int _armies;
         public int Armies
@@ -29,7 +29,7 @@ namespace GuiWpf.ViewModels.Gameplay.Map
 
         public void UpdateArmies()
         {
-            Armies = _territoryModel.Territory.Armies;
+            //Armies = _territoryModel.Territory.Armies;
         }
     }
 }

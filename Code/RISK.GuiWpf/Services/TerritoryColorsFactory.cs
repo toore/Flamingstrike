@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using RISK.Application;
+using RISK.Application.World;
 
 namespace GuiWpf.Services
 {
@@ -20,10 +21,10 @@ namespace GuiWpf.Services
 
         public ITerritoryColors Create(IWorldMap worldMap, ITerritory territory)
         {
-            if (territory.IsOccupied())
-            {
-                return _colorService.GetPlayerTerritoryColors(territory.Occupant);
-            }
+            //if (territory.IsOccupied())
+            //{
+            //    return _colorService.GetPlayerTerritoryColors(territory.Occupant);
+            //}
 
             var colors = new Dictionary<ITerritory, Func<ITerritoryColors>>
             {

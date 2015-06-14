@@ -1,12 +1,13 @@
 ﻿using Caliburn.Micro;
 using GuiWpf.Services;
 using GuiWpf.ViewModels.Gameplay.Map;
+using RISK.Application.GameSetup;
 
 namespace GuiWpf.ViewModels.Setup
 {
     public interface IGameSetupViewModelFactory
     {
-        IGameSetupViewModel Create();
+        IGameSetupViewModel Create(IAlternateGameSetup alternateGameSetup);
     }
 
     public class GameSetupViewModelFactory : IGameSetupViewModelFactory
@@ -15,7 +16,6 @@ namespace GuiWpf.ViewModels.Setup
         private readonly IDialogManager _dialogManager;
         private readonly IEventAggregator _eventAggregator;
         private readonly IUserInteractor _userInteractor;
-        private readonly IGameFactory _gameFactory;
         private readonly IGuiThreadDispatcher _guiThreadDispatcher;
         private readonly ITaskEx _taskEx;
 
@@ -24,7 +24,6 @@ namespace GuiWpf.ViewModels.Setup
             IDialogManager dialogManager,
             IEventAggregator eventAggregator,
             IUserInteractor userInteractor,
-            IGameFactory gameFactory,
             IGuiThreadDispatcher guiThreadDispatcher,
             ITaskEx taskEx)
         {
@@ -32,14 +31,13 @@ namespace GuiWpf.ViewModels.Setup
             _dialogManager = dialogManager;
             _eventAggregator = eventAggregator;
             _userInteractor = userInteractor;
-            _gameFactory = gameFactory;
             _guiThreadDispatcher = guiThreadDispatcher;
             _taskEx = taskEx;
         }
 
-        public IGameSetupViewModel Create()
+        public IGameSetupViewModel Create(IAlternateGameSetup alternateGameSetup)
         {
-            return new GameSetupViewModel(_worldMapViewModelFactory, _dialogManager, _eventAggregator, _userInteractor, _gameFactory, _guiThreadDispatcher, _taskEx);
+            return new GameSetupViewModel(_worldMapViewModelFactory, _dialogManager, _eventAggregator, _userInteractor, alternateGameSetup, _guiThreadDispatcher, _taskEx);
         }
     }
 }

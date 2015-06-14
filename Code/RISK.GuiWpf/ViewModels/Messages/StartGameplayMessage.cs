@@ -1,5 +1,4 @@
 ﻿using GuiWpf.ViewModels.Gameplay;
-using RISK.Application.GamePlaying;
 
 namespace GuiWpf.ViewModels.Messages
 {

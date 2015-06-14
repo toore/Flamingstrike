@@ -5,7 +5,9 @@ using GuiWpf.ViewModels.Gameplay;
 using GuiWpf.ViewModels.Gameplay.Map;
 using GuiWpf.ViewModels.Messages;
 using RISK.Application;
-using RISK.Application.GamePlaying.Setup;
+using RISK.Application.GamePlay;
+using RISK.Application.GameSetup;
+using RISK.Application.World;
 
 namespace GuiWpf.ViewModels.Setup
 {
@@ -14,13 +16,13 @@ namespace GuiWpf.ViewModels.Setup
         void Activate();
     }
 
-    public class GameSetupViewModel : Screen, ITerritorySelector, IGameSetupViewModel
+    public class GameSetupViewModel : Screen, ITerritoryRequestHandler, IGameSetupViewModel
     {
         private readonly IWorldMapViewModelFactory _worldMapViewModelFactory;
         private readonly IDialogManager _dialogManager;
         private readonly IEventAggregator _eventAggregator;
         private readonly IUserInteractor _userInteractor;
-        private readonly IGameFactory _gameFactory;
+        private readonly IAlternateGameSetup _alternateGameSetup;
         private readonly IGuiThreadDispatcher _guiThreadDispatcher;
         private readonly ITaskEx _taskEx;
 
@@ -29,7 +31,7 @@ namespace GuiWpf.ViewModels.Setup
             IDialogManager dialogManager,
             IEventAggregator eventAggregator,
             IUserInteractor userInteractor,
-            IGameFactory gameFactory,
+            IAlternateGameSetup alternateGameSetup,
             IGuiThreadDispatcher guiThreadDispatcher,
             ITaskEx taskEx)
         {
@@ -37,7 +39,7 @@ namespace GuiWpf.ViewModels.Setup
             _dialogManager = dialogManager;
             _eventAggregator = eventAggregator;
             _userInteractor = userInteractor;
-            _gameFactory = gameFactory;
+            _alternateGameSetup = alternateGameSetup;
             _guiThreadDispatcher = guiThreadDispatcher;
             _taskEx = taskEx;
         }
@@ -53,14 +55,14 @@ namespace GuiWpf.ViewModels.Setup
         public string InformationText
         {
             get { return _informationText; }
-            set { this.NotifyOfPropertyChange(value, () => InformationText, x => _informationText = x); }
+            private set { this.NotifyOfPropertyChange(value, () => InformationText, x => _informationText = x); }
         }
 
-        private IPlayer _player;
-        public IPlayer Player
+        private IPlayerId _playerId;
+        public IPlayerId PlayerId
         {
-            get { return _player; }
-            private set { this.NotifyOfPropertyChange(value, () => Player, x => _player = x); }
+            get { return _playerId; }
+            private set { this.NotifyOfPropertyChange(value, () => PlayerId, x => _playerId = x); }
         }
 
         public void Activate()
@@ -70,21 +72,23 @@ namespace GuiWpf.ViewModels.Setup
 
         protected override void OnActivate()
         {
-            var territorySelector = this;
+            var territoryRequestHandler = this;
 
             _taskEx.Run(() =>
             {
-                var game = _gameFactory.Create(territorySelector);
+                var gameboard = _alternateGameSetup.Initialize(territoryRequestHandler);
 
-                StartGameplay(game);
+                //var game = _gameFactory.Create(territorySelector);
+
+                //StartGameplay(game);
             });
         }
 
-        public ITerritory SelectTerritory(ITerritorySelectorParameter territorySelectorParameter)
+        public ITerritory ProcessRequest(ITerritoryRequestParameter territoryRequestParameter)
         {
-            _guiThreadDispatcher.Invoke(() => UpdateView(territorySelectorParameter));
+            _guiThreadDispatcher.Invoke(() => UpdateView(territoryRequestParameter));
 
-            return _userInteractor.GetSelectedTerritory(territorySelectorParameter);
+            return _userInteractor.GetSelectedTerritory(territoryRequestParameter);
         }
 
         private void StartGameplay(IGameAdapter gameAdapter)
@@ -92,15 +96,15 @@ namespace GuiWpf.ViewModels.Setup
             _eventAggregator.PublishOnUIThread(new StartGameplayMessage(gameAdapter));
         }
 
-        private void UpdateView(ITerritorySelectorParameter territorySelectorParameter)
+        private void UpdateView(ITerritoryRequestParameter territoryRequestParameter)
         {
-            var worldMapViewModel = _worldMapViewModelFactory.Create(territorySelectorParameter.WorldMap, x => _userInteractor.SelectTerritory(x), territorySelectorParameter.EnabledTerritories);
+            var worldMapViewModel = _worldMapViewModelFactory.Create(territoryRequestParameter.Gameboard, x => _userInteractor.SelectTerritory(x), territoryRequestParameter.EnabledTerritories);
 
             WorldMapViewModel = worldMapViewModel;
 
-            Player = territorySelectorParameter.GetPlayerThatTakesTurn();
+            PlayerId = territoryRequestParameter.GetPlayerThatTakesTurn();
 
-            InformationText = string.Format(Resources.PLACE_ARMY, territorySelectorParameter.GetArmiesLeft());
+            InformationText = string.Format(Resources.PLACE_ARMY, territoryRequestParameter.GetArmiesLeftToPlace());
         }
 
         public bool CanFortify()

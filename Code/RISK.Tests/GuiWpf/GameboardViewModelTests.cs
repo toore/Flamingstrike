@@ -9,7 +9,8 @@ using GuiWpf.ViewModels.Gameplay.Interaction;
 using GuiWpf.ViewModels.Gameplay.Map;
 using NSubstitute;
 using RISK.Application;
-using RISK.Application.GamePlaying;
+using RISK.Application.GamePlay;
+using RISK.Application.World;
 using Xunit;
 
 namespace RISK.Tests.GuiWpf
@@ -21,8 +22,8 @@ namespace RISK.Tests.GuiWpf
         private readonly ITerritory _territory1;
         private readonly IInteractionState _firstPlayerInteractionState;
         private readonly IInteractionState _nextPlayerInteractionState;
-        private readonly IPlayer _currentPlayer;
-        private readonly IPlayer _nextPlayer;
+        private readonly IPlayerId _currentPlayerId;
+        private readonly IPlayerId _nextPlayerId;
         private readonly IWindowManager _windowManager;
         private readonly IGameOverViewModelFactory _gameOverViewModelFactory;
         private readonly IDialogManager _dialogManager;
@@ -43,13 +44,13 @@ namespace RISK.Tests.GuiWpf
 
             _territory1 = Substitute.For<ITerritory>();
 
-            _currentPlayer = Substitute.For<IPlayer>();
-            _nextPlayer = Substitute.For<IPlayer>();
+            _currentPlayerId = Substitute.For<IPlayerId>();
+            _nextPlayerId = Substitute.For<IPlayerId>();
 
             _firstPlayerInteractionState = Substitute.For<IInteractionState>();
-            _firstPlayerInteractionState.Player.Returns(_currentPlayer);
+            _firstPlayerInteractionState.PlayerId.Returns(_currentPlayerId);
             _nextPlayerInteractionState = Substitute.For<IInteractionState>();
-            _nextPlayerInteractionState.Player.Returns(_nextPlayer);
+            _nextPlayerInteractionState.PlayerId.Returns(_nextPlayerId);
 
             var viewModel = Substitute.For<ITerritoryLayoutViewModel>();
             var layoutViewModel1 = viewModel;
@@ -69,7 +70,7 @@ namespace RISK.Tests.GuiWpf
             var worldMap = Substitute.For<IWorldMap>();
             _gameAdapter.WorldMap.Returns(worldMap);
 
-            _worldMapViewModelFactory.Create(Arg.Is(worldMap), Arg.Any<Action<ITerritory>>(), Arg.Any<IEnumerable<ITerritory>>()).Returns(_worldMapViewModel);
+            //_worldMapViewModelFactory.Create(Arg.Is(worldMap), Arg.Any<Action<ITerritory>>(), Arg.Any<IEnumerable<ITerritory>>()).Returns(_worldMapViewModel);
 
             _sut = new GameboardViewModel(
                 _gameAdapter,
@@ -91,46 +92,46 @@ namespace RISK.Tests.GuiWpf
         [Fact]
         public void First_player_takes_first_turn()
         {
-            _gameAdapter.Player.Returns(_currentPlayer);
+            _gameAdapter.PlayerId.Returns(_currentPlayerId);
 
             _sut.Activate();
 
-            AssertCurrentPlayer(_currentPlayer);
+            AssertCurrentPlayer(_currentPlayerId);
         }
 
         [Fact]
         public void Next_player_takes_second_turn()
         {
-            _gameAdapter.Player.Returns(_nextPlayer);
+            _gameAdapter.PlayerId.Returns(_nextPlayerId);
 
             _sut.EndTurn();
 
-            AssertCurrentPlayer(_nextPlayer);
+            AssertCurrentPlayer(_nextPlayerId);
         }
 
-        private void AssertCurrentPlayer(IPlayer expected)
+        private void AssertCurrentPlayer(IPlayerId expected)
         {
-            _sut.Player.Should().Be(expected);
+            _sut.PlayerId.Should().Be(expected);
         }
 
         [Fact]
         public void Ends_turn_and_gets_next_turn()
         {
-            _gameAdapter.Player.Returns(_nextPlayer);            
+            _gameAdapter.PlayerId.Returns(_nextPlayerId);            
 
             var sut = _sut;
             sut.EndTurn();
 
-            sut.Player.Should().Be(_nextPlayer);
+            sut.PlayerId.Should().Be(_nextPlayerId);
         }
 
         [Fact]
         public void Show_game_over_when_game_is_updated()
         {
-            _gameAdapter.Player.Returns(_currentPlayer);
+            _gameAdapter.PlayerId.Returns(_currentPlayerId);
 
-            var gameOverViewModel = new GameOverViewModel(_currentPlayer);
-            _gameOverViewModelFactory.Create(_currentPlayer).Returns(gameOverViewModel);
+            var gameOverViewModel = new GameOverViewModel(_currentPlayerId);
+            _gameOverViewModelFactory.Create(_currentPlayerId).Returns(gameOverViewModel);
 
             _gameAdapter.IsGameOver().Returns(true);
 
@@ -143,7 +144,7 @@ namespace RISK.Tests.GuiWpf
         public void When_game_is_not_over_no_game_over_dialog_should_be_shown()
         {
             _gameAdapter.IsGameOver().Returns(false);
-            var gameOverViewModel = new GameOverViewModel(_currentPlayer);
+            var gameOverViewModel = new GameOverViewModel(_currentPlayerId);
 
             _sut.OnTerritoryClick(null);
 

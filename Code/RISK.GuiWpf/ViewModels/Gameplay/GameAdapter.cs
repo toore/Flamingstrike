@@ -1,13 +1,14 @@
 ﻿using GuiWpf.ViewModels.Gameplay.Interaction;
 using RISK.Application;
-using RISK.Application.GamePlaying;
+using RISK.Application.GamePlay;
+using RISK.Application.World;
 
 namespace GuiWpf.ViewModels.Gameplay
 {
     public interface IGameAdapter
     {
         IWorldMap WorldMap { get; }
-        IPlayer Player { get; }
+        IPlayerId PlayerId { get; }
         ITerritory SelectedTerritory { get; }
         void EndTurn();
         bool IsGameOver();
@@ -33,12 +34,12 @@ namespace GuiWpf.ViewModels.Gameplay
         }
 
         public IWorldMap WorldMap => _game.WorldMap;
-        public IPlayer Player => _game.Player;
+        public IPlayerId PlayerId => _game.PlayerId;
         public ITerritory SelectedTerritory => _stateController.CurrentState.SelectedTerritory;
 
         private void MoveToNextPlayer()
         {
-            _stateController = _stateControllerFactory.Create(Player, _game);
+            _stateController = _stateControllerFactory.Create(PlayerId, _game);
             _stateController.SetInitialState();
         }
 
@@ -56,7 +57,7 @@ namespace GuiWpf.ViewModels.Gameplay
 
         public void Fortify()
         {
-            _stateController.CurrentState = _interactionStateFactory.CreateFortifyState(_stateController, Player);
+            _stateController.CurrentState = _interactionStateFactory.CreateFortifyState(_stateController, PlayerId);
         }
 
         public void OnClick(ITerritory territory)

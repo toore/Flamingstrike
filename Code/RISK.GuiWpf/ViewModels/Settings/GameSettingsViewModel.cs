@@ -5,19 +5,20 @@ using Caliburn.Micro;
 using GuiWpf.Extensions;
 using GuiWpf.ViewModels.Messages;
 using RISK.Application;
+using RISK.Application.GamePlay;
 
 namespace GuiWpf.ViewModels.Settings
 {
     public class GameSettingsViewModel : ViewModelBase, IGameSettingsViewModel
     {
-        private readonly IPlayerFactory _playerFactory;
+        private readonly IPlayerIdFactory _playerIdFactory;
         private readonly IPlayerTypes _playerTypes;
         private readonly IEventAggregator _eventAggregator;
         private readonly IPlayerRepository _playerRepository;
 
-        public GameSettingsViewModel(IPlayerFactory playerFactory, IPlayerTypes playerTypes, IPlayerRepository playerRepository, IEventAggregator eventAggregator)
+        public GameSettingsViewModel(IPlayerIdFactory playerIdFactory, IPlayerTypes playerTypes, IPlayerRepository playerRepository, IEventAggregator eventAggregator)
         {
-            _playerFactory = playerFactory;
+            _playerIdFactory = playerIdFactory;
             _playerTypes = playerTypes;
             _eventAggregator = eventAggregator;
             _playerRepository = playerRepository;
@@ -42,12 +43,9 @@ namespace GuiWpf.ViewModels.Settings
             NotifyOfPropertyChange(() => CanConfirm);
         }
 
-        public ObservableCollection<PlayerSetupViewModel> Players { get; private set; }
+        public ObservableCollection<PlayerSetupViewModel> Players { get; }
 
-        public bool CanConfirm
-        {
-            get { return GetEnabledPlayers().Count() > 1; }
-        }
+        public bool CanConfirm => GetEnabledPlayers().Count() > 1;
 
         public void Confirm()
         {
@@ -61,10 +59,10 @@ namespace GuiWpf.ViewModels.Settings
             _eventAggregator.PublishOnUIThread(new SetupGameMessage());
         }
 
-        private IEnumerable<IPlayer> CreatePlayers()
+        private IEnumerable<IPlayerId> CreatePlayers()
         {
             return GetEnabledPlayers()
-                .Select(_playerFactory.Create)
+                .Select(_playerIdFactory.Create)
                 .ToList();
         }
 

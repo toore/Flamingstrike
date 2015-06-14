@@ -90,15 +90,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Application\Battle\BattleCalculatorTests.cs" />
-    <Compile Include="Application\Battle\DiceTests.cs" />
-    <Compile Include="Application\Battle\DicesTests.cs" />
-    <Compile Include="Application\Battle\CasualtiesCalculatorTests.cs" />
+    <Compile Include="Application\Battling\BattleCalculatorTests.cs" />
+    <Compile Include="Application\Battling\DiceTests.cs" />
+    <Compile Include="Application\Battling\DiceRollerTests.cs" />
+    <Compile Include="Application\Battling\CasualtiesCalculatorTests.cs" />
     <Compile Include="Application\Gameplay\FortifySelectStateTests.cs" />
     <Compile Include="Application\Gameplay\GameTests.cs" />
     <Compile Include="Application\Gameplay\InitialArmyForceTests.cs" />
     <Compile Include="CardBuilder.cs" />
-    <Compile Include="GuiWpf\SameThreadDispatcher.cs" />
+    <Compile Include="GuiWpf\BypassGuiThreadDispatcher.cs" />
     <Compile Include="GuiWpf\SynchronousTaskEx.cs" />
     <Compile Include="GuiWpf\WorldMapModelFactoryTests.cs" />
     <Compile Include="TerritoryBuilder.cs" />
