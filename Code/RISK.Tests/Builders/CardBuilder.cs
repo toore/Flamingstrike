@@ -1,7 +1,6 @@
-using RISK.Application;
 using RISK.Application.GamePlay;
 
-namespace RISK.Tests
+namespace RISK.Tests.Builders
 {
     public class CardBuilder
     {

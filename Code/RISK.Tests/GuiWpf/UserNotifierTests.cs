@@ -4,9 +4,8 @@ using GuiWpf.Services;
 using GuiWpf.ViewModels;
 using NSubstitute;
 using Xunit;
-using Xunit.Extensions;
 
-namespace RISK.Tests.Views
+namespace RISK.Tests.GuiWpf
 {
     public class UserNotifierTests
     {

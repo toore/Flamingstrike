@@ -1,9 +1,8 @@
 using System.Collections.Generic;
 using RISK.Application;
-using RISK.Application.GamePlay;
 using RISK.Application.World;
 
-namespace RISK.Tests
+namespace RISK.Tests.Builders
 {
     public class TerritoryBuilder
     {

@@ -97,12 +97,12 @@
     <Compile Include="Application\Gameplay\FortifySelectStateTests.cs" />
     <Compile Include="Application\Gameplay\GameTests.cs" />
     <Compile Include="Application\Gameplay\InitialArmyForceTests.cs" />
-    <Compile Include="CardBuilder.cs" />
+    <Compile Include="Builders\CardBuilder.cs" />
     <Compile Include="GuiWpf\BypassGuiThreadDispatcher.cs" />
     <Compile Include="GuiWpf\SynchronousTaskEx.cs" />
     <Compile Include="GuiWpf\WorldMapModelFactoryTests.cs" />
-    <Compile Include="TerritoryBuilder.cs" />
-    <Compile Include="Make.cs" />
+    <Compile Include="Builders\TerritoryBuilder.cs" />
+    <Compile Include="Builders\Make.cs" />
     <Compile Include="Application\Gameplay\TerritoryExtensionsTests.cs" />
     <Compile Include="Application\Gameplay\InteractionStateFactoryTests.cs" />
     <Compile Include="Application\Gameplay\AttackStateTests.cs" />
@@ -115,8 +115,8 @@
     <Compile Include="GuiWpf\GameSetupViewModelTests.cs" />
     <Compile Include="GuiWpf\MainGameViewModelTests.cs" />
     <Compile Include="GuiWpf\ScreenServiceTests.cs" />
-    <Compile Include="Views\ConfirmViewModelFactoryTests.cs" />
-    <Compile Include="Views\UserNotifierTests.cs" />
+    <Compile Include="GuiWpf\ConfirmViewModelFactoryTests.cs" />
+    <Compile Include="GuiWpf\UserNotifierTests.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

@@ -4,7 +4,7 @@ using GuiWpf.ViewModels;
 using NSubstitute;
 using Xunit;
 
-namespace RISK.Tests.Views
+namespace RISK.Tests.GuiWpf
 {
     public class ConfirmViewModelFactoryTests
     {

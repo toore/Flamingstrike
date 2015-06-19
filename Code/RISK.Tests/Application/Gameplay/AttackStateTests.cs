@@ -6,6 +6,7 @@ using RISK.Application;
 using RISK.Application.GamePlay;
 using RISK.Application.GamePlay.Battling;
 using RISK.Application.World;
+using RISK.Tests.Builders;
 using Xunit;
 
 namespace RISK.Tests.Application.Gameplay

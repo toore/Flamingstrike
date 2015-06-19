@@ -5,6 +5,7 @@ using NSubstitute;
 using RISK.Application;
 using RISK.Application.GamePlay;
 using RISK.Application.World;
+using RISK.Tests.Builders;
 using Xunit;
 
 namespace RISK.Tests.Application.Gameplay
