@@ -17,161 +17,143 @@ namespace RISK.Application.GameSetup
 
     public interface IAlternateGameSetup
     {
-        IGameboard Initialize(ITerritoryRequestHandler territoryRequestHandler);
+        IGameSetup Initialize(ITerritoryRequestHandler territoryRequestHandler);
     }
 
     public class AlternateGameSetup : IAlternateGameSetup
     {
-        private readonly IList<IPlayerId> _playerIds;
+        private readonly IEnumerable<IPlayer> _players;
         private readonly IWorldMap _worldMap;
         private readonly IShuffler _shuffler;
         private readonly IStartingInfantryCalculator _startingInfantryCalculator;
 
-        public AlternateGameSetup(IList<IPlayerId> playerIds, IWorldMap worldMap, IShuffler shuffler, IStartingInfantryCalculator startingInfantryCalculator)
+        public AlternateGameSetup(IWorldMap worldMap, IEnumerable<IPlayer> players, IStartingInfantryCalculator startingInfantryCalculator, IShuffler shuffler)
         {
-            _playerIds = playerIds;
+            _players = players;
             _worldMap = worldMap;
             _shuffler = shuffler;
             _startingInfantryCalculator = startingInfantryCalculator;
         }
 
-        public IGameboard Initialize(ITerritoryRequestHandler territoryRequestHandler)
+        public IGameSetup Initialize(ITerritoryRequestHandler territoryRequestHandler)
         {
-            var players = ShufflePlayersAndInitializeStartingInfantry(_playerIds);
-            var gameSetupState = AssignPlayersToShuffledTerritories(players);
-            var gameboard = PlaceAllArmies(territoryRequestHandler, gameSetupState);
+            var playersInTurnOrder = ShufflePlayers();
+            var territories = AssignPlayersToTerritories(playersInTurnOrder);
+            var gameSetupPlayers = InitializeInfantryToPlace(playersInTurnOrder, territories);
+            PlaceArmies(territoryRequestHandler, gameSetupPlayers, territories);
 
-            return gameboard;
+            var gameSetup = new GameSetup(playersInTurnOrder, territories);
+            return gameSetup;
         }
 
-        private IList<Player> ShufflePlayersAndInitializeStartingInfantry(ICollection<IPlayerId> players)
+        private IList<GameSetupPlayer> InitializeInfantryToPlace(IReadOnlyCollection<IPlayer> players, List<GameboardTerritory> gameboardTerritories)
         {
             var numberOfStartingInfantry = _startingInfantryCalculator.Get(players.Count);
 
-            var shuffledPlayers = players
+            var gameSetupPlayers = players
+                .Select(player => CreatePlayer(player, numberOfStartingInfantry, gameboardTerritories))
+                .ToList();
+            return gameSetupPlayers;
+        }
+
+        private static GameSetupPlayer CreatePlayer(IPlayer player, int numberOfStartingInfantry, IEnumerable<GameboardTerritory> gameboardTerritories)
+        {
+            var numberOfTerritoriesAssignedToPlayer = gameboardTerritories.Count(t => t.Player == player);
+            var armiesToPlace = numberOfStartingInfantry - numberOfTerritoriesAssignedToPlayer;
+            var gameSetupPlayer = new GameSetupPlayer(player, armiesToPlace);
+            return gameSetupPlayer;
+        }
+
+        private List<IPlayer> ShufflePlayers()
+        {
+            var shuffledPlayers = _players
                 .Shuffle(_shuffler)
-                .Select(x => new Player(x, numberOfStartingInfantry))
                 .ToList();
             return shuffledPlayers;
         }
 
-        private GameSetupState AssignPlayersToShuffledTerritories(IList<Player> players)
+        private List<GameboardTerritory> AssignPlayersToTerritories(IList<IPlayer> players)
         {
+            var gameboardTerritories = new List<GameboardTerritory>();
+
             var territories = _worldMap.GetTerritories()
                 .Shuffle(_shuffler)
                 .ToList();
 
-            var playerIds = players.Select(x => x.PlayerId).ToList();
-            var playerId = playerIds.First();
-
-            var gameboardTerritories = new List<GameboardTerritory>();
-            var updatedPlayers = players.ToList();
+            var player = players.First();
 
             foreach (var territory in territories)
             {
-                var gameboardTerritory = new GameboardTerritory(territory, playerId, 1);
+                var gameboardTerritory = new GameboardTerritory(territory, player, 1);
                 gameboardTerritories.Add(gameboardTerritory);
 
-                updatedPlayers = PlaceArmyAndUpdatePlayers(playerId, updatedPlayers);
-
-                playerId = playerIds.GetNextOrFirst(playerId);
+                player = players.GetNextOrFirst(player);
             }
 
-            var gameSetupState = new GameSetupState(updatedPlayers, gameboardTerritories);
-            return gameSetupState;
+            return gameboardTerritories;
         }
 
-        private static List<Player> PlaceArmyAndUpdatePlayers(IPlayerId playerId, List<Player> players)
+        private static void PlaceArmies(ITerritoryRequestHandler territoryRequestHandler, IList<GameSetupPlayer> gameSetupPlayers, IList<GameboardTerritory> territories)
         {
-            var player = players.Single(x => x.PlayerId == playerId);
-            var updatedPlayer = new Player(playerId, player.GetNumberOfArmiesLeftToPlace() - 1);
-            var updatedPlayers = players.ReplaceFirstMatchingElement(updatedPlayer, p => p.PlayerId == player.PlayerId);
-
-            return updatedPlayers;
-        }
-
-        //private static List<Player> UpdatePlayerCollection(List<Player> players, Player updatedPlayer)
-        //{
-        //    var playerIndex = players.FindIndex(x => x.PlayerId == updatedPlayer.PlayerId);
-        //    var updatedPlayers = players.ToList();
-        //    updatedPlayers.RemoveAt(playerIndex);
-        //    updatedPlayers.Insert(playerIndex, updatedPlayer);
-
-        //    return updatedPlayers;
-        //}
-
-        private static IGameboard PlaceAllArmies(ITerritoryRequestHandler territoryRequestHandler, GameSetupState gameSetupState)
-        {
-            while (AnyArmiesLeftToPlace(gameSetupState.Players))
+            while (AnyArmiesLeftToPlace(gameSetupPlayers))
             {
-                gameSetupState = PlaceArmies(territoryRequestHandler, gameSetupState);
+                PlaceArmiesForOneRound(territoryRequestHandler, gameSetupPlayers, territories);
             }
-
-            var gameboard = CreateGameboard(gameSetupState);
-            return gameboard;
         }
 
-        private static GameSetupState PlaceArmies(ITerritoryRequestHandler territoryRequestHandler, GameSetupState gameSetupState)
-        {
-            var playersWithArmiesLeftToPlace = gameSetupState.Players
-                    .Where(x => x.HasArmiesLeftToPlace())
-                    .ToList();
-
-            foreach (var player in playersWithArmiesLeftToPlace)
-            {
-                gameSetupState = PlaceArmy(territoryRequestHandler, gameSetupState, player);
-            }
-
-            return gameSetupState;
-        }
-
-        private static bool AnyArmiesLeftToPlace(IEnumerable<Player> players)
+        private static bool AnyArmiesLeftToPlace(IEnumerable<GameSetupPlayer> players)
         {
             return players.Any(x => x.HasArmiesLeftToPlace());
         }
 
-        private static GameSetupState PlaceArmy(ITerritoryRequestHandler territoryRequestHandler, GameSetupState gameSetupState, Player player)
+        private static void PlaceArmiesForOneRound(ITerritoryRequestHandler territoryRequestHandler, IList<GameSetupPlayer> gameSetupPlayers, IList<GameboardTerritory> territories)
         {
-            var territoriesAssignedToPlayer = gameSetupState.GameboardTerritories
-                .Where(x => x.PlayerId == player.PlayerId)
+            var playersWithArmiesLeftToPlace = gameSetupPlayers
+                .Where(x => x.HasArmiesLeftToPlace())
                 .ToList();
 
-            var allowedTerritories = territoriesAssignedToPlayer
-                .Select(x => x.Territory)
-                .ToList();
-
-            var gameboard = CreateGameboard(gameSetupState);
-
-            var respondedTerritory = GetTerritoryResponse(territoryRequestHandler, player, gameboard, allowedTerritories);
-            var respondedGameboardTerritory = territoriesAssignedToPlayer.Single(x => x.Territory == respondedTerritory);
-
-            var updatedGameboardTerritory = new GameboardTerritory(respondedGameboardTerritory.Territory, respondedGameboardTerritory.PlayerId, respondedGameboardTerritory.Armies);
-            var updatedGameboardTerritories = gameSetupState.GameboardTerritories
-                .ReplaceFirstMatchingElement(updatedGameboardTerritory, x => x == respondedGameboardTerritory).ToList();
-
-            var updatedPlayer = new Player(player.PlayerId, player.GetNumberOfArmiesLeftToPlace());
-            var updatedPlayers = gameSetupState.Players
-                .ReplaceFirstMatchingElement(updatedPlayer, p => p.PlayerId == player.PlayerId);
-
-            var updatedGameSetupState = new GameSetupState(updatedPlayers, updatedGameboardTerritories);
-            return updatedGameSetupState;
+            foreach (var gameSetupPlayer in playersWithArmiesLeftToPlace)
+            {
+                PlaceArmy(territoryRequestHandler, gameSetupPlayer, territories);
+            }
         }
 
-        private static Gameboard CreateGameboard(GameSetupState gameSetupState)
+        private static void PlaceArmy(ITerritoryRequestHandler territoryRequestHandler, GameSetupPlayer gameSetupPlayer, IList<GameboardTerritory> gameboardTerritories)
         {
-            var gamePlayTerritories = gameSetupState.GameboardTerritories
-                .Select(x => new GamePlay.GameboardTerritory(x.Territory, x.PlayerId, x.Armies))
+            var gameboard = CreateGameboard(gameboardTerritories);
+
+            var territoriesAssignedToPlayer = gameboardTerritories
+                .Where(x => x.Player == gameSetupPlayer.Player)
+                .ToList();
+
+            var respondedGameboardTerritory = GetTerritoryResponse(territoryRequestHandler, gameboard, gameSetupPlayer, territoriesAssignedToPlayer);
+
+            respondedGameboardTerritory.Armies++;
+            gameSetupPlayer.ArmiesToPlace--;
+        }
+
+        private static Gameboard CreateGameboard(IEnumerable<GameboardTerritory> gameboardTerritories)
+        {
+            var gamePlayTerritories = gameboardTerritories
+                .Select(x => new GamePlay.GameboardTerritory(x.Territory, x.Player, x.Armies))
                 .ToList();
 
             var gameboard = new Gameboard(gamePlayTerritories);
             return gameboard;
         }
 
-        private static ITerritory GetTerritoryResponse(ITerritoryRequestHandler territoryRequestHandler, Player player, IGameboard gameboard, IEnumerable<ITerritory> allowedTerritories)
+        private static GameboardTerritory GetTerritoryResponse(ITerritoryRequestHandler territoryRequestHandler, IGameboard gameboard, GameSetupPlayer gameSetupPlayer, List<GameboardTerritory> territoriesAssignedToPlayer)
         {
-            var parameter = new TerritoryRequestParameter(gameboard, allowedTerritories, player);
+            var selectableTerritories = territoriesAssignedToPlayer
+                .Select(x => x.Territory)
+                .ToList();
+
+            var parameter = new TerritoryRequestParameter(gameboard, selectableTerritories, gameSetupPlayer);
+
             var territory = territoryRequestHandler.ProcessRequest(parameter);
-            return territory;
+            var gameboardTerritory = territoriesAssignedToPlayer.Single(x => x.Territory == territory);
+
+            return gameboardTerritory;
         }
     }
 }

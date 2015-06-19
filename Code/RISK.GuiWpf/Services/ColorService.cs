@@ -13,7 +13,7 @@ namespace GuiWpf.Services
         ITerritoryColors AsiaColors { get; }
         ITerritoryColors AustraliaColors { get; }
 
-        ITerritoryColors GetPlayerTerritoryColors(IPlayerId playerId);
+        ITerritoryColors GetPlayerTerritoryColors(IPlayer player);
 
         Color SelectedTerritoryColor { get; }
     }
@@ -66,7 +66,7 @@ namespace GuiWpf.Services
                 mouseOverFillColor: Color.FromArgb(255, 255, 237, 230));
         }
 
-        public ITerritoryColors GetPlayerTerritoryColors(IPlayerId playerId)
+        public ITerritoryColors GetPlayerTerritoryColors(IPlayer player)
         {
             return new TerritoryColors(
                 normalStrokeColor: Colors.Black,

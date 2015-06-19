@@ -18,8 +18,8 @@ namespace RISK.Tests.Application.Gameplay.Setup
     {
         private readonly AlternateGameSetup _sut;
         private readonly IWorldMap _worldMap;
-        private readonly IPlayerId _player1;
-        private readonly IPlayerId _player2;
+        private readonly IPlayer _player1;
+        private readonly IPlayer _player2;
         private readonly ITerritoryRequestHandler _territoryRequestHandler;
         private readonly ITerritory _territory1;
         private readonly ITerritory _territory2;
@@ -33,8 +33,8 @@ namespace RISK.Tests.Application.Gameplay.Setup
             //var worldMapFactory = Substitute.For<IWorldMapFactory>();
             var initialArmyForce = Substitute.For<IStartingInfantryCalculator>();
 
-            var playerInRepository1 = Substitute.For<IPlayerId>();
-            var playerInRepository2 = Substitute.For<IPlayerId>();
+            var playerInRepository1 = Substitute.For<IPlayer>();
+            var playerInRepository2 = Substitute.For<IPlayer>();
             playerRepository.GetAll().Returns(new[] { playerInRepository1, playerInRepository2 });
 
             var worldMapTerritory1 = Substitute.For<ITerritory>();
@@ -47,12 +47,12 @@ namespace RISK.Tests.Application.Gameplay.Setup
 
             initialArmyForce.Get(2).Returns(3);
 
-            _sut = new AlternateGameSetup(null,null,null,null);
+            _sut = new AlternateGameSetup(null, null, null, null);
                 //new AlternateGameSetup(playerRepository, worldMapFactory, shuffle, initialArmyForce);
 
-            _player1 = Substitute.For<IPlayerId>();
-            _player2 = Substitute.For<IPlayerId>();
-            shuffle.Shuffle(Arg.Is<IEnumerable<IPlayerId>>(x => x.SequenceEqual(new[] { playerInRepository1, playerInRepository2 }))).Returns(new[] { _player1, _player2 });
+            _player1 = Substitute.For<IPlayer>();
+            _player2 = Substitute.For<IPlayer>();
+            shuffle.Shuffle(Arg.Is<IEnumerable<IPlayer>>(x => x.SequenceEqual(new[] { playerInRepository1, playerInRepository2 }))).Returns(new[] { _player1, _player2 });
 
             _territory1 = Substitute.For<ITerritory>();
             _territory2 = Substitute.For<ITerritory>();

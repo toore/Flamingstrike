@@ -32,9 +32,10 @@ namespace GuiWpf.ViewModels
         public Root()
         {
             var colorService = new ColorService();
-            var territoryColorsFactory = new TerritoryColorsFactory(colorService);
+            var worldMap = new WorldMap();
+            var territoryColorsFactory = new TerritoryColorsFactory(colorService, worldMap);
             var worldMapModelFactory = new WorldMapModelFactory();
-            WorldMapViewModelFactory = new WorldMapViewModelFactory(worldMapModelFactory, territoryColorsFactory, colorService);
+            WorldMapViewModelFactory = new WorldMapViewModelFactory(worldMap, worldMapModelFactory, territoryColorsFactory, colorService);
             GameOverViewModelFactory = new GameOverViewModelFactory();
 
             var screenService = new ScreenService();
@@ -50,7 +51,6 @@ namespace GuiWpf.ViewModels
 
             PlayerRepository = new PlayerRepository();
 
-            var worldMap = new WorldMap();
             AlternateGameSetupFactory = new AlternateGameSetupFactory(worldMap, shuffler, startingInfantryCalculator);
 
             WindowManager = new WindowManager();

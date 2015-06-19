@@ -1,24 +1,23 @@
 ﻿using System;
 using System.Windows.Media;
 using GuiWpf.TerritoryModels;
-using RISK.Application;
 using RISK.Application.World;
 
 namespace GuiWpf.ViewModels.Gameplay.Map
 {
-    public class TerritoryLayoutViewModel : ViewModelBase, ITerritoryLayoutViewModel
+    public class TerritoryViewModel : ViewModelBase, ITerritoryLayoutViewModel
     {
         private readonly ITerritoryModel _territoryModel;
         private readonly Action<ITerritory> _onClick;
 
-        public TerritoryLayoutViewModel(ITerritoryModel territoryModel, Action<ITerritory> onClick)
+        public TerritoryViewModel(ITerritoryModel territoryModel, Action<ITerritory> onClick)
         {
             _territoryModel = territoryModel;
             _onClick = onClick;
         }
 
-        public string Path { get { return _territoryModel.Path; } }
-        public ITerritory Territory { get { return _territoryModel.Territory; } }
+        public string Path => _territoryModel.Path;
+        public ITerritory Territory => _territoryModel.Territory;
 
         private Color _strokeColor;
         public Color StrokeColor

@@ -14,7 +14,7 @@ namespace RISK.Tests.Application.Gameplay
         [Fact]
         public void Is_assigned_to_player()
         {
-            var territory = Make.Territory.Occupant(Substitute.For<IPlayerId>()).Build();
+            var territory = Make.Territory.Occupant(Substitute.For<IPlayer>()).Build();
 
             //territory.IsOccupied().Should().BeTrue();
             throw new NotImplementedException();

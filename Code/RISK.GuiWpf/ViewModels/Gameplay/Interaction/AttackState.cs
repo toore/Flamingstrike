@@ -13,16 +13,16 @@ namespace GuiWpf.ViewModels.Gameplay.Interaction
         public AttackState(
             IStateController stateController, 
             IInteractionStateFactory interactionStateFactory, 
-            IPlayerId playerId, 
+            IPlayer player, 
             ITerritory selectedTerritory)
         {
-            PlayerId = playerId;
+            Player = player;
             _stateController = stateController;
             _interactionStateFactory = interactionStateFactory;
             SelectedTerritory = selectedTerritory;
         }
 
-        public IPlayerId PlayerId { get; }
+        public IPlayer Player { get; }
         public ITerritory SelectedTerritory { get; }
 
         public bool CanClick(ITerritory territory)
@@ -58,7 +58,7 @@ namespace GuiWpf.ViewModels.Gameplay.Interaction
         {
             if (CanSelect(location))
             {
-                _stateController.CurrentState = _interactionStateFactory.CreateSelectState(_stateController, PlayerId);
+                _stateController.CurrentState = _interactionStateFactory.CreateSelectState(_stateController, Player);
             }
         }
 
@@ -80,7 +80,7 @@ namespace GuiWpf.ViewModels.Gameplay.Interaction
 
             if (attack == AttackResult.SucceededAndOccupying)
             {
-                _stateController.CurrentState = _interactionStateFactory.CreateAttackState(_stateController, PlayerId, territory);
+                _stateController.CurrentState = _interactionStateFactory.CreateAttackState(_stateController, Player, territory);
             }
         }
 

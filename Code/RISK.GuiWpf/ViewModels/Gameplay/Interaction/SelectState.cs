@@ -10,9 +10,9 @@ namespace GuiWpf.ViewModels.Gameplay.Interaction
         private readonly IStateController _stateController;
         private readonly IInteractionStateFactory _interactionStateFactory;
 
-        public SelectState(IStateController stateController, IInteractionStateFactory interactionStateFactory, IPlayerId playerId)
+        public SelectState(IStateController stateController, IInteractionStateFactory interactionStateFactory, IPlayer player)
         {
-            PlayerId = playerId;
+            Player = player;
             _stateController = stateController;
             _interactionStateFactory = interactionStateFactory;
         }
@@ -22,7 +22,7 @@ namespace GuiWpf.ViewModels.Gameplay.Interaction
             get { return null; }
         }
 
-        public IPlayerId PlayerId { get; private set; }
+        public IPlayer Player { get; private set; }
 
         public bool CanClick(ITerritory territory)
         {
@@ -37,7 +37,7 @@ namespace GuiWpf.ViewModels.Gameplay.Interaction
                 throw new InvalidOperationException();
             }
 
-            _stateController.CurrentState = _interactionStateFactory.CreateAttackState(_stateController, PlayerId, territory);
+            _stateController.CurrentState = _interactionStateFactory.CreateAttackState(_stateController, Player, territory);
         }
     }
 }

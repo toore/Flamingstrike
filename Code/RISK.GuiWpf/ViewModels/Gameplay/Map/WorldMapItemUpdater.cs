@@ -1,63 +1,64 @@
 using System.Collections.Generic;
 using System.Linq;
 using GuiWpf.Services;
-using RISK.Application;
+using RISK.Application.GamePlay;
 using RISK.Application.World;
 
 namespace GuiWpf.ViewModels.Gameplay.Map
 {
     public class WorldMapItemUpdater : IWorldMapItemViewModelVisitor
     {
-        private readonly IWorldMap _worldMap;
+        private readonly IGameboard _gameboard;
         private readonly IEnumerable<ITerritory> _enabledTerritories;
         private readonly ITerritory _selectedTerritory;
         private readonly ITerritoryColorsFactory _territoryColorsFactory;
         private readonly IColorService _colorService;
 
-        public WorldMapItemUpdater(
-            IWorldMap worldMap, 
-            IEnumerable<ITerritory> enabledTerritories, 
-            ITerritory selectedTerritory, 
-            ITerritoryColorsFactory territoryColorsFactory, 
-            IColorService colorService)
+        public WorldMapItemUpdater(IGameboard gameboard, IEnumerable<ITerritory> enabledTerritories, ITerritory selectedTerritory, ITerritoryColorsFactory territoryColorsFactory, IColorService colorService)
         {
-            _worldMap = worldMap;
+            _gameboard = gameboard;
             _enabledTerritories = enabledTerritories;
             _selectedTerritory = selectedTerritory;
             _territoryColorsFactory = territoryColorsFactory;
             _colorService = colorService;
         }
 
-        public void Visit(TerritoryLayoutViewModel territoryLayoutViewModel)
+        public void Visit(TerritoryViewModel territoryViewModel)
         {
-            var territoryColors = _territoryColorsFactory.Create(_worldMap, territoryLayoutViewModel.Territory);
+            var territoryColors = _territoryColorsFactory.Create(territoryViewModel.Territory);
 
             var strokeColor = territoryColors.NormalStrokeColor;
             var fillColor = territoryColors.NormalFillColor;
             var mouseOverStrokeColor = territoryColors.MouseOverStrokeColor;
             var mouseOverFillColor = territoryColors.MouseOverFillColor;
 
-            if (_selectedTerritory == territoryLayoutViewModel.Territory)
+            if (_selectedTerritory == territoryViewModel.Territory)
             {
                 fillColor = _colorService.SelectedTerritoryColor;
             }
 
-            territoryLayoutViewModel.StrokeColor = strokeColor;
-            territoryLayoutViewModel.FillColor = fillColor;
-            territoryLayoutViewModel.MouseOverStrokeColor = mouseOverStrokeColor;
-            territoryLayoutViewModel.MouseOverFillColor = mouseOverFillColor;
+            territoryViewModel.StrokeColor = strokeColor;
+            territoryViewModel.FillColor = fillColor;
+            territoryViewModel.MouseOverStrokeColor = mouseOverStrokeColor;
+            territoryViewModel.MouseOverFillColor = mouseOverFillColor;
 
-            territoryLayoutViewModel.IsEnabled = IsTerritoryEnabled(territoryLayoutViewModel);
+            territoryViewModel.IsEnabled = IsTerritoryEnabled(territoryViewModel);
         }
 
-        private bool IsTerritoryEnabled(TerritoryLayoutViewModel territoryLayoutViewModel)
+        private bool IsTerritoryEnabled(TerritoryViewModel territoryViewModel)
         {
-            return _enabledTerritories.Contains(territoryLayoutViewModel.Territory);
+            return _enabledTerritories.Contains(territoryViewModel.Territory);
         }
 
-        public void Visit(TerritoryTextViewModel territoryTextViewModel)
+        public void Visit(TitleViewModel titleViewModel)
         {
-            territoryTextViewModel.UpdateArmies();
+            UpdateArmiesForTerritory(titleViewModel);
+        }
+
+        private void UpdateArmiesForTerritory(TitleViewModel titleViewModel)
+        {
+            var gameboardTerritory = _gameboard.GetTerritory(titleViewModel.Territory);
+            titleViewModel.Armies = gameboardTerritory.Armies;
         }
     }
 }

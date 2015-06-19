@@ -7,13 +7,13 @@ namespace GuiWpf.ViewModels.Gameplay.Interaction
 {
     public class FortifyMoveState : IInteractionState
     {
-        public FortifyMoveState(IPlayerId playerId, ITerritory selectedTerritory)
+        public FortifyMoveState(IPlayer player, ITerritory selectedTerritory)
         {
-            PlayerId = playerId;
+            Player = player;
             SelectedTerritory = selectedTerritory;
         }
 
-        public IPlayerId PlayerId { get; private set; }
+        public IPlayer Player { get; private set; }
         public ITerritory SelectedTerritory { get; private set; }
         public bool CanClick(ITerritory territory)
         {

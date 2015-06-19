@@ -21,7 +21,7 @@ namespace RISK.Tests.GuiWpf
         private readonly IEventAggregator _eventAggregator;
         private readonly IUserInteractor _userInteractor;
         private readonly GameSetupViewModelFactory _gameSetupViewModelFactory;
-        private IAlternateGameSetup _alternateGameSetup;
+        private readonly IAlternateGameSetup _alternateGameSetup;
 
         public GameSetupViewModelTests()
         {
@@ -50,7 +50,7 @@ namespace RISK.Tests.GuiWpf
         public void Select_location_gets_location_from_user_interactor()
         {
             var territoryRequestParameter = Substitute.For<ITerritoryRequestParameter>();
-            territoryRequestParameter.GetPlayerThatTakesTurn().ReturnsForAnyArgs(Substitute.For<IPlayerId>());
+            territoryRequestParameter.Player.ReturnsForAnyArgs(Substitute.For<IPlayer>());
             var expected = Substitute.For<ITerritory>();
             _userInteractor.GetSelectedTerritory(territoryRequestParameter).Returns(expected);
             _worldMapViewModelFactory.Create(null, null, null).ReturnsForAnyArgs(new WorldMapViewModel());
@@ -73,7 +73,7 @@ namespace RISK.Tests.GuiWpf
 
             gameSetupViewModel.WorldMapViewModel.Should().Be(worldMapViewModel);
             gameSetupViewModel.ShouldRaisePropertyChangeFor(x => x.WorldMapViewModel);
-            gameSetupViewModel.ShouldRaisePropertyChangeFor(x => x.PlayerId);
+            gameSetupViewModel.ShouldRaisePropertyChangeFor(x => x.Player);
             gameSetupViewModel.ShouldRaisePropertyChangeFor(x => x.InformationText);
         }
 

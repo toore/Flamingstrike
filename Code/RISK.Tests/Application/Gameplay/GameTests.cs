@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using NSubstitute;
 using RISK.Application;
 using RISK.Application.GamePlay;
@@ -15,17 +14,17 @@ namespace RISK.Tests.Application.Gameplay
         private IWorldMap _worldMap;
         private ICardFactory _cardFactory;
         private IBattle _battle;
-        private IPlayerId _currentPlayerId;
-        private IPlayerId _nextPlayerId;
+        private IPlayer _currentPlayer;
+        private IPlayer _nextPlayer;
 
         public GameTests()
         {
-            _currentPlayerId = Substitute.For<IPlayerId>();
-            _nextPlayerId = Substitute.For<IPlayerId>();
+            _currentPlayer = Substitute.For<IPlayer>();
+            _nextPlayer = Substitute.For<IPlayer>();
 
-            var players = new[] { _currentPlayerId, _nextPlayerId };
+            var players = new[] { _currentPlayer, _nextPlayer };
 
-            _sut = new Game(players, _worldMap, _cardFactory, _battle);
+            _sut = new Game(players, _worldMap, null, _cardFactory, _battle);
         }
 
         // can not attack territories if any not in map

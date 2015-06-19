@@ -6,34 +6,30 @@ namespace RISK.Application.GameSetup
 {
     public interface ITerritoryRequestParameter
     {
-        IEnumerable<ITerritory> EnabledTerritories { get; }
         IGameboard Gameboard { get; }
-        IPlayerId GetPlayerThatTakesTurn();
+        IReadOnlyList<ITerritory> EnabledTerritories { get; }
+        IPlayer Player { get; }
         int GetArmiesLeftToPlace();
     }
 
     public class TerritoryRequestParameter : ITerritoryRequestParameter
     {
-        private readonly Player _player;
+        private readonly GameSetupPlayer _gameSetupPlayer;
 
-        public TerritoryRequestParameter(IGameboard gameboard, IEnumerable<ITerritory> enabledTerritories, Player player)
+        public TerritoryRequestParameter(IGameboard gameboard, IReadOnlyList<ITerritory> enabledTerritories, GameSetupPlayer gameSetupPlayer)
         {
             Gameboard = gameboard;
-            _player = player;
+            _gameSetupPlayer = gameSetupPlayer;
             EnabledTerritories = enabledTerritories;
         }
 
         public IGameboard Gameboard { get; }
-        public IEnumerable<ITerritory> EnabledTerritories { get; }
-
-        public IPlayerId GetPlayerThatTakesTurn()
-        {
-            return _player.PlayerId;
-        }
+        public IReadOnlyList<ITerritory> EnabledTerritories { get; }
+        public IPlayer Player => _gameSetupPlayer.Player;
 
         public int GetArmiesLeftToPlace()
         {
-            return _player.GetNumberOfArmiesLeftToPlace();
+            return _gameSetupPlayer.ArmiesToPlace;
         }
     }
 }

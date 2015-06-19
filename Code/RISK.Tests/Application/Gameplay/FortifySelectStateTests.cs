@@ -12,22 +12,22 @@ namespace RISK.Tests.Application.Gameplay
     public class FortifySelectStateTests
     {
         private readonly FortifySelectState _sut;
-        private readonly IPlayerId _playerId;
+        private readonly IPlayer _player;
         private readonly IInteractionStateFactory _interactionStateFactory;
         private readonly StateController _stateController;
         private readonly Territory _territoryOccupiedByPlayer;
 
         public FortifySelectStateTests()
         {
-            _stateController = new StateController(_interactionStateFactory, _playerId, null);
+            _stateController = new StateController(_interactionStateFactory, _player, null);
             _interactionStateFactory = Substitute.For<IInteractionStateFactory>();
-            _playerId = Substitute.For<IPlayerId>();
+            _player = Substitute.For<IPlayer>();
 
             _territoryOccupiedByPlayer = Make.Territory
-                .Occupant(_playerId)
+                .Occupant(_player)
                 .Build();
 
-            _sut = new FortifySelectState(_stateController, _interactionStateFactory, _playerId);
+            _sut = new FortifySelectState(_stateController, _interactionStateFactory, _player);
         }
 
         [Fact]
@@ -48,7 +48,7 @@ namespace RISK.Tests.Application.Gameplay
         public void Clicking_occupied_territory_enters_fortify_state()
         {
             var fortifyState = Substitute.For<IInteractionState>();
-            _interactionStateFactory.CreateFortifyState(_stateController, _playerId, _territoryOccupiedByPlayer).Returns(fortifyState);
+            _interactionStateFactory.CreateFortifyState(_stateController, _player, _territoryOccupiedByPlayer).Returns(fortifyState);
 
             _sut.OnClick(_territoryOccupiedByPlayer);
 
@@ -61,7 +61,7 @@ namespace RISK.Tests.Application.Gameplay
         private readonly FortifyMoveState _sut;
         private readonly StateController _stateController;
         private readonly IInteractionStateFactory _interactionStateFactory;
-        private readonly IPlayerId _playerId;
+        private readonly IPlayer _player;
         private readonly ITerritory _selectedTerritory;
         private readonly Territory _remoteTerritoryOccupiedByOtherPlayer;
         private readonly Territory _borderingTerritoryOccupiedByOtherPlayer;
@@ -70,25 +70,25 @@ namespace RISK.Tests.Application.Gameplay
 
         public FortifyMoveTests()
         {
-            _stateController = new StateController(_interactionStateFactory, _playerId, null);
+            _stateController = new StateController(_interactionStateFactory, _player, null);
             _interactionStateFactory = Substitute.For<IInteractionStateFactory>();
-            _playerId = Substitute.For<IPlayerId>();
+            _player = Substitute.For<IPlayer>();
 
             _borderingTerritoryOccupiedByPlayer = Make.Territory
-                .Occupant(_playerId)
+                .Occupant(_player)
                 .Build();
 
             _remoteTerritoryOccupiedByPlayer = Make.Territory
-                .Occupant(_playerId)
+                .Occupant(_player)
                 .Build();
 
             _selectedTerritory = Make.Territory
                 .WithBorder(_borderingTerritoryOccupiedByOtherPlayer)
                 .WithBorder(_borderingTerritoryOccupiedByPlayer)
-                .Occupant(_playerId)
+                .Occupant(_player)
                 .Build();
 
-            _sut = new FortifyMoveState(_playerId, _selectedTerritory);
+            _sut = new FortifyMoveState(_player, _selectedTerritory);
         }
 
         [Fact]

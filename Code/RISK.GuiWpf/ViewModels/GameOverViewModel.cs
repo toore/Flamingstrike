@@ -6,7 +6,7 @@ namespace GuiWpf.ViewModels
 {
     public class GameOverViewModel : Screen, IGameOverViewModel
     {
-        public GameOverViewModel(IPlayerId winner)
+        public GameOverViewModel(IPlayer winner)
         {
             PlayerNameIsTheWinnerText = string.Format(Resources.ARG0_IS_THE_WINNER, winner.Name);
         }

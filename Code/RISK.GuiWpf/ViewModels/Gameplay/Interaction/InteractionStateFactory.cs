@@ -6,32 +6,32 @@ namespace GuiWpf.ViewModels.Gameplay.Interaction
 {
     public interface IInteractionStateFactory
     {
-        IInteractionState CreateSelectState(IStateController stateController, IPlayerId playerId);
-        IInteractionState CreateAttackState(IStateController stateController, IPlayerId playerId, ITerritory selectedTerritory);
-        IInteractionState CreateFortifyState(IStateController stateController, IPlayerId playerId);
-        IInteractionState CreateFortifyState(IStateController stateController, IPlayerId playerId, ITerritory selectedTerritory);
+        IInteractionState CreateSelectState(IStateController stateController, IPlayer player);
+        IInteractionState CreateAttackState(IStateController stateController, IPlayer player, ITerritory selectedTerritory);
+        IInteractionState CreateFortifyState(IStateController stateController, IPlayer player);
+        IInteractionState CreateFortifyState(IStateController stateController, IPlayer player, ITerritory selectedTerritory);
     }
 
     public class InteractionStateFactory : IInteractionStateFactory
     {
-        public IInteractionState CreateSelectState(IStateController stateController, IPlayerId playerId)
+        public IInteractionState CreateSelectState(IStateController stateController, IPlayer player)
         {
-            return new SelectState(stateController, this, playerId);
+            return new SelectState(stateController, this, player);
         }
 
-        public IInteractionState CreateAttackState(IStateController stateController, IPlayerId playerId, ITerritory selectedTerritory)
+        public IInteractionState CreateAttackState(IStateController stateController, IPlayer player, ITerritory selectedTerritory)
         {
-            return new AttackState(stateController, this, playerId, selectedTerritory);
+            return new AttackState(stateController, this, player, selectedTerritory);
         }
 
-        public IInteractionState CreateFortifyState(IStateController stateController, IPlayerId playerId)
+        public IInteractionState CreateFortifyState(IStateController stateController, IPlayer player)
         {
-            return new FortifySelectState(stateController, this, playerId);
+            return new FortifySelectState(stateController, this, player);
         }
 
-        public IInteractionState CreateFortifyState(IStateController stateController, IPlayerId playerId, ITerritory selectedTerritory)
+        public IInteractionState CreateFortifyState(IStateController stateController, IPlayer player, ITerritory selectedTerritory)
         {
-            return new FortifyMoveState(playerId, selectedTerritory);
+            return new FortifyMoveState(player, selectedTerritory);
         }
     }
 }

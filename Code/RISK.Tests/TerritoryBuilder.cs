@@ -10,7 +10,7 @@ namespace RISK.Tests
         private string _name = "";
         private Continent _continent = Continent.Europe;
         private readonly List<ITerritory> _borders = new List<ITerritory>();
-        private IPlayerId _occupant;
+        private IPlayer _occupant;
         private int _armies;
 
         public Territory Build()
@@ -29,7 +29,7 @@ namespace RISK.Tests
             return this;
         }
 
-        public TerritoryBuilder Occupant(IPlayerId occupant)
+        public TerritoryBuilder Occupant(IPlayer occupant)
         {
             _occupant = occupant;
             return this;

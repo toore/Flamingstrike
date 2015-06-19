@@ -10,8 +10,8 @@ namespace RISK.Tests.Application.Battling
 {
    public class AttackCases : DataAttribute
    {
-       public static readonly IPlayerId Attacker = Substitute.For<IPlayerId>();
-       public static readonly IPlayerId Defender = Substitute.For<IPlayerId>();
+       public static readonly IPlayer Attacker = Substitute.For<IPlayer>();
+       public static readonly IPlayer Defender = Substitute.For<IPlayer>();
 
        public override IEnumerable<object[]> GetData(MethodInfo methodUnderTest)
        {
@@ -33,7 +33,7 @@ namespace RISK.Tests.Application.Battling
         [Theory]
         [AttackCases]
         public void Attack(int attackingArmies, int defendingArmies, int attackerCasualties, int defenderCasualties,
-            IPlayerId expectedOwnerAfterAttack, int expectedArmiesInAttackingTerritoryAfter, int expectedArmiesInDefendingTerritoryAfter)
+            IPlayer expectedOwnerAfterAttack, int expectedArmiesInAttackingTerritoryAfter, int expectedArmiesInDefendingTerritoryAfter)
         {
             StubDices(attackingArmies - 1, defendingArmies, attackerCasualties, defenderCasualties);
 

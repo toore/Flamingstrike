@@ -43,7 +43,7 @@
                 </Style>
             </StackPanel.Resources>
             <Label Content="Player: " />
-            <Label Content="{Binding PlayerId.Name}" />
+            <Label Content="{Binding Player.Name}" />
         </StackPanel>
 
         <Label

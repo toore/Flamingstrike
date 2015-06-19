@@ -53,8 +53,8 @@
     <Compile Include="GamePlay\Gameboard.cs" />
     <Compile Include="GamePlay\GameboardTerritory.cs" />
     <Compile Include="GameboardTerritory.cs" />
-    <Compile Include="GameSetup\GameSetupState.cs" />
-    <Compile Include="PlayerId.cs" />
+    <Compile Include="GameSetup\GameSetup.cs" />
+    <Compile Include="Player.cs" />
     <Compile Include="World\Territory.cs" />
     <Compile Include="PlayerType.cs" />
     <Compile Include="Extensions\ListExtensions.cs" />
@@ -67,7 +67,7 @@
     <Compile Include="GamePlay\Battling\BattleCalculator.cs" />
     <Compile Include="GameSetup\ITerritoryRequestHandler.cs" />
     <Compile Include="GameSetup\StartingInfantryCalculator.cs" />
-    <Compile Include="Player.cs" />
+    <Compile Include="GameSetupPlayer.cs" />
     <Compile Include="GameSetup\TerritorySelectorParameter.cs" />
     <Compile Include="Shuffling\FisherYatesShuffler.cs" />
     <Compile Include="Shuffling\IShuffler.cs" />

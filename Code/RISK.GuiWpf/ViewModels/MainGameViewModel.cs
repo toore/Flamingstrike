@@ -1,12 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Caliburn.Micro;
+﻿using Caliburn.Micro;
 using GuiWpf.ViewModels.Gameplay;
 using GuiWpf.ViewModels.Messages;
 using GuiWpf.ViewModels.Settings;
 using GuiWpf.ViewModels.Setup;
-using RISK.Application;
-using RISK.Application.GameSetup;
 
 namespace GuiWpf.ViewModels
 {
@@ -41,8 +37,8 @@ namespace GuiWpf.ViewModels
                     root.UserInteractor,
                     root.GuiThreadDispatcher,
                     root.TaskEx),
-                  root.AlternateGameSetupFactory,
-                  root.PlayerRepository)
+                root.AlternateGameSetupFactory,
+                root.PlayerRepository)
         {
             root.EventAggregator.Subscribe(this);
         }
@@ -93,10 +89,9 @@ namespace GuiWpf.ViewModels
         private void StartGameSetup()
         {
             var players = _playerRepository.GetAll();
-
             var alternateGameSetup = _alternateGameSetupFactory.Create(players);
-
             var gameSetupViewModel = _gameSetupViewModelFactory.Create(alternateGameSetup);
+
             ActivateItem(gameSetupViewModel);
         }
 

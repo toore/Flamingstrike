@@ -11,7 +11,7 @@ namespace RISK.Tests.Application.Gameplay
     public class SelectStateTests
     {
         private readonly SelectState _sut;
-        private readonly IPlayerId _playerId;
+        private readonly IPlayer _player;
         private readonly StateController _stateController;
         private readonly IInteractionStateFactory _interactionStateFactory;
 
@@ -20,14 +20,14 @@ namespace RISK.Tests.Application.Gameplay
 
         public SelectStateTests()
         {
-            _stateController = new StateController(_interactionStateFactory, _playerId, null);
+            _stateController = new StateController(_interactionStateFactory, _player, null);
             _interactionStateFactory = Substitute.For<IInteractionStateFactory>();
-            _playerId = Substitute.For<IPlayerId>();
+            _player = Substitute.For<IPlayer>();
 
-            _sut = new SelectState(_stateController, _interactionStateFactory, _playerId);
+            _sut = new SelectState(_stateController, _interactionStateFactory, _player);
 
             _territoryOccupiedByPlayer = Make.Territory
-                .Occupant(_playerId)
+                .Occupant(_player)
                 .Build();
             _locationOccupiedByOtherPlayer = Substitute.For<ITerritory>();
         }
@@ -48,7 +48,7 @@ namespace RISK.Tests.Application.Gameplay
         public void Click_enters_attack_state()
         {
             var expected = Substitute.For<IInteractionState>();
-            _interactionStateFactory.CreateAttackState(_stateController, _playerId, _territoryOccupiedByPlayer).Returns(expected);
+            _interactionStateFactory.CreateAttackState(_stateController, _player, _territoryOccupiedByPlayer).Returns(expected);
 
             _sut.OnClick(_territoryOccupiedByPlayer);
 

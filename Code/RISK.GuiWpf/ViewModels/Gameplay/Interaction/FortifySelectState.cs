@@ -10,14 +10,14 @@ namespace GuiWpf.ViewModels.Gameplay.Interaction
         private readonly IStateController _stateController;
         private readonly IInteractionStateFactory _interactionStateFactory;
 
-        public FortifySelectState(IStateController stateController, IInteractionStateFactory interactionStateFactory, IPlayerId playerId)
+        public FortifySelectState(IStateController stateController, IInteractionStateFactory interactionStateFactory, IPlayer player)
         {
             _stateController = stateController;
             _interactionStateFactory = interactionStateFactory;
-            PlayerId = playerId;
+            Player = player;
         }
 
-        public IPlayerId PlayerId { get; private set; }
+        public IPlayer Player { get; private set; }
         public ITerritory SelectedTerritory { get; private set; }
 
         public bool CanClick(ITerritory territory)
@@ -33,7 +33,7 @@ namespace GuiWpf.ViewModels.Gameplay.Interaction
             //    throw new InvalidOperationException();
             //}
 
-            _stateController.CurrentState = _interactionStateFactory.CreateFortifyState(_stateController, PlayerId, territory);
+            _stateController.CurrentState = _interactionStateFactory.CreateFortifyState(_stateController, Player, territory);
         }
     }
 }

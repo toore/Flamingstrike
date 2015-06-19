@@ -2,29 +2,16 @@
 {
     public interface IPlayer
     {
-        IPlayerId PlayerId { get; }
+        string Name { get; }
     }
 
     public class Player : IPlayer
     {
-        private readonly int _armiesToPlace;
-
-        public Player(IPlayerId playerId, int armiesToPlace)
+        public Player(string name)
         {
-            PlayerId = playerId;
-            _armiesToPlace = armiesToPlace;
+            Name = name;
         }
 
-        public IPlayerId PlayerId { get; }
-
-        public bool HasArmiesLeftToPlace()
-        {
-            return _armiesToPlace > 0;
-        }
-
-        public int GetNumberOfArmiesLeftToPlace()
-        {
-            return _armiesToPlace;
-        }
+        public string Name { get; }
     }
 }

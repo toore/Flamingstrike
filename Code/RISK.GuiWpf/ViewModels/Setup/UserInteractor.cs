@@ -6,7 +6,7 @@ namespace GuiWpf.ViewModels.Setup
 {
     public interface IUserInteractor
     {
-        ITerritory GetSelectedTerritory(ITerritoryRequestParameter territoryRequest);
+        ITerritory GetSelectedTerritory(ITerritoryRequestParameter territoryRequestParameter);
         void SelectTerritory(ITerritory location);
     }
 
@@ -15,9 +15,9 @@ namespace GuiWpf.ViewModels.Setup
         private ITerritory _selectedLocation;
         private readonly AutoResetEvent _locationHasBeenSelected = new AutoResetEvent(false);
 
-        public ITerritory GetSelectedTerritory(ITerritoryRequestParameter territoryRequest)
+        public ITerritory GetSelectedTerritory(ITerritoryRequestParameter territoryRequestParameter)
         {
-            // territorySelector is not used!
+            // TODO: territoryRequestParameter is not used!
             _locationHasBeenSelected.WaitOne();
             return _selectedLocation;
         }

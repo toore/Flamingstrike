@@ -18,7 +18,7 @@ namespace GuiWpf.ViewModels.Gameplay
         private readonly IGameOverViewModelFactory _gameOverViewModelFactory;
         private readonly IDialogManager _dialogManager;
         private readonly IEventAggregator _eventAggregator;
-        private IPlayerId _playerId;
+        private IPlayer _player;
 
         public GameboardViewModel(
             IGameAdapter gameAdapter,
@@ -40,10 +40,10 @@ namespace GuiWpf.ViewModels.Gameplay
 
         public WorldMapViewModel WorldMapViewModel { get; set; }
 
-        public IPlayerId PlayerId
+        public IPlayer Player
         {
-            get { return _playerId; }
-            set { NotifyOfPropertyChange(value, () => PlayerId, x => _playerId = x); }
+            get { return _player; }
+            set { NotifyOfPropertyChange(value, () => Player, x => _player = x); }
         }
 
         public string InformationText { get; private set; }
@@ -93,11 +93,11 @@ namespace GuiWpf.ViewModels.Gameplay
 
         private void UpdateGame()
         {
-            PlayerId = _gameAdapter.PlayerId;
+            Player = _gameAdapter.Player;
 
             if (_gameAdapter.IsGameOver())
             {
-                _windowManager.ShowDialog(_gameOverViewModelFactory.Create(PlayerId));
+                _windowManager.ShowDialog(_gameOverViewModelFactory.Create(Player));
             }
             else
             {
@@ -111,7 +111,7 @@ namespace GuiWpf.ViewModels.Gameplay
                 .Where(x => _gameAdapter.CanClick(x))
                 .ToList();
 
-            _worldMapViewModelFactory.Update(WorldMapViewModel, _gameAdapter.WorldMap, _gameAdapter.SelectedTerritory, enabledTerritories);
+            _worldMapViewModelFactory.Update(WorldMapViewModel, _gameAdapter.Gameboard, _gameAdapter.SelectedTerritory, enabledTerritories);
         }
     }
 }

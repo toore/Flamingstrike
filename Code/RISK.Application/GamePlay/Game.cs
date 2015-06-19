@@ -14,23 +14,27 @@ namespace RISK.Application.GamePlay
 
     public class Game
     {
-        private readonly IList<IPlayerId> _players;
+        private readonly IList<IPlayer> _players;
+        private readonly IGameboard _gameboard;
         private readonly ICardFactory _cardFactory;
         private readonly IBattle _battle;
 
         private bool _playerShouldReceiveCardWhenTurnEnds;
 
-        public Game(IList<IPlayerId> players, IWorldMap worldMap, ICardFactory cardFactory, IBattle battle)
+        public Game(IList<IPlayer> players, IWorldMap worldMap, IGameboard gameboard, ICardFactory cardFactory, IBattle battle)
         {
             _players = players;
-            PlayerId = players.First();
             WorldMap = worldMap;
+            _gameboard = gameboard;
             _cardFactory = cardFactory;
             _battle = battle;
+
+            Player = _players.First();
         }
 
-        public IPlayerId PlayerId { get; private set; }
+        public IPlayer Player { get; private set; }
         public IWorldMap WorldMap { get; }
+        public IGameboard Gameboard { get; private set; }
 
         public void EndTurn()
         {
@@ -40,7 +44,7 @@ namespace RISK.Application.GamePlay
             }
 
             _playerShouldReceiveCardWhenTurnEnds = false;
-            PlayerId = _players.ToList().GetNextOrFirst(PlayerId);
+            Player = _players.ToList().GetNextOrFirst(Player);
         }
 
         public bool CanAttack(ITerritory from, ITerritory to)

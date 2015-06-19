@@ -8,8 +8,9 @@ namespace GuiWpf.ViewModels.Gameplay
     public interface IGameAdapter
     {
         IWorldMap WorldMap { get; }
-        IPlayerId PlayerId { get; }
+        IPlayer Player { get; }
         ITerritory SelectedTerritory { get; }
+        IGameboard Gameboard { get; }
         void EndTurn();
         bool IsGameOver();
         void Fortify();
@@ -34,12 +35,13 @@ namespace GuiWpf.ViewModels.Gameplay
         }
 
         public IWorldMap WorldMap => _game.WorldMap;
-        public IPlayerId PlayerId => _game.PlayerId;
+        public IPlayer Player => _game.Player;
         public ITerritory SelectedTerritory => _stateController.CurrentState.SelectedTerritory;
+        public IGameboard Gameboard => _game.Gameboard;
 
         private void MoveToNextPlayer()
         {
-            _stateController = _stateControllerFactory.Create(PlayerId, _game);
+            _stateController = _stateControllerFactory.Create(Player, _game);
             _stateController.SetInitialState();
         }
 
@@ -57,7 +59,7 @@ namespace GuiWpf.ViewModels.Gameplay
 
         public void Fortify()
         {
-            _stateController.CurrentState = _interactionStateFactory.CreateFortifyState(_stateController, PlayerId);
+            _stateController.CurrentState = _interactionStateFactory.CreateFortifyState(_stateController, Player);
         }
 
         public void OnClick(ITerritory territory)

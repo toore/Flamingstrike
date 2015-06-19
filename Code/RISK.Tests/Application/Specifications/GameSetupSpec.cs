@@ -93,10 +93,10 @@ namespace RISK.Tests.Application.Specifications
     {
         public int NumberOfSelectTerritoryRequests { get; set; }
 
-        public ITerritory GetSelectedTerritory(ITerritoryRequestParameter territoryRequest)
+        public ITerritory GetSelectedTerritory(ITerritoryRequestParameter territoryRequestParameter)
         {
             NumberOfSelectTerritoryRequests++;
-            return territoryRequest.EnabledTerritories.First();
+            return territoryRequestParameter.EnabledTerritories.First();
         }
 
         public void SelectTerritory(ITerritory location)

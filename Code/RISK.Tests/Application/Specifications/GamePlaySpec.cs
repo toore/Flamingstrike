@@ -22,8 +22,8 @@ namespace RISK.Tests.Application.Specifications
         private GameboardViewModel _gameboardViewModel;
         private WorldMap _worldMap;
         private IWindowManager _windowManager;
-        private IPlayerId _player1;
-        private IPlayerId _player2;
+        private IPlayer _player1;
+        private IPlayer _player2;
         private IDice _dice;
         private GameOverViewModel _gameOverAndPlayer1IsTheWinnerViewModel;
         private GameAdapter _gameAdapter;
@@ -145,8 +145,8 @@ namespace RISK.Tests.Application.Specifications
             _dice = Substitute.For<IDice>();
             _windowManager = Substitute.For<IWindowManager>();
 
-            _player1 = new PlayerId("Player 1");
-            _player2 = new PlayerId("Player 2");
+            _player1 = new Player("Player 1");
+            _player2 = new Player("Player 2");
 
             var gameOverViewModelFactory = Substitute.For<IGameOverViewModelFactory>();
             _gameOverAndPlayer1IsTheWinnerViewModel = new GameOverViewModel(_player1);
@@ -157,18 +157,18 @@ namespace RISK.Tests.Application.Specifications
             //alternateGameSetup.Initialize().Returns(_worldMap);
             var diceRoller = new DiceRoller(_dice);
             var interactionStateFactory = new InteractionStateFactory();
-            var game = new Game(new[] { _player1, _player2 }, _worldMap, new CardFactory(), new Battle(diceRoller, new BattleCalculator()));
+            var game = new Game(new[] { _player1, _player2 }, _worldMap, null, new CardFactory(), new Battle(diceRoller, new BattleCalculator()));
             _gameAdapter = new GameAdapter(interactionStateFactory, new StateControllerFactory(interactionStateFactory), game);
 
             var worldMapModelFactory = new WorldMapModelFactory();
             var colorService = new ColorService();
             var eventAggregator = new EventAggregator();
-            var territoryColorsFactory = new TerritoryColorsFactory(colorService);
+            var territoryColorsFactory = new TerritoryColorsFactory(colorService, _worldMap);
             var screenService = new ScreenService();
             var confirmViewModelFactory = new ConfirmViewModelFactory(screenService);
             var userNotifier = new UserNotifier(_windowManager, confirmViewModelFactory);
             var dialogManager = new DialogManager(userNotifier);
-            var worldMapViewModelFactory = new WorldMapViewModelFactory(worldMapModelFactory, territoryColorsFactory, colorService);
+            var worldMapViewModelFactory = new WorldMapViewModelFactory(_worldMap, worldMapModelFactory, territoryColorsFactory, colorService);
 
             _gameboardViewModel = new GameboardViewModel(
                 _gameAdapter,
@@ -234,7 +234,7 @@ namespace RISK.Tests.Application.Specifications
             return _worldMap.GetTerritories().Except(excludedLocations).ToArray();
         }
 
-        private void UpdateWorldMap(IPlayerId playerId, int armies, params ITerritory[] territories)
+        private void UpdateWorldMap(IPlayer player, int armies, params ITerritory[] territories)
         {
             //territories
             //    .Apply(territory =>
@@ -282,7 +282,7 @@ namespace RISK.Tests.Application.Specifications
         private ITerritoryLayoutViewModel GetTerritoryViewModel(ITerritory territory)
         {
             return _gameboardViewModel.WorldMapViewModel.WorldMapViewModels
-                .OfType<TerritoryLayoutViewModel>()
+                .OfType<TerritoryViewModel>()
                 .Single(x => x.Territory == territory);
         }
 
@@ -314,7 +314,7 @@ namespace RISK.Tests.Application.Specifications
 
         private void player_2_should_take_turn()
         {
-            _gameboardViewModel.PlayerId.Should().Be(_player2);
+            _gameboardViewModel.Player.Should().Be(_player2);
         }
     }
 }

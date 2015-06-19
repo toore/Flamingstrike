@@ -1,5 +1,4 @@
 ﻿using System.Windows;
-using RISK.Application;
 using RISK.Application.World;
 
 namespace GuiWpf.TerritoryModels
@@ -11,11 +10,10 @@ namespace GuiWpf.TerritoryModels
             Territory = territory;
         }
 
-        public ITerritory Territory { get; private set; }
+        public ITerritory Territory { get; }
 
         public abstract string Name { get; }
         public abstract Point NamePosition { get; }
-
         public abstract string Path { get; }
     }
 }

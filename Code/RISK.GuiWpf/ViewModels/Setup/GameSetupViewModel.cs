@@ -5,7 +5,6 @@ using GuiWpf.ViewModels.Gameplay;
 using GuiWpf.ViewModels.Gameplay.Map;
 using GuiWpf.ViewModels.Messages;
 using RISK.Application;
-using RISK.Application.GamePlay;
 using RISK.Application.GameSetup;
 using RISK.Application.World;
 
@@ -58,11 +57,11 @@ namespace GuiWpf.ViewModels.Setup
             private set { this.NotifyOfPropertyChange(value, () => InformationText, x => _informationText = x); }
         }
 
-        private IPlayerId _playerId;
-        public IPlayerId PlayerId
+        private IPlayer _player;
+        public IPlayer Player
         {
-            get { return _playerId; }
-            private set { this.NotifyOfPropertyChange(value, () => PlayerId, x => _playerId = x); }
+            get { return _player; }
+            private set { this.NotifyOfPropertyChange(value, () => Player, x => _player = x); }
         }
 
         public void Activate()
@@ -98,11 +97,13 @@ namespace GuiWpf.ViewModels.Setup
 
         private void UpdateView(ITerritoryRequestParameter territoryRequestParameter)
         {
-            var worldMapViewModel = _worldMapViewModelFactory.Create(territoryRequestParameter.Gameboard, x => _userInteractor.SelectTerritory(x), territoryRequestParameter.EnabledTerritories);
+            var worldMapViewModel = _worldMapViewModelFactory.Create(territoryRequestParameter.Gameboard,
+                x => _userInteractor.SelectTerritory(x),
+                territoryRequestParameter.EnabledTerritories);
 
             WorldMapViewModel = worldMapViewModel;
 
-            PlayerId = territoryRequestParameter.GetPlayerThatTakesTurn();
+            Player = territoryRequestParameter.Player;
 
             InformationText = string.Format(Resources.PLACE_ARMY, territoryRequestParameter.GetArmiesLeftToPlace());
         }
@@ -112,14 +113,14 @@ namespace GuiWpf.ViewModels.Setup
             return false;
         }
 
-        public void Fortify() { }
+        public void Fortify() {}
 
         public bool CanEndTurn()
         {
             return false;
         }
 
-        public void EndTurn() { }
+        public void EndTurn() {}
 
         public void EndGame()
         {

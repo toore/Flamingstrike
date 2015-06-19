@@ -4,9 +4,6 @@ namespace GuiWpf.ViewModels.Settings
 {
     public class NeutralPlayerType : PlayerTypeBase
     {
-        public override string Name
-        {
-            get { return Resources.NEUTRAL; }
-        }
+        public override string Name => Resources.NEUTRAL;
     }
 }

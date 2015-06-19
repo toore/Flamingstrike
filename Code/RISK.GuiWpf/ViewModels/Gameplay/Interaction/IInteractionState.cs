@@ -6,7 +6,7 @@ namespace GuiWpf.ViewModels.Gameplay.Interaction
 {
     public interface IInteractionState
     {
-        IPlayerId PlayerId { get; }
+        IPlayer Player { get; }
         ITerritory SelectedTerritory { get; }
 
         bool CanClick(ITerritory territory);

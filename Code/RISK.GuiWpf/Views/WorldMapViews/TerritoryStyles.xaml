@@ -4,7 +4,7 @@
     xmlns:Map="clr-namespace:GuiWpf.ViewModels.Gameplay.Map"
     xmlns:MapViews="clr-namespace:GuiWpf.Views.WorldMapViews">
 
-    <DataTemplate DataType="{x:Type Map:TerritoryLayoutViewModel}">
+    <DataTemplate DataType="{x:Type Map:TerritoryViewModel}">
         <Canvas
             ZIndex="0">
             <MapViews:TerritoryButtonUserControl
@@ -38,7 +38,7 @@
         <Setter Property="FontWeight" Value="Bold" />
     </Style>
 
-    <DataTemplate DataType="{x:Type Map:TerritoryTextViewModel}">
+    <DataTemplate DataType="{x:Type Map:TitleViewModel}">
         <Canvas
             IsHitTestVisible="False"
             Canvas.ZIndex="5">

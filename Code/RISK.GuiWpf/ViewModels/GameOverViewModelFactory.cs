@@ -5,7 +5,7 @@ namespace GuiWpf.ViewModels
 {
     public class GameOverViewModelFactory : IGameOverViewModelFactory
     {
-        public GameOverViewModel Create(IPlayerId winner)
+        public GameOverViewModel Create(IPlayer winner)
         {
             return new GameOverViewModel(winner);
         }

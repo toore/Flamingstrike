@@ -13,7 +13,7 @@ namespace RISK.Tests.Application.Gameplay
     public class AttackStateTests
     {
         private readonly AttackState _sut;
-        private readonly IPlayerId _playerId;
+        private readonly IPlayer _player;
         private readonly IInteractionStateFactory _interactionStateFactory;
         private readonly StateController _stateController;
         private readonly IBattle _battle;
@@ -25,16 +25,16 @@ namespace RISK.Tests.Application.Gameplay
 
         public AttackStateTests()
         {
-            _stateController = new StateController(_interactionStateFactory, _playerId, null);
+            _stateController = new StateController(_interactionStateFactory, _player, null);
             _interactionStateFactory = Substitute.For<IInteractionStateFactory>();
-            _playerId = Substitute.For<IPlayerId>();
+            _player = Substitute.For<IPlayer>();
             _battle = Substitute.For<IBattle>();
 
             _borderingTerritoryOccupiedByPlayer = Make.Territory
-                .Occupant(_playerId)
+                .Occupant(_player)
                 .Build();
 
-            var otherPlayer = Substitute.For<IPlayerId>();
+            var otherPlayer = Substitute.For<IPlayer>();
 
             _borderingTerritoryOccupiedByOtherPlayer = Make.Territory
                 .Occupant(otherPlayer)
@@ -47,10 +47,10 @@ namespace RISK.Tests.Application.Gameplay
             _selectedTerritory = Make.Territory
                 .WithBorder(_borderingTerritoryOccupiedByOtherPlayer)
                 .WithBorder(_borderingTerritoryOccupiedByPlayer)
-                .Occupant(_playerId)
+                .Occupant(_player)
                 .Build();
 
-            _sut = new AttackState(_stateController, _interactionStateFactory, _playerId, _selectedTerritory);
+            _sut = new AttackState(_stateController, _interactionStateFactory, _player, _selectedTerritory);
         }
 
         [Fact]
@@ -70,7 +70,7 @@ namespace RISK.Tests.Application.Gameplay
         public void Selecting_selected_territory_enters_select_state()
         {
             var selectState = Substitute.For<IInteractionState>();
-            _interactionStateFactory.CreateSelectState(_stateController, _playerId).Returns(selectState);
+            _interactionStateFactory.CreateSelectState(_stateController, _player).Returns(selectState);
 
             _sut.OnClick(_selectedTerritory);
 
@@ -124,7 +124,7 @@ namespace RISK.Tests.Application.Gameplay
         public void After_successfull_attack_attack_enters_attack_state()
         {
             var expected = Substitute.For<IInteractionState>();
-            _interactionStateFactory.CreateAttackState(_stateController, _playerId, _borderingTerritoryOccupiedByOtherPlayer).Returns(expected);
+            _interactionStateFactory.CreateAttackState(_stateController, _player, _borderingTerritoryOccupiedByOtherPlayer).Returns(expected);
             //_selectedTerritory.Armies = 2;
             AttackerWins();
 

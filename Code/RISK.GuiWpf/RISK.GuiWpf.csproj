@@ -199,10 +199,10 @@
     <Compile Include="Views\WorldMapViews\TerritoryButtonUserControl.xaml.cs">
       <DependentUpon>TerritoryButtonUserControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewModels\Gameplay\Map\TerritoryLayoutViewModel.cs" />
+    <Compile Include="ViewModels\Gameplay\Map\TerritoryViewModel.cs" />
     <Compile Include="TerritoryModels\ITerritoryModel.cs" />
     <Compile Include="ViewModels\Gameplay\Map\WorldMapViewModelFactory.cs" />
-    <Compile Include="ViewModels\Gameplay\Map\TerritoryTextViewModel.cs" />
+    <Compile Include="ViewModels\Gameplay\Map\TitleViewModel.cs" />
     <Compile Include="TerritoryModels\UkraineModel.cs" />
     <Compile Include="TerritoryModels\UralModel.cs" />
     <Compile Include="TerritoryModels\VenezuelaModel.cs" />

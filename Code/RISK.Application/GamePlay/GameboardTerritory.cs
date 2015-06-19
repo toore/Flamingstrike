@@ -5,31 +5,34 @@ namespace RISK.Application.GamePlay
 {
     public interface IGameboardTerritory
     {
+        ITerritory Territory { get; }
+        int Armies { get; }
         int GetNumberOfAttackingArmies();
         int GetNumberOfDefendingArmies();
     }
 
     public class GameboardTerritory : IGameboardTerritory
     {
-        private readonly ITerritory _territory;
-        private readonly IPlayerId _playerId;
-        private readonly int _armies;
+        private readonly IPlayer _player;
 
-        public GameboardTerritory(ITerritory territory, IPlayerId playerId, int armies)
+        public GameboardTerritory(ITerritory territory, IPlayer player, int armies)
         {
-            _territory = territory;
-            _playerId = playerId;
-            _armies = armies;
+            Territory = territory;
+            _player = player;
+            Armies = armies;
         }
+
+        public ITerritory Territory { get; }
+        public int Armies { get; }
 
         public int GetNumberOfAttackingArmies()
         {
-            return Math.Max(_armies - 1, 0);
+            return Math.Max(Armies - 1, 0);
         }
 
         public int GetNumberOfDefendingArmies()
         {
-            return _armies;
+            return Armies;
         }
     }
 }

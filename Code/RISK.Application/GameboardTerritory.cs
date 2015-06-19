@@ -2,17 +2,24 @@ using RISK.Application.World;
 
 namespace RISK.Application
 {
-    public class GameboardTerritory
+    public interface IGameboardTerritory
     {
-        public GameboardTerritory(ITerritory territory, IPlayerId playerId, int armies)
+        ITerritory Territory { get; }
+        IPlayer Player { get; }
+        int Armies { get; }
+    }
+
+    public class GameboardTerritory : IGameboardTerritory
+    {
+        public GameboardTerritory(ITerritory territory, IPlayer player, int initialArmy)
         {
             Territory = territory;
-            PlayerId = playerId;
-            Armies = armies;
+            Player = player;
+            Armies = initialArmy;
         }
 
         public ITerritory Territory { get; }
-        public IPlayerId PlayerId { get; }
-        public int Armies { get; private set; }
+        public IPlayer Player { get; }
+        public int Armies { get; set; }
     }
 }

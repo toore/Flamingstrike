@@ -4,14 +4,14 @@ namespace GuiWpf.ViewModels.Settings
 {
     public interface IPlayerIdFactory
     {
-        IPlayerId Create(PlayerSetupViewModel playerSetupViewModel);
+        IPlayer Create(PlayerSetupViewModel playerSetupViewModel);
     }
 
     public class PlayerIdFactory : IPlayerIdFactory
     {
-        public IPlayerId Create(PlayerSetupViewModel playerSetupViewModel)
+        public IPlayer Create(PlayerSetupViewModel playerSetupViewModel)
         {
-            return new PlayerId(playerSetupViewModel.Name);
+            return new Player(playerSetupViewModel.Name);
         }
     }
 }

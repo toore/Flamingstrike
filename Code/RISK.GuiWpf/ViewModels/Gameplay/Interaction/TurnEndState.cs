@@ -6,7 +6,7 @@ namespace GuiWpf.ViewModels.Gameplay.Interaction
 {
     public class TurnEndState : IInteractionState
     {
-        public IPlayerId PlayerId { get; private set; }
+        public IPlayer Player { get; private set; }
         public ITerritory SelectedTerritory { get; private set; }
         public bool CanClick(ITerritory territory)
         {

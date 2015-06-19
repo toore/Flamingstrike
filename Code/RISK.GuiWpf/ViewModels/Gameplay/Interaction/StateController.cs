@@ -13,22 +13,22 @@ namespace GuiWpf.ViewModels.Gameplay.Interaction
     public class StateController : IStateController
     {
         private readonly IInteractionStateFactory _interactionStateFactory;
-        private readonly IPlayerId _playerId;
+        private readonly IPlayer _player;
 
         public IInteractionState CurrentState { get; set; }
 
-        public StateController(IInteractionStateFactory interactionStateFactory, IPlayerId playerId, Game game)
+        public StateController(IInteractionStateFactory interactionStateFactory, IPlayer player, Game game)
         {
             Game = game;
             _interactionStateFactory = interactionStateFactory;
-            _playerId = playerId;
+            _player = player;
         }
 
         public Game Game { get; private set; }
 
         public void SetInitialState()
         {
-            CurrentState = _interactionStateFactory.CreateSelectState(this, _playerId);
+            CurrentState = _interactionStateFactory.CreateSelectState(this, _player);
         }
     }
 }

@@ -5,7 +5,7 @@ namespace GuiWpf.ViewModels.Gameplay.Interaction
 {
     public interface IStateControllerFactory
     {
-        IStateController Create(IPlayerId currentPlayerId, Game game);
+        IStateController Create(IPlayer currentPlayer, Game game);
     }
 
     public class StateControllerFactory : IStateControllerFactory
@@ -17,9 +17,9 @@ namespace GuiWpf.ViewModels.Gameplay.Interaction
             _interactionStateFactory = interactionStateFactory;
         }
 
-        public IStateController Create(IPlayerId currentPlayerId, Game game)
+        public IStateController Create(IPlayer currentPlayer, Game game)
         {
-            return new StateController(_interactionStateFactory, currentPlayerId, game);
+            return new StateController(_interactionStateFactory, currentPlayer, game);
         }
     }
 }
