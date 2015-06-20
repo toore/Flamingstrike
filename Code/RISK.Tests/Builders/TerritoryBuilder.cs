@@ -17,7 +17,7 @@ namespace RISK.Tests.Builders
             var territory = new Territory(_name, _continent);
             //territory.Occupant = _occupant;
             //territory.Armies = _armies;
-            territory.AddBorders(_borders.ToArray());
+            territory.AddBorderToTerritories(_borders.ToArray());
 
             return territory;
         }

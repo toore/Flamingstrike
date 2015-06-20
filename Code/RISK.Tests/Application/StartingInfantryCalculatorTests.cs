@@ -4,13 +4,13 @@ using Xunit;
 
 namespace RISK.Tests.Application
 {
-    public class InitialArmyForceTests
+    public class StartingInfantryCalculatorTests
     {
-        private readonly StartingInfantryCalculator _startingInfantryCalculator;
+        private readonly StartingInfantryCalculator _sut;
 
-        public InitialArmyForceTests()
+        public StartingInfantryCalculatorTests()
         {
-            _startingInfantryCalculator = new StartingInfantryCalculator();
+            _sut = new StartingInfantryCalculator();
         }
 
         [Theory]
@@ -21,7 +21,7 @@ namespace RISK.Tests.Application
         [InlineData(20, 6)]
         public void Number_of_players_gets_correct_number_of_armies(int expectedArmies, int numberOfPlayers)
         {
-            _startingInfantryCalculator.Get(numberOfPlayers).Should().Be(expectedArmies);
+            _sut.Get(numberOfPlayers).Should().Be(expectedArmies);
         }
     }
 }

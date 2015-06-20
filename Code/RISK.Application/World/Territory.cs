@@ -5,14 +5,7 @@ namespace RISK.Application.World
     public interface ITerritory
     {
         Continent Continent { get; }
-        bool IsBordering(ITerritory territory);
-
-        //IPlayer Occupant { get; set; }
-        //int Armies { get; set; }
-
-        //bool IsOccupied();
-        //bool HasArmiesAvailableForAttack();
-        //int GetArmiesAvailableForAttack();
+        bool HasBorderTo(ITerritory territory);
     }
 
     public class Territory : ITerritory
@@ -27,32 +20,14 @@ namespace RISK.Application.World
 
         public Continent Continent { get; }
 
-        public bool IsBordering(ITerritory territory)
+        public bool HasBorderTo(ITerritory territory)
         {
             return _borders.Contains(territory);
         }
 
-        public void AddBorders(params ITerritory[] locations)
+        public void AddBorderToTerritories(params ITerritory[] locations)
         {
             _borders.AddRange(locations);
         }
-
-        //public IPlayer Occupant { get; set; }
-        //public int Armies { get; set; }
-
-        //public bool IsOccupied()
-        //{
-        //    return Occupant != null;
-        //}
-
-        //public bool HasArmiesAvailableForAttack()
-        //{
-        //    return GetArmiesAvailableForAttack() > 0;
-        //}
-
-        //public int GetArmiesAvailableForAttack()
-        //{
-        //    return Math.Max(Armies - 1, 0);
-        //}
     }
 }
