@@ -1,4 +1,5 @@
-﻿using NSubstitute;
+﻿using FluentAssertions;
+using NSubstitute;
 using RISK.Application.Play.Battling;
 using Toore.Shuffling;
 using Xunit;
@@ -7,22 +8,19 @@ namespace RISK.Tests.Application
 {
     public class DiceTests
     {
-        private readonly Dice _sut;
-        private readonly IRandomWrapper _randomWrapper;
-
-        public DiceTests()
+        [Theory]
+        [InlineData(1)]
+        [InlineData(2)]
+        [InlineData(6)]
+        public void Six_face_dice_is_rolled(int value)
         {
-            _randomWrapper = Substitute.For<IRandomWrapper>();
+            var randomWrapper = Substitute.For<IRandomWrapper>();
+            var sut = new Dice(randomWrapper);
+            randomWrapper.Next(1, 7).Returns(value);
 
-            _sut = new Dice(_randomWrapper);
-        }
+            var actual = sut.Roll();
 
-        [Fact]
-        public void Six_face_dice_is_rolled()
-        {
-            _sut.Roll();
-
-            _randomWrapper.Received().Next(1, 7);
+            actual.Should().Be(value);
         }
     }
 }
