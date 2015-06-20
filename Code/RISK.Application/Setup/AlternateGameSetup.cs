@@ -38,15 +38,15 @@ namespace RISK.Application.Setup
         public IGameSetup Initialize(ITerritoryRequestHandler territoryRequestHandler)
         {
             var playersInTurnOrder = ShufflePlayers();
-            var territories = AssignPlayersToTerritories(playersInTurnOrder);
-            var gameSetupPlayers = InitializeInfantryToPlace(playersInTurnOrder, territories);
-            PlaceArmies(territoryRequestHandler, gameSetupPlayers, territories);
+            var gameboardTerritories = AssignPlayersToTerritories(playersInTurnOrder);
+            var gameSetupPlayers = InitializeInfantryToPlace(playersInTurnOrder, gameboardTerritories);
+            PlaceArmies(territoryRequestHandler, gameSetupPlayers, gameboardTerritories);
 
-            var gameSetup = new GameSetup(playersInTurnOrder, territories);
+            var gameSetup = new GameSetup(playersInTurnOrder, gameboardTerritories);
             return gameSetup;
         }
 
-        private IList<GameSetupPlayer> InitializeInfantryToPlace(IReadOnlyCollection<IPlayer> players, List<GameboardTerritory> gameboardTerritories)
+        private IList<GameSetupPlayer> InitializeInfantryToPlace(IReadOnlyCollection<IPlayer> players, IEnumerable<GameboardTerritory> gameboardTerritories)
         {
             var numberOfStartingInfantry = _startingInfantryCalculator.Get(players.Count);
 

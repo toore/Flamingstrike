@@ -97,6 +97,8 @@
     <Compile Include="Application\Gameplay\FortifySelectStateTests.cs" />
     <Compile Include="Application\Gameplay\GameTests.cs" />
     <Compile Include="Application\Gameplay\InitialArmyForceTests.cs" />
+    <Compile Include="Application\Gameplay\Setup\FluentAssertionsExtensions.cs" />
+    <Compile Include="Application\Gameplay\Setup\FluentAssertionsExtensionsTests.cs" />
     <Compile Include="Builders\CardBuilder.cs" />
     <Compile Include="GuiWpf\NoGuiThreadDispatcher.cs" />
     <Compile Include="GuiWpf\SynchronousTaskEx.cs" />
