@@ -92,7 +92,7 @@
     </ApplicationDefinition>
     <Compile Include="Application\BattleCalculatorTests.cs" />
     <Compile Include="Application\DiceTests.cs" />
-    <Compile Include="Application\DiceRollerTests.cs" />
+    <Compile Include="Application\DicesRollerTests.cs" />
     <Compile Include="Application\CasualtiesCalculatorTests.cs" />
     <Compile Include="Application\FortifySelectStateTests.cs" />
     <Compile Include="Application\GameTests.cs" />

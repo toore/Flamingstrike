@@ -10,12 +10,12 @@ namespace RISK.Application.Play.Battling
 
     public class Battle : IBattle
     {
-        private readonly IDiceRoller _diceRoller;
+        private readonly IDicesRoller _dicesRoller;
         private readonly IBattleCalculator _battleCalculator;
 
-        public Battle(IDiceRoller diceRoller, IBattleCalculator battleCalculator)
+        public Battle(IDicesRoller dicesRoller, IBattleCalculator battleCalculator)
         {
-            _diceRoller = diceRoller;
+            _dicesRoller = dicesRoller;
             _battleCalculator = battleCalculator;
         }
 
@@ -24,7 +24,7 @@ namespace RISK.Application.Play.Battling
             var attackingArmies = Math.Min(attacker.GetNumberOfAttackingArmies(), 3);
             var defendingArmies = Math.Min(defender.GetNumberOfDefendingArmies(), 2);
 
-            var dices = _diceRoller.Roll(attackingArmies, defendingArmies);
+            var dices = _dicesRoller.Roll(attackingArmies, defendingArmies);
 
             var battleResult = _battleCalculator.Battle(dices.AttackValues, dices.DefenceValues);
 

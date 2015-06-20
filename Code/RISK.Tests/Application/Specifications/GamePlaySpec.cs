@@ -150,8 +150,9 @@ namespace RISK.Tests.Application.Specifications
 
             var gameOverViewModelFactory = Substitute.For<IGameOverViewModelFactory>();
             _gameOverAndPlayer1IsTheWinnerViewModel = new GameOverViewModel(_player1);
+            gameOverViewModelFactory.Create(_player1).Returns(_gameOverAndPlayer1IsTheWinnerViewModel);
 
-            var diceRoller = new DiceRoller(_dice);
+            var diceRoller = new DicesRoller(_dice);
             var interactionStateFactory = new InteractionStateFactory();
             var game = new Game(null, new CardFactory(), new Battle(diceRoller, new BattleCalculator()));
             _gameAdapter = new GameAdapter(interactionStateFactory, new StateControllerFactory(interactionStateFactory), game);

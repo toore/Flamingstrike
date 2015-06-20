@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace RISK.Application.Play.Battling
 {
-    public interface IDiceRoller
+    public interface IDicesRoller
     {
         Dices Roll(int numberOfAttackDices, int numberOfDefenceDices);
     }
@@ -20,11 +20,11 @@ namespace RISK.Application.Play.Battling
         public IList<int> DefenceValues { get; }
     }
 
-    public class DiceRoller : IDiceRoller
+    public class DicesRoller : IDicesRoller
     {
         private readonly IDice _dice;
 
-        public DiceRoller(IDice dice)
+        public DicesRoller(IDice dice)
         {
             _dice = dice;
         }

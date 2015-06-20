@@ -45,7 +45,7 @@ namespace GuiWpf.ViewModels
             var randomWrapper = new RandomWrapper();
             var shuffler = new FisherYatesShuffler(randomWrapper);
             var dice = new Dice(randomWrapper);
-            var diceRoller = new DiceRoller(dice);
+            var diceRoller = new DicesRoller(dice);
             var cardFactory = new CardFactory();
             var battle = new Battle(diceRoller, new BattleCalculator());
             var interactionStateFactory = new InteractionStateFactory();

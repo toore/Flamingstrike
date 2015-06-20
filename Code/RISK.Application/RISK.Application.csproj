@@ -64,7 +64,7 @@
     <Compile Include="Setup\AlternateGameSetup.cs" />
     <Compile Include="Play\Battling\Battle.cs" />
     <Compile Include="Play\CardFactory.cs" />
-    <Compile Include="Play\Battling\Dices.cs" />
+    <Compile Include="Play\Battling\DicesRoller.cs" />
     <Compile Include="Play\Battling\BattleCalculator.cs" />
     <Compile Include="Setup\ITerritoryRequestHandler.cs" />
     <Compile Include="Setup\StartingInfantryCalculator.cs" />
