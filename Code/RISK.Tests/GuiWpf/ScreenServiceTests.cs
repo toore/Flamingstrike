@@ -7,7 +7,7 @@ namespace RISK.Tests.GuiWpf
 {
     public class ScreenServiceTests
     {
-        private ScreenService _screenService;
+        private readonly ScreenService _screenService;
 
         public ScreenServiceTests()
         {

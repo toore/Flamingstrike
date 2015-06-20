@@ -5,7 +5,7 @@ using RISK.Application.World;
 using Xunit;
 using Xunit.Sdk;
 
-namespace RISK.Tests.Application.Gameplay.Setup
+namespace RISK.Tests.Application
 {
     public class FluentAssertionsExtensionsTests
     {

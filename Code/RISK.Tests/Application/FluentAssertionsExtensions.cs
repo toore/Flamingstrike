@@ -3,7 +3,7 @@ using FluentAssertions;
 using FluentAssertions.Equivalency;
 using RISK.Application;
 
-namespace RISK.Tests.Application.Gameplay.Setup
+namespace RISK.Tests.Application
 {
     public static class FluentAssertionsExtensions
     {

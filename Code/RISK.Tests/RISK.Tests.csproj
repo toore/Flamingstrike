@@ -90,25 +90,25 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Application\Battling\BattleCalculatorTests.cs" />
-    <Compile Include="Application\Battling\DiceTests.cs" />
-    <Compile Include="Application\Battling\DiceRollerTests.cs" />
-    <Compile Include="Application\Battling\CasualtiesCalculatorTests.cs" />
-    <Compile Include="Application\Gameplay\FortifySelectStateTests.cs" />
-    <Compile Include="Application\Gameplay\GameTests.cs" />
-    <Compile Include="Application\Gameplay\InitialArmyForceTests.cs" />
-    <Compile Include="Application\Gameplay\Setup\FluentAssertionsExtensions.cs" />
-    <Compile Include="Application\Gameplay\Setup\FluentAssertionsExtensionsTests.cs" />
+    <Compile Include="Application\BattleCalculatorTests.cs" />
+    <Compile Include="Application\DiceTests.cs" />
+    <Compile Include="Application\DiceRollerTests.cs" />
+    <Compile Include="Application\CasualtiesCalculatorTests.cs" />
+    <Compile Include="Application\FortifySelectStateTests.cs" />
+    <Compile Include="Application\GameTests.cs" />
+    <Compile Include="Application\InitialArmyForceTests.cs" />
+    <Compile Include="Application\FluentAssertionsExtensions.cs" />
+    <Compile Include="Application\FluentAssertionsExtensionsTests.cs" />
     <Compile Include="Builders\CardBuilder.cs" />
     <Compile Include="GuiWpf\NoGuiThreadDispatcher.cs" />
     <Compile Include="GuiWpf\SynchronousTaskEx.cs" />
     <Compile Include="GuiWpf\WorldMapModelFactoryTests.cs" />
     <Compile Include="Builders\TerritoryBuilder.cs" />
     <Compile Include="Builders\Make.cs" />
-    <Compile Include="Application\Gameplay\TerritoryExtensionsTests.cs" />
-    <Compile Include="Application\Gameplay\InteractionStateFactoryTests.cs" />
-    <Compile Include="Application\Gameplay\AttackStateTests.cs" />
-    <Compile Include="Application\Gameplay\SelectStateTests.cs" />
+    <Compile Include="Application\TerritoryExtensionsTests.cs" />
+    <Compile Include="Application\InteractionStateFactoryTests.cs" />
+    <Compile Include="Application\AttackStateTests.cs" />
+    <Compile Include="Application\SelectStateTests.cs" />
     <Compile Include="Application\Specifications\SpecBase.cs" />
     <Compile Include="Application\Specifications\GamePlaySpec.cs" />
     <Compile Include="Application\Specifications\GameSetupSpec.cs" />
@@ -127,11 +127,11 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Application\Gameplay\Setup\AlternateGameSetupTests.cs" />
+    <Compile Include="Application\AlternateGameSetupTests.cs" />
     <Compile Include="GuiWpf\ColorServiceTests.cs" />
     <Compile Include="GuiWpf\GameboardViewModelTests.cs" />
-    <Compile Include="Application\Gameplay\GameAdapterTests.cs" />
-    <Compile Include="Application\Gameplay\WorldMapTests.cs" />
+    <Compile Include="Application\GameAdapterTests.cs" />
+    <Compile Include="Application\WorldMapTests.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>

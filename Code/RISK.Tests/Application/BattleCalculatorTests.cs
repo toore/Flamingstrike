@@ -6,7 +6,7 @@ using RISK.Application.Play.Battling;
 using Xunit;
 using Xunit.Sdk;
 
-namespace RISK.Tests.Application.Battling
+namespace RISK.Tests.Application
 {
    public class AttackCases : DataAttribute
    {

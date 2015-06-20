@@ -1,12 +1,10 @@
 ﻿using System;
-using FluentAssertions;
 using NSubstitute;
 using RISK.Application;
 using RISK.Tests.Builders;
 using Xunit;
-using Xunit.Extensions;
 
-namespace RISK.Tests.Application.Gameplay
+namespace RISK.Tests.Application
 {
     
     public class TerritoryExtensionsTests

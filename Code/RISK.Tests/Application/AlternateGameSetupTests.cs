@@ -8,7 +8,7 @@ using RISK.Application.Shuffling;
 using RISK.Application.World;
 using Xunit;
 
-namespace RISK.Tests.Application.Gameplay.Setup
+namespace RISK.Tests.Application
 {
     public class AlternateGameSetupTests
     {

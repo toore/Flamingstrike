@@ -1,9 +1,8 @@
 ﻿using FluentAssertions;
-using RISK.Application;
 using RISK.Application.Setup;
 using Xunit;
 
-namespace RISK.Tests.Application.Gameplay
+namespace RISK.Tests.Application
 {
     public class InitialArmyForceTests
     {

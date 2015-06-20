@@ -3,7 +3,7 @@ using FluentAssertions;
 using RISK.Application.Play.Battling;
 using Xunit;
 
-namespace RISK.Tests.Application.Battling
+namespace RISK.Tests.Application
 {
     public class CasualtiesCalculatorTests
     {

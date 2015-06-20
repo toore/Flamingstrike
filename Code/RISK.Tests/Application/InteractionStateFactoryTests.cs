@@ -6,7 +6,7 @@ using RISK.Application.Play.Battling;
 using RISK.Application.World;
 using Xunit;
 
-namespace RISK.Tests.Application.Gameplay
+namespace RISK.Tests.Application
 {
     public class InteractionStateFactoryTests
     {

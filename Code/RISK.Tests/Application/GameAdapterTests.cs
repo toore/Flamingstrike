@@ -8,7 +8,7 @@ using RISK.Application.Play;
 using RISK.Application.World;
 using Xunit;
 
-namespace RISK.Tests.Application.Gameplay
+namespace RISK.Tests.Application
 {
     public class GameAdapterTests
     {
