@@ -1,4 +1,4 @@
-﻿namespace RISK.Application
+﻿namespace RISK.Application.Setup
 {
     public class GameSetupPlayer
     {

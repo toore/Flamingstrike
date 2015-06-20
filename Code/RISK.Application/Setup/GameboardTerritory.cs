@@ -1,6 +1,6 @@
 using RISK.Application.World;
 
-namespace RISK.Application
+namespace RISK.Application.Setup
 {
     public interface IGameboardTerritory
     {

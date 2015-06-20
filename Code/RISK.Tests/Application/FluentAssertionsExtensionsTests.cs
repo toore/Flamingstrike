@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using NSubstitute;
 using RISK.Application;
+using RISK.Application.Setup;
 using RISK.Application.World;
 using Xunit;
 using Xunit.Sdk;

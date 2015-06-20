@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using FluentAssertions;
 using FluentAssertions.Equivalency;
 using RISK.Application;
+using RISK.Application.Setup;
 
 namespace RISK.Tests.Application
 {
