@@ -2,7 +2,6 @@
 using GuiWpf.ViewModels.Gameplay.Interaction;
 using NSubstitute;
 using RISK.Application;
-using RISK.Application.Play.Battling;
 using RISK.Application.World;
 using Xunit;
 
@@ -15,8 +14,6 @@ namespace RISK.Tests.Application
 
         public InteractionStateFactoryTests()
         {
-            var battleCalculator = Substitute.For<IBattle>();
-
             _sut = new InteractionStateFactory();
 
             _player = Substitute.For<IPlayer>();
