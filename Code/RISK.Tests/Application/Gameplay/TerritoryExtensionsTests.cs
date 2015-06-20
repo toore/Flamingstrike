@@ -2,7 +2,6 @@
 using FluentAssertions;
 using NSubstitute;
 using RISK.Application;
-using RISK.Application.GamePlay;
 using RISK.Tests.Builders;
 using Xunit;
 using Xunit.Extensions;

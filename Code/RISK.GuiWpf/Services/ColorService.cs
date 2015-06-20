@@ -1,6 +1,5 @@
 using System.Windows.Media;
 using RISK.Application;
-using RISK.Application.GamePlay;
 
 namespace GuiWpf.Services
 {

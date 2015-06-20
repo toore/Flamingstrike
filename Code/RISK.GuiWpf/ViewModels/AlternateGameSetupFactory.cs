@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using RISK.Application;
-using RISK.Application.GameSetup;
+using RISK.Application.Setup;
 using RISK.Application.Shuffling;
 using RISK.Application.World;
 

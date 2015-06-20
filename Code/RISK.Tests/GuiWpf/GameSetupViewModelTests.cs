@@ -8,7 +8,7 @@ using GuiWpf.ViewModels.Messages;
 using GuiWpf.ViewModels.Setup;
 using NSubstitute;
 using RISK.Application;
-using RISK.Application.GameSetup;
+using RISK.Application.Setup;
 using RISK.Application.World;
 using Xunit;
 
@@ -29,10 +29,18 @@ namespace RISK.Tests.GuiWpf
             _dialogManager = Substitute.For<IDialogManager>();
             _eventAggregator = Substitute.For<IEventAggregator>();
             _userInteractor = Substitute.For<IUserInteractor>();
-            var guiThreadDispatcher = new BypassGuiThreadDispatcher();
+            var guiThreadDispatcher = new NoGuiThreadDispatcher();
             var taskScheduler = new SynchronousTaskEx();
 
-            _gameSetupViewModelFactory = new GameSetupViewModelFactory(_worldMapViewModelFactory, _dialogManager, _eventAggregator, _userInteractor, guiThreadDispatcher, taskScheduler);
+            _gameSetupViewModelFactory = new GameSetupViewModelFactory(
+                null,
+                null,
+                _worldMapViewModelFactory, 
+                _dialogManager, 
+                _eventAggregator, 
+                _userInteractor, 
+                guiThreadDispatcher, 
+                taskScheduler);
 
             _alternateGameSetup = Substitute.For<IAlternateGameSetup>();
         }

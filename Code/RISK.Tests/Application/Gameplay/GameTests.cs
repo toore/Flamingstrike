@@ -1,8 +1,8 @@
 ﻿using System;
 using NSubstitute;
 using RISK.Application;
-using RISK.Application.GamePlay;
-using RISK.Application.GamePlay.Battling;
+using RISK.Application.Play;
+using RISK.Application.Play.Battling;
 using RISK.Application.World;
 using RISK.Tests.Builders;
 using Xunit;
@@ -25,7 +25,7 @@ namespace RISK.Tests.Application.Gameplay
 
             var players = new[] { _currentPlayer, _nextPlayer };
 
-            _sut = new Game(players, _worldMap, null, _cardFactory, _battle);
+            _sut = new Game(null, _cardFactory, _battle);
         }
 
         // can not attack territories if any not in map

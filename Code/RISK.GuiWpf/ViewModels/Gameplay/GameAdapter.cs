@@ -1,13 +1,12 @@
 ﻿using GuiWpf.ViewModels.Gameplay.Interaction;
 using RISK.Application;
-using RISK.Application.GamePlay;
+using RISK.Application.Play;
 using RISK.Application.World;
 
 namespace GuiWpf.ViewModels.Gameplay
 {
     public interface IGameAdapter
     {
-        IWorldMap WorldMap { get; }
         IPlayer Player { get; }
         ITerritory SelectedTerritory { get; }
         IGameboard Gameboard { get; }
@@ -22,10 +21,10 @@ namespace GuiWpf.ViewModels.Gameplay
     {
         private readonly IInteractionStateFactory _interactionStateFactory;
         private readonly IStateControllerFactory _stateControllerFactory;
-        private readonly Game _game;
+        private readonly IGame _game;
         private IStateController _stateController;
 
-        public GameAdapter(IInteractionStateFactory interactionStateFactory, IStateControllerFactory stateControllerFactory, Game game)
+        public GameAdapter(IInteractionStateFactory interactionStateFactory, IStateControllerFactory stateControllerFactory, IGame game)
         {
             _interactionStateFactory = interactionStateFactory;
             _stateControllerFactory = stateControllerFactory;
@@ -34,7 +33,6 @@ namespace GuiWpf.ViewModels.Gameplay
             MoveToNextPlayer();
         }
 
-        public IWorldMap WorldMap => _game.WorldMap;
         public IPlayer Player => _game.Player;
         public ITerritory SelectedTerritory => _stateController.CurrentState.SelectedTerritory;
         public IGameboard Gameboard => _game.Gameboard;

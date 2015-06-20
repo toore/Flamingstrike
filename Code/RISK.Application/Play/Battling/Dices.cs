@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace RISK.Application.GamePlay.Battling
+namespace RISK.Application.Play.Battling
 {
     public interface IDiceRoller
     {

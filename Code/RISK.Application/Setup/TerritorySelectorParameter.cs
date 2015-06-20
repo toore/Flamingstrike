@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
-using RISK.Application.GamePlay;
+using RISK.Application.Play;
 using RISK.Application.World;
 
-namespace RISK.Application.GameSetup
+namespace RISK.Application.Setup
 {
     public interface ITerritoryRequestParameter
     {

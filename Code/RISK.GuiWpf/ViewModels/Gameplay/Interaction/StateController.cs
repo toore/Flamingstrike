@@ -1,12 +1,12 @@
 using RISK.Application;
-using RISK.Application.GamePlay;
+using RISK.Application.Play;
 
 namespace GuiWpf.ViewModels.Gameplay.Interaction
 {
     public interface IStateController
     {
         IInteractionState CurrentState { get; set; }
-        Game Game { get; }
+        IGame Game { get; }
         void SetInitialState();
     }
 
@@ -17,14 +17,14 @@ namespace GuiWpf.ViewModels.Gameplay.Interaction
 
         public IInteractionState CurrentState { get; set; }
 
-        public StateController(IInteractionStateFactory interactionStateFactory, IPlayer player, Game game)
+        public StateController(IInteractionStateFactory interactionStateFactory, IPlayer player, IGame game)
         {
             Game = game;
             _interactionStateFactory = interactionStateFactory;
             _player = player;
         }
 
-        public Game Game { get; private set; }
+        public IGame Game { get; private set; }
 
         public void SetInitialState()
         {

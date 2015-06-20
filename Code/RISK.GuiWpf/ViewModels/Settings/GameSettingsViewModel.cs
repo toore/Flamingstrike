@@ -5,7 +5,6 @@ using Caliburn.Micro;
 using GuiWpf.Extensions;
 using GuiWpf.ViewModels.Messages;
 using RISK.Application;
-using RISK.Application.GamePlay;
 
 namespace GuiWpf.ViewModels.Settings
 {

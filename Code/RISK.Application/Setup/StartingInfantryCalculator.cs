@@ -1,4 +1,4 @@
-﻿namespace RISK.Application.GameSetup
+﻿namespace RISK.Application.Setup
 {
     public interface IStartingInfantryCalculator
     {

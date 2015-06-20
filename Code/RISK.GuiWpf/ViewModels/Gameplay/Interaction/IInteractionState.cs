@@ -1,5 +1,4 @@
 ﻿using RISK.Application;
-using RISK.Application.GamePlay;
 using RISK.Application.World;
 
 namespace GuiWpf.ViewModels.Gameplay.Interaction

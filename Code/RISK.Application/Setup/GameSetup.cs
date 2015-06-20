@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace RISK.Application.GameSetup
+namespace RISK.Application.Setup
 {
     public interface IGameSetup
     {

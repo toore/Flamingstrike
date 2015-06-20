@@ -6,8 +6,7 @@ using GuiWpf.ViewModels.Gameplay;
 using GuiWpf.ViewModels.Gameplay.Interaction;
 using GuiWpf.ViewModels.Gameplay.Map;
 using RISK.Application;
-using RISK.Application.GamePlay;
-using RISK.Application.GameSetup;
+using RISK.Application.Setup;
 using RISK.Application.World;
 
 namespace GuiWpf.Views.WorldMapViews

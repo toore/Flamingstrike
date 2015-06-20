@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using RISK.Application.World;
 
-namespace RISK.Application.GamePlay
+namespace RISK.Application.Play
 {
     public interface IGameboard
     {

@@ -9,7 +9,6 @@ using GuiWpf.ViewModels.Gameplay.Interaction;
 using GuiWpf.ViewModels.Gameplay.Map;
 using NSubstitute;
 using RISK.Application;
-using RISK.Application.GamePlay;
 using RISK.Application.World;
 using Xunit;
 
@@ -68,11 +67,11 @@ namespace RISK.Tests.GuiWpf
             _worldMapViewModel.WorldMapViewModels.Add(textViewModel2);
 
             var worldMap = Substitute.For<IWorldMap>();
-            _gameAdapter.WorldMap.Returns(worldMap);
 
             //_worldMapViewModelFactory.Create(Arg.Is(worldMap), Arg.Any<Action<ITerritory>>(), Arg.Any<IEnumerable<ITerritory>>()).Returns(_worldMapViewModel);
 
             _sut = new GameboardViewModel(
+                worldMap,
                 _gameAdapter,
                 _worldMapViewModelFactory,
                 _windowManager,

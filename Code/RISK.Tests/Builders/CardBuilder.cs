@@ -1,4 +1,4 @@
-using RISK.Application.GamePlay;
+using RISK.Application.Play;
 
 namespace RISK.Tests.Builders
 {

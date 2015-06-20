@@ -1,7 +1,7 @@
 ﻿using System;
 using RISK.Application.World;
 
-namespace RISK.Application.GamePlay
+namespace RISK.Application.Play
 {
     public interface IGameboardTerritory
     {

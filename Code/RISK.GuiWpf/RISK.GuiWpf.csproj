@@ -79,6 +79,7 @@
     <Compile Include="ViewModels\ConfirmViewModel.cs" />
     <Compile Include="ViewModels\ConfirmViewModelFactory.cs" />
     <Compile Include="ViewModels\Gameplay\GameAdapter.cs" />
+    <Compile Include="ViewModels\Gameplay\GameAdapterFactory.cs" />
     <Compile Include="ViewModels\Gameplay\GameSetupView.xaml.cs">
       <DependentUpon>GameSetupView.xaml</DependentUpon>
     </Compile>
@@ -128,7 +129,7 @@
     <Compile Include="ViewModels\IGameOverViewModelFactory.cs" />
     <Compile Include="ViewModels\Setup\GameSetupViewModel.cs" />
     <Compile Include="ViewModels\Gameplay\GameboardViewModelFactory.cs" />
-    <Compile Include="ViewModels\Setup\GameFactory.cs" />
+    <Compile Include="ViewModels\Setup\GameAdapterFactory.cs" />
     <Compile Include="ViewModels\Messages\SetupGameMessage.cs" />
     <Compile Include="ViewModels\Setup\GameSetupViewModelFactory.cs" />
     <Compile Include="ViewModels\Gameplay\IGameboardViewModelFactory.cs" />

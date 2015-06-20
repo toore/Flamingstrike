@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using RISK.Application.Extensions;
-using RISK.Application.GamePlay;
+using RISK.Application.Play;
 using RISK.Application.Shuffling;
 using RISK.Application.World;
 using Toore.Shuffling;
 
-namespace RISK.Application.GameSetup
+namespace RISK.Application.Setup
 {
     /* Alternate
      * An alternate and quicker method of setup from the original French rules is to deal out the entire deck of Risk cards (minus the wild cards), 
@@ -135,7 +135,7 @@ namespace RISK.Application.GameSetup
         private static Gameboard CreateGameboard(IEnumerable<GameboardTerritory> gameboardTerritories)
         {
             var gamePlayTerritories = gameboardTerritories
-                .Select(x => new GamePlay.GameboardTerritory(x.Territory, x.Player, x.Armies))
+                .Select(x => new Play.GameboardTerritory(x.Territory, x.Player, x.Armies))
                 .ToList();
 
             var gameboard = new Gameboard(gamePlayTerritories);

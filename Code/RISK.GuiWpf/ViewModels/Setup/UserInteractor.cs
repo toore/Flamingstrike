@@ -1,5 +1,5 @@
 ﻿using System.Threading;
-using RISK.Application.GameSetup;
+using RISK.Application.Setup;
 using RISK.Application.World;
 
 namespace GuiWpf.ViewModels.Setup

@@ -4,7 +4,7 @@ using System.Linq;
 using GuiWpf.Extensions;
 using GuiWpf.Services;
 using GuiWpf.TerritoryModels;
-using RISK.Application.GamePlay;
+using RISK.Application.Play;
 using RISK.Application.World;
 
 namespace GuiWpf.ViewModels.Gameplay.Map

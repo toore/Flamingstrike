@@ -5,13 +5,13 @@ using GuiWpf.Services;
 using GuiWpf.ViewModels.Gameplay.Map;
 using GuiWpf.ViewModels.Messages;
 using RISK.Application;
-using RISK.Application.GamePlay;
 using RISK.Application.World;
 
 namespace GuiWpf.ViewModels.Gameplay
 {
     public class GameboardViewModel : ViewModelBase, IGameboardViewModel, IActivate
     {
+        private readonly IWorldMap _worldMap;
         private readonly IGameAdapter _gameAdapter;
         private readonly IWorldMapViewModelFactory _worldMapViewModelFactory;
         private readonly IWindowManager _windowManager;
@@ -21,6 +21,7 @@ namespace GuiWpf.ViewModels.Gameplay
         private IPlayer _player;
 
         public GameboardViewModel(
+            IWorldMap worldMap,
             IGameAdapter gameAdapter,
             IWorldMapViewModelFactory worldMapViewModelFactory,
             IWindowManager windowManager,
@@ -28,6 +29,7 @@ namespace GuiWpf.ViewModels.Gameplay
             IDialogManager dialogManager,
             IEventAggregator eventAggregator)
         {
+            _worldMap = worldMap;
             _gameAdapter = gameAdapter;
             _worldMapViewModelFactory = worldMapViewModelFactory;
             _windowManager = windowManager;
@@ -52,6 +54,7 @@ namespace GuiWpf.ViewModels.Gameplay
         {
             InitializeWorld();
         }
+
         public bool IsActive { get; private set; }
         public event EventHandler<ActivationEventArgs> Activated;
 
@@ -107,7 +110,7 @@ namespace GuiWpf.ViewModels.Gameplay
 
         private void UpdateWorldMap()
         {
-            var enabledTerritories = _gameAdapter.WorldMap.GetTerritories()
+            var enabledTerritories = _worldMap.GetTerritories()
                 .Where(x => _gameAdapter.CanClick(x))
                 .ToList();
 

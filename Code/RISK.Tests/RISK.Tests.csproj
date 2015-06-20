@@ -98,7 +98,7 @@
     <Compile Include="Application\Gameplay\GameTests.cs" />
     <Compile Include="Application\Gameplay\InitialArmyForceTests.cs" />
     <Compile Include="Builders\CardBuilder.cs" />
-    <Compile Include="GuiWpf\BypassGuiThreadDispatcher.cs" />
+    <Compile Include="GuiWpf\NoGuiThreadDispatcher.cs" />
     <Compile Include="GuiWpf\SynchronousTaskEx.cs" />
     <Compile Include="GuiWpf\WorldMapModelFactoryTests.cs" />
     <Compile Include="Builders\TerritoryBuilder.cs" />

@@ -5,9 +5,9 @@ using GuiWpf.ViewModels.Gameplay.Interaction;
 using GuiWpf.ViewModels.Gameplay.Map;
 using GuiWpf.ViewModels.Settings;
 using GuiWpf.ViewModels.Setup;
-using RISK.Application.GamePlay;
-using RISK.Application.GamePlay.Battling;
-using RISK.Application.GameSetup;
+using RISK.Application.Play;
+using RISK.Application.Play.Battling;
+using RISK.Application.Setup;
 using RISK.Application.Shuffling;
 using RISK.Application.World;
 using Toore.Shuffling;
@@ -16,6 +16,7 @@ namespace GuiWpf.ViewModels
 {
     public class Root
     {
+        public WorldMap WorldMap { get; }
         public IUserInteractor UserInteractor { get; set; }
         public DialogManager DialogManager { get; private set; }
         public GameOverViewModelFactory GameOverViewModelFactory { get; private set; }
@@ -27,15 +28,17 @@ namespace GuiWpf.ViewModels
         public IEventAggregator EventAggregator { get; private set; }
         public IGuiThreadDispatcher GuiThreadDispatcher { get; set; }
         public ITaskEx TaskEx { get; set; }
-        public AlternateGameSetupFactory AlternateGameSetupFactory { get; set; }
+        public AlternateGameSetupFactory AlternateGameSetupFactory { get; private set; }
+        public GameFactory GameFactory { get; private set; }
+        public GameAdapterFactory GameAdapterFactory { get; private set; }
 
         public Root()
         {
             var colorService = new ColorService();
-            var worldMap = new WorldMap();
-            var territoryColorsFactory = new TerritoryColorsFactory(colorService, worldMap);
+            WorldMap = new WorldMap();
+            var territoryColorsFactory = new TerritoryColorsFactory(colorService, WorldMap);
             var worldMapModelFactory = new WorldMapModelFactory();
-            WorldMapViewModelFactory = new WorldMapViewModelFactory(worldMap, worldMapModelFactory, territoryColorsFactory, colorService);
+            WorldMapViewModelFactory = new WorldMapViewModelFactory(WorldMap, worldMapModelFactory, territoryColorsFactory, colorService);
             GameOverViewModelFactory = new GameOverViewModelFactory();
 
             var screenService = new ScreenService();
@@ -51,7 +54,10 @@ namespace GuiWpf.ViewModels
 
             PlayerRepository = new PlayerRepository();
 
-            AlternateGameSetupFactory = new AlternateGameSetupFactory(worldMap, shuffler, startingInfantryCalculator);
+            AlternateGameSetupFactory = new AlternateGameSetupFactory(WorldMap, shuffler, startingInfantryCalculator);
+
+            GameFactory = new GameFactory(cardFactory, battle);
+            GameAdapterFactory = new GameAdapterFactory(interactionStateFactory, stateControllerFactory);
 
             WindowManager = new WindowManager();
             var confirmViewModelFactory = new ConfirmViewModelFactory(screenService);

@@ -2,8 +2,7 @@
 using GuiWpf.ViewModels.Gameplay.Interaction;
 using NSubstitute;
 using RISK.Application;
-using RISK.Application.GamePlay;
-using RISK.Application.GamePlay.Battling;
+using RISK.Application.Play.Battling;
 using RISK.Application.World;
 using Xunit;
 

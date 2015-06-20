@@ -1,4 +1,4 @@
-﻿namespace RISK.Application.GamePlay
+﻿namespace RISK.Application.Play
 {
     public enum CardSymbol
     {

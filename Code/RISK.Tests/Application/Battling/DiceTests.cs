@@ -1,5 +1,5 @@
 ﻿using NSubstitute;
-using RISK.Application.GamePlay.Battling;
+using RISK.Application.Play.Battling;
 using Toore.Shuffling;
 using Xunit;
 

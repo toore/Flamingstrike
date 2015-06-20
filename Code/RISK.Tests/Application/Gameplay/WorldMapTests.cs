@@ -4,7 +4,6 @@ using System.Linq;
 using FluentAssertions;
 using NSubstitute;
 using RISK.Application;
-using RISK.Application.GamePlay;
 using RISK.Application.World;
 using Xunit;
 

@@ -1,10 +1,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using RISK.Application.Extensions;
-using RISK.Application.GamePlay.Battling;
+using RISK.Application.Play.Battling;
+using RISK.Application.Setup;
 using RISK.Application.World;
 
-namespace RISK.Application.GamePlay
+namespace RISK.Application.Play
 {
     public enum AttackResult
     {
@@ -12,20 +13,27 @@ namespace RISK.Application.GamePlay
         Other
     };
 
-    public class Game
+    public interface IGame
     {
-        private readonly IList<IPlayer> _players;
-        private readonly IGameboard _gameboard;
+        IPlayer Player { get; }
+        IGameboard Gameboard { get; }
+        void EndTurn();
+        bool IsGameOver();
+        bool CanAttack(ITerritory from, ITerritory to);
+        AttackResult Attack(ITerritory from, ITerritory to);
+    }
+
+    public class Game : IGame
+    {
+        private readonly IReadOnlyList<IPlayer> _players;
         private readonly ICardFactory _cardFactory;
         private readonly IBattle _battle;
 
         private bool _playerShouldReceiveCardWhenTurnEnds;
 
-        public Game(IList<IPlayer> players, IWorldMap worldMap, IGameboard gameboard, ICardFactory cardFactory, IBattle battle)
+        public Game(IGameSetup gameSetup, ICardFactory cardFactory, IBattle battle)
         {
-            _players = players;
-            WorldMap = worldMap;
-            _gameboard = gameboard;
+            _players = gameSetup.Players;
             _cardFactory = cardFactory;
             _battle = battle;
 
@@ -33,7 +41,6 @@ namespace RISK.Application.GamePlay
         }
 
         public IPlayer Player { get; private set; }
-        public IWorldMap WorldMap { get; }
         public IGameboard Gameboard { get; private set; }
 
         public void EndTurn()

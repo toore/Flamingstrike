@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using FluentAssertions;
-using RISK.Application.GamePlay.Battling;
+using RISK.Application.Play.Battling;
 using Xunit;
 
 namespace RISK.Tests.Application.Battling

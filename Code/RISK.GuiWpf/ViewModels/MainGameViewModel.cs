@@ -25,12 +25,15 @@ namespace GuiWpf.ViewModels
                     root.PlayerRepository,
                     root.EventAggregator),
                 new GameboardViewModelFactory(
+                    root.WorldMap,
                     root.WorldMapViewModelFactory,
                     root.WindowManager,
                     root.GameOverViewModelFactory,
                     root.DialogManager,
                     root.EventAggregator),
                 new GameSetupViewModelFactory(
+                    root.GameFactory,
+                    root.GameAdapterFactory,
                     root.WorldMapViewModelFactory,
                     root.DialogManager,
                     root.EventAggregator,
@@ -61,7 +64,7 @@ namespace GuiWpf.ViewModels
 
         public override string DisplayName
         {
-            get { return "Yarc"; }
+            get { return "R!SK"; }
             set { }
         }
 

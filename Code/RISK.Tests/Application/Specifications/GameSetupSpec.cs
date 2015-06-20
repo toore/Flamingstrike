@@ -5,7 +5,7 @@ using GuiWpf.ViewModels;
 using GuiWpf.ViewModels.Gameplay;
 using GuiWpf.ViewModels.Settings;
 using GuiWpf.ViewModels.Setup;
-using RISK.Application.GameSetup;
+using RISK.Application.Setup;
 using RISK.Application.World;
 using RISK.Tests.GuiWpf;
 using Xunit;
@@ -14,12 +14,12 @@ namespace RISK.Tests.Application.Specifications
 {
     public class GameSetupSpec : SpecBase<GameSetupSpec>
     {
-        private MainGameViewModelAdapter _mainGameViewModel;
+        private MainGameViewModelDecorator _mainGameViewModel;
         private IGameSetupViewModel _setupViewModel;
         private AutoRespondingUserInteractor _userInteractor;
 
         [Fact]
-        public void Game_is_started()
+        public void Game_is_setup_and_started()
         {
             Given
                 .a_new_game();
@@ -38,12 +38,18 @@ namespace RISK.Tests.Application.Specifications
 
             var root = new Root();
             root.UserInteractor = _userInteractor;
-            root.GuiThreadDispatcher = new BypassGuiThreadDispatcher();
+            root.GuiThreadDispatcher = new NoGuiThreadDispatcher();
             root.TaskEx = new SynchronousTaskEx();
-            _mainGameViewModel = new MainGameViewModelAdapter(root);
-            _mainGameViewModel.OnInitialize();
+
+            _mainGameViewModel = new MainGameViewModelDecorator(root);
+            CaliburnCreatesView(_mainGameViewModel);
 
             return this;
+        }
+
+        private static void CaliburnCreatesView(MainGameViewModelDecorator viewModel)
+        {
+            viewModel.OnInitialize();
         }
 
         private GameSetupSpec two_human_players_are_confirmed()
@@ -76,9 +82,9 @@ namespace RISK.Tests.Application.Specifications
         }
     }
 
-    internal class MainGameViewModelAdapter : MainGameViewModel
+    internal class MainGameViewModelDecorator : MainGameViewModel
     {
-        public MainGameViewModelAdapter(Root root)
+        public MainGameViewModelDecorator(Root root)
             : base(root)
         {
         }
@@ -91,7 +97,7 @@ namespace RISK.Tests.Application.Specifications
 
     internal class AutoRespondingUserInteractor : IUserInteractor
     {
-        public int NumberOfSelectTerritoryRequests { get; set; }
+        public int NumberOfSelectTerritoryRequests { get; private set; }
 
         public ITerritory GetSelectedTerritory(ITerritoryRequestParameter territoryRequestParameter)
         {

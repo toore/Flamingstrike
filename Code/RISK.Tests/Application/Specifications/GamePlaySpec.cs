@@ -9,9 +9,9 @@ using GuiWpf.ViewModels.Gameplay.Interaction;
 using GuiWpf.ViewModels.Gameplay.Map;
 using NSubstitute;
 using RISK.Application;
-using RISK.Application.GamePlay;
-using RISK.Application.GamePlay.Battling;
-using RISK.Application.GameSetup;
+using RISK.Application.Play;
+using RISK.Application.Play.Battling;
+using RISK.Application.Setup;
 using RISK.Application.World;
 using Xunit;
 
@@ -157,7 +157,7 @@ namespace RISK.Tests.Application.Specifications
             //alternateGameSetup.Initialize().Returns(_worldMap);
             var diceRoller = new DiceRoller(_dice);
             var interactionStateFactory = new InteractionStateFactory();
-            var game = new Game(new[] { _player1, _player2 }, _worldMap, null, new CardFactory(), new Battle(diceRoller, new BattleCalculator()));
+            var game = new Game(null, new CardFactory(), new Battle(diceRoller, new BattleCalculator()));
             _gameAdapter = new GameAdapter(interactionStateFactory, new StateControllerFactory(interactionStateFactory), game);
 
             var worldMapModelFactory = new WorldMapModelFactory();
@@ -171,6 +171,7 @@ namespace RISK.Tests.Application.Specifications
             var worldMapViewModelFactory = new WorldMapViewModelFactory(_worldMap, worldMapModelFactory, territoryColorsFactory, colorService);
 
             _gameboardViewModel = new GameboardViewModel(
+                _worldMap,
                 _gameAdapter,
                 worldMapViewModelFactory,
                 _windowManager,
