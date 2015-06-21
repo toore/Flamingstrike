@@ -11,7 +11,6 @@ using NSubstitute;
 using RISK.Application;
 using RISK.Application.Play;
 using RISK.Application.Play.Battling;
-using RISK.Application.Setup;
 using RISK.Application.World;
 using Xunit;
 
@@ -154,7 +153,7 @@ namespace RISK.Tests.Application.Specifications
 
             var diceRoller = new DicesRoller(_dice);
             var interactionStateFactory = new InteractionStateFactory();
-            var game = new Game(null, new CardFactory(), new Battle(diceRoller, new BattleCalculator()));
+            var game = new Game(new CardFactory(), new Battle(diceRoller, new BattleCalculator()), null);
             _gameAdapter = new GameAdapter(interactionStateFactory, new StateControllerFactory(interactionStateFactory), game);
 
             var worldMapModelFactory = new WorldMapModelFactory();

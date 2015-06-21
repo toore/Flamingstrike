@@ -18,8 +18,8 @@ namespace RISK.Tests.Application
         [Fact]
         public void Game_board_territory_object_graph_is_equivalent()
         {
-            var actual = new GameboardTerritory(_territory1, _player1, 1);
-            var expected = new GameboardTerritory(_territory1, _player1, 1);
+            var actual = new GameboardSetupTerritory(_territory1, _player1, 1);
+            var expected = new GameboardSetupTerritory(_territory1, _player1, 1);
 
             new[] { actual }.ShouldAllBeEquivalentToInRisk(new[] { expected });
         }
@@ -30,25 +30,25 @@ namespace RISK.Tests.Application
             {
                 yield return new object[]
                 {
-                    new GameboardTerritory(_territory1, _player1, 1),
-                    new GameboardTerritory(_territory2, _player1, 1),
+                    new GameboardSetupTerritory(_territory1, _player1, 1),
+                    new GameboardSetupTerritory(_territory2, _player1, 1),
                 };
                 yield return new object[]
                 {
-                    new GameboardTerritory(_territory1, _player1, 1),
-                    new GameboardTerritory(_territory1, _player2, 1),
+                    new GameboardSetupTerritory(_territory1, _player1, 1),
+                    new GameboardSetupTerritory(_territory1, _player2, 1),
                 };
                 yield return new object[]
                 {
-                    new GameboardTerritory(_territory1, _player1, 1),
-                    new GameboardTerritory(_territory1, _player1, 2),
+                    new GameboardSetupTerritory(_territory1, _player1, 1),
+                    new GameboardSetupTerritory(_territory1, _player1, 2),
                 };
             }
         }
 
         [Theory]
         [MemberData("gameboardTerritoryNotEquivalentTestData")]
-        public void Game_board_territory_object_graph_is_not_equivalent(IGameboardTerritory actual, IGameboardTerritory expected)
+        public void Game_board_territory_object_graph_is_not_equivalent(IGameboardSetupTerritory actual, IGameboardSetupTerritory expected)
         {
             Assert.Throws<XunitException>(() =>
                 new[] { actual }.ShouldAllBeEquivalentToInRisk(new[] { expected }));

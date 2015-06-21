@@ -64,9 +64,9 @@ namespace RISK.Tests.Application
 
             actual.GameboardTerritories.ShouldAllBeEquivalentToInRisk(new[]
             {
-                new GameboardTerritory(_territory1, _player1, 2),
-                new GameboardTerritory(_territory2, _player2, 3),
-                new GameboardTerritory(_territory3, _player1, 1)
+                new GameboardSetupTerritory(_territory1, _player1, 2),
+                new GameboardSetupTerritory(_territory2, _player2, 3),
+                new GameboardSetupTerritory(_territory3, _player1, 1)
             });
         }
 

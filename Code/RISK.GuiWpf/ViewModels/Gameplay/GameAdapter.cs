@@ -33,9 +33,9 @@ namespace GuiWpf.ViewModels.Gameplay
             MoveToNextPlayer();
         }
 
-        public IPlayer Player => _game.Player;
+        public IPlayer Player => null;//_game.Player;
         public ITerritory SelectedTerritory => _stateController.CurrentState.SelectedTerritory;
-        public IGameboard Gameboard => _game.Gameboard;
+        public IGameboard Gameboard => null;//_game.Gameboard;
 
         private void MoveToNextPlayer()
         {

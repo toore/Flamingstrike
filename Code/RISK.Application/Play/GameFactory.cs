@@ -21,7 +21,8 @@ namespace RISK.Application.Play
 
         public Game Create(IGameSetup gameSetup)
         {
-            return new Game(gameSetup, _cardFactory, _battle);
+            var game = new Game(_cardFactory ,_battle, gameSetup);
+            return game;
         }
     }
 }

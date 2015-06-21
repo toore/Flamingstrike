@@ -52,7 +52,7 @@
     <Compile Include="Play\Card.cs" />
     <Compile Include="Play\Gameboard.cs" />
     <Compile Include="Play\GameboardTerritory.cs" />
-    <Compile Include="Setup\GameboardTerritory.cs" />
+    <Compile Include="Setup\GameboardSetupTerritory.cs" />
     <Compile Include="Play\GameFactory.cs" />
     <Compile Include="Setup\GameSetup.cs" />
     <Compile Include="Player.cs" />

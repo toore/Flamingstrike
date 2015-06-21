@@ -15,33 +15,43 @@ namespace RISK.Application.Play
 
     public interface IGame
     {
-        IPlayer Player { get; }
-        IGameboard Gameboard { get; }
         void EndTurn();
         bool IsGameOver();
         bool CanAttack(ITerritory from, ITerritory to);
         AttackResult Attack(ITerritory from, ITerritory to);
+        IGameState GameState { get; }
+    }
+
+    public interface IGameState
+    {
+        IPlayer CurrentPlayer { get; }
+    }
+
+    public class GameState : IGameState
+    {
+        public IPlayer CurrentPlayer { get; set; }
+        public IReadOnlyList<IPlayer> Players { get; set; }
     }
 
     public class Game : IGame
     {
-        private readonly IReadOnlyList<IPlayer> _players;
         private readonly ICardFactory _cardFactory;
         private readonly IBattle _battle;
 
         private bool _playerShouldReceiveCardWhenTurnEnds;
+        private readonly GameState _gameState;
 
-        public Game(IGameSetup gameSetup, ICardFactory cardFactory, IBattle battle)
+        public Game(ICardFactory cardFactory, IBattle battle, IGameSetup gameSetup)
         {
-            _players = gameSetup.Players;
             _cardFactory = cardFactory;
             _battle = battle;
 
-            Player = _players.First();
+            _gameState = new GameState();
+            _gameState.Players = gameSetup.Players;
+            _gameState.CurrentPlayer = gameSetup.Players.First();
         }
 
-        public IPlayer Player { get; private set; }
-        public IGameboard Gameboard { get; private set; }
+        public IGameState GameState => _gameState;
 
         public void EndTurn()
         {
@@ -51,7 +61,8 @@ namespace RISK.Application.Play
             }
 
             _playerShouldReceiveCardWhenTurnEnds = false;
-            Player = _players.ToList().GetNextOrFirst(Player);
+            _gameState.CurrentPlayer = _gameState.Players.ToList()
+                .GetNextOrFirst(_gameState.CurrentPlayer);
         }
 
         public bool CanAttack(ITerritory from, ITerritory to)

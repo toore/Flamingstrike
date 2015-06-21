@@ -8,14 +8,14 @@ namespace RISK.Tests.Application
 {
     public static class FluentAssertionsExtensions
     {
-        public static void ShouldAllBeEquivalentToInRisk(this IEnumerable<IGameboardTerritory> subject, IEnumerable<IGameboardTerritory> expectation)
+        public static void ShouldAllBeEquivalentToInRisk(this IEnumerable<IGameboardSetupTerritory> subject, IEnumerable<IGameboardSetupTerritory> expectation)
         {
             subject.ShouldAllBeEquivalentTo(expectation, RiskEquivalencyAssertionOptions.Config);
         }
 
         private static class RiskEquivalencyAssertionOptions
         {
-            public static EquivalencyAssertionOptions<IGameboardTerritory> Config(EquivalencyAssertionOptions<IGameboardTerritory> config)
+            public static EquivalencyAssertionOptions<IGameboardSetupTerritory> Config(EquivalencyAssertionOptions<IGameboardSetupTerritory> config)
             {
                 return config
                     .Including(opt => opt.Territory)
