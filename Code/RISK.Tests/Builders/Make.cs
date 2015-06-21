@@ -4,5 +4,6 @@ namespace RISK.Tests.Builders
     {
         public static TerritoryBuilder Territory => new TerritoryBuilder();
         public static CardBuilder Card => new CardBuilder();
+        public static GameSetupBuilder GameSetup => new GameSetupBuilder();
     }
 }

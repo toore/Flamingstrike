@@ -25,12 +25,13 @@ namespace RISK.Application.Play
     public interface IGameState
     {
         IPlayer CurrentPlayer { get; }
+        IReadOnlyList<GameboardTerritory> Territories { get; }
     }
 
     public class GameState : IGameState
     {
         public IPlayer CurrentPlayer { get; set; }
-        public IReadOnlyList<IPlayer> Players { get; set; }
+        public IReadOnlyList<GameboardTerritory> Territories { get; set; }
     }
 
     public class Game : IGame
@@ -39,19 +40,39 @@ namespace RISK.Application.Play
         private readonly IBattle _battle;
 
         private bool _playerShouldReceiveCardWhenTurnEnds;
-        private readonly GameState _gameState;
+        private readonly List<IPlayer> _players;
+        private IPlayer _currentPlayer;
+        private readonly List<GameboardTerritory> _gameboardTerritories;
 
         public Game(ICardFactory cardFactory, IBattle battle, IGameSetup gameSetup)
         {
             _cardFactory = cardFactory;
             _battle = battle;
-
-            _gameState = new GameState();
-            _gameState.Players = gameSetup.Players;
-            _gameState.CurrentPlayer = gameSetup.Players.First();
+            _players = gameSetup.Players.ToList();
+            _currentPlayer = gameSetup.Players.First();
+            _gameboardTerritories = gameSetup.GameboardTerritories
+                .Select(Convert)
+                .ToList();
         }
 
-        public IGameState GameState => _gameState;
+        public IGameState GameState => CreateGameState();
+
+        private static GameboardTerritory Convert(IGameboardSetupTerritory gameboardSetupTerritory)
+        {
+            return new GameboardTerritory(
+                gameboardSetupTerritory.Territory,
+                gameboardSetupTerritory.Player,
+                gameboardSetupTerritory.Armies);
+        }
+
+        private IGameState CreateGameState()
+        {
+            return new GameState
+            {
+                CurrentPlayer = _currentPlayer,
+                Territories = _gameboardTerritories
+            };
+        }
 
         public void EndTurn()
         {
@@ -61,8 +82,7 @@ namespace RISK.Application.Play
             }
 
             _playerShouldReceiveCardWhenTurnEnds = false;
-            _gameState.CurrentPlayer = _gameState.Players.ToList()
-                .GetNextOrFirst(_gameState.CurrentPlayer);
+            _currentPlayer = _players.GetNextOrFirst(_currentPlayer);
         }
 
         public bool CanAttack(ITerritory from, ITerritory to)

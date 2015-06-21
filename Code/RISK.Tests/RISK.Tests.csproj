@@ -100,6 +100,7 @@
     <Compile Include="Application\FluentAssertionsExtensions.cs" />
     <Compile Include="Application\FluentAssertionsExtensionsTests.cs" />
     <Compile Include="Builders\CardBuilder.cs" />
+    <Compile Include="Builders\GameSetupBuilder.cs" />
     <Compile Include="GuiWpf\NoGuiThreadDispatcher.cs" />
     <Compile Include="GuiWpf\SynchronousTaskEx.cs" />
     <Compile Include="GuiWpf\WorldMapModelFactoryTests.cs" />

@@ -6,6 +6,7 @@ namespace RISK.Application.Play
     public interface IGameboardTerritory
     {
         ITerritory Territory { get; }
+        IPlayer Player { get; }
         int Armies { get; }
         int GetNumberOfAttackingArmies();
         int GetNumberOfDefendingArmies();
@@ -13,15 +14,14 @@ namespace RISK.Application.Play
 
     public class GameboardTerritory : IGameboardTerritory
     {
-        private readonly IPlayer _player;
-
         public GameboardTerritory(ITerritory territory, IPlayer player, int armies)
         {
             Territory = territory;
-            _player = player;
+            Player = player;
             Armies = armies;
         }
 
+        public IPlayer Player { get; }
         public ITerritory Territory { get; }
         public int Armies { get; }
 

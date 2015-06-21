@@ -1,10 +1,11 @@
-﻿using System.Collections.Generic;
-using FluentAssertions;
+﻿using FluentAssertions;
 using NSubstitute;
 using RISK.Application;
 using RISK.Application.Play;
 using RISK.Application.Play.Battling;
 using RISK.Application.Setup;
+using RISK.Application.World;
+using RISK.Tests.Builders;
 using Xunit;
 
 namespace RISK.Tests.Application
@@ -27,8 +28,11 @@ namespace RISK.Tests.Application
         public void Initializes_with_first_player_taking_turn_first()
         {
             var firstPlayer = Substitute.For<IPlayer>();
-            var players = new[] { firstPlayer, Substitute.For<IPlayer>(), Substitute.For<IPlayer>() };
-            var gameSetup = new GameSetup(players, null);
+            var gameSetup = Make.GameSetup
+                .WithPlayer(firstPlayer)
+                .WithPlayer(Substitute.For<IPlayer>())
+                .WithPlayer(Substitute.For<IPlayer>())
+                .Build();
 
             var sut = Create(gameSetup);
 
@@ -36,20 +40,24 @@ namespace RISK.Tests.Application
         }
 
         [Fact]
-        public void Initializes_with_territories()
+        public void Initializes_territories()
         {
-            var players = new[] { Substitute.For<IPlayer>() };
-            //var territories = new List<IGameboardSetupTerritory>
-            //{
-            //    Substitute.For<IGameboardSetupTerritory>(),
-            //    Substitute.For<IGameboardSetupTerritory>(),
-            //    Substitute.For<IGameboardSetupTerritory>()
-            //};
-            var gameSetup = new GameSetup(players, null);
+            var territory1 = Substitute.For<ITerritory>();
+            var territory2 = Substitute.For<ITerritory>();
+            var player1 = Substitute.For<IPlayer>();
+            var player2 = Substitute.For<IPlayer>();
+            var gameSetup = Make.GameSetup
+                .WithTerritory(new GameboardSetupTerritory(territory1, player1, 1))
+                .WithTerritory(new GameboardSetupTerritory(territory2, player2, 2))
+                .Build();
 
             var sut = Create(gameSetup);
 
-            //sut.GameState.Territories
+            sut.GameState.Territories.ShouldAllBeEquivalentToInRisk(new[]
+            {
+                new GameboardTerritory(territory1, player1, 1),
+                new GameboardTerritory(territory2, player2, 2),
+            });
         }
 
         private IGame Create(IGameSetup gameSetup)
