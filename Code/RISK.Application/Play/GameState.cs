@@ -8,6 +8,7 @@ namespace RISK.Application.Play
     {
         IPlayer CurrentPlayer { get; }
         IReadOnlyList<GameboardTerritory> Territories { get; }
+        IEnumerable<ITerritory> GetAttackCandidates(ITerritory attacker);
     }
 
     public class GameState : IGameState
@@ -28,19 +29,19 @@ namespace RISK.Application.Play
             return attackCandidates;
         }
 
-        private bool CanAttack(GameboardTerritory attacker, GameboardTerritory attackeeCandidate)
+        private static bool CanAttack(GameboardTerritory attacker, GameboardTerritory attackeeCandidate)
         {
-            var isBordering = attacker.Territory.HasBorderTo(attackeeCandidate.Territory);
-            //var hasArmiesToAttackWith = attacker.GetNumberOfAttackingArmies() > 1;
+            var hasBorder = attacker.Territory.HasBorderTo(attackeeCandidate.Territory);
+            var attackerAndAttackeeIsDifferentPlayers = attacker.Player != attackeeCandidate.Player;
+            var hasEnoughArmiesToAttack = attacker.GetNumberOfAttackingArmies() > 0;
 
-            //var canAttack = isBordering
-            //                &&
-            //                isTerritoryOccupiedByEnemy
-            //                &&
-            //                hasArmiesToAttackWith;
+            var canAttack = hasBorder
+                            &&
+                            attackerAndAttackeeIsDifferentPlayers
+                            &&
+                            hasEnoughArmiesToAttack;
 
-            //return canAttack;
-            return isBordering;
+            return canAttack;
         }
     }
 }

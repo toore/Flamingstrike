@@ -18,7 +18,6 @@ namespace RISK.Application.Play
         IGameState GameState { get; }
         void EndTurn();
         bool IsGameOver();
-        bool CanAttack(ITerritory from, ITerritory to);
         AttackResult Attack(ITerritory from, ITerritory to);
     }
 
@@ -73,22 +72,6 @@ namespace RISK.Application.Play
             _currentPlayer = _players.GetNextOrFirst(_currentPlayer);
         }
 
-        public bool CanAttack(ITerritory from, ITerritory to)
-        {
-            //var isTerritoryOccupiedByEnemy = from.Occupant != PlayerId;
-            //var isBordering = from.IsBordering(to);
-            //var hasArmiesToAttackWith = from.HasArmiesAvailableForAttack();
-
-            //var canAttack = isBordering
-            //                &&
-            //                isTerritoryOccupiedByEnemy
-            //                &&
-            //                hasArmiesToAttackWith;
-
-            //return canAttack;
-            return false;
-        }
-
         public AttackResult Attack(ITerritory from, ITerritory to)
         {
             //_battle.Attack(from, to);
@@ -100,12 +83,6 @@ namespace RISK.Application.Play
             //}
 
             return AttackResult.Other;
-        }
-
-        private bool HasPlayerOccupiedTerritory(ITerritory territoryToAttack)
-        {
-            //return territoryToAttack.Occupant == PlayerId;
-            return false;
         }
 
         public bool IsGameOver()

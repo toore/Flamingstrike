@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using RISK.Application;
 using RISK.Application.Play;
 using RISK.Application.World;
@@ -11,9 +12,9 @@ namespace GuiWpf.ViewModels.Gameplay.Interaction
         private readonly IInteractionStateFactory _interactionStateFactory;
 
         public AttackState(
-            IStateController stateController, 
-            IInteractionStateFactory interactionStateFactory, 
-            IPlayer player, 
+            IStateController stateController,
+            IInteractionStateFactory interactionStateFactory,
+            IPlayer player,
             ITerritory selectedTerritory)
         {
             Player = player;
@@ -36,7 +37,7 @@ namespace GuiWpf.ViewModels.Gameplay.Interaction
         {
             if (!CanSelect(territory) && !CanAttack(territory))
             {
-                throw new InvalidOperationException();                
+                throw new InvalidOperationException();
             }
 
             if (CanSelect(territory))
@@ -64,7 +65,9 @@ namespace GuiWpf.ViewModels.Gameplay.Interaction
 
         private bool CanAttack(ITerritory territory)
         {
-            return _stateController.Game.CanAttack(SelectedTerritory, territory);
+            var gameState = _stateController.Game.GameState;
+            var canAttack = gameState.GetAttackCandidates(SelectedTerritory).Contains(territory);
+            return canAttack;
         }
 
         private void Attack(ITerritory territory)
@@ -83,7 +86,5 @@ namespace GuiWpf.ViewModels.Gameplay.Interaction
                 _stateController.CurrentState = _interactionStateFactory.CreateAttackState(_stateController, Player, territory);
             }
         }
-
-        
     }
 }
