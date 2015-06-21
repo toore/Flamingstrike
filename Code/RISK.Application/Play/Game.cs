@@ -15,23 +15,11 @@ namespace RISK.Application.Play
 
     public interface IGame
     {
+        IGameState GameState { get; }
         void EndTurn();
         bool IsGameOver();
         bool CanAttack(ITerritory from, ITerritory to);
         AttackResult Attack(ITerritory from, ITerritory to);
-        IGameState GameState { get; }
-    }
-
-    public interface IGameState
-    {
-        IPlayer CurrentPlayer { get; }
-        IReadOnlyList<GameboardTerritory> Territories { get; }
-    }
-
-    public class GameState : IGameState
-    {
-        public IPlayer CurrentPlayer { get; set; }
-        public IReadOnlyList<GameboardTerritory> Territories { get; set; }
     }
 
     public class Game : IGame
