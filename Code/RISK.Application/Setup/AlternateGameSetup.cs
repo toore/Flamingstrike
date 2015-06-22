@@ -118,42 +118,41 @@ namespace RISK.Application.Setup
             }
         }
 
-        private static void PlaceArmy(ITerritoryRequestHandler territoryRequestHandler, GameSetupPlayer gameSetupPlayer, IList<GameboardSetupTerritory> gameboardTerritories)
+        private static void PlaceArmy(ITerritoryRequestHandler territoryRequestHandler, GameSetupPlayer gameSetupPlayer, IList<GameboardSetupTerritory> gameboardSetupTerritories)
         {
-            var gameboard = CreateGameboard(gameboardTerritories);
+            var gameboardTerritories = CreateGameboard(gameboardSetupTerritories);
 
-            var territoriesAssignedToPlayer = gameboardTerritories
+            var territoriesAssignedToPlayer = gameboardSetupTerritories
                 .Where(x => x.Player == gameSetupPlayer.Player)
                 .ToList();
 
-            var respondedGameboardTerritory = GetTerritoryResponse(territoryRequestHandler, gameboard, gameSetupPlayer, territoriesAssignedToPlayer);
+            var respondedGameboardTerritory = GetTerritoryResponse(territoryRequestHandler, gameboardTerritories, gameSetupPlayer, territoriesAssignedToPlayer);
 
             respondedGameboardTerritory.Armies++;
             gameSetupPlayer.ArmiesToPlace--;
         }
 
-        private static Gameboard CreateGameboard(IEnumerable<GameboardSetupTerritory> gameboardTerritories)
+        private static List<GameboardTerritory> CreateGameboard(IEnumerable<GameboardSetupTerritory> gameboardSetupTerritories)
         {
-            var gamePlayTerritories = gameboardTerritories
+            var gameboardTerritories = gameboardSetupTerritories
                 .Select(x => new GameboardTerritory(x.Territory, x.Player, x.Armies))
                 .ToList();
 
-            var gameboard = new Gameboard(gamePlayTerritories);
-            return gameboard;
+            return gameboardTerritories;
         }
 
-        private static GameboardSetupTerritory GetTerritoryResponse(ITerritoryRequestHandler territoryRequestHandler, IGameboard gameboard, GameSetupPlayer gameSetupPlayer, List<GameboardSetupTerritory> territoriesAssignedToPlayer)
+        private static GameboardSetupTerritory GetTerritoryResponse(ITerritoryRequestHandler territoryRequestHandler, List<GameboardTerritory> gameboardTerritories, GameSetupPlayer gameSetupPlayer, List<GameboardSetupTerritory> territoriesAssignedToPlayer)
         {
             var selectableTerritories = territoriesAssignedToPlayer
                 .Select(x => x.Territory)
                 .ToList();
 
-            var parameter = new TerritoryRequestParameter(gameboard, selectableTerritories, gameSetupPlayer);
+            var parameter = new TerritoryRequestParameter(gameboardTerritories, selectableTerritories, gameSetupPlayer);
 
-            var territory = territoryRequestHandler.ProcessRequest(parameter);
-            var gameboardTerritory = territoriesAssignedToPlayer.Single(x => x.Territory == territory);
+            var selectedTerritory = territoryRequestHandler.ProcessRequest(parameter);
+            var selectedGameboardSetupTerritory = territoriesAssignedToPlayer.Single(x => x.Territory == selectedTerritory);
 
-            return gameboardTerritory;
+            return selectedGameboardSetupTerritory;
         }
     }
 }

@@ -6,7 +6,7 @@ namespace RISK.Application.Setup
 {
     public interface ITerritoryRequestParameter
     {
-        IGameboard Gameboard { get; }
+        IReadOnlyList<IGameboardTerritory> GameboardTerritories { get; }
         IReadOnlyList<ITerritory> EnabledTerritories { get; }
         IPlayer Player { get; }
         int GetArmiesLeftToPlace();
@@ -16,14 +16,14 @@ namespace RISK.Application.Setup
     {
         private readonly GameSetupPlayer _gameSetupPlayer;
 
-        public TerritoryRequestParameter(IGameboard gameboard, IReadOnlyList<ITerritory> enabledTerritories, GameSetupPlayer gameSetupPlayer)
+        public TerritoryRequestParameter(IReadOnlyList<GameboardTerritory> gameboardTerritories, IReadOnlyList<ITerritory> enabledTerritories, GameSetupPlayer gameSetupPlayer)
         {
-            Gameboard = gameboard;
+            GameboardTerritories = gameboardTerritories;
             _gameSetupPlayer = gameSetupPlayer;
             EnabledTerritories = enabledTerritories;
         }
 
-        public IGameboard Gameboard { get; }
+        public IReadOnlyList<IGameboardTerritory> GameboardTerritories { get; }
         public IReadOnlyList<ITerritory> EnabledTerritories { get; }
         public IPlayer Player => _gameSetupPlayer.Player;
 

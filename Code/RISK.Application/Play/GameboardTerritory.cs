@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using RISK.Application.World;
 
 namespace RISK.Application.Play
@@ -10,6 +12,14 @@ namespace RISK.Application.Play
         int Armies { get; }
         int GetNumberOfAttackingArmies();
         int GetNumberOfDefendingArmies();
+    }
+
+    public static class GameboardTerritoryExtensions
+    {
+        public static IGameboardTerritory Get(this IEnumerable<IGameboardTerritory> gameboardTerritories, ITerritory territory)
+        {
+            return gameboardTerritories.Single(x => x.Territory == territory);
+        }
     }
 
     public class GameboardTerritory : IGameboardTerritory

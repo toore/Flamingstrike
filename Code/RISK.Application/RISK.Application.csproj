@@ -50,7 +50,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Play\Card.cs" />
-    <Compile Include="Play\Gameboard.cs" />
     <Compile Include="Play\GameboardRules.cs" />
     <Compile Include="Play\GameboardTerritory.cs" />
     <Compile Include="Play\TerritoryConverter.cs" />

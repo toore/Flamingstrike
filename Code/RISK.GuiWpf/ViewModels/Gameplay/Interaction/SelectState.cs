@@ -1,5 +1,6 @@
 ﻿using System;
 using RISK.Application;
+using RISK.Application.Play;
 using RISK.Application.World;
 
 namespace GuiWpf.ViewModels.Gameplay.Interaction
@@ -18,13 +19,12 @@ namespace GuiWpf.ViewModels.Gameplay.Interaction
 
         public ITerritory SelectedTerritory => null;
 
-        public IPlayer Player { get; private set; }
+        public IPlayer Player { get; }
 
         public bool CanClick(ITerritory territory)
         {
-            throw new NotImplementedException();
-            //_stateController.Game.Territories
-            //return territory.Occupant == PlayerId;
+            var gameboardTerritory = _stateController.Game.Territories.Get(territory);
+            return gameboardTerritory.Player == Player;
         }
 
         public void OnClick(ITerritory territory)

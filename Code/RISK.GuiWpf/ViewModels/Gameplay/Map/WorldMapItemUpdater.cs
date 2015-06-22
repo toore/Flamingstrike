@@ -8,15 +8,15 @@ namespace GuiWpf.ViewModels.Gameplay.Map
 {
     public class WorldMapItemUpdater : IWorldMapItemViewModelVisitor
     {
-        private readonly IGameboard _gameboard;
+        private readonly IReadOnlyList<IGameboardTerritory> _gameboardTerritories;
         private readonly IEnumerable<ITerritory> _enabledTerritories;
         private readonly ITerritory _selectedTerritory;
         private readonly ITerritoryColorsFactory _territoryColorsFactory;
         private readonly IColorService _colorService;
 
-        public WorldMapItemUpdater(IGameboard gameboard, IEnumerable<ITerritory> enabledTerritories, ITerritory selectedTerritory, ITerritoryColorsFactory territoryColorsFactory, IColorService colorService)
+        public WorldMapItemUpdater(IReadOnlyList<IGameboardTerritory> gameboardTerritories, IEnumerable<ITerritory> enabledTerritories, ITerritory selectedTerritory, ITerritoryColorsFactory territoryColorsFactory, IColorService colorService)
         {
-            _gameboard = gameboard;
+            _gameboardTerritories = gameboardTerritories;
             _enabledTerritories = enabledTerritories;
             _selectedTerritory = selectedTerritory;
             _territoryColorsFactory = territoryColorsFactory;
@@ -57,7 +57,7 @@ namespace GuiWpf.ViewModels.Gameplay.Map
 
         private void UpdateArmiesForTerritory(TitleViewModel titleViewModel)
         {
-            var gameboardTerritory = _gameboard.GetTerritory(titleViewModel.Territory);
+            var gameboardTerritory = _gameboardTerritories.Get(titleViewModel.Territory);
             titleViewModel.Armies = gameboardTerritory.Armies;
         }
     }

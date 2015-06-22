@@ -11,8 +11,8 @@ namespace GuiWpf.ViewModels.Gameplay.Map
 {
     public interface IWorldMapViewModelFactory
     {
-        WorldMapViewModel Create(IGameboard gameboard, Action<ITerritory> onClick, IEnumerable<ITerritory> enabledTerritories);
-        void Update(WorldMapViewModel worldMapViewModel, IGameboard gameboard, ITerritory selectedTerritory, IEnumerable<ITerritory> enabledTerritories);
+        WorldMapViewModel Create(IReadOnlyList<IGameboardTerritory> gameboardTerritories, Action<ITerritory> onClick, IEnumerable<ITerritory> enabledTerritories);
+        void Update(WorldMapViewModel worldMapViewModel, IReadOnlyList<IGameboardTerritory> gameboardTerritories, ITerritory selectedTerritory, IEnumerable<ITerritory> enabledTerritories);
     }
 
     public class WorldMapViewModelFactory : IWorldMapViewModelFactory
@@ -30,7 +30,7 @@ namespace GuiWpf.ViewModels.Gameplay.Map
             _colorService = colorService;
         }
 
-        public WorldMapViewModel Create(IGameboard gameboard, Action<ITerritory> onClick, IEnumerable<ITerritory> enabledTerritories)
+        public WorldMapViewModel Create(IReadOnlyList<IGameboardTerritory> gameboardTerritories, Action<ITerritory> onClick, IEnumerable<ITerritory> enabledTerritories)
         {
             var territoryModels = _worldMapModelFactory.Create(_worldMap);
 
@@ -41,14 +41,14 @@ namespace GuiWpf.ViewModels.Gameplay.Map
             var worldMapViewModel = new WorldMapViewModel();
             worldMapViewModel.WorldMapViewModels.Add(worldMapViewModels);
 
-            Update(worldMapViewModel, gameboard, null, enabledTerritories);
+            Update(worldMapViewModel, gameboardTerritories, null, enabledTerritories);
 
             return worldMapViewModel;
         }
 
-        public void Update(WorldMapViewModel worldMapViewModel, IGameboard gameboard, ITerritory selectedTerritory, IEnumerable<ITerritory> enabledTerritories)
+        public void Update(WorldMapViewModel worldMapViewModel, IReadOnlyList<IGameboardTerritory> gameboardTerritories, ITerritory selectedTerritory, IEnumerable<ITerritory> enabledTerritories)
         {
-            var worldMapItemUpdater = new WorldMapItemUpdater(gameboard, enabledTerritories, selectedTerritory, _territoryColorsFactory, _colorService);
+            var worldMapItemUpdater = new WorldMapItemUpdater(gameboardTerritories, enabledTerritories, selectedTerritory, _territoryColorsFactory, _colorService);
             foreach (var worldMapItemViewModel in worldMapViewModel.WorldMapViewModels)
             {
                 worldMapItemViewModel.Accept(worldMapItemUpdater);

@@ -1,4 +1,5 @@
-﻿using GuiWpf.ViewModels.Gameplay.Interaction;
+﻿using System.Collections.Generic;
+using GuiWpf.ViewModels.Gameplay.Interaction;
 using RISK.Application;
 using RISK.Application.Play;
 using RISK.Application.World;
@@ -9,7 +10,7 @@ namespace GuiWpf.ViewModels.Gameplay
     {
         IPlayer Player { get; }
         ITerritory SelectedTerritory { get; }
-        IGameboard Gameboard { get; }
+        IReadOnlyList<IGameboardTerritory> GameboardTerritories { get; }
         void EndTurn();
         bool IsGameOver();
         void Fortify();
@@ -35,7 +36,7 @@ namespace GuiWpf.ViewModels.Gameplay
 
         public IPlayer Player => _game.CurrentPlayer;
         public ITerritory SelectedTerritory => _stateController.CurrentState.SelectedTerritory;
-        public IGameboard Gameboard => new Gameboard(_game.Territories);
+        public IReadOnlyList<IGameboardTerritory> GameboardTerritories => _game.Territories;
 
         private void MoveToNextPlayer()
         {

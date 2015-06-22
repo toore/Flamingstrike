@@ -5,7 +5,7 @@ namespace RISK.Application.Play.Battling
 {
     public interface IBattle
     {
-        IGameboard Attack(IGameboard gameboard, IGameboardTerritory attacker, IGameboardTerritory defender);
+        //IGameboard Attack(IGameboard gameboard, IGameboardTerritory attacker, IGameboardTerritory defender);
     }
 
     public class Battle : IBattle
@@ -19,24 +19,24 @@ namespace RISK.Application.Play.Battling
             _battleCalculator = battleCalculator;
         }
 
-        public IGameboard Attack(IGameboard gameboard, IGameboardTerritory attacker, IGameboardTerritory defender)
-        {
-            var attackingArmies = Math.Min(attacker.GetNumberOfAttackingArmies(), 3);
-            var defendingArmies = Math.Min(defender.GetNumberOfDefendingArmies(), 2);
+        //public IGameboard Attack(IGameboard gameboard, IGameboardTerritory attacker, IGameboardTerritory defender)
+        //{
+        //    var attackingArmies = Math.Min(attacker.GetNumberOfAttackingArmies(), 3);
+        //    var defendingArmies = Math.Min(defender.GetNumberOfDefendingArmies(), 2);
 
-            var dices = _dicesRoller.Roll(attackingArmies, defendingArmies);
+        //    var dices = _dicesRoller.Roll(attackingArmies, defendingArmies);
 
-            var battleResult = _battleCalculator.Battle(dices.AttackValues, dices.DefenceValues);
+        //    var battleResult = _battleCalculator.Battle(dices.AttackValues, dices.DefenceValues);
 
-            //attacker.Armies -= battleResult.AttackerLosses;
-            //defender.Armies -= battleResult.DefenderLosses;
+        //    //attacker.Armies -= battleResult.AttackerLosses;
+        //    //defender.Armies -= battleResult.DefenderLosses;
 
-            //if (IsDefenderDefeated(defender))
-            //{
-            //    OccupyTerritory(attacker, defender);
-            //}
-            return null;//remove
-        }
+        //    //if (IsDefenderDefeated(defender))
+        //    //{
+        //    //    OccupyTerritory(attacker, defender);
+        //    //}
+        //    return null;//remove
+        //}
 
         private static void OccupyTerritory(ITerritory attacker, ITerritory defender)
         {
