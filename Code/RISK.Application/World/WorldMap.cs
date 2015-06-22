@@ -4,7 +4,7 @@ namespace RISK.Application.World
 {
     public interface IWorldMap
     {
-        IEnumerable<ITerritory> GetTerritories();
+        IEnumerable<ITerritory> GetAll();
 
         ITerritory Alaska { get; }
         ITerritory Alberta { get; }
@@ -202,7 +202,7 @@ namespace RISK.Application.World
             WesternAustralia = westernAustralia;
         }
 
-        public IEnumerable<ITerritory> GetTerritories()
+        public IEnumerable<ITerritory> GetAll()
         {
             return new[]
             {

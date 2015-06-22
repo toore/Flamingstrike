@@ -60,7 +60,7 @@ namespace GuiWpf.ViewModels.Gameplay
 
         private void InitializeWorld()
         {
-            //WorldMapViewModel = _worldMapViewModelFactory.Create(_gameAdapter.WorldMap, x => OnTerritoryClick(x), Enumerable.Empty<ITerritory>());
+            WorldMapViewModel = _worldMapViewModelFactory.Create(_gameAdapter.Gameboard, x => OnTerritoryClick(x), Enumerable.Empty<ITerritory>());
 
             UpdateGame();
         }
@@ -110,7 +110,7 @@ namespace GuiWpf.ViewModels.Gameplay
 
         private void UpdateWorldMap()
         {
-            var enabledTerritories = _worldMap.GetTerritories()
+            var enabledTerritories = _worldMap.GetAll()
                 .Where(x => _gameAdapter.CanClick(x))
                 .ToList();
 

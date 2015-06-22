@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using Caliburn.Micro;
 using FluentAssertions;
@@ -11,6 +12,7 @@ using NSubstitute;
 using RISK.Application;
 using RISK.Application.Play;
 using RISK.Application.Play.Battling;
+using RISK.Application.Setup;
 using RISK.Application.World;
 using Xunit;
 
@@ -26,15 +28,18 @@ namespace RISK.Tests.Application.Specifications
         private IDice _dice;
         private GameOverViewModel _gameOverAndPlayer1IsTheWinnerViewModel;
         private GameAdapter _gameAdapter;
+        private List<IPlayer> _players;
+        private List<GameboardSetupTerritory> _gameboardTerritories;
 
         [Fact]
         public void Moves_armies_into_Brazil_after_win()
         {
             Given.
-                a_started_game_with_two_players().
-                player_1_occupies_every_territory_except_brazil_and_venezuela_with_one_army_each().
+                a_game_with_two_players().
+                player_1_occupies_every_territory_except_brazil_and_venezuela_and_north_africa_with_one_army_each().
                 player_1_has_5_armies_in_north_africa().
-                player_2_occupies_brazil_and_venezuela_with_one_army_each();
+                player_2_occupies_brazil_and_venezuela_with_one_army_each().
+                game_is_started();
 
             When.
                 player_one_selects_north_africa().
@@ -48,7 +53,7 @@ namespace RISK.Tests.Application.Specifications
         public void Game_over_after_player_occupies_all_territories()
         {
             Given.
-                a_started_game_with_two_players().
+                a_game_with_two_players().
                 player_1_occupies_every_territory_except_iceland_with_one_army_each().
                 player_1_has_2_armies_in_scandinavia().
                 player_2_occupies_iceland_with_one_army();
@@ -65,8 +70,8 @@ namespace RISK.Tests.Application.Specifications
         public void Receives_a_card_when_ending_turn()
         {
             Given.
-                a_started_game_with_two_players().
-                player_1_occupies_every_territory_except_brazil_and_venezuela_with_one_army_each().
+                a_game_with_two_players().
+                //player_1_occupies_every_territory_except_brazil_and_venezuela_with_one_army_each().
                 player_1_has_5_armies_in_north_africa().
                 player_2_occupies_brazil_and_venezuela_with_one_army_each();
 
@@ -83,7 +88,7 @@ namespace RISK.Tests.Application.Specifications
         [Fact]
         public void Does_not_receive_a_card_when_ending_turn()
         {
-            Given.a_started_game_with_two_players();
+            Given.a_game_with_two_players();
 
             When.turn_ends();
 
@@ -96,7 +101,7 @@ namespace RISK.Tests.Application.Specifications
         public void Fortifies_armies()
         {
             Given.
-                a_started_game_with_two_players().
+                a_game_with_two_players().
                 player_1_occupies_every_territory_except_indonesia_with_ten_armies_each().
                 player_2_occupies_indonesia().
                 player_1_fortifies();
@@ -137,7 +142,7 @@ namespace RISK.Tests.Application.Specifications
             _gameboardViewModel.Fortify();
         }
 
-        private GamePlaySpec a_started_game_with_two_players()
+        private GamePlaySpec a_game_with_two_players()
         {
             _worldMap = new WorldMap();
 
@@ -147,13 +152,20 @@ namespace RISK.Tests.Application.Specifications
             _player1 = new Player("Player 1");
             _player2 = new Player("Player 2");
 
-            var gameOverViewModelFactory = Substitute.For<IGameOverViewModelFactory>();
-            _gameOverAndPlayer1IsTheWinnerViewModel = new GameOverViewModel(_player1);
-            gameOverViewModelFactory.Create(_player1).Returns(_gameOverAndPlayer1IsTheWinnerViewModel);
+            _players = new List<IPlayer> { _player1, _player2 };
 
+            _gameboardTerritories = new List<GameboardSetupTerritory>();
+
+            return this;
+        }
+
+        private GamePlaySpec game_is_started()
+        {
             var diceRoller = new DicesRoller(_dice);
             var interactionStateFactory = new InteractionStateFactory();
-            var game = new Game(null, null, new CardFactory(), new Battle(diceRoller, new BattleCalculator()), null);
+
+            var gameSetup = new GameSetup(_players, _gameboardTerritories);
+            var game = new Game(gameSetup, new GameboardRules(), new CardFactory(), new Battle(diceRoller, new BattleCalculator()), new TerritoryConverter());
             _gameAdapter = new GameAdapter(interactionStateFactory, new StateControllerFactory(interactionStateFactory), game);
 
             var worldMapModelFactory = new WorldMapModelFactory();
@@ -165,6 +177,10 @@ namespace RISK.Tests.Application.Specifications
             var userNotifier = new UserNotifier(_windowManager, confirmViewModelFactory);
             var dialogManager = new DialogManager(userNotifier);
             var worldMapViewModelFactory = new WorldMapViewModelFactory(_worldMap, worldMapModelFactory, territoryColorsFactory, colorService);
+
+            var gameOverViewModelFactory = Substitute.For<IGameOverViewModelFactory>();
+            _gameOverAndPlayer1IsTheWinnerViewModel = new GameOverViewModel(_player1);
+            gameOverViewModelFactory.Create(_player1).Returns(_gameOverAndPlayer1IsTheWinnerViewModel);
 
             _gameboardViewModel = new GameboardViewModel(
                 _worldMap,
@@ -182,30 +198,45 @@ namespace RISK.Tests.Application.Specifications
 
         private GamePlaySpec player_1_has_5_armies_in_north_africa()
         {
-            UpdateWorldMap(_player1, 5, _worldMap.NorthAfrica);
+            AddTerritoryToGameboard(_worldMap.NorthAfrica, _player1, 5);
+            //UpdateWorldMap(_player1, 5, _worldMap.NorthAfrica);
             return this;
         }
 
-        private GamePlaySpec player_1_occupies_every_territory_except_brazil_and_venezuela_with_one_army_each()
+        private void AddTerritoryToGameboard(ITerritory territory, IPlayer player, int armies)
         {
-            UpdateWorldMap(_player1, 1, GetAllLocationsExcept(_worldMap.Brazil, _worldMap.Venezuela));
+            _gameboardTerritories.Add(new GameboardSetupTerritory(territory, player, armies));
+        }
+
+        private GamePlaySpec player_1_occupies_every_territory_except_brazil_and_venezuela_and_north_africa_with_one_army_each()
+        {
+            GetAllTerritoriesExcept(
+                _worldMap.Brazil, 
+                _worldMap.Venezuela,
+                _worldMap.NorthAfrica).
+                Apply(x => AddTerritoryToGameboard(x, _player1, 1));
+
+            //UpdateWorldMap(_player1, 1, GetAllLocationsExcept(_worldMap.Brazil, _worldMap.Venezuela));
             return this;
         }
 
-        private void player_2_occupies_brazil_and_venezuela_with_one_army_each()
+        private GamePlaySpec player_2_occupies_brazil_and_venezuela_with_one_army_each()
         {
-            UpdateWorldMap(_player2, 1, _worldMap.Brazil, _worldMap.Venezuela);
+            AddTerritoryToGameboard(_worldMap.Brazil, _player2, 1);
+            AddTerritoryToGameboard(_worldMap.Venezuela, _player2, 1);
+            //UpdateWorldMap(_player2, 1, _worldMap.Brazil, _worldMap.Venezuela);
+            return this;
         }
 
         private GamePlaySpec player_1_occupies_every_territory_except_iceland_with_one_army_each()
         {
-            UpdateWorldMap(_player1, 1, GetAllLocationsExcept(_worldMap.Iceland));
+            UpdateWorldMap(_player1, 1, GetAllTerritoriesExcept(_worldMap.Iceland));
             return this;
         }
 
         private GamePlaySpec player_1_occupies_every_territory_except_indonesia_with_ten_armies_each()
         {
-            UpdateWorldMap(_player1, 10, GetAllLocationsExcept(_worldMap.Indonesia));
+            UpdateWorldMap(_player1, 10, GetAllTerritoriesExcept(_worldMap.Indonesia));
             return this;
         }
 
@@ -226,9 +257,9 @@ namespace RISK.Tests.Application.Specifications
             UpdateWorldMap(_player2, 1, _worldMap.Iceland);
         }
 
-        private ITerritory[] GetAllLocationsExcept(params ITerritory[] excludedLocations)
+        private ITerritory[] GetAllTerritoriesExcept(params ITerritory[] excludedLocations)
         {
-            return _worldMap.GetTerritories().Except(excludedLocations).ToArray();
+            return _worldMap.GetAll().Except(excludedLocations).ToArray();
         }
 
         private void UpdateWorldMap(IPlayer player, int armies, params ITerritory[] territories)

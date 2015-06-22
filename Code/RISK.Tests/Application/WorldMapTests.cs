@@ -205,7 +205,7 @@ namespace RISK.Tests.Application
 
         private IEnumerable<ITerritory> GetAll()
         {
-            return _sut.GetTerritories();
+            return _sut.GetAll();
         }
 
         private ITerritory Alaska => _sut.Alaska;

@@ -76,7 +76,7 @@ namespace RISK.Application.Setup
         {
             var gameboardTerritories = new List<GameboardSetupTerritory>();
 
-            var territories = _worldMap.GetTerritories()
+            var territories = _worldMap.GetAll()
                 .Shuffle(_shuffler)
                 .ToList();
 

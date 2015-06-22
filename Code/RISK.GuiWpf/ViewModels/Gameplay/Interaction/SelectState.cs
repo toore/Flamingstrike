@@ -16,17 +16,15 @@ namespace GuiWpf.ViewModels.Gameplay.Interaction
             _interactionStateFactory = interactionStateFactory;
         }
 
-        public ITerritory SelectedTerritory
-        {
-            get { return null; }
-        }
+        public ITerritory SelectedTerritory => null;
 
         public IPlayer Player { get; private set; }
 
         public bool CanClick(ITerritory territory)
         {
+            throw new NotImplementedException();
+            //_stateController.Game.Territories
             //return territory.Occupant == PlayerId;
-            return false;
         }
 
         public void OnClick(ITerritory territory)
