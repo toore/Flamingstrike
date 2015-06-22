@@ -15,7 +15,9 @@ namespace RISK.Application.Play
 
     public interface IGame
     {
-        IGameState GameState { get; }
+        IPlayer CurrentPlayer { get; }
+        IReadOnlyList<IGameboardTerritory> Territories { get; }
+        IEnumerable<ITerritory> GetAttackeeCandidates(ITerritory attackingTerritory);
         void EndTurn();
         bool IsGameOver();
         AttackResult Attack(ITerritory from, ITerritory to);
@@ -23,42 +25,33 @@ namespace RISK.Application.Play
 
     public class Game : IGame
     {
+        private readonly IGameboardRules _gameboardRules;
         private readonly ICardFactory _cardFactory;
         private readonly IBattle _battle;
 
         private bool _playerShouldReceiveCardWhenTurnEnds;
         private readonly List<IPlayer> _players;
-        private IPlayer _currentPlayer;
-        private readonly List<GameboardTerritory> _gameboardTerritories;
+        private readonly List<GameboardTerritory> _territories;
 
-        public Game(ICardFactory cardFactory, IBattle battle, IGameSetup gameSetup)
+        public Game(IGameSetup gameSetup, IGameboardRules gameboardRules, ICardFactory cardFactory, IBattle battle, ITerritoryConverter territoryConverter)
         {
+            _gameboardRules = gameboardRules;
             _cardFactory = cardFactory;
             _battle = battle;
             _players = gameSetup.Players.ToList();
-            _currentPlayer = gameSetup.Players.First();
-            _gameboardTerritories = gameSetup.GameboardTerritories
-                .Select(Convert)
-                .ToList();
+            CurrentPlayer = gameSetup.Players.First();
+
+            _territories = territoryConverter.Convert(gameSetup.GameboardTerritories);
         }
 
-        public IGameState GameState => CreateGameState();
+        public IPlayer CurrentPlayer { get; private set; }
+        public IReadOnlyList<IGameboardTerritory> Territories => _territories;
 
-        private static GameboardTerritory Convert(IGameboardSetupTerritory gameboardSetupTerritory)
-        {
-            return new GameboardTerritory(
-                gameboardSetupTerritory.Territory,
-                gameboardSetupTerritory.Player,
-                gameboardSetupTerritory.Armies);
-        }
 
-        private IGameState CreateGameState()
+
+        public IEnumerable<ITerritory> GetAttackeeCandidates(ITerritory attackingTerritory)
         {
-            return new GameState
-            {
-                CurrentPlayer = _currentPlayer,
-                Territories = _gameboardTerritories
-            };
+            return _gameboardRules.GetAttackeeCandidates(_territories, attackingTerritory);
         }
 
         public void EndTurn()
@@ -69,7 +62,7 @@ namespace RISK.Application.Play
             }
 
             _playerShouldReceiveCardWhenTurnEnds = false;
-            _currentPlayer = _players.GetNextOrFirst(_currentPlayer);
+            CurrentPlayer = _players.GetNextOrFirst(CurrentPlayer);
         }
 
         public AttackResult Attack(ITerritory from, ITerritory to)
@@ -91,4 +84,6 @@ namespace RISK.Application.Play
             return false;
         }
     }
+
+
 }

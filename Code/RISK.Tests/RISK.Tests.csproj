@@ -95,11 +95,12 @@
     <Compile Include="Application\DicesRollerTests.cs" />
     <Compile Include="Application\CasualtiesCalculatorTests.cs" />
     <Compile Include="Application\FortifySelectStateTests.cs" />
-    <Compile Include="Application\GameStateTests.cs" />
     <Compile Include="Application\GameTests.cs" />
+    <Compile Include="Application\GameboardRulesTests.cs" />
     <Compile Include="Application\StartingInfantryCalculatorTests.cs" />
     <Compile Include="Application\FluentAssertionsExtensions.cs" />
     <Compile Include="Application\FluentAssertionsExtensionsTests.cs" />
+    <Compile Include="Application\TerritoryConverterTests.cs" />
     <Compile Include="Builders\CardBuilder.cs" />
     <Compile Include="Builders\GameSetupBuilder.cs" />
     <Compile Include="GuiWpf\NoGuiThreadDispatcher.cs" />

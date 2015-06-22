@@ -11,9 +11,9 @@ namespace RISK.Application.Play
 
     public class Gameboard : IGameboard
     {
-        private readonly IReadOnlyList<GameboardTerritory> _gameboardTerritories;
+        private readonly IReadOnlyList<IGameboardTerritory> _gameboardTerritories;
 
-        public Gameboard(IReadOnlyList<GameboardTerritory> gameboardTerritories)
+        public Gameboard(IReadOnlyList<IGameboardTerritory> gameboardTerritories)
         {
             _gameboardTerritories = gameboardTerritories;
         }

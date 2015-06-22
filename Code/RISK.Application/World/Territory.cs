@@ -5,29 +5,31 @@ namespace RISK.Application.World
     public interface ITerritory
     {
         Continent Continent { get; }
+        IReadOnlyList<ITerritory> GetBorderingTerritories { get; }
         bool HasBorderTo(ITerritory territory);
     }
 
     public class Territory : ITerritory
     {
-        private readonly List<ITerritory> _borders;
+        private readonly List<ITerritory> _borderingTerritories;
 
         public Territory(string name, Continent continent)
         {
             Continent = continent;
-            _borders = new List<ITerritory>();
+            _borderingTerritories = new List<ITerritory>();
         }
 
         public Continent Continent { get; }
+        public IReadOnlyList<ITerritory> GetBorderingTerritories => _borderingTerritories;
 
         public bool HasBorderTo(ITerritory territory)
         {
-            return _borders.Contains(territory);
+            return _borderingTerritories.Contains(territory);
         }
 
-        public void AddBorderToTerritories(params ITerritory[] locations)
+        public void AddBorderToTerritories(params ITerritory[] territories)
         {
-            _borders.AddRange(locations);
+            _borderingTerritories.AddRange(territories);
         }
     }
 }

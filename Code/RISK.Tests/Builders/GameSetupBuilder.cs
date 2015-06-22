@@ -21,11 +21,5 @@ namespace RISK.Tests.Builders
             _players.Add(player);
             return this;
         }
-
-        public GameSetupBuilder WithTerritory(GameboardSetupTerritory gameboardSetupTerritory)
-        {
-            _gameboardTerritories.Add(gameboardSetupTerritory);
-            return this;
-        }
     }
 }

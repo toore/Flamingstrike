@@ -135,7 +135,7 @@ namespace RISK.Application.Setup
         private static Gameboard CreateGameboard(IEnumerable<GameboardSetupTerritory> gameboardTerritories)
         {
             var gamePlayTerritories = gameboardTerritories
-                .Select(x => new Play.GameboardTerritory(x.Territory, x.Player, x.Armies))
+                .Select(x => new GameboardTerritory(x.Territory, x.Player, x.Armies))
                 .ToList();
 
             var gameboard = new Gameboard(gamePlayTerritories);

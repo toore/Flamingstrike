@@ -153,7 +153,7 @@ namespace RISK.Tests.Application.Specifications
 
             var diceRoller = new DicesRoller(_dice);
             var interactionStateFactory = new InteractionStateFactory();
-            var game = new Game(new CardFactory(), new Battle(diceRoller, new BattleCalculator()), null);
+            var game = new Game(null, null, new CardFactory(), new Battle(diceRoller, new BattleCalculator()), null);
             _gameAdapter = new GameAdapter(interactionStateFactory, new StateControllerFactory(interactionStateFactory), game);
 
             var worldMapModelFactory = new WorldMapModelFactory();

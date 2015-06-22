@@ -65,8 +65,7 @@ namespace GuiWpf.ViewModels.Gameplay.Interaction
 
         private bool CanAttack(ITerritory territory)
         {
-            var gameState = _stateController.Game.GameState;
-            var canAttack = gameState.GetAttackCandidates(SelectedTerritory).Contains(territory);
+            var canAttack = _stateController.Game.GetAttackeeCandidates(SelectedTerritory).Contains(territory);
             return canAttack;
         }
 

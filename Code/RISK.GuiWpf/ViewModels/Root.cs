@@ -46,17 +46,19 @@ namespace GuiWpf.ViewModels
             var shuffler = new FisherYatesShuffler(randomWrapper);
             var dice = new Dice(randomWrapper);
             var diceRoller = new DicesRoller(dice);
-            var cardFactory = new CardFactory();
-            var battle = new Battle(diceRoller, new BattleCalculator());
             var interactionStateFactory = new InteractionStateFactory();
             var stateControllerFactory = new StateControllerFactory(interactionStateFactory);
             var startingInfantryCalculator = new StartingInfantryCalculator();
+            var gameboardRules = new GameboardRules();
+            var cardFactory = new CardFactory();
+            var battle = new Battle(diceRoller, new BattleCalculator());
+            var territoryConverter = new TerritoryConverter();
 
             PlayerRepository = new PlayerRepository();
 
             AlternateGameSetupFactory = new AlternateGameSetupFactory(WorldMap, shuffler, startingInfantryCalculator);
-
-            GameFactory = new GameFactory(cardFactory, battle);
+            
+            GameFactory = new GameFactory(gameboardRules, cardFactory, battle, territoryConverter);
             GameAdapterFactory = new GameAdapterFactory(interactionStateFactory, stateControllerFactory);
 
             WindowManager = new WindowManager();

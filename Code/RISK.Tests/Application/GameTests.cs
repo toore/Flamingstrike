@@ -1,4 +1,5 @@
-﻿using FluentAssertions;
+﻿using System.Collections.Generic;
+using FluentAssertions;
 using NSubstitute;
 using RISK.Application;
 using RISK.Application.Play;
@@ -12,16 +13,20 @@ namespace RISK.Tests.Application
 {
     public class GameTests
     {
+        private readonly IGameboardRules _gameboardRules;
         private readonly ICardFactory _cardFactory;
         private readonly IBattle _battle;
+        private readonly ITerritoryConverter _territoryConverter;
         private readonly GameFactory _gameFactory;
 
         public GameTests()
         {
+            _gameboardRules = Substitute.For<IGameboardRules>();
             _cardFactory = Substitute.For<ICardFactory>();
             _battle = Substitute.For<IBattle>();
+            _territoryConverter = Substitute.For<ITerritoryConverter>();
 
-            _gameFactory = new GameFactory(_cardFactory, _battle);
+            _gameFactory = new GameFactory(_gameboardRules, _cardFactory, _battle, _territoryConverter);
         }
 
         [Fact]
@@ -36,28 +41,42 @@ namespace RISK.Tests.Application
 
             var sut = Create(gameSetup);
 
-            sut.GameState.CurrentPlayer.Should().Be(firstPlayer);
+            sut.CurrentPlayer.Should().Be(firstPlayer);
         }
 
         [Fact]
         public void Initializes_territories()
         {
-            var territory1 = Substitute.For<ITerritory>();
-            var territory2 = Substitute.For<ITerritory>();
-            var player1 = Substitute.For<IPlayer>();
-            var player2 = Substitute.For<IPlayer>();
-            var gameSetup = Make.GameSetup
-                .WithTerritory(new GameboardSetupTerritory(territory1, player1, 1))
-                .WithTerritory(new GameboardSetupTerritory(territory2, player2, 2))
-                .Build();
+            var gameSetup = Make.GameSetup.Build();
+            var expected = new List<GameboardTerritory> { null };
+            _territoryConverter.Convert(gameSetup.GameboardTerritories).Returns(expected);
 
             var sut = Create(gameSetup);
+            var actual = sut.Territories;
 
-            sut.GameState.Territories.ShouldAllBeEquivalentToInRisk(new[]
+            actual.Should().BeSameAs(expected);
+        }
+
+        [Fact]
+        public void Get_attackee_candidates()
+        {
+            var attackingTerritory = Substitute.For<ITerritory>();
+            IEnumerable<ITerritory> attackeeCandidates = new[]
             {
-                new GameboardTerritory(territory1, player1, 1),
-                new GameboardTerritory(territory2, player2, 2),
-            });
+                Substitute.For<ITerritory>(),
+                Substitute.For<ITerritory>(),
+                Substitute.For<ITerritory>()
+            };
+            var gameboardTerritories = new List<GameboardTerritory>();
+            _territoryConverter.Convert(null)
+                .ReturnsForAnyArgs(gameboardTerritories);
+            _gameboardRules.GetAttackeeCandidates(gameboardTerritories, attackingTerritory)
+                .Returns(attackeeCandidates);
+
+            var sut = Create(Make.GameSetup.Build());
+            var actual = sut.GetAttackeeCandidates(attackingTerritory);
+
+            actual.Should().BeEquivalentTo(attackeeCandidates);
         }
 
         private IGame Create(IGameSetup gameSetup)
