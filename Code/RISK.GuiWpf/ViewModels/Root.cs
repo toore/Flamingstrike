@@ -6,7 +6,7 @@ using GuiWpf.ViewModels.Gameplay.Map;
 using GuiWpf.ViewModels.Settings;
 using GuiWpf.ViewModels.Setup;
 using RISK.Application.Play;
-using RISK.Application.Play.Battling;
+using RISK.Application.Play.Attacking;
 using RISK.Application.Setup;
 using RISK.Application.Shuffling;
 using RISK.Application.World;

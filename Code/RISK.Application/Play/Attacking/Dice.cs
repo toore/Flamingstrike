@@ -1,6 +1,6 @@
 ﻿using Toore.Shuffling;
 
-namespace RISK.Application.Play.Battling
+namespace RISK.Application.Play.Attacking
 {
     public interface IDice
     {

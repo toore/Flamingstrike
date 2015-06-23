@@ -60,13 +60,13 @@
     <Compile Include="World\Territory.cs" />
     <Compile Include="PlayerType.cs" />
     <Compile Include="Extensions\ListExtensions.cs" />
-    <Compile Include="Play\Battling\Dice.cs" />
+    <Compile Include="Play\Attacking\Dice.cs" />
     <Compile Include="Play\Game.cs" />
     <Compile Include="Setup\AlternateGameSetup.cs" />
-    <Compile Include="Play\Battling\Battle.cs" />
+    <Compile Include="Play\Attacking\Battle.cs" />
     <Compile Include="Play\CardFactory.cs" />
-    <Compile Include="Play\Battling\DicesRoller.cs" />
-    <Compile Include="Play\Battling\BattleCalculator.cs" />
+    <Compile Include="Play\Attacking\DicesRoller.cs" />
+    <Compile Include="Play\Attacking\BattleCalculator.cs" />
     <Compile Include="Setup\ITerritoryRequestHandler.cs" />
     <Compile Include="Setup\StartingInfantryCalculator.cs" />
     <Compile Include="Setup\GameSetupPlayer.cs" />

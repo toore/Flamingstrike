@@ -11,7 +11,7 @@ using GuiWpf.ViewModels.Gameplay.Map;
 using NSubstitute;
 using RISK.Application;
 using RISK.Application.Play;
-using RISK.Application.Play.Battling;
+using RISK.Application.Play.Attacking;
 using RISK.Application.Setup;
 using RISK.Application.World;
 using Xunit;

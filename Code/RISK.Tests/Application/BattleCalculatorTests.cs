@@ -2,7 +2,7 @@
 using System.Reflection;
 using NSubstitute;
 using RISK.Application;
-using RISK.Application.Play.Battling;
+using RISK.Application.Play.Attacking;
 using Xunit;
 using Xunit.Sdk;
 

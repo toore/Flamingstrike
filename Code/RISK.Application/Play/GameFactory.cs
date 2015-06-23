@@ -1,4 +1,4 @@
-using RISK.Application.Play.Battling;
+using RISK.Application.Play.Attacking;
 using RISK.Application.Setup;
 
 namespace RISK.Application.Play

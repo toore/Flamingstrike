@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using RISK.Application.Extensions;
-using RISK.Application.Play.Battling;
+using RISK.Application.Play.Attacking;
 using RISK.Application.Setup;
 using RISK.Application.World;
 
@@ -47,8 +47,6 @@ namespace RISK.Application.Play
         public IPlayer CurrentPlayer { get; private set; }
         public IReadOnlyList<IGameboardTerritory> Territories => _territories;
 
-
-
         public IEnumerable<ITerritory> GetAttackeeCandidates(ITerritory attackingTerritory)
         {
             return _gameboardRules.GetAttackeeCandidates(_territories, attackingTerritory);
@@ -84,6 +82,4 @@ namespace RISK.Application.Play
             return false;
         }
     }
-
-
 }

@@ -1,6 +1,6 @@
 ﻿using FluentAssertions;
 using NSubstitute;
-using RISK.Application.Play.Battling;
+using RISK.Application.Play.Attacking;
 using Toore.Shuffling;
 using Xunit;
 

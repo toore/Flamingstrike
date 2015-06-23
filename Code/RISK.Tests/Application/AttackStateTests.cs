@@ -3,7 +3,7 @@ using FluentAssertions;
 using GuiWpf.ViewModels.Gameplay.Interaction;
 using NSubstitute;
 using RISK.Application;
-using RISK.Application.Play.Battling;
+using RISK.Application.Play.Attacking;
 using RISK.Application.World;
 using RISK.Tests.Builders;
 using Xunit;

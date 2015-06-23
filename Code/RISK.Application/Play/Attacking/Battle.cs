@@ -1,7 +1,6 @@
-﻿using System;
-using RISK.Application.World;
+﻿using RISK.Application.World;
 
-namespace RISK.Application.Play.Battling
+namespace RISK.Application.Play.Attacking
 {
     public interface IBattle
     {
