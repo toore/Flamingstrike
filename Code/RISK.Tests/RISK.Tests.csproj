@@ -111,7 +111,6 @@
     <Compile Include="GuiWpf\WorldMapModelFactoryTests.cs" />
     <Compile Include="Builders\TerritoryBuilder.cs" />
     <Compile Include="Builders\Make.cs" />
-    <Compile Include="Application\TerritoryExtensionsTests.cs" />
     <Compile Include="Application\Interaction\SelectStateTests.cs" />
     <Compile Include="Application\Specifications\SpecBase.cs" />
     <Compile Include="Application\Specifications\GamePlaySpec.cs" />

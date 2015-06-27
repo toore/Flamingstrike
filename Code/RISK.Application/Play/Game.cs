@@ -20,7 +20,12 @@ namespace RISK.Application.Play
         IEnumerable<ITerritory> GetAttackeeCandidates(ITerritory attackingTerritory);
         void EndTurn();
         bool IsGameOver();
-        AttackResult Attack(ITerritory from, ITerritory to);
+
+        /* Test:
+        Attack of bordering territory: occupied by player, occupied by other player
+        Attack of remote territory: occupied by player, occupied by other player
+        */
+        AttackResult Attack(ITerritory attackingTerritory, ITerritory attackeeTerritory);
         bool IsCurrentPlayerOccupyingTerritory(ITerritory territory);
     }
 
@@ -64,7 +69,7 @@ namespace RISK.Application.Play
             CurrentPlayer = _players.GetNextOrFirst(CurrentPlayer);
         }
 
-        public AttackResult Attack(ITerritory from, ITerritory to)
+        public AttackResult Attack(ITerritory attackingTerritory, ITerritory attackeeTerritory)
         {
             //_battle.Attack(from, to);
 

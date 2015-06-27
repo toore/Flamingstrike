@@ -16,7 +16,6 @@ namespace RISK.Tests.Application.Interaction
             _sut = new StateController(_game);
 
             _interactionStateFactory = Substitute.For<IInteractionStateFactory>();
-            _sut.CurrentState = new SelectState(_interactionStateFactory);
         }
     }
 }

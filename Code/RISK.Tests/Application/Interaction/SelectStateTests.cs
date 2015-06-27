@@ -8,6 +8,11 @@ namespace RISK.Tests.Application.Interaction
 {
     public class SelectStateTests : InteractionStateTestsBase
     {
+        public SelectStateTests()
+        {
+            _sut.CurrentState = new SelectState(_interactionStateFactory);
+        }
+
         [Fact]
         public void Can_click_territory_occupied_by_current_player()
         {

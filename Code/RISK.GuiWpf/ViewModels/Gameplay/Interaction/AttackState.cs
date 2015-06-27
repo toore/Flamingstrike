@@ -1,100 +1,69 @@
 using System;
+using System.Linq;
 using RISK.Application.World;
 
 namespace GuiWpf.ViewModels.Gameplay.Interaction
 {
     public class AttackState : IInteractionState
     {
+        private readonly IInteractionStateFactory _interactionStateFactory;
+
         public AttackState(IInteractionStateFactory interactionStateFactory)
         {
-            throw new NotImplementedException();
+            _interactionStateFactory = interactionStateFactory;
         }
 
         public bool CanClick(IStateController stateController, ITerritory territory)
         {
-            throw new NotImplementedException();
+            return CanAttack(stateController, territory)
+                   ||
+                   CanDeselect(stateController, territory);
         }
 
         public void OnClick(IStateController stateController, ITerritory territory)
         {
-            throw new NotImplementedException();
+            if (CanDeselect(stateController, territory))
+            {
+                Deselect(stateController, territory);
+            }
+            else if (CanAttack(stateController, territory))
+            {
+                Attack(stateController, territory);
+            }
+            else
+            {
+                throw new InvalidOperationException();
+            }
         }
 
-        //    private readonly IStateController _stateController;
-        //    private readonly IInteractionStateFactory _interactionStateFactory;
-        //    private InteractionStateFactory _interactionStateFactory;
+        private static bool CanAttack(IStateController stateController, ITerritory territory)
+        {
+            var attackingTerritory = stateController.SelectedTerritory;
+            var canAttack = stateController.Game.GetAttackeeCandidates(attackingTerritory).Contains(territory);
 
-        //    public AttackState(
-        //        IStateController stateController,
-        //        IInteractionStateFactory interactionStateFactory)
-        //    {
-        //        _stateController = stateController;
-        //        _interactionStateFactory = interactionStateFactory;
-        //    }
+            return canAttack;
+        }
 
-        //    public AttackState(InteractionStateFactory interactionStateFactory)
-        //    {
-        //        _interactionStateFactory = interactionStateFactory;
-        //    }
+        private static bool CanDeselect(IStateController stateController, ITerritory territory)
+        {
+            return territory == stateController.SelectedTerritory;
+        }
 
-        //    public bool CanClick(ITerritory territory)
-        //    {
-        //        return CanSelect(territory)
-        //               ||
-        //               CanAttack(territory);
-        //    }
+        private static void Attack(IStateController stateController, ITerritory attackeeTerritory)
+        {
+            var attackingTerritory = stateController.SelectedTerritory;
+            var attackResult = stateController.Game.Attack(attackingTerritory, attackeeTerritory);
 
-        //    public void OnClick(ITerritory territory)
-        //    {
-        //        if (!CanSelect(territory) && !CanAttack(territory))
-        //        {
-        //            throw new InvalidOperationException();
-        //        }
+            // fire event for gameboard territories change
+        }
 
-        //        if (CanSelect(territory))
-        //        {
-        //            Select(territory);
-        //        }
-        //        else if (CanAttack(territory))
-        //        {
-        //            Attack(territory);
-        //        }
-        //    }
-
-        //    private bool CanSelect(ITerritory territory)
-        //    {
-        //        return territory == SelectedTerritory;
-        //    }
-
-        //    private void Select(ITerritory location)
-        //    {
-        //        if (CanSelect(location))
-        //        {
-        //            _stateController.CurrentState = _interactionStateFactory.CreateSelectState();
-        //        }
-        //    }
-
-        //    private bool CanAttack(ITerritory territory)
-        //    {
-        //        var canAttack = _stateController.Game.GetAttackeeCandidates(SelectedTerritory).Contains(territory);
-        //        return canAttack;
-        //    }
-
-        //    private void Attack(ITerritory territory)
-        //    {
-        //        //var canAttack = CanAttack(territory);
-
-        //        //if (!canAttack)
-        //        //{
-        //        //    return;
-        //        //}
-
-        //        var attack = _stateController.Game.Attack(SelectedTerritory, territory);
-
-        //        if (attack == AttackResult.SucceededAndOccupying)
-        //        {
-        //            _stateController.CurrentState = _interactionStateFactory.CreateAttackState();
-        //        }
-        //    }
+        private void Deselect(IStateController stateController, ITerritory territory)
+        {
+            //if (CanSelect(location))
+            {
+                stateController.CurrentState = _interactionStateFactory.CreateSelectState();
+                stateController.SelectedTerritory = null;
+            }
+        }
     }
 }
