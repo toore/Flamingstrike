@@ -2,7 +2,7 @@
 using GuiWpf.ViewModels.Gameplay.Interaction;
 using Xunit;
 
-namespace RISK.Tests.Application.Interaction
+namespace RISK.Tests.GuiWpf.Interaction
 {
     public class InteractionStateFactoryTests
     {

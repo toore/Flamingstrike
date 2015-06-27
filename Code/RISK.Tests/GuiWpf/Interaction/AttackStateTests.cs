@@ -6,7 +6,7 @@ using RISK.Application.World;
 using RISK.Tests.Builders;
 using Xunit;
 
-namespace RISK.Tests.Application.Interaction
+namespace RISK.Tests.GuiWpf.Interaction
 {
     public class AttackStateTests : InteractionStateTestsBase
     {

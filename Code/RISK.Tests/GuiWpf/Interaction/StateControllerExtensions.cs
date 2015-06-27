@@ -3,7 +3,7 @@ using FluentAssertions;
 using GuiWpf.ViewModels.Gameplay.Interaction;
 using RISK.Application.World;
 
-namespace RISK.Tests.Application.Interaction
+namespace RISK.Tests.GuiWpf.Interaction
 {
     public static class StateControllerExtensions
     {

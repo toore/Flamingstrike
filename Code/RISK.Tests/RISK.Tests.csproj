@@ -96,10 +96,10 @@
     <Compile Include="Application\CasualtiesCalculatorTests.cs" />
     <Compile Include="Application\GameTests.cs" />
     <Compile Include="Application\GameboardRulesTests.cs" />
-    <Compile Include="Application\Interaction\AttackStateTests.cs" />
-    <Compile Include="Application\Interaction\InteractionStateFactoryTests.cs" />
-    <Compile Include="Application\Interaction\InteractionStateTestsBase.cs" />
-    <Compile Include="Application\Interaction\StateControllerExtensions.cs" />
+    <Compile Include="GuiWpf\Interaction\AttackStateTests.cs" />
+    <Compile Include="GuiWpf\Interaction\InteractionStateFactoryTests.cs" />
+    <Compile Include="GuiWpf\Interaction\InteractionStateTestsBase.cs" />
+    <Compile Include="GuiWpf\Interaction\StateControllerExtensions.cs" />
     <Compile Include="Application\StartingInfantryCalculatorTests.cs" />
     <Compile Include="Application\FluentAssertionsExtensions.cs" />
     <Compile Include="Application\FluentAssertionsExtensionsTests.cs" />
@@ -111,7 +111,7 @@
     <Compile Include="GuiWpf\WorldMapModelFactoryTests.cs" />
     <Compile Include="Builders\TerritoryBuilder.cs" />
     <Compile Include="Builders\Make.cs" />
-    <Compile Include="Application\Interaction\SelectStateTests.cs" />
+    <Compile Include="GuiWpf\Interaction\SelectStateTests.cs" />
     <Compile Include="Application\Specifications\SpecBase.cs" />
     <Compile Include="Application\Specifications\GamePlaySpec.cs" />
     <Compile Include="Application\Specifications\GameSetupSpec.cs" />

@@ -2,7 +2,7 @@
 using NSubstitute;
 using RISK.Application.Play;
 
-namespace RISK.Tests.Application.Interaction
+namespace RISK.Tests.GuiWpf.Interaction
 {
     public abstract class InteractionStateTestsBase
     {
