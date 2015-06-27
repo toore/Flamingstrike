@@ -27,9 +27,11 @@ namespace RISK.Tests.Application.Specifications
         private IPlayer _player2;
         private IDice _dice;
         private GameOverViewModel _gameOverAndPlayer1IsTheWinnerViewModel;
-        private GameAdapter _gameAdapter;
         private List<IPlayer> _players;
         private List<GameboardSetupTerritory> _gameboardTerritories;
+        private IGame _game;
+        private IStateControllerFactory _stateControllerFactory;
+        private IInteractionStateFactory _interactionStateFactory;
 
         [Fact]
         public void Moves_armies_into_Brazil_after_win()
@@ -166,7 +168,7 @@ namespace RISK.Tests.Application.Specifications
 
             var gameSetup = new GameSetup(_players, _gameboardTerritories);
             var game = new Game(gameSetup, new GameboardRules(), new CardFactory(), new Battle(diceRoller, new BattleCalculator()), new TerritoryConverter());
-            _gameAdapter = new GameAdapter(interactionStateFactory, new StateControllerFactory(interactionStateFactory), game);
+            //_gameAdapter = new GameAdapter(interactionStateFactory, new StateControllerFactory(interactionStateFactory), game);
 
             var worldMapModelFactory = new WorldMapModelFactory();
             var colorService = new ColorService();
@@ -183,8 +185,10 @@ namespace RISK.Tests.Application.Specifications
             gameOverViewModelFactory.Create(_player1).Returns(_gameOverAndPlayer1IsTheWinnerViewModel);
 
             _gameboardViewModel = new GameboardViewModel(
+                _game,
+                _stateControllerFactory,
+                _interactionStateFactory,
                 _worldMap,
-                _gameAdapter,
                 worldMapViewModelFactory,
                 _windowManager,
                 gameOverViewModelFactory,

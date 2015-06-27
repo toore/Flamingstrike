@@ -38,10 +38,10 @@ namespace RISK.Tests.Application
             _worldMap = Substitute.For<IWorldMap>();
             var players = new[] { _currentPlayer, _nextPlayer };
             _game = new Game(null, null, _cardFactory, null, null);
-            stateControllerFactory.Create(_currentPlayer, _game).Returns(_currentStateController);
-            stateControllerFactory.Create(_nextPlayer, _game).Returns(nextStateController);
-            _interactionStateFactory.CreateSelectState(_currentStateController, _currentPlayer).Returns(_currentPlayerInteractionState);
-            _interactionStateFactory.CreateSelectState(nextStateController, _nextPlayer).Returns(_nextPlayerInteractionState);
+            stateControllerFactory.Create(_game).Returns(_currentStateController);
+            stateControllerFactory.Create(_game).Returns(nextStateController);
+            _interactionStateFactory.CreateSelectState().Returns(_currentPlayerInteractionState);
+            _interactionStateFactory.CreateSelectState().Returns(_nextPlayerInteractionState);
 
 
             _sut = new GameAdapter(_interactionStateFactory, stateControllerFactory, _game);
@@ -115,7 +115,7 @@ namespace RISK.Tests.Application
         public void Game_enters_fortify_state()
         {
             var fortify = Substitute.For<IInteractionState>();
-            _interactionStateFactory.CreateFortifyState(_currentStateController, _currentPlayer).Returns(fortify);
+            _interactionStateFactory.CreateFortifyState().Returns(fortify);
 
             _sut.Fortify();
 

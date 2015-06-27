@@ -1,14 +1,14 @@
-﻿using GuiWpf.ViewModels.Gameplay;
+﻿using RISK.Application.Play;
 
 namespace GuiWpf.ViewModels.Messages
 {
     public class StartGameplayMessage
     {
-        public IGameAdapter GameAdapter { get; private set; }
+        public IGame Game { get; private set; }
 
-        public StartGameplayMessage(IGameAdapter gameAdapter)
+        public StartGameplayMessage(IGame game)
         {
-            GameAdapter = gameAdapter;
+            Game = game;
         }
     }
 }

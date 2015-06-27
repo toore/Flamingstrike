@@ -39,7 +39,7 @@ namespace RISK.Application.Play.Attacking
 
         private static void OccupyTerritory(ITerritory attacker, ITerritory defender)
         {
-            const int armiesLeftBehind = 1;
+            //const int armiesLeftBehind = 1;
 
             //defender.Occupant = attacker.Occupant;
             //defender.Armies = attacker.Armies - armiesLeftBehind;

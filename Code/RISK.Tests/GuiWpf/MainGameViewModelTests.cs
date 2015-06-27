@@ -6,6 +6,7 @@ using GuiWpf.ViewModels.Messages;
 using GuiWpf.ViewModels.Settings;
 using GuiWpf.ViewModels.Setup;
 using NSubstitute;
+using RISK.Application.Play;
 using Xunit;
 
 namespace RISK.Tests.GuiWpf
@@ -61,7 +62,7 @@ namespace RISK.Tests.GuiWpf
         [Fact]
         public void Start_game_play_shows_the_game_playing_view()
         {
-            var game = Substitute.For<IGameAdapter>();
+            var game = Substitute.For<IGame>();
             var gameboardViewModel = Substitute.For<IGameboardViewModel>();
             _gameboardViewModelFactory.Create(game).Returns(gameboardViewModel);
 

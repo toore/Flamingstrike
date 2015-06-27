@@ -7,7 +7,7 @@ using RISK.Application.World;
 using RISK.Tests.Builders;
 using Xunit;
 
-namespace RISK.Tests.Application
+namespace RISK.Tests.Application.Interaction
 {
     public class FortifySelectStateTests
     {
@@ -19,7 +19,7 @@ namespace RISK.Tests.Application
 
         public FortifySelectStateTests()
         {
-            _stateController = new StateController(_interactionStateFactory, _player, null);
+            _stateController = new StateController(_player, null);
             _interactionStateFactory = Substitute.For<IInteractionStateFactory>();
             _player = Substitute.For<IPlayer>();
 
@@ -27,7 +27,7 @@ namespace RISK.Tests.Application
                 .Occupant(_player)
                 .Build();
 
-            _sut = new FortifySelectState(_stateController, _interactionStateFactory, _player);
+            _sut = new FortifySelectState(_stateController, _interactionStateFactory);
         }
 
         [Fact]
@@ -48,7 +48,7 @@ namespace RISK.Tests.Application
         public void Clicking_occupied_territory_enters_fortify_state()
         {
             var fortifyState = Substitute.For<IInteractionState>();
-            _interactionStateFactory.CreateFortifyState(_stateController, _player, _territoryOccupiedByPlayer).Returns(fortifyState);
+            _interactionStateFactory.CreateFortifyState().Returns(fortifyState);
 
             _sut.OnClick(_territoryOccupiedByPlayer);
 
@@ -70,7 +70,7 @@ namespace RISK.Tests.Application
 
         public FortifyMoveTests()
         {
-            _stateController = new StateController(_interactionStateFactory, _player, null);
+            _stateController = new StateController(null);
             _interactionStateFactory = Substitute.For<IInteractionStateFactory>();
             _player = Substitute.For<IPlayer>();
 
@@ -88,7 +88,7 @@ namespace RISK.Tests.Application
                 .Occupant(_player)
                 .Build();
 
-            _sut = new FortifyMoveState(_player, _selectedTerritory);
+            _sut = new FortifyMoveState(_selectedTerritory);
         }
 
         [Fact]

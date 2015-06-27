@@ -1,14 +1,10 @@
-﻿using RISK.Application;
-using RISK.Application.World;
+﻿using RISK.Application.World;
 
 namespace GuiWpf.ViewModels.Gameplay.Interaction
 {
     public interface IInteractionState
     {
-        IPlayer Player { get; }
-        ITerritory SelectedTerritory { get; }
-
-        bool CanClick(ITerritory territory);
-        void OnClick(ITerritory territory);
+        bool CanClick(IStateController stateController, ITerritory territory);
+        void OnClick(IStateController stateController,ITerritory territory);
     }
 }

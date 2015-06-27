@@ -5,14 +5,12 @@ namespace GuiWpf.ViewModels.Gameplay.Interaction
 {
     public class TurnEndState : IInteractionState
     {
-        public IPlayer Player { get; private set; }
-        public ITerritory SelectedTerritory { get; private set; }
-        public bool CanClick(ITerritory territory)
+        public bool CanClick(IStateController stateController, ITerritory territory)
         {
             throw new System.NotImplementedException();
         }
 
-        public void OnClick(ITerritory territory)
+        public void OnClick(IStateController stateController, ITerritory territory)
         {
             throw new System.NotImplementedException();
         }

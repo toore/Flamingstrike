@@ -8,14 +8,11 @@ using RISK.Application.World;
 using RISK.Tests.Builders;
 using Xunit;
 
-namespace RISK.Tests.Application
+namespace RISK.Tests.Application.Interaction
 {
-    public class AttackStateTests
+    public class AttackStateTests : InteractionStateTestsBase
     {
-        private readonly AttackState _sut;
         private readonly IPlayer _player;
-        private readonly IInteractionStateFactory _interactionStateFactory;
-        private readonly StateController _stateController;
         private readonly IBattle _battle;
 
         private readonly ITerritory _selectedTerritory;
@@ -25,8 +22,6 @@ namespace RISK.Tests.Application
 
         public AttackStateTests()
         {
-            _stateController = new StateController(_interactionStateFactory, _player, null);
-            _interactionStateFactory = Substitute.For<IInteractionStateFactory>();
             _player = Substitute.For<IPlayer>();
             _battle = Substitute.For<IBattle>();
 
@@ -49,14 +44,13 @@ namespace RISK.Tests.Application
                 .WithBorder(_borderingTerritoryOccupiedByPlayer)
                 .Occupant(_player)
                 .Build();
-
-            _sut = new AttackState(_stateController, _interactionStateFactory, _player, _selectedTerritory);
         }
 
         [Fact]
         public void Can_click_on_location_already_selected()
         {
-            _sut.CanClick(_selectedTerritory).Should().BeTrue();
+            _sut.AssertCanClick(_selectedTerritory);
+            //_sut.CanClick(_selectedTerritory).Should().BeTrue();
         }
 
         [Fact]
@@ -70,11 +64,11 @@ namespace RISK.Tests.Application
         public void Selecting_selected_territory_enters_select_state()
         {
             var selectState = Substitute.For<IInteractionState>();
-            _interactionStateFactory.CreateSelectState(_stateController, _player).Returns(selectState);
+            _interactionStateFactory.CreateSelectState().Returns(selectState);
 
             _sut.OnClick(_selectedTerritory);
 
-            _stateController.CurrentState.Should().Be(selectState);
+            _sut.CurrentState.Should().Be(selectState);
         }
 
         [Fact]
@@ -124,13 +118,13 @@ namespace RISK.Tests.Application
         public void After_successfull_attack_attack_enters_attack_state()
         {
             var expected = Substitute.For<IInteractionState>();
-            _interactionStateFactory.CreateAttackState(_stateController, _player, _borderingTerritoryOccupiedByOtherPlayer).Returns(expected);
+            _interactionStateFactory.CreateAttackState().Returns(expected);
             //_selectedTerritory.Armies = 2;
             AttackerWins();
 
             _sut.OnClick(_borderingTerritoryOccupiedByOtherPlayer);
 
-            _stateController.CurrentState.Should().Be(expected);
+            _sut.CurrentState.Should().Be(expected);
         }
 
         private void AttackerWins()
@@ -152,17 +146,6 @@ namespace RISK.Tests.Application
 
             //_stateController.PlayerShouldReceiveCardWhenTurnEnds.Should().BeTrue();
             throw new NotImplementedException();
-        }
-    }
-
-    public static class GameStateAssertionExtensions
-    {
-        public static void AssertCanNotClick(this IInteractionState state, ITerritory territory)
-        {
-            state.CanClick(territory).Should().BeFalse();
-
-            Action act = () => state.OnClick(territory);
-            act.ShouldThrow<InvalidOperationException>();
         }
     }
 }

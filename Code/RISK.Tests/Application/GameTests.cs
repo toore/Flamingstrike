@@ -52,7 +52,7 @@ namespace RISK.Tests.Application
             _territoryConverter.Convert(gameSetup.GameboardTerritories).Returns(expected);
 
             var sut = Create(gameSetup);
-            var actual = sut.Territories;
+            var actual = sut.GameboardTerritories;
 
             actual.Should().BeSameAs(expected);
         }

@@ -94,9 +94,12 @@
     <Compile Include="Application\DiceTests.cs" />
     <Compile Include="Application\DicesRollerTests.cs" />
     <Compile Include="Application\CasualtiesCalculatorTests.cs" />
-    <Compile Include="Application\FortifySelectStateTests.cs" />
     <Compile Include="Application\GameTests.cs" />
     <Compile Include="Application\GameboardRulesTests.cs" />
+    <Compile Include="Application\Interaction\AttackStateTests.cs" />
+    <Compile Include="Application\Interaction\InteractionStateFactoryTests.cs" />
+    <Compile Include="Application\Interaction\InteractionStateTestsBase.cs" />
+    <Compile Include="Application\Interaction\StateControllerExtensions.cs" />
     <Compile Include="Application\StartingInfantryCalculatorTests.cs" />
     <Compile Include="Application\FluentAssertionsExtensions.cs" />
     <Compile Include="Application\FluentAssertionsExtensionsTests.cs" />
@@ -109,9 +112,7 @@
     <Compile Include="Builders\TerritoryBuilder.cs" />
     <Compile Include="Builders\Make.cs" />
     <Compile Include="Application\TerritoryExtensionsTests.cs" />
-    <Compile Include="Application\InteractionStateFactoryTests.cs" />
-    <Compile Include="Application\AttackStateTests.cs" />
-    <Compile Include="Application\SelectStateTests.cs" />
+    <Compile Include="Application\Interaction\SelectStateTests.cs" />
     <Compile Include="Application\Specifications\SpecBase.cs" />
     <Compile Include="Application\Specifications\GamePlaySpec.cs" />
     <Compile Include="Application\Specifications\GameSetupSpec.cs" />
@@ -133,7 +134,6 @@
     <Compile Include="Application\AlternateGameSetupTests.cs" />
     <Compile Include="GuiWpf\ColorServiceTests.cs" />
     <Compile Include="GuiWpf\GameboardViewModelTests.cs" />
-    <Compile Include="Application\GameAdapterTests.cs" />
     <Compile Include="Application\WorldMapTests.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>

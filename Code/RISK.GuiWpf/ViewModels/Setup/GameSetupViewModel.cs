@@ -1,7 +1,6 @@
 ﻿using Caliburn.Micro;
 using GuiWpf.Properties;
 using GuiWpf.Services;
-using GuiWpf.ViewModels.Gameplay;
 using GuiWpf.ViewModels.Gameplay.Map;
 using GuiWpf.ViewModels.Messages;
 using RISK.Application;
@@ -20,7 +19,6 @@ namespace GuiWpf.ViewModels.Setup
     {
         private readonly IWorldMapViewModelFactory _worldMapViewModelFactory;
         private readonly IGameFactory _gameFactory;
-        private readonly IGameAdapterFactory _gameAdapterFactory;
         private readonly IDialogManager _dialogManager;
         private readonly IEventAggregator _eventAggregator;
         private readonly IUserInteractor _userInteractor;
@@ -30,7 +28,6 @@ namespace GuiWpf.ViewModels.Setup
 
         public GameSetupViewModel(
             IGameFactory gameFactory,
-            IGameAdapterFactory gameAdapterFactory,
             IWorldMapViewModelFactory worldMapViewModelFactory,
             IDialogManager dialogManager,
             IEventAggregator eventAggregator,
@@ -41,7 +38,6 @@ namespace GuiWpf.ViewModels.Setup
         {
             _worldMapViewModelFactory = worldMapViewModelFactory;
             _gameFactory = gameFactory;
-            _gameAdapterFactory = gameAdapterFactory;
             _dialogManager = dialogManager;
             _eventAggregator = eventAggregator;
             _userInteractor = userInteractor;
@@ -83,11 +79,9 @@ namespace GuiWpf.ViewModels.Setup
             _taskEx.Run(() =>
             {
                 var gameSetup = _alternateGameSetup.Initialize(territoryRequestHandler);
-
                 var game = _gameFactory.Create(gameSetup);
-                var gameAdapter = _gameAdapterFactory.Create(game);
 
-                StartGameplay(gameAdapter);
+                StartGameplay(game);
             });
         }
 
@@ -98,9 +92,9 @@ namespace GuiWpf.ViewModels.Setup
             return _userInteractor.GetSelectedTerritory(territoryRequestParameter);
         }
 
-        private void StartGameplay(IGameAdapter gameAdapter)
+        private void StartGameplay(IGame game)
         {
-            _eventAggregator.PublishOnUIThread(new StartGameplayMessage(gameAdapter));
+            _eventAggregator.PublishOnUIThread(new StartGameplayMessage(game));
         }
 
         private void UpdateView(ITerritoryRequestParameter territoryRequestParameter)

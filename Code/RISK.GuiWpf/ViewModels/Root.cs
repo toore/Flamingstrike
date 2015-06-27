@@ -30,7 +30,8 @@ namespace GuiWpf.ViewModels
         public ITaskEx TaskEx { get; set; }
         public AlternateGameSetupFactory AlternateGameSetupFactory { get; private set; }
         public GameFactory GameFactory { get; private set; }
-        public GameAdapterFactory GameAdapterFactory { get; private set; }
+        public IStateControllerFactory StateControllerFactory { get; private set; }
+        public IInteractionStateFactory InteractionStateFactory { get; set; }
 
         public Root()
         {
@@ -47,7 +48,7 @@ namespace GuiWpf.ViewModels
             var dice = new Dice(randomWrapper);
             var diceRoller = new DicesRoller(dice);
             var interactionStateFactory = new InteractionStateFactory();
-            var stateControllerFactory = new StateControllerFactory(interactionStateFactory);
+            StateControllerFactory = new StateControllerFactory();
             var startingInfantryCalculator = new StartingInfantryCalculator();
             var gameboardRules = new GameboardRules();
             var cardFactory = new CardFactory();
@@ -59,7 +60,6 @@ namespace GuiWpf.ViewModels
             AlternateGameSetupFactory = new AlternateGameSetupFactory(WorldMap, shuffler, startingInfantryCalculator);
             
             GameFactory = new GameFactory(gameboardRules, cardFactory, battle, territoryConverter);
-            GameAdapterFactory = new GameAdapterFactory(interactionStateFactory, stateControllerFactory);
 
             WindowManager = new WindowManager();
             var confirmViewModelFactory = new ConfirmViewModelFactory(screenService);

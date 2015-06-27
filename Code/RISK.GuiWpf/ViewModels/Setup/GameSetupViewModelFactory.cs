@@ -14,7 +14,6 @@ namespace GuiWpf.ViewModels.Setup
     public class GameSetupViewModelFactory : IGameSetupViewModelFactory
     {
         private readonly IGameFactory _gameFactory;
-        private readonly IGameAdapterFactory _gameAdapterFactory;
         private readonly IWorldMapViewModelFactory _worldMapViewModelFactory;
         private readonly IDialogManager _dialogManager;
         private readonly IEventAggregator _eventAggregator;
@@ -24,7 +23,6 @@ namespace GuiWpf.ViewModels.Setup
 
         public GameSetupViewModelFactory(
             IGameFactory gameFactory,
-            IGameAdapterFactory gameAdapterFactory,
             IWorldMapViewModelFactory worldMapViewModelFactory,
             IDialogManager dialogManager,
             IEventAggregator eventAggregator,
@@ -33,7 +31,6 @@ namespace GuiWpf.ViewModels.Setup
             ITaskEx taskEx)
         {
             _gameFactory = gameFactory;
-            _gameAdapterFactory = gameAdapterFactory;
             _worldMapViewModelFactory = worldMapViewModelFactory;
             _dialogManager = dialogManager;
             _eventAggregator = eventAggregator;
@@ -46,13 +43,12 @@ namespace GuiWpf.ViewModels.Setup
         {
             return new GameSetupViewModel(
                 _gameFactory,
-                _gameAdapterFactory,
-                _worldMapViewModelFactory, 
-                _dialogManager, 
-                _eventAggregator, 
-                _userInteractor, 
-                alternateGameSetup, 
-                _guiThreadDispatcher, 
+                _worldMapViewModelFactory,
+                _dialogManager,
+                _eventAggregator,
+                _userInteractor,
+                alternateGameSetup,
+                _guiThreadDispatcher,
                 _taskEx);
         }
     }

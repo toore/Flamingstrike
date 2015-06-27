@@ -1,5 +1,6 @@
-using RISK.Application;
+using System;
 using RISK.Application.Play;
+using RISK.Application.World;
 
 namespace GuiWpf.ViewModels.Gameplay.Interaction
 {
@@ -7,28 +8,31 @@ namespace GuiWpf.ViewModels.Gameplay.Interaction
     {
         IInteractionState CurrentState { get; set; }
         IGame Game { get; }
-        void SetInitialState();
+        ITerritory SelectedTerritory { get; set; }
+
+        bool CanClick(ITerritory territory);
+        void OnClick(ITerritory territory);
     }
 
     public class StateController : IStateController
     {
-        private readonly IInteractionStateFactory _interactionStateFactory;
-        private readonly IPlayer _player;
-
         public IInteractionState CurrentState { get; set; }
+        public IGame Game { get; }
+        public ITerritory SelectedTerritory { get; set; }
 
-        public StateController(IInteractionStateFactory interactionStateFactory, IPlayer player, IGame game)
+        public StateController(IGame game)
         {
             Game = game;
-            _interactionStateFactory = interactionStateFactory;
-            _player = player;
         }
 
-        public IGame Game { get; private set; }
-
-        public void SetInitialState()
+        public bool CanClick(ITerritory territory)
         {
-            CurrentState = _interactionStateFactory.CreateSelectState(this, _player);
+            return CurrentState.CanClick(this, territory);
+        }
+
+        public void OnClick(ITerritory territory)
+        {
+            CurrentState.OnClick(this, territory);
         }
     }
 }

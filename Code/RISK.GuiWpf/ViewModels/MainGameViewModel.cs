@@ -3,6 +3,7 @@ using GuiWpf.ViewModels.Gameplay;
 using GuiWpf.ViewModels.Messages;
 using GuiWpf.ViewModels.Settings;
 using GuiWpf.ViewModels.Setup;
+using RISK.Application.Play;
 
 namespace GuiWpf.ViewModels
 {
@@ -25,6 +26,8 @@ namespace GuiWpf.ViewModels
                     root.PlayerRepository,
                     root.EventAggregator),
                 new GameboardViewModelFactory(
+                    root.StateControllerFactory,
+                    root.InteractionStateFactory,
                     root.WorldMap,
                     root.WorldMapViewModelFactory,
                     root.WindowManager,
@@ -33,7 +36,6 @@ namespace GuiWpf.ViewModels
                     root.EventAggregator),
                 new GameSetupViewModelFactory(
                     root.GameFactory,
-                    root.GameAdapterFactory,
                     root.WorldMapViewModelFactory,
                     root.DialogManager,
                     root.EventAggregator,
@@ -80,7 +82,7 @@ namespace GuiWpf.ViewModels
 
         public void Handle(StartGameplayMessage startGameplayMessage)
         {
-            StartGamePlay(startGameplayMessage.GameAdapter);
+            StartGamePlay(startGameplayMessage.Game);
         }
 
         private void InitializeNewGame()
@@ -98,9 +100,10 @@ namespace GuiWpf.ViewModels
             ActivateItem(gameSetupViewModel);
         }
 
-        private void StartGamePlay(IGameAdapter gameAdapter)
+        private void StartGamePlay(IGame game)
         {
-            var gameboardViewModel = _gameboardViewModelFactory.Create(gameAdapter);
+            var gameboardViewModel = _gameboardViewModelFactory.Create(game);
+
             ActivateItem(gameboardViewModel);
         }
     }

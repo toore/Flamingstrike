@@ -1,40 +1,35 @@
 ﻿using System;
-using RISK.Application;
-using RISK.Application.Play;
 using RISK.Application.World;
 
 namespace GuiWpf.ViewModels.Gameplay.Interaction
 {
     public class SelectState : IInteractionState
     {
-        private readonly IStateController _stateController;
         private readonly IInteractionStateFactory _interactionStateFactory;
 
-        public SelectState(IStateController stateController, IInteractionStateFactory interactionStateFactory, IPlayer player)
+        public SelectState(IInteractionStateFactory interactionStateFactory)
         {
-            Player = player;
-            _stateController = stateController;
             _interactionStateFactory = interactionStateFactory;
         }
 
-        public ITerritory SelectedTerritory => null;
-
-        public IPlayer Player { get; }
-
-        public bool CanClick(ITerritory territory)
+        public bool CanClick(IStateController stateController, ITerritory territory)
         {
-            var gameboardTerritory = _stateController.Game.Territories.Get(territory);
-            return gameboardTerritory.Player == Player;
+            return stateController.Game.IsCurrentPlayerOccupyingTerritory(territory);
+            //var gameboardTerritory = stateController.Game.GameboardTerritories.Get(territory);
+            //var isCurrentPlayerOccupyingTerritory = gameboardTerritory.Player == stateController.Game.CurrentPlayer;
+
+            //return isCurrentPlayerOccupyingTerritory;
         }
 
-        public void OnClick(ITerritory territory)
+        public void OnClick(IStateController stateController, ITerritory territory)
         {
-            if (!CanClick(territory))
+            if (!CanClick(stateController, territory))
             {
                 throw new InvalidOperationException();
             }
 
-            _stateController.CurrentState = _interactionStateFactory.CreateAttackState(_stateController, Player, territory);
+            stateController.SelectedTerritory = territory;
+            stateController.CurrentState = _interactionStateFactory.CreateAttackState();
         }
     }
 }

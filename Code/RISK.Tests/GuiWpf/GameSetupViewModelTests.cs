@@ -2,12 +2,12 @@
 using Caliburn.Micro;
 using FluentAssertions;
 using GuiWpf.Services;
-using GuiWpf.ViewModels.Gameplay;
 using GuiWpf.ViewModels.Gameplay.Map;
 using GuiWpf.ViewModels.Messages;
 using GuiWpf.ViewModels.Setup;
 using NSubstitute;
 using RISK.Application;
+using RISK.Application.Play;
 using RISK.Application.Setup;
 using RISK.Application.World;
 using Xunit;
@@ -16,6 +16,7 @@ namespace RISK.Tests.GuiWpf
 {
     public class GameSetupViewModelTests
     {
+        private readonly IGameFactory _gameFactory;
         private readonly IWorldMapViewModelFactory _worldMapViewModelFactory;
         private readonly IDialogManager _dialogManager;
         private readonly IEventAggregator _eventAggregator;
@@ -25,6 +26,7 @@ namespace RISK.Tests.GuiWpf
 
         public GameSetupViewModelTests()
         {
+            _gameFactory = Substitute.For<IGameFactory>();
             _worldMapViewModelFactory = Substitute.For<IWorldMapViewModelFactory>();
             _dialogManager = Substitute.For<IDialogManager>();
             _eventAggregator = Substitute.For<IEventAggregator>();
@@ -33,13 +35,12 @@ namespace RISK.Tests.GuiWpf
             var taskScheduler = new SynchronousTaskEx();
 
             _gameSetupViewModelFactory = new GameSetupViewModelFactory(
-                null,
-                null,
-                _worldMapViewModelFactory, 
-                _dialogManager, 
-                _eventAggregator, 
-                _userInteractor, 
-                guiThreadDispatcher, 
+                _gameFactory,
+                _worldMapViewModelFactory,
+                _dialogManager,
+                _eventAggregator,
+                _userInteractor,
+                guiThreadDispatcher,
                 taskScheduler);
 
             _alternateGameSetup = Substitute.For<IAlternateGameSetup>();
@@ -88,9 +89,9 @@ namespace RISK.Tests.GuiWpf
         [Fact]
         public void When_finished_game_conductor_is_notified()
         {
-            var expectedGame = Substitute.For<IGameAdapter>();
-            IGameAdapter actualGameAdapter = null;
-            _eventAggregator.WhenForAnyArgs(x => x.PublishOnUIThread(null)).Do(ci => actualGameAdapter = ci.Arg<StartGameplayMessage>().GameAdapter);
+            var expectedGame = Substitute.For<IGame>();
+            IGame actualGameAdapter = null;
+            _eventAggregator.WhenForAnyArgs(x => x.PublishOnUIThread(null)).Do(ci => actualGameAdapter = ci.Arg<StartGameplayMessage>().Game);
 
             InitializeAndActivate();
 

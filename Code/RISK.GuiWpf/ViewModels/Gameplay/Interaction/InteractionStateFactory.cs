@@ -1,36 +1,33 @@
-using RISK.Application;
-using RISK.Application.World;
-
 namespace GuiWpf.ViewModels.Gameplay.Interaction
 {
     public interface IInteractionStateFactory
     {
-        IInteractionState CreateSelectState(IStateController stateController, IPlayer player);
-        IInteractionState CreateAttackState(IStateController stateController, IPlayer player, ITerritory selectedTerritory);
-        IInteractionState CreateFortifyState(IStateController stateController, IPlayer player);
-        IInteractionState CreateFortifyState(IStateController stateController, IPlayer player, ITerritory selectedTerritory);
+        IInteractionState CreateSelectState();
+        IInteractionState CreateAttackState();
+        IInteractionState CreateFortifySelectState();
+        IInteractionState CreateFortifyMoveState();
     }
 
     public class InteractionStateFactory : IInteractionStateFactory
     {
-        public IInteractionState CreateSelectState(IStateController stateController, IPlayer player)
+        public IInteractionState CreateSelectState()
         {
-            return new SelectState(stateController, this, player);
+            return new SelectState(this);
         }
 
-        public IInteractionState CreateAttackState(IStateController stateController, IPlayer player, ITerritory selectedTerritory)
+        public IInteractionState CreateAttackState()
         {
-            return new AttackState(stateController, this, player, selectedTerritory);
+            return new AttackState(this);
         }
 
-        public IInteractionState CreateFortifyState(IStateController stateController, IPlayer player)
+        public IInteractionState CreateFortifySelectState()
         {
-            return new FortifySelectState(stateController, this, player);
+            return new FortifySelectState(this);
         }
 
-        public IInteractionState CreateFortifyState(IStateController stateController, IPlayer player, ITerritory selectedTerritory)
+        public IInteractionState CreateFortifyMoveState()
         {
-            return new FortifyMoveState(player, selectedTerritory);
+            return new FortifyMoveState(this);
         }
     }
 }

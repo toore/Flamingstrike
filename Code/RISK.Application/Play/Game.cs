@@ -16,11 +16,12 @@ namespace RISK.Application.Play
     public interface IGame
     {
         IPlayer CurrentPlayer { get; }
-        IReadOnlyList<IGameboardTerritory> Territories { get; }
+        IReadOnlyList<IGameboardTerritory> GameboardTerritories { get; }
         IEnumerable<ITerritory> GetAttackeeCandidates(ITerritory attackingTerritory);
         void EndTurn();
         bool IsGameOver();
         AttackResult Attack(ITerritory from, ITerritory to);
+        bool IsCurrentPlayerOccupyingTerritory(ITerritory territory);
     }
 
     public class Game : IGame
@@ -31,7 +32,7 @@ namespace RISK.Application.Play
 
         private bool _playerShouldReceiveCardWhenTurnEnds;
         private readonly List<IPlayer> _players;
-        private readonly List<GameboardTerritory> _territories;
+        private readonly List<GameboardTerritory> _gameboardTerritories;
 
         public Game(IGameSetup gameSetup, IGameboardRules gameboardRules, ICardFactory cardFactory, IBattle battle, ITerritoryConverter territoryConverter)
         {
@@ -41,15 +42,15 @@ namespace RISK.Application.Play
             _players = gameSetup.Players.ToList();
             CurrentPlayer = gameSetup.Players.First();
 
-            _territories = territoryConverter.Convert(gameSetup.GameboardTerritories);
+            _gameboardTerritories = territoryConverter.Convert(gameSetup.GameboardTerritories);
         }
 
         public IPlayer CurrentPlayer { get; private set; }
-        public IReadOnlyList<IGameboardTerritory> Territories => _territories;
+        public IReadOnlyList<IGameboardTerritory> GameboardTerritories => _gameboardTerritories;
 
         public IEnumerable<ITerritory> GetAttackeeCandidates(ITerritory attackingTerritory)
         {
-            return _gameboardRules.GetAttackeeCandidates(_territories, attackingTerritory);
+            return _gameboardRules.GetAttackeeCandidates(_gameboardTerritories, attackingTerritory);
         }
 
         public void EndTurn()
@@ -74,6 +75,11 @@ namespace RISK.Application.Play
             //}
 
             return AttackResult.Other;
+        }
+
+        public bool IsCurrentPlayerOccupyingTerritory(ITerritory territory)
+        {
+            throw new System.NotImplementedException();
         }
 
         public bool IsGameOver()
