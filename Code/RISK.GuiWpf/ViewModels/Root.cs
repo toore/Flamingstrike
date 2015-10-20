@@ -50,7 +50,7 @@ namespace GuiWpf.ViewModels
             var interactionStateFactory = new InteractionStateFactory();
             StateControllerFactory = new StateControllerFactory();
             var startingInfantryCalculator = new StartingInfantryCalculator();
-            var gameboardRules = new GameboardRules();
+            var gameboardRules = new GameRules();
             var cardFactory = new CardFactory();
             var battle = new Battle(diceRoller, new BattleCalculator());
             var territoryConverter = new TerritoryConverter();

@@ -14,22 +14,22 @@ namespace RISK.Application.Setup
 
     public class TerritoryRequestParameter : ITerritoryRequestParameter
     {
-        private readonly GameSetupPlayer _gameSetupPlayer;
+        private readonly PlayerInSetup _playerInSetup;
 
-        public TerritoryRequestParameter(IReadOnlyList<GameboardTerritory> gameboardTerritories, IReadOnlyList<ITerritory> enabledTerritories, GameSetupPlayer gameSetupPlayer)
+        public TerritoryRequestParameter(IReadOnlyList<GameboardTerritory> gameboardTerritories, IReadOnlyList<ITerritory> enabledTerritories, PlayerInSetup playerInSetup)
         {
             GameboardTerritories = gameboardTerritories;
-            _gameSetupPlayer = gameSetupPlayer;
+            _playerInSetup = playerInSetup;
             EnabledTerritories = enabledTerritories;
         }
 
         public IReadOnlyList<IGameboardTerritory> GameboardTerritories { get; }
         public IReadOnlyList<ITerritory> EnabledTerritories { get; }
-        public IPlayer Player => _gameSetupPlayer.Player;
+        public IPlayer Player => _playerInSetup.Player;
 
         public int GetArmiesLeftToPlace()
         {
-            return _gameSetupPlayer.ArmiesToPlace;
+            return _playerInSetup.ArmiesToPlace;
         }
     }
 }

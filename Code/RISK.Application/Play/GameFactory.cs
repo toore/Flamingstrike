@@ -5,27 +5,30 @@ namespace RISK.Application.Play
 {
     public interface IGameFactory
     {
-        Game Create(IGameSetup gameSetup);
+        IGame Create(IGamePlaySetup gamePlaySetup);
     }
 
     public class GameFactory : IGameFactory
     {
-        private readonly IGameboardRules _gameboardRules;
+        private readonly IGameRules _gameRules;
         private readonly ICardFactory _cardFactory;
         private readonly IBattle _battle;
         private readonly ITerritoryConverter _territoryConverter;
 
-        public GameFactory(IGameboardRules gameboardRules, ICardFactory cardFactory, IBattle battle, ITerritoryConverter territoryConverter)
+        public GameFactory(IGameRules gameRules, ICardFactory cardFactory, IBattle battle, ITerritoryConverter territoryConverter)
         {
-            _gameboardRules = gameboardRules;
+            _gameRules = gameRules;
             _cardFactory = cardFactory;
             _battle = battle;
             _territoryConverter = territoryConverter;
         }
 
-        public Game Create(IGameSetup gameSetup)
+        public IGame Create(IGamePlaySetup gamePlaySetup)
         {
-            var game = new Game(gameSetup, _gameboardRules, _cardFactory, _battle, _territoryConverter);
+            var gameboardTerritories = _territoryConverter.Convert(gamePlaySetup.GameboardSetupTerritories);
+
+            var game = new Game(gamePlaySetup.Players, gameboardTerritories, _gameRules, _cardFactory, _battle);
+
             return game;
         }
     }

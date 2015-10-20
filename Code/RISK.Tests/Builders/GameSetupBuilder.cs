@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using NSubstitute;
 using RISK.Application;
 using RISK.Application.Setup;
 
@@ -8,11 +9,11 @@ namespace RISK.Tests.Builders
     {
         private static readonly IPlayer _defaultPlayer = new Player("default");
         private readonly List<IPlayer> _players = new List<IPlayer> { _defaultPlayer };
-        private readonly List<IGameboardSetupTerritory> _gameboardTerritories = new List<IGameboardSetupTerritory>();
+        private readonly List<IGameboardSetupTerritory> _gameboardTerritories = new List<IGameboardSetupTerritory> { Substitute.For<IGameboardSetupTerritory>() };
 
-        public IGameSetup Build()
+        public IGamePlaySetup Build()
         {
-            return new GameSetup(_players, _gameboardTerritories);
+            return new GamePlaySetup(_players, _gameboardTerritories);
         }
 
         public GameSetupBuilder WithPlayer(IPlayer player)

@@ -4,14 +4,14 @@ using RISK.Application.World;
 
 namespace RISK.Application.Play
 {
-    public interface IGameboardRules
+    public interface IGameRules
     {
-        IEnumerable<ITerritory> GetAttackeeCandidates(IList<GameboardTerritory> gameboardTerritories, ITerritory attackingTerritory);
+        IEnumerable<ITerritory> GetAttackeeCandidates(ITerritory attackingTerritory, IReadOnlyList<IGameboardTerritory> gameboardTerritories);
     }
 
-    public class GameboardRules : IGameboardRules
+    public class GameRules : IGameRules
     {
-        public IEnumerable<ITerritory> GetAttackeeCandidates(IList<GameboardTerritory> gameboardTerritories, ITerritory attackingTerritory)
+        public IEnumerable<ITerritory> GetAttackeeCandidates(ITerritory attackingTerritory, IReadOnlyList<IGameboardTerritory> gameboardTerritories)
         {
             var attacker = gameboardTerritories
                 .Single(x => x.Territory == attackingTerritory);

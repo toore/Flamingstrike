@@ -16,7 +16,7 @@ using RISK.Application.Setup;
 using RISK.Application.World;
 using Xunit;
 
-namespace RISK.Tests.Application.Specifications
+namespace RISK.Tests.GuiWpf.Specifications
 {
     public class GamePlaySpec : SpecBase<GamePlaySpec>
     {
@@ -166,8 +166,8 @@ namespace RISK.Tests.Application.Specifications
             var diceRoller = new DicesRoller(_dice);
             var interactionStateFactory = new InteractionStateFactory();
 
-            var gameSetup = new GameSetup(_players, _gameboardTerritories);
-            var game = new Game(gameSetup, new GameboardRules(), new CardFactory(), new Battle(diceRoller, new BattleCalculator()), new TerritoryConverter());
+            var gameSetup = new GamePlaySetup(_players, _gameboardTerritories);
+            //var game = new Game(gameSetup, new GameboardRules(), new CardFactory(), new Battle(diceRoller, new BattleCalculator()), new TerritoryConverter());
             //_gameAdapter = new GameAdapter(interactionStateFactory, new StateControllerFactory(interactionStateFactory), game);
 
             var worldMapModelFactory = new WorldMapModelFactory();

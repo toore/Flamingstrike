@@ -16,7 +16,7 @@ namespace RISK.Application.Play
 
     public static class GameboardTerritoryExtensions
     {
-        public static IGameboardTerritory Get(this IEnumerable<IGameboardTerritory> gameboardTerritories, ITerritory territory)
+        public static IGameboardTerritory GetFromTerritory(this IEnumerable<IGameboardTerritory> gameboardTerritories, ITerritory territory)
         {
             return gameboardTerritories.Single(x => x.Territory == territory);
         }

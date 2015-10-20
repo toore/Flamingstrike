@@ -5,14 +5,16 @@ namespace GuiWpf.ViewModels.Gameplay.Interaction
 {
     public class FortifySelectState : IInteractionState
     {
-        public FortifySelectState(InteractionStateFactory interactionStateFactory)
+        private readonly IInteractionStateFactory _interactionStateFactory;
+
+        public FortifySelectState(IInteractionStateFactory interactionStateFactory)
         {
-            throw new NotImplementedException();
+            _interactionStateFactory = interactionStateFactory;
         }
 
         public bool CanClick(IStateController stateController, ITerritory territory)
         {
-            throw new NotImplementedException();
+            return stateController.Game.IsCurrentPlayerOccupyingTerritory(territory);
         }
 
         public void OnClick(IStateController stateController, ITerritory territory)

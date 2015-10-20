@@ -1,4 +1,4 @@
-﻿namespace RISK.Tests.Application.Specifications
+﻿namespace RISK.Tests
 {
     public class SpecBase<T> where T : SpecBase<T>
     {

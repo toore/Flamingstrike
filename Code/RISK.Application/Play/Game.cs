@@ -1,61 +1,68 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using RISK.Application.Extensions;
 using RISK.Application.Play.Attacking;
-using RISK.Application.Setup;
 using RISK.Application.World;
 
 namespace RISK.Application.Play
 {
-    public enum AttackResult
-    {
-        SucceededAndOccupying,
-        Other
-    };
+    // GameStateFactory?
 
     public interface IGame
     {
-        IPlayer CurrentPlayer { get; }
-        IReadOnlyList<IGameboardTerritory> GameboardTerritories { get; }
-        IEnumerable<ITerritory> GetAttackeeCandidates(ITerritory attackingTerritory);
-        void EndTurn();
-        bool IsGameOver();
-
         /* Test:
         Attack of bordering territory: occupied by player, occupied by other player
         Attack of remote territory: occupied by player, occupied by other player
         */
-        AttackResult Attack(ITerritory attackingTerritory, ITerritory attackeeTerritory);
+        //IGameState Start(); // Same as EndTurn technically, but semantically different
+        void Attack(ITerritory attackingTerritory, ITerritory attackeeTerritory);
+        //IGameState Fortify(ITerritory fromTerritory, ITerritory toTerritory);
+        void EndTurn();
+        IPlayer CurrentPlayer { get; }
+        IReadOnlyList<IGameboardTerritory> GameboardTerritories { get; }
+        bool IsGameOver();
+        bool CanAttack(ITerritory attackingTerritory, ITerritory attackedTerritory);
         bool IsCurrentPlayerOccupyingTerritory(ITerritory territory);
     }
 
     public class Game : IGame
     {
-        private readonly IGameboardRules _gameboardRules;
+        private readonly IGameRules _gameRules;
         private readonly ICardFactory _cardFactory;
         private readonly IBattle _battle;
 
         private bool _playerShouldReceiveCardWhenTurnEnds;
         private readonly List<IPlayer> _players;
-        private readonly List<GameboardTerritory> _gameboardTerritories;
 
-        public Game(IGameSetup gameSetup, IGameboardRules gameboardRules, ICardFactory cardFactory, IBattle battle, ITerritoryConverter territoryConverter)
+        public Game(IEnumerable<IPlayer> players, IReadOnlyList<IGameboardTerritory> gameboardTerritories, IGameRules gameRules, ICardFactory cardFactory, IBattle battle)
         {
-            _gameboardRules = gameboardRules;
+            _players = players.ToList();
+            GameboardTerritories = gameboardTerritories;
+            _gameRules = gameRules;
             _cardFactory = cardFactory;
             _battle = battle;
-            _players = gameSetup.Players.ToList();
-            CurrentPlayer = gameSetup.Players.First();
 
-            _gameboardTerritories = territoryConverter.Convert(gameSetup.GameboardTerritories);
+            SetStartingPlayer();
         }
 
-        public IPlayer CurrentPlayer { get; private set; }
-        public IReadOnlyList<IGameboardTerritory> GameboardTerritories => _gameboardTerritories;
-
-        public IEnumerable<ITerritory> GetAttackeeCandidates(ITerritory attackingTerritory)
+        private void SetStartingPlayer()
         {
-            return _gameboardRules.GetAttackeeCandidates(_gameboardTerritories, attackingTerritory);
+            CurrentPlayer = _players.First();
+        }
+
+        public void Attack(ITerritory attackingTerritory, ITerritory attackeeTerritory)
+        {
+            // TODO: throw if attacker is not current player
+            // TODO: throw if attacker is same as attackee
+
+            //_battle.Attack(from, to);
+
+            //if (HasPlayerOccupiedTerritory(to))
+            //{
+            //    _playerShouldReceiveCardWhenTurnEnds = true;
+            //    return AttackResult.SucceededAndOccupying;
+            //}
         }
 
         public void EndTurn()
@@ -69,28 +76,38 @@ namespace RISK.Application.Play
             CurrentPlayer = _players.GetNextOrFirst(CurrentPlayer);
         }
 
-        public AttackResult Attack(ITerritory attackingTerritory, ITerritory attackeeTerritory)
+        public IPlayer CurrentPlayer { get; private set; }
+        public IReadOnlyList<IGameboardTerritory> GameboardTerritories { get; }
+
+        public bool IsGameOver()
         {
-            //_battle.Attack(from, to);
+            var allTerritoriesAreOccupiedBySamePlayer = GameboardTerritories.Select(x => x.Player)
+                .Distinct()
+                .Count() == 1;
 
-            //if (HasPlayerOccupiedTerritory(to))
-            //{
-            //    _playerShouldReceiveCardWhenTurnEnds = true;
-            //    return AttackResult.SucceededAndOccupying;
-            //}
+            return allTerritoriesAreOccupiedBySamePlayer;
+        }
 
-            return AttackResult.Other;
+        public bool CanAttack(ITerritory attackingTerritory, ITerritory attackedTerritory)
+        {
+            var attackeeCandidates = _gameRules.GetAttackeeCandidates(attackingTerritory, GameboardTerritories);
+            var canAttack = attackeeCandidates.Contains(attackedTerritory);
+
+            return canAttack;
         }
 
         public bool IsCurrentPlayerOccupyingTerritory(ITerritory territory)
         {
-            throw new System.NotImplementedException();
+            var gameboardTerritory = GameboardTerritories.GetFromTerritory(territory);
+            var isCurrentPlayerOccupyingTerritory = gameboardTerritory.Player == CurrentPlayer;
+
+            //return isCurrentPlayerOccupyingTerritory;
+            throw new NotImplementedException();
         }
 
-        public bool IsGameOver()
-        {
-            //return WorldMap.GetAllPlayersOccupyingTerritories().Count() == 1;
-            return false;
-        }
+        //private IGameState CreateGameState()
+        //{
+        //    return new GameState(_currentPlayer, _players, _gameboardTerritories, _gameboardRules);
+        //}
     }
 }

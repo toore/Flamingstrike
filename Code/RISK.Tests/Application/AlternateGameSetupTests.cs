@@ -62,7 +62,7 @@ namespace RISK.Tests.Application
 
             var actual = _sut.Initialize(_territoryRequestHandler);
 
-            actual.GameboardTerritories.ShouldAllBeEquivalentToInRisk(new[]
+            actual.GameboardSetupTerritories.ShouldAllBeEquivalentToInRisk(new[]
             {
                 new GameboardSetupTerritory(_territory1, _player1, 2),
                 new GameboardSetupTerritory(_territory2, _player2, 3),

@@ -23,17 +23,18 @@ namespace RISK.Tests.GuiWpf.Interaction
         [Fact]
         public void Can_click_attackee_candidate()
         {
-            var attackeeCandidate = Substitute.For<ITerritory>();
-            _game.GetAttackeeCandidates(_selectedTerritory).Returns(new[] { attackeeCandidate });
+            var attackedTerritory = Substitute.For<ITerritory>();
+            //_game.GetAttackeeCandidates(_selectedTerritory).Returns(new[] { attackeeCandidate });
+            _game.CanAttack(_selectedTerritory, attackedTerritory).Returns(true);
 
-            _sut.CanClick(attackeeCandidate).Should().BeTrue();
+            _sut.CanClick(attackedTerritory).Should().BeTrue();
         }
 
         [Fact]
         public void Click_on_attackee_candidate_attacks()
         {
             var attackeeCandidate = Substitute.For<ITerritory>();
-            _game.GetAttackeeCandidates(_selectedTerritory).Returns(new[] { attackeeCandidate });
+            _game.CanAttack(_selectedTerritory, attackeeCandidate).Returns(true);
 
             _sut.OnClick(attackeeCandidate);
 

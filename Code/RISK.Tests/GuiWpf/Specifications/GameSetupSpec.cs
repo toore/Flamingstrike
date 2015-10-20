@@ -7,10 +7,9 @@ using GuiWpf.ViewModels.Settings;
 using GuiWpf.ViewModels.Setup;
 using RISK.Application.Setup;
 using RISK.Application.World;
-using RISK.Tests.GuiWpf;
 using Xunit;
 
-namespace RISK.Tests.Application.Specifications
+namespace RISK.Tests.GuiWpf.Specifications
 {
     public class GameSetupSpec : SpecBase<GameSetupSpec>
     {

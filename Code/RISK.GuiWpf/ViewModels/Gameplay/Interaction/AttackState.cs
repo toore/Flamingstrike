@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using RISK.Application.World;
 
 namespace GuiWpf.ViewModels.Gameplay.Interaction
@@ -39,7 +38,9 @@ namespace GuiWpf.ViewModels.Gameplay.Interaction
         private static bool CanAttack(IStateController stateController, ITerritory territory)
         {
             var attackingTerritory = stateController.SelectedTerritory;
-            var canAttack = stateController.Game.GetAttackeeCandidates(attackingTerritory).Contains(territory);
+            //var canAttack = stateController.Game.GetAttackeeCandidates(attackingTerritory).Contains(territory);
+
+            var canAttack = stateController.Game.CanAttack(attackingTerritory, territory);
 
             return canAttack;
         }
@@ -52,9 +53,9 @@ namespace GuiWpf.ViewModels.Gameplay.Interaction
         private static void Attack(IStateController stateController, ITerritory attackeeTerritory)
         {
             var attackingTerritory = stateController.SelectedTerritory;
-            var attackResult = stateController.Game.Attack(attackingTerritory, attackeeTerritory);
+            stateController.Game.Attack(attackingTerritory, attackeeTerritory);
 
-            // fire event for gameboard territories change
+            // TODO: fire event for gameboard territories change layout update
         }
 
         private void Deselect(IStateController stateController, ITerritory territory)

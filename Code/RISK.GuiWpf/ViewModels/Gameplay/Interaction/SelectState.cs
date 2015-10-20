@@ -15,10 +15,6 @@ namespace GuiWpf.ViewModels.Gameplay.Interaction
         public bool CanClick(IStateController stateController, ITerritory territory)
         {
             return stateController.Game.IsCurrentPlayerOccupyingTerritory(territory);
-            //var gameboardTerritory = stateController.Game.GameboardTerritories.Get(territory);
-            //var isCurrentPlayerOccupyingTerritory = gameboardTerritory.Player == stateController.Game.CurrentPlayer;
-
-            //return isCurrentPlayerOccupyingTerritory;
         }
 
         public void OnClick(IStateController stateController, ITerritory territory)

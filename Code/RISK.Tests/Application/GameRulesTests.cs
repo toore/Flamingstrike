@@ -7,25 +7,25 @@ using Xunit;
 
 namespace RISK.Tests.Application
 {
-    public class GameboardRulesTests
+    public class GameRulesTests
     {
         private readonly IPlayer _currentPlayer;
         private readonly IPlayer _otherPlayer;
         private readonly ITerritory _attackingTerritory;
         private readonly ITerritory _attackeeTerritory;
-        private readonly GameboardRules _sut;
+        private readonly GameRules _sut;
 
-        protected GameboardRulesTests()
+        protected GameRulesTests()
         {
             _currentPlayer = Substitute.For<IPlayer>();
             _otherPlayer = Substitute.For<IPlayer>();
             _attackingTerritory = Substitute.For<ITerritory>();
             _attackeeTerritory = Substitute.For<ITerritory>();
 
-            _sut = new GameboardRules();
+            _sut = new GameRules();
         }
 
-        public class Bordering_territories : GameboardRulesTests
+        public class Bordering_territories : GameRulesTests
         {
             private readonly ITerritory _secondAttackeeTerritory;
 
@@ -46,7 +46,7 @@ namespace RISK.Tests.Application
                     new GameboardTerritory(_attackeeTerritory, _otherPlayer, 1),
                 };
 
-                var actual = _sut.GetAttackeeCandidates(gameboardTerritories, _attackingTerritory);
+                var actual = _sut.GetAttackeeCandidates(_attackingTerritory, gameboardTerritories);
 
                 actual.Should().BeEquivalentTo(_attackeeTerritory);
             }
@@ -60,7 +60,7 @@ namespace RISK.Tests.Application
                     new GameboardTerritory(_attackeeTerritory, _otherPlayer, 1),
                 };
 
-                var actual = _sut.GetAttackeeCandidates(gameboardTerritories, _attackingTerritory);
+                var actual = _sut.GetAttackeeCandidates(_attackingTerritory, gameboardTerritories);
 
                 actual.Should().BeEmpty();
             }
@@ -75,7 +75,7 @@ namespace RISK.Tests.Application
                     new GameboardTerritory(_secondAttackeeTerritory, _otherPlayer, 1)
                 };
 
-                var actual = _sut.GetAttackeeCandidates(gameboardTerritories, _attackingTerritory);
+                var actual = _sut.GetAttackeeCandidates(_attackingTerritory, gameboardTerritories);
 
                 actual.Should().BeEquivalentTo(_attackeeTerritory, _secondAttackeeTerritory);
             }
@@ -89,13 +89,13 @@ namespace RISK.Tests.Application
                     new GameboardTerritory(_attackeeTerritory, _currentPlayer, 1)
                 };
 
-                var actual = _sut.GetAttackeeCandidates(gameboardTerritories, _attackingTerritory);
+                var actual = _sut.GetAttackeeCandidates(_attackingTerritory, gameboardTerritories);
 
                 actual.Should().BeEmpty();
             }
         }
 
-        public class Orphaned_territories : GameboardRulesTests
+        public class Orphaned_territories : GameRulesTests
         {
             [Fact]
             public void Can_not_attack()
@@ -106,7 +106,7 @@ namespace RISK.Tests.Application
                     new GameboardTerritory(_attackeeTerritory, _otherPlayer, 1)
                 };
 
-                var actual = _sut.GetAttackeeCandidates(gameboardTerritories, _attackingTerritory);
+                var actual = _sut.GetAttackeeCandidates(_attackingTerritory, gameboardTerritories);
 
                 actual.Should().BeEmpty();
             }
