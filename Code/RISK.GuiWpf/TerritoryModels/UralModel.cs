@@ -7,7 +7,7 @@ namespace GuiWpf.TerritoryModels
 {
     public class UralModel : TerritoryModelBase
     {
-        public UralModel(ITerritory territory) : base(territory) {}
+        public UralModel(ITerritoryId territoryId) : base(territoryId) {}
 
         public override string Name
         {

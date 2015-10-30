@@ -10,12 +10,12 @@ namespace GuiWpf.ViewModels.Gameplay.Interaction
             throw new NotImplementedException();
         }
 
-        public bool CanClick(IStateController stateController, ITerritory territory)
+        public bool CanClick(IStateController stateController, ITerritoryId territoryId)
         {
             throw new NotImplementedException();
         }
 
-        public void OnClick(IStateController stateController, ITerritory territory)
+        public void OnClick(IStateController stateController, ITerritoryId territoryId)
         {
             throw new NotImplementedException();
         }

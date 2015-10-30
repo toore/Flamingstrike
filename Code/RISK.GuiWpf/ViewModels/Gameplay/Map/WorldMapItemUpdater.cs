@@ -8,31 +8,31 @@ namespace GuiWpf.ViewModels.Gameplay.Map
 {
     public class WorldMapItemUpdater : IWorldMapItemViewModelVisitor
     {
-        private readonly IReadOnlyList<IGameboardTerritory> _gameboardTerritories;
-        private readonly IEnumerable<ITerritory> _enabledTerritories;
-        private readonly ITerritory _selectedTerritory;
+        private readonly IReadOnlyList<ITerritory> _territories;
+        private readonly IEnumerable<ITerritoryId> _enabledTerritories;
+        private readonly ITerritoryId _selectedTerritoryId;
         private readonly ITerritoryColorsFactory _territoryColorsFactory;
         private readonly IColorService _colorService;
 
-        public WorldMapItemUpdater(IReadOnlyList<IGameboardTerritory> gameboardTerritories, IEnumerable<ITerritory> enabledTerritories, ITerritory selectedTerritory, ITerritoryColorsFactory territoryColorsFactory, IColorService colorService)
+        public WorldMapItemUpdater(IReadOnlyList<ITerritory> territories, IEnumerable<ITerritoryId> enabledTerritories, ITerritoryId selectedTerritoryId, ITerritoryColorsFactory territoryColorsFactory, IColorService colorService)
         {
-            _gameboardTerritories = gameboardTerritories;
+            _territories = territories;
             _enabledTerritories = enabledTerritories;
-            _selectedTerritory = selectedTerritory;
+            _selectedTerritoryId = selectedTerritoryId;
             _territoryColorsFactory = territoryColorsFactory;
             _colorService = colorService;
         }
 
         public void Visit(TerritoryViewModel territoryViewModel)
         {
-            var territoryColors = _territoryColorsFactory.Create(territoryViewModel.Territory);
+            var territoryColors = _territoryColorsFactory.Create(territoryViewModel.TerritoryId);
 
             var strokeColor = territoryColors.NormalStrokeColor;
             var fillColor = territoryColors.NormalFillColor;
             var mouseOverStrokeColor = territoryColors.MouseOverStrokeColor;
             var mouseOverFillColor = territoryColors.MouseOverFillColor;
 
-            if (_selectedTerritory == territoryViewModel.Territory)
+            if (_selectedTerritoryId == territoryViewModel.TerritoryId)
             {
                 fillColor = _colorService.SelectedTerritoryColor;
             }
@@ -47,7 +47,7 @@ namespace GuiWpf.ViewModels.Gameplay.Map
 
         private bool IsTerritoryEnabled(TerritoryViewModel territoryViewModel)
         {
-            return _enabledTerritories.Contains(territoryViewModel.Territory);
+            return _enabledTerritories.Contains(territoryViewModel.TerritoryId);
         }
 
         public void Visit(TitleViewModel titleViewModel)
@@ -57,7 +57,7 @@ namespace GuiWpf.ViewModels.Gameplay.Map
 
         private void UpdateArmiesForTerritory(TitleViewModel titleViewModel)
         {
-            var gameboardTerritory = _gameboardTerritories.GetFromTerritory(titleViewModel.Territory);
+            var gameboardTerritory = _territories.Get(titleViewModel.TerritoryId);
             titleViewModel.Armies = gameboardTerritory.Armies;
         }
     }

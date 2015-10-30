@@ -51,13 +51,15 @@
   <ItemGroup>
     <Compile Include="Play\Card.cs" />
     <Compile Include="Play\GameRules.cs" />
-    <Compile Include="Play\GameboardTerritory.cs" />
-    <Compile Include="Play\TerritoryConverter.cs" />
-    <Compile Include="Setup\GameboardSetupTerritory.cs" />
+    <Compile Include="Play\Player.cs" />
+    <Compile Include="Play\PlayerFactory.cs" />
+    <Compile Include="Play\Territory.cs" />
+    <Compile Include="Play\TerritoryFactory.cs" />
+    <Compile Include="Territory.cs" />
     <Compile Include="Play\GameFactory.cs" />
     <Compile Include="Setup\GamePlaySetup.cs" />
-    <Compile Include="Player.cs" />
-    <Compile Include="World\Territory.cs" />
+    <Compile Include="PlayerId.cs" />
+    <Compile Include="World\TerritoryId.cs" />
     <Compile Include="PlayerType.cs" />
     <Compile Include="Extensions\ListExtensions.cs" />
     <Compile Include="Play\Attacking\Dice.cs" />
@@ -69,7 +71,7 @@
     <Compile Include="Play\Attacking\BattleCalculator.cs" />
     <Compile Include="Setup\ITerritoryRequestHandler.cs" />
     <Compile Include="Setup\StartingInfantryCalculator.cs" />
-    <Compile Include="Setup\PlayerInSetup.cs" />
+    <Compile Include="Setup\Player.cs" />
     <Compile Include="Setup\TerritoryRequestParameter.cs" />
     <Compile Include="Shuffling\FisherYatesShuffler.cs" />
     <Compile Include="Shuffling\IShuffler.cs" />

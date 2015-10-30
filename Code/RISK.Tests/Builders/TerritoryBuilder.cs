@@ -1,25 +1,22 @@
-using System.Collections.Generic;
+using NSubstitute;
+using RISK.Application;
 using RISK.Application.World;
+using Territory = RISK.Application.Play.Territory;
 
 namespace RISK.Tests.Builders
 {
     public class TerritoryBuilder
     {
-        private string _name = "";
-        private Continent _continent = Continent.Europe;
-        private readonly List<ITerritory> _borders = new List<ITerritory>();
+        private IPlayerId _playerId = Substitute.For<IPlayerId>();
 
         public Territory Build()
         {
-            var territory = new Territory(_name, _continent);
-            territory.AddBorderToTerritories(_borders.ToArray());
-
-            return territory;
+            return new Territory(Substitute.For<ITerritoryId>(), _playerId, 0);
         }
 
-        public TerritoryBuilder WithBorder(ITerritory location)
+        public TerritoryBuilder Player(IPlayerId playerId)
         {
-            _borders.Add(location);
+            _playerId = playerId;
             return this;
         }
     }

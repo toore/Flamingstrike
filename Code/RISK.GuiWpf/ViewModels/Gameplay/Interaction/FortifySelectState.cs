@@ -12,12 +12,12 @@ namespace GuiWpf.ViewModels.Gameplay.Interaction
             _interactionStateFactory = interactionStateFactory;
         }
 
-        public bool CanClick(IStateController stateController, ITerritory territory)
+        public bool CanClick(IStateController stateController, ITerritoryId territoryId)
         {
-            return stateController.Game.IsCurrentPlayerOccupyingTerritory(territory);
+            return stateController.Game.IsCurrentPlayerOccupyingTerritory(territoryId);
         }
 
-        public void OnClick(IStateController stateController, ITerritory territory)
+        public void OnClick(IStateController stateController, ITerritoryId territoryId)
         {
             throw new NotImplementedException();
         }

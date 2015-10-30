@@ -15,7 +15,7 @@ namespace RISK.Tests.GuiWpf.Interaction
         [Fact]
         public void Can_not_click_territory_not_occupied_by_current_player()
         {
-            _sut.AssertCanNotClick(Substitute.For<ITerritory>());
+            _sut.AssertCanNotClick(Substitute.For<ITerritoryId>());
         }
     }
 }

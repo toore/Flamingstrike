@@ -15,6 +15,7 @@ using RISK.Application.Play.Attacking;
 using RISK.Application.Setup;
 using RISK.Application.World;
 using Xunit;
+using Territory = RISK.Application.Territory;
 
 namespace RISK.Tests.GuiWpf.Specifications
 {
@@ -23,12 +24,12 @@ namespace RISK.Tests.GuiWpf.Specifications
         private GameboardViewModel _gameboardViewModel;
         private WorldMap _worldMap;
         private IWindowManager _windowManager;
-        private IPlayer _player1;
-        private IPlayer _player2;
+        private IPlayerId _player1;
+        private IPlayerId _player2;
         private IDice _dice;
         private GameOverViewModel _gameOverAndPlayer1IsTheWinnerViewModel;
-        private List<IPlayer> _players;
-        private List<GameboardSetupTerritory> _gameboardTerritories;
+        private List<IPlayerId> _players;
+        private List<Territory> _gameboardTerritories;
         private IGame _game;
         private IStateControllerFactory _stateControllerFactory;
         private IInteractionStateFactory _interactionStateFactory;
@@ -151,12 +152,12 @@ namespace RISK.Tests.GuiWpf.Specifications
             _dice = Substitute.For<IDice>();
             _windowManager = Substitute.For<IWindowManager>();
 
-            _player1 = new Player("Player 1");
-            _player2 = new Player("Player 2");
+            _player1 = new PlayerId("Player 1");
+            _player2 = new PlayerId("Player 2");
 
-            _players = new List<IPlayer> { _player1, _player2 };
+            _players = new List<IPlayerId> { _player1, _player2 };
 
-            _gameboardTerritories = new List<GameboardSetupTerritory>();
+            _gameboardTerritories = new List<Territory>();
 
             return this;
         }
@@ -207,9 +208,9 @@ namespace RISK.Tests.GuiWpf.Specifications
             return this;
         }
 
-        private void AddTerritoryToGameboard(ITerritory territory, IPlayer player, int armies)
+        private void AddTerritoryToGameboard(ITerritoryId territoryId, IPlayerId playerId, int armies)
         {
-            _gameboardTerritories.Add(new GameboardSetupTerritory(territory, player, armies));
+            _gameboardTerritories.Add(new Territory(territoryId, playerId, armies));
         }
 
         private GamePlaySpec player_1_occupies_every_territory_except_brazil_and_venezuela_and_north_africa_with_one_army_each()
@@ -261,12 +262,12 @@ namespace RISK.Tests.GuiWpf.Specifications
             UpdateWorldMap(_player2, 1, _worldMap.Iceland);
         }
 
-        private ITerritory[] GetAllTerritoriesExcept(params ITerritory[] excludedLocations)
+        private ITerritoryId[] GetAllTerritoriesExcept(params ITerritoryId[] excludedLocations)
         {
             return _worldMap.GetAll().Except(excludedLocations).ToArray();
         }
 
-        private void UpdateWorldMap(IPlayer player, int armies, params ITerritory[] territories)
+        private void UpdateWorldMap(IPlayerId playerId, int armies, params ITerritoryId[] territoriesId)
         {
             //territories
             //    .Apply(territory =>
@@ -306,16 +307,16 @@ namespace RISK.Tests.GuiWpf.Specifications
             _gameboardViewModel.EndTurn();
         }
 
-        private void ClickOn(ITerritory location)
+        private void ClickOn(ITerritoryId location)
         {
             GetTerritoryViewModel(location).OnClick();
         }
 
-        private ITerritoryLayoutViewModel GetTerritoryViewModel(ITerritory territory)
+        private ITerritoryLayoutViewModel GetTerritoryViewModel(ITerritoryId territoryId)
         {
             return _gameboardViewModel.WorldMapViewModel.WorldMapViewModels
                 .OfType<TerritoryViewModel>()
-                .Single(x => x.Territory == territory);
+                .Single(x => x.TerritoryId == territoryId);
         }
 
         private void player_1_should_occupy_Brazil_with_4_armies()
@@ -346,7 +347,7 @@ namespace RISK.Tests.GuiWpf.Specifications
 
         private void player_2_should_take_turn()
         {
-            _gameboardViewModel.Player.Should().Be(_player2);
+            _gameboardViewModel.PlayerId.Should().Be(_player2);
         }
     }
 }

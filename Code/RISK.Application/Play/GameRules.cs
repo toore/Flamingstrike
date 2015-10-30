@@ -6,28 +6,28 @@ namespace RISK.Application.Play
 {
     public interface IGameRules
     {
-        IEnumerable<ITerritory> GetAttackeeCandidates(ITerritory attackingTerritory, IReadOnlyList<IGameboardTerritory> gameboardTerritories);
+        IEnumerable<ITerritoryId> GetAttackeeCandidates(ITerritoryId attackingTerritoryId, IReadOnlyList<ITerritory> territories);
     }
 
     public class GameRules : IGameRules
     {
-        public IEnumerable<ITerritory> GetAttackeeCandidates(ITerritory attackingTerritory, IReadOnlyList<IGameboardTerritory> gameboardTerritories)
+        public IEnumerable<ITerritoryId> GetAttackeeCandidates(ITerritoryId attackingTerritoryId, IReadOnlyList<ITerritory> territories)
         {
-            var attacker = gameboardTerritories
-                .Single(x => x.Territory == attackingTerritory);
+            var attacker = territories
+                .Single(x => x.TerritoryId == attackingTerritoryId);
 
-            var attackCandidates = gameboardTerritories
+            var attackCandidates = territories
                 .Where(attackee => CanAttack(attacker, attackee))
-                .Select(x => x.Territory)
+                .Select(x => x.TerritoryId)
                 .ToList();
 
             return attackCandidates;
         }
 
-        private static bool CanAttack(IGameboardTerritory attacker, IGameboardTerritory attackee)
+        private static bool CanAttack(ITerritory attacker, ITerritory attackee)
         {
-            var hasBorder = attacker.Territory.HasBorderTo(attackee.Territory);
-            var attackerAndAttackeeIsDifferentPlayers = attacker.Player != attackee.Player;
+            var hasBorder = attacker.TerritoryId.HasBorderTo(attackee.TerritoryId);
+            var attackerAndAttackeeIsDifferentPlayers = attacker.PlayerId != attackee.PlayerId;
             var hasEnoughArmiesToAttack = attacker.GetNumberOfAttackingArmies() > 0;
 
             var canAttack = hasBorder

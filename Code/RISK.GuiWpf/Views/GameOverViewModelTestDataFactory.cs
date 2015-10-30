@@ -9,7 +9,7 @@ namespace GuiWpf.Views
 
         private GameOverViewModel Create()
         {
-            return new GameOverViewModel(new Player("TEST_PLAYER"));
+            return new GameOverViewModel(new PlayerId("TEST_PLAYER"));
         }
     }
 }

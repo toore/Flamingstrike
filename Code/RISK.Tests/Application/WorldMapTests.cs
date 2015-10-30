@@ -138,7 +138,7 @@ namespace RISK.Tests.Application
         [Fact]
         public void GetAll_contains_all()
         {
-            IEnumerable<ITerritory> expected = new[]
+            IEnumerable<ITerritoryId> expected = new[]
             {
                 Alaska,
                 Alberta,
@@ -187,7 +187,7 @@ namespace RISK.Tests.Application
             GetAll().Should().BeEquivalentTo(expected);
         }
 
-        private void AssertTerritoryBorders(ITerritory actual, params ITerritory[] expectedItems)
+        private void AssertTerritoryBorders(ITerritoryId actual, params ITerritoryId[] expectedItems)
         {
             foreach (var expected in expectedItems)
             {
@@ -196,59 +196,59 @@ namespace RISK.Tests.Application
             }
         }
 
-        private void AssertTerritoriesInContinent(Continent continent, params ITerritory[] expected)
+        private void AssertTerritoriesInContinent(Continent continent, params ITerritoryId[] expected)
         {
             var actual = GetAll().Where(x => x.Continent == continent).ToList();
 
             actual.Should().BeEquivalentTo(expected.AsEnumerable());
         }
 
-        private IEnumerable<ITerritory> GetAll()
+        private IEnumerable<ITerritoryId> GetAll()
         {
             return _sut.GetAll();
         }
 
-        private ITerritory Alaska => _sut.Alaska;
-        private ITerritory Alberta => _sut.Alberta;
-        private ITerritory NewGuinea => _sut.NewGuinea;
-        private ITerritory Indonesia => _sut.Indonesia;
-        private ITerritory EasternAustralia => _sut.EasternAustralia;
-        private ITerritory Yakutsk => _sut.Yakutsk;
-        private ITerritory Ural => _sut.Ural;
-        private ITerritory Siberia => _sut.Siberia;
-        private ITerritory Siam => _sut.Siam;
-        private ITerritory Mongolia => _sut.Mongolia;
-        private ITerritory MiddleEast => _sut.MiddleEast;
-        private ITerritory Kamchatka => _sut.Kamchatka;
-        private ITerritory Japan => _sut.Japan;
-        private ITerritory Irkutsk => _sut.Irkutsk;
-        private ITerritory India => _sut.India;
-        private ITerritory China => _sut.China;
-        private ITerritory Afghanistan => _sut.Afghanistan;
-        private ITerritory SouthAfrica => _sut.SouthAfrica;
-        private ITerritory NorthAfrica => _sut.NorthAfrica;
-        private ITerritory Madagascar => _sut.Madagascar;
-        private ITerritory Egypt => _sut.Egypt;
-        private ITerritory EastAfrica => _sut.EastAfrica;
-        private ITerritory Congo => _sut.Congo;
-        private ITerritory WesternEurope => _sut.WesternEurope;
-        private ITerritory Ukraine => _sut.Ukraine;
-        private ITerritory SouthernEurope => _sut.SouthernEurope;
-        private ITerritory Scandinavia => _sut.Scandinavia;
-        private ITerritory NorthernEurope => _sut.NorthernEurope;
-        private ITerritory Iceland => _sut.Iceland;
-        private ITerritory GreatBritain => _sut.GreatBritain;
-        private ITerritory Venezuela => _sut.Venezuela;
-        private ITerritory Peru => _sut.Peru;
-        private ITerritory Brazil => _sut.Brazil;
-        private ITerritory Argentina => _sut.Argentina;
-        private ITerritory WesternUnitedStates => _sut.WesternUnitedStates;
-        private ITerritory Quebec => _sut.Quebec;
-        private ITerritory Ontario => _sut.Ontario;
-        private ITerritory Northwest => _sut.NorthwestTerritory;
-        private ITerritory Greenland => _sut.Greenland;
-        private ITerritory EasternUnitedStates => _sut.EasternUnitedStates;
-        private ITerritory CentralAmerica => _sut.CentralAmerica;
-        private ITerritory WesternAustralia => _sut.WesternAustralia;
+        private ITerritoryId Alaska => _sut.Alaska;
+        private ITerritoryId Alberta => _sut.Alberta;
+        private ITerritoryId NewGuinea => _sut.NewGuinea;
+        private ITerritoryId Indonesia => _sut.Indonesia;
+        private ITerritoryId EasternAustralia => _sut.EasternAustralia;
+        private ITerritoryId Yakutsk => _sut.Yakutsk;
+        private ITerritoryId Ural => _sut.Ural;
+        private ITerritoryId Siberia => _sut.Siberia;
+        private ITerritoryId Siam => _sut.Siam;
+        private ITerritoryId Mongolia => _sut.Mongolia;
+        private ITerritoryId MiddleEast => _sut.MiddleEast;
+        private ITerritoryId Kamchatka => _sut.Kamchatka;
+        private ITerritoryId Japan => _sut.Japan;
+        private ITerritoryId Irkutsk => _sut.Irkutsk;
+        private ITerritoryId India => _sut.India;
+        private ITerritoryId China => _sut.China;
+        private ITerritoryId Afghanistan => _sut.Afghanistan;
+        private ITerritoryId SouthAfrica => _sut.SouthAfrica;
+        private ITerritoryId NorthAfrica => _sut.NorthAfrica;
+        private ITerritoryId Madagascar => _sut.Madagascar;
+        private ITerritoryId Egypt => _sut.Egypt;
+        private ITerritoryId EastAfrica => _sut.EastAfrica;
+        private ITerritoryId Congo => _sut.Congo;
+        private ITerritoryId WesternEurope => _sut.WesternEurope;
+        private ITerritoryId Ukraine => _sut.Ukraine;
+        private ITerritoryId SouthernEurope => _sut.SouthernEurope;
+        private ITerritoryId Scandinavia => _sut.Scandinavia;
+        private ITerritoryId NorthernEurope => _sut.NorthernEurope;
+        private ITerritoryId Iceland => _sut.Iceland;
+        private ITerritoryId GreatBritain => _sut.GreatBritain;
+        private ITerritoryId Venezuela => _sut.Venezuela;
+        private ITerritoryId Peru => _sut.Peru;
+        private ITerritoryId Brazil => _sut.Brazil;
+        private ITerritoryId Argentina => _sut.Argentina;
+        private ITerritoryId WesternUnitedStates => _sut.WesternUnitedStates;
+        private ITerritoryId Quebec => _sut.Quebec;
+        private ITerritoryId Ontario => _sut.Ontario;
+        private ITerritoryId Northwest => _sut.NorthwestTerritoryId;
+        private ITerritoryId Greenland => _sut.Greenland;
+        private ITerritoryId EasternUnitedStates => _sut.EasternUnitedStates;
+        private ITerritoryId CentralAmerica => _sut.CentralAmerica;
+        private ITerritoryId WesternAustralia => _sut.WesternAustralia;
     }
 }

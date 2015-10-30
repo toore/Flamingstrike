@@ -60,11 +60,11 @@ namespace GuiWpf.ViewModels.Setup
             private set { this.NotifyOfPropertyChange(value, () => InformationText, x => _informationText = x); }
         }
 
-        private IPlayer _player;
-        public IPlayer Player
+        private IPlayerId _playerId;
+        public IPlayerId PlayerId
         {
-            get { return _player; }
-            private set { this.NotifyOfPropertyChange(value, () => Player, x => _player = x); }
+            get { return _playerId; }
+            private set { this.NotifyOfPropertyChange(value, () => PlayerId, x => _playerId = x); }
         }
 
         public void Activate()
@@ -85,7 +85,7 @@ namespace GuiWpf.ViewModels.Setup
             });
         }
 
-        public ITerritory ProcessRequest(ITerritoryRequestParameter territoryRequestParameter)
+        public ITerritoryId ProcessRequest(ITerritoryRequestParameter territoryRequestParameter)
         {
             _guiThreadDispatcher.Invoke(() => UpdateView(territoryRequestParameter));
 
@@ -105,7 +105,7 @@ namespace GuiWpf.ViewModels.Setup
 
             WorldMapViewModel = worldMapViewModel;
 
-            Player = territoryRequestParameter.Player;
+            PlayerId = territoryRequestParameter.PlayerId;
 
             InformationText = string.Format(Resources.PLACE_ARMY, territoryRequestParameter.GetArmiesLeftToPlace());
         }

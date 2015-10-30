@@ -1,16 +1,16 @@
 ﻿namespace RISK.Application.Setup
 {
-    public class PlayerInSetup
+    public class Player
     {
         public int ArmiesToPlace { get; set; }
 
-        public PlayerInSetup(IPlayer player, int armiesToPlace)
+        public Player(IPlayerId playerId, int armiesToPlace)
         {
-            Player = player;
+            PlayerId = playerId;
             ArmiesToPlace = armiesToPlace;
         }
 
-        public IPlayer Player { get; }
+        public IPlayerId PlayerId { get; }
 
         public bool HasArmiesLeftToPlace()
         {

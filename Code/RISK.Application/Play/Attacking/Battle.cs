@@ -37,7 +37,7 @@ namespace RISK.Application.Play.Attacking
         //    return null;//remove
         //}
 
-        private static void OccupyTerritory(ITerritory attacker, ITerritory defender)
+        private static void OccupyTerritory(ITerritoryId attacker, ITerritoryId defender)
         {
             //const int armiesLeftBehind = 1;
 
@@ -46,7 +46,7 @@ namespace RISK.Application.Play.Attacking
             //attacker.Armies = armiesLeftBehind;
         }
 
-        private static bool IsDefenderDefeated(ITerritory defender)
+        private static bool IsDefenderDefeated(ITerritoryId defender)
         {
             //return defender.Armies == 0;
             return false;

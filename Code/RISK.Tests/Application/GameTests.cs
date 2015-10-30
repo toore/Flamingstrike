@@ -8,6 +8,7 @@ using RISK.Application.Setup;
 using RISK.Application.World;
 using RISK.Tests.Builders;
 using Xunit;
+using Territory = RISK.Application.Play.Territory;
 
 namespace RISK.Tests.Application
 {
@@ -16,28 +17,32 @@ namespace RISK.Tests.Application
         private readonly IGameRules _gameRules;
         private readonly ICardFactory _cardFactory;
         private readonly IBattle _battle;
-        private readonly ITerritoryConverter _territoryConverter;
+        private readonly ITerritoryFactory _territoryFactory;
         private readonly GameFactory _gameFactory;
+        private readonly IPlayerFactory _playerFactory;
 
         public GameTests()
         {
             _gameRules = Substitute.For<IGameRules>();
             _cardFactory = Substitute.For<ICardFactory>();
             _battle = Substitute.For<IBattle>();
-            _territoryConverter = Substitute.For<ITerritoryConverter>();
+            _territoryFactory = Substitute.For<ITerritoryFactory>();
+            _playerFactory = Substitute.For<IPlayerFactory>();
 
-            _gameFactory = new GameFactory(_gameRules, _cardFactory, _battle, _territoryConverter);
+            _gameFactory = new GameFactory(_gameRules, _cardFactory, _battle, _territoryFactory, _playerFactory);
         }
 
         [Fact]
         public void Initializes_with_first_player_taking_turn_first()
         {
+            var gameSetup = Make.GameSetup.Build();
             var firstPlayer = Substitute.For<IPlayer>();
-            var gameSetup = Make.GameSetup
-                .WithPlayer(firstPlayer)
-                .WithPlayer(Substitute.For<IPlayer>())
-                .WithPlayer(Substitute.For<IPlayer>())
-                .Build();
+            _playerFactory.Create(gameSetup.Players).Returns(new List<IPlayer>
+            {
+                firstPlayer,
+                Substitute.For<IPlayer>(),
+                Substitute.For<IPlayer>()
+            });
 
             var sut = Create(gameSetup);
 
@@ -47,13 +52,14 @@ namespace RISK.Tests.Application
         [Fact]
         public void End_turn_passes_turn_to_next_player()
         {
-            var initialPlayer = Substitute.For<IPlayer>();
             var nextPlayer = Substitute.For<IPlayer>();
-            var gameSetup = Make.GameSetup
-                .WithPlayer(initialPlayer)
-                .WithPlayer(nextPlayer)
-                .Build();
-            
+            var gameSetup = Make.GameSetup.Build();
+            _playerFactory.Create(gameSetup.Players).Returns(new List<IPlayer>
+            {
+                Substitute.For<IPlayer>(),
+                nextPlayer
+            });
+
             var sut = Create(gameSetup);
             sut.EndTurn();
 
@@ -61,26 +67,28 @@ namespace RISK.Tests.Application
         }
 
         [Fact]
-        public void Initializes_gameboard_territories()
+        public void Initializes_territories()
         {
             var gameSetup = Make.GameSetup.Build();
-            var expected = new List<GameboardTerritory> { Make.GameboardTerritory.Build() };
-            _territoryConverter.Convert(gameSetup.GameboardSetupTerritories).Returns(expected);
+            var expected = new List<Territory> { Make.Territory.Build() };
+            _territoryFactory.Create(gameSetup.Territories).Returns(expected);
+            HasPlayers();
 
             var sut = Create(gameSetup);
 
-            sut.GameboardTerritories.Should().BeEquivalentTo(expected);
+            sut.Territories.Should().BeEquivalentTo(expected);
         }
 
         [Fact]
         public void Is_game_over_when_all_territories_belongs_to_one_player()
         {
-            var player = Substitute.For<IPlayer>();
-            _territoryConverter.Convert(null).ReturnsForAnyArgs(new List<GameboardTerritory>
+            var player = Substitute.For<IPlayerId>();
+            _territoryFactory.Create(null).ReturnsForAnyArgs(new List<Territory>
             {
-                Make.GameboardTerritory.Player(player).Build(),
-                Make.GameboardTerritory.Player(player).Build()
+                Make.Territory.Player(player).Build(),
+                Make.Territory.Player(player).Build()
             });
+            HasPlayers();
 
             var sut = Create(Make.GameSetup.Build());
 
@@ -90,11 +98,12 @@ namespace RISK.Tests.Application
         [Fact]
         public void Is_not_game_over_when_more_than_one_player_occupies_territories()
         {
-            _territoryConverter.Convert(null).ReturnsForAnyArgs(new List<GameboardTerritory>
+            _territoryFactory.Create(null).ReturnsForAnyArgs(new List<Territory>
             {
-                Make.GameboardTerritory.Build(),
-                Make.GameboardTerritory.Build()
+                Make.Territory.Build(),
+                Make.Territory.Build()
             });
+            HasPlayers();
 
             var sut = Create(Make.GameSetup.Build());
 
@@ -104,10 +113,11 @@ namespace RISK.Tests.Application
         [Fact]
         public void Can_attack()
         {
-            var attackingTerritory = Substitute.For<ITerritory>();
-            var attackedTerritory = Substitute.For<ITerritory>();
-            var gameboardTerritories = HasGameboardTerritories();
-            _gameRules.GetAttackeeCandidates(attackingTerritory, gameboardTerritories)
+            var attackingTerritory = Substitute.For<ITerritoryId>();
+            var attackedTerritory = Substitute.For<ITerritoryId>();
+            var territories = HasTerritories();
+            HasPlayers();
+            _gameRules.GetAttackeeCandidates(attackingTerritory, territories)
                 .Returns(new[] { attackedTerritory });
 
             var sut = Create(Make.GameSetup.Build());
@@ -118,23 +128,30 @@ namespace RISK.Tests.Application
         [Fact]
         public void Can_not_attack()
         {
-            var attackingTerritory = Substitute.For<ITerritory>();
-            var attackedTerritory = Substitute.For<ITerritory>();
-            var gameboardTerritories = HasGameboardTerritories();
-            _gameRules.GetAttackeeCandidates(attackingTerritory, gameboardTerritories)
-                .Returns(new[] { Substitute.For<ITerritory>() });
+            var attackingTerritory = Substitute.For<ITerritoryId>();
+            var attackedTerritory = Substitute.For<ITerritoryId>();
+            var territories = HasTerritories();
+            HasPlayers();
+            _gameRules.GetAttackeeCandidates(attackingTerritory, territories)
+                .Returns(new[] { Substitute.For<ITerritoryId>() });
 
             var sut = Create(Make.GameSetup.Build());
 
             sut.CanAttack(attackingTerritory, attackedTerritory).Should().BeFalse();
         }
 
-        private List<GameboardTerritory> HasGameboardTerritories()
+        private void HasPlayers()
         {
-            var gameboardTerritories = new List<GameboardTerritory>();
-            _territoryConverter.Convert(null).ReturnsForAnyArgs(gameboardTerritories);
+            var players = new List<IPlayer>(new[] { Substitute.For<IPlayer>() });
+            _playerFactory.Create(null).ReturnsForAnyArgs(players);
+        }
 
-            return gameboardTerritories;
+        private List<Territory> HasTerritories()
+        {
+            var territories = new List<Territory>();
+            _territoryFactory.Create(null).ReturnsForAnyArgs(territories);
+
+            return territories;
         }
 
         private IGame Create(IGamePlaySetup gamePlaySetup)

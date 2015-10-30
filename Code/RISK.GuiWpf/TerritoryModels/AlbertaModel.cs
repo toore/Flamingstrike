@@ -6,7 +6,7 @@ namespace GuiWpf.TerritoryModels
 {
     public class AlbertaModel : TerritoryModelBase
     {
-        public AlbertaModel(ITerritory alberta)
+        public AlbertaModel(ITerritoryId alberta)
             : base(alberta) {}
 
         public override string Name => Resources.ALBERTA;

@@ -4,19 +4,19 @@ namespace RISK.Application.Setup
 {
     public interface IGamePlaySetup
     {
-        IReadOnlyList<IPlayer> Players { get; }
-        IReadOnlyList<IGameboardSetupTerritory> GameboardSetupTerritories { get; }
+        IReadOnlyList<IPlayerId> Players { get; }
+        IReadOnlyList<ITerritory> Territories { get; }
     }
 
     public class GamePlaySetup : IGamePlaySetup
     {
-        public GamePlaySetup(IReadOnlyList<IPlayer> players, IReadOnlyList<IGameboardSetupTerritory> gameboardSetupTerritories)
+        public GamePlaySetup(IReadOnlyList<IPlayerId> players, IReadOnlyList<ITerritory> territories)
         {
             Players = players;
-            GameboardSetupTerritories = gameboardSetupTerritories;
+            Territories = territories;
         }
 
-        public IReadOnlyList<IPlayer> Players { get; }
-        public IReadOnlyList<IGameboardSetupTerritory> GameboardSetupTerritories { get; }
+        public IReadOnlyList<IPlayerId> Players { get; }
+        public IReadOnlyList<ITerritory> Territories { get; }
     }
 }

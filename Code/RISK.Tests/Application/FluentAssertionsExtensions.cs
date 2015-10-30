@@ -1,37 +1,36 @@
 using System.Collections.Generic;
 using FluentAssertions;
 using FluentAssertions.Equivalency;
-using RISK.Application.Play;
-using RISK.Application.Setup;
+using ITerritory = RISK.Application.Play.ITerritory;
 
 namespace RISK.Tests.Application
 {
     public static class FluentAssertionsExtensions
     {
-        public static void ShouldAllBeEquivalentToInRisk(this IEnumerable<IGameboardSetupTerritory> subject, IEnumerable<IGameboardSetupTerritory> expectation)
+        public static void ShouldAllBeEquivalentToInRisk(this IEnumerable<RISK.Application.ITerritory> subject, IEnumerable<RISK.Application.ITerritory> expectation)
         {
             subject.ShouldAllBeEquivalentTo(expectation, RiskEquivalencyAssertionOptions.Config);
         }
 
-        public static void ShouldAllBeEquivalentToInRisk(this IEnumerable<IGameboardTerritory> subject, IEnumerable<IGameboardTerritory> expectation)
+        public static void ShouldAllBeEquivalentToInRisk(this IEnumerable<ITerritory> subject, IEnumerable<ITerritory> expectation)
         {
             subject.ShouldAllBeEquivalentTo(expectation, RiskEquivalencyAssertionOptions.Config);
         }
 
         private static class RiskEquivalencyAssertionOptions
         {
-            public static EquivalencyAssertionOptions<IGameboardSetupTerritory> Config(EquivalencyAssertionOptions<IGameboardSetupTerritory> config)
+            public static EquivalencyAssertionOptions<RISK.Application.ITerritory> Config(EquivalencyAssertionOptions<RISK.Application.ITerritory> config)
             {
                 return config
-                    .Including(opt => opt.Territory)
-                    .Including(opt => opt.Player);
+                    .Including(opt => opt.TerritoryId)
+                    .Including(opt => opt.PlayerId);
             }
 
-            public static EquivalencyAssertionOptions<IGameboardTerritory> Config(EquivalencyAssertionOptions<IGameboardTerritory> config)
+            public static EquivalencyAssertionOptions<ITerritory> Config(EquivalencyAssertionOptions<ITerritory> config)
             {
                 return config
-                    .Including(opt => opt.Territory)
-                    .Including(opt => opt.Player);
+                    .Including(opt => opt.TerritoryId)
+                    .Including(opt => opt.PlayerId);
             }
         }
     }

@@ -6,30 +6,30 @@ namespace RISK.Application.Setup
 {
     public interface ITerritoryRequestParameter
     {
-        IReadOnlyList<IGameboardTerritory> GameboardTerritories { get; }
-        IReadOnlyList<ITerritory> EnabledTerritories { get; }
-        IPlayer Player { get; }
+        IReadOnlyList<Play.ITerritory> GameboardTerritories { get; }
+        IReadOnlyList<ITerritoryId> EnabledTerritories { get; }
+        IPlayerId PlayerId { get; }
         int GetArmiesLeftToPlace();
     }
 
     public class TerritoryRequestParameter : ITerritoryRequestParameter
     {
-        private readonly PlayerInSetup _playerInSetup;
+        private readonly Player _player;
 
-        public TerritoryRequestParameter(IReadOnlyList<GameboardTerritory> gameboardTerritories, IReadOnlyList<ITerritory> enabledTerritories, PlayerInSetup playerInSetup)
+        public TerritoryRequestParameter(IReadOnlyList<Play.Territory> gameboardTerritories, IReadOnlyList<ITerritoryId> enabledTerritories, Player player)
         {
             GameboardTerritories = gameboardTerritories;
-            _playerInSetup = playerInSetup;
+            _player = player;
             EnabledTerritories = enabledTerritories;
         }
 
-        public IReadOnlyList<IGameboardTerritory> GameboardTerritories { get; }
-        public IReadOnlyList<ITerritory> EnabledTerritories { get; }
-        public IPlayer Player => _playerInSetup.Player;
+        public IReadOnlyList<Play.ITerritory> GameboardTerritories { get; }
+        public IReadOnlyList<ITerritoryId> EnabledTerritories { get; }
+        public IPlayerId PlayerId => _player.PlayerId;
 
         public int GetArmiesLeftToPlace()
         {
-            return _playerInSetup.ArmiesToPlace;
+            return _player.ArmiesToPlace;
         }
     }
 }

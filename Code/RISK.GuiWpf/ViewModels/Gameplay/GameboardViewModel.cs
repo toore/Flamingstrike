@@ -22,7 +22,7 @@ namespace GuiWpf.ViewModels.Gameplay
         private readonly IGameOverViewModelFactory _gameOverViewModelFactory;
         private readonly IDialogManager _dialogManager;
         private readonly IEventAggregator _eventAggregator;
-        private IPlayer _player;
+        private IPlayerId _playerId;
         private IStateController _stateController;
 
         public GameboardViewModel(
@@ -51,10 +51,10 @@ namespace GuiWpf.ViewModels.Gameplay
 
         public WorldMapViewModel WorldMapViewModel { get; set; }
 
-        public IPlayer Player
+        public IPlayerId PlayerId
         {
-            get { return _player; }
-            set { NotifyOfPropertyChange(value, () => Player, x => _player = x); }
+            get { return _playerId; }
+            set { NotifyOfPropertyChange(value, () => PlayerId, x => _playerId = x); }
         }
 
         public string InformationText { get; private set; }
@@ -69,7 +69,7 @@ namespace GuiWpf.ViewModels.Gameplay
 
         private void InitializeWorld()
         {
-            WorldMapViewModel = _worldMapViewModelFactory.Create(_game.GameboardTerritories, OnTerritoryClick, Enumerable.Empty<ITerritory>());
+            WorldMapViewModel = _worldMapViewModelFactory.Create(_game.Territories, OnTerritoryClick, Enumerable.Empty<ITerritoryId>());
 
             _stateController = _stateControllerFactory.Create(_game);
             _stateController.CurrentState = _interactionStateFactory.CreateSelectState();
@@ -99,20 +99,20 @@ namespace GuiWpf.ViewModels.Gameplay
             }
         }
 
-        public void OnTerritoryClick(ITerritory territory)
+        public void OnTerritoryClick(ITerritoryId territoryId)
         {
-            _stateController.OnClick(territory);
+            _stateController.OnClick(territoryId);
 
             UpdateGame();
         }
 
         private void UpdateGame()
         {
-            Player = _game.CurrentPlayer;
+            PlayerId = _game.CurrentPlayer.PlayerId;
 
             if (_game.IsGameOver())
             {
-                _windowManager.ShowDialog(_gameOverViewModelFactory.Create(Player));
+                _windowManager.ShowDialog(_gameOverViewModelFactory.Create(PlayerId));
             }
             else
             {
@@ -126,7 +126,7 @@ namespace GuiWpf.ViewModels.Gameplay
                 .Where(x => _stateController.CanClick(x))
                 .ToList();
 
-            _worldMapViewModelFactory.Update(WorldMapViewModel, _game.GameboardTerritories, _stateController.SelectedTerritory, enabledTerritories);
+            _worldMapViewModelFactory.Update(WorldMapViewModel, _game.Territories, _stateController.SelectedTerritoryId, enabledTerritories);
         }
     }
 }

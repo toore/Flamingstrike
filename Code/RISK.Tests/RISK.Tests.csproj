@@ -96,7 +96,7 @@
     <Compile Include="Application\CasualtiesCalculatorTests.cs" />
     <Compile Include="Application\GameTests.cs" />
     <Compile Include="Application\GameRulesTests.cs" />
-    <Compile Include="Builders\GameboardTerritoryBuilder.cs" />
+    <Compile Include="Builders\TerritoryBuilder.cs" />
     <Compile Include="GuiWpf\Interaction\AttackStateTests.cs" />
     <Compile Include="GuiWpf\Interaction\FortifyMoveStateTests.cs" />
     <Compile Include="GuiWpf\Interaction\FortifySelectStateTests.cs" />
@@ -106,13 +106,13 @@
     <Compile Include="Application\StartingInfantryCalculatorTests.cs" />
     <Compile Include="Application\FluentAssertionsExtensions.cs" />
     <Compile Include="Application\FluentAssertionsExtensionsTests.cs" />
-    <Compile Include="Application\TerritoryConverterTests.cs" />
+    <Compile Include="Application\TerritoryFactoryTests.cs" />
     <Compile Include="Builders\CardBuilder.cs" />
     <Compile Include="Builders\GameSetupBuilder.cs" />
     <Compile Include="GuiWpf\NoGuiThreadDispatcher.cs" />
     <Compile Include="GuiWpf\SynchronousTaskEx.cs" />
     <Compile Include="GuiWpf\WorldMapModelFactoryTests.cs" />
-    <Compile Include="Builders\TerritoryBuilder.cs" />
+    <Compile Include="Builders\TerritoryIdBuilder.cs" />
     <Compile Include="Builders\Make.cs" />
     <Compile Include="GuiWpf\Interaction\SelectStateTests.cs" />
     <Compile Include="SpecBase.cs" />

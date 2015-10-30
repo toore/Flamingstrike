@@ -4,106 +4,103 @@ namespace RISK.Application.World
 {
     public interface IWorldMap
     {
-        IEnumerable<ITerritory> GetAll();
+        IEnumerable<ITerritoryId> GetAll();
 
-        ITerritory Alaska { get; }
-        ITerritory Alberta { get; }
-        ITerritory CentralAmerica { get; }
-        ITerritory EasternUnitedStates { get; }
-        ITerritory Greenland { get; }
-        ITerritory NorthwestTerritory { get; }
-        ITerritory Ontario { get; }
-        ITerritory Quebec { get; }
-        ITerritory WesternUnitedStates { get; }
-        ITerritory Argentina { get; }
-        ITerritory Brazil { get; }
-        ITerritory Peru { get; }
-        ITerritory Venezuela { get; }
-        ITerritory GreatBritain { get; }
-        ITerritory Iceland { get; }
-        ITerritory NorthernEurope { get; }
-        ITerritory Scandinavia { get; }
-        ITerritory SouthernEurope { get; }
-        ITerritory Ukraine { get; }
-        ITerritory WesternEurope { get; }
-        ITerritory Congo { get; }
-        ITerritory EastAfrica { get; }
-        ITerritory Egypt { get; }
-        ITerritory Madagascar { get; }
-        ITerritory NorthAfrica { get; }
-        ITerritory SouthAfrica { get; }
-        ITerritory Afghanistan { get; }
-        ITerritory China { get; }
-        ITerritory India { get; }
-        ITerritory Irkutsk { get; }
-        ITerritory Japan { get; }
-        ITerritory Kamchatka { get; }
-        ITerritory MiddleEast { get; }
-        ITerritory Mongolia { get; }
-        ITerritory Siam { get; }
-        ITerritory Siberia { get; }
-        ITerritory Ural { get; }
-        ITerritory Yakutsk { get; }
-        ITerritory EasternAustralia { get; }
-        ITerritory Indonesia { get; }
-        ITerritory NewGuinea { get; }
-        ITerritory WesternAustralia { get; }
-
-        //IEnumerable<ITerritory> GetTerritoriesOccupiedByPlayer(IPlayer player);
-        //IEnumerable<IPlayer> GetAllPlayersOccupyingTerritories();
+        ITerritoryId Alaska { get; }
+        ITerritoryId Alberta { get; }
+        ITerritoryId CentralAmerica { get; }
+        ITerritoryId EasternUnitedStates { get; }
+        ITerritoryId Greenland { get; }
+        ITerritoryId NorthwestTerritoryId { get; }
+        ITerritoryId Ontario { get; }
+        ITerritoryId Quebec { get; }
+        ITerritoryId WesternUnitedStates { get; }
+        ITerritoryId Argentina { get; }
+        ITerritoryId Brazil { get; }
+        ITerritoryId Peru { get; }
+        ITerritoryId Venezuela { get; }
+        ITerritoryId GreatBritain { get; }
+        ITerritoryId Iceland { get; }
+        ITerritoryId NorthernEurope { get; }
+        ITerritoryId Scandinavia { get; }
+        ITerritoryId SouthernEurope { get; }
+        ITerritoryId Ukraine { get; }
+        ITerritoryId WesternEurope { get; }
+        ITerritoryId Congo { get; }
+        ITerritoryId EastAfrica { get; }
+        ITerritoryId Egypt { get; }
+        ITerritoryId Madagascar { get; }
+        ITerritoryId NorthAfrica { get; }
+        ITerritoryId SouthAfrica { get; }
+        ITerritoryId Afghanistan { get; }
+        ITerritoryId China { get; }
+        ITerritoryId India { get; }
+        ITerritoryId Irkutsk { get; }
+        ITerritoryId Japan { get; }
+        ITerritoryId Kamchatka { get; }
+        ITerritoryId MiddleEast { get; }
+        ITerritoryId Mongolia { get; }
+        ITerritoryId Siam { get; }
+        ITerritoryId Siberia { get; }
+        ITerritoryId Ural { get; }
+        ITerritoryId Yakutsk { get; }
+        ITerritoryId EasternAustralia { get; }
+        ITerritoryId Indonesia { get; }
+        ITerritoryId NewGuinea { get; }
+        ITerritoryId WesternAustralia { get; }
     }
 
     public class WorldMap : IWorldMap
     {
         public WorldMap()
         {
-            var alaska = new Territory("ALASKA", Continent.NorthAmerica);
-            var alberta = new Territory("ALBERTA", Continent.NorthAmerica);
-            var centralAmerica = new Territory("CENTRAL_AMERICA", Continent.NorthAmerica);
-            var easternUnitedStates = new Territory("EASTERN_UNITED_STATES", Continent.NorthAmerica);
-            var greenland = new Territory("GREENLAND", Continent.NorthAmerica);
-            var northwestTerritory = new Territory("NORTHWEST_TERRITORY", Continent.NorthAmerica);
-            var ontario = new Territory("ONTARIO", Continent.NorthAmerica);
-            var quebec = new Territory("QUEBEC", Continent.NorthAmerica);
-            var westernUnitedStates = new Territory("WESTERN_UNITED_STATES", Continent.NorthAmerica);
+            var alaska = new TerritoryId("ALASKA", Continent.NorthAmerica);
+            var alberta = new TerritoryId("ALBERTA", Continent.NorthAmerica);
+            var centralAmerica = new TerritoryId("CENTRAL_AMERICA", Continent.NorthAmerica);
+            var easternUnitedStates = new TerritoryId("EASTERN_UNITED_STATES", Continent.NorthAmerica);
+            var greenland = new TerritoryId("GREENLAND", Continent.NorthAmerica);
+            var northwestTerritory = new TerritoryId("NORTHWEST_TERRITORY", Continent.NorthAmerica);
+            var ontario = new TerritoryId("ONTARIO", Continent.NorthAmerica);
+            var quebec = new TerritoryId("QUEBEC", Continent.NorthAmerica);
+            var westernUnitedStates = new TerritoryId("WESTERN_UNITED_STATES", Continent.NorthAmerica);
 
-            var argentina = new Territory("ARGENTINA", Continent.SouthAmerica);
-            var brazil = new Territory("BRAZIL", Continent.SouthAmerica);
-            var peru = new Territory("PERU", Continent.SouthAmerica);
-            var venezuela = new Territory("VENEZUELA", Continent.SouthAmerica);
+            var argentina = new TerritoryId("ARGENTINA", Continent.SouthAmerica);
+            var brazil = new TerritoryId("BRAZIL", Continent.SouthAmerica);
+            var peru = new TerritoryId("PERU", Continent.SouthAmerica);
+            var venezuela = new TerritoryId("VENEZUELA", Continent.SouthAmerica);
 
-            var greatBritain = new Territory("GREAT_BRITAIN", Continent.Europe);
-            var iceland = new Territory("ICELAND", Continent.Europe);
-            var northernEurope = new Territory("NORTHERN_EUROPE", Continent.Europe);
-            var scandinavia = new Territory("SCANDINAVIA", Continent.Europe);
-            var southernEurope = new Territory("SOUTHERN_EUROPE", Continent.Europe);
-            var ukraine = new Territory("UKRAINE", Continent.Europe);
-            var westernEurope = new Territory("WESTERN_EUROPE", Continent.Europe);
+            var greatBritain = new TerritoryId("GREAT_BRITAIN", Continent.Europe);
+            var iceland = new TerritoryId("ICELAND", Continent.Europe);
+            var northernEurope = new TerritoryId("NORTHERN_EUROPE", Continent.Europe);
+            var scandinavia = new TerritoryId("SCANDINAVIA", Continent.Europe);
+            var southernEurope = new TerritoryId("SOUTHERN_EUROPE", Continent.Europe);
+            var ukraine = new TerritoryId("UKRAINE", Continent.Europe);
+            var westernEurope = new TerritoryId("WESTERN_EUROPE", Continent.Europe);
 
-            var congo = new Territory("CONGO", Continent.Africa);
-            var eastAfrica = new Territory("EAST_AFRICA", Continent.Africa);
-            var egypt = new Territory("EGYPT", Continent.Africa);
-            var madagascar = new Territory("MADAGASCAR", Continent.Africa);
-            var northAfrica = new Territory("NORTH_AFRICA", Continent.Africa);
-            var southAfrica = new Territory("SOUTH_AFRICA", Continent.Africa);
+            var congo = new TerritoryId("CONGO", Continent.Africa);
+            var eastAfrica = new TerritoryId("EAST_AFRICA", Continent.Africa);
+            var egypt = new TerritoryId("EGYPT", Continent.Africa);
+            var madagascar = new TerritoryId("MADAGASCAR", Continent.Africa);
+            var northAfrica = new TerritoryId("NORTH_AFRICA", Continent.Africa);
+            var southAfrica = new TerritoryId("SOUTH_AFRICA", Continent.Africa);
 
-            var afghanistan = new Territory("AFGHANISTAN", Continent.Asia);
-            var china = new Territory("CHINA", Continent.Asia);
-            var india = new Territory("INDIA", Continent.Asia);
-            var irkutsk = new Territory("IRKUTSK", Continent.Asia);
-            var japan = new Territory("JAPAN", Continent.Asia);
-            var kamchatka = new Territory("KAMCHATKA", Continent.Asia);
-            var middleEast = new Territory("MIDDLE_EAST", Continent.Asia);
-            var mongolia = new Territory("MONGOLIA", Continent.Asia);
-            var siam = new Territory("SIAM", Continent.Asia);
-            var siberia = new Territory("SIBERIA", Continent.Asia);
-            var ural = new Territory("URAL", Continent.Asia);
-            var yakutsk = new Territory("YAKUTSK", Continent.Asia);
+            var afghanistan = new TerritoryId("AFGHANISTAN", Continent.Asia);
+            var china = new TerritoryId("CHINA", Continent.Asia);
+            var india = new TerritoryId("INDIA", Continent.Asia);
+            var irkutsk = new TerritoryId("IRKUTSK", Continent.Asia);
+            var japan = new TerritoryId("JAPAN", Continent.Asia);
+            var kamchatka = new TerritoryId("KAMCHATKA", Continent.Asia);
+            var middleEast = new TerritoryId("MIDDLE_EAST", Continent.Asia);
+            var mongolia = new TerritoryId("MONGOLIA", Continent.Asia);
+            var siam = new TerritoryId("SIAM", Continent.Asia);
+            var siberia = new TerritoryId("SIBERIA", Continent.Asia);
+            var ural = new TerritoryId("URAL", Continent.Asia);
+            var yakutsk = new TerritoryId("YAKUTSK", Continent.Asia);
 
-            var easternAustralia = new Territory("EASTERN_AUSTRALIA", Continent.Australia);
-            var indonesia = new Territory("INDONESIA", Continent.Australia);
-            var newGuinea = new Territory("NEW_GUINEA", Continent.Australia);
-            var westernAustralia = new Territory("WESTERN_AUSTRALIA", Continent.Australia);
+            var easternAustralia = new TerritoryId("EASTERN_AUSTRALIA", Continent.Australia);
+            var indonesia = new TerritoryId("INDONESIA", Continent.Australia);
+            var newGuinea = new TerritoryId("NEW_GUINEA", Continent.Australia);
+            var westernAustralia = new TerritoryId("WESTERN_AUSTRALIA", Continent.Australia);
 
             alaska.AddBorderToTerritories(alberta, northwestTerritory, kamchatka);
             alberta.AddBorderToTerritories(alaska, northwestTerritory, ontario, westernUnitedStates);
@@ -158,7 +155,7 @@ namespace RISK.Application.World
             CentralAmerica = centralAmerica;
             EasternUnitedStates = easternUnitedStates;
             Greenland = greenland;
-            NorthwestTerritory = northwestTerritory;
+            NorthwestTerritoryId = northwestTerritory;
             Ontario = ontario;
             Quebec = quebec;
             WesternUnitedStates = westernUnitedStates;
@@ -202,7 +199,7 @@ namespace RISK.Application.World
             WesternAustralia = westernAustralia;
         }
 
-        public IEnumerable<ITerritory> GetAll()
+        public IEnumerable<ITerritoryId> GetAll()
         {
             return new[]
             {
@@ -211,7 +208,7 @@ namespace RISK.Application.World
                 CentralAmerica,
                 EasternUnitedStates,
                 Greenland,
-                NorthwestTerritory,
+                NorthwestTerritoryId,
                 Ontario,
                 Quebec,
                 WesternUnitedStates,
@@ -251,52 +248,52 @@ namespace RISK.Application.World
             };
         }
 
-        public ITerritory Alaska { get; }
-        public ITerritory Alberta { get; }
-        public ITerritory CentralAmerica { get; }
-        public ITerritory EasternUnitedStates { get; }
-        public ITerritory Greenland { get; }
-        public ITerritory NorthwestTerritory { get; }
-        public ITerritory Ontario { get; }
-        public ITerritory Quebec { get; }
-        public ITerritory WesternUnitedStates { get; }
+        public ITerritoryId Alaska { get; }
+        public ITerritoryId Alberta { get; }
+        public ITerritoryId CentralAmerica { get; }
+        public ITerritoryId EasternUnitedStates { get; }
+        public ITerritoryId Greenland { get; }
+        public ITerritoryId NorthwestTerritoryId { get; }
+        public ITerritoryId Ontario { get; }
+        public ITerritoryId Quebec { get; }
+        public ITerritoryId WesternUnitedStates { get; }
 
-        public ITerritory Argentina { get; }
-        public ITerritory Brazil { get; }
-        public ITerritory Peru { get; }
-        public ITerritory Venezuela { get; }
+        public ITerritoryId Argentina { get; }
+        public ITerritoryId Brazil { get; }
+        public ITerritoryId Peru { get; }
+        public ITerritoryId Venezuela { get; }
 
-        public ITerritory GreatBritain { get; }
-        public ITerritory Iceland { get; }
-        public ITerritory NorthernEurope { get; }
-        public ITerritory Scandinavia { get; }
-        public ITerritory SouthernEurope { get; }
-        public ITerritory Ukraine { get; }
-        public ITerritory WesternEurope { get; }
+        public ITerritoryId GreatBritain { get; }
+        public ITerritoryId Iceland { get; }
+        public ITerritoryId NorthernEurope { get; }
+        public ITerritoryId Scandinavia { get; }
+        public ITerritoryId SouthernEurope { get; }
+        public ITerritoryId Ukraine { get; }
+        public ITerritoryId WesternEurope { get; }
 
-        public ITerritory Congo { get; }
-        public ITerritory EastAfrica { get; }
-        public ITerritory Egypt { get; }
-        public ITerritory Madagascar { get; }
-        public ITerritory NorthAfrica { get; }
-        public ITerritory SouthAfrica { get; }
+        public ITerritoryId Congo { get; }
+        public ITerritoryId EastAfrica { get; }
+        public ITerritoryId Egypt { get; }
+        public ITerritoryId Madagascar { get; }
+        public ITerritoryId NorthAfrica { get; }
+        public ITerritoryId SouthAfrica { get; }
 
-        public ITerritory Afghanistan { get; }
-        public ITerritory China { get; }
-        public ITerritory India { get; }
-        public ITerritory Irkutsk { get; }
-        public ITerritory Japan { get; }
-        public ITerritory Kamchatka { get; }
-        public ITerritory MiddleEast { get; }
-        public ITerritory Mongolia { get; }
-        public ITerritory Siam { get; }
-        public ITerritory Siberia { get; }
-        public ITerritory Ural { get; }
-        public ITerritory Yakutsk { get; }
+        public ITerritoryId Afghanistan { get; }
+        public ITerritoryId China { get; }
+        public ITerritoryId India { get; }
+        public ITerritoryId Irkutsk { get; }
+        public ITerritoryId Japan { get; }
+        public ITerritoryId Kamchatka { get; }
+        public ITerritoryId MiddleEast { get; }
+        public ITerritoryId Mongolia { get; }
+        public ITerritoryId Siam { get; }
+        public ITerritoryId Siberia { get; }
+        public ITerritoryId Ural { get; }
+        public ITerritoryId Yakutsk { get; }
 
-        public ITerritory EasternAustralia { get; }
-        public ITerritory Indonesia { get; }
-        public ITerritory NewGuinea { get; }
-        public ITerritory WesternAustralia { get; }
+        public ITerritoryId EasternAustralia { get; }
+        public ITerritoryId Indonesia { get; }
+        public ITerritoryId NewGuinea { get; }
+        public ITerritoryId WesternAustralia { get; }
     }
 }

@@ -6,7 +6,7 @@ namespace GuiWpf.TerritoryModels
 {
     public class AlaskaModel : TerritoryModelBase
     {
-        public AlaskaModel(ITerritory alaska)
+        public AlaskaModel(ITerritoryId alaska)
             : base(alaska) {}
 
         public override string Name => Resources.ALASKA;

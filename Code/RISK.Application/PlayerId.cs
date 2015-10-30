@@ -1,13 +1,13 @@
 ﻿namespace RISK.Application
 {
-    public interface IPlayer
+    public interface IPlayerId
     {
         string Name { get; }
     }
 
-    public class Player : IPlayer
+    public class PlayerId : IPlayerId
     {
-        public Player(string name)
+        public PlayerId(string name)
         {
             Name = name;
         }

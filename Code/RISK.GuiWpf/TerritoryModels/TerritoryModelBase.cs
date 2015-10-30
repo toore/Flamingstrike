@@ -5,12 +5,12 @@ namespace GuiWpf.TerritoryModels
 {
     public abstract class TerritoryModelBase : ITerritoryModel
     {
-        protected TerritoryModelBase(ITerritory territory)
+        protected TerritoryModelBase(ITerritoryId territoryId)
         {
-            Territory = territory;
+            TerritoryId = territoryId;
         }
 
-        public ITerritory Territory { get; }
+        public ITerritoryId TerritoryId { get; }
 
         public abstract string Name { get; }
         public abstract Point NamePosition { get; }

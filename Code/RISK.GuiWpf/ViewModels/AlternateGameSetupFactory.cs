@@ -19,7 +19,7 @@ namespace GuiWpf.ViewModels
             _startingInfantryCalculator = startingInfantryCalculator;
         }
 
-        public IAlternateGameSetup Create(IEnumerable<IPlayer> players)
+        public IAlternateGameSetup Create(IEnumerable<IPlayerId> players)
         {
             return new AlternateGameSetup(_worldMap, players, _startingInfantryCalculator, _shuffler);
         }

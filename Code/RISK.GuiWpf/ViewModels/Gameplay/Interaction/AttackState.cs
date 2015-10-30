@@ -12,22 +12,22 @@ namespace GuiWpf.ViewModels.Gameplay.Interaction
             _interactionStateFactory = interactionStateFactory;
         }
 
-        public bool CanClick(IStateController stateController, ITerritory territory)
+        public bool CanClick(IStateController stateController, ITerritoryId territoryId)
         {
-            return CanAttack(stateController, territory)
+            return CanAttack(stateController, territoryId)
                    ||
-                   CanDeselect(stateController, territory);
+                   CanDeselect(stateController, territoryId);
         }
 
-        public void OnClick(IStateController stateController, ITerritory territory)
+        public void OnClick(IStateController stateController, ITerritoryId territoryId)
         {
-            if (CanDeselect(stateController, territory))
+            if (CanDeselect(stateController, territoryId))
             {
-                Deselect(stateController, territory);
+                Deselect(stateController, territoryId);
             }
-            else if (CanAttack(stateController, territory))
+            else if (CanAttack(stateController, territoryId))
             {
-                Attack(stateController, territory);
+                Attack(stateController, territoryId);
             }
             else
             {
@@ -35,35 +35,35 @@ namespace GuiWpf.ViewModels.Gameplay.Interaction
             }
         }
 
-        private static bool CanAttack(IStateController stateController, ITerritory territory)
+        private static bool CanAttack(IStateController stateController, ITerritoryId territoryId)
         {
-            var attackingTerritory = stateController.SelectedTerritory;
+            var attackingTerritory = stateController.SelectedTerritoryId;
             //var canAttack = stateController.Game.GetAttackeeCandidates(attackingTerritory).Contains(territory);
 
-            var canAttack = stateController.Game.CanAttack(attackingTerritory, territory);
+            var canAttack = stateController.Game.CanAttack(attackingTerritory, territoryId);
 
             return canAttack;
         }
 
-        private static bool CanDeselect(IStateController stateController, ITerritory territory)
+        private static bool CanDeselect(IStateController stateController, ITerritoryId territoryId)
         {
-            return territory == stateController.SelectedTerritory;
+            return territoryId == stateController.SelectedTerritoryId;
         }
 
-        private static void Attack(IStateController stateController, ITerritory attackeeTerritory)
+        private static void Attack(IStateController stateController, ITerritoryId attackeeTerritoryId)
         {
-            var attackingTerritory = stateController.SelectedTerritory;
-            stateController.Game.Attack(attackingTerritory, attackeeTerritory);
+            var attackingTerritory = stateController.SelectedTerritoryId;
+            stateController.Game.Attack(attackingTerritory, attackeeTerritoryId);
 
             // TODO: fire event for gameboard territories change layout update
         }
 
-        private void Deselect(IStateController stateController, ITerritory territory)
+        private void Deselect(IStateController stateController, ITerritoryId territoryId)
         {
             //if (CanSelect(location))
             {
                 stateController.CurrentState = _interactionStateFactory.CreateSelectState();
-                stateController.SelectedTerritory = null;
+                stateController.SelectedTerritoryId = null;
             }
         }
     }

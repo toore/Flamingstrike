@@ -7,19 +7,19 @@ namespace RISK.Tests.Builders
 {
     public class GameSetupBuilder
     {
-        private static readonly IPlayer _defaultPlayer = new Player("default");
-        private readonly List<IPlayer> _players = new List<IPlayer> { _defaultPlayer };
-        private readonly List<IGameboardSetupTerritory> _gameboardTerritories = new List<IGameboardSetupTerritory> { Substitute.For<IGameboardSetupTerritory>() };
+        private static readonly IPlayerId _defaultPlayerId = new PlayerId("default");
+        private readonly List<IPlayerId> _players = new List<IPlayerId> { _defaultPlayerId };
+        private readonly List<ITerritory> _territories = new List<ITerritory>();
 
         public IGamePlaySetup Build()
         {
-            return new GamePlaySetup(_players, _gameboardTerritories);
+            return new GamePlaySetup(_players, _territories);
         }
 
-        public GameSetupBuilder WithPlayer(IPlayer player)
+        public GameSetupBuilder WithPlayer(IPlayerId playerId)
         {
-            _players.Remove(_defaultPlayer);
-            _players.Add(player);
+            _players.Remove(_defaultPlayerId);
+            _players.Add(playerId);
             return this;
         }
     }

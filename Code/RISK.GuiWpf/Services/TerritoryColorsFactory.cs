@@ -6,23 +6,23 @@ namespace GuiWpf.Services
 {
     public interface ITerritoryColorsFactory
     {
-        ITerritoryColors Create(ITerritory territory);
+        ITerritoryColors Create(ITerritoryId territoryId);
     }
 
     public class TerritoryColorsFactory : ITerritoryColorsFactory
     {
-        private Dictionary<ITerritory, Func<GuiWpf.Services.ITerritoryColors>> _colors;
+        private Dictionary<ITerritoryId, Func<GuiWpf.Services.ITerritoryColors>> _colors;
 
         public TerritoryColorsFactory(IColorService colorService, IWorldMap worldMap)
         {
-            _colors = new Dictionary<ITerritory, Func<ITerritoryColors>>
+            _colors = new Dictionary<ITerritoryId, Func<ITerritoryColors>>
             {
                 { worldMap.Alaska, () => colorService.NorthAmericaColors },
                 { worldMap.Alberta, () => colorService.NorthAmericaColors },
                 { worldMap.CentralAmerica, () => colorService.NorthAmericaColors },
                 { worldMap.EasternUnitedStates, () => colorService.NorthAmericaColors },
                 { worldMap.Greenland, () => colorService.NorthAmericaColors },
-                { worldMap.NorthwestTerritory, () => colorService.NorthAmericaColors },
+                { worldMap.NorthwestTerritoryId, () => colorService.NorthAmericaColors },
                 { worldMap.Ontario, () => colorService.NorthAmericaColors },
                 { worldMap.Quebec, () => colorService.NorthAmericaColors },
                 { worldMap.WesternUnitedStates, () => colorService.NorthAmericaColors },
@@ -62,14 +62,14 @@ namespace GuiWpf.Services
             };
         }
 
-        public ITerritoryColors Create(ITerritory territory)
+        public ITerritoryColors Create(ITerritoryId territoryId)
         {
             //if (territory.IsOccupied())
             //{
             //    return _colorService.GetPlayerTerritoryColors(territory.Occupant);
             //}
 
-            return _colors[territory]();
+            return _colors[territoryId]();
         }
     }
 }

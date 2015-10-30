@@ -7,7 +7,7 @@ namespace GuiWpf.TerritoryModels
 {
     public class KamchatkaModel : TerritoryModelBase
     {
-        public KamchatkaModel(ITerritory territory) : base(territory) {}
+        public KamchatkaModel(ITerritoryId territoryId) : base(territoryId) {}
 
         public override string Name
         {

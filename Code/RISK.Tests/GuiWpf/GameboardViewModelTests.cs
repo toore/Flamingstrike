@@ -17,11 +17,11 @@ namespace RISK.Tests.GuiWpf
     public class GameboardViewModelTests
     {
         private readonly WorldMapViewModel _worldMapViewModel;
-        private readonly ITerritory _territory1;
+        private readonly ITerritoryId _territory1;
         private readonly IInteractionState _firstPlayerInteractionState;
         private readonly IInteractionState _nextPlayerInteractionState;
-        private readonly IPlayer _currentPlayer;
-        private readonly IPlayer _nextPlayer;
+        private readonly IPlayer _currentPlayerId;
+        private readonly IPlayer _nextPlayerId;
         private readonly IWindowManager _windowManager;
         private readonly IGameOverViewModelFactory _gameOverViewModelFactory;
         private readonly IDialogManager _dialogManager;
@@ -44,10 +44,10 @@ namespace RISK.Tests.GuiWpf
 
             LanguageResources.Instance = Substitute.For<ILanguageResources>();
 
-            _territory1 = Substitute.For<ITerritory>();
+            _territory1 = Substitute.For<ITerritoryId>();
 
-            _currentPlayer = Substitute.For<IPlayer>();
-            _nextPlayer = Substitute.For<IPlayer>();
+            _currentPlayerId = Substitute.For<IPlayer>();
+            _nextPlayerId = Substitute.For<IPlayer>();
 
             _firstPlayerInteractionState = Substitute.For<IInteractionState>();
             //_firstPlayerInteractionState.Player.Returns(_currentPlayer);
@@ -96,46 +96,46 @@ namespace RISK.Tests.GuiWpf
         [Fact]
         public void First_player_takes_first_turn()
         {
-            _game.CurrentPlayer.Returns(_currentPlayer);
+            _game.CurrentPlayer.Returns(_currentPlayerId);
 
             _sut.Activate();
 
-            AssertCurrentPlayer(_currentPlayer);
+            AssertCurrentPlayer(_currentPlayerId);
         }
 
         [Fact]
         public void Next_player_takes_second_turn()
         {
-            _game.CurrentPlayer.Returns(_nextPlayer);
+            _game.CurrentPlayer.Returns(_nextPlayerId);
 
             _sut.EndTurn();
 
-            AssertCurrentPlayer(_nextPlayer);
+            AssertCurrentPlayer(_nextPlayerId);
         }
 
         private void AssertCurrentPlayer(IPlayer expected)
         {
-            _sut.Player.Should().Be(expected);
+            _sut.PlayerId.Should().Be(expected);
         }
 
         [Fact]
         public void Ends_turn_and_gets_next_turn()
         {
-            _game.CurrentPlayer.Returns(_nextPlayer);
+            _game.CurrentPlayer.Returns(_nextPlayerId);
 
             var sut = _sut;
             sut.EndTurn();
 
-            sut.Player.Should().Be(_nextPlayer);
+            sut.PlayerId.Should().Be(_nextPlayerId);
         }
 
         [Fact]
         public void Show_game_over_when_game_is_updated()
         {
-            _game.CurrentPlayer.Returns(_currentPlayer);
+            _game.CurrentPlayer.Returns(_currentPlayerId);
 
-            var gameOverViewModel = new GameOverViewModel(_currentPlayer);
-            _gameOverViewModelFactory.Create(_currentPlayer).Returns(gameOverViewModel);
+            var gameOverViewModel = new GameOverViewModel(_currentPlayerId.PlayerId);
+            _gameOverViewModelFactory.Create(_currentPlayerId.PlayerId).Returns(gameOverViewModel);
 
             _game.IsGameOver().Returns(true);
 
@@ -148,7 +148,7 @@ namespace RISK.Tests.GuiWpf
         public void When_game_is_not_over_no_game_over_dialog_should_be_shown()
         {
             _game.IsGameOver().Returns(false);
-            var gameOverViewModel = new GameOverViewModel(_currentPlayer);
+            var gameOverViewModel = new GameOverViewModel(_currentPlayerId.PlayerId);
 
             _sut.OnTerritoryClick(null);
 

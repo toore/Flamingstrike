@@ -53,13 +53,13 @@ namespace GuiWpf.ViewModels
             var gameboardRules = new GameRules();
             var cardFactory = new CardFactory();
             var battle = new Battle(diceRoller, new BattleCalculator());
-            var territoryConverter = new TerritoryConverter();
+            var territoryConverter = new TerritoryFactory();
 
             PlayerRepository = new PlayerRepository();
 
             AlternateGameSetupFactory = new AlternateGameSetupFactory(WorldMap, shuffler, startingInfantryCalculator);
-            
-            GameFactory = new GameFactory(gameboardRules, cardFactory, battle, territoryConverter);
+
+            GameFactory = new GameFactory(gameboardRules, cardFactory, battle, territoryConverter, new PlayerFactory());
 
             WindowManager = new WindowManager();
             var confirmViewModelFactory = new ConfirmViewModelFactory(screenService);
