@@ -51,7 +51,7 @@ namespace RISK.Tests.GuiWpf
         [Fact]
         public void Initialize_game_factory()
         {
-            var sut = InitializeAndActivate();
+            var sut = Initialize();
 
             //_gameFactory.Received().Create(sut);
             throw new NotImplementedException();
@@ -66,7 +66,7 @@ namespace RISK.Tests.GuiWpf
             _userInteractor.GetSelectedTerritory(territoryRequestParameter).Returns(expected);
             _worldMapViewModelFactory.Create(null, null, null).ReturnsForAnyArgs(new WorldMapViewModel());
 
-            var gameSetupViewModel = InitializeAndActivate();
+            var gameSetupViewModel = Initialize();
             var actual = gameSetupViewModel.ProcessRequest(territoryRequestParameter);
 
             actual.Should().Be(expected);
@@ -77,14 +77,14 @@ namespace RISK.Tests.GuiWpf
         {
             var worldMapViewModel = new WorldMapViewModel();
             _worldMapViewModelFactory.Create(null, null, null).ReturnsForAnyArgs(worldMapViewModel);
-            var gameSetupViewModel = InitializeAndActivate();
+            var gameSetupViewModel = Initialize();
             gameSetupViewModel.MonitorEvents();
 
             gameSetupViewModel.ProcessRequest(Substitute.For<ITerritoryRequestParameter>());
 
             gameSetupViewModel.WorldMapViewModel.Should().Be(worldMapViewModel);
             gameSetupViewModel.ShouldRaisePropertyChangeFor(x => x.WorldMapViewModel);
-            gameSetupViewModel.ShouldRaisePropertyChangeFor(x => x.PlayerId);
+            gameSetupViewModel.ShouldRaisePropertyChangeFor(x => x.PlayerName);
             gameSetupViewModel.ShouldRaisePropertyChangeFor(x => x.InformationText);
         }
 
@@ -95,7 +95,7 @@ namespace RISK.Tests.GuiWpf
             IGame actualGame = null;
             _eventAggregator.WhenForAnyArgs(x => x.PublishOnUIThread(null)).Do(ci => actualGame = ci.Arg<StartGameplayMessage>().Game);
 
-            InitializeAndActivate();
+            Initialize();
 
             _eventAggregator.ReceivedWithAnyArgs().PublishOnUIThread(new StartGameplayMessage(expectedGame));
             actualGame.Should().Be(expectedGame);
@@ -104,7 +104,7 @@ namespace RISK.Tests.GuiWpf
         [Fact]
         public void Can_not_fortify()
         {
-            var gameSetupViewModel = InitializeAndActivate();
+            var gameSetupViewModel = Initialize();
 
             gameSetupViewModel.CanFortify().Should().BeFalse();
         }
@@ -112,7 +112,7 @@ namespace RISK.Tests.GuiWpf
         [Fact]
         public void Can_not_end_turn()
         {
-            var gameSetupViewModel = InitializeAndActivate();
+            var gameSetupViewModel = Initialize();
 
             gameSetupViewModel.CanEndTurn().Should().BeFalse();
         }
@@ -122,7 +122,7 @@ namespace RISK.Tests.GuiWpf
         {
             _dialogManager.ConfirmEndGame().Returns(true);
 
-            var gameSetupViewModel = InitializeAndActivate();
+            var gameSetupViewModel = Initialize();
 
             gameSetupViewModel.EndGame();
 
@@ -134,14 +134,14 @@ namespace RISK.Tests.GuiWpf
         {
             _dialogManager.ConfirmEndGame().Returns(false);
 
-            var gameSetupViewModel = InitializeAndActivate();
+            var gameSetupViewModel = Initialize();
 
             gameSetupViewModel.EndGame();
 
             _eventAggregator.DidNotReceive().PublishOnUIThread(Arg.Any<NewGameMessage>());
         }
 
-        private GameSetupViewModel InitializeAndActivate()
+        private GameSetupViewModel Initialize()
         {
             var gameSetupViewModel = (GameSetupViewModel)_gameSetupViewModelFactory.Create(_alternateGameSetup);
             gameSetupViewModel.Activate();
