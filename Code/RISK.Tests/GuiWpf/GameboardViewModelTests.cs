@@ -70,7 +70,7 @@ namespace RISK.Tests.GuiWpf
         }
 
         [Fact]
-        public void Initializes_WorldMapViewModel_when_activated()
+        public void Activate_initializes_WorldMapViewModel()
         {
             var sut = Initialize(activate: false);
             _worldMapViewModelFactory.Create(_game.Territories, sut.OnTerritoryClick, Arg.Is<IEnumerable<ITerritoryId>>(x => x.IsEmpty()))
@@ -107,15 +107,15 @@ namespace RISK.Tests.GuiWpf
         }
 
         [Fact]
-        public void Show_game_over_when_game_is_updated()
+        public void Show_game_over_when_game_is_updated_after_user_action()
         {
             var winner = Substitute.For<IPlayer>();
             winner.PlayerId.Name.Returns("winner");
             _game.CurrentPlayer.Returns(winner);
-            var sut = Initialize();
             var gameOverViewModel = new GameOverViewModel("");
             _gameOverViewModelFactory.Create("winner").Returns(gameOverViewModel);
             _game.IsGameOver().Returns(true);
+            var sut = Initialize();
 
             sut.OnTerritoryClick(null);
 
@@ -137,19 +137,20 @@ namespace RISK.Tests.GuiWpf
         public void End_game_shows_confirm_dialog()
         {
             var sut = Initialize();
+
             sut.EndGame();
 
             _dialogManager.Received(1).ConfirmEndGame();
         }
 
         [Fact]
-        public void Interaction_state_receives_on_click_when_location_is_clicked()
+        public void Clicked_territory_is_proxied_to_state_controller()
         {
             var stateController = Substitute.For<IStateController>();
             _stateControllerFactory.Create(_game).Returns(stateController);
             var territoryId = Substitute.For<ITerritoryId>();
-
             var sut = Initialize();
+
             sut.OnTerritoryClick(territoryId);
 
             stateController.Received().OnClick(territoryId);
@@ -158,11 +159,15 @@ namespace RISK.Tests.GuiWpf
         [Fact]
         public void Fortifies_armies()
         {
+            var stateController = Substitute.For<IStateController>();
+            _stateControllerFactory.Create(_game).Returns(stateController);
+            var fortifyState = Substitute.For<IInteractionState>();
+            _interactionStateFactory.CreateFortifySelectState().Returns(fortifyState);
             var sut = Initialize();
+
             sut.Fortify();
 
-            //_interactionState.Received().Fortify();
-            throw new NotImplementedException();
+            stateController.CurrentState.Should().Be(fortifyState);
         }
 
         private GameboardViewModel Initialize(bool activate = true)

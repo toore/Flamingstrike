@@ -78,7 +78,7 @@ namespace GuiWpf.ViewModels.Gameplay
 
         public void Fortify()
         {
-            //_interactionState = _interactionStateFactory.CreateFortifyState(_stateController);
+            _stateController.CurrentState = _interactionStateFactory.CreateFortifySelectState();
         }
 
         public void EndTurn()
@@ -103,21 +103,24 @@ namespace GuiWpf.ViewModels.Gameplay
             _stateController.OnClick(territoryId);
 
             UpdateGame();
+
+            if (_game.IsGameOver())
+            {
+                ShowGameOverMessage();
+            }
+        }
+
+        private void ShowGameOverMessage()
+        {
+            var gameOverViewModel = _gameOverViewModelFactory.Create(_game.CurrentPlayer.PlayerId.Name);
+            _windowManager.ShowDialog(gameOverViewModel);
         }
 
         private void UpdateGame()
         {
             PlayerName = _game.CurrentPlayer.PlayerId.Name;
 
-            if (_game.IsGameOver())
-            {
-                var gameOverViewModel = _gameOverViewModelFactory.Create(_game.CurrentPlayer.PlayerId.Name);
-                _windowManager.ShowDialog(gameOverViewModel);
-            }
-            else
-            {
-                UpdateWorldMap();
-            }
+            UpdateWorldMap();
         }
 
         private void UpdateWorldMap()
