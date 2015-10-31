@@ -3,7 +3,6 @@ using GuiWpf.Properties;
 using GuiWpf.Services;
 using GuiWpf.ViewModels.Gameplay.Map;
 using GuiWpf.ViewModels.Messages;
-using RISK.Application;
 using RISK.Application.Play;
 using RISK.Application.Setup;
 using RISK.Application.World;
@@ -57,11 +56,11 @@ namespace GuiWpf.ViewModels.Setup
             private set { this.NotifyOfPropertyChange(value, () => InformationText, x => _informationText = x); }
         }
 
-        private IPlayerId _playerId;
-        public IPlayerId PlayerId
+        private string _playerName;
+        public string PlayerName
         {
-            get { return _playerId; }
-            private set { this.NotifyOfPropertyChange(value, () => PlayerId, x => _playerId = x); }
+            get { return _playerName; }
+            private set { this.NotifyOfPropertyChange(value, () => PlayerName, x => _playerName = x); }
         }
 
         public void Activate()
@@ -96,13 +95,14 @@ namespace GuiWpf.ViewModels.Setup
 
         private void UpdateView(ITerritoryRequestParameter territoryRequestParameter)
         {
-            var worldMapViewModel = _worldMapViewModelFactory.Create(territoryRequestParameter.GameboardTerritories,
+            var worldMapViewModel = _worldMapViewModelFactory.Create(
+                territoryRequestParameter.GameboardTerritories,
                 x => _userInteractor.SelectTerritory(x),
                 territoryRequestParameter.EnabledTerritories);
 
             WorldMapViewModel = worldMapViewModel;
 
-            PlayerId = territoryRequestParameter.PlayerId;
+            PlayerName = territoryRequestParameter.PlayerId.Name;
 
             InformationText = string.Format(Resources.PLACE_ARMY, territoryRequestParameter.GetArmiesLeftToPlace());
         }

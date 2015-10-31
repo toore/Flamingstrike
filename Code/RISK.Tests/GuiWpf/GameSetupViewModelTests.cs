@@ -1,5 +1,4 @@
-﻿using System;
-using Caliburn.Micro;
+﻿using Caliburn.Micro;
 using FluentAssertions;
 using GuiWpf.Services;
 using GuiWpf.ViewModels.Gameplay.Map;
@@ -49,31 +48,22 @@ namespace RISK.Tests.GuiWpf
         }
 
         [Fact]
-        public void Initialize_game_factory()
-        {
-            var sut = Initialize();
-
-            //_gameFactory.Received().Create(sut);
-            throw new NotImplementedException();
-        }
-
-        [Fact]
-        public void Select_location_gets_location_from_user_interactor()
+        public void A_territory_request_gets_territory_from_user()
         {
             var territoryRequestParameter = Substitute.For<ITerritoryRequestParameter>();
             territoryRequestParameter.PlayerId.ReturnsForAnyArgs(Substitute.For<IPlayerId>());
             var expected = Substitute.For<ITerritoryId>();
             _userInteractor.GetSelectedTerritory(territoryRequestParameter).Returns(expected);
             _worldMapViewModelFactory.Create(null, null, null).ReturnsForAnyArgs(new WorldMapViewModel());
+            var sut = Initialize();
 
-            var gameSetupViewModel = Initialize();
-            var actual = gameSetupViewModel.ProcessRequest(territoryRequestParameter);
+            var actual = sut.ProcessRequest(territoryRequestParameter);
 
             actual.Should().Be(expected);
         }
 
         [Fact]
-        public void Select_location_updates_view()
+        public void After_user_has_responded_with_a_territory_the_WorldMapViewModel_is_updated()
         {
             var worldMapViewModel = new WorldMapViewModel();
             _worldMapViewModelFactory.Create(null, null, null).ReturnsForAnyArgs(worldMapViewModel);
@@ -91,13 +81,17 @@ namespace RISK.Tests.GuiWpf
         [Fact]
         public void When_finished_game_conductor_is_notified()
         {
+            var sut = Initialize(activate: false);
             var expectedGame = Substitute.For<IGame>();
             IGame actualGame = null;
+            var gamePlaySetup = Substitute.For<IGamePlaySetup>();
+            _alternateGameSetup.Initialize(sut).Returns(gamePlaySetup);
+            _gameFactory.Create(gamePlaySetup).Returns(expectedGame);
             _eventAggregator.WhenForAnyArgs(x => x.PublishOnUIThread(null)).Do(ci => actualGame = ci.Arg<StartGameplayMessage>().Game);
 
-            Initialize();
+            sut.Activate();
 
-            _eventAggregator.ReceivedWithAnyArgs().PublishOnUIThread(new StartGameplayMessage(expectedGame));
+            _eventAggregator.ReceivedWithAnyArgs().PublishOnUIThread(null);
             actualGame.Should().Be(expectedGame);
         }
 
@@ -141,10 +135,13 @@ namespace RISK.Tests.GuiWpf
             _eventAggregator.DidNotReceive().PublishOnUIThread(Arg.Any<NewGameMessage>());
         }
 
-        private GameSetupViewModel Initialize()
+        private GameSetupViewModel Initialize(bool activate = true)
         {
             var gameSetupViewModel = (GameSetupViewModel)_gameSetupViewModelFactory.Create(_alternateGameSetup);
-            gameSetupViewModel.Activate();
+            if (activate)
+            {
+                gameSetupViewModel.Activate();
+            }
 
             return gameSetupViewModel;
         }
