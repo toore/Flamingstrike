@@ -91,9 +91,11 @@ namespace RISK.Tests.GuiWpf.Specifications
         [Fact]
         public void Does_not_receive_a_card_when_ending_turn()
         {
-            Given.a_game_with_two_players();
+            Given.
+                a_game_with_two_players();
 
-            When.turn_ends();
+            When.
+                turn_ends();
 
             Then.
                 player_1_should_not_have_any_card().
