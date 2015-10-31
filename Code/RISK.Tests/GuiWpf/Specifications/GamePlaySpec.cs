@@ -182,8 +182,8 @@ namespace RISK.Tests.GuiWpf.Specifications
             var worldMapViewModelFactory = new WorldMapViewModelFactory(_worldMap, worldMapModelFactory, territoryColorsFactory, colorService);
 
             var gameOverViewModelFactory = Substitute.For<IGameOverViewModelFactory>();
-            _gameOverAndPlayer1IsTheWinnerViewModel = new GameOverViewModel(_player1);
-            gameOverViewModelFactory.Create(_player1).Returns(_gameOverAndPlayer1IsTheWinnerViewModel);
+            _gameOverAndPlayer1IsTheWinnerViewModel = new GameOverViewModel("");
+            gameOverViewModelFactory.Create(_player1.Name).Returns(_gameOverAndPlayer1IsTheWinnerViewModel);
 
             _gameboardViewModel = new GameboardViewModel(
                 _game,
@@ -347,7 +347,7 @@ namespace RISK.Tests.GuiWpf.Specifications
 
         private void player_2_should_take_turn()
         {
-            _gameboardViewModel.PlayerId.Should().Be(_player2);
+            _gameboardViewModel.PlayerName.Should().Be(_player2.Name);
         }
     }
 }

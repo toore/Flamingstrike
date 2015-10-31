@@ -5,7 +5,6 @@ using GuiWpf.Services;
 using GuiWpf.ViewModels.Gameplay.Interaction;
 using GuiWpf.ViewModels.Gameplay.Map;
 using GuiWpf.ViewModels.Messages;
-using RISK.Application;
 using RISK.Application.Play;
 using RISK.Application.World;
 
@@ -22,7 +21,7 @@ namespace GuiWpf.ViewModels.Gameplay
         private readonly IGameOverViewModelFactory _gameOverViewModelFactory;
         private readonly IDialogManager _dialogManager;
         private readonly IEventAggregator _eventAggregator;
-        private IPlayerId _playerId;
+        private string _playerName;
         private IStateController _stateController;
 
         public GameboardViewModel(
@@ -51,10 +50,10 @@ namespace GuiWpf.ViewModels.Gameplay
 
         public WorldMapViewModel WorldMapViewModel { get; set; }
 
-        public IPlayerId PlayerId
+        public string PlayerName
         {
-            get { return _playerId; }
-            set { NotifyOfPropertyChange(value, () => PlayerId, x => _playerId = x); }
+            get { return _playerName; }
+            set { NotifyOfPropertyChange(value, () => PlayerName, x => _playerName = x); }
         }
 
         public string InformationText { get; private set; }
@@ -108,11 +107,12 @@ namespace GuiWpf.ViewModels.Gameplay
 
         private void UpdateGame()
         {
-            PlayerId = _game.CurrentPlayer.PlayerId;
+            PlayerName = _game.CurrentPlayer.PlayerId.Name;
 
             if (_game.IsGameOver())
             {
-                _windowManager.ShowDialog(_gameOverViewModelFactory.Create(PlayerId));
+                var gameOverViewModel = _gameOverViewModelFactory.Create(_game.CurrentPlayer.PlayerId.Name);
+                _windowManager.ShowDialog(gameOverViewModel);
             }
             else
             {

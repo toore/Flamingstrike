@@ -1,12 +1,15 @@
-﻿using RISK.Application;
-
-namespace GuiWpf.ViewModels
+﻿namespace GuiWpf.ViewModels
 {
+    public interface IGameOverViewModelFactory
+    {
+        GameOverViewModel Create(string winnerPlayerName);
+    }
+
     public class GameOverViewModelFactory : IGameOverViewModelFactory
     {
-        public GameOverViewModel Create(IPlayerId winner)
+        public GameOverViewModel Create(string winnerPlayerName)
         {
-            return new GameOverViewModel(winner);
+            return new GameOverViewModel(winnerPlayerName);
         }
     }
 }

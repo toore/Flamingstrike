@@ -1,5 +1,4 @@
 ﻿using GuiWpf.ViewModels;
-using RISK.Application;
 
 namespace GuiWpf.Views
 {
@@ -9,7 +8,7 @@ namespace GuiWpf.Views
 
         private GameOverViewModel Create()
         {
-            return new GameOverViewModel(new PlayerId("TEST_PLAYER"));
+            return new GameOverViewModel("TEST_PLAYER");
         }
     }
 }

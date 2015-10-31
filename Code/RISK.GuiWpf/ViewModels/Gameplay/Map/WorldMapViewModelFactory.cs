@@ -11,7 +11,7 @@ namespace GuiWpf.ViewModels.Gameplay.Map
 {
     public interface IWorldMapViewModelFactory
     {
-        WorldMapViewModel Create(IReadOnlyList<ITerritory> gameboardTerritories, Action<ITerritoryId> onClick, IEnumerable<ITerritoryId> enabledTerritories);
+        WorldMapViewModel Create(IReadOnlyList<ITerritory> territories, Action<ITerritoryId> onClick, IEnumerable<ITerritoryId> enabledTerritories);
         void Update(WorldMapViewModel worldMapViewModel, IReadOnlyList<ITerritory> gameboardTerritories, ITerritoryId selectedTerritoryId, IEnumerable<ITerritoryId> enabledTerritories);
     }
 
@@ -30,7 +30,7 @@ namespace GuiWpf.ViewModels.Gameplay.Map
             _colorService = colorService;
         }
 
-        public WorldMapViewModel Create(IReadOnlyList<ITerritory> gameboardTerritories, Action<ITerritoryId> onClick, IEnumerable<ITerritoryId> enabledTerritories)
+        public WorldMapViewModel Create(IReadOnlyList<ITerritory> territories, Action<ITerritoryId> onClick, IEnumerable<ITerritoryId> enabledTerritories)
         {
             var territoryModels = _worldMapModelFactory.Create(_worldMap);
 
@@ -41,7 +41,7 @@ namespace GuiWpf.ViewModels.Gameplay.Map
             var worldMapViewModel = new WorldMapViewModel();
             worldMapViewModel.WorldMapViewModels.Add(worldMapViewModels);
 
-            Update(worldMapViewModel, gameboardTerritories, null, enabledTerritories);
+            Update(worldMapViewModel, territories, null, enabledTerritories);
 
             return worldMapViewModel;
         }
