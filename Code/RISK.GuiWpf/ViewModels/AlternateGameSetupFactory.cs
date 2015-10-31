@@ -6,7 +6,12 @@ using RISK.Application.World;
 
 namespace GuiWpf.ViewModels
 {
-    public class AlternateGameSetupFactory
+    public interface IAlternateGameSetupFactory
+    {
+        IAlternateGameSetup Create(IEnumerable<IPlayerId> players);
+    }
+
+    public class AlternateGameSetupFactory : IAlternateGameSetupFactory
     {
         private readonly IWorldMap _worldMap;
         private readonly IShuffler _shuffler;

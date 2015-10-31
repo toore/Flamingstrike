@@ -28,7 +28,7 @@ namespace GuiWpf.ViewModels
         public IEventAggregator EventAggregator { get; private set; }
         public IGuiThreadDispatcher GuiThreadDispatcher { get; set; }
         public ITaskEx TaskEx { get; set; }
-        public AlternateGameSetupFactory AlternateGameSetupFactory { get; private set; }
+        public IAlternateGameSetupFactory AlternateGameSetupFactory { get; private set; }
         public GameFactory GameFactory { get; private set; }
         public IStateControllerFactory StateControllerFactory { get; private set; }
         public IInteractionStateFactory InteractionStateFactory { get; set; }

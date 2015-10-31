@@ -1,4 +1,5 @@
-﻿using System;
+﻿using System.Collections.Generic;
+using System.Windows.Documents;
 using FluentAssertions;
 using GuiWpf.ViewModels;
 using GuiWpf.ViewModels.Gameplay;
@@ -6,7 +7,9 @@ using GuiWpf.ViewModels.Messages;
 using GuiWpf.ViewModels.Settings;
 using GuiWpf.ViewModels.Setup;
 using NSubstitute;
+using RISK.Application;
 using RISK.Application.Play;
+using RISK.Application.Setup;
 using Xunit;
 
 namespace RISK.Tests.GuiWpf
@@ -16,12 +19,16 @@ namespace RISK.Tests.GuiWpf
         private readonly IGameInitializationViewModelFactory _gameInitializationViewModelFactory;
         private readonly IGameboardViewModelFactory _gameboardViewModelFactory;
         private readonly IGameSetupViewModelFactory _gameSetupViewModelFactory;
+        private readonly IAlternateGameSetupFactory _alternateGameSetupFactory;
+        private readonly IPlayerRepository _playerRepository;
 
         public MainGameViewModelTests()
         {
             _gameInitializationViewModelFactory = Substitute.For<IGameInitializationViewModelFactory>();
             _gameboardViewModelFactory = Substitute.For<IGameboardViewModelFactory>();
             _gameSetupViewModelFactory = Substitute.For<IGameSetupViewModelFactory>();
+            _alternateGameSetupFactory = Substitute.For<IAlternateGameSetupFactory>();
+            _playerRepository = Substitute.For<IPlayerRepository>();
         }
 
         [Fact(Skip = "OnInitialize is protected?")]
@@ -30,7 +37,7 @@ namespace RISK.Tests.GuiWpf
             var gameSettingsViewModel = Substitute.For<IGameSettingsViewModel>();
             _gameInitializationViewModelFactory.Create().Returns(gameSettingsViewModel);
 
-            var actual = CreateSut().ActiveItem;
+            var actual = Initialize().ActiveItem;
 
             actual.Should().Be(gameSettingsViewModel);
         }
@@ -41,7 +48,7 @@ namespace RISK.Tests.GuiWpf
             var gameInitializationViewModel = Substitute.For<IGameSettingsViewModel>();
             _gameInitializationViewModelFactory.Create().Returns(gameInitializationViewModel);
 
-            var sut = CreateSut();
+            var sut = Initialize();
             sut.Handle(new NewGameMessage());
 
             sut.ActiveItem.Should().Be(gameInitializationViewModel);
@@ -51,9 +58,13 @@ namespace RISK.Tests.GuiWpf
         public void Setup_game_message_shows_setup_game_phase_view()
         {
             var gameSetupviewModel = Substitute.For<IGameSetupViewModel>();
-            //_gameSetupViewModelFactory.Create().Returns(gameSetupviewModel);
+            var alternateGameSetup = Substitute.For<IAlternateGameSetup>();
+            var players = new List<IPlayerId>();
+            _playerRepository.GetAll().Returns(players);
+            _alternateGameSetupFactory.Create(players).Returns(alternateGameSetup);
+            _gameSetupViewModelFactory.Create(alternateGameSetup).Returns(gameSetupviewModel);
 
-            var sut = CreateSut();
+            var sut = Initialize();
             sut.Handle(new SetupGameMessage());
 
             sut.ActiveItem.Should().Be(gameSetupviewModel);
@@ -66,16 +77,20 @@ namespace RISK.Tests.GuiWpf
             var gameboardViewModel = Substitute.For<IGameboardViewModel>();
             _gameboardViewModelFactory.Create(game).Returns(gameboardViewModel);
 
-            var sut = CreateSut();
+            var sut = Initialize();
             sut.Handle(new StartGameplayMessage(game));
 
             sut.ActiveItem.Should().Be(gameboardViewModel);
         }
 
-        private MainGameViewModel CreateSut()
+        private MainGameViewModel Initialize()
         {
-            throw new NotImplementedException();
-            //return new MainGameViewModel(_gameInitializationViewModelFactory, _gameboardViewModelFactory, _gameSetupViewModelFactory);
+            return new MainGameViewModel(
+                _gameInitializationViewModelFactory,
+                _gameboardViewModelFactory,
+                _gameSetupViewModelFactory,
+                _alternateGameSetupFactory,
+                _playerRepository);
         }
     }
 }

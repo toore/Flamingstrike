@@ -12,8 +12,8 @@ namespace GuiWpf.ViewModels
         private readonly IGameInitializationViewModelFactory _gameInitializationViewModelFactory;
         private readonly IGameboardViewModelFactory _gameboardViewModelFactory;
         private readonly IGameSetupViewModelFactory _gameSetupViewModelFactory;
-        private readonly AlternateGameSetupFactory _alternateGameSetupFactory;
-        private readonly PlayerRepository _playerRepository;
+        private readonly IAlternateGameSetupFactory _alternateGameSetupFactory;
+        private readonly IPlayerRepository _playerRepository;
 
         public MainGameViewModel()
             : this(new Root()) {}
@@ -48,7 +48,12 @@ namespace GuiWpf.ViewModels
             root.EventAggregator.Subscribe(this);
         }
 
-        private MainGameViewModel(IGameInitializationViewModelFactory gameInitializationViewModelFactory, IGameboardViewModelFactory gameboardViewModelFactory, IGameSetupViewModelFactory gameSetupViewModelFactory, AlternateGameSetupFactory alternateGameSetupFactory, PlayerRepository playerRepository)
+        public MainGameViewModel(
+            IGameInitializationViewModelFactory gameInitializationViewModelFactory, 
+            IGameboardViewModelFactory gameboardViewModelFactory, 
+            IGameSetupViewModelFactory gameSetupViewModelFactory, 
+            IAlternateGameSetupFactory alternateGameSetupFactory, 
+            IPlayerRepository playerRepository)
         {
             _gameInitializationViewModelFactory = gameInitializationViewModelFactory;
             _gameboardViewModelFactory = gameboardViewModelFactory;
