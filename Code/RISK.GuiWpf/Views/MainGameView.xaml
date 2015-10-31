@@ -5,10 +5,11 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     mc:Ignorable="d"
     d:DesignHeight="300" d:DesignWidth="300"
-    Width="1024" Height="768">
+    Width="800" Height="600"
+    WindowStartupLocation="CenterScreen">
 
     <Grid>
         <ContentControl x:Name="ActiveItem" />
     </Grid>
-    
+
 </Window>
