@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using Caliburn.Micro;
 using FluentAssertions;
 using GuiWpf.Extensions;
@@ -26,9 +25,9 @@ namespace RISK.Tests.GuiWpf
         private readonly IWindowManager _windowManager;
         private readonly IGameOverViewModelFactory _gameOverViewModelFactory;
         private readonly IDialogManager _dialogManager;
-        private readonly IEventAggregator _gameEventAggregator;
+        private readonly IEventAggregator _eventAggregator;
         private readonly WorldMapViewModel _worldMapViewModel;
-        private readonly GameboardViewModel _sut;
+        private readonly GameboardViewModelFactory _gameboardViewModelFactory;
 
         public GameboardViewModelTests()
         {
@@ -40,7 +39,7 @@ namespace RISK.Tests.GuiWpf
             _windowManager = Substitute.For<IWindowManager>();
             _gameOverViewModelFactory = Substitute.For<IGameOverViewModelFactory>();
             _dialogManager = Substitute.For<IDialogManager>();
-            _gameEventAggregator = Substitute.For<IEventAggregator>();
+            _eventAggregator = Substitute.For<IEventAggregator>();
 
             LanguageResources.Instance = Substitute.For<ILanguageResources>();
 
@@ -59,8 +58,7 @@ namespace RISK.Tests.GuiWpf
             _worldMapViewModel.WorldMapViewModels.Add(layoutViewModel2);
             _worldMapViewModel.WorldMapViewModels.Add(textViewModel2);
 
-            _sut = new GameboardViewModel(
-                _game,
+            _gameboardViewModelFactory = new GameboardViewModelFactory(
                 _stateControllerFactory,
                 _interactionStateFactory,
                 _worldMap,
@@ -68,18 +66,19 @@ namespace RISK.Tests.GuiWpf
                 _windowManager,
                 _gameOverViewModelFactory,
                 _dialogManager,
-                _gameEventAggregator);
+                _eventAggregator);
         }
 
         [Fact]
         public void Initializes_WorldMapViewModel_when_activated()
         {
-            _worldMapViewModelFactory.Create(_game.Territories, _sut.OnTerritoryClick, Arg.Is<IEnumerable<ITerritoryId>>(x => x.IsEmpty()))
+            var sut = Initialize(activate: false);
+            _worldMapViewModelFactory.Create(_game.Territories, sut.OnTerritoryClick, Arg.Is<IEnumerable<ITerritoryId>>(x => x.IsEmpty()))
                 .Returns(_worldMapViewModel);
 
-            _sut.Activate();
+            sut.Activate();
 
-            _sut.WorldMapViewModel.Should().Be(_worldMapViewModel);
+            sut.WorldMapViewModel.Should().Be(_worldMapViewModel);
         }
 
         [Fact]
@@ -89,22 +88,22 @@ namespace RISK.Tests.GuiWpf
             player.PlayerId.Name.Returns("player");
             _game.CurrentPlayer.Returns(player);
 
-            _sut.Activate();
+            var sut = Initialize();
 
-            _sut.PlayerName.Should().Be("player");
+            sut.PlayerName.Should().Be("player");
         }
 
         [Fact]
         public void Player_is_updated_when_turn_ends()
         {
-            _sut.Activate();
+            var sut = Initialize();
             var player = Substitute.For<IPlayer>();
             player.PlayerId.Name.Returns("next player");
             _game.CurrentPlayer.Returns(player);
 
-            _sut.EndTurn();
+            sut.EndTurn();
 
-            _sut.PlayerName.Should().Be("next player");
+            sut.PlayerName.Should().Be("next player");
         }
 
         [Fact]
@@ -113,12 +112,12 @@ namespace RISK.Tests.GuiWpf
             var winner = Substitute.For<IPlayer>();
             winner.PlayerId.Name.Returns("winner");
             _game.CurrentPlayer.Returns(winner);
-            _sut.Activate();
+            var sut = Initialize();
             var gameOverViewModel = new GameOverViewModel("");
             _gameOverViewModelFactory.Create("winner").Returns(gameOverViewModel);
             _game.IsGameOver().Returns(true);
 
-            _sut.OnTerritoryClick(null);
+            sut.OnTerritoryClick(null);
 
             _windowManager.Received().ShowDialog(gameOverViewModel);
         }
@@ -126,10 +125,10 @@ namespace RISK.Tests.GuiWpf
         [Fact]
         public void When_game_is_not_over_no_game_over_dialog_should_be_shown()
         {
-            _sut.Activate();
+            var sut = Initialize();
             _game.IsGameOver().Returns(false);
 
-            _sut.OnTerritoryClick(null);
+            sut.OnTerritoryClick(null);
 
             _windowManager.DidNotReceiveWithAnyArgs().ShowDialog(null);
         }
@@ -137,8 +136,8 @@ namespace RISK.Tests.GuiWpf
         [Fact]
         public void End_game_shows_confirm_dialog()
         {
-            _sut.Activate();
-            _sut.EndGame();
+            var sut = Initialize();
+            sut.EndGame();
 
             _dialogManager.Received(1).ConfirmEndGame();
         }
@@ -150,8 +149,8 @@ namespace RISK.Tests.GuiWpf
             _stateControllerFactory.Create(_game).Returns(stateController);
             var territoryId = Substitute.For<ITerritoryId>();
 
-            _sut.Activate();
-            _sut.OnTerritoryClick(territoryId);
+            var sut = Initialize();
+            sut.OnTerritoryClick(territoryId);
 
             stateController.Received().OnClick(territoryId);
         }
@@ -159,10 +158,21 @@ namespace RISK.Tests.GuiWpf
         [Fact]
         public void Fortifies_armies()
         {
-            _sut.Fortify();
+            var sut = Initialize();
+            sut.Fortify();
 
             //_interactionState.Received().Fortify();
             throw new NotImplementedException();
+        }
+
+        private GameboardViewModel Initialize(bool activate = true)
+        {
+            var sut = (GameboardViewModel)_gameboardViewModelFactory.Create(_game);
+            if (activate)
+            {
+                sut.Activate();
+            }
+            return sut;
         }
     }
 }
