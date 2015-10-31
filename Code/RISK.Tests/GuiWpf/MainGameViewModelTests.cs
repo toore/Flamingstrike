@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Windows.Documents;
 using FluentAssertions;
 using GuiWpf.ViewModels;
 using GuiWpf.ViewModels.Gameplay;
@@ -31,19 +30,21 @@ namespace RISK.Tests.GuiWpf
             _playerRepository = Substitute.For<IPlayerRepository>();
         }
 
-        [Fact(Skip = "OnInitialize is protected?")]
-        public void OnInitialize_starts_new_game()
+        [Fact]
+        public void OnInitialize_shows_game_settings_view()
         {
             var gameSettingsViewModel = Substitute.For<IGameSettingsViewModel>();
             _gameInitializationViewModelFactory.Create().Returns(gameSettingsViewModel);
+            var sut = Initialize();
 
-            var actual = Initialize().ActiveItem;
+            sut.OnInitialize();
+            var actual = sut.ActiveItem;
 
             actual.Should().Be(gameSettingsViewModel);
         }
 
         [Fact]
-        public void New_game_message_shows_game_initialization_view()
+        public void New_game_message_shows_game_settings_view()
         {
             var gameInitializationViewModel = Substitute.For<IGameSettingsViewModel>();
             _gameInitializationViewModelFactory.Create().Returns(gameInitializationViewModel);
@@ -55,23 +56,23 @@ namespace RISK.Tests.GuiWpf
         }
 
         [Fact]
-        public void Setup_game_message_shows_setup_game_phase_view()
+        public void Setup_game_message_shows_game_setup_view()
         {
-            var gameSetupviewModel = Substitute.For<IGameSetupViewModel>();
+            var gameSetupViewModel = Substitute.For<IGameSetupViewModel>();
             var alternateGameSetup = Substitute.For<IAlternateGameSetup>();
             var players = new List<IPlayerId>();
             _playerRepository.GetAll().Returns(players);
             _alternateGameSetupFactory.Create(players).Returns(alternateGameSetup);
-            _gameSetupViewModelFactory.Create(alternateGameSetup).Returns(gameSetupviewModel);
+            _gameSetupViewModelFactory.Create(alternateGameSetup).Returns(gameSetupViewModel);
 
             var sut = Initialize();
             sut.Handle(new SetupGameMessage());
 
-            sut.ActiveItem.Should().Be(gameSetupviewModel);
+            sut.ActiveItem.Should().Be(gameSetupViewModel);
         }
 
         [Fact]
-        public void Start_game_play_shows_the_game_playing_view()
+        public void Start_game_play_shows_gameboard_view()
         {
             var game = Substitute.For<IGame>();
             var gameboardViewModel = Substitute.For<IGameboardViewModel>();
@@ -83,9 +84,9 @@ namespace RISK.Tests.GuiWpf
             sut.ActiveItem.Should().Be(gameboardViewModel);
         }
 
-        private MainGameViewModel Initialize()
+        private MainGameViewModelDecorator Initialize()
         {
-            return new MainGameViewModel(
+            return new MainGameViewModelDecorator(
                 _gameInitializationViewModelFactory,
                 _gameboardViewModelFactory,
                 _gameSetupViewModelFactory,

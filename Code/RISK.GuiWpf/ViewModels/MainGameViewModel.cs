@@ -48,7 +48,7 @@ namespace GuiWpf.ViewModels
             root.EventAggregator.Subscribe(this);
         }
 
-        public MainGameViewModel(
+        protected MainGameViewModel(
             IGameInitializationViewModelFactory gameInitializationViewModelFactory, 
             IGameboardViewModelFactory gameboardViewModelFactory, 
             IGameSetupViewModelFactory gameSetupViewModelFactory, 

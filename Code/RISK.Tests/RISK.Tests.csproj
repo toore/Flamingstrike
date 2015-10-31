@@ -110,6 +110,7 @@
     <Compile Include="Builders\CardBuilder.cs" />
     <Compile Include="Builders\GameSetupBuilder.cs" />
     <Compile Include="GuiWpf\NoGuiThreadDispatcher.cs" />
+    <Compile Include="GuiWpf\MainGameViewModelDecorator.cs" />
     <Compile Include="GuiWpf\SynchronousTaskEx.cs" />
     <Compile Include="GuiWpf\WorldMapModelFactoryTests.cs" />
     <Compile Include="Builders\TerritoryIdBuilder.cs" />

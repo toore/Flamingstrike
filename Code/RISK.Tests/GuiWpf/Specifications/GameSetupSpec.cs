@@ -81,19 +81,6 @@ namespace RISK.Tests.GuiWpf.Specifications
         }
     }
 
-    internal class MainGameViewModelDecorator : MainGameViewModel
-    {
-        public MainGameViewModelDecorator(Root root)
-            : base(root)
-        {
-        }
-
-        public new void OnInitialize()
-        {
-            base.OnInitialize();
-        }
-    }
-
     internal class AutoRespondingUserInteractor : IUserInteractor
     {
         public int NumberOfSelectTerritoryRequests { get; private set; }
