@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 
 namespace GuiWpf.Extensions
 {
@@ -16,6 +17,11 @@ namespace GuiWpf.Extensions
             {
                 source.Add(r);
             }
+        }
+
+        public static bool IsEmpty<T>(this IEnumerable<T> collection)
+        {
+            return !collection.Any();
         }
     }
 }

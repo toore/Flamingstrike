@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Caliburn.Micro;
 using FluentAssertions;
+using GuiWpf.Extensions;
 using GuiWpf.Services;
 using GuiWpf.ViewModels;
 using GuiWpf.ViewModels.Gameplay;
@@ -58,8 +59,6 @@ namespace RISK.Tests.GuiWpf
             _worldMapViewModel.WorldMapViewModels.Add(layoutViewModel2);
             _worldMapViewModel.WorldMapViewModels.Add(textViewModel2);
 
-            //_worldMapViewModelFactory.Create(Arg.Is(worldMap), Arg.Any<Action<ITerritory>>(), Arg.Any<IEnumerable<ITerritory>>()).Returns(_worldMapViewModel);
-
             _sut = new GameboardViewModel(
                 _game,
                 _stateControllerFactory,
@@ -73,9 +72,9 @@ namespace RISK.Tests.GuiWpf
         }
 
         [Fact]
-        public void Initializes_WorldMapViewModel_upon_activation()
+        public void Initializes_WorldMapViewModel_when_activated()
         {
-            _worldMapViewModelFactory.Create(_game.Territories, _sut.OnTerritoryClick, Arg.Is<IEnumerable<ITerritoryId>>(x => !x.Any()))
+            _worldMapViewModelFactory.Create(_game.Territories, _sut.OnTerritoryClick, Arg.Is<IEnumerable<ITerritoryId>>(x => x.IsEmpty()))
                 .Returns(_worldMapViewModel);
 
             _sut.Activate();
