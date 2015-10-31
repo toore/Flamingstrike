@@ -14,7 +14,7 @@ namespace RISK.Tests.GuiWpf.Specifications
     public class GameSetupSpec : SpecBase<GameSetupSpec>
     {
         private MainGameViewModelDecorator _mainGameViewModel;
-        private IGameSetupViewModel _setupViewModel;
+        private GameSetupViewModel _setupViewModel;
         private AutoRespondingUserInteractor _userInteractor;
 
         [Fact]
@@ -60,7 +60,7 @@ namespace RISK.Tests.GuiWpf.Specifications
 
             gameSettingsViewModel.Confirm();
 
-            _setupViewModel = (IGameSetupViewModel)_mainGameViewModel.ActiveItem;
+            _setupViewModel = (GameSetupViewModel)_mainGameViewModel.ActiveItem;
             _setupViewModel.Activate();
 
             return this;

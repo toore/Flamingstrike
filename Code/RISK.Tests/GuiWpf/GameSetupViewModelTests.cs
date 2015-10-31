@@ -21,6 +21,8 @@ namespace RISK.Tests.GuiWpf
         private readonly IDialogManager _dialogManager;
         private readonly IEventAggregator _eventAggregator;
         private readonly IUserInteractor _userInteractor;
+        private readonly NoGuiThreadDispatcher _guiThreadDispatcher;
+        private readonly SynchronousTaskEx _taskScheduler;
         private readonly GameSetupViewModelFactory _gameSetupViewModelFactory;
         private readonly IAlternateGameSetup _alternateGameSetup;
 
@@ -31,8 +33,8 @@ namespace RISK.Tests.GuiWpf
             _dialogManager = Substitute.For<IDialogManager>();
             _eventAggregator = Substitute.For<IEventAggregator>();
             _userInteractor = Substitute.For<IUserInteractor>();
-            var guiThreadDispatcher = new NoGuiThreadDispatcher();
-            var taskScheduler = new SynchronousTaskEx();
+            _guiThreadDispatcher = new NoGuiThreadDispatcher();
+            _taskScheduler = new SynchronousTaskEx();
 
             _gameSetupViewModelFactory = new GameSetupViewModelFactory(
                 _gameFactory,
@@ -40,8 +42,8 @@ namespace RISK.Tests.GuiWpf
                 _dialogManager,
                 _eventAggregator,
                 _userInteractor,
-                guiThreadDispatcher,
-                taskScheduler);
+                _guiThreadDispatcher,
+                _taskScheduler);
 
             _alternateGameSetup = Substitute.For<IAlternateGameSetup>();
         }
@@ -141,10 +143,10 @@ namespace RISK.Tests.GuiWpf
 
         private GameSetupViewModel InitializeAndActivate()
         {
-            var gameSetupViewModel = _gameSetupViewModelFactory.Create(_alternateGameSetup);
+            var gameSetupViewModel = (GameSetupViewModel)_gameSetupViewModelFactory.Create(_alternateGameSetup);
             gameSetupViewModel.Activate();
 
-            return (GameSetupViewModel)gameSetupViewModel;
+            return gameSetupViewModel;
         }
     }
 }

@@ -21,7 +21,7 @@ namespace GuiWpf.ViewModels.Gameplay
         private readonly IGameOverViewModelFactory _gameOverViewModelFactory;
         private readonly IDialogManager _dialogManager;
         private readonly IEventAggregator _eventAggregator;
-        private IInteractionStateFactory _interactionStateFactory;
+        private readonly IInteractionStateFactory _interactionStateFactory;
 
         public GameboardViewModelFactory(
             IStateControllerFactory stateControllerFactory,

@@ -10,10 +10,7 @@ using RISK.Application.World;
 
 namespace GuiWpf.ViewModels.Setup
 {
-    public interface IGameSetupViewModel : IMainViewModel
-    {
-        void Activate();
-    }
+    public interface IGameSetupViewModel : IMainViewModel {}
 
     public class GameSetupViewModel : Screen, ITerritoryRequestHandler, IGameSetupViewModel
     {
