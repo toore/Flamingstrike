@@ -31,7 +31,7 @@ namespace GuiWpf.ViewModels
         public IAlternateGameSetupFactory AlternateGameSetupFactory { get; private set; }
         public GameFactory GameFactory { get; private set; }
         public IStateControllerFactory StateControllerFactory { get; private set; }
-        public IInteractionStateFactory InteractionStateFactory { get; set; }
+        public IInteractionStateFactory InteractionStateFactory { get; private set; }
 
         public Root()
         {
@@ -47,8 +47,8 @@ namespace GuiWpf.ViewModels
             var shuffler = new FisherYatesShuffler(randomWrapper);
             var dice = new Dice(randomWrapper);
             var diceRoller = new DicesRoller(dice);
-            var interactionStateFactory = new InteractionStateFactory();
             StateControllerFactory = new StateControllerFactory();
+            InteractionStateFactory = new InteractionStateFactory();
             var startingInfantryCalculator = new StartingInfantryCalculator();
             var gameboardRules = new GameRules();
             var cardFactory = new CardFactory();
