@@ -96,7 +96,7 @@ namespace GuiWpf.ViewModels.Setup
         private void UpdateView(ITerritoryRequestParameter territoryRequestParameter)
         {
             var worldMapViewModel = _worldMapViewModelFactory.Create(
-                territoryRequestParameter.GameboardTerritories,
+                territoryRequestParameter.Territories,
                 x => _userInteractor.SelectTerritory(x),
                 territoryRequestParameter.EnabledTerritories);
 
