@@ -30,13 +30,13 @@ namespace RISK.Tests.GuiWpf.Interaction
         [Fact]
         public void Click_enters_attack_state()
         {
-            var expected = Substitute.For<IInteractionState>();
-            _interactionStateFactory.CreateAttackState().Returns(expected);
+            var attackState = Substitute.For<IInteractionState>();
+            _interactionStateFactory.CreateAttackState().Returns(attackState);
             var territory = CreateTerritoryOccupiedByCurrentPlayer();
 
             _sut.OnClick(territory);
 
-            _sut.CurrentState.Should().Be(expected);
+            _sut.CurrentState.Should().Be(attackState);
         }
 
         [Fact]

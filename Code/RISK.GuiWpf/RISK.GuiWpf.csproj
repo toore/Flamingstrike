@@ -89,7 +89,7 @@
     <Compile Include="ViewModels\Gameplay\Interaction\SelectState.cs" />
     <Compile Include="ViewModels\Gameplay\Interaction\StateController.cs" />
     <Compile Include="ViewModels\Gameplay\Interaction\StateControllerFactory.cs" />
-    <Compile Include="ViewModels\Gameplay\Interaction\TurnEndState.cs" />
+    <Compile Include="ViewModels\Gameplay\Interaction\EndTurnState.cs" />
     <Compile Include="ViewModels\Gameplay\Map\IWorldMapItemViewModelVisitor.cs" />
     <Compile Include="ViewModels\Gameplay\Map\WorldMapItemUpdater.cs" />
     <Compile Include="ViewModels\IConfirmViewModelFactory.cs" />

@@ -6,6 +6,7 @@ namespace GuiWpf.ViewModels.Gameplay.Interaction
         IInteractionState CreateAttackState();
         IInteractionState CreateFortifySelectState();
         IInteractionState CreateFortifyMoveState();
+        IInteractionState CreateEndTurnState();
     }
 
     public class InteractionStateFactory : IInteractionStateFactory
@@ -28,6 +29,11 @@ namespace GuiWpf.ViewModels.Gameplay.Interaction
         public IInteractionState CreateFortifyMoveState()
         {
             return new FortifyMoveState(this);
+        }
+
+        public IInteractionState CreateEndTurnState()
+        {
+            return new EndTurnState();
         }
     }
 }

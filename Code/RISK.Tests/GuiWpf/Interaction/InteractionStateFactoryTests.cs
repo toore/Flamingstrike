@@ -36,5 +36,11 @@ namespace RISK.Tests.GuiWpf.Interaction
         {
             _sut.CreateFortifyMoveState().Should().BeOfType<FortifyMoveState>();
         }
+
+        [Fact]
+        public void Creates_end_turn_state()
+        {
+            _sut.CreateEndTurnState().Should().BeOfType<EndTurnState>();
+        }
     }
 }

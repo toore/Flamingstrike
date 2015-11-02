@@ -5,9 +5,11 @@ namespace GuiWpf.ViewModels.Gameplay.Interaction
 {
     public class FortifyMoveState : IInteractionState
     {
-        public FortifyMoveState(InteractionStateFactory interactionStateFactory)
+        private readonly IInteractionStateFactory _interactionStateFactory;
+
+        public FortifyMoveState(IInteractionStateFactory interactionStateFactory)
         {
-            throw new NotImplementedException();
+            _interactionStateFactory = interactionStateFactory;
         }
 
         public bool CanClick(IStateController stateController, ITerritoryId territoryId)
