@@ -15,13 +15,18 @@ namespace RISK.Tests.GuiWpf.Interaction
         }
 
         [Fact]
-        public void Can_click_adjacent_territory_occupied_by_current_player()
+        public void Can_click_fortification_candidate()
         {
-            throw new NotImplementedException();
+            var fortificationCandidate = Substitute.For<ITerritoryId>();
+            var selectedTerritoryId = Substitute.For<ITerritoryId>();
+            _game.CanFortify(selectedTerritoryId, fortificationCandidate).Returns(true);
+            _sut.SelectedTerritoryId = selectedTerritoryId;
+
+            _sut.AssertCanClickAndCanBeInvoked(fortificationCandidate);
         }
 
         [Fact]
-        public void Can_not_click_remote_territory()
+        public void Click_on_fortification_candidate_fortifies()
         {
             // inte egen
             // inte annans

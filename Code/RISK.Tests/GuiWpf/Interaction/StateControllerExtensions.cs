@@ -7,7 +7,7 @@ namespace RISK.Tests.GuiWpf.Interaction
 {
     public static class StateControllerExtensions
     {
-        public static void AssertCanClick(this IStateController stateController, ITerritoryId territoryId)
+        public static void AssertCanClickAndCanBeInvoked(this IStateController stateController, ITerritoryId territoryId)
         {
             stateController.CanClick(territoryId).Should().BeTrue();
 
@@ -15,7 +15,7 @@ namespace RISK.Tests.GuiWpf.Interaction
             act.ShouldNotThrow<InvalidOperationException>();
         }
 
-        public static void AssertCanNotClick(this IStateController stateController, ITerritoryId territoryId)
+        public static void AssertCanNotClickAndThrowsIfInvoked(this IStateController stateController, ITerritoryId territoryId)
         {
             stateController.CanClick(territoryId).Should().BeFalse();
 

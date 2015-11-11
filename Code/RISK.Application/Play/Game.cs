@@ -22,8 +22,9 @@ namespace RISK.Application.Play
         IPlayer CurrentPlayer { get; }
         IReadOnlyList<ITerritory> Territories { get; }
         bool IsGameOver();
-        bool CanAttack(ITerritoryId attackingTerritoryId, ITerritoryId attackedTerritoryId);
         bool IsCurrentPlayerOccupyingTerritory(ITerritoryId territoryId);
+        bool CanAttack(ITerritoryId attackingTerritoryId, ITerritoryId territoryIdToAttack);
+        bool CanFortify(ITerritoryId sourceTerritory, ITerritoryId territoryIdToFortify);
     }
 
     public class Game : IGame
@@ -93,12 +94,17 @@ namespace RISK.Application.Play
             return allTerritoriesAreOccupiedBySamePlayer;
         }
 
-        public bool CanAttack(ITerritoryId attackingTerritoryId, ITerritoryId attackedTerritoryId)
+        public bool CanAttack(ITerritoryId attackingTerritoryId, ITerritoryId territoryIdToAttack)
         {
             var attackeeCandidates = _gameRules.GetAttackeeCandidates(attackingTerritoryId, Territories);
-            var canAttack = attackeeCandidates.Contains(attackedTerritoryId);
+            var canAttack = attackeeCandidates.Contains(territoryIdToAttack);
 
             return canAttack;
+        }
+
+        public bool CanFortify(ITerritoryId sourceTerritory, ITerritoryId territoryIdToFortify)
+        {
+            throw new NotImplementedException();
         }
 
         public bool IsCurrentPlayerOccupyingTerritory(ITerritoryId territoryId)

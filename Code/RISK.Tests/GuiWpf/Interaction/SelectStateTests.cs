@@ -18,13 +18,13 @@ namespace RISK.Tests.GuiWpf.Interaction
         {
             var territory = CreateTerritoryOccupiedByCurrentPlayer();
 
-            _sut.AssertCanClick(territory);
+            _sut.AssertCanClickAndCanBeInvoked(territory);
         }
 
         [Fact]
         public void Can_not_click_territory_not_occupied_by_current_player()
         {
-            _sut.AssertCanNotClick(Substitute.For<ITerritoryId>());
+            _sut.AssertCanNotClickAndThrowsIfInvoked(Substitute.For<ITerritoryId>());
         }
 
         [Fact]
@@ -53,6 +53,7 @@ namespace RISK.Tests.GuiWpf.Interaction
         {
             var territory = Substitute.For<ITerritoryId>();
             _game.IsCurrentPlayerOccupyingTerritory(territory).Returns(true);
+
             return territory;
         }
     }

@@ -1,5 +1,3 @@
-using System;
-using FluentAssertions;
 using GuiWpf.ViewModels.Gameplay.Interaction;
 using NSubstitute;
 using RISK.Application.World;
@@ -17,15 +15,7 @@ namespace RISK.Tests.GuiWpf.Interaction
         [Fact]
         public void Can_not_click_any_territory()
         {
-            throw new NotImplementedException();
-        }
-
-        [Fact]
-        public void Click_on_any_territory_throws()
-        {
-            Action act = () => _sut.OnClick(Substitute.For<ITerritoryId>());
-
-            act.ShouldThrow<InvalidOperationException>();
+            _sut.AssertCanNotClickAndThrowsIfInvoked(Substitute.For<ITerritoryId>());
         }
     }
 }

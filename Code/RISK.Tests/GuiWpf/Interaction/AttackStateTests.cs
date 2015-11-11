@@ -44,22 +44,13 @@ namespace RISK.Tests.GuiWpf.Interaction
         [Fact]
         public void Can_not_click_on_remote_territory()
         {
-            _sut.AssertCanNotClick(Substitute.For<ITerritoryId>());
-        }
-
-        [Fact]
-        public void Click_on_remote_territory_should_throw()
-        {
-            var remoteTerritory = Substitute.For<ITerritoryId>();
-            Action act = () => _sut.OnClick(remoteTerritory);
-
-            act.ShouldThrow<InvalidOperationException>();
+            _sut.AssertCanNotClickAndThrowsIfInvoked(Substitute.For<ITerritoryId>());
         }
 
         [Fact]
         public void Can_click_on_selected_territory()
         {
-            _sut.AssertCanClick(_selectedTerritoryId);
+            _sut.AssertCanClickAndCanBeInvoked(_selectedTerritoryId);
         }
 
         [Fact]

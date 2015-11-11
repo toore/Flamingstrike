@@ -7,12 +7,12 @@ namespace GuiWpf.ViewModels.Gameplay.Interaction
     {
         public bool CanClick(IStateController stateController, ITerritoryId territoryId)
         {
-            throw new NotImplementedException();
+            return false;
         }
 
         public void OnClick(IStateController stateController, ITerritoryId territoryId)
         {
-            throw new NotImplementedException();
+            throw new InvalidOperationException();
         }
     }
 }
