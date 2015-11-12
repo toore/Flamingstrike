@@ -1,5 +1,4 @@
-﻿using System;
-using FluentAssertions;
+﻿using FluentAssertions;
 using GuiWpf.ViewModels.Gameplay.Interaction;
 using NSubstitute;
 using RISK.Application.World;
@@ -14,24 +13,23 @@ namespace RISK.Tests.GuiWpf.Interaction
 
         public AttackStateTests()
         {
-            _selectedTerritoryId = Make.TerritoryId.Build();
+            _selectedTerritoryId = Substitute.For<ITerritoryId>();
 
             _sut.CurrentState = new AttackState(_interactionStateFactory);
             _sut.SelectedTerritoryId = _selectedTerritoryId;
         }
 
         [Fact]
-        public void Can_click_attackee_candidate()
+        public void Can_click_territory_that_can_be_attacked()
         {
-            var attackedTerritory = Substitute.For<ITerritoryId>();
-            //_game.GetAttackeeCandidates(_selectedTerritory).Returns(new[] { attackeeCandidate });
-            _game.CanAttack(_selectedTerritoryId, attackedTerritory).Returns(true);
+            var territoryIdToAttack = Substitute.For<ITerritoryId>();
+            _game.CanAttack(_selectedTerritoryId, territoryIdToAttack).Returns(true);
 
-            _sut.CanClick(attackedTerritory).Should().BeTrue();
+            _sut.AssertCanClickAndOnClickCanBeInvoked(territoryIdToAttack);
         }
 
         [Fact]
-        public void Click_on_attackee_candidate_attacks()
+        public void OnClick_attacks()
         {
             var attackeeCandidate = Substitute.For<ITerritoryId>();
             _game.CanAttack(_selectedTerritoryId, attackeeCandidate).Returns(true);
@@ -44,17 +42,17 @@ namespace RISK.Tests.GuiWpf.Interaction
         [Fact]
         public void Can_not_click_on_remote_territory()
         {
-            _sut.AssertCanNotClickAndThrowsIfInvoked(Substitute.For<ITerritoryId>());
+            _sut.AssertCanNotClickAndOnClickThrowsWhenInvoked(Substitute.For<ITerritoryId>());
         }
 
         [Fact]
         public void Can_click_on_selected_territory()
         {
-            _sut.AssertCanClickAndCanBeInvoked(_selectedTerritoryId);
+            _sut.AssertCanClickAndOnClickCanBeInvoked(_selectedTerritoryId);
         }
 
         [Fact]
-        public void Click_on_selected_territory_enters_select_state()
+        public void OnClick_on_selected_territory_enters_select_state()
         {
             var selectState = Substitute.For<IInteractionState>();
             _interactionStateFactory.CreateSelectState().Returns(selectState);
@@ -66,7 +64,7 @@ namespace RISK.Tests.GuiWpf.Interaction
         }
 
         [Fact]
-        public void When_entering_select_state_the_selected_territory_is_reset()
+        public void OnClick_resets_selected_territory_before_entering_select_state()
         {
             _sut.OnClick(_selectedTerritoryId);
 

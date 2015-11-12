@@ -1,6 +1,7 @@
 ﻿using GuiWpf.ViewModels.Gameplay.Interaction;
 using NSubstitute;
 using RISK.Application.Play;
+using RISK.Application.World;
 
 namespace RISK.Tests.GuiWpf.Interaction
 {
@@ -16,6 +17,14 @@ namespace RISK.Tests.GuiWpf.Interaction
             _sut = new StateController(_game);
 
             _interactionStateFactory = Substitute.For<IInteractionStateFactory>();
+        }
+
+        protected ITerritoryId CreateTerritoryOccupiedByCurrentPlayer()
+        {
+            var territory = Substitute.For<ITerritoryId>();
+            _game.IsCurrentPlayerOccupyingTerritory(territory).Returns(true);
+
+            return territory;
         }
     }
 }

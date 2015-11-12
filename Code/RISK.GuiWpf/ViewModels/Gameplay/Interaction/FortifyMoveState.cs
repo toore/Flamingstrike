@@ -14,49 +14,49 @@ namespace GuiWpf.ViewModels.Gameplay.Interaction
 
         public bool CanClick(IStateController stateController, ITerritoryId territoryId)
         {
-            throw new NotImplementedException();
+            return CanFortify(stateController, territoryId)
+                   ||
+                   CanDeselect(stateController, territoryId);
         }
 
         public void OnClick(IStateController stateController, ITerritoryId territoryId)
         {
-            throw new NotImplementedException();
+            if (CanDeselect(stateController, territoryId))
+            {
+                Deselect(stateController);
+            }
+            else if (CanFortify(stateController, territoryId))
+            {
+                Fortify(stateController, territoryId);
+            }
+            else
+            {
+                throw new InvalidOperationException();
+            }
         }
 
-        //public FortifyMoveState(ITerritory selectedTerritory)
-        //{
-        //    SelectedTerritory = selectedTerritory;
-        //}
+        private static bool CanDeselect(IStateController stateController, ITerritoryId territoryId)
+        {
+            return territoryId == stateController.SelectedTerritoryId;
+        }
 
-        //public ITerritory SelectedTerritory { get; }
+        private void Deselect(IStateController stateController)
+        {
+            stateController.CurrentState = _interactionStateFactory.CreateFortifySelectState();
+            stateController.SelectedTerritoryId = null;
+        }
 
-        //public bool CanClick(ITerritory territory)
-        //{
-        //    return true;
+        private void Fortify(IStateController stateController, ITerritoryId territoryId)
+        {
+            stateController.Game.Fortify(stateController.SelectedTerritoryId, territoryId);
+            stateController.CurrentState = _interactionStateFactory.CreateEndTurnState();
+        }
 
-        //    //return
-        //    //    SelectedTerritory.IsBordering(territory)
-        //    //        &&
-        //    //    territory.Occupant == Player;
-        //}
-
-        //public void OnClick(ITerritory territory)
-        //{
-        //    throw new NotImplementedException();
-        //}
-
-        ////public bool CanFortify(ILocation location)
-        ////{
-        ////    return SelectedTerritory.Location.IsBordering(location) 
-        ////        && 
-        ////        _worldMap.GetTerritory(location).Occupant == Player;
-        ////}
-
-        ////public void Fortify(ILocation location, int armies)
-        ////{
-        ////    _worldMap.GetTerritory(location).Armies += armies;
-        ////    SelectedTerritory.Armies -= armies;
-
-        ////    _stateController.CurrentState = _interactionStateFactory.CreateFortifiedState(Player, _worldMap);
-        ////}
+        private static bool CanFortify(IStateController stateController, ITerritoryId territoryIdToFortify)
+        {
+            var sourceTerritory = stateController.SelectedTerritoryId;
+            var canFortify = stateController.Game.CanFortify(sourceTerritory, territoryIdToFortify);
+            return canFortify;
+        }
     }
 }

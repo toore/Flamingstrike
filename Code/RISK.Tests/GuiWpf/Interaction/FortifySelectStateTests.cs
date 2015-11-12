@@ -1,4 +1,4 @@
-﻿using System;
+﻿using FluentAssertions;
 using GuiWpf.ViewModels.Gameplay.Interaction;
 using NSubstitute;
 using RISK.Application.World;
@@ -16,21 +16,36 @@ namespace RISK.Tests.GuiWpf.Interaction
         [Fact]
         public void Can_click_territory_occupied_by_current_player()
         {
-            _sut.AssertCanClickAndCanBeInvoked(Substitute.For<ITerritoryId>());
-        }
-
-        [Fact]
-        public void Click_on_territory_occupied_by_current_player_enters_fortify_move_state_and_selects_territory()
-        {
-            _sut.OnClick(null);
-
-            throw new NotImplementedException();
+            var territoryId = CreateTerritoryOccupiedByCurrentPlayer();
+            _sut.AssertCanClickAndOnClickCanBeInvoked(territoryId);
         }
 
         [Fact]
         public void Can_not_click_territory_not_occupied_by_current_player()
         {
-            _sut.AssertCanNotClickAndThrowsIfInvoked(Substitute.For<ITerritoryId>());
+            _sut.AssertCanNotClickAndOnClickThrowsWhenInvoked(Substitute.For<ITerritoryId>());
+        }
+
+        [Fact]
+        public void OnClick_enters_fortify_move_state()
+        {
+            var fortifyMoveState = Substitute.For<IInteractionState>();
+            _interactionStateFactory.CreateFortifyMoveState().Returns(fortifyMoveState);
+            var territory = CreateTerritoryOccupiedByCurrentPlayer();
+
+            _sut.OnClick(territory);
+
+            _sut.CurrentState.Should().Be(fortifyMoveState);
+        }
+
+        [Fact]
+        public void OnClick_sets_selected_territory_before_entering_fortify_move_state()
+        {
+            var territory = CreateTerritoryOccupiedByCurrentPlayer();
+
+            _sut.OnClick(territory);
+
+            _sut.SelectedTerritoryId.Should().Be(territory);
         }
     }
 }

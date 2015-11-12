@@ -1,9 +1,6 @@
-﻿using System;
-using RISK.Application.World;
-
-namespace GuiWpf.ViewModels.Gameplay.Interaction
+﻿namespace GuiWpf.ViewModels.Gameplay.Interaction
 {
-    public class SelectState : IInteractionState
+    public class SelectState : SelectStateBase
     {
         private readonly IInteractionStateFactory _interactionStateFactory;
 
@@ -12,20 +9,9 @@ namespace GuiWpf.ViewModels.Gameplay.Interaction
             _interactionStateFactory = interactionStateFactory;
         }
 
-        public bool CanClick(IStateController stateController, ITerritoryId territoryId)
+        protected override IInteractionState CreateStateToEnterWhenSelected()
         {
-            return stateController.Game.IsCurrentPlayerOccupyingTerritory(territoryId);
-        }
-
-        public void OnClick(IStateController stateController, ITerritoryId territoryId)
-        {
-            if (!CanClick(stateController, territoryId))
-            {
-                throw new InvalidOperationException();
-            }
-
-            stateController.SelectedTerritoryId = territoryId;
-            stateController.CurrentState = _interactionStateFactory.CreateAttackState();
+            return _interactionStateFactory.CreateAttackState();
         }
     }
 }
