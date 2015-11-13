@@ -7,25 +7,17 @@ using RISK.Application.World;
 
 namespace RISK.Application.Play
 {
-    // GameStateFactory?
-
     public interface IGame
     {
-        /* Test:
-        Attack of bordering territory: occupied by player, occupied by other player
-        Attack of remote territory: occupied by player, occupied by other player
-        */
-        //IGameState Start(); // Same as EndTurn technically, but semantically different
-        void Attack(ITerritoryId attackingTerritoryId, ITerritoryId attackeeTerritoryId);
-        void Fortify(ITerritoryId selectedTerritoryId, ITerritoryId territoryIdToFortify);
-        void EndTurn();
         IPlayer CurrentPlayer { get; }
-        IReadOnlyList<ITerritory> Territories { get; }
-        bool IsGameOver();
         bool IsCurrentPlayerOccupyingTerritory(ITerritoryId territoryId);
         bool CanAttack(ITerritoryId attackingTerritoryId, ITerritoryId territoryIdToAttack);
+        void Attack(ITerritoryId attackingTerritoryId, ITerritoryId attackeeTerritoryId);
         bool CanFortify(ITerritoryId sourceIdTerritory, ITerritoryId territoryIdToFortify);
-        
+        void Fortify(ITerritoryId selectedTerritoryId, ITerritoryId territoryIdToFortify);
+        void EndTurn();
+        IReadOnlyList<ITerritory> Territories { get; }
+        bool IsGameOver();
     }
 
     public class Game : IGame
@@ -93,7 +85,8 @@ namespace RISK.Application.Play
 
         public bool IsGameOver()
         {
-            var allTerritoriesAreOccupiedBySamePlayer = Territories.Select(x => x.PlayerId)
+            var allTerritoriesAreOccupiedBySamePlayer = Territories
+                .Select(x => x.PlayerId)
                 .Distinct()
                 .Count() == 1;
 
@@ -102,8 +95,8 @@ namespace RISK.Application.Play
 
         public bool CanAttack(ITerritoryId attackingTerritoryId, ITerritoryId territoryIdToAttack)
         {
+            //Territories.Single(x=>x.TerritoryId==attackingTerritoryId).PlayerId == CurrentPlayer
             var attackeeCandidates = _gameRules.GetAttackeeCandidates(attackingTerritoryId, Territories);
-            // Vad händer om man försöker attacker ifrån en annan spelares territorium?
             var canAttack = attackeeCandidates.Contains(territoryIdToAttack);
 
             return canAttack;

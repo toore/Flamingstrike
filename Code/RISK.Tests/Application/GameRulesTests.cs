@@ -8,7 +8,7 @@ using Territory = RISK.Application.Play.Territory;
 
 namespace RISK.Tests.Application
 {
-    public class GameRulesTests
+    public abstract class GameRulesTests
     {
         private readonly IPlayerId _currentPlayerId;
         private readonly IPlayerId _otherPlayerId;
@@ -26,11 +26,11 @@ namespace RISK.Tests.Application
             _sut = new GameRules();
         }
 
-        public class Bordering_territories : GameRulesTests
+        public class GameRulesBorderingTerritoriesTests : GameRulesTests
         {
             private readonly ITerritoryId _secondAttackeeTerritoryId;
 
-            public Bordering_territories()
+            public GameRulesBorderingTerritoriesTests()
             {
                 _secondAttackeeTerritoryId = Substitute.For<ITerritoryId>();
 
@@ -96,7 +96,7 @@ namespace RISK.Tests.Application
             }
         }
 
-        public class Orphaned_territories : GameRulesTests
+        public class GameRulesOrphanedTerritoriesTests : GameRulesTests
         {
             [Fact]
             public void Can_not_attack()
