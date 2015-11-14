@@ -10,13 +10,13 @@ namespace RISK.Application.Play
     public interface IGame
     {
         IPlayer CurrentPlayer { get; }
+        IReadOnlyList<ITerritory> Territories { get; }
         bool IsCurrentPlayerOccupyingTerritory(ITerritoryId territoryId);
         bool CanAttack(ITerritoryId attackingTerritoryId, ITerritoryId territoryIdToAttack);
         void Attack(ITerritoryId attackingTerritoryId, ITerritoryId attackeeTerritoryId);
         bool CanFortify(ITerritoryId sourceIdTerritory, ITerritoryId territoryIdToFortify);
         void Fortify(ITerritoryId selectedTerritoryId, ITerritoryId territoryIdToFortify);
         void EndTurn();
-        IReadOnlyList<ITerritory> Territories { get; }
         bool IsGameOver();
     }
 
@@ -43,9 +43,30 @@ namespace RISK.Application.Play
         public IPlayer CurrentPlayer { get; private set; }
         public IReadOnlyList<ITerritory> Territories { get; }
 
+        public bool IsCurrentPlayerOccupyingTerritory(ITerritoryId territoryId)
+        {
+            var territory = Territories.Get(territoryId);
+            var isCurrentPlayerOccupyingTerritory = territory.PlayerId == CurrentPlayer.PlayerId;
+
+            return isCurrentPlayerOccupyingTerritory;
+        }
+
         private void SetStartingPlayer()
         {
             CurrentPlayer = _players.First();
+        }
+
+        public bool CanAttack(ITerritoryId attackingTerritoryId, ITerritoryId territoryIdToAttack)
+        {
+            if (!IsCurrentPlayerOccupyingTerritory(attackingTerritoryId))
+            {
+                return false;
+            }
+
+            var attackeeCandidates = _gameRules.GetAttackeeCandidates(attackingTerritoryId, Territories);
+            var canAttack = attackeeCandidates.Contains(territoryIdToAttack);
+
+            return canAttack;
         }
 
         public void Attack(ITerritoryId attackingTerritoryId, ITerritoryId attackeeTerritoryId)
@@ -60,6 +81,11 @@ namespace RISK.Application.Play
             //    _playerShouldReceiveCardWhenTurnEnds = true;
             //    return AttackResult.SucceededAndOccupying;
             //}
+        }
+
+        public bool CanFortify(ITerritoryId sourceIdTerritory, ITerritoryId territoryIdToFortify)
+        {
+            throw new NotImplementedException();
         }
 
         public void Fortify(ITerritoryId selectedTerritoryId, ITerritoryId territoryIdToFortify)
@@ -91,24 +117,6 @@ namespace RISK.Application.Play
                 .Count() == 1;
 
             return allTerritoriesAreOccupiedBySamePlayer;
-        }
-
-        public bool CanAttack(ITerritoryId attackingTerritoryId, ITerritoryId territoryIdToAttack)
-        {
-            if (!IsCurrentPlayerOccupyingTerritory(attackingTerritoryId))
-            {
-                return false;
-            }
-
-            var attackeeCandidates = _gameRules.GetAttackeeCandidates(attackingTerritoryId, Territories);
-            var canAttack = attackeeCandidates.Contains(territoryIdToAttack);
-
-            return canAttack;
-        }
-
-        public bool CanFortify(ITerritoryId sourceIdTerritory, ITerritoryId territoryIdToFortify)
-        {
-            throw new NotImplementedException();
         }
 
         //public FortifyMoveState(ITerritory selectedTerritory)
@@ -147,18 +155,5 @@ namespace RISK.Application.Play
 
         ////    _stateController.CurrentState = _interactionStateFactory.CreateFortifiedState(Player, _worldMap);
         ////}
-
-        public bool IsCurrentPlayerOccupyingTerritory(ITerritoryId territoryId)
-        {
-            var territory = Territories.Get(territoryId);
-            var isCurrentPlayerOccupyingTerritory = territory.PlayerId == CurrentPlayer.PlayerId;
-
-            return isCurrentPlayerOccupyingTerritory;
-        }
-
-        //private IGameState CreateGameState()
-        //{
-        //    return new GameState(_currentPlayer, _players, _gameboardTerritories, _gameboardRules);
-        //}
     }
 }
