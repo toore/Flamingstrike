@@ -69,8 +69,13 @@ namespace RISK.Application.Play
             return canAttack;
         }
 
-        public void Attack(ITerritoryId attackingTerritoryId, ITerritoryId attackeeTerritoryId)
+        public void Attack(ITerritoryId attackingTerritoryId, ITerritoryId territoryIdToAttack)
         {
+            if (!CanAttack(attackingTerritoryId, territoryIdToAttack))
+            {
+                throw new InvalidOperationException();
+            }
+
             // TODO: throw if attacker is not current player
             // TODO: throw if attacker is same as attackee
 

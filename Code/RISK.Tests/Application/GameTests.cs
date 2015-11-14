@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using FluentAssertions;
 using NSubstitute;
@@ -108,6 +109,12 @@ namespace RISK.Tests.Application
             }
 
             [Fact]
+            public void Attack_moves_territories_into_()
+            {
+                throw new NotImplementedException();
+            }
+
+            [Fact]
             public void Can_not_attack()
             {
                 var territories = HasTerritories(
@@ -117,7 +124,7 @@ namespace RISK.Tests.Application
 
                 var sut = Create(Make.GameSetup.Build());
 
-                sut.CanAttack(_attackingTerritoryId, _attackedTerritoryId).Should().BeFalse();
+                sut.AssertCanNotAttack(_attackingTerritoryId, _attackedTerritoryId);
             }
 
             [Fact]
@@ -130,7 +137,7 @@ namespace RISK.Tests.Application
 
                 var sut = Create(Make.GameSetup.Build());
 
-                sut.CanAttack(_attackingTerritoryId, _attackedTerritoryId).Should().BeFalse();
+                sut.AssertCanNotAttack(_attackingTerritoryId, _attackedTerritoryId);
             }
 
             private List<Territory> HasTerritories(params Territory[] territories)
@@ -218,6 +225,17 @@ namespace RISK.Tests.Application
             //    //_currentPlayerId.DidNotReceiveWithAnyArgs().AddCard(null);
             //    throw new NotImplementedException();
             //}
+        }
+    }
+
+    public static class GameTestsExtensions
+    {
+        public static void AssertCanNotAttack(this IGame sut, ITerritoryId attackingTerritoryId, ITerritoryId attackedTerritoryId)
+        {
+            Action act = () => sut.Attack(attackingTerritoryId, attackedTerritoryId);
+
+            sut.CanAttack(attackingTerritoryId, attackedTerritoryId).Should().BeFalse();
+            act.ShouldThrow<InvalidOperationException>();
         }
     }
 }
