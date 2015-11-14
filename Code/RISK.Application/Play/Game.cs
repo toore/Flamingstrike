@@ -95,7 +95,11 @@ namespace RISK.Application.Play
 
         public bool CanAttack(ITerritoryId attackingTerritoryId, ITerritoryId territoryIdToAttack)
         {
-            //Territories.Single(x=>x.TerritoryId==attackingTerritoryId).PlayerId == CurrentPlayer
+            if (!IsCurrentPlayerOccupyingTerritory(attackingTerritoryId))
+            {
+                return false;
+            }
+
             var attackeeCandidates = _gameRules.GetAttackeeCandidates(attackingTerritoryId, Territories);
             var canAttack = attackeeCandidates.Contains(territoryIdToAttack);
 
@@ -146,11 +150,10 @@ namespace RISK.Application.Play
 
         public bool IsCurrentPlayerOccupyingTerritory(ITerritoryId territoryId)
         {
-            var gameboardTerritory = Territories.Get(territoryId);
-            var isCurrentPlayerOccupyingTerritory = gameboardTerritory.PlayerId == CurrentPlayer.PlayerId;
+            var territory = Territories.Get(territoryId);
+            var isCurrentPlayerOccupyingTerritory = territory.PlayerId == CurrentPlayer.PlayerId;
 
-            //return isCurrentPlayerOccupyingTerritory;
-            throw new NotImplementedException();
+            return isCurrentPlayerOccupyingTerritory;
         }
 
         //private IGameState CreateGameState()

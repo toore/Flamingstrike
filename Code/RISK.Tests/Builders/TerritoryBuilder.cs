@@ -7,11 +7,18 @@ namespace RISK.Tests.Builders
 {
     public class TerritoryBuilder
     {
+        private ITerritoryId _territoryId = Substitute.For<ITerritoryId>();
         private IPlayerId _playerId = Substitute.For<IPlayerId>();
 
         public Territory Build()
         {
-            return new Territory(Substitute.For<ITerritoryId>(), _playerId, 0);
+            return new Territory(_territoryId, _playerId, 0);
+        }
+
+        public TerritoryBuilder TerritoryId(ITerritoryId territoryId)
+        {
+            _territoryId = territoryId;
+            return this;
         }
 
         public TerritoryBuilder Player(IPlayerId playerId)

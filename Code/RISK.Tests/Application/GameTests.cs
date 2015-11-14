@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using FluentAssertions;
 using NSubstitute;
 using RISK.Application;
@@ -43,14 +44,6 @@ namespace RISK.Tests.Application
             _playerFactory.Create(null).ReturnsForAnyArgs(players);
         }
 
-        private List<Territory> HasTerritories()
-        {
-            var territories = new List<Territory>();
-            _territoryFactory.Create(null).ReturnsForAnyArgs(territories);
-
-            return territories;
-        }
-
         public class GameInitializationTests : GameTestsBase
         {
             [Fact]
@@ -86,57 +79,66 @@ namespace RISK.Tests.Application
 
         public class GameAttackTests : GameTestsBase
         {
-            // can not attack territories if any not in map
-            // can not attack territories with same occupant
+            private readonly ITerritoryId _attackingTerritoryId = Substitute.For<ITerritoryId>();
+            private readonly ITerritoryId _attackedTerritoryId = Substitute.For<ITerritoryId>();
+            private readonly IPlayerId _playerId = Substitute.For<IPlayerId>();
+            private readonly IPlayerId _anotherPlayerId = Substitute.For<IPlayerId>();
 
-            // can not attack with other player
-
-            //Attack of bordering territory: occupied by player, occupied by other player
-            //Attack of remote territory: occupied by player, occupied by other player
+            public GameAttackTests()
+            {
+                var players = new List<IPlayer>
+                {
+                    Make.Player.PlayerId(_playerId).Build(),
+                    Make.Player.PlayerId(_anotherPlayerId).Build()
+                };
+                _playerFactory.Create(null).ReturnsForAnyArgs(players);
+            }
 
             [Fact]
             public void Can_attack()
             {
-                var attackingTerritory = Substitute.For<ITerritoryId>();
-                var attackedTerritory = Substitute.For<ITerritoryId>();
-                var territories = HasTerritories();
-                HasPlayers();
-                _gameRules.GetAttackeeCandidates(attackingTerritory, territories)
-                    .Returns(new[] { attackedTerritory });
+                var territories = HasTerritories(
+                    Make.Territory.TerritoryId(_attackingTerritoryId).Player(_playerId).Build());
+                _gameRules.GetAttackeeCandidates(_attackingTerritoryId, territories)
+                    .Returns(new[] { _attackedTerritoryId });
 
                 var sut = Create(Make.GameSetup.Build());
 
-                sut.CanAttack(attackingTerritory, attackedTerritory).Should().BeTrue();
+                sut.CanAttack(_attackingTerritoryId, _attackedTerritoryId).Should().BeTrue();
             }
 
             [Fact]
             public void Can_not_attack()
             {
-                var attackingTerritory = Substitute.For<ITerritoryId>();
-                var attackedTerritory = Substitute.For<ITerritoryId>();
-                var territories = HasTerritories();
-                HasPlayers();
-                _gameRules.GetAttackeeCandidates(attackingTerritory, territories)
-                    .Returns(new[] { Substitute.For<ITerritoryId>() });
+                var territories = HasTerritories(
+                    Make.Territory.TerritoryId(_attackingTerritoryId).Player(_playerId).Build());
+                _gameRules.GetAttackeeCandidates(_attackingTerritoryId, territories)
+                    .Returns(new ITerritoryId[] { });
 
                 var sut = Create(Make.GameSetup.Build());
 
-                sut.CanAttack(attackingTerritory, attackedTerritory).Should().BeFalse();
+                sut.CanAttack(_attackingTerritoryId, _attackedTerritoryId).Should().BeFalse();
             }
 
             [Fact]
             public void Can_not_attack_with_another_players_territory()
             {
-                var attackingTerritory = Substitute.For<ITerritoryId>();
-                var attackedTerritory = Substitute.For<ITerritoryId>();
-                var territories = HasTerritories();
-                HasPlayers();
-                _gameRules.GetAttackeeCandidates(attackingTerritory, territories)
-                    .Returns(new[] { attackedTerritory });
+                var territories = HasTerritories(
+                    Make.Territory.TerritoryId(_attackingTerritoryId).Player(_anotherPlayerId).Build());
+                _gameRules.GetAttackeeCandidates(_attackingTerritoryId, territories)
+                    .Returns(new[] { _attackedTerritoryId });
 
                 var sut = Create(Make.GameSetup.Build());
 
-                sut.CanAttack(attackingTerritory, attackedTerritory).Should().BeFalse();
+                sut.CanAttack(_attackingTerritoryId, _attackedTerritoryId).Should().BeFalse();
+            }
+
+            private List<Territory> HasTerritories(params Territory[] territories)
+            {
+                var result = territories.ToList();
+                _territoryFactory.Create(null).ReturnsForAnyArgs(result);
+
+                return result;
             }
         }
 
@@ -194,17 +196,6 @@ namespace RISK.Tests.Application
             }
 
             //[Fact]
-            //public void Player_should_not_receive_card_when_turn_ends()
-            //{
-            //    //_currentStateController.PlayerShouldReceiveCardWhenTurnEnds = false;
-
-            //    _sut.EndTurn();
-
-            //    //_currentPlayerId.DidNotReceiveWithAnyArgs().AddCard(null);
-            //    throw new NotImplementedException();
-            //}
-
-            //[Fact]
             //public void Player_should_receive_card_when_turn_ends()
             //{
             //    //_currentStateController.PlayerShouldReceiveCardWhenTurnEnds = true;
@@ -214,6 +205,17 @@ namespace RISK.Tests.Application
             //    _sut.EndTurn();
 
             //    //_currentPlayerId.Received().AddCard(card);
+            //    throw new NotImplementedException();
+            //}
+
+            //[Fact]
+            //public void Player_should_not_receive_card_when_turn_ends()
+            //{
+            //    //_currentStateController.PlayerShouldReceiveCardWhenTurnEnds = false;
+
+            //    _sut.EndTurn();
+
+            //    //_currentPlayerId.DidNotReceiveWithAnyArgs().AddCard(null);
             //    throw new NotImplementedException();
             //}
         }
