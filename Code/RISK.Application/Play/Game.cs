@@ -76,10 +76,10 @@ namespace RISK.Application.Play
                 throw new InvalidOperationException();
             }
 
-            // TODO: throw if attacker is not current player
-            // TODO: throw if attacker is same as attackee
+            var attacker = Territories.Get(attackingTerritoryId);
+            var defender = Territories.Get(territoryIdToAttack);
 
-            //_battle.Attack(from, to);
+            _battle.Attack(attacker, defender);
 
             //if (HasPlayerOccupiedTerritory(to))
             //{

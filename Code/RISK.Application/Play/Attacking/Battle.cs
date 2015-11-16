@@ -1,10 +1,11 @@
-﻿using RISK.Application.World;
+﻿using System;
+using RISK.Application.World;
 
 namespace RISK.Application.Play.Attacking
 {
     public interface IBattle
     {
-        //IGameboard Attack(IGameboard gameboard, IGameboardTerritory attacker, IGameboardTerritory defender);
+        void Attack(ITerritory attacker, ITerritory defender);
     }
 
     public class Battle : IBattle
@@ -16,6 +17,11 @@ namespace RISK.Application.Play.Attacking
         {
             _dicesRoller = dicesRoller;
             _battleCalculator = battleCalculator;
+        }
+
+        public void Attack(ITerritory attacker, ITerritory defender)
+        {
+            throw new NotImplementedException();
         }
 
         //public IGameboard Attack(IGameboard gameboard, IGameboardTerritory attacker, IGameboardTerritory defender)

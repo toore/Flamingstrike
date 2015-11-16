@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using FluentAssertions;
 using NSubstitute;
 using RISK.Application;
@@ -80,10 +79,13 @@ namespace RISK.Tests.Application
 
         public class GameAttackTests : GameTestsBase
         {
-            private readonly ITerritoryId _attackingTerritoryId = Substitute.For<ITerritoryId>();
-            private readonly ITerritoryId _attackedTerritoryId = Substitute.For<ITerritoryId>();
+            private readonly ITerritoryId _playerTerritoryId = Substitute.For<ITerritoryId>();
+            private readonly ITerritoryId _anotherPlayerTerritoryId = Substitute.For<ITerritoryId>();
             private readonly IPlayerId _playerId = Substitute.For<IPlayerId>();
             private readonly IPlayerId _anotherPlayerId = Substitute.For<IPlayerId>();
+            private readonly List<Territory> _territories;
+            private readonly Territory _inGamePlayerTerritoryId;
+            private readonly Territory _inGameAnotherPlayerTerritory;
 
             public GameAttackTests()
             {
@@ -93,59 +95,59 @@ namespace RISK.Tests.Application
                     Make.Player.PlayerId(_anotherPlayerId).Build()
                 };
                 _playerFactory.Create(null).ReturnsForAnyArgs(players);
+
+                _inGamePlayerTerritoryId = Make.Territory.TerritoryId(_playerTerritoryId).Player(_playerId).Build();
+                _inGameAnotherPlayerTerritory = Make.Territory.TerritoryId(_anotherPlayerTerritoryId).Player(_anotherPlayerId).Build();
+                _territories = new List<Territory> {
+                    _inGamePlayerTerritoryId,
+                    _inGameAnotherPlayerTerritory
+                };
+                _territoryFactory.Create(null).ReturnsForAnyArgs(_territories);
             }
 
             [Fact]
             public void Can_attack()
             {
-                var territories = HasTerritories(
-                    Make.Territory.TerritoryId(_attackingTerritoryId).Player(_playerId).Build());
-                _gameRules.GetAttackeeCandidates(_attackingTerritoryId, territories)
-                    .Returns(new[] { _attackedTerritoryId });
+                _gameRules.GetAttackeeCandidates(_playerTerritoryId, _territories)
+                    .Returns(new[] { _anotherPlayerTerritoryId });
 
                 var sut = Create(Make.GameSetup.Build());
 
-                sut.CanAttack(_attackingTerritoryId, _attackedTerritoryId).Should().BeTrue();
+                sut.CanAttack(_playerTerritoryId, _anotherPlayerTerritoryId).Should().BeTrue();
             }
 
             [Fact]
-            public void Attack_moves_territories_into_()
+            public void Attacks()
             {
-                throw new NotImplementedException();
+                _gameRules.GetAttackeeCandidates(_playerTerritoryId, _territories)
+                   .Returns(new[] { _anotherPlayerTerritoryId });
+
+                var sut = Create(Make.GameSetup.Build());
+                sut.Attack(_playerTerritoryId, _anotherPlayerTerritoryId);
+
+                _battle.Received().Attack(_inGamePlayerTerritoryId, _inGameAnotherPlayerTerritory);
             }
 
             [Fact]
             public void Can_not_attack()
             {
-                var territories = HasTerritories(
-                    Make.Territory.TerritoryId(_attackingTerritoryId).Player(_playerId).Build());
-                _gameRules.GetAttackeeCandidates(_attackingTerritoryId, territories)
+                _gameRules.GetAttackeeCandidates(_playerTerritoryId, _territories)
                     .Returns(new ITerritoryId[] { });
 
                 var sut = Create(Make.GameSetup.Build());
 
-                sut.AssertCanNotAttack(_attackingTerritoryId, _attackedTerritoryId);
+                sut.AssertCanNotAttack(_playerTerritoryId, _anotherPlayerTerritoryId);
             }
 
             [Fact]
             public void Can_not_attack_with_another_players_territory()
             {
-                var territories = HasTerritories(
-                    Make.Territory.TerritoryId(_attackingTerritoryId).Player(_anotherPlayerId).Build());
-                _gameRules.GetAttackeeCandidates(_attackingTerritoryId, territories)
-                    .Returns(new[] { _attackedTerritoryId });
+                _gameRules.GetAttackeeCandidates(_playerTerritoryId, _territories)
+                    .Returns(new[] { _anotherPlayerTerritoryId });
 
                 var sut = Create(Make.GameSetup.Build());
 
-                sut.AssertCanNotAttack(_attackingTerritoryId, _attackedTerritoryId);
-            }
-
-            private List<Territory> HasTerritories(params Territory[] territories)
-            {
-                var result = territories.ToList();
-                _territoryFactory.Create(null).ReturnsForAnyArgs(result);
-
-                return result;
+                sut.AssertCanNotAttack(_anotherPlayerTerritoryId, _playerTerritoryId);
             }
         }
 
