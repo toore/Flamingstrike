@@ -38,42 +38,64 @@ namespace RISK.Tests.Application
             return _gameFactory.Create(gamePlaySetup);
         }
 
-        private void HasPlayers()
-        {
-            var players = new List<IPlayer>(new[] { Substitute.For<IPlayer>() });
-            _playerFactory.Create(null).ReturnsForAnyArgs(players);
-        }
-
         public class GameInitializationTests : GameTestsBase
         {
-            [Fact]
-            public void Initializes_with_first_player_taking_turn_first()
+            private readonly IGamePlaySetup _gameSetup;
+            private readonly IPlayer _firstPlayer;
+            private readonly List<Territory> _territories;
+            private readonly ITerritoryId _territoryId;
+            private readonly ITerritoryId _anotherTerritoryId;
+
+            public GameInitializationTests()
             {
-                var gameSetup = Make.GameSetup.Build();
-                var firstPlayer = Substitute.For<IPlayer>();
-                _playerFactory.Create(gameSetup.Players).Returns(new List<IPlayer>
+                _gameSetup = Make.GameSetup.Build();
+                _firstPlayer = Substitute.For<IPlayer>();
+                _playerFactory.Create(_gameSetup.Players).Returns(new List<IPlayer>
                 {
-                    firstPlayer,
-                    Substitute.For<IPlayer>(),
+                    _firstPlayer,
                     Substitute.For<IPlayer>()
                 });
 
-                var sut = Create(gameSetup);
+                _territoryId = Substitute.For<ITerritoryId>();
+                _anotherTerritoryId = Substitute.For<ITerritoryId>();
+                _territories = new List<Territory>
+                {
+                    Make.Territory.TerritoryId(_territoryId).Build(),
+                    Make.Territory.TerritoryId(_anotherTerritoryId).Build()
+                };
+                _territoryFactory.Create(_gameSetup.Territories).Returns(_territories);
+            }
 
-                sut.CurrentPlayer.Should().Be(firstPlayer);
+            [Fact]
+            public void Initializes_with_first_player_taking_turn_first()
+            {
+                var sut = Create(_gameSetup);
+
+                sut.CurrentPlayer.Should().Be(_firstPlayer);
             }
 
             [Fact]
             public void Initializes_territories()
             {
-                var gameSetup = Make.GameSetup.Build();
-                var expected = new List<Territory> { Make.Territory.Build() };
-                _territoryFactory.Create(gameSetup.Territories).Returns(expected);
-                HasPlayers();
+                var sut = Create(_gameSetup);
 
-                var sut = Create(gameSetup);
+                sut.Territories.Should().BeEquivalentTo(_territories);
+            }
 
-                sut.Territories.Should().BeEquivalentTo(expected);
+            [Fact]
+            public void Can_not_move_armies_into_captured_territory()
+            {
+                var sut = Create(_gameSetup);
+
+                sut.CanMoveArmiesIntoCapturedTerritory().Should().BeFalse();
+            }
+
+            [Fact]
+            public void Can_not_fortify()
+            {
+                var sut = Create(_gameSetup);
+
+                sut.CanFortify(_territoryId, _anotherTerritoryId).Should().BeFalse();
             }
         }
 
@@ -98,7 +120,8 @@ namespace RISK.Tests.Application
 
                 _inGamePlayerTerritoryId = Make.Territory.TerritoryId(_playerTerritoryId).Player(_playerId).Build();
                 _inGameAnotherPlayerTerritory = Make.Territory.TerritoryId(_anotherPlayerTerritoryId).Player(_anotherPlayerId).Build();
-                _territories = new List<Territory> {
+                _territories = new List<Territory>
+                {
                     _inGamePlayerTerritoryId,
                     _inGameAnotherPlayerTerritory
                 };
@@ -120,12 +143,24 @@ namespace RISK.Tests.Application
             public void Attacks()
             {
                 _gameRules.GetAttackeeCandidates(_playerTerritoryId, _territories)
-                   .Returns(new[] { _anotherPlayerTerritoryId });
+                    .Returns(new[] { _anotherPlayerTerritoryId });
 
                 var sut = Create(Make.GameSetup.Build());
                 sut.Attack(_playerTerritoryId, _anotherPlayerTerritoryId);
 
                 _battle.Received().Attack(_inGamePlayerTerritoryId, _inGameAnotherPlayerTerritory);
+            }
+
+            [Fact]
+            public void Can_move_armies_into_captured_territory()
+            {
+                _gameRules.GetAttackeeCandidates(_playerTerritoryId, _territories)
+                    .Returns(new[] { _anotherPlayerTerritoryId });
+
+                var sut = Create(Make.GameSetup.Build());
+                sut.Attack(_playerTerritoryId, _anotherPlayerTerritoryId);
+
+                sut.CanMoveArmiesIntoCapturedTerritory().Should().BeTrue();
             }
 
             [Fact]
@@ -182,6 +217,12 @@ namespace RISK.Tests.Application
                 var sut = Create(Make.GameSetup.Build());
 
                 sut.IsGameOver().Should().BeFalse();
+            }
+
+            private void HasPlayers()
+            {
+                var players = new List<IPlayer>(new[] { Substitute.For<IPlayer>() });
+                _playerFactory.Create(null).ReturnsForAnyArgs(players);
             }
         }
 

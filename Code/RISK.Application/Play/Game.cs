@@ -14,6 +14,8 @@ namespace RISK.Application.Play
         bool IsCurrentPlayerOccupyingTerritory(ITerritoryId territoryId);
         bool CanAttack(ITerritoryId attackingTerritoryId, ITerritoryId territoryIdToAttack);
         void Attack(ITerritoryId attackingTerritoryId, ITerritoryId attackeeTerritoryId);
+        bool CanMoveArmiesIntoCapturedTerritory();
+        void MoveArmiesIntoCapturedTerritory(int numberOfArmies);
         bool CanFortify(ITerritoryId sourceIdTerritory, ITerritoryId territoryIdToFortify);
         void Fortify(ITerritoryId selectedTerritoryId, ITerritoryId territoryIdToFortify);
         void EndTurn();
@@ -86,6 +88,16 @@ namespace RISK.Application.Play
             //    _playerShouldReceiveCardWhenTurnEnds = true;
             //    return AttackResult.SucceededAndOccupying;
             //}
+        }
+
+        public bool CanMoveArmiesIntoCapturedTerritory()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void MoveArmiesIntoCapturedTerritory(int numberOfArmies)
+        {
+            throw new NotImplementedException();
         }
 
         public bool CanFortify(ITerritoryId sourceIdTerritory, ITerritoryId territoryIdToFortify)
