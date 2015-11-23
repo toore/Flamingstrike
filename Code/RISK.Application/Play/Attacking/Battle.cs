@@ -5,7 +5,13 @@ namespace RISK.Application.Play.Attacking
 {
     public interface IBattle
     {
-        void Attack(ITerritory attacker, ITerritory defender);
+        BattleResult Attack(ITerritory attacker, ITerritory defender);
+    }
+
+    public enum BattleResult
+    {
+        NoChange,
+        DefenderEliminated
     }
 
     public class Battle : IBattle
@@ -19,7 +25,7 @@ namespace RISK.Application.Play.Attacking
             _battleCalculator = battleCalculator;
         }
 
-        public void Attack(ITerritory attacker, ITerritory defender)
+        public BattleResult Attack(ITerritory attacker, ITerritory defender)
         {
             throw new NotImplementedException();
         }

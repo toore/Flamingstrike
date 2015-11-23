@@ -30,6 +30,7 @@ namespace RISK.Application.Play
 
         private bool _playerShouldReceiveCardWhenTurnEnds;
         private readonly IReadOnlyList<IPlayer> _players;
+        private bool _mustConfirmMoveOfArmiesIntoCapturedTerritory;
 
         public Game(IReadOnlyList<IPlayer> players, IReadOnlyList<ITerritory> territories, IGameRules gameRules, ICardFactory cardFactory, IBattle battle)
         {
@@ -60,7 +61,9 @@ namespace RISK.Application.Play
 
         public bool CanAttack(ITerritoryId attackingTerritoryId, ITerritoryId territoryIdToAttack)
         {
-            if (!IsCurrentPlayerOccupyingTerritory(attackingTerritoryId))
+            if (_mustConfirmMoveOfArmiesIntoCapturedTerritory 
+                || 
+                !IsCurrentPlayerOccupyingTerritory(attackingTerritoryId))
             {
                 return false;
             }
@@ -81,7 +84,9 @@ namespace RISK.Application.Play
             var attacker = Territories.Get(attackingTerritoryId);
             var defender = Territories.Get(territoryIdToAttack);
 
-            _battle.Attack(attacker, defender);
+            var battleResult = _battle.Attack(attacker, defender);
+
+            _mustConfirmMoveOfArmiesIntoCapturedTerritory = battleResult == BattleResult.DefenderEliminated;
 
             //if (HasPlayerOccupiedTerritory(to))
             //{
@@ -92,7 +97,7 @@ namespace RISK.Application.Play
 
         public bool CanMoveArmiesIntoCapturedTerritory()
         {
-            throw new NotImplementedException();
+            return _mustConfirmMoveOfArmiesIntoCapturedTerritory;
         }
 
         public void MoveArmiesIntoCapturedTerritory(int numberOfArmies)

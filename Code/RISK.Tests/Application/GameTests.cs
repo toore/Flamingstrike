@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using FluentAssertions;
 using NSubstitute;
+using NSubstitute.ExceptionExtensions;
 using RISK.Application;
 using RISK.Application.Play;
 using RISK.Application.Play.Attacking;
@@ -106,8 +107,8 @@ namespace RISK.Tests.Application
             private readonly IPlayerId _playerId = Substitute.For<IPlayerId>();
             private readonly IPlayerId _anotherPlayerId = Substitute.For<IPlayerId>();
             private readonly List<Territory> _territories;
-            private readonly Territory _inGamePlayerTerritoryId;
-            private readonly Territory _inGameAnotherPlayerTerritory;
+            private readonly Territory _playerTerritory;
+            private readonly Territory _anotherPlayerTerritory;
 
             public GameAttackTests()
             {
@@ -118,12 +119,12 @@ namespace RISK.Tests.Application
                 };
                 _playerFactory.Create(null).ReturnsForAnyArgs(players);
 
-                _inGamePlayerTerritoryId = Make.Territory.TerritoryId(_playerTerritoryId).Player(_playerId).Build();
-                _inGameAnotherPlayerTerritory = Make.Territory.TerritoryId(_anotherPlayerTerritoryId).Player(_anotherPlayerId).Build();
+                _playerTerritory = Make.Territory.TerritoryId(_playerTerritoryId).Player(_playerId).Build();
+                _anotherPlayerTerritory = Make.Territory.TerritoryId(_anotherPlayerTerritoryId).Player(_anotherPlayerId).Build();
                 _territories = new List<Territory>
                 {
-                    _inGamePlayerTerritoryId,
-                    _inGameAnotherPlayerTerritory
+                    _playerTerritory,
+                    _anotherPlayerTerritory
                 };
                 _territoryFactory.Create(null).ReturnsForAnyArgs(_territories);
             }
@@ -148,19 +149,7 @@ namespace RISK.Tests.Application
                 var sut = Create(Make.GameSetup.Build());
                 sut.Attack(_playerTerritoryId, _anotherPlayerTerritoryId);
 
-                _battle.Received().Attack(_inGamePlayerTerritoryId, _inGameAnotherPlayerTerritory);
-            }
-
-            [Fact]
-            public void Can_move_armies_into_captured_territory()
-            {
-                _gameRules.GetAttackeeCandidates(_playerTerritoryId, _territories)
-                    .Returns(new[] { _anotherPlayerTerritoryId });
-
-                var sut = Create(Make.GameSetup.Build());
-                sut.Attack(_playerTerritoryId, _anotherPlayerTerritoryId);
-
-                sut.CanMoveArmiesIntoCapturedTerritory().Should().BeTrue();
+                _battle.Received().Attack(_playerTerritory, _anotherPlayerTerritory);
             }
 
             [Fact]
@@ -183,6 +172,34 @@ namespace RISK.Tests.Application
                 var sut = Create(Make.GameSetup.Build());
 
                 sut.AssertCanNotAttack(_anotherPlayerTerritoryId, _playerTerritoryId);
+            }
+
+            [Fact]
+            public void Can_move_armies_into_captured_territory()
+            {
+                _gameRules.GetAttackeeCandidates(_playerTerritoryId, _territories)
+                    .Returns(new[] { _anotherPlayerTerritoryId });
+                _battle.Attack(_playerTerritory, _anotherPlayerTerritory)
+                    .Returns(BattleResult.DefenderEliminated);
+
+                var sut = Create(Make.GameSetup.Build());
+                sut.Attack(_playerTerritoryId, _anotherPlayerTerritoryId);
+
+                sut.CanMoveArmiesIntoCapturedTerritory().Should().BeTrue();
+            }
+
+            [Fact]
+            public void Can_not_attack_before_move_into_captured_territory_has_been_confirmed()
+            {
+                _gameRules.GetAttackeeCandidates(_playerTerritoryId, _territories)
+                    .Returns(new[] { _anotherPlayerTerritoryId });
+                _battle.Attack(_playerTerritory, _anotherPlayerTerritory)
+                    .Returns(BattleResult.DefenderEliminated);
+
+                var sut = Create(Make.GameSetup.Build());
+                sut.Attack(_playerTerritoryId, _anotherPlayerTerritoryId);
+
+                sut.AssertCanNotAttack(_playerTerritoryId, _anotherPlayerTerritoryId);
             }
         }
 
@@ -279,6 +296,30 @@ namespace RISK.Tests.Application
 
             sut.CanAttack(attackingTerritoryId, attackedTerritoryId).Should().BeFalse();
             act.ShouldThrow<InvalidOperationException>();
+        }
+    }
+
+    public class GameTestsExtensionsTests
+    {
+        private readonly IGame _sut;
+        private readonly ITerritoryId _territoryId;
+        private readonly ITerritoryId _anotherTerritoryId;
+
+        public GameTestsExtensionsTests()
+        {
+            _territoryId = Substitute.For<ITerritoryId>();
+            _anotherTerritoryId = Substitute.For<ITerritoryId>();
+
+            _sut = Substitute.For<IGame>();
+        }
+
+        [Fact]
+        public void AssertCanNotAttack()
+        {
+            _sut.CanAttack(_territoryId, _anotherTerritoryId).Returns(false);
+            //_sut.When(x => x.Attack(_territoryId, _anotherTerritoryId)).Throw<InvalidOperationException>();
+            
+            _sut.AssertCanNotAttack(_territoryId, _anotherTerritoryId);
         }
     }
 }

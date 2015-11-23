@@ -6,12 +6,12 @@ namespace RISK.Application.Play.Attacking
 {
     public interface IBattleCalculator
     {
-        BattleResult Battle(IEnumerable<int> attack, IEnumerable<int> defence);
+        BattleCalculatorResult Battle(IEnumerable<int> attack, IEnumerable<int> defence);
     }
 
-    public class BattleResult
+    public class BattleCalculatorResult
     {
-        public BattleResult(int attackerLosses, int defenderLosses)
+        public BattleCalculatorResult(int attackerLosses, int defenderLosses)
         {
             AttackerLosses = attackerLosses;
             DefenderLosses = defenderLosses;
@@ -23,12 +23,12 @@ namespace RISK.Application.Play.Attacking
 
     public class BattleCalculator : IBattleCalculator
     {
-        public BattleResult Battle(IEnumerable<int> attack, IEnumerable<int> defence)
+        public BattleCalculatorResult Battle(IEnumerable<int> attack, IEnumerable<int> defence)
         {
             var matchedAttackAndDefenceValues = MatchAttackAndDefenceValues(attack.ToList(), defence.ToList())
                 .ToList();
 
-            return new BattleResult(
+            return new BattleCalculatorResult(
                 GetAttackerLosses(matchedAttackAndDefenceValues),
                 GetDefenderLosses(matchedAttackAndDefenceValues));
         }
