@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using FluentAssertions;
 using NSubstitute;
-using NSubstitute.ExceptionExtensions;
 using RISK.Application;
 using RISK.Application.Play;
 using RISK.Application.Play.Attacking;
@@ -39,7 +38,7 @@ namespace RISK.Tests.Application
             return _gameFactory.Create(gamePlaySetup);
         }
 
-        public class GameInitializationTests : GameTestsBase
+        public class AfterInitializationTests : GameTestsBase
         {
             private readonly IGamePlaySetup _gameSetup;
             private readonly IPlayer _firstPlayer;
@@ -47,7 +46,7 @@ namespace RISK.Tests.Application
             private readonly ITerritoryId _territoryId;
             private readonly ITerritoryId _anotherTerritoryId;
 
-            public GameInitializationTests()
+            public AfterInitializationTests()
             {
                 _gameSetup = Make.GameSetup.Build();
                 _firstPlayer = Substitute.For<IPlayer>();
@@ -82,7 +81,6 @@ namespace RISK.Tests.Application
 
                 sut.Territories.Should().BeEquivalentTo(_territories);
             }
-
             [Fact]
             public void Can_not_move_armies_into_captured_territory()
             {
@@ -100,7 +98,7 @@ namespace RISK.Tests.Application
             }
         }
 
-        public class GameAttackTests : GameTestsBase
+        public class AttackTests : GameTestsBase
         {
             private readonly ITerritoryId _playerTerritoryId = Substitute.For<ITerritoryId>();
             private readonly ITerritoryId _anotherPlayerTerritoryId = Substitute.For<ITerritoryId>();
@@ -110,7 +108,7 @@ namespace RISK.Tests.Application
             private readonly Territory _playerTerritory;
             private readonly Territory _anotherPlayerTerritory;
 
-            public GameAttackTests()
+            public AttackTests()
             {
                 var players = new List<IPlayer>
                 {
@@ -203,7 +201,7 @@ namespace RISK.Tests.Application
             }
         }
 
-        public class GameGameOverTests : GameTestsBase
+        public class GameOverTests : GameTestsBase
         {
             [Fact]
             public void Is_game_over_when_all_territories_belongs_to_one_player()
@@ -243,7 +241,7 @@ namespace RISK.Tests.Application
             }
         }
 
-        public class GameTurnEndsTests : GameTestsBase
+        public class TurnEndsTests : GameTestsBase
         {
             [Fact]
             public void End_turn_passes_turn_to_next_player()
@@ -317,7 +315,7 @@ namespace RISK.Tests.Application
         public void AssertCanNotAttack()
         {
             _sut.CanAttack(_territoryId, _anotherTerritoryId).Returns(false);
-            //_sut.When(x => x.Attack(_territoryId, _anotherTerritoryId)).Throw<InvalidOperationException>();
+            _sut.When(x => x.Attack(_territoryId, _anotherTerritoryId)).Throw<InvalidOperationException>();
             
             _sut.AssertCanNotAttack(_territoryId, _anotherTerritoryId);
         }
