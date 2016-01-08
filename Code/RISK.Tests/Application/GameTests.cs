@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using FluentAssertions;
+using FluentAssertions.Execution;
 using NSubstitute;
 using RISK.Application;
 using RISK.Application.Play;
@@ -81,12 +82,21 @@ namespace RISK.Tests.Application
 
                 sut.Territories.Should().BeEquivalentTo(_territories);
             }
+
+            [Fact]
+            public void Can_not_attack()
+            {
+                var sut = Create(_gameSetup);
+
+                sut.AssertCanNotAttack(_territoryId, _anotherTerritoryId);
+            }
+
             [Fact]
             public void Can_not_move_armies_into_captured_territory()
             {
                 var sut = Create(_gameSetup);
 
-                sut.CanMoveArmiesIntoCapturedTerritory().Should().BeFalse();
+                sut.AssertCanNotMoveArmiesIntoCapturedTerritory(1);
             }
 
             [Fact]
@@ -94,7 +104,7 @@ namespace RISK.Tests.Application
             {
                 var sut = Create(_gameSetup);
 
-                sut.CanFortify(_territoryId, _anotherTerritoryId).Should().BeFalse();
+                sut.AssertCanNotFortify(_territoryId, _anotherTerritoryId);
             }
         }
 
@@ -295,6 +305,22 @@ namespace RISK.Tests.Application
             sut.CanAttack(attackingTerritoryId, attackedTerritoryId).Should().BeFalse();
             act.ShouldThrow<InvalidOperationException>();
         }
+
+        public static void AssertCanNotMoveArmiesIntoCapturedTerritory(this IGame sut, int numberOfArmies)
+        {
+            Action act = () => sut.MoveArmiesIntoCapturedTerritory(numberOfArmies);
+
+            sut.CanMoveArmiesIntoCapturedTerritory().Should().BeFalse();
+            act.ShouldThrow<InvalidOperationException>();
+        }
+
+        public static void AssertCanNotFortify(this IGame sut, ITerritoryId attackingTerritoryId, ITerritoryId attackedTerritoryId)
+        {
+            Action act = () => sut.Fortify(attackingTerritoryId, attackedTerritoryId);
+
+            sut.CanFortify(attackingTerritoryId, attackedTerritoryId).Should().BeFalse();
+            act.ShouldThrow<InvalidOperationException>();
+        }
     }
 
     public class GameTestsExtensionsTests
@@ -302,6 +328,7 @@ namespace RISK.Tests.Application
         private readonly IGame _sut;
         private readonly ITerritoryId _territoryId;
         private readonly ITerritoryId _anotherTerritoryId;
+        private const int _numberOfArmies = 1;
 
         public GameTestsExtensionsTests()
         {
@@ -312,12 +339,68 @@ namespace RISK.Tests.Application
         }
 
         [Fact]
-        public void AssertCanNotAttack()
+        public void AssertCanNotAttack_asserts_that_CanAttack_is_false()
         {
-            _sut.CanAttack(_territoryId, _anotherTerritoryId).Returns(false);
-            _sut.When(x => x.Attack(_territoryId, _anotherTerritoryId)).Throw<InvalidOperationException>();
-            
-            _sut.AssertCanNotAttack(_territoryId, _anotherTerritoryId);
+            AssertMethodThrowsAssertionFailedExceptionWhenIsEnabled(
+                x => x.AssertCanNotAttack(_territoryId, _anotherTerritoryId),
+                x => x.CanAttack(_territoryId, _anotherTerritoryId),
+                x => x.Attack(_territoryId, _anotherTerritoryId));
+        }
+
+        [Fact]
+        public void AssertCanNotAttack_asserts_that_Attack_throws()
+        {
+            AssertMethodThrowsAssertionFailedException(
+                x => x.AssertCanNotAttack(_territoryId, _anotherTerritoryId));
+        }
+
+        [Fact]
+        public void AssertCanNotMoveArmiesIntoCapturedTerritory_asserts_that_CanMoveArmiesIntoCapturedTerritory_is_false()
+        {
+            AssertMethodThrowsAssertionFailedExceptionWhenIsEnabled(
+                x => x.AssertCanNotMoveArmiesIntoCapturedTerritory(_numberOfArmies),
+                x => x.CanMoveArmiesIntoCapturedTerritory(),
+                x => x.MoveArmiesIntoCapturedTerritory(_numberOfArmies));
+        }
+
+        [Fact]
+        public void AssertCanMoveArmiesIntoCapturedTerritory_asserts_that_MoveArmiesIntoCapturedTerritory_throws()
+        {
+            AssertMethodThrowsAssertionFailedException(
+                x => x.AssertCanNotMoveArmiesIntoCapturedTerritory(_numberOfArmies));
+        }
+
+        [Fact]
+        public void AssertCanNotFortify_asserts_that_CanFortify_is_false()
+        {
+            AssertMethodThrowsAssertionFailedExceptionWhenIsEnabled(
+                x => x.AssertCanNotFortify(_territoryId, _anotherTerritoryId),
+                x => x.CanFortify(_territoryId, _anotherTerritoryId),
+                x => x.Fortify(_territoryId, _anotherTerritoryId));
+        }
+
+        [Fact]
+        public void AssertCanNotFortify_asserts_that_Fortify_throws()
+        {
+            AssertMethodThrowsAssertionFailedException(
+                x => x.AssertCanNotFortify(_territoryId, _anotherTerritoryId));
+        }
+
+        private void AssertMethodThrowsAssertionFailedExceptionWhenIsEnabled(
+            Action<IGame> assertAction,
+            Func<IGame, bool> isEnabled,
+            Action<IGame> action)
+        {
+            isEnabled.Invoke(_sut).Returns(true);
+            _sut.When(action).Throw<InvalidOperationException>();
+
+            AssertMethodThrowsAssertionFailedException(assertAction);
+        }
+
+        private void AssertMethodThrowsAssertionFailedException(Action<IGame> assertAction)
+        {
+            Action act = () => assertAction.Invoke(_sut);
+            act.ShouldThrow<AssertionFailedException>();
         }
     }
 }

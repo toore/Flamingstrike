@@ -61,8 +61,8 @@ namespace RISK.Application.Play
 
         public bool CanAttack(ITerritoryId attackingTerritoryId, ITerritoryId territoryIdToAttack)
         {
-            if (_mustConfirmMoveOfArmiesIntoCapturedTerritory 
-                || 
+            if (_mustConfirmMoveOfArmiesIntoCapturedTerritory
+                ||
                 !IsCurrentPlayerOccupyingTerritory(attackingTerritoryId))
             {
                 return false;
@@ -102,16 +102,26 @@ namespace RISK.Application.Play
 
         public void MoveArmiesIntoCapturedTerritory(int numberOfArmies)
         {
+            if (!CanMoveArmiesIntoCapturedTerritory())
+            {
+                throw new InvalidOperationException();
+            }
+
             throw new NotImplementedException();
         }
 
         public bool CanFortify(ITerritoryId sourceIdTerritory, ITerritoryId territoryIdToFortify)
         {
-            throw new NotImplementedException();
+            return false;
         }
 
         public void Fortify(ITerritoryId selectedTerritoryId, ITerritoryId territoryIdToFortify)
         {
+            if (!CanFortify(selectedTerritoryId, territoryIdToFortify))
+            {
+                throw new InvalidOperationException();
+            }
+
             throw new NotImplementedException();
         }
 
