@@ -81,18 +81,24 @@ namespace RISK.Application.Play
                 throw new InvalidOperationException();
             }
 
-            var attacker = Territories.Get(attackingTerritoryId);
-            var defender = Territories.Get(territoryIdToAttack);
-
-            var battleResult = _battle.Attack(attacker, defender);
-
-            _mustConfirmMoveOfArmiesIntoCapturedTerritory = battleResult == BattleResult.DefenderEliminated;
+            _mustConfirmMoveOfArmiesIntoCapturedTerritory = 
+                IsDefenderEliminatedAfterAttack(attackingTerritoryId, territoryIdToAttack);
 
             //if (HasPlayerOccupiedTerritory(to))
             //{
             //    _playerShouldReceiveCardWhenTurnEnds = true;
             //    return AttackResult.SucceededAndOccupying;
             //}
+        }
+
+        private bool IsDefenderEliminatedAfterAttack(ITerritoryId attackingTerritoryId, ITerritoryId territoryIdToAttack)
+        {
+            var attacker = Territories.Get(attackingTerritoryId);
+            var defender = Territories.Get(territoryIdToAttack);
+
+            var battleResult = _battle.Attack(attacker, defender);
+
+            return battleResult == BattleResult.DefenderEliminated;
         }
 
         public bool CanMoveArmiesIntoCapturedTerritory()
