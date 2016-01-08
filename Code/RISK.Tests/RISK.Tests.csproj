@@ -99,6 +99,8 @@
     <Compile Include="Application\CasualtiesCalculatorTests.cs" />
     <Compile Include="Application\GameTests.cs" />
     <Compile Include="Application\GameRulesTests.cs" />
+    <Compile Include="Application\Extensions\GameTestsExtensions.cs" />
+    <Compile Include="Application\Extensions\GameTestsExtensionsTests.cs" />
     <Compile Include="Builders\PlayerBuilder.cs" />
     <Compile Include="Builders\TerritoryBuilder.cs" />
     <Compile Include="GuiWpf\Interaction\AttackStateTests.cs" />
