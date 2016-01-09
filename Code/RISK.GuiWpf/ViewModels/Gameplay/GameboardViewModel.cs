@@ -76,9 +76,19 @@ namespace GuiWpf.ViewModels.Gameplay
             UpdateGame();
         }
 
+        public bool CanFortify()
+        {
+            return false;//_game.CanFortify();??
+        }
+
         public void Fortify()
         {
             _stateController.CurrentState = _interactionStateFactory.CreateFortifySelectState();
+        }
+
+        public bool CanEndTurn()
+        {
+            return true;
         }
 
         public void EndTurn()
