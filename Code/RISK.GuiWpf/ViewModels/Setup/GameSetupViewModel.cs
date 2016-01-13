@@ -1,4 +1,7 @@
-﻿using Caliburn.Micro;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Caliburn.Micro;
 using GuiWpf.Properties;
 using GuiWpf.Services;
 using GuiWpf.ViewModels.Gameplay.Map;
@@ -9,7 +12,7 @@ using RISK.Application.World;
 
 namespace GuiWpf.ViewModels.Setup
 {
-    public interface IGameSetupViewModel : IMainViewModel {}
+    public interface IGameSetupViewModel : IMainViewModel { }
 
     public class GameSetupViewModel : Screen, ITerritoryRequestHandler, IGameSetupViewModel
     {
@@ -17,7 +20,6 @@ namespace GuiWpf.ViewModels.Setup
         private readonly IGameFactory _gameFactory;
         private readonly IDialogManager _dialogManager;
         private readonly IEventAggregator _eventAggregator;
-        private readonly IUserInteractor _userInteractor;
         private readonly IAlternateGameSetup _alternateGameSetup;
         private readonly IGuiThreadDispatcher _guiThreadDispatcher;
         private readonly ITaskEx _taskEx;
@@ -27,7 +29,6 @@ namespace GuiWpf.ViewModels.Setup
             IWorldMapViewModelFactory worldMapViewModelFactory,
             IDialogManager dialogManager,
             IEventAggregator eventAggregator,
-            IUserInteractor userInteractor,
             IAlternateGameSetup alternateGameSetup,
             IGuiThreadDispatcher guiThreadDispatcher,
             ITaskEx taskEx)
@@ -36,7 +37,6 @@ namespace GuiWpf.ViewModels.Setup
             _gameFactory = gameFactory;
             _dialogManager = dialogManager;
             _eventAggregator = eventAggregator;
-            _userInteractor = userInteractor;
             _alternateGameSetup = alternateGameSetup;
             _guiThreadDispatcher = guiThreadDispatcher;
             _taskEx = taskEx;
@@ -68,24 +68,41 @@ namespace GuiWpf.ViewModels.Setup
             OnActivate();
         }
 
-        protected override void OnActivate()
+        protected override async void OnActivate()
+        {
+            var gamePlaySetup = await SetupGame();
+
+            var game = _gameFactory.Create(gamePlaySetup);
+            StartGameplay(game);
+        }
+
+        private async Task<IGamePlaySetup> SetupGame()
+        {
+            var setupOfGameAsync = SetupOfGameAsync();
+            var gamePlaySetup = await setupOfGameAsync;
+
+            return gamePlaySetup;
+        }
+
+        private async Task<IGamePlaySetup> SetupOfGameAsync()
         {
             var territoryRequestHandler = this;
 
-            _taskEx.Run(() =>
+            IGamePlaySetup gameSetup = null;
+            await _taskEx.Run(() =>
             {
-                var gameSetup = _alternateGameSetup.Initialize(territoryRequestHandler);
-                var game = _gameFactory.Create(gameSetup);
-
-                StartGameplay(game);
+                gameSetup = _alternateGameSetup.Initialize(territoryRequestHandler);
             });
+
+            return gameSetup;
         }
 
         public ITerritoryId ProcessRequest(ITerritoryRequestParameter territoryRequestParameter)
         {
-            _guiThreadDispatcher.Invoke(() => UpdateView(territoryRequestParameter));
+            var userInteractor = new UserInteractor();
+            _guiThreadDispatcher.Invoke(() => UpdateView(territoryRequestParameter.Territories, userInteractor.SelectTerritory, territoryRequestParameter.EnabledTerritories, territoryRequestParameter.PlayerId.Name, territoryRequestParameter.GetArmiesLeftToPlace()));
 
-            return _userInteractor.GetSelectedTerritory(territoryRequestParameter);
+            return userInteractor.WaitForTerritoryToBeSelected(territoryRequestParameter);
         }
 
         private void StartGameplay(IGame game)
@@ -93,18 +110,18 @@ namespace GuiWpf.ViewModels.Setup
             _eventAggregator.PublishOnUIThread(new StartGameplayMessage(game));
         }
 
-        private void UpdateView(ITerritoryRequestParameter territoryRequestParameter)
+        private void UpdateView(IReadOnlyList<ITerritory> territories, Action<ITerritoryId> selectTerritoryAction, IReadOnlyList<ITerritoryId> enabledTerritories, string playerName, int armiesLeftToPlace)
         {
             var worldMapViewModel = _worldMapViewModelFactory.Create(
-                territoryRequestParameter.Territories,
-                x => _userInteractor.SelectTerritory(x),
-                territoryRequestParameter.EnabledTerritories);
+                territories,
+                selectTerritoryAction,
+                enabledTerritories);
 
             WorldMapViewModel = worldMapViewModel;
 
-            PlayerName = territoryRequestParameter.PlayerId.Name;
+            PlayerName = playerName;
 
-            InformationText = string.Format(Resources.PLACE_ARMY, territoryRequestParameter.GetArmiesLeftToPlace());
+            InformationText = string.Format(Resources.PLACE_ARMY, armiesLeftToPlace);
         }
 
         public bool CanFortify()
@@ -112,14 +129,14 @@ namespace GuiWpf.ViewModels.Setup
             return false;
         }
 
-        public void Fortify() {}
+        public void Fortify() { }
 
         public bool CanEndTurn()
         {
             return false;
         }
 
-        public void EndTurn() {}
+        public void EndTurn() { }
 
         public void EndGame()
         {

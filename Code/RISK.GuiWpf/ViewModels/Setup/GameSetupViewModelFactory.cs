@@ -17,7 +17,6 @@ namespace GuiWpf.ViewModels.Setup
         private readonly IWorldMapViewModelFactory _worldMapViewModelFactory;
         private readonly IDialogManager _dialogManager;
         private readonly IEventAggregator _eventAggregator;
-        private readonly IUserInteractor _userInteractor;
         private readonly IGuiThreadDispatcher _guiThreadDispatcher;
         private readonly ITaskEx _taskEx;
 
@@ -26,7 +25,6 @@ namespace GuiWpf.ViewModels.Setup
             IWorldMapViewModelFactory worldMapViewModelFactory,
             IDialogManager dialogManager,
             IEventAggregator eventAggregator,
-            IUserInteractor userInteractor,
             IGuiThreadDispatcher guiThreadDispatcher,
             ITaskEx taskEx)
         {
@@ -34,7 +32,6 @@ namespace GuiWpf.ViewModels.Setup
             _worldMapViewModelFactory = worldMapViewModelFactory;
             _dialogManager = dialogManager;
             _eventAggregator = eventAggregator;
-            _userInteractor = userInteractor;
             _guiThreadDispatcher = guiThreadDispatcher;
             _taskEx = taskEx;
         }
@@ -46,7 +43,6 @@ namespace GuiWpf.ViewModels.Setup
                 _worldMapViewModelFactory,
                 _dialogManager,
                 _eventAggregator,
-                _userInteractor,
                 alternateGameSetup,
                 _guiThreadDispatcher,
                 _taskEx);

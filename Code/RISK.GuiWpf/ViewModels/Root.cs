@@ -17,7 +17,6 @@ namespace GuiWpf.ViewModels
     public class Root
     {
         public WorldMap WorldMap { get; }
-        public IUserInteractor UserInteractor { get; set; }
         public DialogManager DialogManager { get; private set; }
         public GameOverViewModelFactory GameOverViewModelFactory { get; private set; }
         public WindowManager WindowManager { get; }
@@ -69,8 +68,6 @@ namespace GuiWpf.ViewModels
             PlayerIdFactory = new PlayerIdFactory();
             PlayerTypes = new PlayerTypes();
             EventAggregator = new EventAggregator();
-
-            UserInteractor = new UserInteractor();
 
             GuiThreadDispatcher = new GuiThreadDispatcher();
             TaskEx = new TaskEx();

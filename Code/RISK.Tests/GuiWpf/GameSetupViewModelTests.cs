@@ -40,7 +40,6 @@ namespace RISK.Tests.GuiWpf
                 _worldMapViewModelFactory,
                 _dialogManager,
                 _eventAggregator,
-                _userInteractor,
                 _guiThreadDispatcher,
                 _taskScheduler);
 
@@ -53,7 +52,7 @@ namespace RISK.Tests.GuiWpf
             var territoryRequestParameter = Substitute.For<ITerritoryRequestParameter>();
             territoryRequestParameter.PlayerId.ReturnsForAnyArgs(Substitute.For<IPlayerId>());
             var expected = Substitute.For<ITerritoryId>();
-            _userInteractor.GetSelectedTerritory(territoryRequestParameter).Returns(expected);
+            _userInteractor.WaitForTerritoryToBeSelected(territoryRequestParameter).Returns(expected);
             _worldMapViewModelFactory.Create(null, null, null).ReturnsForAnyArgs(new WorldMapViewModel());
             var sut = Initialize();
 

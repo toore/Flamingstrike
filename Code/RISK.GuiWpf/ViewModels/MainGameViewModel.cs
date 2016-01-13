@@ -39,7 +39,6 @@ namespace GuiWpf.ViewModels
                     root.WorldMapViewModelFactory,
                     root.DialogManager,
                     root.EventAggregator,
-                    root.UserInteractor,
                     root.GuiThreadDispatcher,
                     root.TaskEx),
                 root.AlternateGameSetupFactory,
