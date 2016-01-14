@@ -9,14 +9,14 @@ namespace RISK.Tests.GuiWpf
     public class ConfirmViewModelFactoryTests
     {
         private readonly IScreenService _screenService;
-        private readonly ILanguageResources _languageResources;
+        private readonly IResourceManager _resourceManager;
 
         public ConfirmViewModelFactoryTests()
         {
             _screenService = Substitute.For<IScreenService>();
-            _languageResources = Substitute.For<ILanguageResources>();
+            _resourceManager = Substitute.For<IResourceManager>();
 
-            LanguageResources.Instance = _languageResources;
+            ResourceManager.Instance = _resourceManager;
         }
 
         [Fact]
@@ -28,7 +28,7 @@ namespace RISK.Tests.GuiWpf
         [Fact]
         public void Initialize_default_confirm_and_abort_texts()
         {
-            _languageResources.GetString("CANCEL").Returns("translated cancel text");
+            _resourceManager.GetString("CANCEL").Returns("translated cancel text");
 
             var confirmViewModel = Create(null);
 

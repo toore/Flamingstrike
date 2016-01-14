@@ -73,9 +73,8 @@
     </ApplicationDefinition>
     <Compile Include="Extensions\EnumerableExtensions.cs" />
     <Compile Include="Services\GuiThreadDispatcher.cs" />
-    <Compile Include="Services\LanguageResources.cs" />
+    <Compile Include="Services\ResourceManager.cs" />
     <Compile Include="TerritoryModels\TerritoryModelBase.cs" />
-    <Compile Include="ViewModels\AlternateGameSetupFactory.cs" />
     <Compile Include="ViewModels\ConfirmViewModel.cs" />
     <Compile Include="ViewModels\ConfirmViewModelFactory.cs" />
     <Compile Include="ViewModels\Gameplay\GameSetupView.xaml.cs">
@@ -107,7 +106,10 @@
     </Compile>
     <Compile Include="ViewModels\Messages\StartGameplayMessage.cs" />
     <Compile Include="Services\TaskEx.cs" />
+    <Compile Include="ViewModels\Setup\UserInteractionFactory.cs" />
     <Compile Include="ViewModels\Setup\UserInteractor.cs" />
+    <Compile Include="ViewModels\Setup\UserInteraction.cs" />
+    <Compile Include="ViewModels\Setup\UserInteractorFactory.cs" />
     <Compile Include="Views\ConfirmView.xaml.cs">
       <DependentUpon>ConfirmView.xaml</DependentUpon>
     </Compile>

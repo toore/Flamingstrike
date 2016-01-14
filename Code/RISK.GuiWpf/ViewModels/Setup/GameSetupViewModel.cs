@@ -12,16 +12,18 @@ using RISK.Application.World;
 
 namespace GuiWpf.ViewModels.Setup
 {
-    public interface IGameSetupViewModel : IMainViewModel { }
+    public interface IGameSetupViewModel : IMainViewModel
+    {
+        void UpdateView(IReadOnlyList<ITerritory> territories, Action<ITerritoryId> selectTerritoryAction, IEnumerable<ITerritoryId> enabledTerritories, string playerName, int armiesLeftToPlace);
+    }
 
-    public class GameSetupViewModel : Screen, ITerritoryRequestHandler, IGameSetupViewModel
+    public class GameSetupViewModel : Screen, IGameSetupViewModel
     {
         private readonly IWorldMapViewModelFactory _worldMapViewModelFactory;
         private readonly IGameFactory _gameFactory;
         private readonly IDialogManager _dialogManager;
         private readonly IEventAggregator _eventAggregator;
         private readonly IAlternateGameSetup _alternateGameSetup;
-        private readonly IGuiThreadDispatcher _guiThreadDispatcher;
         private readonly ITaskEx _taskEx;
 
         public GameSetupViewModel(
@@ -30,7 +32,6 @@ namespace GuiWpf.ViewModels.Setup
             IDialogManager dialogManager,
             IEventAggregator eventAggregator,
             IAlternateGameSetup alternateGameSetup,
-            IGuiThreadDispatcher guiThreadDispatcher,
             ITaskEx taskEx)
         {
             _worldMapViewModelFactory = worldMapViewModelFactory;
@@ -38,7 +39,6 @@ namespace GuiWpf.ViewModels.Setup
             _dialogManager = dialogManager;
             _eventAggregator = eventAggregator;
             _alternateGameSetup = alternateGameSetup;
-            _guiThreadDispatcher = guiThreadDispatcher;
             _taskEx = taskEx;
         }
 
@@ -86,23 +86,10 @@ namespace GuiWpf.ViewModels.Setup
 
         private async Task<IGamePlaySetup> SetupOfGameAsync()
         {
-            var territoryRequestHandler = this;
-
             IGamePlaySetup gameSetup = null;
-            await _taskEx.Run(() =>
-            {
-                gameSetup = _alternateGameSetup.Initialize(territoryRequestHandler);
-            });
+            await _taskEx.Run(() => { gameSetup = _alternateGameSetup.Initialize(); });
 
             return gameSetup;
-        }
-
-        public ITerritoryId ProcessRequest(ITerritoryRequestParameter territoryRequestParameter)
-        {
-            var userInteractor = new UserInteractor();
-            _guiThreadDispatcher.Invoke(() => UpdateView(territoryRequestParameter.Territories, userInteractor.SelectTerritory, territoryRequestParameter.EnabledTerritories, territoryRequestParameter.PlayerId.Name, territoryRequestParameter.GetArmiesLeftToPlace()));
-
-            return userInteractor.WaitForTerritoryToBeSelected(territoryRequestParameter);
         }
 
         private void StartGameplay(IGame game)
@@ -110,7 +97,7 @@ namespace GuiWpf.ViewModels.Setup
             _eventAggregator.PublishOnUIThread(new StartGameplayMessage(game));
         }
 
-        private void UpdateView(IReadOnlyList<ITerritory> territories, Action<ITerritoryId> selectTerritoryAction, IReadOnlyList<ITerritoryId> enabledTerritories, string playerName, int armiesLeftToPlace)
+        public void UpdateView(IReadOnlyList<ITerritory> territories, Action<ITerritoryId> selectTerritoryAction, IEnumerable<ITerritoryId> enabledTerritories, string playerName, int armiesLeftToPlace)
         {
             var worldMapViewModel = _worldMapViewModelFactory.Create(
                 territories,
@@ -121,7 +108,8 @@ namespace GuiWpf.ViewModels.Setup
 
             PlayerName = playerName;
 
-            InformationText = string.Format(Resources.PLACE_ARMY, armiesLeftToPlace);
+            //string.Format(Resources.PLACE_ARMY, armiesLeftToPlace);
+            InformationText = string.Format(ResourceManager.Instance.GetString("PLACE_ARMY"), armiesLeftToPlace);
         }
 
         public bool CanFortify()
@@ -129,14 +117,14 @@ namespace GuiWpf.ViewModels.Setup
             return false;
         }
 
-        public void Fortify() { }
+        public void Fortify() {}
 
         public bool CanEndTurn()
         {
             return false;
         }
 
-        public void EndTurn() { }
+        public void EndTurn() {}
 
         public void EndGame()
         {

@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using FluentAssertions;
-using GuiWpf.ViewModels;
 using GuiWpf.ViewModels.Gameplay;
 using GuiWpf.ViewModels.Messages;
 using GuiWpf.ViewModels.Settings;
@@ -15,19 +14,21 @@ namespace RISK.Tests.GuiWpf
 {
     public class MainGameViewModelTests
     {
+        private readonly IPlayerRepository _playerRepository;
+        private readonly IAlternateGameSetupFactory _alternateGameSetupFactory;
         private readonly IGameInitializationViewModelFactory _gameInitializationViewModelFactory;
         private readonly IGameboardViewModelFactory _gameboardViewModelFactory;
         private readonly IGameSetupViewModelFactory _gameSetupViewModelFactory;
-        private readonly IAlternateGameSetupFactory _alternateGameSetupFactory;
-        private readonly IPlayerRepository _playerRepository;
+        private readonly IUserInteractorFactory _userInteractorFactory;
 
         public MainGameViewModelTests()
         {
+            _playerRepository = Substitute.For<IPlayerRepository>();
+            _alternateGameSetupFactory = Substitute.For<IAlternateGameSetupFactory>();
             _gameInitializationViewModelFactory = Substitute.For<IGameInitializationViewModelFactory>();
             _gameboardViewModelFactory = Substitute.For<IGameboardViewModelFactory>();
             _gameSetupViewModelFactory = Substitute.For<IGameSetupViewModelFactory>();
-            _alternateGameSetupFactory = Substitute.For<IAlternateGameSetupFactory>();
-            _playerRepository = Substitute.For<IPlayerRepository>();
+            _userInteractorFactory = Substitute.For<IUserInteractorFactory>();
         }
 
         [Fact]
@@ -87,11 +88,12 @@ namespace RISK.Tests.GuiWpf
         private MainGameViewModelDecorator Initialize()
         {
             return new MainGameViewModelDecorator(
+                _playerRepository,
+                _alternateGameSetupFactory,
                 _gameInitializationViewModelFactory,
                 _gameboardViewModelFactory,
                 _gameSetupViewModelFactory,
-                _alternateGameSetupFactory,
-                _playerRepository);
+                _userInteractorFactory);
         }
     }
 }

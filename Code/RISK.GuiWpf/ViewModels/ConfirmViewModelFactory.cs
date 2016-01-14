@@ -20,7 +20,7 @@ namespace GuiWpf.ViewModels
 
             if (abortText == null)
             {
-                abortText = LanguageResources.Instance.GetString("CANCEL");
+                abortText = ResourceManager.Instance.GetString("CANCEL");
             }
 
             return new ConfirmViewModel(_screenService)

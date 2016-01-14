@@ -1,10 +1,8 @@
 ﻿using System.Collections.Generic;
-using RISK.Application;
-using RISK.Application.Setup;
 using RISK.Application.Shuffling;
 using RISK.Application.World;
 
-namespace GuiWpf.ViewModels
+namespace RISK.Application.Setup
 {
     public interface IAlternateGameSetupFactory
     {

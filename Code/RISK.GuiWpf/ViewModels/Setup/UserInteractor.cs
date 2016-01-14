@@ -1,30 +1,42 @@
-﻿using System.Threading;
+using System.Runtime.InteropServices;
+using GuiWpf.Services;
 using RISK.Application.Setup;
 using RISK.Application.World;
 
 namespace GuiWpf.ViewModels.Setup
 {
-    public interface IUserInteractor
-    {
-        ITerritoryId WaitForTerritoryToBeSelected(ITerritoryRequestParameter territoryRequestParameter);
-        void SelectTerritory(ITerritoryId territoryId);
-    }
+    public interface IUserInteractor : ITerritoryResponder {}
 
     public class UserInteractor : IUserInteractor
     {
-        private ITerritoryId _selectedTerritoryId;
-        private readonly AutoResetEvent _territoryIdHasBeenSet = new AutoResetEvent(false);
+        private readonly IUserInteractionFactory _userInteractionFactory;
+        private readonly IGuiThreadDispatcher _guiThreadDispatcher;
+        private readonly IGameSetupViewModel _gameSetupViewModel;
 
-        public ITerritoryId WaitForTerritoryToBeSelected(ITerritoryRequestParameter territoryRequestParameter)
+        public UserInteractor(IUserInteractionFactory userInteractionFactory, IGuiThreadDispatcher guiThreadDispatcher, IGameSetupViewModel gameSetupViewModel)
         {
-            _territoryIdHasBeenSet.WaitOne();
-            return _selectedTerritoryId;
+            _userInteractionFactory = userInteractionFactory;
+            _guiThreadDispatcher = guiThreadDispatcher;
+            _gameSetupViewModel = gameSetupViewModel;
         }
 
-        public void SelectTerritory(ITerritoryId territoryId)
+        public ITerritoryId ProcessRequest(ITerritoryRequestParameter territoryRequestParameter)
         {
-            _selectedTerritoryId = territoryId;
-            _territoryIdHasBeenSet.Set();
+            var userInteraction = _userInteractionFactory.Create();
+
+            _guiThreadDispatcher.Invoke(() => UpdateView(territoryRequestParameter, userInteraction));
+
+            return userInteraction.WaitForTerritoryToBeSelected(territoryRequestParameter);
+        }
+
+        private void UpdateView(ITerritoryRequestParameter territoryRequestParameter, IUserInteraction userInteraction)
+        {
+            _gameSetupViewModel.UpdateView(
+                territoryRequestParameter.Territories,
+                userInteraction.SelectTerritory,
+                territoryRequestParameter.EnabledTerritories,
+                territoryRequestParameter.PlayerId.Name,
+                territoryRequestParameter.GetArmiesLeftToPlace());
         }
     }
 }

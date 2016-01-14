@@ -2,17 +2,17 @@
 
 namespace GuiWpf.Services
 {
-    public interface ILanguageResources
+    public interface IResourceManager
     {
         string GetString(string key);
     }
 
-    public class LanguageResources : ILanguageResources
+    public class ResourceManager : IResourceManager
     {
-        private static ILanguageResources _instance;
-        public static ILanguageResources Instance
+        private static IResourceManager _instance;
+        public static IResourceManager Instance
         {
-            get { return _instance ?? (_instance = new LanguageResources()); }
+            get { return _instance ?? (_instance = new ResourceManager()); }
             set { _instance = value; }
         }
 

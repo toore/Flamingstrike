@@ -2,6 +2,7 @@ using GuiWpf.ViewModels;
 using GuiWpf.ViewModels.Gameplay;
 using GuiWpf.ViewModels.Settings;
 using GuiWpf.ViewModels.Setup;
+using RISK.Application.Setup;
 
 namespace RISK.Tests.GuiWpf
 {
@@ -11,16 +12,19 @@ namespace RISK.Tests.GuiWpf
             : base(root) {}
 
         public MainGameViewModelDecorator(
+            IPlayerRepository playerRepository,
+            IAlternateGameSetupFactory alternateGameSetupFactory,
             IGameInitializationViewModelFactory gameInitializationViewModelFactory,
             IGameboardViewModelFactory gameboardViewModelFactory,
             IGameSetupViewModelFactory gameSetupViewModelFactory,
-            IAlternateGameSetupFactory alternateGameSetupFactory,
-            IPlayerRepository playerRepository)
-            : base(gameInitializationViewModelFactory, 
-                  gameboardViewModelFactory, 
-                  gameSetupViewModelFactory, 
+            IUserInteractorFactory userInteractorFactory)
+            : base(
+                  playerRepository,
                   alternateGameSetupFactory, 
-                  playerRepository) {}
+                  gameInitializationViewModelFactory, 
+                  gameboardViewModelFactory, 
+                  gameSetupViewModelFactory,
+                  userInteractorFactory) {}
 
         public new void OnInitialize()
         {

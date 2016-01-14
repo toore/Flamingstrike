@@ -1,6 +1,7 @@
 ﻿using Caliburn.Micro;
 using GuiWpf.Services;
 using GuiWpf.TerritoryModels;
+using GuiWpf.ViewModels.Gameplay;
 using GuiWpf.ViewModels.Gameplay.Interaction;
 using GuiWpf.ViewModels.Gameplay.Map;
 using GuiWpf.ViewModels.Settings;
@@ -16,61 +17,82 @@ namespace GuiWpf.ViewModels
 {
     public class Root
     {
-        public WorldMap WorldMap { get; }
-        public DialogManager DialogManager { get; private set; }
-        public GameOverViewModelFactory GameOverViewModelFactory { get; private set; }
-        public WindowManager WindowManager { get; }
-        public WorldMapViewModelFactory WorldMapViewModelFactory { get; private set; }
-        public PlayerIdFactory PlayerIdFactory { get; private set; }
-        public PlayerTypes PlayerTypes { get; private set; }
         public PlayerRepository PlayerRepository { get; }
-        public IEventAggregator EventAggregator { get; private set; }
-        public IGuiThreadDispatcher GuiThreadDispatcher { get; set; }
-        public ITaskEx TaskEx { get; set; }
+        public IEventAggregator EventAggregator { get; }
         public IAlternateGameSetupFactory AlternateGameSetupFactory { get; private set; }
-        public GameFactory GameFactory { get; private set; }
-        public IStateControllerFactory StateControllerFactory { get; private set; }
-        public IInteractionStateFactory InteractionStateFactory { get; private set; }
+        public IGameInitializationViewModelFactory GameInitializationViewModelFactory { get; private set; }
+        public IGameboardViewModelFactory GameboardViewModelFactory { get; private set; }
+        public IGameSetupViewModelFactory GameSetupViewModelFactory { get; private set; }
+        public IUserInteractorFactory UserInteractorFactory { get; set; }
 
-        public Root()
+        public Root() : this(
+            taskEx: new TaskEx()) {}
+
+        public Root(ITaskEx taskEx)
         {
-            var colorService = new ColorService();
-            WorldMap = new WorldMap();
-            var territoryColorsFactory = new TerritoryColorsFactory(colorService, WorldMap);
-            var worldMapModelFactory = new WorldMapModelFactory();
-            WorldMapViewModelFactory = new WorldMapViewModelFactory(WorldMap, worldMapModelFactory, territoryColorsFactory, colorService);
-            GameOverViewModelFactory = new GameOverViewModelFactory();
-
-            var screenService = new ScreenService();
-            var randomWrapper = new RandomWrapper();
-            var shuffler = new FisherYatesShuffler(randomWrapper);
-            var dice = new Dice(randomWrapper);
-            var diceRoller = new DicesRoller(dice);
-            StateControllerFactory = new StateControllerFactory();
-            InteractionStateFactory = new InteractionStateFactory();
-            var startingInfantryCalculator = new StartingInfantryCalculator();
-            var gameboardRules = new GameRules();
-            var cardFactory = new CardFactory();
-            var battle = new Battle(diceRoller, new BattleCalculator());
-            var territoryConverter = new TerritoryFactory();
-
+            var playerIdFactory = new PlayerIdFactory();
+            var playerTypes = new PlayerTypes();
             PlayerRepository = new PlayerRepository();
-
-            AlternateGameSetupFactory = new AlternateGameSetupFactory(WorldMap, shuffler, startingInfantryCalculator);
-
-            GameFactory = new GameFactory(gameboardRules, cardFactory, battle, territoryConverter, new PlayerFactory());
-
-            WindowManager = new WindowManager();
-            var confirmViewModelFactory = new ConfirmViewModelFactory(screenService);
-            var userNotifier = new UserNotifier(WindowManager, confirmViewModelFactory);
-            DialogManager = new DialogManager(userNotifier);
-
-            PlayerIdFactory = new PlayerIdFactory();
-            PlayerTypes = new PlayerTypes();
             EventAggregator = new EventAggregator();
 
-            GuiThreadDispatcher = new GuiThreadDispatcher();
-            TaskEx = new TaskEx();
+            GameInitializationViewModelFactory = new GameInitializationViewModelFactory(
+                playerIdFactory,
+                playerTypes,
+                PlayerRepository,
+                EventAggregator);
+
+            var stateControllerFactory = new StateControllerFactory();
+            var interactionStateFactory = new InteractionStateFactory();
+            var colorService = new ColorService();
+            var worldMap = new WorldMap();
+            var territoryColorsFactory = new TerritoryColorsFactory(colorService, worldMap);
+            var worldMapModelFactory = new WorldMapModelFactory();
+            var worldMapViewModelFactory = new WorldMapViewModelFactory(
+                worldMap, worldMapModelFactory, territoryColorsFactory, colorService);
+            var windowManager = new WindowManager();
+            var gameOverViewModelFactory = new GameOverViewModelFactory();
+            var screenService = new ScreenService();
+            var confirmViewModelFactory = new ConfirmViewModelFactory(screenService);
+            var userNotifier = new UserNotifier(windowManager, confirmViewModelFactory);
+            var dialogManager = new DialogManager(userNotifier);
+
+            GameboardViewModelFactory = new GameboardViewModelFactory(
+                stateControllerFactory,
+                interactionStateFactory,
+                worldMap,
+                worldMapViewModelFactory,
+                windowManager,
+                gameOverViewModelFactory,
+                dialogManager,
+                EventAggregator);
+
+            var gameboardRules = new GameRules();
+            var cardFactory = new CardFactory();
+            var battleCalculator = new BattleCalculator();
+            var randomWrapper = new RandomWrapper();
+            var dice = new Dice(randomWrapper);
+            var diceRoller = new DicesRoller(dice);
+            var battle = new Battle(diceRoller, battleCalculator);
+            var territoryConverter = new TerritoryFactory();
+            var gameFactory = new GameFactory(
+                gameboardRules, cardFactory, battle, territoryConverter, new PlayerFactory());
+
+            GameSetupViewModelFactory = new GameSetupViewModelFactory(
+                gameFactory,
+                worldMapViewModelFactory,
+                dialogManager,
+                EventAggregator,
+                taskEx);
+
+            var shuffler = new FisherYatesShuffler(randomWrapper);
+            var startingInfantryCalculator = new StartingInfantryCalculator();
+
+            AlternateGameSetupFactory = new AlternateGameSetupFactory(
+                worldMap, shuffler, startingInfantryCalculator);
+
+            var userInteractionFactory = new UserInteractionFactory();
+            var guiThreadDispatcher = new GuiThreadDispatcher();
+            UserInteractorFactory = new UserInteractorFactory(userInteractionFactory, guiThreadDispatcher);
         }
     }
 }

@@ -16,7 +16,7 @@ namespace GuiWpf.WpfExtensions
 
         public override object ProvideValue(IServiceProvider serviceProvider)
         {
-            var provideValue = LanguageResources.Instance.GetString(Key);
+            var provideValue = ResourceManager.Instance.GetString(Key);
 
             return provideValue;
         }

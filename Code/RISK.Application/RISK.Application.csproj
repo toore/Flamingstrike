@@ -55,6 +55,7 @@
     <Compile Include="Play\PlayerFactory.cs" />
     <Compile Include="Play\Territory.cs" />
     <Compile Include="Play\TerritoryFactory.cs" />
+    <Compile Include="Setup\AlternateGameSetupFactory.cs" />
     <Compile Include="Territory.cs" />
     <Compile Include="Play\GameFactory.cs" />
     <Compile Include="Setup\GamePlaySetup.cs" />
@@ -69,7 +70,7 @@
     <Compile Include="Play\CardFactory.cs" />
     <Compile Include="Play\Attacking\DicesRoller.cs" />
     <Compile Include="Play\Attacking\BattleCalculator.cs" />
-    <Compile Include="Setup\ITerritoryRequestHandler.cs" />
+    <Compile Include="Setup\ITerritoryResponder.cs" />
     <Compile Include="Setup\StartingInfantryCalculator.cs" />
     <Compile Include="Setup\Player.cs" />
     <Compile Include="Setup\TerritoryRequestParameter.cs" />

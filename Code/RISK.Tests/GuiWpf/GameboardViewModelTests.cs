@@ -41,7 +41,7 @@ namespace RISK.Tests.GuiWpf
             _dialogManager = Substitute.For<IDialogManager>();
             _eventAggregator = Substitute.For<IEventAggregator>();
 
-            LanguageResources.Instance = Substitute.For<ILanguageResources>();
+            ResourceManager.Instance = Substitute.For<IResourceManager>();
 
             var viewModel = Substitute.For<ITerritoryLayoutViewModel>();
             var layoutViewModel1 = viewModel;

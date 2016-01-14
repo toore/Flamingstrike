@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("RISK.Domain")]
+[assembly: AssemblyTitle("RISK.Application")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Sogeti")]
-[assembly: AssemblyProduct("RISK.Domain")]
-[assembly: AssemblyCopyright("Copyright © Sogeti 2013")]
+[assembly: AssemblyCompany("")]
+[assembly: AssemblyProduct("RISK.Application")]
+[assembly: AssemblyCopyright("Copyright © Andreas Torebring 2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

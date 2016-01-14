@@ -1,15 +1,18 @@
-﻿using Caliburn.Micro;
+﻿using System;
+using System.Collections.Generic;
+using Caliburn.Micro;
 using FluentAssertions;
 using GuiWpf.Services;
 using GuiWpf.ViewModels.Gameplay.Map;
 using GuiWpf.ViewModels.Messages;
 using GuiWpf.ViewModels.Setup;
 using NSubstitute;
-using RISK.Application;
 using RISK.Application.Play;
 using RISK.Application.Setup;
 using RISK.Application.World;
+using RISK.Tests.Builders;
 using Xunit;
+using ITerritory = RISK.Application.Play.ITerritory;
 
 namespace RISK.Tests.GuiWpf
 {
@@ -19,8 +22,6 @@ namespace RISK.Tests.GuiWpf
         private readonly IWorldMapViewModelFactory _worldMapViewModelFactory;
         private readonly IDialogManager _dialogManager;
         private readonly IEventAggregator _eventAggregator;
-        private readonly IUserInteractor _userInteractor;
-        private readonly NoGuiThreadDispatcher _guiThreadDispatcher;
         private readonly SynchronousTaskEx _taskScheduler;
         private readonly GameSetupViewModelFactory _gameSetupViewModelFactory;
         private readonly IAlternateGameSetup _alternateGameSetup;
@@ -31,8 +32,6 @@ namespace RISK.Tests.GuiWpf
             _worldMapViewModelFactory = Substitute.For<IWorldMapViewModelFactory>();
             _dialogManager = Substitute.For<IDialogManager>();
             _eventAggregator = Substitute.For<IEventAggregator>();
-            _userInteractor = Substitute.For<IUserInteractor>();
-            _guiThreadDispatcher = new NoGuiThreadDispatcher();
             _taskScheduler = new SynchronousTaskEx();
 
             _gameSetupViewModelFactory = new GameSetupViewModelFactory(
@@ -40,41 +39,72 @@ namespace RISK.Tests.GuiWpf
                 _worldMapViewModelFactory,
                 _dialogManager,
                 _eventAggregator,
-                _guiThreadDispatcher,
                 _taskScheduler);
 
             _alternateGameSetup = Substitute.For<IAlternateGameSetup>();
         }
 
         [Fact]
-        public void A_territory_request_gets_territory_from_user()
+        public void UpdateView_updates_world_map_view_model()
         {
-            var territoryRequestParameter = Substitute.For<ITerritoryRequestParameter>();
-            territoryRequestParameter.PlayerId.ReturnsForAnyArgs(Substitute.For<IPlayerId>());
-            var expected = Substitute.For<ITerritoryId>();
-            _userInteractor.WaitForTerritoryToBeSelected(territoryRequestParameter).Returns(expected);
-            _worldMapViewModelFactory.Create(null, null, null).ReturnsForAnyArgs(new WorldMapViewModel());
-            var sut = Initialize();
-
-            var actual = sut.ProcessRequest(territoryRequestParameter);
-
-            actual.Should().Be(expected);
-        }
-
-        [Fact]
-        public void After_user_has_responded_with_a_territory_the_WorldMapViewModel_is_updated()
-        {
-            var worldMapViewModel = new WorldMapViewModel();
-            _worldMapViewModelFactory.Create(null, null, null).ReturnsForAnyArgs(worldMapViewModel);
+            var expectedWorldMapViewModel = new WorldMapViewModel();
+            var territories = new List<ITerritory>();
+            Action<ITerritoryId> onClickAction = x => { };
+            var enabledTerritories = new List<ITerritoryId> { Make.TerritoryId.Build() };
+            _worldMapViewModelFactory.Create(territories, onClickAction, enabledTerritories)
+                .Returns(expectedWorldMapViewModel);
             var gameSetupViewModel = Initialize();
             gameSetupViewModel.MonitorEvents();
 
-            gameSetupViewModel.ProcessRequest(Substitute.For<ITerritoryRequestParameter>());
+            gameSetupViewModel.UpdateView(
+                territories: territories, 
+                selectTerritoryAction: onClickAction, 
+                enabledTerritories: enabledTerritories, 
+                playerName: null, 
+                armiesLeftToPlace: 0);
 
-            gameSetupViewModel.WorldMapViewModel.Should().Be(worldMapViewModel);
+            gameSetupViewModel.WorldMapViewModel.Should().Be(expectedWorldMapViewModel);
             gameSetupViewModel.ShouldRaisePropertyChangeFor(x => x.WorldMapViewModel);
-            gameSetupViewModel.ShouldRaisePropertyChangeFor(x => x.PlayerName);
+        }
+
+        [Fact]
+        public void UpdateView_updates_information_text()
+        {
+            var resourceManager = Substitute.For<IResourceManager>();
+            ResourceManager.Instance = resourceManager;
+            const string expectedInformationText = "information text shows armies left: 1";
+            resourceManager.GetString("PLACE_ARMY").Returns("information text shows armies left: {0}");
+
+            var gameSetupViewModel = Initialize();
+            gameSetupViewModel.MonitorEvents();
+
+            gameSetupViewModel.UpdateView(
+                territories: null,
+                selectTerritoryAction: null,
+                enabledTerritories: null,
+                playerName: null,
+                armiesLeftToPlace: 1);
+
+            gameSetupViewModel.InformationText.Should().Be(expectedInformationText);
             gameSetupViewModel.ShouldRaisePropertyChangeFor(x => x.InformationText);
+        }
+
+        [Fact]
+        public void UpdateView_updates_player_name()
+        {
+            const string expectedPlayerName = "any player name";
+            var gameSetupViewModel = Initialize();
+            gameSetupViewModel.MonitorEvents();
+
+            gameSetupViewModel.UpdateView(
+                territories: null, 
+                selectTerritoryAction: null, 
+                enabledTerritories: null, 
+                playerName: expectedPlayerName, 
+                armiesLeftToPlace: 0);
+
+            gameSetupViewModel.PlayerName.Should().Be(expectedPlayerName);
+            gameSetupViewModel.ShouldRaisePropertyChangeFor(x => x.PlayerName);
         }
 
         [Fact]
@@ -84,7 +114,7 @@ namespace RISK.Tests.GuiWpf
             var expectedGame = Substitute.For<IGame>();
             IGame actualGame = null;
             var gamePlaySetup = Substitute.For<IGamePlaySetup>();
-            _alternateGameSetup.Initialize(sut).Returns(gamePlaySetup);
+            _alternateGameSetup.Initialize().Returns(gamePlaySetup);
             _gameFactory.Create(gamePlaySetup).Returns(expectedGame);
             _eventAggregator.WhenForAnyArgs(x => x.PublishOnUIThread(null)).Do(ci => actualGame = ci.Arg<StartGameplayMessage>().Game);
 

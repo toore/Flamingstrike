@@ -10,9 +10,9 @@ using System.Windows;
 [assembly: AssemblyTitle("RISK.Tests")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Sogeti")]
+[assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("RISK.Tests")]
-[assembly: AssemblyCopyright("Copyright © Sogeti 2013")]
+[assembly: AssemblyCopyright("Copyright © Andreas Torebring 2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

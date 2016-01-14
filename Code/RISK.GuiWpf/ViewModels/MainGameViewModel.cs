@@ -4,6 +4,7 @@ using GuiWpf.ViewModels.Messages;
 using GuiWpf.ViewModels.Settings;
 using GuiWpf.ViewModels.Setup;
 using RISK.Application.Play;
+using RISK.Application.Setup;
 
 namespace GuiWpf.ViewModels
 {
@@ -12,6 +13,7 @@ namespace GuiWpf.ViewModels
         private readonly IGameInitializationViewModelFactory _gameInitializationViewModelFactory;
         private readonly IGameboardViewModelFactory _gameboardViewModelFactory;
         private readonly IGameSetupViewModelFactory _gameSetupViewModelFactory;
+        private readonly IUserInteractorFactory _userInteractorFactory;
         private readonly IAlternateGameSetupFactory _alternateGameSetupFactory;
         private readonly IPlayerRepository _playerRepository;
 
@@ -20,45 +22,30 @@ namespace GuiWpf.ViewModels
 
         protected MainGameViewModel(Root root)
             : this(
-                new GameInitializationViewModelFactory(
-                    root.PlayerIdFactory,
-                    root.PlayerTypes,
-                    root.PlayerRepository,
-                    root.EventAggregator),
-                new GameboardViewModelFactory(
-                    root.StateControllerFactory,
-                    root.InteractionStateFactory,
-                    root.WorldMap,
-                    root.WorldMapViewModelFactory,
-                    root.WindowManager,
-                    root.GameOverViewModelFactory,
-                    root.DialogManager,
-                    root.EventAggregator),
-                new GameSetupViewModelFactory(
-                    root.GameFactory,
-                    root.WorldMapViewModelFactory,
-                    root.DialogManager,
-                    root.EventAggregator,
-                    root.GuiThreadDispatcher,
-                    root.TaskEx),
+                root.PlayerRepository,
                 root.AlternateGameSetupFactory,
-                root.PlayerRepository)
+                root.GameInitializationViewModelFactory,
+                root.GameboardViewModelFactory,
+                root.GameSetupViewModelFactory,
+                root.UserInteractorFactory)
         {
             root.EventAggregator.Subscribe(this);
         }
 
         protected MainGameViewModel(
-            IGameInitializationViewModelFactory gameInitializationViewModelFactory, 
-            IGameboardViewModelFactory gameboardViewModelFactory, 
-            IGameSetupViewModelFactory gameSetupViewModelFactory, 
-            IAlternateGameSetupFactory alternateGameSetupFactory, 
-            IPlayerRepository playerRepository)
+            IPlayerRepository playerRepository,
+            IAlternateGameSetupFactory alternateGameSetupFactory,
+            IGameInitializationViewModelFactory gameInitializationViewModelFactory,
+            IGameboardViewModelFactory gameboardViewModelFactory,
+            IGameSetupViewModelFactory gameSetupViewModelFactory,
+            IUserInteractorFactory userInteractorFactory)
         {
+            _playerRepository = playerRepository;
+            _alternateGameSetupFactory = alternateGameSetupFactory;
             _gameInitializationViewModelFactory = gameInitializationViewModelFactory;
             _gameboardViewModelFactory = gameboardViewModelFactory;
             _gameSetupViewModelFactory = gameSetupViewModelFactory;
-            _alternateGameSetupFactory = alternateGameSetupFactory;
-            _playerRepository = playerRepository;
+            _userInteractorFactory = userInteractorFactory;
         }
 
         protected override void OnInitialize()
@@ -100,6 +87,9 @@ namespace GuiWpf.ViewModels
             var players = _playerRepository.GetAll();
             var alternateGameSetup = _alternateGameSetupFactory.Create(players);
             var gameSetupViewModel = _gameSetupViewModelFactory.Create(alternateGameSetup);
+
+            var userInteractory = _userInteractorFactory.Create(gameSetupViewModel);
+            alternateGameSetup.TerritoryResponder = userInteractory;
 
             ActivateItem(gameSetupViewModel);
         }

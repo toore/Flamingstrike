@@ -18,7 +18,7 @@ namespace RISK.Tests.Application
         private readonly ITerritoryId _territory1;
         private readonly ITerritoryId _territory2;
         private readonly ITerritoryId _territory3;
-        private readonly ITerritoryRequestHandler _territoryRequestHandler;
+        private readonly ITerritoryResponder _territoryResponder;
 
         public AlternateGameSetupTests()
         {
@@ -26,8 +26,10 @@ namespace RISK.Tests.Application
             var shuffler = Substitute.For<IShuffler>();
             var startingInfantryCalculator = Substitute.For<IStartingInfantryCalculator>();
             var players = new List<IPlayerId> { null };
+            _territoryResponder = Substitute.For<ITerritoryResponder>();
 
             _sut = new AlternateGameSetup(worldMap, players, startingInfantryCalculator, shuffler);
+            _sut.TerritoryResponder = _territoryResponder;
 
             _player1 = Substitute.For<IPlayerId>();
             _player2 = Substitute.For<IPlayerId>();
@@ -41,16 +43,14 @@ namespace RISK.Tests.Application
             shuffler.Shuffle(territories).Returns(new[] { _territory1, _territory2, _territory3 });
 
             startingInfantryCalculator.Get(2).Returns(3);
-
-            _territoryRequestHandler = Substitute.For<ITerritoryRequestHandler>();
         }
 
         [Fact]
         public void Shuffles_player_order()
         {
-            ForAnyTerritoryRequestReturnFirstValidTerritory();
+            RespondWithFirstEnabledTerritory();
 
-            var actual = _sut.Initialize(_territoryRequestHandler);
+            var actual = _sut.Initialize();
 
             actual.Players.Should().ContainInOrder(_player1, _player2);
         }
@@ -58,9 +58,9 @@ namespace RISK.Tests.Application
         [Fact]
         public void Shuffles_and_assigns_territories_to_players()
         {
-            ForAnyTerritoryRequestReturnFirstValidTerritory();
+            RespondWithFirstEnabledTerritory();
 
-            var actual = _sut.Initialize(_territoryRequestHandler);
+            var actual = _sut.Initialize();
 
             actual.Territories.ShouldAllBeEquivalentTo(new[]
             {
@@ -70,9 +70,9 @@ namespace RISK.Tests.Application
             });
         }
 
-        private void ForAnyTerritoryRequestReturnFirstValidTerritory()
+        private void RespondWithFirstEnabledTerritory()
         {
-            _territoryRequestHandler.ProcessRequest(null)
+            _territoryResponder.ProcessRequest(null)
                 .ReturnsForAnyArgs(x => x.Arg<ITerritoryRequestParameter>().EnabledTerritories.First());
         }
     }

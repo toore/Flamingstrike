@@ -11,7 +11,7 @@ using RISK.Application.World;
 
 namespace GuiWpf.Views.WorldMapViews
 {
-    public class GameboardViewModelTestDataFactory : ITerritoryRequestHandler
+    public class GameboardViewModelTestDataFactory : ITerritoryResponder
     {
         public static GameboardViewModel ViewModel => new GameboardViewModelTestDataFactory().Create();
 

@@ -16,10 +16,10 @@
 
         public bool? ConfirmEndGame()
         {
-            var message = LanguageResources.Instance.GetString("ARE_YOU_SURE_YOU_WANT_TO_END_GAME");
-            var displayName = LanguageResources.Instance.GetString("END_GAME");
-            var confirmText = LanguageResources.Instance.GetString("YES");
-            var abortText = LanguageResources.Instance.GetString("NO");
+            var message = ResourceManager.Instance.GetString("ARE_YOU_SURE_YOU_WANT_TO_END_GAME");
+            var displayName = ResourceManager.Instance.GetString("END_GAME");
+            var confirmText = ResourceManager.Instance.GetString("YES");
+            var abortText = ResourceManager.Instance.GetString("NO");
 
             return _userNotifier.Confirm(message, displayName, confirmText, abortText);
         }

@@ -45,7 +45,7 @@ namespace GuiWpf.ViewModels.Gameplay
             _dialogManager = dialogManager;
             _eventAggregator = eventAggregator;
 
-            InformationText = LanguageResources.Instance.GetString("SELECT_TERRITORY");
+            InformationText = ResourceManager.Instance.GetString("SELECT_TERRITORY");
         }
 
         public WorldMapViewModel WorldMapViewModel { get; set; }

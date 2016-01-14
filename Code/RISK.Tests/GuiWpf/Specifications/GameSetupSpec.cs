@@ -15,7 +15,8 @@ namespace RISK.Tests.GuiWpf.Specifications
     {
         private MainGameViewModelDecorator _mainGameViewModel;
         private GameSetupViewModel _setupViewModel;
-        private AutoRespondingUserInteractor _userInteractor;
+        private AutoRespondingUserInteraction _autoRespondingUserInteraction;
+        private UserInteractionFactoryReturningSameInstance _userInteractionFactoryReturningSameInstance;
 
         [Fact]
         public void Game_is_setup_and_started()
@@ -33,20 +34,21 @@ namespace RISK.Tests.GuiWpf.Specifications
 
         private GameSetupSpec a_new_game()
         {
-            _userInteractor = new AutoRespondingUserInteractor();
+            _autoRespondingUserInteraction = new AutoRespondingUserInteraction();
+            _userInteractionFactoryReturningSameInstance = new UserInteractionFactoryReturningSameInstance(_autoRespondingUserInteraction);
+            var noGuiThreadDispatcher = new CurrentThreadDispatcher();
 
-            var root = new Root();
-            root.UserInteractor = _userInteractor;
-            root.GuiThreadDispatcher = new NoGuiThreadDispatcher();
-            root.TaskEx = new SynchronousTaskEx();
+            var root = new Root(new SynchronousTaskEx());
+            root.UserInteractorFactory = new UserInteractorFactory(
+                _userInteractionFactoryReturningSameInstance, noGuiThreadDispatcher);
 
             _mainGameViewModel = new MainGameViewModelDecorator(root);
-            CaliburnCreatesView(_mainGameViewModel);
+            ViewIsCreated(_mainGameViewModel);
 
             return this;
         }
 
-        private static void CaliburnCreatesView(MainGameViewModelDecorator viewModel)
+        private static void ViewIsCreated(MainGameViewModelDecorator viewModel)
         {
             viewModel.OnInitialize();
         }
@@ -70,7 +72,7 @@ namespace RISK.Tests.GuiWpf.Specifications
         {
             const int numberOfArmiesToPlace = (40 - 21) * 2;
 
-            _userInteractor.NumberOfSelectTerritoryRequests.Should().Be(numberOfArmiesToPlace);
+            _autoRespondingUserInteraction.NumberOfCallsToWaitForTerritoryToBeSelected.Should().Be(numberOfArmiesToPlace);
 
             return this;
         }
@@ -81,13 +83,28 @@ namespace RISK.Tests.GuiWpf.Specifications
         }
     }
 
-    internal class AutoRespondingUserInteractor : IUserInteractor
+    internal class UserInteractionFactoryReturningSameInstance : IUserInteractionFactory
     {
-        public int NumberOfSelectTerritoryRequests { get; private set; }
+        private readonly AutoRespondingUserInteraction _autoRespondingUserInteraction;
+
+        public UserInteractionFactoryReturningSameInstance(AutoRespondingUserInteraction autoRespondingUserInteraction)
+        {
+            _autoRespondingUserInteraction = autoRespondingUserInteraction;
+        }
+
+        public IUserInteraction Create()
+        {
+            return _autoRespondingUserInteraction;
+        }
+    }
+
+    internal class AutoRespondingUserInteraction : IUserInteraction
+    {
+        public int NumberOfCallsToWaitForTerritoryToBeSelected { get; private set; }
 
         public ITerritoryId WaitForTerritoryToBeSelected(ITerritoryRequestParameter territoryRequestParameter)
         {
-            NumberOfSelectTerritoryRequests++;
+            NumberOfCallsToWaitForTerritoryToBeSelected++;
             return territoryRequestParameter.EnabledTerritories.First();
         }
 
