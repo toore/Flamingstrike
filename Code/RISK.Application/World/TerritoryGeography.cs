@@ -13,7 +13,7 @@ namespace RISK.Application.World
     {
         private readonly List<ITerritoryGeography> _borderingTerritories;
 
-        public TerritoryGeography(string name, Continent continent)
+        public TerritoryGeography(Continent continent)
         {
             Continent = continent;
             _borderingTerritories = new List<ITerritoryGeography>();

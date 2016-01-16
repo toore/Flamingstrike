@@ -54,53 +54,53 @@ namespace RISK.Application.World
     {
         public WorldMap()
         {
-            var alaska = new TerritoryGeography("ALASKA", Continent.NorthAmerica);
-            var alberta = new TerritoryGeography("ALBERTA", Continent.NorthAmerica);
-            var centralAmerica = new TerritoryGeography("CENTRAL_AMERICA", Continent.NorthAmerica);
-            var easternUnitedStates = new TerritoryGeography("EASTERN_UNITED_STATES", Continent.NorthAmerica);
-            var greenland = new TerritoryGeography("GREENLAND", Continent.NorthAmerica);
-            var northwestTerritory = new TerritoryGeography("NORTHWEST_TERRITORY", Continent.NorthAmerica);
-            var ontario = new TerritoryGeography("ONTARIO", Continent.NorthAmerica);
-            var quebec = new TerritoryGeography("QUEBEC", Continent.NorthAmerica);
-            var westernUnitedStates = new TerritoryGeography("WESTERN_UNITED_STATES", Continent.NorthAmerica);
+            var alaska = new TerritoryGeography(Continent.NorthAmerica);
+            var alberta = new TerritoryGeography(Continent.NorthAmerica);
+            var centralAmerica = new TerritoryGeography(Continent.NorthAmerica);
+            var easternUnitedStates = new TerritoryGeography(Continent.NorthAmerica);
+            var greenland = new TerritoryGeography(Continent.NorthAmerica);
+            var northwestTerritory = new TerritoryGeography(Continent.NorthAmerica);
+            var ontario = new TerritoryGeography(Continent.NorthAmerica);
+            var quebec = new TerritoryGeography(Continent.NorthAmerica);
+            var westernUnitedStates = new TerritoryGeography(Continent.NorthAmerica);
 
-            var argentina = new TerritoryGeography("ARGENTINA", Continent.SouthAmerica);
-            var brazil = new TerritoryGeography("BRAZIL", Continent.SouthAmerica);
-            var peru = new TerritoryGeography("PERU", Continent.SouthAmerica);
-            var venezuela = new TerritoryGeography("VENEZUELA", Continent.SouthAmerica);
+            var argentina = new TerritoryGeography(Continent.SouthAmerica);
+            var brazil = new TerritoryGeography(Continent.SouthAmerica);
+            var peru = new TerritoryGeography(Continent.SouthAmerica);
+            var venezuela = new TerritoryGeography(Continent.SouthAmerica);
 
-            var greatBritain = new TerritoryGeography("GREAT_BRITAIN", Continent.Europe);
-            var iceland = new TerritoryGeography("ICELAND", Continent.Europe);
-            var northernEurope = new TerritoryGeography("NORTHERN_EUROPE", Continent.Europe);
-            var scandinavia = new TerritoryGeography("SCANDINAVIA", Continent.Europe);
-            var southernEurope = new TerritoryGeography("SOUTHERN_EUROPE", Continent.Europe);
-            var ukraine = new TerritoryGeography("UKRAINE", Continent.Europe);
-            var westernEurope = new TerritoryGeography("WESTERN_EUROPE", Continent.Europe);
+            var greatBritain = new TerritoryGeography(Continent.Europe);
+            var iceland = new TerritoryGeography(Continent.Europe);
+            var northernEurope = new TerritoryGeography(Continent.Europe);
+            var scandinavia = new TerritoryGeography(Continent.Europe);
+            var southernEurope = new TerritoryGeography(Continent.Europe);
+            var ukraine = new TerritoryGeography(Continent.Europe);
+            var westernEurope = new TerritoryGeography(Continent.Europe);
 
-            var congo = new TerritoryGeography("CONGO", Continent.Africa);
-            var eastAfrica = new TerritoryGeography("EAST_AFRICA", Continent.Africa);
-            var egypt = new TerritoryGeography("EGYPT", Continent.Africa);
-            var madagascar = new TerritoryGeography("MADAGASCAR", Continent.Africa);
-            var northAfrica = new TerritoryGeography("NORTH_AFRICA", Continent.Africa);
-            var southAfrica = new TerritoryGeography("SOUTH_AFRICA", Continent.Africa);
+            var congo = new TerritoryGeography(Continent.Africa);
+            var eastAfrica = new TerritoryGeography(Continent.Africa);
+            var egypt = new TerritoryGeography(Continent.Africa);
+            var madagascar = new TerritoryGeography(Continent.Africa);
+            var northAfrica = new TerritoryGeography(Continent.Africa);
+            var southAfrica = new TerritoryGeography(Continent.Africa);
 
-            var afghanistan = new TerritoryGeography("AFGHANISTAN", Continent.Asia);
-            var china = new TerritoryGeography("CHINA", Continent.Asia);
-            var india = new TerritoryGeography("INDIA", Continent.Asia);
-            var irkutsk = new TerritoryGeography("IRKUTSK", Continent.Asia);
-            var japan = new TerritoryGeography("JAPAN", Continent.Asia);
-            var kamchatka = new TerritoryGeography("KAMCHATKA", Continent.Asia);
-            var middleEast = new TerritoryGeography("MIDDLE_EAST", Continent.Asia);
-            var mongolia = new TerritoryGeography("MONGOLIA", Continent.Asia);
-            var siam = new TerritoryGeography("SIAM", Continent.Asia);
-            var siberia = new TerritoryGeography("SIBERIA", Continent.Asia);
-            var ural = new TerritoryGeography("URAL", Continent.Asia);
-            var yakutsk = new TerritoryGeography("YAKUTSK", Continent.Asia);
+            var afghanistan = new TerritoryGeography(Continent.Asia);
+            var china = new TerritoryGeography(Continent.Asia);
+            var india = new TerritoryGeography(Continent.Asia);
+            var irkutsk = new TerritoryGeography(Continent.Asia);
+            var japan = new TerritoryGeography(Continent.Asia);
+            var kamchatka = new TerritoryGeography(Continent.Asia);
+            var middleEast = new TerritoryGeography(Continent.Asia);
+            var mongolia = new TerritoryGeography(Continent.Asia);
+            var siam = new TerritoryGeography(Continent.Asia);
+            var siberia = new TerritoryGeography(Continent.Asia);
+            var ural = new TerritoryGeography(Continent.Asia);
+            var yakutsk = new TerritoryGeography(Continent.Asia);
 
-            var easternAustralia = new TerritoryGeography("EASTERN_AUSTRALIA", Continent.Australia);
-            var indonesia = new TerritoryGeography("INDONESIA", Continent.Australia);
-            var newGuinea = new TerritoryGeography("NEW_GUINEA", Continent.Australia);
-            var westernAustralia = new TerritoryGeography("WESTERN_AUSTRALIA", Continent.Australia);
+            var easternAustralia = new TerritoryGeography(Continent.Australia);
+            var indonesia = new TerritoryGeography(Continent.Australia);
+            var newGuinea = new TerritoryGeography(Continent.Australia);
+            var westernAustralia = new TerritoryGeography(Continent.Australia);
 
             alaska.AddBorders(alberta, northwestTerritory, kamchatka);
             alberta.AddBorders(alaska, northwestTerritory, ontario, westernUnitedStates);
