@@ -49,19 +49,19 @@ namespace RISK.Application.Play.Attacking
         //    return null;//remove
         //}
 
-        private static void OccupyTerritory(ITerritoryGeography attacker, ITerritoryGeography defender)
-        {
-            //const int armiesLeftBehind = 1;
+        //private static void OccupyTerritory(ITerritoryGeography attacker, ITerritoryGeography defender)
+        //{
+        //    //const int armiesLeftBehind = 1;
 
-            //defender.Occupant = attacker.Occupant;
-            //defender.Armies = attacker.Armies - armiesLeftBehind;
-            //attacker.Armies = armiesLeftBehind;
-        }
+        //    //defender.Occupant = attacker.Occupant;
+        //    //defender.Armies = attacker.Armies - armiesLeftBehind;
+        //    //attacker.Armies = armiesLeftBehind;
+        //}
 
-        private static bool IsDefenderDefeated(ITerritoryGeography defender)
-        {
-            //return defender.Armies == 0;
-            return false;
-        }
+        //private static bool IsDefenderDefeated(ITerritoryGeography defender)
+        //{
+        //    //return defender.Armies == 0;
+        //    return false;
+        //}
     }
 }
