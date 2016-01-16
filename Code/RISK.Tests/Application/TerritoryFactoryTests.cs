@@ -4,6 +4,7 @@ using RISK.Application;
 using RISK.Application.Play;
 using RISK.Application.World;
 using Xunit;
+using IPlayer = RISK.Application.IPlayer;
 using Territory = RISK.Application.Territory;
 
 namespace RISK.Tests.Application
@@ -15,8 +16,8 @@ namespace RISK.Tests.Application
         {
             var territory1 = Substitute.For<ITerritoryId>();
             var territory2 = Substitute.For<ITerritoryId>();
-            var player1 = Substitute.For<IPlayerId>();
-            var player2 = Substitute.For<IPlayerId>();
+            var player1 = Substitute.For<IPlayer>();
+            var player2 = Substitute.For<IPlayer>();
 
             var sut = new TerritoryFactory();
             var actual = sut.Create(new[]

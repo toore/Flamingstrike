@@ -13,8 +13,8 @@ namespace RISK.Tests.Application
     public class AlternateGameSetupTests
     {
         private readonly AlternateGameSetup _sut;
-        private readonly IPlayerId _player1;
-        private readonly IPlayerId _player2;
+        private readonly IPlayer _player1;
+        private readonly IPlayer _player2;
         private readonly ITerritoryId _territory1;
         private readonly ITerritoryId _territory2;
         private readonly ITerritoryId _territory3;
@@ -25,14 +25,14 @@ namespace RISK.Tests.Application
             var worldMap = Substitute.For<IWorldMap>();
             var shuffler = Substitute.For<IShuffler>();
             var startingInfantryCalculator = Substitute.For<IStartingInfantryCalculator>();
-            var players = new List<IPlayerId> { null };
+            var players = new List<IPlayer> { null };
             _territoryResponder = Substitute.For<ITerritoryResponder>();
 
             _sut = new AlternateGameSetup(worldMap, players, startingInfantryCalculator, shuffler);
             _sut.TerritoryResponder = _territoryResponder;
 
-            _player1 = Substitute.For<IPlayerId>();
-            _player2 = Substitute.For<IPlayerId>();
+            _player1 = Substitute.For<IPlayer>();
+            _player2 = Substitute.For<IPlayer>();
             shuffler.Shuffle(players).Returns(new[] { _player1, _player2 });
 
             var territories = new List<ITerritoryId> { null };

@@ -9,7 +9,7 @@ namespace RISK.Application.Play
 {
     public interface IGame
     {
-        IPlayer CurrentPlayer { get; }
+        IInGameplayPlayer CurrentPlayer { get; }
         IReadOnlyList<ITerritory> Territories { get; }
         bool IsCurrentPlayerOccupyingTerritory(ITerritoryId territoryId);
         bool CanAttack(ITerritoryId attackingTerritoryId, ITerritoryId territoryIdToAttack);
@@ -29,10 +29,10 @@ namespace RISK.Application.Play
         private readonly IBattle _battle;
 
         private bool _playerShouldReceiveCardWhenTurnEnds;
-        private readonly IReadOnlyList<IPlayer> _players;
+        private readonly IReadOnlyList<IInGameplayPlayer> _players;
         private bool _mustConfirmMoveOfArmiesIntoCapturedTerritory;
 
-        public Game(IReadOnlyList<IPlayer> players, IReadOnlyList<ITerritory> territories, IGameRules gameRules, ICardFactory cardFactory, IBattle battle)
+        public Game(IReadOnlyList<IInGameplayPlayer> players, IReadOnlyList<ITerritory> territories, IGameRules gameRules, ICardFactory cardFactory, IBattle battle)
         {
             _players = players;
             Territories = territories;
@@ -43,13 +43,13 @@ namespace RISK.Application.Play
             SetStartingPlayer();
         }
 
-        public IPlayer CurrentPlayer { get; private set; }
+        public IInGameplayPlayer CurrentPlayer { get; private set; }
         public IReadOnlyList<ITerritory> Territories { get; }
 
         public bool IsCurrentPlayerOccupyingTerritory(ITerritoryId territoryId)
         {
             var territory = Territories.Get(territoryId);
-            var isCurrentPlayerOccupyingTerritory = territory.PlayerId == CurrentPlayer.PlayerId;
+            var isCurrentPlayerOccupyingTerritory = territory.Player == CurrentPlayer.Player;
 
             return isCurrentPlayerOccupyingTerritory;
         }
@@ -142,7 +142,7 @@ namespace RISK.Application.Play
             CurrentPlayer = GetNextPlayer();
         }
 
-        private IPlayer GetNextPlayer()
+        private IInGameplayPlayer GetNextPlayer()
         {
             return _players.ToList().GetNextOrFirst(CurrentPlayer);
         }
@@ -150,7 +150,7 @@ namespace RISK.Application.Play
         public bool IsGameOver()
         {
             var allTerritoriesAreOccupiedBySamePlayer = Territories
-                .Select(x => x.PlayerId)
+                .Select(x => x.Player)
                 .Distinct()
                 .Count() == 1;
 

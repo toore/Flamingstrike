@@ -35,7 +35,7 @@ namespace GuiWpf.ViewModels.Setup
                 territoryRequestParameter.Territories,
                 userInteraction.SelectTerritory,
                 territoryRequestParameter.EnabledTerritories,
-                territoryRequestParameter.PlayerId.Name,
+                territoryRequestParameter.Player.Name,
                 territoryRequestParameter.GetArmiesLeftToPlace());
         }
     }

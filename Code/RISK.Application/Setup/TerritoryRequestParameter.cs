@@ -7,28 +7,28 @@ namespace RISK.Application.Setup
     {
         IReadOnlyList<Play.ITerritory> Territories { get; }
         IReadOnlyList<ITerritoryId> EnabledTerritories { get; }
-        IPlayerId PlayerId { get; }
+        IPlayer Player { get; }
         int GetArmiesLeftToPlace();
     }
 
     public class TerritoryRequestParameter : ITerritoryRequestParameter
     {
-        private readonly Player _player;
+        private readonly InSetupPlayer _inSetupPlayer;
 
-        public TerritoryRequestParameter(IReadOnlyList<Play.Territory> territories, IReadOnlyList<ITerritoryId> enabledTerritories, Player player)
+        public TerritoryRequestParameter(IReadOnlyList<Play.Territory> territories, IReadOnlyList<ITerritoryId> enabledTerritories, InSetupPlayer inSetupPlayer)
         {
             Territories = territories;
-            _player = player;
+            _inSetupPlayer = inSetupPlayer;
             EnabledTerritories = enabledTerritories;
         }
 
         public IReadOnlyList<Play.ITerritory> Territories { get; }
         public IReadOnlyList<ITerritoryId> EnabledTerritories { get; }
-        public IPlayerId PlayerId => _player.PlayerId;
+        public IPlayer Player => _inSetupPlayer.Player;
 
         public int GetArmiesLeftToPlace()
         {
-            return _player.ArmiesToPlace;
+            return _inSetupPlayer.ArmiesToPlace;
         }
     }
 }

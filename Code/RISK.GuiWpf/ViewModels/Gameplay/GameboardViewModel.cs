@@ -123,13 +123,13 @@ namespace GuiWpf.ViewModels.Gameplay
 
         private void ShowGameOverMessage()
         {
-            var gameOverViewModel = _gameOverViewModelFactory.Create(_game.CurrentPlayer.PlayerId.Name);
+            var gameOverViewModel = _gameOverViewModelFactory.Create(_game.CurrentPlayer.Player.Name);
             _windowManager.ShowDialog(gameOverViewModel);
         }
 
         private void UpdateGame()
         {
-            PlayerName = _game.CurrentPlayer.PlayerId.Name;
+            PlayerName = _game.CurrentPlayer.Player.Name;
 
             UpdateWorldMap();
         }

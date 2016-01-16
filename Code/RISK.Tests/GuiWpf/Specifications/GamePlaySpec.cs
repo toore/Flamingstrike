@@ -24,11 +24,11 @@ namespace RISK.Tests.GuiWpf.Specifications
         private GameboardViewModel _gameboardViewModel;
         private WorldMap _worldMap;
         private IWindowManager _windowManager;
-        private IPlayerId _playerId1;
-        private IPlayerId _playerId2;
+        private IPlayer _playerId1;
+        private IPlayer _playerId2;
         private IDice _dice;
         private GameOverViewModel _gameOverAndPlayer1IsTheWinnerViewModel;
-        private List<IPlayer> _players;
+        private List<IInGameplayPlayer> _players;
         private List<Territory> _territories;
         private IGame _game;
         private IStateControllerFactory _stateControllerFactory;
@@ -154,12 +154,12 @@ namespace RISK.Tests.GuiWpf.Specifications
             _dice = Substitute.For<IDice>();
             _windowManager = Substitute.For<IWindowManager>();
 
-            _playerId1 = new PlayerId("Player 1");
-            _playerId2 = new PlayerId("Player 2");
-            var player1 = new Player(_playerId1);
-            var player2 = new Player(_playerId2);
+            _playerId1 = new Player("Player 1");
+            _playerId2 = new Player("Player 2");
+            var player1 = new InGameplayPlayer(_playerId1);
+            var player2 = new InGameplayPlayer(_playerId2);
 
-            _players = new List<IPlayer> { player1, player2 };
+            _players = new List<IInGameplayPlayer> { player1, player2 };
 
             _territories = new List<Territory>();
 
@@ -215,9 +215,9 @@ namespace RISK.Tests.GuiWpf.Specifications
             return this;
         }
 
-        private void AddTerritoryToGameboard(ITerritoryId territoryId, IPlayerId playerId, int armies)
+        private void AddTerritoryToGameboard(ITerritoryId territoryId, IPlayer player, int armies)
         {
-            _territories.Add(new Territory(territoryId, playerId, armies));
+            _territories.Add(new Territory(territoryId, player, armies));
         }
 
         private GamePlaySpec player_1_occupies_every_territory_except_brazil_and_venezuela_and_north_africa_with_one_army_each()
@@ -274,7 +274,7 @@ namespace RISK.Tests.GuiWpf.Specifications
             return _worldMap.GetAll().Except(excludedLocations).ToArray();
         }
 
-        private void UpdateWorldMap(IPlayerId playerId, int armies, params ITerritoryId[] territoriesId)
+        private void UpdateWorldMap(IPlayer player, int armies, params ITerritoryId[] territoriesId)
         {
             //territories
             //    .Apply(territory =>

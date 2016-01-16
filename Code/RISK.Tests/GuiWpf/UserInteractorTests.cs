@@ -55,7 +55,7 @@ namespace RISK.Tests.GuiWpf
             const int armiesLeftToPlace = 1;
             territoryRequestParameter.Territories.Returns(territories);
             territoryRequestParameter.EnabledTerritories.Returns(enabledTerritories);
-            territoryRequestParameter.PlayerId.Returns(new PlayerId("any player"));
+            territoryRequestParameter.Player.Returns(new Player("any player"));
             territoryRequestParameter.GetArmiesLeftToPlace().Returns(1);
 
             var sut = _userInteractorFactory.Create(gameSetupViewModel);

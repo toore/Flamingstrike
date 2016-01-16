@@ -4,22 +4,23 @@ using RISK.Application;
 using RISK.Application.Play;
 using RISK.Application.World;
 using Xunit;
+using IPlayer = RISK.Application.IPlayer;
 using Territory = RISK.Application.Play.Territory;
 
 namespace RISK.Tests.Application
 {
     public abstract class GameRulesTests
     {
-        private readonly IPlayerId _currentPlayerId;
-        private readonly IPlayerId _otherPlayerId;
+        private readonly IPlayer _currentPlayer;
+        private readonly IPlayer _otherPlayer;
         private readonly ITerritoryId _attackingTerritoryId;
         private readonly ITerritoryId _attackeeTerritoryId;
         private readonly GameRules _sut;
 
         protected GameRulesTests()
         {
-            _currentPlayerId = Substitute.For<IPlayerId>();
-            _otherPlayerId = Substitute.For<IPlayerId>();
+            _currentPlayer = Substitute.For<IPlayer>();
+            _otherPlayer = Substitute.For<IPlayer>();
             _attackingTerritoryId = Substitute.For<ITerritoryId>();
             _attackeeTerritoryId = Substitute.For<ITerritoryId>();
 
@@ -43,8 +44,8 @@ namespace RISK.Tests.Application
             {
                 var gameboardTerritories = new[]
                 {
-                    new Territory(_attackingTerritoryId, _currentPlayerId, 2),
-                    new Territory(_attackeeTerritoryId, _otherPlayerId, 1),
+                    new Territory(_attackingTerritoryId, _currentPlayer, 2),
+                    new Territory(_attackeeTerritoryId, _otherPlayer, 1),
                 };
 
                 var actual = _sut.GetAttackeeCandidates(_attackingTerritoryId, gameboardTerritories);
@@ -57,8 +58,8 @@ namespace RISK.Tests.Application
             {
                 var gameboardTerritories = new[]
                 {
-                    new Territory(_attackingTerritoryId, _currentPlayerId, 1),
-                    new Territory(_attackeeTerritoryId, _otherPlayerId, 1),
+                    new Territory(_attackingTerritoryId, _currentPlayer, 1),
+                    new Territory(_attackeeTerritoryId, _otherPlayer, 1),
                 };
 
                 var actual = _sut.GetAttackeeCandidates(_attackingTerritoryId, gameboardTerritories);
@@ -71,9 +72,9 @@ namespace RISK.Tests.Application
             {
                 var gameboardTerritories = new[]
                 {
-                    new Territory(_attackingTerritoryId, _currentPlayerId, 2),
-                    new Territory(_attackeeTerritoryId, _otherPlayerId, 1),
-                    new Territory(_secondAttackeeTerritoryId, _otherPlayerId, 1)
+                    new Territory(_attackingTerritoryId, _currentPlayer, 2),
+                    new Territory(_attackeeTerritoryId, _otherPlayer, 1),
+                    new Territory(_secondAttackeeTerritoryId, _otherPlayer, 1)
                 };
 
                 var actual = _sut.GetAttackeeCandidates(_attackingTerritoryId, gameboardTerritories);
@@ -86,8 +87,8 @@ namespace RISK.Tests.Application
             {
                 var gameboardTerritories = new[]
                 {
-                    new Territory(_attackingTerritoryId, _currentPlayerId, 2),
-                    new Territory(_attackeeTerritoryId, _currentPlayerId, 1)
+                    new Territory(_attackingTerritoryId, _currentPlayer, 2),
+                    new Territory(_attackeeTerritoryId, _currentPlayer, 1)
                 };
 
                 var actual = _sut.GetAttackeeCandidates(_attackingTerritoryId, gameboardTerritories);
@@ -103,8 +104,8 @@ namespace RISK.Tests.Application
             {
                 var gameboardTerritories = new[]
                 {
-                    new Territory(_attackingTerritoryId, _currentPlayerId, 2),
-                    new Territory(_attackeeTerritoryId, _otherPlayerId, 1)
+                    new Territory(_attackingTerritoryId, _currentPlayer, 2),
+                    new Territory(_attackeeTerritoryId, _otherPlayer, 1)
                 };
 
                 var actual = _sut.GetAttackeeCandidates(_attackingTerritoryId, gameboardTerritories);

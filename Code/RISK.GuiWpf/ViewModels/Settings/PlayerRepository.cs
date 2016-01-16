@@ -5,23 +5,23 @@ namespace GuiWpf.ViewModels.Settings
 {
     public interface IPlayerRepository
     {
-        IList<IPlayerId> GetAll();
-        void Add(IPlayerId playerId);
+        IList<IPlayer> GetAll();
+        void Add(IPlayer player);
         void Clear();
     }
 
     public class PlayerRepository : IPlayerRepository
     {
-        private readonly List<IPlayerId> _players = new List<IPlayerId>();
+        private readonly List<IPlayer> _players = new List<IPlayer>();
 
-        public IList<IPlayerId> GetAll()
+        public IList<IPlayer> GetAll()
         {
             return _players;
         }
 
-        public void Add(IPlayerId playerId)
+        public void Add(IPlayer player)
         {
-            _players.Add(playerId);
+            _players.Add(player);
         }
 
         public void Clear()

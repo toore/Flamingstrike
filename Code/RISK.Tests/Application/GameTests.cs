@@ -41,7 +41,7 @@ namespace RISK.Tests.Application
         public class AfterInitializationTests : GameTestsBase
         {
             private readonly IGamePlaySetup _gameSetup;
-            private readonly IPlayer _firstPlayer;
+            private readonly IInGameplayPlayer _firstInGameplayPlayer;
             private readonly List<Territory> _territories;
             private readonly ITerritoryId _territoryId;
             private readonly ITerritoryId _anotherTerritoryId;
@@ -49,11 +49,11 @@ namespace RISK.Tests.Application
             public AfterInitializationTests()
             {
                 _gameSetup = Make.GameSetup.Build();
-                _firstPlayer = Substitute.For<IPlayer>();
-                _playerFactory.Create(_gameSetup.Players).Returns(new List<IPlayer>
+                _firstInGameplayPlayer = Substitute.For<IInGameplayPlayer>();
+                _playerFactory.Create(_gameSetup.Players).Returns(new List<IInGameplayPlayer>
                 {
-                    _firstPlayer,
-                    Substitute.For<IPlayer>()
+                    _firstInGameplayPlayer,
+                    Substitute.For<IInGameplayPlayer>()
                 });
 
                 _territoryId = Substitute.For<ITerritoryId>();
@@ -71,7 +71,7 @@ namespace RISK.Tests.Application
             {
                 var sut = Create(_gameSetup);
 
-                sut.CurrentPlayer.Should().Be(_firstPlayer);
+                sut.CurrentPlayer.Should().Be(_firstInGameplayPlayer);
             }
 
             [Fact]
@@ -111,23 +111,23 @@ namespace RISK.Tests.Application
         {
             private readonly ITerritoryId _playerTerritoryId = Substitute.For<ITerritoryId>();
             private readonly ITerritoryId _anotherPlayerTerritoryId = Substitute.For<ITerritoryId>();
-            private readonly IPlayerId _playerId = Substitute.For<IPlayerId>();
-            private readonly IPlayerId _anotherPlayerId = Substitute.For<IPlayerId>();
+            private readonly IPlayer _player = Substitute.For<IPlayer>();
+            private readonly IPlayer _anotherPlayer = Substitute.For<IPlayer>();
             private readonly List<Territory> _territories;
             private readonly Territory _playerTerritory;
             private readonly Territory _anotherPlayerTerritory;
 
             public AttackTests()
             {
-                var players = new List<IPlayer>
+                var players = new List<IInGameplayPlayer>
                 {
-                    Make.Player.PlayerId(_playerId).Build(),
-                    Make.Player.PlayerId(_anotherPlayerId).Build()
+                    Make.Player.PlayerId(_player).Build(),
+                    Make.Player.PlayerId(_anotherPlayer).Build()
                 };
                 _playerFactory.Create(null).ReturnsForAnyArgs(players);
 
-                _playerTerritory = Make.Territory.TerritoryId(_playerTerritoryId).Player(_playerId).Build();
-                _anotherPlayerTerritory = Make.Territory.TerritoryId(_anotherPlayerTerritoryId).Player(_anotherPlayerId).Build();
+                _playerTerritory = Make.Territory.TerritoryId(_playerTerritoryId).Player(_player).Build();
+                _anotherPlayerTerritory = Make.Territory.TerritoryId(_anotherPlayerTerritoryId).Player(_anotherPlayer).Build();
                 _territories = new List<Territory>
                 {
                     _playerTerritory,
@@ -215,7 +215,7 @@ namespace RISK.Tests.Application
             [Fact]
             public void Is_game_over_when_all_territories_belongs_to_one_player()
             {
-                var player = Substitute.For<IPlayerId>();
+                var player = Substitute.For<IPlayer>();
                 _territoryFactory.Create(null).ReturnsForAnyArgs(new List<Territory>
                 {
                     Make.Territory.Player(player).Build(),
@@ -245,7 +245,7 @@ namespace RISK.Tests.Application
 
             private void HasPlayers()
             {
-                var players = new List<IPlayer>(new[] { Substitute.For<IPlayer>() });
+                var players = new List<IInGameplayPlayer>(new[] { Substitute.For<IInGameplayPlayer>() });
                 _playerFactory.Create(null).ReturnsForAnyArgs(players);
             }
         }
@@ -255,11 +255,11 @@ namespace RISK.Tests.Application
             [Fact]
             public void End_turn_passes_turn_to_next_player()
             {
-                var nextPlayer = Substitute.For<IPlayer>();
+                var nextPlayer = Substitute.For<IInGameplayPlayer>();
                 var gameSetup = Make.GameSetup.Build();
-                _playerFactory.Create(gameSetup.Players).Returns(new List<IPlayer>
+                _playerFactory.Create(gameSetup.Players).Returns(new List<IInGameplayPlayer>
                 {
-                    Substitute.For<IPlayer>(),
+                    Substitute.For<IInGameplayPlayer>(),
                     nextPlayer
                 });
 

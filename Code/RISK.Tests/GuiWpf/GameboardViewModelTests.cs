@@ -84,8 +84,8 @@ namespace RISK.Tests.GuiWpf
         [Fact]
         public void Player_takes_turn()
         {
-            var player = Substitute.For<IPlayer>();
-            player.PlayerId.Name.Returns("player");
+            var player = Substitute.For<IInGameplayPlayer>();
+            player.Player.Name.Returns("player");
             _game.CurrentPlayer.Returns(player);
 
             var sut = Initialize();
@@ -97,8 +97,8 @@ namespace RISK.Tests.GuiWpf
         public void Player_is_updated_when_turn_ends()
         {
             var sut = Initialize();
-            var player = Substitute.For<IPlayer>();
-            player.PlayerId.Name.Returns("next player");
+            var player = Substitute.For<IInGameplayPlayer>();
+            player.Player.Name.Returns("next player");
             _game.CurrentPlayer.Returns(player);
 
             sut.EndTurn();
@@ -109,8 +109,8 @@ namespace RISK.Tests.GuiWpf
         [Fact]
         public void Show_game_over_when_game_is_updated_after_user_action()
         {
-            var winner = Substitute.For<IPlayer>();
-            winner.PlayerId.Name.Returns("winner");
+            var winner = Substitute.For<IInGameplayPlayer>();
+            winner.Player.Name.Returns("winner");
             _game.CurrentPlayer.Returns(winner);
             var gameOverViewModel = new GameOverViewModel("");
             _gameOverViewModelFactory.Create("winner").Returns(gameOverViewModel);

@@ -27,7 +27,7 @@ namespace RISK.Application.Play
         private static bool CanAttack(ITerritory attacker, ITerritory attackee)
         {
             var hasBorder = attacker.TerritoryId.HasBorderTo(attackee.TerritoryId);
-            var attackerAndAttackeeIsDifferentPlayers = attacker.PlayerId != attackee.PlayerId;
+            var attackerAndAttackeeIsDifferentPlayers = attacker.Player != attackee.Player;
             var hasEnoughArmiesToAttack = attacker.GetNumberOfArmiesAvailableForAttack() > 0;
 
             var canAttack = hasBorder

@@ -1,20 +1,21 @@
 using RISK.Application;
 using RISK.Application.Play;
+using IPlayer = RISK.Application.IPlayer;
 
 namespace RISK.Tests.Builders
 {
     public class PlayerBuilder
     {
-        private IPlayerId _playerId;
+        private IPlayer _player;
 
-        public Player Build()
+        public InGameplayPlayer Build()
         {
-            return new Player(_playerId);
+            return new InGameplayPlayer(_player);
         }
 
-        public PlayerBuilder PlayerId(IPlayerId playerId)
+        public PlayerBuilder PlayerId(IPlayer player)
         {
-            _playerId = playerId;
+            _player = player;
             return this;
         }
     }

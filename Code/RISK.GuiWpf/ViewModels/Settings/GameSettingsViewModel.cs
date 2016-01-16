@@ -59,7 +59,7 @@ namespace GuiWpf.ViewModels.Settings
             _eventAggregator.PublishOnUIThread(new SetupGameMessage());
         }
 
-        private IEnumerable<IPlayerId> CreatePlayers()
+        private IEnumerable<IPlayer> CreatePlayers()
         {
             return GetEnabledPlayers()
                 .Select(_playerIdFactory.Create)

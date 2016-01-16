@@ -9,6 +9,7 @@ using RISK.Application;
 using RISK.Application.Play;
 using RISK.Application.Setup;
 using Xunit;
+using IPlayer = RISK.Application.IPlayer;
 
 namespace RISK.Tests.GuiWpf
 {
@@ -61,7 +62,7 @@ namespace RISK.Tests.GuiWpf
         {
             var gameSetupViewModel = Substitute.For<IGameSetupViewModel>();
             var alternateGameSetup = Substitute.For<IAlternateGameSetup>();
-            var players = new List<IPlayerId>();
+            var players = new List<IPlayer>();
             _playerRepository.GetAll().Returns(players);
             _alternateGameSetupFactory.Create(players).Returns(alternateGameSetup);
             _gameSetupViewModelFactory.Create(alternateGameSetup).Returns(gameSetupViewModel);

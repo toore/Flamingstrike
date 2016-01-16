@@ -21,8 +21,8 @@ namespace RISK.Application.Play
 
     public class Territory : Application.Territory, ITerritory
     {
-        public Territory(ITerritoryId territoryId, IPlayerId playerId, int armies)
-            : base(territoryId, playerId, armies) {}
+        public Territory(ITerritoryId territoryId, Application.IPlayer player, int armies)
+            : base(territoryId, player, armies) {}
 
         public int GetNumberOfArmiesAvailableForAttack()
         {

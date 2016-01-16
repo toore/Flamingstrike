@@ -5,21 +5,21 @@ namespace RISK.Application.Play
 {
     public interface IPlayerFactory
     {
-        List<IPlayer> Create(IEnumerable<IPlayerId> players);
+        List<IInGameplayPlayer> Create(IEnumerable<IPlayer> players);
     }
 
     public class PlayerFactory : IPlayerFactory
     {
-        public List<IPlayer> Create(IEnumerable<IPlayerId> players)
+        public List<IInGameplayPlayer> Create(IEnumerable<IPlayer> players)
         {
             return players
                 .Select(Create)
                 .ToList();
         }
 
-        private static IPlayer Create(IPlayerId playerId)
+        private static IInGameplayPlayer Create(IPlayer player)
         {
-            return new Player(playerId);
+            return new InGameplayPlayer(player);
         }
     }
 }

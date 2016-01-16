@@ -21,7 +21,7 @@ namespace RISK.Application.Play
         {
             return new Territory(
                 territory.TerritoryId,
-                territory.PlayerId,
+                territory.Player,
                 territory.Armies);
         }
     }

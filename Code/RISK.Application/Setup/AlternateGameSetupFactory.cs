@@ -6,7 +6,7 @@ namespace RISK.Application.Setup
 {
     public interface IAlternateGameSetupFactory
     {
-        IAlternateGameSetup Create(IEnumerable<IPlayerId> players);
+        IAlternateGameSetup Create(IEnumerable<IPlayer> players);
     }
 
     public class AlternateGameSetupFactory : IAlternateGameSetupFactory
@@ -22,7 +22,7 @@ namespace RISK.Application.Setup
             _startingInfantryCalculator = startingInfantryCalculator;
         }
 
-        public IAlternateGameSetup Create(IEnumerable<IPlayerId> players)
+        public IAlternateGameSetup Create(IEnumerable<IPlayer> players)
         {
             return new AlternateGameSetup(_worldMap, players, _startingInfantryCalculator, _shuffler);
         }
