@@ -64,6 +64,7 @@ namespace GuiWpf.ViewModels.Gameplay
         }
 
         public bool IsActive { get; private set; }
+
         public event EventHandler<ActivationEventArgs> Activated;
 
         private void InitializeWorld()

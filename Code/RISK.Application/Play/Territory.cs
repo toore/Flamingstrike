@@ -7,8 +7,8 @@ namespace RISK.Application.Play
 {
     public interface ITerritory : Application.ITerritory
     {
-        int GetNumberOfAttackingArmies();
-        int GetNumberOfDefendingArmies();
+        int GetNumberOfArmiesAvailableForAttack();
+        int GetNumberOfArmiesUsedForDefence();
     }
 
     public static class TerritoryExtensions
@@ -24,12 +24,12 @@ namespace RISK.Application.Play
         public Territory(ITerritoryId territoryId, IPlayerId playerId, int armies)
             : base(territoryId, playerId, armies) {}
 
-        public int GetNumberOfAttackingArmies()
+        public int GetNumberOfArmiesAvailableForAttack()
         {
             return Math.Max(Armies - 1, 0);
         }
 
-        public int GetNumberOfDefendingArmies()
+        public int GetNumberOfArmiesUsedForDefence()
         {
             return Armies;
         }

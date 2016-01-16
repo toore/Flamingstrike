@@ -12,10 +12,10 @@ using NSubstitute;
 using RISK.Application;
 using RISK.Application.Play;
 using RISK.Application.Play.Attacking;
-using RISK.Application.Setup;
 using RISK.Application.World;
+using Toore.Shuffling;
 using Xunit;
-using Territory = RISK.Application.Territory;
+using Territory = RISK.Application.Play.Territory;
 
 namespace RISK.Tests.GuiWpf.Specifications
 {
@@ -24,12 +24,12 @@ namespace RISK.Tests.GuiWpf.Specifications
         private GameboardViewModel _gameboardViewModel;
         private WorldMap _worldMap;
         private IWindowManager _windowManager;
-        private IPlayerId _player1;
-        private IPlayerId _player2;
+        private IPlayerId _playerId1;
+        private IPlayerId _playerId2;
         private IDice _dice;
         private GameOverViewModel _gameOverAndPlayer1IsTheWinnerViewModel;
-        private List<IPlayerId> _players;
-        private List<Territory> _gameboardTerritories;
+        private List<IPlayer> _players;
+        private List<Territory> _territories;
         private IGame _game;
         private IStateControllerFactory _stateControllerFactory;
         private IInteractionStateFactory _interactionStateFactory;
@@ -154,24 +154,29 @@ namespace RISK.Tests.GuiWpf.Specifications
             _dice = Substitute.For<IDice>();
             _windowManager = Substitute.For<IWindowManager>();
 
-            _player1 = new PlayerId("Player 1");
-            _player2 = new PlayerId("Player 2");
+            _playerId1 = new PlayerId("Player 1");
+            _playerId2 = new PlayerId("Player 2");
+            var player1 = new Player(_playerId1);
+            var player2 = new Player(_playerId2);
 
-            _players = new List<IPlayerId> { _player1, _player2 };
+            _players = new List<IPlayer> { player1, player2 };
 
-            _gameboardTerritories = new List<Territory>();
+            _territories = new List<Territory>();
 
             return this;
         }
 
         private GamePlaySpec game_is_started()
         {
-            var diceRoller = new DicesRoller(_dice);
-            var interactionStateFactory = new InteractionStateFactory();
-
-            var gameSetup = new GamePlaySetup(_players, _gameboardTerritories);
-            //var game = new Game(gameSetup, new GameboardRules(), new CardFactory(), new Battle(diceRoller, new BattleCalculator()), new TerritoryConverter());
-            //_gameAdapter = new GameAdapter(interactionStateFactory, new StateControllerFactory(interactionStateFactory), game);
+            var gameRules = new GameRules();
+            var cardFactory = new CardFactory();
+            var randomWrapper = new RandomWrapper();
+            var dice = new Dice(randomWrapper);
+            var dicesRoller = new DicesRoller(dice);
+            var battle = new Battle(dicesRoller, new BattleCalculator());
+            _game = new Game(_players, _territories, gameRules, cardFactory, battle);
+            _stateControllerFactory = new StateControllerFactory();
+            _interactionStateFactory = new InteractionStateFactory();
 
             var worldMapModelFactory = new WorldMapModelFactory();
             var colorService = new ColorService();
@@ -185,7 +190,7 @@ namespace RISK.Tests.GuiWpf.Specifications
 
             var gameOverViewModelFactory = Substitute.For<IGameOverViewModelFactory>();
             _gameOverAndPlayer1IsTheWinnerViewModel = new GameOverViewModel("");
-            gameOverViewModelFactory.Create(_player1.Name).Returns(_gameOverAndPlayer1IsTheWinnerViewModel);
+            gameOverViewModelFactory.Create(_playerId1.Name).Returns(_gameOverAndPlayer1IsTheWinnerViewModel);
 
             _gameboardViewModel = new GameboardViewModel(
                 _game,
@@ -205,23 +210,23 @@ namespace RISK.Tests.GuiWpf.Specifications
 
         private GamePlaySpec player_1_has_5_armies_in_north_africa()
         {
-            AddTerritoryToGameboard(_worldMap.NorthAfrica, _player1, 5);
+            AddTerritoryToGameboard(_worldMap.NorthAfrica, _playerId1, 5);
             //UpdateWorldMap(_player1, 5, _worldMap.NorthAfrica);
             return this;
         }
 
         private void AddTerritoryToGameboard(ITerritoryId territoryId, IPlayerId playerId, int armies)
         {
-            _gameboardTerritories.Add(new Territory(territoryId, playerId, armies));
+            _territories.Add(new Territory(territoryId, playerId, armies));
         }
 
         private GamePlaySpec player_1_occupies_every_territory_except_brazil_and_venezuela_and_north_africa_with_one_army_each()
         {
             GetAllTerritoriesExcept(
-                _worldMap.Brazil, 
+                _worldMap.Brazil,
                 _worldMap.Venezuela,
                 _worldMap.NorthAfrica).
-                Apply(x => AddTerritoryToGameboard(x, _player1, 1));
+                Apply(x => AddTerritoryToGameboard(x, _playerId1, 1));
 
             //UpdateWorldMap(_player1, 1, GetAllLocationsExcept(_worldMap.Brazil, _worldMap.Venezuela));
             return this;
@@ -229,39 +234,39 @@ namespace RISK.Tests.GuiWpf.Specifications
 
         private GamePlaySpec player_2_occupies_brazil_and_venezuela_with_one_army_each()
         {
-            AddTerritoryToGameboard(_worldMap.Brazil, _player2, 1);
-            AddTerritoryToGameboard(_worldMap.Venezuela, _player2, 1);
+            AddTerritoryToGameboard(_worldMap.Brazil, _playerId2, 1);
+            AddTerritoryToGameboard(_worldMap.Venezuela, _playerId2, 1);
             //UpdateWorldMap(_player2, 1, _worldMap.Brazil, _worldMap.Venezuela);
             return this;
         }
 
         private GamePlaySpec player_1_occupies_every_territory_except_iceland_with_one_army_each()
         {
-            UpdateWorldMap(_player1, 1, GetAllTerritoriesExcept(_worldMap.Iceland));
+            UpdateWorldMap(_playerId1, 1, GetAllTerritoriesExcept(_worldMap.Iceland));
             return this;
         }
 
         private GamePlaySpec player_1_occupies_every_territory_except_indonesia_with_ten_armies_each()
         {
-            UpdateWorldMap(_player1, 10, GetAllTerritoriesExcept(_worldMap.Indonesia));
+            UpdateWorldMap(_playerId1, 10, GetAllTerritoriesExcept(_worldMap.Indonesia));
             return this;
         }
 
         private GamePlaySpec player_2_occupies_indonesia()
         {
-            UpdateWorldMap(_player2, 1, _worldMap.Indonesia);
+            UpdateWorldMap(_playerId2, 1, _worldMap.Indonesia);
             return this;
         }
 
         private GamePlaySpec player_1_has_2_armies_in_scandinavia()
         {
-            UpdateWorldMap(_player1, 2, _worldMap.Scandinavia);
+            UpdateWorldMap(_playerId1, 2, _worldMap.Scandinavia);
             return this;
         }
 
         private void player_2_occupies_iceland_with_one_army()
         {
-            UpdateWorldMap(_player2, 1, _worldMap.Iceland);
+            UpdateWorldMap(_playerId2, 1, _worldMap.Iceland);
         }
 
         private ITerritoryId[] GetAllTerritoriesExcept(params ITerritoryId[] excludedLocations)
@@ -349,7 +354,7 @@ namespace RISK.Tests.GuiWpf.Specifications
 
         private void player_2_should_take_turn()
         {
-            _gameboardViewModel.PlayerName.Should().Be(_player2.Name);
+            _gameboardViewModel.PlayerName.Should().Be(_playerId2.Name);
         }
     }
 }

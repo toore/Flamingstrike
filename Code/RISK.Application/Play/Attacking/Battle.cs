@@ -39,8 +39,8 @@ namespace RISK.Application.Play.Attacking
 
         //    var battleResult = _battleCalculator.Battle(dices.AttackValues, dices.DefenceValues);
 
-        //    //attacker.Armies -= battleResult.AttackerLosses;
-        //    //defender.Armies -= battleResult.DefenderLosses;
+            //attacker.Armies -= battleResult.AttackerLosses;
+            //defender.Armies -= battleResult.DefenderLosses;
 
         //    //if (IsDefenderDefeated(defender))
         //    //{
