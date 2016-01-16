@@ -403,6 +403,15 @@ namespace GuiWpf.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Player {0}.
+        /// </summary>
+        internal static string PLAYER {
+            get {
+                return ResourceManager.GetString("PLAYER", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Quebec.
         /// </summary>
         internal static string QUEBEC {

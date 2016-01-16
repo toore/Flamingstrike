@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using Caliburn.Micro;
 using GuiWpf.Extensions;
+using GuiWpf.Properties;
 using GuiWpf.ViewModels.Messages;
 using RISK.Application;
 
@@ -28,13 +29,13 @@ namespace GuiWpf.ViewModels.Settings
                 .ToObservableCollection();
         }
 
-        private PlayerSetupViewModel CreatePlayerSetupViewModel(int playerNumber)
+        private PlayerSetupViewModel CreatePlayerSetupViewModel(int playerIndex)
         {
             return new PlayerSetupViewModel(_playerTypes)
-                {
-                    Name = "Player " + (playerNumber + 1),
-                    OnIsEnabledChanged = () => OnEnabledPlayerChanged()
-                };
+            {
+                Name = string.Format(Resources.PLAYER, playerIndex + 1),
+                OnIsEnabledChanged = () => OnEnabledPlayerChanged()
+            };
         }
 
         private void OnEnabledPlayerChanged()
