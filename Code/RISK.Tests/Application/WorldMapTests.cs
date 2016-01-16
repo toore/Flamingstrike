@@ -191,8 +191,8 @@ namespace RISK.Tests.Application
         {
             foreach (var expected in expectedItems)
             {
-                actual.HasBorderTo(expected).Should().BeTrue(actual + " should have border to " + expected);
-                expected.HasBorderTo(actual).Should().BeTrue(expected + " should have border to " + actual);
+                actual.HasBorder(expected).Should().BeTrue(actual + " should have border to " + expected);
+                expected.HasBorder(actual).Should().BeTrue(expected + " should have border to " + actual);
             }
         }
 

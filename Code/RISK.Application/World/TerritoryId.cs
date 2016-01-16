@@ -6,7 +6,7 @@ namespace RISK.Application.World
     {
         Continent Continent { get; }
         IReadOnlyList<ITerritoryId> GetBorderingTerritories { get; }
-        bool HasBorderTo(ITerritoryId territoryId);
+        bool HasBorder(ITerritoryId territoryId);
     }
 
     public class TerritoryId : ITerritoryId
@@ -22,12 +22,12 @@ namespace RISK.Application.World
         public Continent Continent { get; }
         public IReadOnlyList<ITerritoryId> GetBorderingTerritories => _borderingTerritories;
 
-        public bool HasBorderTo(ITerritoryId territoryId)
+        public bool HasBorder(ITerritoryId territoryId)
         {
             return _borderingTerritories.Contains(territoryId);
         }
 
-        public void AddBorderToTerritories(params ITerritoryId[] territoriesId)
+        public void AddBorders(params ITerritoryId[] territoriesId)
         {
             _borderingTerritories.AddRange(territoriesId);
         }

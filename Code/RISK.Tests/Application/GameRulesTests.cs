@@ -35,8 +35,8 @@ namespace RISK.Tests.Application
             {
                 _secondAttackeeTerritoryId = Substitute.For<ITerritoryId>();
 
-                _attackingTerritoryId.HasBorderTo(_attackeeTerritoryId).Returns(true);
-                _attackingTerritoryId.HasBorderTo(_secondAttackeeTerritoryId).Returns(true);
+                _attackingTerritoryId.HasBorder(_attackeeTerritoryId).Returns(true);
+                _attackingTerritoryId.HasBorder(_secondAttackeeTerritoryId).Returns(true);
             }
 
             [Fact]
