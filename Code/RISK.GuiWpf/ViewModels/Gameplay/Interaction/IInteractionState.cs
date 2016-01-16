@@ -4,7 +4,7 @@ namespace GuiWpf.ViewModels.Gameplay.Interaction
 {
     public interface IInteractionState
     {
-        bool CanClick(IStateController stateController, ITerritoryId territoryId);
-        void OnClick(IStateController stateController,ITerritoryId territoryId);
+        bool CanClick(IStateController stateController, ITerritoryGeography territoryGeography);
+        void OnClick(IStateController stateController,ITerritoryGeography territoryGeography);
     }
 }

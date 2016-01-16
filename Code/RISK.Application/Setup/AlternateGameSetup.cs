@@ -142,7 +142,7 @@ namespace RISK.Application.Setup
         private static List<Play.Territory> CreateGameboard(IEnumerable<Territory> territories)
         {
             var gameboardTerritories = territories
-                .Select(x => new Play.Territory(x.TerritoryId, x.Player, x.Armies))
+                .Select(x => new Play.Territory(x.TerritoryGeography, x.Player, x.Armies))
                 .ToList();
 
             return gameboardTerritories;
@@ -151,13 +151,13 @@ namespace RISK.Application.Setup
         private static Territory SelectTerritory(ITerritoryResponder territoryResponder, IReadOnlyList<Play.Territory> territories, InSetupPlayer inSetupPlayer, List<Territory> territoriesAssignedToPlayer)
         {
             var options = territoriesAssignedToPlayer
-                .Select(x => x.TerritoryId)
+                .Select(x => x.TerritoryGeography)
                 .ToList();
 
             var parameter = new TerritoryRequestParameter(territories, options, inSetupPlayer);
             var selectedTerritoryId = territoryResponder.ProcessRequest(parameter);
 
-            var selectedTerritory = territoriesAssignedToPlayer.Single(x => x.TerritoryId == selectedTerritoryId);
+            var selectedTerritory = territoriesAssignedToPlayer.Single(x => x.TerritoryGeography == selectedTerritoryId);
             return selectedTerritory;
         }
     }

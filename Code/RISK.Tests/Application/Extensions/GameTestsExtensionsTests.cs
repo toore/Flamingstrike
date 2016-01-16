@@ -11,14 +11,14 @@ namespace RISK.Tests.Application.Extensions
     public class GameTestsExtensionsTests
     {
         private readonly IGame _sut;
-        private readonly ITerritoryId _territoryId;
-        private readonly ITerritoryId _anotherTerritoryId;
+        private readonly ITerritoryGeography _territoryGeography;
+        private readonly ITerritoryGeography _anotherTerritoryGeography;
         private const int _numberOfArmies = 1;
 
         public GameTestsExtensionsTests()
         {
-            _territoryId = Substitute.For<ITerritoryId>();
-            _anotherTerritoryId = Substitute.For<ITerritoryId>();
+            _territoryGeography = Substitute.For<ITerritoryGeography>();
+            _anotherTerritoryGeography = Substitute.For<ITerritoryGeography>();
 
             _sut = Substitute.For<IGame>();
         }
@@ -27,16 +27,16 @@ namespace RISK.Tests.Application.Extensions
         public void AssertCanNotAttack_asserts_that_CanAttack_is_false()
         {
             AssertMethodThrowsAssertionFailedExceptionWhenIsEnabled(
-                x => x.AssertCanNotAttack(_territoryId, _anotherTerritoryId),
-                x => x.CanAttack(_territoryId, _anotherTerritoryId),
-                x => x.Attack(_territoryId, _anotherTerritoryId));
+                x => x.AssertCanNotAttack(_territoryGeography, _anotherTerritoryGeography),
+                x => x.CanAttack(_territoryGeography, _anotherTerritoryGeography),
+                x => x.Attack(_territoryGeography, _anotherTerritoryGeography));
         }
 
         [Fact]
         public void AssertCanNotAttack_asserts_that_Attack_throws()
         {
             AssertMethodThrowsAssertionFailedException(
-                x => x.AssertCanNotAttack(_territoryId, _anotherTerritoryId));
+                x => x.AssertCanNotAttack(_territoryGeography, _anotherTerritoryGeography));
         }
 
         [Fact]
@@ -59,16 +59,16 @@ namespace RISK.Tests.Application.Extensions
         public void AssertCanNotFortify_asserts_that_CanFortify_is_false()
         {
             AssertMethodThrowsAssertionFailedExceptionWhenIsEnabled(
-                x => x.AssertCanNotFortify(_territoryId, _anotherTerritoryId),
-                x => x.CanFortify(_territoryId, _anotherTerritoryId),
-                x => x.Fortify(_territoryId, _anotherTerritoryId));
+                x => x.AssertCanNotFortify(_territoryGeography, _anotherTerritoryGeography),
+                x => x.CanFortify(_territoryGeography, _anotherTerritoryGeography),
+                x => x.Fortify(_territoryGeography, _anotherTerritoryGeography));
         }
 
         [Fact]
         public void AssertCanNotFortify_asserts_that_Fortify_throws()
         {
             AssertMethodThrowsAssertionFailedException(
-                x => x.AssertCanNotFortify(_territoryId, _anotherTerritoryId));
+                x => x.AssertCanNotFortify(_territoryGeography, _anotherTerritoryGeography));
         }
 
         private void AssertMethodThrowsAssertionFailedExceptionWhenIsEnabled(

@@ -4,6 +4,6 @@ namespace RISK.Application.Setup
 {
     public interface ITerritoryResponder
     {
-        ITerritoryId ProcessRequest(ITerritoryRequestParameter territoryRequestParameter);
+        ITerritoryGeography ProcessRequest(ITerritoryRequestParameter territoryRequestParameter);
     }
 }

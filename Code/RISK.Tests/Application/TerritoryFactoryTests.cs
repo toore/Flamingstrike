@@ -14,8 +14,8 @@ namespace RISK.Tests.Application
         [Fact]
         public void Creates_territory_used_in_game_play()
         {
-            var territory1 = Substitute.For<ITerritoryId>();
-            var territory2 = Substitute.For<ITerritoryId>();
+            var territory1 = Substitute.For<ITerritoryGeography>();
+            var territory2 = Substitute.For<ITerritoryGeography>();
             var player1 = Substitute.For<IPlayer>();
             var player2 = Substitute.For<IPlayer>();
 

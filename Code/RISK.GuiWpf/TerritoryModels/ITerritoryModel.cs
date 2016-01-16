@@ -5,7 +5,7 @@ namespace GuiWpf.TerritoryModels
 {
     public interface ITerritoryModel
     {
-        ITerritoryId TerritoryId { get; }
+        ITerritoryGeography TerritoryGeography { get; }
 
         string Name { get; }
         Point NamePosition { get; }

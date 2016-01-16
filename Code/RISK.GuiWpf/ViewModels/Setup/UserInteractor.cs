@@ -20,7 +20,7 @@ namespace GuiWpf.ViewModels.Setup
             _gameSetupViewModel = gameSetupViewModel;
         }
 
-        public ITerritoryId ProcessRequest(ITerritoryRequestParameter territoryRequestParameter)
+        public ITerritoryGeography ProcessRequest(ITerritoryRequestParameter territoryRequestParameter)
         {
             var userInteraction = _userInteractionFactory.Create();
 

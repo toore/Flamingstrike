@@ -20,7 +20,7 @@ namespace RISK.Application.Play
         private static Territory Create(Application.ITerritory territory)
         {
             return new Territory(
-                territory.TerritoryId,
+                territory.TerritoryGeography,
                 territory.Player,
                 territory.Armies);
         }

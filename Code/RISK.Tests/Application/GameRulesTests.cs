@@ -13,30 +13,30 @@ namespace RISK.Tests.Application
     {
         private readonly IPlayer _currentPlayer;
         private readonly IPlayer _otherPlayer;
-        private readonly ITerritoryId _attackingTerritoryId;
-        private readonly ITerritoryId _attackeeTerritoryId;
+        private readonly ITerritoryGeography _attackingTerritoryGeography;
+        private readonly ITerritoryGeography _attackeeTerritoryGeography;
         private readonly GameRules _sut;
 
         protected GameRulesTests()
         {
             _currentPlayer = Substitute.For<IPlayer>();
             _otherPlayer = Substitute.For<IPlayer>();
-            _attackingTerritoryId = Substitute.For<ITerritoryId>();
-            _attackeeTerritoryId = Substitute.For<ITerritoryId>();
+            _attackingTerritoryGeography = Substitute.For<ITerritoryGeography>();
+            _attackeeTerritoryGeography = Substitute.For<ITerritoryGeography>();
 
             _sut = new GameRules();
         }
 
         public class GameRulesBorderingTerritoriesTests : GameRulesTests
         {
-            private readonly ITerritoryId _secondAttackeeTerritoryId;
+            private readonly ITerritoryGeography _secondAttackeeTerritoryGeography;
 
             public GameRulesBorderingTerritoriesTests()
             {
-                _secondAttackeeTerritoryId = Substitute.For<ITerritoryId>();
+                _secondAttackeeTerritoryGeography = Substitute.For<ITerritoryGeography>();
 
-                _attackingTerritoryId.HasBorder(_attackeeTerritoryId).Returns(true);
-                _attackingTerritoryId.HasBorder(_secondAttackeeTerritoryId).Returns(true);
+                _attackingTerritoryGeography.HasBorder(_attackeeTerritoryGeography).Returns(true);
+                _attackingTerritoryGeography.HasBorder(_secondAttackeeTerritoryGeography).Returns(true);
             }
 
             [Fact]
@@ -44,13 +44,13 @@ namespace RISK.Tests.Application
             {
                 var gameboardTerritories = new[]
                 {
-                    new Territory(_attackingTerritoryId, _currentPlayer, 2),
-                    new Territory(_attackeeTerritoryId, _otherPlayer, 1),
+                    new Territory(_attackingTerritoryGeography, _currentPlayer, 2),
+                    new Territory(_attackeeTerritoryGeography, _otherPlayer, 1),
                 };
 
-                var actual = _sut.GetAttackeeCandidates(_attackingTerritoryId, gameboardTerritories);
+                var actual = _sut.GetAttackeeCandidates(_attackingTerritoryGeography, gameboardTerritories);
 
-                actual.Should().BeEquivalentTo(_attackeeTerritoryId);
+                actual.Should().BeEquivalentTo(_attackeeTerritoryGeography);
             }
 
             [Fact]
@@ -58,11 +58,11 @@ namespace RISK.Tests.Application
             {
                 var gameboardTerritories = new[]
                 {
-                    new Territory(_attackingTerritoryId, _currentPlayer, 1),
-                    new Territory(_attackeeTerritoryId, _otherPlayer, 1),
+                    new Territory(_attackingTerritoryGeography, _currentPlayer, 1),
+                    new Territory(_attackeeTerritoryGeography, _otherPlayer, 1),
                 };
 
-                var actual = _sut.GetAttackeeCandidates(_attackingTerritoryId, gameboardTerritories);
+                var actual = _sut.GetAttackeeCandidates(_attackingTerritoryGeography, gameboardTerritories);
 
                 actual.Should().BeEmpty();
             }
@@ -72,14 +72,14 @@ namespace RISK.Tests.Application
             {
                 var gameboardTerritories = new[]
                 {
-                    new Territory(_attackingTerritoryId, _currentPlayer, 2),
-                    new Territory(_attackeeTerritoryId, _otherPlayer, 1),
-                    new Territory(_secondAttackeeTerritoryId, _otherPlayer, 1)
+                    new Territory(_attackingTerritoryGeography, _currentPlayer, 2),
+                    new Territory(_attackeeTerritoryGeography, _otherPlayer, 1),
+                    new Territory(_secondAttackeeTerritoryGeography, _otherPlayer, 1)
                 };
 
-                var actual = _sut.GetAttackeeCandidates(_attackingTerritoryId, gameboardTerritories);
+                var actual = _sut.GetAttackeeCandidates(_attackingTerritoryGeography, gameboardTerritories);
 
-                actual.Should().BeEquivalentTo(_attackeeTerritoryId, _secondAttackeeTerritoryId);
+                actual.Should().BeEquivalentTo(_attackeeTerritoryGeography, _secondAttackeeTerritoryGeography);
             }
 
             [Fact]
@@ -87,11 +87,11 @@ namespace RISK.Tests.Application
             {
                 var gameboardTerritories = new[]
                 {
-                    new Territory(_attackingTerritoryId, _currentPlayer, 2),
-                    new Territory(_attackeeTerritoryId, _currentPlayer, 1)
+                    new Territory(_attackingTerritoryGeography, _currentPlayer, 2),
+                    new Territory(_attackeeTerritoryGeography, _currentPlayer, 1)
                 };
 
-                var actual = _sut.GetAttackeeCandidates(_attackingTerritoryId, gameboardTerritories);
+                var actual = _sut.GetAttackeeCandidates(_attackingTerritoryGeography, gameboardTerritories);
 
                 actual.Should().BeEmpty();
             }
@@ -104,11 +104,11 @@ namespace RISK.Tests.Application
             {
                 var gameboardTerritories = new[]
                 {
-                    new Territory(_attackingTerritoryId, _currentPlayer, 2),
-                    new Territory(_attackeeTerritoryId, _otherPlayer, 1)
+                    new Territory(_attackingTerritoryGeography, _currentPlayer, 2),
+                    new Territory(_attackeeTerritoryGeography, _otherPlayer, 1)
                 };
 
-                var actual = _sut.GetAttackeeCandidates(_attackingTerritoryId, gameboardTerritories);
+                var actual = _sut.GetAttackeeCandidates(_attackingTerritoryGeography, gameboardTerritories);
 
                 actual.Should().BeEmpty();
             }

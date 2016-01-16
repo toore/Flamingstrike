@@ -17,7 +17,7 @@ namespace GuiWpf.TerritoryModels
             yield return new CentralAmericaModel(worldMap.CentralAmerica);
             yield return new EasternUnitedStatesModel(worldMap.EasternUnitedStates);
             yield return new GreenlandModel(worldMap.Greenland);
-            yield return new NorthwestTerritoryModel(worldMap.NorthwestTerritoryId);
+            yield return new NorthwestTerritoryModel(worldMap.NorthwestTerritoryGeography);
             yield return new OntarioModel(worldMap.Ontario);
             yield return new QuebecModel(worldMap.Quebec);
             yield return new WesternUnitedStatesModel(worldMap.WesternUnitedStates);

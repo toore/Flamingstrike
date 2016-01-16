@@ -12,22 +12,22 @@ namespace GuiWpf.ViewModels.Gameplay.Interaction
             _interactionStateFactory = interactionStateFactory;
         }
 
-        public bool CanClick(IStateController stateController, ITerritoryId territoryId)
+        public bool CanClick(IStateController stateController, ITerritoryGeography territoryGeography)
         {
-            return CanFortify(stateController, territoryId)
+            return CanFortify(stateController, territoryGeography)
                    ||
-                   CanDeselect(stateController, territoryId);
+                   CanDeselect(stateController, territoryGeography);
         }
 
-        public void OnClick(IStateController stateController, ITerritoryId territoryId)
+        public void OnClick(IStateController stateController, ITerritoryGeography territoryGeography)
         {
-            if (CanDeselect(stateController, territoryId))
+            if (CanDeselect(stateController, territoryGeography))
             {
                 Deselect(stateController);
             }
-            else if (CanFortify(stateController, territoryId))
+            else if (CanFortify(stateController, territoryGeography))
             {
-                Fortify(stateController, territoryId);
+                Fortify(stateController, territoryGeography);
             }
             else
             {
@@ -35,27 +35,27 @@ namespace GuiWpf.ViewModels.Gameplay.Interaction
             }
         }
 
-        private static bool CanDeselect(IStateController stateController, ITerritoryId territoryId)
+        private static bool CanDeselect(IStateController stateController, ITerritoryGeography territoryGeography)
         {
-            return territoryId == stateController.SelectedTerritoryId;
+            return territoryGeography == stateController.SelectedTerritoryGeography;
         }
 
         private void Deselect(IStateController stateController)
         {
             stateController.CurrentState = _interactionStateFactory.CreateFortifySelectState();
-            stateController.SelectedTerritoryId = null;
+            stateController.SelectedTerritoryGeography = null;
         }
 
-        private void Fortify(IStateController stateController, ITerritoryId territoryId)
+        private void Fortify(IStateController stateController, ITerritoryGeography territoryGeography)
         {
-            stateController.Game.Fortify(stateController.SelectedTerritoryId, territoryId);
+            stateController.Game.Fortify(stateController.SelectedTerritoryGeography, territoryGeography);
             stateController.CurrentState = _interactionStateFactory.CreateEndTurnState();
         }
 
-        private static bool CanFortify(IStateController stateController, ITerritoryId territoryIdToFortify)
+        private static bool CanFortify(IStateController stateController, ITerritoryGeography territoryGeographyToFortify)
         {
-            var sourceTerritory = stateController.SelectedTerritoryId;
-            var canFortify = stateController.Game.CanFortify(sourceTerritory, territoryIdToFortify);
+            var sourceTerritory = stateController.SelectedTerritoryGeography;
+            var canFortify = stateController.Game.CanFortify(sourceTerritory, territoryGeographyToFortify);
             return canFortify;
         }
     }

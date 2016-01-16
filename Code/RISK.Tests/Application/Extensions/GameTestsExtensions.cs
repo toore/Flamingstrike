@@ -7,11 +7,11 @@ namespace RISK.Tests.Application.Extensions
 {
     public static class GameTestsExtensions
     {
-        public static void AssertCanNotAttack(this IGame sut, ITerritoryId attackingTerritoryId, ITerritoryId attackedTerritoryId)
+        public static void AssertCanNotAttack(this IGame sut, ITerritoryGeography attackingTerritoryGeography, ITerritoryGeography attackedTerritoryGeography)
         {
-            Action act = () => sut.Attack(attackingTerritoryId, attackedTerritoryId);
+            Action act = () => sut.Attack(attackingTerritoryGeography, attackedTerritoryGeography);
 
-            sut.CanAttack(attackingTerritoryId, attackedTerritoryId).Should().BeFalse();
+            sut.CanAttack(attackingTerritoryGeography, attackedTerritoryGeography).Should().BeFalse();
             act.ShouldThrow<InvalidOperationException>();
         }
 
@@ -23,11 +23,11 @@ namespace RISK.Tests.Application.Extensions
             act.ShouldThrow<InvalidOperationException>();
         }
 
-        public static void AssertCanNotFortify(this IGame sut, ITerritoryId attackingTerritoryId, ITerritoryId attackedTerritoryId)
+        public static void AssertCanNotFortify(this IGame sut, ITerritoryGeography attackingTerritoryGeography, ITerritoryGeography attackedTerritoryGeography)
         {
-            Action act = () => sut.Fortify(attackingTerritoryId, attackedTerritoryId);
+            Action act = () => sut.Fortify(attackingTerritoryGeography, attackedTerritoryGeography);
 
-            sut.CanFortify(attackingTerritoryId, attackedTerritoryId).Should().BeFalse();
+            sut.CanFortify(attackingTerritoryGeography, attackedTerritoryGeography).Should().BeFalse();
             act.ShouldThrow<InvalidOperationException>();
         }
     }

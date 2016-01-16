@@ -15,7 +15,7 @@ namespace GuiWpf.ViewModels.Gameplay.Map
 
         public string Name => _territoryModel.Name;
         public Point Position => _territoryModel.NamePosition;
-        public ITerritoryId TerritoryId => _territoryModel.TerritoryId;
+        public ITerritoryGeography TerritoryGeography => _territoryModel.TerritoryGeography;
 
         private int _armies;
         public int Armies

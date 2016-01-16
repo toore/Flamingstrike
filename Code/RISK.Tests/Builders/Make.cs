@@ -4,7 +4,7 @@ namespace RISK.Tests.Builders
 {
     public static class Make
     {
-        public static TerritoryIdBuilder TerritoryId => new TerritoryIdBuilder();
+        public static TerritoryGeographyBuilder TerritoryGeography => new TerritoryGeographyBuilder();
         public static CardBuilder Card => new CardBuilder();
         public static GameSetupBuilder GameSetup => new GameSetupBuilder();
         public static TerritoryBuilder Territory => new TerritoryBuilder();

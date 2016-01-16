@@ -14,7 +14,7 @@ namespace GuiWpf.ViewModels.Setup
 {
     public interface IGameSetupViewModel : IMainViewModel
     {
-        void UpdateView(IReadOnlyList<ITerritory> territories, Action<ITerritoryId> selectTerritoryAction, IEnumerable<ITerritoryId> enabledTerritories, string playerName, int armiesLeftToPlace);
+        void UpdateView(IReadOnlyList<ITerritory> territories, Action<ITerritoryGeography> selectTerritoryAction, IEnumerable<ITerritoryGeography> enabledTerritories, string playerName, int armiesLeftToPlace);
     }
 
     public class GameSetupViewModel : Screen, IGameSetupViewModel
@@ -97,7 +97,7 @@ namespace GuiWpf.ViewModels.Setup
             _eventAggregator.PublishOnUIThread(new StartGameplayMessage(game));
         }
 
-        public void UpdateView(IReadOnlyList<ITerritory> territories, Action<ITerritoryId> selectTerritoryAction, IEnumerable<ITerritoryId> enabledTerritories, string playerName, int armiesLeftToPlace)
+        public void UpdateView(IReadOnlyList<ITerritory> territories, Action<ITerritoryGeography> selectTerritoryAction, IEnumerable<ITerritoryGeography> enabledTerritories, string playerName, int armiesLeftToPlace)
         {
             var worldMapViewModel = _worldMapViewModelFactory.Create(
                 territories,

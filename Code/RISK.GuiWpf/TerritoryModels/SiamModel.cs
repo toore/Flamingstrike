@@ -7,7 +7,7 @@ namespace GuiWpf.TerritoryModels
 {
     public class SiamModel : TerritoryModelBase
     {
-        public SiamModel(ITerritoryId territoryId) : base(territoryId) {}
+        public SiamModel(ITerritoryGeography territoryGeography) : base(territoryGeography) {}
 
         public override string Name
         {

@@ -11,8 +11,8 @@ namespace GuiWpf.ViewModels.Gameplay.Map
 {
     public interface IWorldMapViewModelFactory
     {
-        WorldMapViewModel Create(IReadOnlyList<ITerritory> territories, Action<ITerritoryId> onClick, IEnumerable<ITerritoryId> enabledTerritories);
-        void Update(WorldMapViewModel worldMapViewModel, IReadOnlyList<ITerritory> territories, ITerritoryId selectedTerritoryId, IEnumerable<ITerritoryId> enabledTerritories);
+        WorldMapViewModel Create(IReadOnlyList<ITerritory> territories, Action<ITerritoryGeography> onClick, IEnumerable<ITerritoryGeography> enabledTerritories);
+        void Update(WorldMapViewModel worldMapViewModel, IReadOnlyList<ITerritory> territories, ITerritoryGeography selectedTerritoryGeography, IEnumerable<ITerritoryGeography> enabledTerritories);
     }
 
     public class WorldMapViewModelFactory : IWorldMapViewModelFactory
@@ -30,7 +30,7 @@ namespace GuiWpf.ViewModels.Gameplay.Map
             _colorService = colorService;
         }
 
-        public WorldMapViewModel Create(IReadOnlyList<ITerritory> territories, Action<ITerritoryId> onClick, IEnumerable<ITerritoryId> enabledTerritories)
+        public WorldMapViewModel Create(IReadOnlyList<ITerritory> territories, Action<ITerritoryGeography> onClick, IEnumerable<ITerritoryGeography> enabledTerritories)
         {
             var territoryModels = _worldMapModelFactory.Create(_worldMap);
 
@@ -46,16 +46,16 @@ namespace GuiWpf.ViewModels.Gameplay.Map
             return worldMapViewModel;
         }
 
-        public void Update(WorldMapViewModel worldMapViewModel, IReadOnlyList<ITerritory> territories, ITerritoryId selectedTerritoryId, IEnumerable<ITerritoryId> enabledTerritories)
+        public void Update(WorldMapViewModel worldMapViewModel, IReadOnlyList<ITerritory> territories, ITerritoryGeography selectedTerritoryGeography, IEnumerable<ITerritoryGeography> enabledTerritories)
         {
-            var worldMapItemUpdater = new WorldMapItemUpdater(territories, enabledTerritories, selectedTerritoryId, _territoryColorsFactory, _colorService);
+            var worldMapItemUpdater = new WorldMapItemUpdater(territories, enabledTerritories, selectedTerritoryGeography, _territoryColorsFactory, _colorService);
             foreach (var worldMapItemViewModel in worldMapViewModel.WorldMapViewModels)
             {
                 worldMapItemViewModel.Accept(worldMapItemUpdater);
             }
         }
 
-        private static IEnumerable<IWorldMapItemViewModel> CreateViewModels(ITerritoryModel territoryModel, Action<ITerritoryId> onClick)
+        private static IEnumerable<IWorldMapItemViewModel> CreateViewModels(ITerritoryModel territoryModel, Action<ITerritoryGeography> onClick)
         {
             yield return new TerritoryViewModel(territoryModel, onClick);
             yield return new TitleViewModel(territoryModel);

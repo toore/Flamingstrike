@@ -6,19 +6,19 @@ namespace RISK.Application.Play
 {
     public interface IGameRules
     {
-        IEnumerable<ITerritoryId> GetAttackeeCandidates(ITerritoryId attackingTerritoryId, IReadOnlyList<ITerritory> territories);
+        IEnumerable<ITerritoryGeography> GetAttackeeCandidates(ITerritoryGeography attackingTerritoryGeography, IReadOnlyList<ITerritory> territories);
     }
 
     public class GameRules : IGameRules
     {
-        public IEnumerable<ITerritoryId> GetAttackeeCandidates(ITerritoryId attackingTerritoryId, IReadOnlyList<ITerritory> territories)
+        public IEnumerable<ITerritoryGeography> GetAttackeeCandidates(ITerritoryGeography attackingTerritoryGeography, IReadOnlyList<ITerritory> territories)
         {
             var attacker = territories
-                .Single(x => x.TerritoryId == attackingTerritoryId);
+                .Single(x => x.TerritoryGeography == attackingTerritoryGeography);
 
             var attackCandidates = territories
                 .Where(attackee => CanAttack(attacker, attackee))
-                .Select(x => x.TerritoryId)
+                .Select(x => x.TerritoryGeography)
                 .ToList();
 
             return attackCandidates;
@@ -26,7 +26,7 @@ namespace RISK.Application.Play
 
         private static bool CanAttack(ITerritory attacker, ITerritory attackee)
         {
-            var hasBorder = attacker.TerritoryId.HasBorder(attackee.TerritoryId);
+            var hasBorder = attacker.TerritoryGeography.HasBorder(attackee.TerritoryGeography);
             var attackerAndAttackeeIsDifferentPlayers = attacker.Player != attackee.Player;
             var hasEnoughArmiesToAttack = attacker.GetNumberOfArmiesAvailableForAttack() > 0;
 

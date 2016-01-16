@@ -19,9 +19,9 @@ namespace RISK.Tests.GuiWpf.Interaction
             _interactionStateFactory = Substitute.For<IInteractionStateFactory>();
         }
 
-        protected ITerritoryId CreateTerritoryOccupiedByCurrentPlayer()
+        protected ITerritoryGeography CreateTerritoryOccupiedByCurrentPlayer()
         {
-            var territory = Substitute.For<ITerritoryId>();
+            var territory = Substitute.For<ITerritoryGeography>();
             _game.IsCurrentPlayerOccupyingTerritory(territory).Returns(true);
 
             return territory;

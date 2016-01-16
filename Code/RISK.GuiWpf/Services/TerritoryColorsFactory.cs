@@ -6,23 +6,23 @@ namespace GuiWpf.Services
 {
     public interface ITerritoryColorsFactory
     {
-        ITerritoryColors Create(ITerritoryId territoryId);
+        ITerritoryColors Create(ITerritoryGeography territoryGeography);
     }
 
     public class TerritoryColorsFactory : ITerritoryColorsFactory
     {
-        private Dictionary<ITerritoryId, Func<GuiWpf.Services.ITerritoryColors>> _colors;
+        private Dictionary<ITerritoryGeography, Func<GuiWpf.Services.ITerritoryColors>> _colors;
 
         public TerritoryColorsFactory(IColorService colorService, IWorldMap worldMap)
         {
-            _colors = new Dictionary<ITerritoryId, Func<ITerritoryColors>>
+            _colors = new Dictionary<ITerritoryGeography, Func<ITerritoryColors>>
             {
                 { worldMap.Alaska, () => colorService.NorthAmericaColors },
                 { worldMap.Alberta, () => colorService.NorthAmericaColors },
                 { worldMap.CentralAmerica, () => colorService.NorthAmericaColors },
                 { worldMap.EasternUnitedStates, () => colorService.NorthAmericaColors },
                 { worldMap.Greenland, () => colorService.NorthAmericaColors },
-                { worldMap.NorthwestTerritoryId, () => colorService.NorthAmericaColors },
+                { worldMap.NorthwestTerritoryGeography, () => colorService.NorthAmericaColors },
                 { worldMap.Ontario, () => colorService.NorthAmericaColors },
                 { worldMap.Quebec, () => colorService.NorthAmericaColors },
                 { worldMap.WesternUnitedStates, () => colorService.NorthAmericaColors },
@@ -62,14 +62,14 @@ namespace GuiWpf.Services
             };
         }
 
-        public ITerritoryColors Create(ITerritoryId territoryId)
+        public ITerritoryColors Create(ITerritoryGeography territoryGeography)
         {
             //if (territory.IsOccupied())
             //{
             //    return _colorService.GetPlayerTerritoryColors(territory.Occupant);
             //}
 
-            return _colors[territoryId]();
+            return _colors[territoryGeography]();
         }
     }
 }

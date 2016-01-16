@@ -4,21 +4,21 @@ namespace RISK.Application
 {
     public interface ITerritory
     {
-        ITerritoryId TerritoryId { get; }
+        ITerritoryGeography TerritoryGeography { get; }
         IPlayer Player { get; }
         int Armies { get; }
     }
 
     public class Territory : ITerritory
     {
-        public Territory(ITerritoryId territoryId, IPlayer player, int initialArmy)
+        public Territory(ITerritoryGeography territoryGeography, IPlayer player, int initialArmy)
         {
-            TerritoryId = territoryId;
+            TerritoryGeography = territoryGeography;
             Player = player;
             Armies = initialArmy;
         }
 
-        public ITerritoryId TerritoryId { get; }
+        public ITerritoryGeography TerritoryGeography { get; }
         public IPlayer Player { get; }
         public int Armies { get; set; }
     }

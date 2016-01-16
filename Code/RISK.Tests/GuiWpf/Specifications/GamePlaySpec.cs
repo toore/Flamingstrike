@@ -215,9 +215,9 @@ namespace RISK.Tests.GuiWpf.Specifications
             return this;
         }
 
-        private void AddTerritoryToGameboard(ITerritoryId territoryId, IPlayer player, int armies)
+        private void AddTerritoryToGameboard(ITerritoryGeography territoryGeography, IPlayer player, int armies)
         {
-            _territories.Add(new Territory(territoryId, player, armies));
+            _territories.Add(new Territory(territoryGeography, player, armies));
         }
 
         private GamePlaySpec player_1_occupies_every_territory_except_brazil_and_venezuela_and_north_africa_with_one_army_each()
@@ -269,12 +269,12 @@ namespace RISK.Tests.GuiWpf.Specifications
             UpdateWorldMap(_playerId2, 1, _worldMap.Iceland);
         }
 
-        private ITerritoryId[] GetAllTerritoriesExcept(params ITerritoryId[] excludedLocations)
+        private ITerritoryGeography[] GetAllTerritoriesExcept(params ITerritoryGeography[] excludedLocations)
         {
             return _worldMap.GetAll().Except(excludedLocations).ToArray();
         }
 
-        private void UpdateWorldMap(IPlayer player, int armies, params ITerritoryId[] territoriesId)
+        private void UpdateWorldMap(IPlayer player, int armies, params ITerritoryGeography[] territoriesGeography)
         {
             //territories
             //    .Apply(territory =>
@@ -314,16 +314,16 @@ namespace RISK.Tests.GuiWpf.Specifications
             _gameboardViewModel.EndTurn();
         }
 
-        private void ClickOn(ITerritoryId location)
+        private void ClickOn(ITerritoryGeography location)
         {
             GetTerritoryViewModel(location).OnClick();
         }
 
-        private ITerritoryLayoutViewModel GetTerritoryViewModel(ITerritoryId territoryId)
+        private ITerritoryLayoutViewModel GetTerritoryViewModel(ITerritoryGeography territoryGeography)
         {
             return _gameboardViewModel.WorldMapViewModel.WorldMapViewModels
                 .OfType<TerritoryViewModel>()
-                .Single(x => x.TerritoryId == territoryId);
+                .Single(x => x.TerritoryGeography == territoryGeography);
         }
 
         private void player_1_should_occupy_Brazil_with_4_armies()

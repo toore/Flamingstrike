@@ -7,17 +7,17 @@ namespace RISK.Tests.Builders
 {
     public class TerritoryBuilder
     {
-        private ITerritoryId _territoryId = Substitute.For<ITerritoryId>();
+        private ITerritoryGeography _territoryGeography = Substitute.For<ITerritoryGeography>();
         private IPlayer _player = Substitute.For<IPlayer>();
 
         public Territory Build()
         {
-            return new Territory(_territoryId, _player, 0);
+            return new Territory(_territoryGeography, _player, 0);
         }
 
-        public TerritoryBuilder TerritoryId(ITerritoryId territoryId)
+        public TerritoryBuilder TerritoryId(ITerritoryGeography territoryGeography)
         {
-            _territoryId = territoryId;
+            _territoryGeography = territoryGeography;
             return this;
         }
 

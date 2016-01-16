@@ -7,7 +7,7 @@ namespace GuiWpf.TerritoryModels
 {
     public class NorthwestTerritoryModel : TerritoryModelBase
     {
-        public NorthwestTerritoryModel(ITerritoryId territoryId) : base(territoryId) {}
+        public NorthwestTerritoryModel(ITerritoryGeography territoryGeography) : base(territoryGeography) {}
 
         public override string Name
         {

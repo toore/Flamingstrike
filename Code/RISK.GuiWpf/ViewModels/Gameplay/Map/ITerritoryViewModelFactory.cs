@@ -6,6 +6,6 @@ namespace GuiWpf.ViewModels.Gameplay.Map
 {
     public interface ITerritoryViewModelFactory
     {
-        TerritoryViewModel Create(ITerritoryId territoryId, Action<ITerritoryId> clickCommand);
+        TerritoryViewModel Create(ITerritoryGeography territoryGeography, Action<ITerritoryGeography> clickCommand);
     }
 }

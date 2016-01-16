@@ -25,7 +25,7 @@ namespace RISK.Tests.GuiWpf
         {
             var territoryModels = Create().ToList();
 
-            territoryModels.Select(x => x.TerritoryId).Distinct().Should().HaveCount(42);
+            territoryModels.Select(x => x.TerritoryGeography).Distinct().Should().HaveCount(42);
             territoryModels.Select(x => x.Name).Distinct().Should().HaveCount(42);
             territoryModels.Select(x => x.NamePosition).Distinct().Should().HaveCount(42);
             territoryModels.Select(x => x.Path).Distinct().Should().HaveCount(42);

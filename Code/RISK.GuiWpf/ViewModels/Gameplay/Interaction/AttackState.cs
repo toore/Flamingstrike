@@ -12,22 +12,22 @@ namespace GuiWpf.ViewModels.Gameplay.Interaction
             _interactionStateFactory = interactionStateFactory;
         }
 
-        public bool CanClick(IStateController stateController, ITerritoryId territoryId)
+        public bool CanClick(IStateController stateController, ITerritoryGeography territoryGeography)
         {
-            return CanAttack(stateController, territoryId)
+            return CanAttack(stateController, territoryGeography)
                    ||
-                   CanDeselect(stateController, territoryId);
+                   CanDeselect(stateController, territoryGeography);
         }
 
-        public void OnClick(IStateController stateController, ITerritoryId territoryId)
+        public void OnClick(IStateController stateController, ITerritoryGeography territoryGeography)
         {
-            if (CanDeselect(stateController, territoryId))
+            if (CanDeselect(stateController, territoryGeography))
             {
                 Deselect(stateController);
             }
-            else if (CanAttack(stateController, territoryId))
+            else if (CanAttack(stateController, territoryGeography))
             {
-                Attack(stateController, territoryId);
+                Attack(stateController, territoryGeography);
             }
             else
             {
@@ -35,29 +35,29 @@ namespace GuiWpf.ViewModels.Gameplay.Interaction
             }
         }
 
-        private static bool CanDeselect(IStateController stateController, ITerritoryId territoryId)
+        private static bool CanDeselect(IStateController stateController, ITerritoryGeography territoryGeography)
         {
-            return territoryId == stateController.SelectedTerritoryId;
+            return territoryGeography == stateController.SelectedTerritoryGeography;
         }
 
         private void Deselect(IStateController stateController)
         {
             stateController.CurrentState = _interactionStateFactory.CreateSelectState();
-            stateController.SelectedTerritoryId = null;
+            stateController.SelectedTerritoryGeography = null;
         }
 
-        private static bool CanAttack(IStateController stateController, ITerritoryId territoryId)
+        private static bool CanAttack(IStateController stateController, ITerritoryGeography territoryGeography)
         {
-            var attackingTerritory = stateController.SelectedTerritoryId;
-            var canAttack = stateController.Game.CanAttack(attackingTerritory, territoryId);
+            var attackingTerritory = stateController.SelectedTerritoryGeography;
+            var canAttack = stateController.Game.CanAttack(attackingTerritory, territoryGeography);
 
             return canAttack;
         }
 
-        private static void Attack(IStateController stateController, ITerritoryId attackeeTerritoryId)
+        private static void Attack(IStateController stateController, ITerritoryGeography attackeeTerritoryGeography)
         {
-            var attackingTerritory = stateController.SelectedTerritoryId;
-            stateController.Game.Attack(attackingTerritory, attackeeTerritoryId);
+            var attackingTerritory = stateController.SelectedTerritoryGeography;
+            stateController.Game.Attack(attackingTerritory, attackeeTerritoryGeography);
         }
     }
 }

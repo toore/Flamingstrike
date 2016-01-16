@@ -60,7 +60,7 @@
     <Compile Include="Play\GameFactory.cs" />
     <Compile Include="Setup\GamePlaySetup.cs" />
     <Compile Include="Player.cs" />
-    <Compile Include="World\TerritoryId.cs" />
+    <Compile Include="World\TerritoryGeography.cs" />
     <Compile Include="PlayerType.cs" />
     <Compile Include="Extensions\ListExtensions.cs" />
     <Compile Include="Play\Attacking\Dice.cs" />

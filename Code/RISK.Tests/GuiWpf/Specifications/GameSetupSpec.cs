@@ -102,13 +102,13 @@ namespace RISK.Tests.GuiWpf.Specifications
     {
         public int NumberOfCallsToWaitForTerritoryToBeSelected { get; private set; }
 
-        public ITerritoryId WaitForTerritoryToBeSelected(ITerritoryRequestParameter territoryRequestParameter)
+        public ITerritoryGeography WaitForTerritoryToBeSelected(ITerritoryRequestParameter territoryRequestParameter)
         {
             NumberOfCallsToWaitForTerritoryToBeSelected++;
             return territoryRequestParameter.EnabledTerritories.First();
         }
 
-        public void SelectTerritory(ITerritoryId territoryId)
+        public void SelectTerritory(ITerritoryGeography territoryGeography)
         {
             throw new NotImplementedException();
         }

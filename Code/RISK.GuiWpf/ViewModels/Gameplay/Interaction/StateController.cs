@@ -7,31 +7,31 @@ namespace GuiWpf.ViewModels.Gameplay.Interaction
     {
         IInteractionState CurrentState { get; set; }
         IGame Game { get; }
-        ITerritoryId SelectedTerritoryId { get; set; }
+        ITerritoryGeography SelectedTerritoryGeography { get; set; }
 
-        bool CanClick(ITerritoryId territoryId);
-        void OnClick(ITerritoryId territoryId);
+        bool CanClick(ITerritoryGeography territoryGeography);
+        void OnClick(ITerritoryGeography territoryGeography);
     }
 
     public class StateController : IStateController
     {
         public IInteractionState CurrentState { get; set; }
         public IGame Game { get; }
-        public ITerritoryId SelectedTerritoryId { get; set; }
+        public ITerritoryGeography SelectedTerritoryGeography { get; set; }
 
         public StateController(IGame game)
         {
             Game = game;
         }
 
-        public bool CanClick(ITerritoryId territoryId)
+        public bool CanClick(ITerritoryGeography territoryGeography)
         {
-            return CurrentState.CanClick(this, territoryId);
+            return CurrentState.CanClick(this, territoryGeography);
         }
 
-        public void OnClick(ITerritoryId territoryId)
+        public void OnClick(ITerritoryGeography territoryGeography)
         {
-            CurrentState.OnClick(this, territoryId);
+            CurrentState.OnClick(this, territoryGeography);
         }
     }
 }

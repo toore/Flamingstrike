@@ -32,7 +32,7 @@ namespace RISK.Tests.GuiWpf
         public void A_territory_request_gets_territory_from_user()
         {
             var territoryRequestParameter = Substitute.For<ITerritoryRequestParameter>();
-            var expectedTerritory = Make.TerritoryId.Build();
+            var expectedTerritory = Make.TerritoryGeography.Build();
             var gameSetupViewModel = Substitute.For<IGameSetupViewModel>();
 
             _userInteraction.WaitForTerritoryToBeSelected(territoryRequestParameter).Returns(expectedTerritory);
@@ -49,8 +49,8 @@ namespace RISK.Tests.GuiWpf
             var territoryRequestParameter = Substitute.For<ITerritoryRequestParameter>();
             var gameSetupViewModel = Substitute.For<IGameSetupViewModel>();
             var territories = new List<ITerritory>();
-            Action<ITerritoryId> selectTerritoryAction = _userInteraction.SelectTerritory;
-            var enabledTerritories = new List<ITerritoryId> { Make.TerritoryId.Build() };
+            Action<ITerritoryGeography> selectTerritoryAction = _userInteraction.SelectTerritory;
+            var enabledTerritories = new List<ITerritoryGeography> { Make.TerritoryGeography.Build() };
             const string playerName = "any player";
             const int armiesLeftToPlace = 1;
             territoryRequestParameter.Territories.Returns(territories);

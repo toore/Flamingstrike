@@ -13,16 +13,16 @@ namespace RISK.Application.Play
 
     public static class TerritoryExtensions
     {
-        public static ITerritory Get(this IEnumerable<ITerritory> territories, ITerritoryId territoryId)
+        public static ITerritory Get(this IEnumerable<ITerritory> territories, ITerritoryGeography territoryGeography)
         {
-            return territories.Single(x => x.TerritoryId == territoryId);
+            return territories.Single(x => x.TerritoryGeography == territoryGeography);
         }
     }
 
     public class Territory : Application.Territory, ITerritory
     {
-        public Territory(ITerritoryId territoryId, Application.IPlayer player, int armies)
-            : base(territoryId, player, armies) {}
+        public Territory(ITerritoryGeography territoryGeography, Application.IPlayer player, int armies)
+            : base(territoryGeography, player, armies) {}
 
         public int GetNumberOfArmiesAvailableForAttack()
         {
