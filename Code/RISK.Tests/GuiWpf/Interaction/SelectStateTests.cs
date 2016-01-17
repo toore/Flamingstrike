@@ -1,7 +1,6 @@
 ﻿using FluentAssertions;
 using GuiWpf.ViewModels.Gameplay.Interaction;
 using NSubstitute;
-using RISK.Application.World;
 using Xunit;
 
 namespace RISK.Tests.GuiWpf.Interaction
@@ -16,7 +15,7 @@ namespace RISK.Tests.GuiWpf.Interaction
         [Fact]
         public void Can_click_territory_occupied_by_current_player()
         {
-            var territory = CreateTerritoryOccupiedByCurrentPlayer();
+            var territory = AddTerritoryOccupiedByCurrentPlayer();
 
             _sut.AssertCanClickAndOnClickCanBeInvoked(territory);
         }
@@ -24,7 +23,8 @@ namespace RISK.Tests.GuiWpf.Interaction
         [Fact]
         public void Can_not_click_territory_not_occupied_by_current_player()
         {
-            _sut.AssertCanNotClickAndOnClickThrowsWhenInvoked(Substitute.For<ITerritoryGeography>());
+            var territory = AddTerritory();
+            _sut.AssertCanNotClickAndOnClickThrowsWhenInvoked(territory.TerritoryGeography);
         }
 
         [Fact]
@@ -32,7 +32,7 @@ namespace RISK.Tests.GuiWpf.Interaction
         {
             var attackState = Substitute.For<IInteractionState>();
             _interactionStateFactory.CreateAttackState().Returns(attackState);
-            var territory = CreateTerritoryOccupiedByCurrentPlayer();
+            var territory = AddTerritoryOccupiedByCurrentPlayer();
 
             _sut.OnClick(territory);
 
@@ -42,7 +42,7 @@ namespace RISK.Tests.GuiWpf.Interaction
         [Fact]
         public void OnClick_sets_selected_territory_before_entering_attack_state()
         {
-            var territory = CreateTerritoryOccupiedByCurrentPlayer();
+            var territory = AddTerritoryOccupiedByCurrentPlayer();
 
             _sut.OnClick(territory);
 

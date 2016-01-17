@@ -1,7 +1,9 @@
 using FluentAssertions;
 using GuiWpf.ViewModels.Gameplay.Interaction;
 using NSubstitute;
+using RISK.Application.Play;
 using RISK.Application.World;
+using RISK.Tests.Builders;
 using Xunit;
 
 namespace RISK.Tests.GuiWpf.Interaction
@@ -9,10 +11,12 @@ namespace RISK.Tests.GuiWpf.Interaction
     public class FortifyMoveStateTests : InteractionStateTestsBase
     {
         private readonly ITerritoryGeography _selectedTerritoryGeography;
+        private readonly Territory _selectedTerritory;
 
         public FortifyMoveStateTests()
         {
-            _selectedTerritoryGeography = Substitute.For<ITerritoryGeography>();
+            _selectedTerritory = AddTerritory();
+            _selectedTerritoryGeography = _selectedTerritory.TerritoryGeography;
 
             _sut.CurrentState = new FortifyMoveState(_interactionStateFactory);
             _sut.SelectedTerritoryGeography = _selectedTerritoryGeography;
@@ -21,10 +25,11 @@ namespace RISK.Tests.GuiWpf.Interaction
         [Fact]
         public void Can_click_territory_that_can_be_fortified()
         {
-            var territoryIdToAttack = Substitute.For<ITerritoryGeography>();
-            _game.CanFortify(_selectedTerritoryGeography, territoryIdToAttack).Returns(true);
+            var territoryToFortify = AddTerritory();
 
-            _sut.AssertCanClickAndOnClickCanBeInvoked(territoryIdToAttack);
+            _game.CanFortify(_selectedTerritory, territoryToFortify).Returns(true);
+
+            _sut.AssertCanClickAndOnClickCanBeInvoked(territoryToFortify.TerritoryGeography);
         }
 
         [Fact]
@@ -36,18 +41,19 @@ namespace RISK.Tests.GuiWpf.Interaction
         [Fact]
         public void Can_not_click_when_fortification_is_not_allowed()
         {
-            _sut.AssertCanNotClickAndOnClickThrowsWhenInvoked(Substitute.For<ITerritoryGeography>());
+            var territory = AddTerritory();
+            _sut.AssertCanNotClickAndOnClickThrowsWhenInvoked(territory.TerritoryGeography);
         }
 
         [Fact]
         public void OnClick_fortifies()
         {
-            var territoryIdToFortify = Substitute.For<ITerritoryGeography>();
-            _game.CanFortify(_selectedTerritoryGeography, territoryIdToFortify).Returns(true);
+            var territoryToFortify = AddTerritory();
+            _game.CanFortify(_selectedTerritory, territoryToFortify).Returns(true);
 
-            _sut.OnClick(territoryIdToFortify);
+            _sut.OnClick(territoryToFortify.TerritoryGeography);
 
-            _game.Received().Fortify(_selectedTerritoryGeography, territoryIdToFortify);
+            _game.Received().Fortify(_selectedTerritory, territoryToFortify);
         }
 
         [Fact]
@@ -55,10 +61,10 @@ namespace RISK.Tests.GuiWpf.Interaction
         {
             var endTurnState = Substitute.For<IInteractionState>();
             _interactionStateFactory.CreateEndTurnState().Returns(endTurnState);
-            var territoryIdToFortify = Substitute.For<ITerritoryGeography>();
-            _game.CanFortify(_selectedTerritoryGeography, territoryIdToFortify).Returns(true);
+            var territoryToFortify = AddTerritory();
+            _game.CanFortify(_selectedTerritory, territoryToFortify).Returns(true);
 
-            _sut.OnClick(territoryIdToFortify);
+            _sut.OnClick(territoryToFortify.TerritoryGeography);
 
             _sut.CurrentState.Should().Be(endTurnState);
         }

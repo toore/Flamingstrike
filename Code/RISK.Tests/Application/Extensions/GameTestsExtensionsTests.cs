@@ -3,7 +3,6 @@ using FluentAssertions;
 using FluentAssertions.Execution;
 using NSubstitute;
 using RISK.Application.Play;
-using RISK.Application.World;
 using Xunit;
 
 namespace RISK.Tests.Application.Extensions
@@ -11,14 +10,14 @@ namespace RISK.Tests.Application.Extensions
     public class GameTestsExtensionsTests
     {
         private readonly IGame _sut;
-        private readonly ITerritoryGeography _territoryGeography;
-        private readonly ITerritoryGeography _anotherTerritoryGeography;
+        private readonly ITerritory _territory;
+        private readonly ITerritory _anotherTerritory;
         private const int _numberOfArmies = 1;
 
         public GameTestsExtensionsTests()
         {
-            _territoryGeography = Substitute.For<ITerritoryGeography>();
-            _anotherTerritoryGeography = Substitute.For<ITerritoryGeography>();
+            _territory = Substitute.For<ITerritory>();
+            _anotherTerritory = Substitute.For<ITerritory>();
 
             _sut = Substitute.For<IGame>();
         }
@@ -27,16 +26,16 @@ namespace RISK.Tests.Application.Extensions
         public void AssertCanNotAttack_asserts_that_CanAttack_is_false()
         {
             AssertMethodThrowsAssertionFailedExceptionWhenIsEnabled(
-                x => x.AssertCanNotAttack(_territoryGeography, _anotherTerritoryGeography),
-                x => x.CanAttack(_territoryGeography, _anotherTerritoryGeography),
-                x => x.Attack(_territoryGeography, _anotherTerritoryGeography));
+                x => x.AssertCanNotAttack(_territory, _anotherTerritory),
+                x => x.CanAttack(_territory, _anotherTerritory),
+                x => x.Attack(_territory, _anotherTerritory));
         }
 
         [Fact]
         public void AssertCanNotAttack_asserts_that_Attack_throws()
         {
             AssertMethodThrowsAssertionFailedException(
-                x => x.AssertCanNotAttack(_territoryGeography, _anotherTerritoryGeography));
+                x => x.AssertCanNotAttack(_territory, _anotherTerritory));
         }
 
         [Fact]
@@ -59,16 +58,16 @@ namespace RISK.Tests.Application.Extensions
         public void AssertCanNotFortify_asserts_that_CanFortify_is_false()
         {
             AssertMethodThrowsAssertionFailedExceptionWhenIsEnabled(
-                x => x.AssertCanNotFortify(_territoryGeography, _anotherTerritoryGeography),
-                x => x.CanFortify(_territoryGeography, _anotherTerritoryGeography),
-                x => x.Fortify(_territoryGeography, _anotherTerritoryGeography));
+                x => x.AssertCanNotFortify(_territory, _anotherTerritory),
+                x => x.CanFortify(_territory, _anotherTerritory),
+                x => x.Fortify(_territory, _anotherTerritory));
         }
 
         [Fact]
         public void AssertCanNotFortify_asserts_that_Fortify_throws()
         {
             AssertMethodThrowsAssertionFailedException(
-                x => x.AssertCanNotFortify(_territoryGeography, _anotherTerritoryGeography));
+                x => x.AssertCanNotFortify(_territory, _anotherTerritory));
         }
 
         private void AssertMethodThrowsAssertionFailedExceptionWhenIsEnabled(

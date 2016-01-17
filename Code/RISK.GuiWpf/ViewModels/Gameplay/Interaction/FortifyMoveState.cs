@@ -1,4 +1,5 @@
 ﻿using System;
+using RISK.Application.Play;
 using RISK.Application.World;
 
 namespace GuiWpf.ViewModels.Gameplay.Interaction
@@ -12,11 +13,11 @@ namespace GuiWpf.ViewModels.Gameplay.Interaction
             _interactionStateFactory = interactionStateFactory;
         }
 
-        public bool CanClick(IStateController stateController, ITerritoryGeography territoryGeography)
+        public bool CanClick(IStateController stateController, ITerritoryGeography selectedTerritoryGeography)
         {
-            return CanFortify(stateController, territoryGeography)
+            return CanFortify(stateController, selectedTerritoryGeography)
                    ||
-                   CanDeselect(stateController, territoryGeography);
+                   CanDeselect(stateController, selectedTerritoryGeography);
         }
 
         public void OnClick(IStateController stateController, ITerritoryGeography territoryGeography)
@@ -46,17 +47,26 @@ namespace GuiWpf.ViewModels.Gameplay.Interaction
             stateController.SelectedTerritoryGeography = null;
         }
 
-        private void Fortify(IStateController stateController, ITerritoryGeography territoryGeography)
-        {
-            stateController.Game.Fortify(stateController.SelectedTerritoryGeography, territoryGeography);
-            stateController.CurrentState = _interactionStateFactory.CreateEndTurnState();
-        }
-
         private static bool CanFortify(IStateController stateController, ITerritoryGeography territoryGeographyToFortify)
         {
-            var sourceTerritory = stateController.SelectedTerritoryGeography;
-            var canFortify = stateController.Game.CanFortify(sourceTerritory, territoryGeographyToFortify);
+            var sourceTerritory = stateController.Game.Territories
+                .GetFromGeography(stateController.SelectedTerritoryGeography);
+            var territoryToFortify = stateController.Game.Territories
+                .GetFromGeography(territoryGeographyToFortify);
+
+            var canFortify = stateController.Game.CanFortify(sourceTerritory, territoryToFortify);
             return canFortify;
+        }
+
+        private void Fortify(IStateController stateController, ITerritoryGeography territoryGeographyToFortify)
+        {
+            var sourceTerritory = stateController.Game.Territories
+                .GetFromGeography(stateController.SelectedTerritoryGeography);
+            var territoryToFortify = stateController.Game.Territories
+                .GetFromGeography(territoryGeographyToFortify);
+
+            stateController.Game.Fortify(sourceTerritory, territoryToFortify);
+            stateController.CurrentState = _interactionStateFactory.CreateEndTurnState();
         }
     }
 }

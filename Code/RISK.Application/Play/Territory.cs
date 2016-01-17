@@ -13,7 +13,7 @@ namespace RISK.Application.Play
 
     public static class TerritoryExtensions
     {
-        public static ITerritory Get(this IEnumerable<ITerritory> territories, ITerritoryGeography territoryGeography)
+        public static ITerritory GetFromGeography(this IEnumerable<ITerritory> territories, ITerritoryGeography territoryGeography)
         {
             return territories.Single(x => x.TerritoryGeography == territoryGeography);
         }

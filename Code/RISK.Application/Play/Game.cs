@@ -11,13 +11,13 @@ namespace RISK.Application.Play
     {
         IInGameplayPlayer CurrentPlayer { get; }
         IReadOnlyList<ITerritory> Territories { get; }
-        bool IsCurrentPlayerOccupyingTerritory(ITerritoryGeography territoryGeography);
-        bool CanAttack(ITerritoryGeography attackingTerritoryGeography, ITerritoryGeography territoryGeographyToAttack);
-        void Attack(ITerritoryGeography attackingTerritoryGeography, ITerritoryGeography attackeeTerritoryGeography);
+        bool IsCurrentPlayerOccupyingTerritory(ITerritory territory);
+        bool CanAttack(ITerritory attackingTerritory, ITerritory attackeeTerritory);
+        void Attack(ITerritory attackingTerritory, ITerritory attackeeTerritory);
         bool CanMoveArmiesIntoCapturedTerritory();
         void MoveArmiesIntoCapturedTerritory(int numberOfArmies);
-        bool CanFortify(ITerritoryGeography sourceGeographyTerritory, ITerritoryGeography territoryGeographyToFortify);
-        void Fortify(ITerritoryGeography selectedTerritoryGeography, ITerritoryGeography territoryGeographyToFortify);
+        bool CanFortify(ITerritory sourceTerritory, ITerritory territoryToFortify);
+        void Fortify(ITerritory sourceTerritory, ITerritory territoryToFortify);
         void EndTurn();
         bool IsGameOver();
     }
@@ -46,9 +46,10 @@ namespace RISK.Application.Play
         public IInGameplayPlayer CurrentPlayer { get; private set; }
         public IReadOnlyList<ITerritory> Territories { get; }
 
-        public bool IsCurrentPlayerOccupyingTerritory(ITerritoryGeography territoryGeography)
+        public bool IsCurrentPlayerOccupyingTerritory(ITerritory territory)
         {
-            var territory = Territories.Get(territoryGeography);
+            ThrowIfTerritoriesDoesNotContain(territory);
+
             var isCurrentPlayerOccupyingTerritory = territory.Player == CurrentPlayer.Player;
 
             return isCurrentPlayerOccupyingTerritory;
@@ -59,30 +60,33 @@ namespace RISK.Application.Play
             CurrentPlayer = _players.First();
         }
 
-        public bool CanAttack(ITerritoryGeography attackingTerritoryGeography, ITerritoryGeography territoryGeographyToAttack)
+        public bool CanAttack(ITerritory attackingTerritory, ITerritory attackeeTerritory)
         {
+            ThrowIfTerritoriesDoesNotContain(attackingTerritory);
+            ThrowIfTerritoriesDoesNotContain(attackeeTerritory);
+
             if (_mustConfirmMoveOfArmiesIntoCapturedTerritory
                 ||
-                !IsCurrentPlayerOccupyingTerritory(attackingTerritoryGeography))
+                !IsCurrentPlayerOccupyingTerritory(attackingTerritory))
             {
                 return false;
             }
 
-            var attackeeCandidates = _gameRules.GetAttackeeCandidates(attackingTerritoryGeography, Territories);
-            var canAttack = attackeeCandidates.Contains(territoryGeographyToAttack);
+            var attackeeCandidates = _gameRules.GetAttackeeCandidates(attackingTerritory.TerritoryGeography, Territories);
+            var canAttack = attackeeCandidates.Contains(attackeeTerritory.TerritoryGeography);
 
             return canAttack;
         }
 
-        public void Attack(ITerritoryGeography attackingTerritoryGeography, ITerritoryGeography territoryGeographyToAttack)
+        public void Attack(ITerritory attackingTerritory, ITerritory attackeeTerritory)
         {
-            if (!CanAttack(attackingTerritoryGeography, territoryGeographyToAttack))
+            if (!CanAttack(attackingTerritory, attackeeTerritory))
             {
                 throw new InvalidOperationException();
             }
 
-            _mustConfirmMoveOfArmiesIntoCapturedTerritory = 
-                IsDefenderEliminatedAfterAttack(attackingTerritoryGeography, territoryGeographyToAttack);
+            _mustConfirmMoveOfArmiesIntoCapturedTerritory =
+                IsDefenderEliminatedAfterAttack(attackingTerritory.TerritoryGeography, attackeeTerritory.TerritoryGeography);
 
             //if (HasPlayerOccupiedTerritory(to))
             //{
@@ -93,8 +97,8 @@ namespace RISK.Application.Play
 
         private bool IsDefenderEliminatedAfterAttack(ITerritoryGeography attackingTerritoryGeography, ITerritoryGeography territoryGeographyToAttack)
         {
-            var attacker = Territories.Get(attackingTerritoryGeography);
-            var defender = Territories.Get(territoryGeographyToAttack);
+            var attacker = Territories.Single(x => x.TerritoryGeography == attackingTerritoryGeography);
+            var defender = Territories.Single(x => x.TerritoryGeography == territoryGeographyToAttack);
 
             var battleResult = _battle.Attack(attacker, defender);
 
@@ -116,14 +120,25 @@ namespace RISK.Application.Play
             throw new NotImplementedException();
         }
 
-        public bool CanFortify(ITerritoryGeography sourceGeographyTerritory, ITerritoryGeography territoryGeographyToFortify)
+        public bool CanFortify(ITerritory sourceTerritory, ITerritory territoryToFortify)
         {
+            ThrowIfTerritoriesDoesNotContain(sourceTerritory);
+            ThrowIfTerritoriesDoesNotContain(territoryToFortify);
+
             return false;
         }
 
-        public void Fortify(ITerritoryGeography selectedTerritoryGeography, ITerritoryGeography territoryGeographyToFortify)
+        private void ThrowIfTerritoriesDoesNotContain(ITerritory territory)
         {
-            if (!CanFortify(selectedTerritoryGeography, territoryGeographyToFortify))
+            if (!Territories.Contains(territory))
+            {
+                throw new InvalidOperationException("Territory does not exist in game");
+            }
+        }
+
+        public void Fortify(ITerritory sourceTerritory, ITerritory territoryToFortify)
+        {
+            if (!CanFortify(sourceTerritory, territoryToFortify))
             {
                 throw new InvalidOperationException();
             }

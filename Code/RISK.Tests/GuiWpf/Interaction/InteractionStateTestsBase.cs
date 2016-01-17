@@ -1,7 +1,9 @@
-﻿using GuiWpf.ViewModels.Gameplay.Interaction;
+﻿using System.Collections.Generic;
+using GuiWpf.ViewModels.Gameplay.Interaction;
 using NSubstitute;
 using RISK.Application.Play;
 using RISK.Application.World;
+using RISK.Tests.Builders;
 
 namespace RISK.Tests.GuiWpf.Interaction
 {
@@ -10,6 +12,7 @@ namespace RISK.Tests.GuiWpf.Interaction
         protected readonly StateController _sut;
         protected readonly IGame _game;
         protected readonly IInteractionStateFactory _interactionStateFactory;
+        private readonly List<ITerritory> _territories;
 
         protected InteractionStateTestsBase()
         {
@@ -17,12 +20,26 @@ namespace RISK.Tests.GuiWpf.Interaction
             _sut = new StateController(_game);
 
             _interactionStateFactory = Substitute.For<IInteractionStateFactory>();
+
+            _territories = new List<ITerritory>();
+            _game.Territories.Returns(_territories);
         }
 
-        protected ITerritoryGeography CreateTerritoryOccupiedByCurrentPlayer()
+        protected ITerritoryGeography AddTerritoryOccupiedByCurrentPlayer()
         {
-            var territory = Substitute.For<ITerritoryGeography>();
+            var territory = AddTerritory();
+
             _game.IsCurrentPlayerOccupyingTerritory(territory).Returns(true);
+
+            return territory.TerritoryGeography;
+        }
+
+        protected Territory AddTerritory()
+        {
+            var territoryGeography = Substitute.For<ITerritoryGeography>();
+            var territory = Make.Territory.TerritoryGeography(territoryGeography).Build();
+
+            _territories.Add(territory);
 
             return territory;
         }

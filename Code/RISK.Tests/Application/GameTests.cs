@@ -9,6 +9,7 @@ using RISK.Application.World;
 using RISK.Tests.Application.Extensions;
 using RISK.Tests.Builders;
 using Xunit;
+using ITerritory = RISK.Application.Play.ITerritory;
 using Territory = RISK.Application.Play.Territory;
 
 namespace RISK.Tests.Application
@@ -42,9 +43,9 @@ namespace RISK.Tests.Application
         {
             private readonly IGamePlaySetup _gameSetup;
             private readonly IInGameplayPlayer _firstInGameplayPlayer;
-            private readonly List<Territory> _territories;
-            private readonly ITerritoryGeography _territoryGeography;
-            private readonly ITerritoryGeography _anotherTerritoryGeography;
+            private readonly List<ITerritory> _territories;
+            private readonly ITerritory _territory;
+            private readonly ITerritory _anotherTerritory;
 
             public AfterInitializationTests()
             {
@@ -56,12 +57,12 @@ namespace RISK.Tests.Application
                     Substitute.For<IInGameplayPlayer>()
                 });
 
-                _territoryGeography = Substitute.For<ITerritoryGeography>();
-                _anotherTerritoryGeography = Substitute.For<ITerritoryGeography>();
-                _territories = new List<Territory>
+                _territory = Substitute.For<ITerritory>();
+                _anotherTerritory = Substitute.For<ITerritory>();
+                _territories = new List<ITerritory>
                 {
-                    Make.Territory.TerritoryId(_territoryGeography).Build(),
-                    Make.Territory.TerritoryId(_anotherTerritoryGeography).Build()
+                    _territory,
+                    _anotherTerritory
                 };
                 _territoryFactory.Create(_gameSetup.Territories).Returns(_territories);
             }
@@ -87,7 +88,7 @@ namespace RISK.Tests.Application
             {
                 var sut = Create(_gameSetup);
 
-                sut.AssertCanNotAttack(_territoryGeography, _anotherTerritoryGeography);
+                sut.AssertCanNotAttack(_territory, _anotherTerritory);
             }
 
             [Fact]
@@ -103,7 +104,7 @@ namespace RISK.Tests.Application
             {
                 var sut = Create(_gameSetup);
 
-                sut.AssertCanNotFortify(_territoryGeography, _anotherTerritoryGeography);
+                sut.AssertCanNotFortify(_territory, _anotherTerritory);
             }
         }
 
@@ -113,7 +114,7 @@ namespace RISK.Tests.Application
             private readonly ITerritoryGeography _anotherPlayerTerritoryGeography = Substitute.For<ITerritoryGeography>();
             private readonly IPlayer _player = Substitute.For<IPlayer>();
             private readonly IPlayer _anotherPlayer = Substitute.For<IPlayer>();
-            private readonly List<Territory> _territories;
+            private readonly List<ITerritory> _territories;
             private readonly Territory _playerTerritory;
             private readonly Territory _anotherPlayerTerritory;
 
@@ -126,9 +127,9 @@ namespace RISK.Tests.Application
                 };
                 _playerFactory.Create(null).ReturnsForAnyArgs(players);
 
-                _playerTerritory = Make.Territory.TerritoryId(_playerTerritoryGeography).Player(_player).Build();
-                _anotherPlayerTerritory = Make.Territory.TerritoryId(_anotherPlayerTerritoryGeography).Player(_anotherPlayer).Build();
-                _territories = new List<Territory>
+                _playerTerritory = Make.Territory.TerritoryGeography(_playerTerritoryGeography).Player(_player).Build();
+                _anotherPlayerTerritory = Make.Territory.TerritoryGeography(_anotherPlayerTerritoryGeography).Player(_anotherPlayer).Build();
+                _territories = new List<ITerritory>
                 {
                     _playerTerritory,
                     _anotherPlayerTerritory
@@ -144,7 +145,7 @@ namespace RISK.Tests.Application
 
                 var sut = Create(Make.GameSetup.Build());
 
-                sut.CanAttack(_playerTerritoryGeography, _anotherPlayerTerritoryGeography).Should().BeTrue();
+                sut.CanAttack(_playerTerritory, _anotherPlayerTerritory).Should().BeTrue();
             }
 
             [Fact]
@@ -154,7 +155,7 @@ namespace RISK.Tests.Application
                     .Returns(new[] { _anotherPlayerTerritoryGeography });
 
                 var sut = Create(Make.GameSetup.Build());
-                sut.Attack(_playerTerritoryGeography, _anotherPlayerTerritoryGeography);
+                sut.Attack(_playerTerritory, _anotherPlayerTerritory);
 
                 _battle.Received().Attack(_playerTerritory, _anotherPlayerTerritory);
             }
@@ -167,7 +168,7 @@ namespace RISK.Tests.Application
 
                 var sut = Create(Make.GameSetup.Build());
 
-                sut.AssertCanNotAttack(_playerTerritoryGeography, _anotherPlayerTerritoryGeography);
+                sut.AssertCanNotAttack(_playerTerritory, _anotherPlayerTerritory);
             }
 
             [Fact]
@@ -178,7 +179,7 @@ namespace RISK.Tests.Application
 
                 var sut = Create(Make.GameSetup.Build());
 
-                sut.AssertCanNotAttack(_anotherPlayerTerritoryGeography, _playerTerritoryGeography);
+                sut.AssertCanNotAttack(_anotherPlayerTerritory, _playerTerritory);
             }
 
             [Fact]
@@ -190,7 +191,7 @@ namespace RISK.Tests.Application
                     .Returns(BattleResult.DefenderEliminated);
 
                 var sut = Create(Make.GameSetup.Build());
-                sut.Attack(_playerTerritoryGeography, _anotherPlayerTerritoryGeography);
+                sut.Attack(_playerTerritory, _anotherPlayerTerritory);
 
                 sut.CanMoveArmiesIntoCapturedTerritory().Should().BeTrue();
             }
@@ -204,9 +205,9 @@ namespace RISK.Tests.Application
                     .Returns(BattleResult.DefenderEliminated);
 
                 var sut = Create(Make.GameSetup.Build());
-                sut.Attack(_playerTerritoryGeography, _anotherPlayerTerritoryGeography);
+                sut.Attack(_playerTerritory, _anotherPlayerTerritory);
 
-                sut.AssertCanNotAttack(_playerTerritoryGeography, _anotherPlayerTerritoryGeography);
+                sut.AssertCanNotAttack(_playerTerritory, _anotherPlayerTerritory);
             }
         }
 
@@ -216,7 +217,7 @@ namespace RISK.Tests.Application
             public void Is_game_over_when_all_territories_belongs_to_one_player()
             {
                 var player = Substitute.For<IPlayer>();
-                _territoryFactory.Create(null).ReturnsForAnyArgs(new List<Territory>
+                _territoryFactory.Create(null).ReturnsForAnyArgs(new List<ITerritory>
                 {
                     Make.Territory.Player(player).Build(),
                     Make.Territory.Player(player).Build()
@@ -231,7 +232,7 @@ namespace RISK.Tests.Application
             [Fact]
             public void Is_not_game_over_when_more_than_one_player_occupies_territories()
             {
-                _territoryFactory.Create(null).ReturnsForAnyArgs(new List<Territory>
+                _territoryFactory.Create(null).ReturnsForAnyArgs(new List<ITerritory>
                 {
                     Make.Territory.Build(),
                     Make.Territory.Build()

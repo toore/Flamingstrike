@@ -1,17 +1,16 @@
 using System;
 using FluentAssertions;
 using RISK.Application.Play;
-using RISK.Application.World;
 
 namespace RISK.Tests.Application.Extensions
 {
     public static class GameTestsExtensions
     {
-        public static void AssertCanNotAttack(this IGame sut, ITerritoryGeography attackingTerritoryGeography, ITerritoryGeography attackedTerritoryGeography)
+        public static void AssertCanNotAttack(this IGame sut, ITerritory attackingTerritory, ITerritory attackedTerritory)
         {
-            Action act = () => sut.Attack(attackingTerritoryGeography, attackedTerritoryGeography);
+            Action act = () => sut.Attack(attackingTerritory, attackedTerritory);
 
-            sut.CanAttack(attackingTerritoryGeography, attackedTerritoryGeography).Should().BeFalse();
+            sut.CanAttack(attackingTerritory, attackedTerritory).Should().BeFalse();
             act.ShouldThrow<InvalidOperationException>();
         }
 
@@ -23,11 +22,11 @@ namespace RISK.Tests.Application.Extensions
             act.ShouldThrow<InvalidOperationException>();
         }
 
-        public static void AssertCanNotFortify(this IGame sut, ITerritoryGeography attackingTerritoryGeography, ITerritoryGeography attackedTerritoryGeography)
+        public static void AssertCanNotFortify(this IGame sut, ITerritory attackingTerritory, ITerritory attackedTerritory)
         {
-            Action act = () => sut.Fortify(attackingTerritoryGeography, attackedTerritoryGeography);
+            Action act = () => sut.Fortify(attackingTerritory, attackedTerritory);
 
-            sut.CanFortify(attackingTerritoryGeography, attackedTerritoryGeography).Should().BeFalse();
+            sut.CanFortify(attackingTerritory, attackedTerritory).Should().BeFalse();
             act.ShouldThrow<InvalidOperationException>();
         }
     }

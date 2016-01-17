@@ -1,4 +1,5 @@
 using System;
+using RISK.Application.Play;
 using RISK.Application.World;
 
 namespace GuiWpf.ViewModels.Gameplay.Interaction
@@ -12,11 +13,11 @@ namespace GuiWpf.ViewModels.Gameplay.Interaction
             _interactionStateFactory = interactionStateFactory;
         }
 
-        public bool CanClick(IStateController stateController, ITerritoryGeography territoryGeography)
+        public bool CanClick(IStateController stateController, ITerritoryGeography selectedTerritoryGeography)
         {
-            return CanAttack(stateController, territoryGeography)
+            return CanAttack(stateController, selectedTerritoryGeography)
                    ||
-                   CanDeselect(stateController, territoryGeography);
+                   CanDeselect(stateController, selectedTerritoryGeography);
         }
 
         public void OnClick(IStateController stateController, ITerritoryGeography territoryGeography)
@@ -46,18 +47,26 @@ namespace GuiWpf.ViewModels.Gameplay.Interaction
             stateController.SelectedTerritoryGeography = null;
         }
 
-        private static bool CanAttack(IStateController stateController, ITerritoryGeography territoryGeography)
+        private static bool CanAttack(IStateController stateController, ITerritoryGeography attackeeTerritoryGeography)
         {
-            var attackingTerritory = stateController.SelectedTerritoryGeography;
-            var canAttack = stateController.Game.CanAttack(attackingTerritory, territoryGeography);
+            var attackingTerritory = stateController.Game.Territories
+                .GetFromGeography(stateController.SelectedTerritoryGeography);
+            var attackeeTerritory= stateController.Game.Territories
+                .GetFromGeography(attackeeTerritoryGeography);
+
+            var canAttack = stateController.Game.CanAttack(attackingTerritory, attackeeTerritory);
 
             return canAttack;
         }
 
         private static void Attack(IStateController stateController, ITerritoryGeography attackeeTerritoryGeography)
         {
-            var attackingTerritory = stateController.SelectedTerritoryGeography;
-            stateController.Game.Attack(attackingTerritory, attackeeTerritoryGeography);
+            var attackingTerritory = stateController.Game.Territories
+                .GetFromGeography(stateController.SelectedTerritoryGeography);
+            var attackeeTerritory = stateController.Game.Territories
+                .GetFromGeography(attackeeTerritoryGeography);
+
+            stateController.Game.Attack(attackingTerritory, attackeeTerritory);
         }
     }
 }

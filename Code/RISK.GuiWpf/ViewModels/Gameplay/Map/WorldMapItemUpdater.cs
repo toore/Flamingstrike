@@ -57,7 +57,9 @@ namespace GuiWpf.ViewModels.Gameplay.Map
 
         private void UpdateArmiesForTerritory(TitleViewModel titleViewModel)
         {
-            var gameboardTerritory = _territories.Get(titleViewModel.TerritoryGeography);
+            var gameboardTerritory = _territories
+                .Single(x => x.TerritoryGeography == titleViewModel.TerritoryGeography);
+
             titleViewModel.Armies = gameboardTerritory.Armies;
         }
     }

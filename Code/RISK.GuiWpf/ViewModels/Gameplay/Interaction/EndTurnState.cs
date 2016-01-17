@@ -5,7 +5,7 @@ namespace GuiWpf.ViewModels.Gameplay.Interaction
 {
     public class EndTurnState : IInteractionState
     {
-        public bool CanClick(IStateController stateController, ITerritoryGeography territoryGeography)
+        public bool CanClick(IStateController stateController, ITerritoryGeography selectedTerritoryGeography)
         {
             return false;
         }
