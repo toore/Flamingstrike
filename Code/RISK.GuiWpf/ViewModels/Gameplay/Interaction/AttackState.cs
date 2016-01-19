@@ -1,5 +1,4 @@
 using System;
-using RISK.Application.Play;
 using RISK.Application.World;
 
 namespace GuiWpf.ViewModels.Gameplay.Interaction
@@ -49,10 +48,8 @@ namespace GuiWpf.ViewModels.Gameplay.Interaction
 
         private static bool CanAttack(IStateController stateController, ITerritoryGeography attackeeTerritoryGeography)
         {
-            var attackingTerritory = stateController.Game.Territories
-                .GetFromGeography(stateController.SelectedTerritoryGeography);
-            var attackeeTerritory= stateController.Game.Territories
-                .GetFromGeography(attackeeTerritoryGeography);
+            var attackingTerritory = stateController.Game.GetTerritory(stateController.SelectedTerritoryGeography);
+            var attackeeTerritory = stateController.Game.GetTerritory(attackeeTerritoryGeography);
 
             var canAttack = stateController.Game.CanAttack(attackingTerritory, attackeeTerritory);
 
@@ -61,10 +58,8 @@ namespace GuiWpf.ViewModels.Gameplay.Interaction
 
         private static void Attack(IStateController stateController, ITerritoryGeography attackeeTerritoryGeography)
         {
-            var attackingTerritory = stateController.Game.Territories
-                .GetFromGeography(stateController.SelectedTerritoryGeography);
-            var attackeeTerritory = stateController.Game.Territories
-                .GetFromGeography(attackeeTerritoryGeography);
+            var attackingTerritory = stateController.Game.GetTerritory(stateController.SelectedTerritoryGeography);
+            var attackeeTerritory = stateController.Game.GetTerritory(attackeeTerritoryGeography);
 
             stateController.Game.Attack(attackingTerritory, attackeeTerritory);
         }

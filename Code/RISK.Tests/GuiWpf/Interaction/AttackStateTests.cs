@@ -9,43 +9,47 @@ namespace RISK.Tests.GuiWpf.Interaction
 {
     public class AttackStateTests : InteractionStateTestsBase
     {
+        private readonly ITerritory _selectedTerritory;
         private readonly ITerritoryGeography _selectedTerritoryGeography;
-        private readonly Territory _selectedTerritory;
+        private readonly ITerritory _attackeeTerritory;
+        private readonly ITerritoryGeography _attackeeTerritoryGeography;
 
         public AttackStateTests()
         {
-            _selectedTerritory = AddTerritory();
+            _selectedTerritory = Substitute.For<ITerritory>();
             _selectedTerritoryGeography = _selectedTerritory.TerritoryGeography;
+            _game.GetTerritory(_selectedTerritoryGeography).Returns(_selectedTerritory);
 
             _sut.CurrentState = new AttackState(_interactionStateFactory);
             _sut.SelectedTerritoryGeography = _selectedTerritoryGeography;
+
+            _attackeeTerritory = Substitute.For<ITerritory>();
+            _attackeeTerritoryGeography = Substitute.For<ITerritoryGeography>();
+            _game.GetTerritory(_attackeeTerritoryGeography).Returns(_attackeeTerritory);
         }
 
         [Fact]
         public void Can_click_territory_that_can_be_attacked()
         {
-            var attackeeTerritory = AddTerritory();
-            _game.CanAttack(_selectedTerritory, attackeeTerritory).Returns(true);
+            _game.CanAttack(_selectedTerritory, _attackeeTerritory).Returns(true);
 
-            _sut.AssertCanClickAndOnClickCanBeInvoked(attackeeTerritory.TerritoryGeography);
+            _sut.AssertCanClickAndOnClickCanBeInvoked(_attackeeTerritoryGeography);
         }
 
         [Fact]
         public void OnClick_attacks()
         {
-            var attackeeTerritory = AddTerritory();
-            _game.CanAttack(_selectedTerritory, attackeeTerritory).Returns(true);
+            _game.CanAttack(_selectedTerritory, _attackeeTerritory).Returns(true);
 
-            _sut.OnClick(attackeeTerritory.TerritoryGeography);
+            _sut.OnClick(_attackeeTerritoryGeography);
 
-            _game.Received().Attack(_selectedTerritory, attackeeTerritory);
+            _game.Received().Attack(_selectedTerritory, _attackeeTerritory);
         }
 
         [Fact]
         public void Can_not_click_on_remote_territory()
         {
-            var attackeeTerritory = AddTerritory();
-            _sut.AssertCanNotClickAndOnClickThrowsWhenInvoked(attackeeTerritory.TerritoryGeography);
+            _sut.AssertCanNotClickAndOnClickThrowsWhenInvoked(_attackeeTerritoryGeography);
         }
 
         [Fact]

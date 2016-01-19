@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using RISK.Application.World;
 
 namespace RISK.Application.Play
@@ -9,14 +7,6 @@ namespace RISK.Application.Play
     {
         int GetNumberOfArmiesAvailableForAttack();
         int GetNumberOfArmiesUsedForDefence();
-    }
-
-    public static class TerritoryExtensions
-    {
-        public static ITerritory GetFromGeography(this IEnumerable<ITerritory> territories, ITerritoryGeography territoryGeography)
-        {
-            return territories.Single(x => x.TerritoryGeography == territoryGeography);
-        }
     }
 
     public class Territory : Application.Territory, ITerritory

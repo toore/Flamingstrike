@@ -1,6 +1,7 @@
 ﻿using FluentAssertions;
 using GuiWpf.ViewModels.Gameplay.Interaction;
 using NSubstitute;
+using RISK.Application.World;
 using Xunit;
 
 namespace RISK.Tests.GuiWpf.Interaction
@@ -23,8 +24,8 @@ namespace RISK.Tests.GuiWpf.Interaction
         [Fact]
         public void Can_not_click_territory_not_occupied_by_current_player()
         {
-            var territory = AddTerritory();
-            _sut.AssertCanNotClickAndOnClickThrowsWhenInvoked(territory.TerritoryGeography);
+            var territoryGeography = Substitute.For<ITerritoryGeography>();
+            _sut.AssertCanNotClickAndOnClickThrowsWhenInvoked(territoryGeography);
         }
 
         [Fact]

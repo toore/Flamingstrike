@@ -10,7 +10,8 @@ namespace RISK.Application.Play
     public interface IGame
     {
         IInGameplayPlayer CurrentPlayer { get; }
-        IReadOnlyList<ITerritory> Territories { get; }
+        IReadOnlyList<ITerritory> GetTerritories();
+        ITerritory GetTerritory(ITerritoryGeography selectedTerritoryGeography);
         bool IsCurrentPlayerOccupyingTerritory(ITerritory territory);
         bool CanAttack(ITerritory attackingTerritory, ITerritory attackeeTerritory);
         void Attack(ITerritory attackingTerritory, ITerritory attackeeTerritory);
@@ -31,11 +32,12 @@ namespace RISK.Application.Play
         private bool _playerShouldReceiveCardWhenTurnEnds;
         private readonly IReadOnlyList<IInGameplayPlayer> _players;
         private bool _mustConfirmMoveOfArmiesIntoCapturedTerritory;
+        private readonly IReadOnlyList<ITerritory> _territories;
 
-        public Game(IReadOnlyList<IInGameplayPlayer> players, IReadOnlyList<ITerritory> territories, IGameRules gameRules, ICardFactory cardFactory, IBattle battle)
+        public Game(IReadOnlyList<IInGameplayPlayer> players, IReadOnlyList<ITerritory> initialTerritories, IGameRules gameRules, ICardFactory cardFactory, IBattle battle)
         {
             _players = players;
-            Territories = territories;
+            _territories = initialTerritories;
             _gameRules = gameRules;
             _cardFactory = cardFactory;
             _battle = battle;
@@ -44,7 +46,16 @@ namespace RISK.Application.Play
         }
 
         public IInGameplayPlayer CurrentPlayer { get; private set; }
-        public IReadOnlyList<ITerritory> Territories { get; }
+
+        public IReadOnlyList<ITerritory> GetTerritories()
+        {
+            return _territories;
+        }
+
+        public ITerritory GetTerritory(ITerritoryGeography selectedTerritoryGeography)
+        {
+            return _territories.Single(x => x.TerritoryGeography == selectedTerritoryGeography);
+        }
 
         public bool IsCurrentPlayerOccupyingTerritory(ITerritory territory)
         {
@@ -72,7 +83,7 @@ namespace RISK.Application.Play
                 return false;
             }
 
-            var attackeeCandidates = _gameRules.GetAttackeeCandidates(attackingTerritory.TerritoryGeography, Territories);
+            var attackeeCandidates = _gameRules.GetAttackeeCandidates(attackingTerritory.TerritoryGeography, GetTerritories());
             var canAttack = attackeeCandidates.Contains(attackeeTerritory.TerritoryGeography);
 
             return canAttack;
@@ -97,8 +108,8 @@ namespace RISK.Application.Play
 
         private bool IsDefenderEliminatedAfterAttack(ITerritoryGeography attackingTerritoryGeography, ITerritoryGeography territoryGeographyToAttack)
         {
-            var attacker = Territories.Single(x => x.TerritoryGeography == attackingTerritoryGeography);
-            var defender = Territories.Single(x => x.TerritoryGeography == territoryGeographyToAttack);
+            var attacker = GetTerritory(attackingTerritoryGeography);
+            var defender = GetTerritory(territoryGeographyToAttack);
 
             var battleResult = _battle.Attack(attacker, defender);
 
@@ -130,7 +141,7 @@ namespace RISK.Application.Play
 
         private void ThrowIfTerritoriesDoesNotContain(ITerritory territory)
         {
-            if (!Territories.Contains(territory))
+            if (!GetTerritories().Contains(territory))
             {
                 throw new InvalidOperationException("Territory does not exist in game");
             }
@@ -164,7 +175,7 @@ namespace RISK.Application.Play
 
         public bool IsGameOver()
         {
-            var allTerritoriesAreOccupiedBySamePlayer = Territories
+            var allTerritoriesAreOccupiedBySamePlayer = GetTerritories()
                 .Select(x => x.Player)
                 .Distinct()
                 .Count() == 1;

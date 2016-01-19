@@ -80,7 +80,7 @@ namespace RISK.Tests.Application
             {
                 var sut = Create(_gameSetup);
 
-                sut.Territories.Should().BeEquivalentTo(_territories);
+                sut.GetTerritories().Should().BeEquivalentTo(_territories);
             }
 
             [Fact]

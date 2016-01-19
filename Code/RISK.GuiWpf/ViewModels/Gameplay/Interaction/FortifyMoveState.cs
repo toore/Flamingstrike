@@ -1,5 +1,4 @@
 ﻿using System;
-using RISK.Application.Play;
 using RISK.Application.World;
 
 namespace GuiWpf.ViewModels.Gameplay.Interaction
@@ -49,10 +48,8 @@ namespace GuiWpf.ViewModels.Gameplay.Interaction
 
         private static bool CanFortify(IStateController stateController, ITerritoryGeography territoryGeographyToFortify)
         {
-            var sourceTerritory = stateController.Game.Territories
-                .GetFromGeography(stateController.SelectedTerritoryGeography);
-            var territoryToFortify = stateController.Game.Territories
-                .GetFromGeography(territoryGeographyToFortify);
+            var sourceTerritory = stateController.Game.GetTerritory(stateController.SelectedTerritoryGeography);
+            var territoryToFortify = stateController.Game.GetTerritory(territoryGeographyToFortify);
 
             var canFortify = stateController.Game.CanFortify(sourceTerritory, territoryToFortify);
             return canFortify;
@@ -60,10 +57,8 @@ namespace GuiWpf.ViewModels.Gameplay.Interaction
 
         private void Fortify(IStateController stateController, ITerritoryGeography territoryGeographyToFortify)
         {
-            var sourceTerritory = stateController.Game.Territories
-                .GetFromGeography(stateController.SelectedTerritoryGeography);
-            var territoryToFortify = stateController.Game.Territories
-                .GetFromGeography(territoryGeographyToFortify);
+            var sourceTerritory = stateController.Game.GetTerritory(stateController.SelectedTerritoryGeography);
+            var territoryToFortify = stateController.Game.GetTerritory(territoryGeographyToFortify);
 
             stateController.Game.Fortify(sourceTerritory, territoryToFortify);
             stateController.CurrentState = _interactionStateFactory.CreateEndTurnState();

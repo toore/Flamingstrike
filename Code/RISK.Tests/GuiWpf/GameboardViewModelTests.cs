@@ -73,7 +73,7 @@ namespace RISK.Tests.GuiWpf
         public void Activate_initializes_WorldMapViewModel()
         {
             var sut = Initialize(activate: false);
-            _worldMapViewModelFactory.Create(_game.Territories, sut.OnTerritoryClick, Arg.Is<IEnumerable<ITerritoryGeography>>(x => x.IsEmpty()))
+            _worldMapViewModelFactory.Create(_game.GetTerritories(), sut.OnTerritoryClick, Arg.Is<IEnumerable<ITerritoryGeography>>(x => x.IsEmpty()))
                 .Returns(_worldMapViewModel);
 
             sut.Activate();

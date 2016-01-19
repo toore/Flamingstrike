@@ -69,7 +69,7 @@ namespace GuiWpf.ViewModels.Gameplay
 
         private void InitializeWorld()
         {
-            WorldMapViewModel = _worldMapViewModelFactory.Create(_game.Territories, OnTerritoryClick, Enumerable.Empty<ITerritoryGeography>());
+            WorldMapViewModel = _worldMapViewModelFactory.Create(_game.GetTerritories(), OnTerritoryClick, Enumerable.Empty<ITerritoryGeography>());
 
             _stateController = _stateControllerFactory.Create(_game);
             _stateController.CurrentState = _interactionStateFactory.CreateSelectState();
@@ -140,7 +140,7 @@ namespace GuiWpf.ViewModels.Gameplay
                 .Where(x => _stateController.CanClick(x))
                 .ToList();
 
-            _worldMapViewModelFactory.Update(WorldMapViewModel, _game.Territories, _stateController.SelectedTerritoryGeography, enabledTerritories);
+            _worldMapViewModelFactory.Update(WorldMapViewModel, _game.GetTerritories(), _stateController.SelectedTerritoryGeography, enabledTerritories);
         }
     }
 }
