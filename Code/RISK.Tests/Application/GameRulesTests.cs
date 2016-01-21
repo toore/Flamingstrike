@@ -4,8 +4,6 @@ using RISK.Application;
 using RISK.Application.Play;
 using RISK.Application.World;
 using Xunit;
-using IPlayer = RISK.Application.IPlayer;
-using Territory = RISK.Application.Play.Territory;
 
 namespace RISK.Tests.Application
 {

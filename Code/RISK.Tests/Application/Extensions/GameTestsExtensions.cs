@@ -1,5 +1,6 @@
 using System;
 using FluentAssertions;
+using RISK.Application;
 using RISK.Application.Play;
 
 namespace RISK.Tests.Application.Extensions

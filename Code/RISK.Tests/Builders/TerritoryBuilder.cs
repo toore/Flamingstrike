@@ -1,7 +1,6 @@
 using NSubstitute;
 using RISK.Application;
 using RISK.Application.World;
-using Territory = RISK.Application.Play.Territory;
 
 namespace RISK.Tests.Builders
 {

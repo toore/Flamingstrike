@@ -8,7 +8,6 @@ using RISK.Application.Setup;
 using RISK.Application.World;
 using RISK.Tests.Builders;
 using Xunit;
-using ITerritory = RISK.Application.Play.ITerritory;
 
 namespace RISK.Tests.GuiWpf
 {

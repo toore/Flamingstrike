@@ -2,6 +2,7 @@ using System;
 using FluentAssertions;
 using FluentAssertions.Execution;
 using NSubstitute;
+using RISK.Application;
 using RISK.Application.Play;
 using Xunit;
 

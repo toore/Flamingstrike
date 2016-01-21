@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using FluentAssertions;
+using GuiWpf.Extensions;
 using NSubstitute;
 using RISK.Application;
 using RISK.Application.Play;
@@ -9,8 +11,6 @@ using RISK.Application.World;
 using RISK.Tests.Application.Extensions;
 using RISK.Tests.Builders;
 using Xunit;
-using ITerritory = RISK.Application.Play.ITerritory;
-using Territory = RISK.Application.Play.Territory;
 
 namespace RISK.Tests.Application
 {
@@ -19,7 +19,6 @@ namespace RISK.Tests.Application
         private readonly IGameRules _gameRules;
         private readonly ICardFactory _cardFactory;
         private readonly IBattle _battle;
-        private readonly ITerritoryFactory _territoryFactory;
         private readonly GameFactory _gameFactory;
         private readonly IPlayerFactory _playerFactory;
 
@@ -28,10 +27,9 @@ namespace RISK.Tests.Application
             _gameRules = Substitute.For<IGameRules>();
             _cardFactory = Substitute.For<ICardFactory>();
             _battle = Substitute.For<IBattle>();
-            _territoryFactory = Substitute.For<ITerritoryFactory>();
             _playerFactory = Substitute.For<IPlayerFactory>();
 
-            _gameFactory = new GameFactory(_gameRules, _cardFactory, _battle, _territoryFactory, _playerFactory);
+            _gameFactory = new GameFactory(_gameRules, _cardFactory, _battle, _playerFactory);
         }
 
         private IGame Create(IGamePlaySetup gamePlaySetup)
@@ -43,28 +41,24 @@ namespace RISK.Tests.Application
         {
             private readonly IGamePlaySetup _gameSetup;
             private readonly IInGameplayPlayer _firstInGameplayPlayer;
-            private readonly List<ITerritory> _territories;
             private readonly ITerritory _territory;
             private readonly ITerritory _anotherTerritory;
 
             public AfterInitializationTests()
             {
-                _gameSetup = Make.GameSetup.Build();
+                _territory = Substitute.For<ITerritory>();
+                _anotherTerritory = Substitute.For<ITerritory>();
+
+                _gameSetup = Make.GamePlaySetup
+                    .WithTerritory(_territory)
+                    .WithTerritory(_anotherTerritory)
+                    .Build();
                 _firstInGameplayPlayer = Substitute.For<IInGameplayPlayer>();
                 _playerFactory.Create(_gameSetup.Players).Returns(new List<IInGameplayPlayer>
                 {
                     _firstInGameplayPlayer,
                     Substitute.For<IInGameplayPlayer>()
                 });
-
-                _territory = Substitute.For<ITerritory>();
-                _anotherTerritory = Substitute.For<ITerritory>();
-                _territories = new List<ITerritory>
-                {
-                    _territory,
-                    _anotherTerritory
-                };
-                _territoryFactory.Create(_gameSetup.Territories).Returns(_territories);
             }
 
             [Fact]
@@ -80,7 +74,7 @@ namespace RISK.Tests.Application
             {
                 var sut = Create(_gameSetup);
 
-                sut.GetTerritories().Should().BeEquivalentTo(_territories);
+                sut.GetTerritories().Should().BeEquivalentTo(_territory, _anotherTerritory);
             }
 
             [Fact]
@@ -114,9 +108,9 @@ namespace RISK.Tests.Application
             private readonly ITerritoryGeography _anotherPlayerTerritoryGeography = Substitute.For<ITerritoryGeography>();
             private readonly IPlayer _player = Substitute.For<IPlayer>();
             private readonly IPlayer _anotherPlayer = Substitute.For<IPlayer>();
-            private readonly List<ITerritory> _territories;
-            private readonly Territory _playerTerritory;
-            private readonly Territory _anotherPlayerTerritory;
+            private readonly ITerritory _playerTerritory;
+            private readonly ITerritory _anotherPlayerTerritory;
+            private readonly IGamePlaySetup _gamePlaySetup;
 
             public AttackTests()
             {
@@ -129,21 +123,18 @@ namespace RISK.Tests.Application
 
                 _playerTerritory = Make.Territory.TerritoryGeography(_playerTerritoryGeography).Player(_player).Build();
                 _anotherPlayerTerritory = Make.Territory.TerritoryGeography(_anotherPlayerTerritoryGeography).Player(_anotherPlayer).Build();
-                _territories = new List<ITerritory>
-                {
-                    _playerTerritory,
-                    _anotherPlayerTerritory
-                };
-                _territoryFactory.Create(null).ReturnsForAnyArgs(_territories);
+                _gamePlaySetup = Make.GamePlaySetup
+                    .WithTerritory(_playerTerritory)
+                    .WithTerritory(_anotherPlayerTerritory)
+                    .Build();
             }
 
             [Fact]
             public void Can_attack()
             {
-                _gameRules.GetAttackeeCandidates(_playerTerritoryGeography, _territories)
-                    .Returns(new[] { _anotherPlayerTerritoryGeography });
+                GetAttackeeCandidatesReturns(_anotherPlayerTerritoryGeography);
 
-                var sut = Create(Make.GameSetup.Build());
+                var sut = Create(_gamePlaySetup);
 
                 sut.CanAttack(_playerTerritory, _anotherPlayerTerritory).Should().BeTrue();
             }
@@ -151,10 +142,9 @@ namespace RISK.Tests.Application
             [Fact]
             public void Attacks()
             {
-                _gameRules.GetAttackeeCandidates(_playerTerritoryGeography, _territories)
-                    .Returns(new[] { _anotherPlayerTerritoryGeography });
+                GetAttackeeCandidatesReturns(_anotherPlayerTerritoryGeography);
 
-                var sut = Create(Make.GameSetup.Build());
+                var sut = Create(_gamePlaySetup);
                 sut.Attack(_playerTerritory, _anotherPlayerTerritory);
 
                 _battle.Received().Attack(_playerTerritory, _anotherPlayerTerritory);
@@ -163,10 +153,9 @@ namespace RISK.Tests.Application
             [Fact]
             public void Can_not_attack()
             {
-                _gameRules.GetAttackeeCandidates(_playerTerritoryGeography, _territories)
-                    .Returns(new ITerritoryGeography[] { });
+                GetAttackeeCandidatesReturns();
 
-                var sut = Create(Make.GameSetup.Build());
+                var sut = Create(_gamePlaySetup);
 
                 sut.AssertCanNotAttack(_playerTerritory, _anotherPlayerTerritory);
             }
@@ -174,10 +163,9 @@ namespace RISK.Tests.Application
             [Fact]
             public void Can_not_attack_with_another_players_territory()
             {
-                _gameRules.GetAttackeeCandidates(_playerTerritoryGeography, _territories)
-                    .Returns(new[] { _anotherPlayerTerritoryGeography });
+                GetAttackeeCandidatesReturns(_anotherPlayerTerritoryGeography);
 
-                var sut = Create(Make.GameSetup.Build());
+                var sut = Create(_gamePlaySetup);
 
                 sut.AssertCanNotAttack(_anotherPlayerTerritory, _playerTerritory);
             }
@@ -185,29 +173,61 @@ namespace RISK.Tests.Application
             [Fact]
             public void Can_move_armies_into_captured_territory()
             {
-                _gameRules.GetAttackeeCandidates(_playerTerritoryGeography, _territories)
-                    .Returns(new[] { _anotherPlayerTerritoryGeography });
+                GetAttackeeCandidatesReturns(_anotherPlayerTerritoryGeography);
                 _battle.Attack(_playerTerritory, _anotherPlayerTerritory)
                     .Returns(BattleResult.DefenderEliminated);
 
-                var sut = Create(Make.GameSetup.Build());
+                var sut = Create(_gamePlaySetup);
                 sut.Attack(_playerTerritory, _anotherPlayerTerritory);
 
                 sut.CanMoveArmiesIntoCapturedTerritory().Should().BeTrue();
             }
 
+            [Fact(Skip = "Not implemented")]
+            public void Moves_armies_into_captured_territory()
+            {
+                //GetAttackeeCandidatesReturns(_anotherPlayerTerritoryGeography);
+                //_battle.Attack(_playerTerritory, _anotherPlayerTerritory)
+                //    .Returns(BattleResult.DefenderEliminated);
+
+                //var sut = Create(_gamePlaySetup);
+                //sut.Attack(_playerTerritory, _anotherPlayerTerritory);
+                //sut.MoveArmiesIntoCapturedTerritory(3);
+
+                // Move to own test fixture
+                // Test that canmove 
+                // test move
+                // test that canmove prevents other actions
+            }
+
             [Fact]
             public void Can_not_attack_before_move_into_captured_territory_has_been_confirmed()
             {
-                _gameRules.GetAttackeeCandidates(_playerTerritoryGeography, _territories)
-                    .Returns(new[] { _anotherPlayerTerritoryGeography });
+                GetAttackeeCandidatesReturns(_anotherPlayerTerritoryGeography);
                 _battle.Attack(_playerTerritory, _anotherPlayerTerritory)
                     .Returns(BattleResult.DefenderEliminated);
 
-                var sut = Create(Make.GameSetup.Build());
+                var sut = Create(_gamePlaySetup);
                 sut.Attack(_playerTerritory, _anotherPlayerTerritory);
 
                 sut.AssertCanNotAttack(_playerTerritory, _anotherPlayerTerritory);
+            }
+
+            private void GetAttackeeCandidatesReturns(params ITerritoryGeography[] territoryGeographies)
+            {
+                _gameRules.GetAttackeeCandidates(
+                    _playerTerritoryGeography, ArgListIsEquivalentTo(_playerTerritory, _anotherPlayerTerritory))
+                    .Returns(territoryGeographies);
+            }
+
+            private static IReadOnlyList<T> ArgListIsEquivalentTo<T>(params T[] equivalency)
+            {
+                return Arg.Is<IReadOnlyList<T>>(arg => IsEquivalentTo(arg, equivalency));
+            }
+
+            private static bool IsEquivalentTo<T>(IEnumerable<T> arg, params T[] equivalency)
+            {
+                return arg.Except(equivalency).IsEmpty();
             }
         }
 
@@ -217,14 +237,13 @@ namespace RISK.Tests.Application
             public void Is_game_over_when_all_territories_belongs_to_one_player()
             {
                 var player = Substitute.For<IPlayer>();
-                _territoryFactory.Create(null).ReturnsForAnyArgs(new List<ITerritory>
-                {
-                    Make.Territory.Player(player).Build(),
-                    Make.Territory.Player(player).Build()
-                });
+                var gamePlaySetup = Make.GamePlaySetup
+                    .WithTerritory(Make.Territory.Player(player).Build())
+                    .WithTerritory(Make.Territory.Player(player).Build())
+                    .Build();
                 HasPlayers();
 
-                var sut = Create(Make.GameSetup.Build());
+                var sut = Create(gamePlaySetup);
 
                 sut.IsGameOver().Should().BeTrue();
             }
@@ -232,14 +251,13 @@ namespace RISK.Tests.Application
             [Fact]
             public void Is_not_game_over_when_more_than_one_player_occupies_territories()
             {
-                _territoryFactory.Create(null).ReturnsForAnyArgs(new List<ITerritory>
-                {
-                    Make.Territory.Build(),
-                    Make.Territory.Build()
-                });
+                var gamePlaySetup = Make.GamePlaySetup
+                    .WithTerritory(Make.Territory.Build())
+                    .WithTerritory(Make.Territory.Build())
+                    .Build();
                 HasPlayers();
 
-                var sut = Create(Make.GameSetup.Build());
+                var sut = Create(gamePlaySetup);
 
                 sut.IsGameOver().Should().BeFalse();
             }
@@ -257,7 +275,7 @@ namespace RISK.Tests.Application
             public void End_turn_passes_turn_to_next_player()
             {
                 var nextPlayer = Substitute.For<IInGameplayPlayer>();
-                var gameSetup = Make.GameSetup.Build();
+                var gameSetup = Make.GamePlaySetup.Build();
                 _playerFactory.Create(gameSetup.Players).Returns(new List<IInGameplayPlayer>
                 {
                     Substitute.For<IInGameplayPlayer>(),

@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using GuiWpf.Services;
-using RISK.Application.Play;
+using RISK.Application;
 using RISK.Application.World;
 
 namespace GuiWpf.ViewModels.Gameplay.Map

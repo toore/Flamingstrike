@@ -53,8 +53,6 @@
     <Compile Include="Play\GameRules.cs" />
     <Compile Include="Play\InGameplayPlayer.cs" />
     <Compile Include="Play\PlayerFactory.cs" />
-    <Compile Include="Play\Territory.cs" />
-    <Compile Include="Play\TerritoryFactory.cs" />
     <Compile Include="Setup\AlternateGameSetupFactory.cs" />
     <Compile Include="Territory.cs" />
     <Compile Include="Play\GameFactory.cs" />

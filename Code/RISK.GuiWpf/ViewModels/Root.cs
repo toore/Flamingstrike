@@ -73,9 +73,7 @@ namespace GuiWpf.ViewModels
             var dice = new Dice(randomWrapper);
             var diceRoller = new DicesRoller(dice);
             var battle = new Battle(diceRoller, battleCalculator);
-            var territoryConverter = new TerritoryFactory();
-            var gameFactory = new GameFactory(
-                gameboardRules, cardFactory, battle, territoryConverter, new PlayerFactory());
+            var gameFactory = new GameFactory(gameboardRules, cardFactory, battle, new PlayerFactory());
 
             GameSetupViewModelFactory = new GameSetupViewModelFactory(
                 gameFactory,

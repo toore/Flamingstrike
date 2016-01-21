@@ -49,7 +49,9 @@ namespace RISK.Application.Play
 
         public IReadOnlyList<ITerritory> GetTerritories()
         {
-            return _territories;
+            var territories = _territories.ToList();
+            territories.Reverse();
+            return territories;
         }
 
         public ITerritory GetTerritory(ITerritoryGeography selectedTerritoryGeography)
