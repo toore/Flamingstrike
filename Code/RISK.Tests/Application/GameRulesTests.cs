@@ -40,13 +40,13 @@ namespace RISK.Tests.Application
             [Fact]
             public void Has_attackee_candidate()
             {
-                var gameboardTerritories = new[]
+                var territories = new[]
                 {
                     new Territory(_attackingTerritoryGeography, _currentPlayer, 2),
                     new Territory(_attackeeTerritoryGeography, _otherPlayer, 1),
                 };
 
-                var actual = _sut.GetAttackeeCandidates(_attackingTerritoryGeography, gameboardTerritories);
+                var actual = _sut.GetAttackeeCandidates(_attackingTerritoryGeography, territories);
 
                 actual.Should().BeEquivalentTo(_attackeeTerritoryGeography);
             }
