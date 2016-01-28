@@ -1,5 +1,3 @@
-using RISK.Application.Play;
-
 namespace RISK.Tests.Builders
 {
     public static class Make
@@ -9,5 +7,7 @@ namespace RISK.Tests.Builders
         public static GamePlaySetupBuilder GamePlaySetup => new GamePlaySetupBuilder();
         public static TerritoryBuilder Territory => new TerritoryBuilder();
         public static PlayerBuilder Player => new PlayerBuilder();
+        public static DicesBuilder Dices => new DicesBuilder();
+        public static BattleOutcomeBuilder BattleOutcome => new BattleOutcomeBuilder();
     }
 }

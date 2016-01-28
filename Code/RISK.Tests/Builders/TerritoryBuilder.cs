@@ -8,10 +8,11 @@ namespace RISK.Tests.Builders
     {
         private ITerritoryGeography _territoryGeography = Substitute.For<ITerritoryGeography>();
         private IPlayer _player = Substitute.For<IPlayer>();
+        private int _armies;
 
         public Territory Build()
         {
-            return new Territory(_territoryGeography, _player, 0);
+            return new Territory(_territoryGeography, _player, _armies);
         }
 
         public TerritoryBuilder TerritoryGeography(ITerritoryGeography territoryGeography)
@@ -23,6 +24,12 @@ namespace RISK.Tests.Builders
         public TerritoryBuilder Player(IPlayer player)
         {
             _player = player;
+            return this;
+        }
+
+        public TerritoryBuilder Armies(int armies)
+        {
+            _armies = armies;
             return this;
         }
     }

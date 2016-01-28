@@ -96,11 +96,13 @@
     <Compile Include="Application\BattleTests.cs" />
     <Compile Include="Application\DiceTests.cs" />
     <Compile Include="Application\DicesRollerTests.cs" />
-    <Compile Include="Application\BattleCalculatorTests.cs" />
+    <Compile Include="Application\BattleOutcomeCalculatorTests.cs" />
     <Compile Include="Application\GameTests.cs" />
     <Compile Include="Application\GameRulesTests.cs" />
     <Compile Include="Application\Extensions\GameTestsExtensions.cs" />
     <Compile Include="Application\Extensions\GameTestsExtensionsTests.cs" />
+    <Compile Include="Builders\BattleOutcomeBuilder.cs" />
+    <Compile Include="Builders\DicesBuilder.cs" />
     <Compile Include="Builders\PlayerBuilder.cs" />
     <Compile Include="Builders\TerritoryBuilder.cs" />
     <Compile Include="GuiWpf\Interaction\AttackStateTests.cs" />

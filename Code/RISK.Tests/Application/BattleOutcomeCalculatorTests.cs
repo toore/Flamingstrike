@@ -5,13 +5,13 @@ using Xunit;
 
 namespace RISK.Tests.Application
 {
-    public class BattleCalculatorTests
+    public class BattleOutcomeCalculatorTests
     {
-        private readonly BattleCalculator _sut;
+        private readonly BattleOutcomeCalculator _sut;
 
-        public BattleCalculatorTests()
+        public BattleOutcomeCalculatorTests()
         {
-            _sut = new BattleCalculator();
+            _sut = new BattleOutcomeCalculator();
         }
 
         public static IEnumerable<object[]> _attackerCasualtiesCases
@@ -30,7 +30,7 @@ namespace RISK.Tests.Application
         }
 
         [Theory]
-        [MemberData("_attackerCasualtiesCases")]
+        [MemberData(nameof(_attackerCasualtiesCases))]
         public void CalculateAttackerCasualties(int expectedCasualties, IEnumerable<int> attack, IEnumerable<int> defence)
         {
             _sut.Battle(attack, defence).AttackerLosses
@@ -53,7 +53,7 @@ namespace RISK.Tests.Application
         }
 
         [Theory]
-        [MemberData("_defenderCasualtiesCases")]
+        [MemberData(nameof(_defenderCasualtiesCases))]
         public void CalculateDefenderCasualties(int expectedCasualties, IEnumerable<int> attack, IEnumerable<int> defence)
         {
             _sut.Battle(attack, defence).DefenderLosses

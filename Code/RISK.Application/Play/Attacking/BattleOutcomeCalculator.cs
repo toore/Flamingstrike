@@ -4,14 +4,14 @@ using System.Linq;
 
 namespace RISK.Application.Play.Attacking
 {
-    public interface IBattleCalculator
+    public interface IBattleOutcomeCalculator
     {
-        BattleCalculatorResult Battle(IEnumerable<int> attack, IEnumerable<int> defence);
+        BattleOutcome Battle(IEnumerable<int> attack, IEnumerable<int> defence);
     }
 
-    public class BattleCalculatorResult
+    public class BattleOutcome
     {
-        public BattleCalculatorResult(int attackerLosses, int defenderLosses)
+        public BattleOutcome(int attackerLosses, int defenderLosses)
         {
             AttackerLosses = attackerLosses;
             DefenderLosses = defenderLosses;
@@ -21,14 +21,14 @@ namespace RISK.Application.Play.Attacking
         public int DefenderLosses { get; }
     }
 
-    public class BattleCalculator : IBattleCalculator
+    public class BattleOutcomeCalculator : IBattleOutcomeCalculator
     {
-        public BattleCalculatorResult Battle(IEnumerable<int> attack, IEnumerable<int> defence)
+        public BattleOutcome Battle(IEnumerable<int> attack, IEnumerable<int> defence)
         {
             var matchedAttackAndDefenceValues = MatchAttackAndDefenceValues(attack.ToList(), defence.ToList())
                 .ToList();
 
-            return new BattleCalculatorResult(
+            return new BattleOutcome(
                 GetAttackerLosses(matchedAttackAndDefenceValues),
                 GetDefenderLosses(matchedAttackAndDefenceValues));
         }

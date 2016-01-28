@@ -68,7 +68,7 @@ namespace GuiWpf.ViewModels
 
             var gameboardRules = new GameRules();
             var cardFactory = new CardFactory();
-            var battleCalculator = new BattleCalculator();
+            var battleCalculator = new BattleOutcomeCalculator();
             var randomWrapper = new RandomWrapper();
             var dice = new Dice(randomWrapper);
             var diceRoller = new DicesRoller(dice);

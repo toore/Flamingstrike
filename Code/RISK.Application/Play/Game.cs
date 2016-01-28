@@ -115,7 +115,7 @@ namespace RISK.Application.Play
 
             var battleResult = _battle.Attack(attacker, defender);
 
-            return battleResult == BattleResult.DefenderEliminated;
+            return battleResult.IsDefenderEliminated();
         }
 
         public bool CanMoveArmiesIntoCapturedTerritory()

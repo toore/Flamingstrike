@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using FluentAssertions;
 using GuiWpf.Extensions;
@@ -173,9 +174,11 @@ namespace RISK.Tests.Application
             [Fact]
             public void Can_move_armies_into_captured_territory()
             {
+                var defenderIsEliminated = Substitute.For<IBattleResult>();
+                defenderIsEliminated.IsDefenderEliminated().Returns(true);
                 GetAttackeeCandidatesReturns(_anotherPlayerTerritoryGeography);
                 _battle.Attack(_playerTerritory, _anotherPlayerTerritory)
-                    .Returns(BattleResult.DefenderEliminated);
+                    .Returns(defenderIsEliminated);
 
                 var sut = Create(_gamePlaySetup);
                 sut.Attack(_playerTerritory, _anotherPlayerTerritory);
@@ -197,15 +200,18 @@ namespace RISK.Tests.Application
                 // Move to own test fixture
                 // Test that canmove 
                 // test move
-                // test that canmove prevents other actions
+                // TBD: test that canmove prevents other actions
             }
 
             [Fact]
             public void Can_not_attack_before_move_into_captured_territory_has_been_confirmed()
             {
+                throw new NotImplementedException("succeeds because of side-effects, not because it's prevented");
+                var defenderIsEliminated = Substitute.For<IBattleResult>();
+                defenderIsEliminated.IsDefenderEliminated().Returns(true);
                 GetAttackeeCandidatesReturns(_anotherPlayerTerritoryGeography);
                 _battle.Attack(_playerTerritory, _anotherPlayerTerritory)
-                    .Returns(BattleResult.DefenderEliminated);
+                    .Returns(defenderIsEliminated);
 
                 var sut = Create(_gamePlaySetup);
                 sut.Attack(_playerTerritory, _anotherPlayerTerritory);

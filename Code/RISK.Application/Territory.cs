@@ -15,11 +15,11 @@ namespace RISK.Application
 
     public class Territory : ITerritory
     {
-        public Territory(ITerritoryGeography territoryGeography, IPlayer player, int initialArmy)
+        public Territory(ITerritoryGeography territoryGeography, IPlayer player, int armies)
         {
             TerritoryGeography = territoryGeography;
             Player = player;
-            Armies = initialArmy;
+            Armies = armies;
         }
 
         public ITerritoryGeography TerritoryGeography { get; }
