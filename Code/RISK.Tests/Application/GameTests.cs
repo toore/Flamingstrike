@@ -206,7 +206,6 @@ namespace RISK.Tests.Application
             [Fact]
             public void Can_not_attack_before_move_into_captured_territory_has_been_confirmed()
             {
-                throw new NotImplementedException("succeeds because of side-effects, not because it's prevented");
                 var defenderIsEliminated = Substitute.For<IBattleResult>();
                 defenderIsEliminated.IsDefenderEliminated().Returns(true);
                 GetAttackeeCandidatesReturns(_anotherPlayerTerritoryGeography);
