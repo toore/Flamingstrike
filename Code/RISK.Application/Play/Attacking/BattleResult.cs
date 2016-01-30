@@ -2,7 +2,7 @@
 {
     public interface IBattleResult
     {
-        bool IsDefenderEliminated();
+        bool IsDefenderDefeated();
         ITerritory AttackingTerritory { get; }
         ITerritory DefendingTerritory { get; }
     }
@@ -18,7 +18,7 @@
             DefendingTerritory = defendingTerritory;
         }
 
-        public bool IsDefenderEliminated()
+        public bool IsDefenderDefeated()
         {
             return AttackingTerritory.Player == DefendingTerritory.Player;
         }

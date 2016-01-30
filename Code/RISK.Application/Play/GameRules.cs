@@ -6,12 +6,12 @@ namespace RISK.Application.Play
 {
     public interface IGameRules
     {
-        IEnumerable<IRegion> GetAttackeeCandidates(IRegion attackingRegion, IReadOnlyList<ITerritory> territories);
+        IEnumerable<IRegion> GetCandidatesToAttack(IRegion attackingRegion, IReadOnlyList<ITerritory> territories);
     }
 
     public class GameRules : IGameRules
     {
-        public IEnumerable<IRegion> GetAttackeeCandidates(IRegion attackingRegion, IReadOnlyList<ITerritory> territories)
+        public IEnumerable<IRegion> GetCandidatesToAttack(IRegion attackingRegion, IReadOnlyList<ITerritory> territories)
         {
             var attacker = territories
                 .Single(x => x.Region == attackingRegion);

@@ -79,7 +79,7 @@ namespace GuiWpf.ViewModels.Gameplay
 
         public bool CanFortify()
         {
-            return false;//_game.CanFortify();??
+            return false; //_game.CanFortify();??
         }
 
         public void Fortify()
@@ -123,13 +123,13 @@ namespace GuiWpf.ViewModels.Gameplay
 
         private void ShowGameOverMessage()
         {
-            var gameOverViewModel = _gameOverViewModelFactory.Create(_game.CurrentPlayer.Player.Name);
+            var gameOverViewModel = _gameOverViewModelFactory.Create(_game.CurrentPlayer.Name);
             _windowManager.ShowDialog(gameOverViewModel);
         }
 
         private void UpdateGame()
         {
-            PlayerName = _game.CurrentPlayer.Player.Name;
+            PlayerName = _game.CurrentPlayer.Name;
 
             UpdateWorldMap();
         }

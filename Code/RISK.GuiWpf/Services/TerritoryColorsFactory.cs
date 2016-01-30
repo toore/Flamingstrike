@@ -11,7 +11,7 @@ namespace GuiWpf.Services
 
     public class TerritoryColorsFactory : ITerritoryColorsFactory
     {
-        private Dictionary<IRegion, Func<GuiWpf.Services.ITerritoryColors>> _colors;
+        private readonly Dictionary<IRegion, Func<ITerritoryColors>> _colors;
 
         public TerritoryColorsFactory(IColorService colorService, IWorldMap worldMap)
         {

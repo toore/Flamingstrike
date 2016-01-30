@@ -23,12 +23,12 @@ namespace RISK.Tests.GuiWpf.Specifications
         private GameboardViewModel _gameboardViewModel;
         private WorldMap _worldMap;
         private IWindowManager _windowManager;
-        private IPlayer _playerId1;
-        private IPlayer _playerId2;
+        private IPlayer _player1;
+        private IPlayer _player2;
         private IDice _dice;
         private GameOverViewModel _gameOverAndPlayer1IsTheWinnerViewModel;
-        private List<IInGameplayPlayer> _players;
-        private List<Territory> _territories;
+        private IReadOnlyList<IPlayer> _players;
+        private readonly List<Territory> _territories = new List<Territory>();
         private IGame _game;
         private IStateControllerFactory _stateControllerFactory;
         private IInteractionStateFactory _interactionStateFactory;
@@ -153,14 +153,10 @@ namespace RISK.Tests.GuiWpf.Specifications
             _dice = Substitute.For<IDice>();
             _windowManager = Substitute.For<IWindowManager>();
 
-            _playerId1 = new Player("Player 1");
-            _playerId2 = new Player("Player 2");
-            var player1 = new InGameplayPlayer(_playerId1);
-            var player2 = new InGameplayPlayer(_playerId2);
+            _player1 = new Player("Player 1");
+            _player2 = new Player("Player 2");
 
-            _players = new List<IInGameplayPlayer> { player1, player2 };
-
-            _territories = new List<Territory>();
+            _players = new List<IPlayer> { _player1, _player2 };
 
             return this;
         }
@@ -189,7 +185,7 @@ namespace RISK.Tests.GuiWpf.Specifications
 
             var gameOverViewModelFactory = Substitute.For<IGameOverViewModelFactory>();
             _gameOverAndPlayer1IsTheWinnerViewModel = new GameOverViewModel("");
-            gameOverViewModelFactory.Create(_playerId1.Name).Returns(_gameOverAndPlayer1IsTheWinnerViewModel);
+            gameOverViewModelFactory.Create(_player1.Name).Returns(_gameOverAndPlayer1IsTheWinnerViewModel);
 
             _gameboardViewModel = new GameboardViewModel(
                 _game,
@@ -209,7 +205,7 @@ namespace RISK.Tests.GuiWpf.Specifications
 
         private GamePlaySpec player_1_has_5_armies_in_north_africa()
         {
-            AddTerritoryToGameboard(_worldMap.NorthAfrica, _playerId1, 5);
+            AddTerritoryToGameboard(_worldMap.NorthAfrica, _player1, 5);
             //UpdateWorldMap(_player1, 5, _worldMap.NorthAfrica);
             return this;
         }
@@ -225,7 +221,7 @@ namespace RISK.Tests.GuiWpf.Specifications
                 _worldMap.Brazil,
                 _worldMap.Venezuela,
                 _worldMap.NorthAfrica).
-                Apply(x => AddTerritoryToGameboard(x, _playerId1, 1));
+                Apply(x => AddTerritoryToGameboard(x, _player1, 1));
 
             //UpdateWorldMap(_player1, 1, GetAllLocationsExcept(_worldMap.Brazil, _worldMap.Venezuela));
             return this;
@@ -233,39 +229,39 @@ namespace RISK.Tests.GuiWpf.Specifications
 
         private GamePlaySpec player_2_occupies_brazil_and_venezuela_with_one_army_each()
         {
-            AddTerritoryToGameboard(_worldMap.Brazil, _playerId2, 1);
-            AddTerritoryToGameboard(_worldMap.Venezuela, _playerId2, 1);
+            AddTerritoryToGameboard(_worldMap.Brazil, _player2, 1);
+            AddTerritoryToGameboard(_worldMap.Venezuela, _player2, 1);
             //UpdateWorldMap(_player2, 1, _worldMap.Brazil, _worldMap.Venezuela);
             return this;
         }
 
         private GamePlaySpec player_1_occupies_every_territory_except_iceland_with_one_army_each()
         {
-            UpdateWorldMap(_playerId1, 1, GetAllTerritoriesExcept(_worldMap.Iceland));
+            UpdateWorldMap(_player1, 1, GetAllTerritoriesExcept(_worldMap.Iceland));
             return this;
         }
 
         private GamePlaySpec player_1_occupies_every_territory_except_indonesia_with_ten_armies_each()
         {
-            UpdateWorldMap(_playerId1, 10, GetAllTerritoriesExcept(_worldMap.Indonesia));
+            UpdateWorldMap(_player1, 10, GetAllTerritoriesExcept(_worldMap.Indonesia));
             return this;
         }
 
         private GamePlaySpec player_2_occupies_indonesia()
         {
-            UpdateWorldMap(_playerId2, 1, _worldMap.Indonesia);
+            UpdateWorldMap(_player2, 1, _worldMap.Indonesia);
             return this;
         }
 
         private GamePlaySpec player_1_has_2_armies_in_scandinavia()
         {
-            UpdateWorldMap(_playerId1, 2, _worldMap.Scandinavia);
+            UpdateWorldMap(_player1, 2, _worldMap.Scandinavia);
             return this;
         }
 
         private void player_2_occupies_iceland_with_one_army()
         {
-            UpdateWorldMap(_playerId2, 1, _worldMap.Iceland);
+            UpdateWorldMap(_player2, 1, _worldMap.Iceland);
         }
 
         private IRegion[] GetAllTerritoriesExcept(params IRegion[] excludedLocations)
@@ -327,11 +323,10 @@ namespace RISK.Tests.GuiWpf.Specifications
 
         private void player_1_should_occupy_Brazil_with_4_armies()
         {
-            //_worldMap.NorthAfrica.Occupant.Should().Be(_player1, "player 1 should occupy North Africa");
-            //_worldMap.NorthAfrica.Armies.Should().Be(1, "North Africa should have 1 army");
-            //_worldMap.Brazil.Occupant.Should().Be(_player1, "player 1 should occupy Brazil");
-            //_worldMap.Brazil.Armies.Should().Be(4, "Brazil should have 4 armies");
-            //_gameAdapter.SelectedTerritory.Should().Be(_worldMap.Brazil);
+            _game.GetTerritory(_worldMap.NorthAfrica).Player.Should().Be(_player1, "player 1 should occupy North Africa");
+            _game.GetTerritory(_worldMap.NorthAfrica).Armies.Should().Be(1, "North Africa should have 1 army");
+            _game.GetTerritory(_worldMap.Brazil).Player.Should().Be(_player1, "player 1 should occupy Brazil");
+            _game.GetTerritory(_worldMap.Brazil).Armies.Should().Be(4, "Brazil should have 4 armies");
         }
 
         private void player_1_is_the_winner()
@@ -353,7 +348,7 @@ namespace RISK.Tests.GuiWpf.Specifications
 
         private void player_2_should_take_turn()
         {
-            _gameboardViewModel.PlayerName.Should().Be(_playerId2.Name);
+            _gameboardViewModel.PlayerName.Should().Be(_player2.Name);
         }
     }
 }

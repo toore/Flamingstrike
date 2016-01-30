@@ -56,12 +56,12 @@ namespace GuiWpf.ViewModels.Gameplay.Interaction
             return canAttack;
         }
 
-        private static void Attack(IStateController stateController, IRegion attackeeRegion)
+        private static void Attack(IStateController stateController, IRegion attackedRegion)
         {
             var attackingTerritory = stateController.Game.GetTerritory(stateController.SelectedRegion);
-            var attackeeTerritory = stateController.Game.GetTerritory(attackeeRegion);
+            var defendingTerritory = stateController.Game.GetTerritory(attackedRegion);
 
-            stateController.Game.Attack(attackingTerritory, attackeeTerritory);
+            stateController.Game.Attack(attackingTerritory, defendingTerritory);
         }
     }
 }
