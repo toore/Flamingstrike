@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using FluentAssertions;
 using GuiWpf.Extensions;
@@ -149,6 +148,19 @@ namespace RISK.Tests.Application
                 sut.Attack(_playerTerritory, _anotherPlayerTerritory);
 
                 _battle.Received().Attack(_playerTerritory, _anotherPlayerTerritory);
+                sut.GetTerritory(_playerTerritory.TerritoryGeography).Player.Should().Be(_player);
+                sut.GetTerritory(_anotherPlayerTerritory.TerritoryGeography).Player.Should().Be(_anotherPlayer);
+            }
+
+            [Fact(Skip = "Not implemented")]
+            public void Attacks_and_updates_armies()
+            {
+                GetAttackeeCandidatesReturns(_anotherPlayerTerritoryGeography);
+
+                var sut = Create(_gamePlaySetup);
+                sut.Attack(_playerTerritory, _anotherPlayerTerritory);
+
+                
             }
 
             [Fact]
@@ -186,20 +198,23 @@ namespace RISK.Tests.Application
                 sut.CanMoveArmiesIntoCapturedTerritory().Should().BeTrue();
             }
 
-            [Fact(Skip = "Not implemented")]
+            [Fact]
             public void Moves_armies_into_captured_territory()
             {
-                //GetAttackeeCandidatesReturns(_anotherPlayerTerritoryGeography);
-                //_battle.Attack(_playerTerritory, _anotherPlayerTerritory)
-                //    .Returns(BattleResult.DefenderEliminated);
+                var defenderIsEliminated = Substitute.For<IBattleResult>();
+                defenderIsEliminated.IsDefenderEliminated().Returns(true);
+                GetAttackeeCandidatesReturns(_anotherPlayerTerritoryGeography);
+                _battle.Attack(_playerTerritory, _anotherPlayerTerritory)
+                    .Returns(defenderIsEliminated);
 
-                //var sut = Create(_gamePlaySetup);
-                //sut.Attack(_playerTerritory, _anotherPlayerTerritory);
-                //sut.MoveArmiesIntoCapturedTerritory(3);
+                var sut = Create(_gamePlaySetup);
+                sut.Attack(_playerTerritory, _anotherPlayerTerritory);
+                sut.MoveArmiesIntoCapturedTerritory(3);
 
                 // Move to own test fixture
                 // Test that canmove 
                 // test move
+                // (test to attack and standard move)
                 // TBD: test that canmove prevents other actions
             }
 

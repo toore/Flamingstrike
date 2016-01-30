@@ -49,9 +49,7 @@ namespace RISK.Application.Play
 
         public IReadOnlyList<ITerritory> GetTerritories()
         {
-            var territories = _territories.ToList();
-            territories.Reverse();
-            return territories;
+            return _territories;
         }
 
         public ITerritory GetTerritory(ITerritoryGeography selectedTerritoryGeography)
@@ -98,24 +96,18 @@ namespace RISK.Application.Play
                 throw new InvalidOperationException();
             }
 
-            _mustConfirmMoveOfArmiesIntoCapturedTerritory =
-                IsDefenderEliminatedAfterAttack(attackingTerritory.TerritoryGeography, attackeeTerritory.TerritoryGeography);
+            var attacker = GetTerritory(attackingTerritory.TerritoryGeography);
+            var defender = GetTerritory(attackeeTerritory.TerritoryGeography);
+
+            var battleResult = _battle.Attack(attacker, defender);
+
+            _mustConfirmMoveOfArmiesIntoCapturedTerritory = battleResult.IsDefenderEliminated();
 
             //if (HasPlayerOccupiedTerritory(to))
             //{
             //    _playerShouldReceiveCardWhenTurnEnds = true;
             //    return AttackResult.SucceededAndOccupying;
             //}
-        }
-
-        private bool IsDefenderEliminatedAfterAttack(ITerritoryGeography attackingTerritoryGeography, ITerritoryGeography territoryGeographyToAttack)
-        {
-            var attacker = GetTerritory(attackingTerritoryGeography);
-            var defender = GetTerritory(territoryGeographyToAttack);
-
-            var battleResult = _battle.Attack(attacker, defender);
-
-            return battleResult.IsDefenderEliminated();
         }
 
         public bool CanMoveArmiesIntoCapturedTerritory()
