@@ -15,7 +15,7 @@ namespace RISK.Application.Play
         bool IsCurrentPlayerOccupyingTerritory(ITerritory territory);
         bool CanAttack(ITerritory attackingTerritory, ITerritory defendingTeraritory);
         void Attack(ITerritory attackingTerritory, ITerritory defendingTerritory);
-        bool CanMoveArmiesIntoOccupiedTerritory();
+        bool MustConfirmMoveOfArmiesIntoOccupiedTerritory();
         void MoveArmiesIntoOccupiedTerritory(int numberOfArmies);
         bool CanFortify(ITerritory sourceTerritory, ITerritory destinationTerritory);
         void Fortify(ITerritory sourceTerritory, ITerritory destinationFortify);
@@ -31,7 +31,7 @@ namespace RISK.Application.Play
 
         private bool _playerShouldReceiveCardWhenTurnEnds;
         private readonly IReadOnlyList<IPlayer> _players;
-        private bool _mustConfirmMoveOfArmiesIntoCapturedTerritory;
+        private bool _mustConfirmMoveOfArmiesIntoOccupiedTerritory;
         private readonly IReadOnlyList<ITerritory> _territories;
 
         public Game(IReadOnlyList<IPlayer> players, IReadOnlyList<ITerritory> initialTerritories, IGameRules gameRules, ICardFactory cardFactory, IBattle battle)
@@ -76,7 +76,7 @@ namespace RISK.Application.Play
             ThrowIfTerritoriesDoesNotContain(attackingTerritory);
             ThrowIfTerritoriesDoesNotContain(defendingTerritory);
 
-            if (_mustConfirmMoveOfArmiesIntoCapturedTerritory
+            if (_mustConfirmMoveOfArmiesIntoOccupiedTerritory
                 ||
                 !IsCurrentPlayerOccupyingTerritory(attackingTerritory))
             {
@@ -96,12 +96,9 @@ namespace RISK.Application.Play
                 throw new InvalidOperationException();
             }
 
-            var attacker = GetTerritory(attackingTerritory.Region);
-            var defender = GetTerritory(defendingTerritory.Region);
+            var battleResult = _battle.Attack(attackingTerritory, defendingTerritory);
 
-            var battleResult = _battle.Attack(attacker, defender);
-
-            _mustConfirmMoveOfArmiesIntoCapturedTerritory = battleResult.IsDefenderDefeated();
+            _mustConfirmMoveOfArmiesIntoOccupiedTerritory = battleResult.IsDefenderDefeated();
 
             //if (HasPlayerOccupiedTerritory(to))
             //{
@@ -110,14 +107,14 @@ namespace RISK.Application.Play
             //}
         }
 
-        public bool CanMoveArmiesIntoOccupiedTerritory()
+        public bool MustConfirmMoveOfArmiesIntoOccupiedTerritory()
         {
-            return _mustConfirmMoveOfArmiesIntoCapturedTerritory;
+            return _mustConfirmMoveOfArmiesIntoOccupiedTerritory;
         }
 
         public void MoveArmiesIntoOccupiedTerritory(int numberOfArmies)
         {
-            if (!CanMoveArmiesIntoOccupiedTerritory())
+            if (!MustConfirmMoveOfArmiesIntoOccupiedTerritory())
             {
                 throw new InvalidOperationException();
             }

@@ -19,7 +19,7 @@ namespace RISK.Tests.Application.Extensions
         {
             Action act = () => sut.MoveArmiesIntoOccupiedTerritory(numberOfArmies);
 
-            sut.CanMoveArmiesIntoOccupiedTerritory().Should().BeFalse();
+            sut.MustConfirmMoveOfArmiesIntoOccupiedTerritory().Should().BeFalse();
             act.ShouldThrow<InvalidOperationException>();
         }
 

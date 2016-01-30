@@ -184,7 +184,7 @@ namespace RISK.Tests.Application
                 var sut = Create(_gamePlaySetup);
                 sut.Attack(_playerTerritory, _anotherPlayerTerritory);
 
-                sut.CanMoveArmiesIntoOccupiedTerritory().Should().BeTrue();
+                sut.MustConfirmMoveOfArmiesIntoOccupiedTerritory().Should().BeTrue();
             }
 
             [Fact]
