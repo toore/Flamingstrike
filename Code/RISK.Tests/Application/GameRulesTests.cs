@@ -38,29 +38,33 @@ namespace RISK.Tests.Application
             }
 
             [Fact]
-            public void Has_attackee_candidate()
+            public void Has_attack_candidates()
             {
+                var attackingTerritory = new Territory(_attackingRegion, _currentPlayer, 2);
+                var borderingTerritory = new Territory(_borderingRegion, _otherPlayer, 1);
                 var territories = new[]
                 {
-                    new Territory(_attackingRegion, _currentPlayer, 2),
-                    new Territory(_borderingRegion, _otherPlayer, 1),
+                    attackingTerritory,
+                    borderingTerritory
                 };
 
-                var actual = _sut.GetCandidatesToAttack(_attackingRegion, territories);
+                var actual = _sut.GetAttackCandidates(attackingTerritory, territories);
 
-                actual.Should().BeEquivalentTo(_borderingRegion);
+                actual.Should().BeEquivalentTo(borderingTerritory);
             }
 
             [Fact]
             public void Can_not_attack_if_not_enough_armies()
             {
+                var attackingTerritory = new Territory(_attackingRegion, _currentPlayer, 1);
+                var borderingTerritory = new Territory(_borderingRegion, _otherPlayer, 1);
                 var territories = new[]
                 {
-                    new Territory(_attackingRegion, _currentPlayer, 1),
-                    new Territory(_borderingRegion, _otherPlayer, 1),
+                    attackingTerritory,
+                    borderingTerritory
                 };
 
-                var actual = _sut.GetCandidatesToAttack(_attackingRegion, territories);
+                var actual = _sut.GetAttackCandidates(attackingTerritory, territories);
 
                 actual.Should().BeEmpty();
             }
@@ -68,28 +72,33 @@ namespace RISK.Tests.Application
             [Fact]
             public void Has_attackee_candidates()
             {
+                var attackingTerritory = new Territory(_attackingRegion, _currentPlayer, 2);
+                var borderingTerritory = new Territory(_borderingRegion, _otherPlayer, 1);
+                var anotherBorderingTerritory = new Territory(_anotherBorderingRegion, _otherPlayer, 1);
                 var territories = new[]
                 {
-                    new Territory(_attackingRegion, _currentPlayer, 2),
-                    new Territory(_borderingRegion, _otherPlayer, 1),
-                    new Territory(_anotherBorderingRegion, _otherPlayer, 1)
+                    attackingTerritory,
+                    borderingTerritory,
+                    anotherBorderingTerritory
                 };
 
-                var actual = _sut.GetCandidatesToAttack(_attackingRegion, territories);
+                var actual = _sut.GetAttackCandidates(attackingTerritory, territories);
 
-                actual.Should().BeEquivalentTo(_borderingRegion, _anotherBorderingRegion);
+                actual.Should().BeEquivalentTo(borderingTerritory, anotherBorderingTerritory);
             }
 
             [Fact]
             public void Can_not_attack_already_occupied_territory()
             {
+                var attackingTerritory = new Territory(_attackingRegion, _currentPlayer, 2);
+                var borderingTerritory = new Territory(_borderingRegion, _currentPlayer, 1);
                 var territories = new[]
                 {
-                    new Territory(_attackingRegion, _currentPlayer, 2),
-                    new Territory(_borderingRegion, _currentPlayer, 1)
+                    attackingTerritory,
+                    borderingTerritory
                 };
 
-                var actual = _sut.GetCandidatesToAttack(_attackingRegion, territories);
+                var actual = _sut.GetAttackCandidates(attackingTerritory, territories);
 
                 actual.Should().BeEmpty();
             }
@@ -100,13 +109,15 @@ namespace RISK.Tests.Application
             [Fact]
             public void Can_not_attack()
             {
+                var attackingTerritory = new Territory(_attackingRegion, _currentPlayer, 2);
+                var orphanedTerritory = new Territory(_borderingRegion, _otherPlayer, 1);
                 var territories = new[]
                 {
-                    new Territory(_attackingRegion, _currentPlayer, 2),
-                    new Territory(_borderingRegion, _otherPlayer, 1)
+                    attackingTerritory,
+                    orphanedTerritory
                 };
 
-                var actual = _sut.GetCandidatesToAttack(_attackingRegion, territories);
+                var actual = _sut.GetAttackCandidates(attackingTerritory, territories);
 
                 actual.Should().BeEmpty();
             }

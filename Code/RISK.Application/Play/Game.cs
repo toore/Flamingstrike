@@ -83,8 +83,8 @@ namespace RISK.Application.Play
                 return false;
             }
 
-            var candidates = _gameRules.GetCandidatesToAttack(attackingTerritory.Region, GetTerritories());
-            var canAttack = candidates.Contains(defendingTerritory.Region);
+            var candidates = _gameRules.GetAttackCandidates(attackingTerritory, _territories);
+            var canAttack = candidates.Contains(defendingTerritory);
 
             return canAttack;
         }

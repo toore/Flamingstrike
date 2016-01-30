@@ -1,38 +1,33 @@
 using System.Collections.Generic;
 using System.Linq;
-using RISK.Application.World;
 
 namespace RISK.Application.Play
 {
     public interface IGameRules
     {
-        IEnumerable<IRegion> GetCandidatesToAttack(IRegion attackingRegion, IReadOnlyList<ITerritory> territories);
+        IEnumerable<ITerritory> GetAttackCandidates(ITerritory attacker, IEnumerable<ITerritory> territories);
     }
 
     public class GameRules : IGameRules
     {
-        public IEnumerable<IRegion> GetCandidatesToAttack(IRegion attackingRegion, IReadOnlyList<ITerritory> territories)
+        public IEnumerable<ITerritory> GetAttackCandidates(ITerritory attacker, IEnumerable<ITerritory> territories)
         {
-            var attacker = territories
-                .Single(x => x.Region == attackingRegion);
-
             var attackCandidates = territories
-                .Where(attackee => CanAttack(attacker, attackee))
-                .Select(x => x.Region)
+                .Where(defender => CanAttack(attacker, defender))
                 .ToList();
 
             return attackCandidates;
         }
 
-        private static bool CanAttack(ITerritory attacker, ITerritory attackee)
+        private static bool CanAttack(ITerritory attacker, ITerritory defender)
         {
-            var hasBorder = attacker.Region.HasBorder(attackee.Region);
-            var attackerAndAttackeeIsDifferentPlayers = attacker.Player != attackee.Player;
+            var hasBorder = attacker.Region.HasBorder(defender.Region);
+            var attackerAndDefenderIsDifferentPlayers = attacker.Player != defender.Player;
             var hasEnoughArmiesToAttack = attacker.GetNumberOfArmiesAvailableForAttack() > 0;
 
             var canAttack = hasBorder
                             &&
-                            attackerAndAttackeeIsDifferentPlayers
+                            attackerAndDefenderIsDifferentPlayers
                             &&
                             hasEnoughArmiesToAttack;
 
