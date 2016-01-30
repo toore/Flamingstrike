@@ -26,8 +26,8 @@ namespace RISK.Application.Play.Attacking
             var dices = _dicesRoller.Roll(attackingArmies, defendingArmies);
             var battleOutcome = _battleOutcomeCalculator.Battle(dices.AttackValues, dices.DefenceValues);
 
-            var isDefenderEliminated = IsDefenderDefeated(defendingTerritory, battleOutcome);
-            if (isDefenderEliminated)
+            var isDefenderDefeated = IsDefenderDefeated(defendingTerritory, battleOutcome);
+            if (isDefenderDefeated)
             {
                 return AttackerOccupiesNewTerritory(attackingArmies, attackingTerritory, defendingTerritory);
             }
