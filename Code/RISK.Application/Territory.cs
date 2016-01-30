@@ -5,7 +5,7 @@ namespace RISK.Application
 {
     public interface ITerritory
     {
-        ITerritoryGeography TerritoryGeography { get; }
+        IRegion Region { get; }
         IPlayer Player { get; }
         int Armies { get; }
 
@@ -15,14 +15,14 @@ namespace RISK.Application
 
     public class Territory : ITerritory
     {
-        public Territory(ITerritoryGeography territoryGeography, IPlayer player, int armies)
+        public Territory(IRegion region, IPlayer player, int armies)
         {
-            TerritoryGeography = territoryGeography;
+            Region = region;
             Player = player;
             Armies = armies;
         }
 
-        public ITerritoryGeography TerritoryGeography { get; }
+        public IRegion Region { get; }
         public IPlayer Player { get; }
         public int Armies { get; set; }
 

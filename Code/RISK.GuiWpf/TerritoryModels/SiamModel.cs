@@ -5,9 +5,9 @@ using RISK.Application.World;
 
 namespace GuiWpf.TerritoryModels
 {
-    public class SiamModel : TerritoryModelBase
+    public class SiamModel : RegionModelBase
     {
-        public SiamModel(ITerritoryGeography territoryGeography) : base(territoryGeography) {}
+        public SiamModel(IRegion region) : base(region) {}
 
         public override string Name
         {

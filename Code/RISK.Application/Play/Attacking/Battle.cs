@@ -26,7 +26,7 @@ namespace RISK.Application.Play.Attacking
             var dices = _dicesRoller.Roll(attackingArmies, defendingArmies);
             var battleOutcome = _battleOutcomeCalculator.Battle(dices.AttackValues, dices.DefenceValues);
 
-            var isDefenderEliminated = IsDefenderEliminated(defendingTerritory.Armies, battleOutcome);
+            var isDefenderEliminated = IsDefenderDefeated(defendingTerritory, battleOutcome);
             if (isDefenderEliminated)
             {
                 return AttackerOccupiesNewTerritory(attackingArmies, attackingTerritory, defendingTerritory);
@@ -38,10 +38,10 @@ namespace RISK.Application.Play.Attacking
         private static IBattleResult AttackerOccupiesNewTerritory(int attackingArmies, ITerritory attackingTerritory, ITerritory territoryToBeOccupied)
         {
             var attackingArmiesLeft = attackingTerritory.Armies - attackingArmies;
-            var updatedAttackingTerritory = new Territory(attackingTerritory.TerritoryGeography, attackingTerritory.Player, attackingArmiesLeft);
+            var updatedAttackingTerritory = new Territory(attackingTerritory.Region, attackingTerritory.Player, attackingArmiesLeft);
 
             var occupyingPlayer = attackingTerritory.Player;
-            var occupiedTerritory = new Territory(territoryToBeOccupied.TerritoryGeography, occupyingPlayer, attackingArmies);
+            var occupiedTerritory = new Territory(territoryToBeOccupied.Region, occupyingPlayer, attackingArmies);
 
             return new BattleResult(updatedAttackingTerritory, occupiedTerritory);
         }
@@ -49,17 +49,17 @@ namespace RISK.Application.Play.Attacking
         private static IBattleResult UpdateArmyCount(BattleOutcome battleOutcome, ITerritory attackingTerritory, ITerritory defendingTerritory)
         {
             var updatedAttackingArmies = attackingTerritory.Armies - battleOutcome.AttackerLosses;
-            var updatedAttackingTerritory = new Territory(attackingTerritory.TerritoryGeography, attackingTerritory.Player, updatedAttackingArmies);
+            var updatedAttackingTerritory = new Territory(attackingTerritory.Region, attackingTerritory.Player, updatedAttackingArmies);
 
             var updatedAttackedArmies = defendingTerritory.Armies - battleOutcome.DefenderLosses;
-            var updatedAttackedTerritory = new Territory(defendingTerritory.TerritoryGeography, defendingTerritory.Player, updatedAttackedArmies);
+            var updatedAttackedTerritory = new Territory(defendingTerritory.Region, defendingTerritory.Player, updatedAttackedArmies);
 
             return new BattleResult(updatedAttackingTerritory, updatedAttackedTerritory);
         }
 
-        private static bool IsDefenderEliminated(int defendingArmies, BattleOutcome battleOutcome)
+        private static bool IsDefenderDefeated(ITerritory defendingTerritory, BattleOutcome battleOutcome)
         {
-            var defendingArmiesLeftAfterAttack = defendingArmies - battleOutcome.DefenderLosses;
+            var defendingArmiesLeftAfterAttack = defendingTerritory.Armies - battleOutcome.DefenderLosses;
             var isAttackedTerritoryDefeated = defendingArmiesLeftAfterAttack == 0;
 
             return isAttackedTerritoryDefeated;

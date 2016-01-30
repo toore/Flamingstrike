@@ -73,7 +73,7 @@ namespace RISK.Tests.GuiWpf
         public void Activate_initializes_WorldMapViewModel()
         {
             var sut = Initialize(activate: false);
-            _worldMapViewModelFactory.Create(_game.GetTerritories(), sut.OnTerritoryClick, Arg.Is<IEnumerable<ITerritoryGeography>>(x => x.IsEmpty()))
+            _worldMapViewModelFactory.Create(_game.GetTerritories(), sut.OnTerritoryClick, Arg.Is<IEnumerable<IRegion>>(x => x.IsEmpty()))
                 .Returns(_worldMapViewModel);
 
             sut.Activate();
@@ -148,7 +148,7 @@ namespace RISK.Tests.GuiWpf
         {
             var stateController = Substitute.For<IStateController>();
             _stateControllerFactory.Create(_game).Returns(stateController);
-            var territoryId = Substitute.For<ITerritoryGeography>();
+            var territoryId = Substitute.For<IRegion>();
             var sut = Initialize();
 
             sut.OnTerritoryClick(territoryId);

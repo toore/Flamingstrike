@@ -74,7 +74,7 @@
     <Compile Include="Extensions\EnumerableExtensions.cs" />
     <Compile Include="Services\GuiThreadDispatcher.cs" />
     <Compile Include="Services\ResourceManager.cs" />
-    <Compile Include="TerritoryModels\TerritoryModelBase.cs" />
+    <Compile Include="TerritoryModels\RegionModelBase.cs" />
     <Compile Include="ViewModels\ConfirmViewModel.cs" />
     <Compile Include="ViewModels\ConfirmViewModelFactory.cs" />
     <Compile Include="ViewModels\Gameplay\GameSetupView.xaml.cs">
@@ -183,7 +183,7 @@
     <Compile Include="TerritoryModels\NewGuineaModel.cs" />
     <Compile Include="TerritoryModels\NorthAfricaModel.cs" />
     <Compile Include="TerritoryModels\NorthernEuropeModel.cs" />
-    <Compile Include="TerritoryModels\NorthwestTerritoryModel.cs" />
+    <Compile Include="TerritoryModels\NorthwestRegionModel.cs" />
     <Compile Include="TerritoryModels\OntarioModel.cs" />
     <Compile Include="TerritoryModels\PeruModel.cs" />
     <Compile Include="TerritoryModels\QuebecModel.cs" />
@@ -198,7 +198,7 @@
       <DependentUpon>TerritoryButtonUserControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\Gameplay\Map\TerritoryViewModel.cs" />
-    <Compile Include="TerritoryModels\ITerritoryModel.cs" />
+    <Compile Include="TerritoryModels\IRegionModel.cs" />
     <Compile Include="ViewModels\Gameplay\Map\WorldMapViewModelFactory.cs" />
     <Compile Include="ViewModels\Gameplay\Map\TitleViewModel.cs" />
     <Compile Include="TerritoryModels\UkraineModel.cs" />

@@ -10,22 +10,22 @@ namespace RISK.Tests.GuiWpf.Interaction
     public class AttackStateTests : InteractionStateTestsBase
     {
         private readonly ITerritory _selectedTerritory;
-        private readonly ITerritoryGeography _selectedTerritoryGeography;
+        private readonly IRegion _selectedRegion;
         private readonly ITerritory _attackedTerritory;
-        private readonly ITerritoryGeography _attackeeTerritoryGeography;
+        private readonly IRegion _attackeeRegion;
 
         public AttackStateTests()
         {
             _selectedTerritory = Substitute.For<ITerritory>();
-            _selectedTerritoryGeography = _selectedTerritory.TerritoryGeography;
-            _game.GetTerritory(_selectedTerritoryGeography).Returns(_selectedTerritory);
+            _selectedRegion = _selectedTerritory.Region;
+            _game.GetTerritory(_selectedRegion).Returns(_selectedTerritory);
 
             _sut.CurrentState = new AttackState(_interactionStateFactory);
-            _sut.SelectedTerritoryGeography = _selectedTerritoryGeography;
+            _sut.SelectedRegion = _selectedRegion;
 
             _attackedTerritory = Substitute.For<ITerritory>();
-            _attackeeTerritoryGeography = Substitute.For<ITerritoryGeography>();
-            _game.GetTerritory(_attackeeTerritoryGeography).Returns(_attackedTerritory);
+            _attackeeRegion = Substitute.For<IRegion>();
+            _game.GetTerritory(_attackeeRegion).Returns(_attackedTerritory);
         }
 
         [Fact]
@@ -33,7 +33,7 @@ namespace RISK.Tests.GuiWpf.Interaction
         {
             _game.CanAttack(_selectedTerritory, _attackedTerritory).Returns(true);
 
-            _sut.AssertCanClickAndOnClickCanBeInvoked(_attackeeTerritoryGeography);
+            _sut.AssertCanClickAndOnClickCanBeInvoked(_attackeeRegion);
         }
 
         [Fact]
@@ -41,7 +41,7 @@ namespace RISK.Tests.GuiWpf.Interaction
         {
             _game.CanAttack(_selectedTerritory, _attackedTerritory).Returns(true);
 
-            _sut.OnClick(_attackeeTerritoryGeography);
+            _sut.OnClick(_attackeeRegion);
 
             _game.Received().Attack(_selectedTerritory, _attackedTerritory);
         }
@@ -49,13 +49,13 @@ namespace RISK.Tests.GuiWpf.Interaction
         [Fact]
         public void Can_not_click_on_remote_territory()
         {
-            _sut.AssertCanNotClickAndOnClickThrowsWhenInvoked(_attackeeTerritoryGeography);
+            _sut.AssertCanNotClickAndOnClickThrowsWhenInvoked(_attackeeRegion);
         }
 
         [Fact]
         public void Can_click_on_selected_territory()
         {
-            _sut.AssertCanClickAndOnClickCanBeInvoked(_selectedTerritoryGeography);
+            _sut.AssertCanClickAndOnClickCanBeInvoked(_selectedRegion);
         }
 
         [Fact]
@@ -64,18 +64,18 @@ namespace RISK.Tests.GuiWpf.Interaction
             var selectState = Substitute.For<IInteractionState>();
             _interactionStateFactory.CreateSelectState().Returns(selectState);
 
-            _sut.OnClick(_selectedTerritoryGeography);
+            _sut.OnClick(_selectedRegion);
 
             _sut.CurrentState.Should().Be(selectState);
-            _sut.SelectedTerritoryGeography.Should().BeNull();
+            _sut.SelectedRegion.Should().BeNull();
         }
 
         [Fact]
         public void OnClick_resets_selected_territory_before_entering_select_state()
         {
-            _sut.OnClick(_selectedTerritoryGeography);
+            _sut.OnClick(_selectedRegion);
 
-            _sut.SelectedTerritoryGeography.Should().BeNull();
+            _sut.SelectedRegion.Should().BeNull();
         }
     }
 }

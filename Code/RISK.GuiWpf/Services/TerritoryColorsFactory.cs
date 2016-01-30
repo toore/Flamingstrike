@@ -6,23 +6,23 @@ namespace GuiWpf.Services
 {
     public interface ITerritoryColorsFactory
     {
-        ITerritoryColors Create(ITerritoryGeography territoryGeography);
+        ITerritoryColors Create(IRegion region);
     }
 
     public class TerritoryColorsFactory : ITerritoryColorsFactory
     {
-        private Dictionary<ITerritoryGeography, Func<GuiWpf.Services.ITerritoryColors>> _colors;
+        private Dictionary<IRegion, Func<GuiWpf.Services.ITerritoryColors>> _colors;
 
         public TerritoryColorsFactory(IColorService colorService, IWorldMap worldMap)
         {
-            _colors = new Dictionary<ITerritoryGeography, Func<ITerritoryColors>>
+            _colors = new Dictionary<IRegion, Func<ITerritoryColors>>
             {
                 { worldMap.Alaska, () => colorService.NorthAmericaColors },
                 { worldMap.Alberta, () => colorService.NorthAmericaColors },
                 { worldMap.CentralAmerica, () => colorService.NorthAmericaColors },
                 { worldMap.EasternUnitedStates, () => colorService.NorthAmericaColors },
                 { worldMap.Greenland, () => colorService.NorthAmericaColors },
-                { worldMap.NorthwestTerritoryGeography, () => colorService.NorthAmericaColors },
+                { worldMap.NorthwestRegion, () => colorService.NorthAmericaColors },
                 { worldMap.Ontario, () => colorService.NorthAmericaColors },
                 { worldMap.Quebec, () => colorService.NorthAmericaColors },
                 { worldMap.WesternUnitedStates, () => colorService.NorthAmericaColors },
@@ -62,14 +62,14 @@ namespace GuiWpf.Services
             };
         }
 
-        public ITerritoryColors Create(ITerritoryGeography territoryGeography)
+        public ITerritoryColors Create(IRegion region)
         {
             //if (territory.IsOccupied())
             //{
             //    return _colorService.GetPlayerTerritoryColors(territory.Occupant);
             //}
 
-            return _colors[territoryGeography]();
+            return _colors[region]();
         }
     }
 }

@@ -5,19 +5,19 @@ namespace GuiWpf.TerritoryModels
 {
     public interface IWorldMapModelFactory
     {
-        IEnumerable<ITerritoryModel> Create(IWorldMap worldMap);
+        IEnumerable<IRegionModel> Create(IWorldMap worldMap);
     }
 
     public class WorldMapModelFactory : IWorldMapModelFactory
     {
-        public IEnumerable<ITerritoryModel> Create(IWorldMap worldMap)
+        public IEnumerable<IRegionModel> Create(IWorldMap worldMap)
         {
             yield return new AlaskaModel(worldMap.Alaska);
             yield return new AlbertaModel(worldMap.Alberta);
             yield return new CentralAmericaModel(worldMap.CentralAmerica);
             yield return new EasternUnitedStatesModel(worldMap.EasternUnitedStates);
             yield return new GreenlandModel(worldMap.Greenland);
-            yield return new NorthwestTerritoryModel(worldMap.NorthwestTerritoryGeography);
+            yield return new NorthwestRegionModel(worldMap.NorthwestRegion);
             yield return new OntarioModel(worldMap.Ontario);
             yield return new QuebecModel(worldMap.Quebec);
             yield return new WesternUnitedStatesModel(worldMap.WesternUnitedStates);

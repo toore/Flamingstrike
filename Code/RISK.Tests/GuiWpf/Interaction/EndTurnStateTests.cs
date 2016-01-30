@@ -15,7 +15,7 @@ namespace RISK.Tests.GuiWpf.Interaction
         [Fact]
         public void Can_not_click_any_territory()
         {
-            _sut.AssertCanNotClickAndOnClickThrowsWhenInvoked(Substitute.For<ITerritoryGeography>());
+            _sut.AssertCanNotClickAndOnClickThrowsWhenInvoked(Substitute.For<IRegion>());
         }
     }
 }

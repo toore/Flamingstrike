@@ -3,9 +3,9 @@ using RISK.Application.World;
 
 namespace GuiWpf.TerritoryModels
 {
-    public interface ITerritoryModel
+    public interface IRegionModel
     {
-        ITerritoryGeography TerritoryGeography { get; }
+        IRegion Region { get; }
 
         string Name { get; }
         Point NamePosition { get; }

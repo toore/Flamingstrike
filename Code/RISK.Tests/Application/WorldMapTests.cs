@@ -138,7 +138,7 @@ namespace RISK.Tests.Application
         [Fact]
         public void GetAll_contains_all()
         {
-            IEnumerable<ITerritoryGeography> expected = new[]
+            IEnumerable<IRegion> expected = new[]
             {
                 Alaska,
                 Alberta,
@@ -187,7 +187,7 @@ namespace RISK.Tests.Application
             GetAll().Should().BeEquivalentTo(expected);
         }
 
-        private void AssertTerritoryBorders(ITerritoryGeography actual, params ITerritoryGeography[] expectedItems)
+        private void AssertTerritoryBorders(IRegion actual, params IRegion[] expectedItems)
         {
             foreach (var expected in expectedItems)
             {
@@ -196,59 +196,59 @@ namespace RISK.Tests.Application
             }
         }
 
-        private void AssertTerritoriesInContinent(Continent continent, params ITerritoryGeography[] expected)
+        private void AssertTerritoriesInContinent(Continent continent, params IRegion[] expected)
         {
             var actual = GetAll().Where(x => x.Continent == continent).ToList();
 
             actual.Should().BeEquivalentTo(expected.AsEnumerable());
         }
 
-        private IEnumerable<ITerritoryGeography> GetAll()
+        private IEnumerable<IRegion> GetAll()
         {
             return _sut.GetAll();
         }
 
-        private ITerritoryGeography Alaska => _sut.Alaska;
-        private ITerritoryGeography Alberta => _sut.Alberta;
-        private ITerritoryGeography NewGuinea => _sut.NewGuinea;
-        private ITerritoryGeography Indonesia => _sut.Indonesia;
-        private ITerritoryGeography EasternAustralia => _sut.EasternAustralia;
-        private ITerritoryGeography Yakutsk => _sut.Yakutsk;
-        private ITerritoryGeography Ural => _sut.Ural;
-        private ITerritoryGeography Siberia => _sut.Siberia;
-        private ITerritoryGeography Siam => _sut.Siam;
-        private ITerritoryGeography Mongolia => _sut.Mongolia;
-        private ITerritoryGeography MiddleEast => _sut.MiddleEast;
-        private ITerritoryGeography Kamchatka => _sut.Kamchatka;
-        private ITerritoryGeography Japan => _sut.Japan;
-        private ITerritoryGeography Irkutsk => _sut.Irkutsk;
-        private ITerritoryGeography India => _sut.India;
-        private ITerritoryGeography China => _sut.China;
-        private ITerritoryGeography Afghanistan => _sut.Afghanistan;
-        private ITerritoryGeography SouthAfrica => _sut.SouthAfrica;
-        private ITerritoryGeography NorthAfrica => _sut.NorthAfrica;
-        private ITerritoryGeography Madagascar => _sut.Madagascar;
-        private ITerritoryGeography Egypt => _sut.Egypt;
-        private ITerritoryGeography EastAfrica => _sut.EastAfrica;
-        private ITerritoryGeography Congo => _sut.Congo;
-        private ITerritoryGeography WesternEurope => _sut.WesternEurope;
-        private ITerritoryGeography Ukraine => _sut.Ukraine;
-        private ITerritoryGeography SouthernEurope => _sut.SouthernEurope;
-        private ITerritoryGeography Scandinavia => _sut.Scandinavia;
-        private ITerritoryGeography NorthernEurope => _sut.NorthernEurope;
-        private ITerritoryGeography Iceland => _sut.Iceland;
-        private ITerritoryGeography GreatBritain => _sut.GreatBritain;
-        private ITerritoryGeography Venezuela => _sut.Venezuela;
-        private ITerritoryGeography Peru => _sut.Peru;
-        private ITerritoryGeography Brazil => _sut.Brazil;
-        private ITerritoryGeography Argentina => _sut.Argentina;
-        private ITerritoryGeography WesternUnitedStates => _sut.WesternUnitedStates;
-        private ITerritoryGeography Quebec => _sut.Quebec;
-        private ITerritoryGeography Ontario => _sut.Ontario;
-        private ITerritoryGeography Northwest => _sut.NorthwestTerritoryGeography;
-        private ITerritoryGeography Greenland => _sut.Greenland;
-        private ITerritoryGeography EasternUnitedStates => _sut.EasternUnitedStates;
-        private ITerritoryGeography CentralAmerica => _sut.CentralAmerica;
-        private ITerritoryGeography WesternAustralia => _sut.WesternAustralia;
+        private IRegion Alaska => _sut.Alaska;
+        private IRegion Alberta => _sut.Alberta;
+        private IRegion NewGuinea => _sut.NewGuinea;
+        private IRegion Indonesia => _sut.Indonesia;
+        private IRegion EasternAustralia => _sut.EasternAustralia;
+        private IRegion Yakutsk => _sut.Yakutsk;
+        private IRegion Ural => _sut.Ural;
+        private IRegion Siberia => _sut.Siberia;
+        private IRegion Siam => _sut.Siam;
+        private IRegion Mongolia => _sut.Mongolia;
+        private IRegion MiddleEast => _sut.MiddleEast;
+        private IRegion Kamchatka => _sut.Kamchatka;
+        private IRegion Japan => _sut.Japan;
+        private IRegion Irkutsk => _sut.Irkutsk;
+        private IRegion India => _sut.India;
+        private IRegion China => _sut.China;
+        private IRegion Afghanistan => _sut.Afghanistan;
+        private IRegion SouthAfrica => _sut.SouthAfrica;
+        private IRegion NorthAfrica => _sut.NorthAfrica;
+        private IRegion Madagascar => _sut.Madagascar;
+        private IRegion Egypt => _sut.Egypt;
+        private IRegion EastAfrica => _sut.EastAfrica;
+        private IRegion Congo => _sut.Congo;
+        private IRegion WesternEurope => _sut.WesternEurope;
+        private IRegion Ukraine => _sut.Ukraine;
+        private IRegion SouthernEurope => _sut.SouthernEurope;
+        private IRegion Scandinavia => _sut.Scandinavia;
+        private IRegion NorthernEurope => _sut.NorthernEurope;
+        private IRegion Iceland => _sut.Iceland;
+        private IRegion GreatBritain => _sut.GreatBritain;
+        private IRegion Venezuela => _sut.Venezuela;
+        private IRegion Peru => _sut.Peru;
+        private IRegion Brazil => _sut.Brazil;
+        private IRegion Argentina => _sut.Argentina;
+        private IRegion WesternUnitedStates => _sut.WesternUnitedStates;
+        private IRegion Quebec => _sut.Quebec;
+        private IRegion Ontario => _sut.Ontario;
+        private IRegion Northwest => _sut.NorthwestRegion;
+        private IRegion Greenland => _sut.Greenland;
+        private IRegion EasternUnitedStates => _sut.EasternUnitedStates;
+        private IRegion CentralAmerica => _sut.CentralAmerica;
+        private IRegion WesternAustralia => _sut.WesternAustralia;
     }
 }

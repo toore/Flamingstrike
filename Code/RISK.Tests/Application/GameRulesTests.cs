@@ -11,30 +11,30 @@ namespace RISK.Tests.Application
     {
         private readonly IPlayer _currentPlayer;
         private readonly IPlayer _otherPlayer;
-        private readonly ITerritoryGeography _attackingTerritoryGeography;
-        private readonly ITerritoryGeography _attackeeTerritoryGeography;
+        private readonly IRegion _attackingRegion;
+        private readonly IRegion _attackeeRegion;
         private readonly GameRules _sut;
 
         protected GameRulesTests()
         {
             _currentPlayer = Substitute.For<IPlayer>();
             _otherPlayer = Substitute.For<IPlayer>();
-            _attackingTerritoryGeography = Substitute.For<ITerritoryGeography>();
-            _attackeeTerritoryGeography = Substitute.For<ITerritoryGeography>();
+            _attackingRegion = Substitute.For<IRegion>();
+            _attackeeRegion = Substitute.For<IRegion>();
 
             _sut = new GameRules();
         }
 
         public class GameRulesBorderingTerritoriesTests : GameRulesTests
         {
-            private readonly ITerritoryGeography _secondAttackeeTerritoryGeography;
+            private readonly IRegion _secondAttackeeRegion;
 
             public GameRulesBorderingTerritoriesTests()
             {
-                _secondAttackeeTerritoryGeography = Substitute.For<ITerritoryGeography>();
+                _secondAttackeeRegion = Substitute.For<IRegion>();
 
-                _attackingTerritoryGeography.HasBorder(_attackeeTerritoryGeography).Returns(true);
-                _attackingTerritoryGeography.HasBorder(_secondAttackeeTerritoryGeography).Returns(true);
+                _attackingRegion.HasBorder(_attackeeRegion).Returns(true);
+                _attackingRegion.HasBorder(_secondAttackeeRegion).Returns(true);
             }
 
             [Fact]
@@ -42,13 +42,13 @@ namespace RISK.Tests.Application
             {
                 var territories = new[]
                 {
-                    new Territory(_attackingTerritoryGeography, _currentPlayer, 2),
-                    new Territory(_attackeeTerritoryGeography, _otherPlayer, 1),
+                    new Territory(_attackingRegion, _currentPlayer, 2),
+                    new Territory(_attackeeRegion, _otherPlayer, 1),
                 };
 
-                var actual = _sut.GetAttackeeCandidates(_attackingTerritoryGeography, territories);
+                var actual = _sut.GetAttackeeCandidates(_attackingRegion, territories);
 
-                actual.Should().BeEquivalentTo(_attackeeTerritoryGeography);
+                actual.Should().BeEquivalentTo(_attackeeRegion);
             }
 
             [Fact]
@@ -56,11 +56,11 @@ namespace RISK.Tests.Application
             {
                 var gameboardTerritories = new[]
                 {
-                    new Territory(_attackingTerritoryGeography, _currentPlayer, 1),
-                    new Territory(_attackeeTerritoryGeography, _otherPlayer, 1),
+                    new Territory(_attackingRegion, _currentPlayer, 1),
+                    new Territory(_attackeeRegion, _otherPlayer, 1),
                 };
 
-                var actual = _sut.GetAttackeeCandidates(_attackingTerritoryGeography, gameboardTerritories);
+                var actual = _sut.GetAttackeeCandidates(_attackingRegion, gameboardTerritories);
 
                 actual.Should().BeEmpty();
             }
@@ -70,14 +70,14 @@ namespace RISK.Tests.Application
             {
                 var gameboardTerritories = new[]
                 {
-                    new Territory(_attackingTerritoryGeography, _currentPlayer, 2),
-                    new Territory(_attackeeTerritoryGeography, _otherPlayer, 1),
-                    new Territory(_secondAttackeeTerritoryGeography, _otherPlayer, 1)
+                    new Territory(_attackingRegion, _currentPlayer, 2),
+                    new Territory(_attackeeRegion, _otherPlayer, 1),
+                    new Territory(_secondAttackeeRegion, _otherPlayer, 1)
                 };
 
-                var actual = _sut.GetAttackeeCandidates(_attackingTerritoryGeography, gameboardTerritories);
+                var actual = _sut.GetAttackeeCandidates(_attackingRegion, gameboardTerritories);
 
-                actual.Should().BeEquivalentTo(_attackeeTerritoryGeography, _secondAttackeeTerritoryGeography);
+                actual.Should().BeEquivalentTo(_attackeeRegion, _secondAttackeeRegion);
             }
 
             [Fact]
@@ -85,11 +85,11 @@ namespace RISK.Tests.Application
             {
                 var gameboardTerritories = new[]
                 {
-                    new Territory(_attackingTerritoryGeography, _currentPlayer, 2),
-                    new Territory(_attackeeTerritoryGeography, _currentPlayer, 1)
+                    new Territory(_attackingRegion, _currentPlayer, 2),
+                    new Territory(_attackeeRegion, _currentPlayer, 1)
                 };
 
-                var actual = _sut.GetAttackeeCandidates(_attackingTerritoryGeography, gameboardTerritories);
+                var actual = _sut.GetAttackeeCandidates(_attackingRegion, gameboardTerritories);
 
                 actual.Should().BeEmpty();
             }
@@ -102,11 +102,11 @@ namespace RISK.Tests.Application
             {
                 var gameboardTerritories = new[]
                 {
-                    new Territory(_attackingTerritoryGeography, _currentPlayer, 2),
-                    new Territory(_attackeeTerritoryGeography, _otherPlayer, 1)
+                    new Territory(_attackingRegion, _currentPlayer, 2),
+                    new Territory(_attackeeRegion, _otherPlayer, 1)
                 };
 
-                var actual = _sut.GetAttackeeCandidates(_attackingTerritoryGeography, gameboardTerritories);
+                var actual = _sut.GetAttackeeCandidates(_attackingRegion, gameboardTerritories);
 
                 actual.Should().BeEmpty();
             }

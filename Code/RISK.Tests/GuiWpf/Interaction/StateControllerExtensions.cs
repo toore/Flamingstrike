@@ -7,19 +7,19 @@ namespace RISK.Tests.GuiWpf.Interaction
 {
     public static class StateControllerExtensions
     {
-        public static void AssertCanClickAndOnClickCanBeInvoked(this IStateController stateController, ITerritoryGeography territoryGeography)
+        public static void AssertCanClickAndOnClickCanBeInvoked(this IStateController stateController, IRegion region)
         {
-            stateController.CanClick(territoryGeography).Should().BeTrue();
+            stateController.CanClick(region).Should().BeTrue();
 
-            Action act = () => stateController.OnClick(territoryGeography);
+            Action act = () => stateController.OnClick(region);
             act.ShouldNotThrow();
         }
 
-        public static void AssertCanNotClickAndOnClickThrowsWhenInvoked(this IStateController stateController, ITerritoryGeography territoryGeography)
+        public static void AssertCanNotClickAndOnClickThrowsWhenInvoked(this IStateController stateController, IRegion region)
         {
-            stateController.CanClick(territoryGeography).Should().BeFalse();
+            stateController.CanClick(region).Should().BeFalse();
 
-            Action act = () => stateController.OnClick(territoryGeography);
+            Action act = () => stateController.OnClick(region);
             act.ShouldThrow<InvalidOperationException>();
         }
     }

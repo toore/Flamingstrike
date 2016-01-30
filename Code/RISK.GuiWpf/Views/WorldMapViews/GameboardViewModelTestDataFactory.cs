@@ -43,7 +43,7 @@ namespace GuiWpf.Views.WorldMapViews
             return null;
         }
 
-        public ITerritoryGeography ProcessRequest(ITerritoryRequestParameter territoryRequestParameter)
+        public IRegion ProcessRequest(ITerritoryRequestParameter territoryRequestParameter)
         {
             return territoryRequestParameter.EnabledTerritories.First();
         }

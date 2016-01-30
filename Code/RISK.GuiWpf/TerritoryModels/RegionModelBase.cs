@@ -3,14 +3,14 @@ using RISK.Application.World;
 
 namespace GuiWpf.TerritoryModels
 {
-    public abstract class TerritoryModelBase : ITerritoryModel
+    public abstract class RegionModelBase : IRegionModel
     {
-        protected TerritoryModelBase(ITerritoryGeography territoryGeography)
+        protected RegionModelBase(IRegion region)
         {
-            TerritoryGeography = territoryGeography;
+            Region = region;
         }
 
-        public ITerritoryGeography TerritoryGeography { get; }
+        public IRegion Region { get; }
 
         public abstract string Name { get; }
         public abstract Point NamePosition { get; }

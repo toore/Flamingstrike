@@ -5,9 +5,9 @@ using RISK.Application.World;
 
 namespace GuiWpf.TerritoryModels
 {
-    public class UralModel : TerritoryModelBase
+    public class UralModel : RegionModelBase
     {
-        public UralModel(ITerritoryGeography territoryGeography) : base(territoryGeography) {}
+        public UralModel(IRegion region) : base(region) {}
 
         public override string Name
         {

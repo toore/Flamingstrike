@@ -4,9 +4,9 @@ using RISK.Application.World;
 
 namespace GuiWpf.TerritoryModels
 {
-    public class AfghanistanModel : TerritoryModelBase
+    public class AfghanistanModel : RegionModelBase
     {
-        public AfghanistanModel(ITerritoryGeography territoryGeography) : base(territoryGeography) {}
+        public AfghanistanModel(IRegion region) : base(region) {}
 
         public override string Name => Resources.AFGHANISTAN;
         public override Point NamePosition => new Point(830, 170);

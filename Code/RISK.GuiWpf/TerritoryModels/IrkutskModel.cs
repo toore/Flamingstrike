@@ -5,9 +5,9 @@ using RISK.Application.World;
 
 namespace GuiWpf.TerritoryModels
 {
-    public class IrkutskModel : TerritoryModelBase
+    public class IrkutskModel : RegionModelBase
     {
-        public IrkutskModel(ITerritoryGeography territoryGeography) : base(territoryGeography) {}
+        public IrkutskModel(IRegion region) : base(region) {}
 
         public override string Name
         {

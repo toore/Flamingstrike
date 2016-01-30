@@ -5,9 +5,9 @@ using RISK.Application.World;
 
 namespace GuiWpf.TerritoryModels
 {
-    public class WesternAustraliaModel : TerritoryModelBase
+    public class WesternAustraliaModel : RegionModelBase
     {
-        public WesternAustraliaModel(ITerritoryGeography territoryGeography) : base(territoryGeography) {}
+        public WesternAustraliaModel(IRegion region) : base(region) {}
 
         public override string Name
         {

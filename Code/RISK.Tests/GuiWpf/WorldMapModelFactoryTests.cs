@@ -25,13 +25,13 @@ namespace RISK.Tests.GuiWpf
         {
             var territoryModels = Create().ToList();
 
-            territoryModels.Select(x => x.TerritoryGeography).Distinct().Should().HaveCount(42);
+            territoryModels.Select(x => x.Region).Distinct().Should().HaveCount(42);
             territoryModels.Select(x => x.Name).Distinct().Should().HaveCount(42);
             territoryModels.Select(x => x.NamePosition).Distinct().Should().HaveCount(42);
             territoryModels.Select(x => x.Path).Distinct().Should().HaveCount(42);
         }
 
-        private IEnumerable<ITerritoryModel> Create()
+        private IEnumerable<IRegionModel> Create()
         {
             var worldMap = new WorldMap();
             var sut = new WorldMapModelFactory();

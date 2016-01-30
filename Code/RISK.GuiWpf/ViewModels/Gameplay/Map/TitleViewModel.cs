@@ -6,16 +6,16 @@ namespace GuiWpf.ViewModels.Gameplay.Map
 {
     public class TitleViewModel : ViewModelBase, IWorldMapItemViewModel
     {
-        private readonly ITerritoryModel _territoryModel;
+        private readonly IRegionModel _regionModel;
 
-        public TitleViewModel(ITerritoryModel territoryModel)
+        public TitleViewModel(IRegionModel regionModel)
         {
-            _territoryModel = territoryModel;
+            _regionModel = regionModel;
         }
 
-        public string Name => _territoryModel.Name;
-        public Point Position => _territoryModel.NamePosition;
-        public ITerritoryGeography TerritoryGeography => _territoryModel.TerritoryGeography;
+        public string Name => _regionModel.Name;
+        public Point Position => _regionModel.NamePosition;
+        public IRegion Region => _regionModel.Region;
 
         private int _armies;
         public int Armies

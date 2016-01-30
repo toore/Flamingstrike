@@ -4,9 +4,9 @@ using RISK.Application.World;
 
 namespace GuiWpf.TerritoryModels
 {
-    public class AlaskaModel : TerritoryModelBase
+    public class AlaskaModel : RegionModelBase
     {
-        public AlaskaModel(ITerritoryGeography alaska)
+        public AlaskaModel(IRegion alaska)
             : base(alaska) {}
 
         public override string Name => Resources.ALASKA;

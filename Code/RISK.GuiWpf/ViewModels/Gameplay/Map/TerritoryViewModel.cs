@@ -7,17 +7,17 @@ namespace GuiWpf.ViewModels.Gameplay.Map
 {
     public class TerritoryViewModel : ViewModelBase, ITerritoryLayoutViewModel
     {
-        private readonly ITerritoryModel _territoryModel;
-        private readonly Action<ITerritoryGeography> _onClick;
+        private readonly IRegionModel _regionModel;
+        private readonly Action<IRegion> _onClick;
 
-        public TerritoryViewModel(ITerritoryModel territoryModel, Action<ITerritoryGeography> onClick)
+        public TerritoryViewModel(IRegionModel regionModel, Action<IRegion> onClick)
         {
-            _territoryModel = territoryModel;
+            _regionModel = regionModel;
             _onClick = onClick;
         }
 
-        public string Path => _territoryModel.Path;
-        public ITerritoryGeography TerritoryGeography => _territoryModel.TerritoryGeography;
+        public string Path => _regionModel.Path;
+        public IRegion Region => _regionModel.Region;
 
         private Color _strokeColor;
         public Color StrokeColor
@@ -56,7 +56,7 @@ namespace GuiWpf.ViewModels.Gameplay.Map
 
         public void OnClick()
         {
-            _onClick(_territoryModel.TerritoryGeography);
+            _onClick(_regionModel.Region);
         }
 
         public void Accept(IWorldMapItemViewModelVisitor worldMapItemViewModelVisitor)

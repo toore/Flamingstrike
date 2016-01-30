@@ -88,10 +88,10 @@ namespace RISK.Tests.Application
 
                 var battleResult = _sut.Attack(attackingTerritory, defendingTerritory);
 
-                battleResult.AttackingTerritory.TerritoryGeography.Should().Be(attackingTerritory.TerritoryGeography);
+                battleResult.AttackingTerritory.Region.Should().Be(attackingTerritory.Region);
                 battleResult.AttackingTerritory.Player.Should().Be(attackingTerritory.Player);
                 battleResult.AttackingTerritory.Armies.Should().Be(2);
-                battleResult.DefendingTerritory.TerritoryGeography.Should().Be(defendingTerritory.TerritoryGeography);
+                battleResult.DefendingTerritory.Region.Should().Be(defendingTerritory.Region);
                 battleResult.DefendingTerritory.Player.Should().Be(defendingTerritory.Player);
                 battleResult.DefendingTerritory.Armies.Should().Be(1);
             }
@@ -106,10 +106,10 @@ namespace RISK.Tests.Application
 
                 var battleResult = _sut.Attack(attackingTerritory, defendingTerritory);
 
-                battleResult.AttackingTerritory.TerritoryGeography.Should().Be(attackingTerritory.TerritoryGeography);
+                battleResult.AttackingTerritory.Region.Should().Be(attackingTerritory.Region);
                 battleResult.AttackingTerritory.Player.Should().Be(attackingTerritory.Player);
                 battleResult.AttackingTerritory.Armies.Should().Be(2);
-                battleResult.DefendingTerritory.TerritoryGeography.Should().Be(defendingTerritory.TerritoryGeography);
+                battleResult.DefendingTerritory.Region.Should().Be(defendingTerritory.Region);
                 battleResult.DefendingTerritory.Player.Should().Be(defendingTerritory.Player);
                 battleResult.DefendingTerritory.Armies.Should().Be(1);
             }
@@ -124,10 +124,10 @@ namespace RISK.Tests.Application
 
                 var battleResult = _sut.Attack(attackingTerritory, defendingTerritory);
 
-                battleResult.AttackingTerritory.TerritoryGeography.Should().Be(attackingTerritory.TerritoryGeography);
+                battleResult.AttackingTerritory.Region.Should().Be(attackingTerritory.Region);
                 battleResult.AttackingTerritory.Player.Should().Be(attackingTerritory.Player);
                 battleResult.AttackingTerritory.Armies.Should().Be(3);
-                battleResult.DefendingTerritory.TerritoryGeography.Should().Be(defendingTerritory.TerritoryGeography);
+                battleResult.DefendingTerritory.Region.Should().Be(defendingTerritory.Region);
                 battleResult.DefendingTerritory.Player.Should().Be(defendingTerritory.Player);
                 battleResult.DefendingTerritory.Armies.Should().Be(1);
             }
@@ -142,10 +142,10 @@ namespace RISK.Tests.Application
 
                 var battleResult = _sut.Attack(attackingTerritory, defendingTerritory);
 
-                battleResult.AttackingTerritory.TerritoryGeography.Should().Be(attackingTerritory.TerritoryGeography);
+                battleResult.AttackingTerritory.Region.Should().Be(attackingTerritory.Region);
                 battleResult.AttackingTerritory.Player.Should().Be(attackingTerritory.Player);
                 battleResult.AttackingTerritory.Armies.Should().Be(1);
-                battleResult.DefendingTerritory.TerritoryGeography.Should().Be(defendingTerritory.TerritoryGeography);
+                battleResult.DefendingTerritory.Region.Should().Be(defendingTerritory.Region);
                 battleResult.DefendingTerritory.Player.Should().Be(attackingTerritory.Player);
                 battleResult.DefendingTerritory.Armies.Should().Be(1);
             }

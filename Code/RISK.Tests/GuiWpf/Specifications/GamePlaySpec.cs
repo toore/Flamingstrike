@@ -214,9 +214,9 @@ namespace RISK.Tests.GuiWpf.Specifications
             return this;
         }
 
-        private void AddTerritoryToGameboard(ITerritoryGeography territoryGeography, IPlayer player, int armies)
+        private void AddTerritoryToGameboard(IRegion region, IPlayer player, int armies)
         {
-            _territories.Add(new Territory(territoryGeography, player, armies));
+            _territories.Add(new Territory(region, player, armies));
         }
 
         private GamePlaySpec player_1_occupies_every_territory_except_brazil_and_venezuela_and_north_africa_with_one_army_each()
@@ -268,12 +268,12 @@ namespace RISK.Tests.GuiWpf.Specifications
             UpdateWorldMap(_playerId2, 1, _worldMap.Iceland);
         }
 
-        private ITerritoryGeography[] GetAllTerritoriesExcept(params ITerritoryGeography[] excludedLocations)
+        private IRegion[] GetAllTerritoriesExcept(params IRegion[] excludedLocations)
         {
             return _worldMap.GetAll().Except(excludedLocations).ToArray();
         }
 
-        private void UpdateWorldMap(IPlayer player, int armies, params ITerritoryGeography[] territoriesGeography)
+        private void UpdateWorldMap(IPlayer player, int armies, params IRegion[] territoriesGeography)
         {
             //territories
             //    .Apply(territory =>
@@ -313,16 +313,16 @@ namespace RISK.Tests.GuiWpf.Specifications
             _gameboardViewModel.EndTurn();
         }
 
-        private void ClickOn(ITerritoryGeography location)
+        private void ClickOn(IRegion location)
         {
             GetTerritoryViewModel(location).OnClick();
         }
 
-        private ITerritoryLayoutViewModel GetTerritoryViewModel(ITerritoryGeography territoryGeography)
+        private ITerritoryLayoutViewModel GetTerritoryViewModel(IRegion region)
         {
             return _gameboardViewModel.WorldMapViewModel.WorldMapViewModels
                 .OfType<TerritoryViewModel>()
-                .Single(x => x.TerritoryGeography == territoryGeography);
+                .Single(x => x.Region == region);
         }
 
         private void player_1_should_occupy_Brazil_with_4_armies()

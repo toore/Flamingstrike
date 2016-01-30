@@ -11,7 +11,7 @@ namespace RISK.Application.Play
     {
         IInGameplayPlayer CurrentPlayer { get; }
         IReadOnlyList<ITerritory> GetTerritories();
-        ITerritory GetTerritory(ITerritoryGeography selectedTerritoryGeography);
+        ITerritory GetTerritory(IRegion selectedRegion);
         bool IsCurrentPlayerOccupyingTerritory(ITerritory territory);
         bool CanAttack(ITerritory attackingTerritory, ITerritory attackeeTerritory);
         void Attack(ITerritory attackingTerritory, ITerritory attackeeTerritory);
@@ -52,9 +52,9 @@ namespace RISK.Application.Play
             return _territories;
         }
 
-        public ITerritory GetTerritory(ITerritoryGeography selectedTerritoryGeography)
+        public ITerritory GetTerritory(IRegion selectedRegion)
         {
-            return _territories.Single(x => x.TerritoryGeography == selectedTerritoryGeography);
+            return _territories.Single(x => x.Region == selectedRegion);
         }
 
         public bool IsCurrentPlayerOccupyingTerritory(ITerritory territory)
@@ -83,8 +83,8 @@ namespace RISK.Application.Play
                 return false;
             }
 
-            var attackeeCandidates = _gameRules.GetAttackeeCandidates(attackingTerritory.TerritoryGeography, GetTerritories());
-            var canAttack = attackeeCandidates.Contains(attackeeTerritory.TerritoryGeography);
+            var attackeeCandidates = _gameRules.GetAttackeeCandidates(attackingTerritory.Region, GetTerritories());
+            var canAttack = attackeeCandidates.Contains(attackeeTerritory.Region);
 
             return canAttack;
         }
@@ -96,8 +96,8 @@ namespace RISK.Application.Play
                 throw new InvalidOperationException();
             }
 
-            var attacker = GetTerritory(attackingTerritory.TerritoryGeography);
-            var defender = GetTerritory(attackeeTerritory.TerritoryGeography);
+            var attacker = GetTerritory(attackingTerritory.Region);
+            var defender = GetTerritory(attackeeTerritory.Region);
 
             var battleResult = _battle.Attack(attacker, defender);
 

@@ -6,24 +6,24 @@ namespace GuiWpf.ViewModels.Setup
 {
     public interface IUserInteraction
     {
-        ITerritoryGeography WaitForTerritoryToBeSelected(ITerritoryRequestParameter territoryRequestParameter);
-        void SelectTerritory(ITerritoryGeography territoryGeography);
+        IRegion WaitForTerritoryToBeSelected(ITerritoryRequestParameter territoryRequestParameter);
+        void SelectTerritory(IRegion region);
     }
 
     public class UserInteraction : IUserInteraction
     {
-        private ITerritoryGeography _selectedTerritoryGeography;
+        private IRegion _selectedRegion;
         private readonly AutoResetEvent _territoryIdHasBeenSet = new AutoResetEvent(false);
 
-        public ITerritoryGeography WaitForTerritoryToBeSelected(ITerritoryRequestParameter territoryRequestParameter)
+        public IRegion WaitForTerritoryToBeSelected(ITerritoryRequestParameter territoryRequestParameter)
         {
             _territoryIdHasBeenSet.WaitOne();
-            return _selectedTerritoryGeography;
+            return _selectedRegion;
         }
 
-        public void SelectTerritory(ITerritoryGeography territoryGeography)
+        public void SelectTerritory(IRegion region)
         {
-            _selectedTerritoryGeography = territoryGeography;
+            _selectedRegion = region;
             _territoryIdHasBeenSet.Set();
         }
     }

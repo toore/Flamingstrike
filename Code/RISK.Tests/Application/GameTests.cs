@@ -104,8 +104,8 @@ namespace RISK.Tests.Application
 
         public class AttackTests : GameTestsBase
         {
-            private readonly ITerritoryGeography _playerTerritoryGeography = Substitute.For<ITerritoryGeography>();
-            private readonly ITerritoryGeography _anotherPlayerTerritoryGeography = Substitute.For<ITerritoryGeography>();
+            private readonly IRegion _playerRegion = Substitute.For<IRegion>();
+            private readonly IRegion _anotherPlayerRegion = Substitute.For<IRegion>();
             private readonly IPlayer _player = Substitute.For<IPlayer>();
             private readonly IPlayer _anotherPlayer = Substitute.For<IPlayer>();
             private readonly ITerritory _playerTerritory;
@@ -121,8 +121,8 @@ namespace RISK.Tests.Application
                 };
                 _playerFactory.Create(null).ReturnsForAnyArgs(players);
 
-                _playerTerritory = Make.Territory.TerritoryGeography(_playerTerritoryGeography).Player(_player).Build();
-                _anotherPlayerTerritory = Make.Territory.TerritoryGeography(_anotherPlayerTerritoryGeography).Player(_anotherPlayer).Build();
+                _playerTerritory = Make.Territory.TerritoryGeography(_playerRegion).Player(_player).Build();
+                _anotherPlayerTerritory = Make.Territory.TerritoryGeography(_anotherPlayerRegion).Player(_anotherPlayer).Build();
                 _gamePlaySetup = Make.GamePlaySetup
                     .WithTerritory(_playerTerritory)
                     .WithTerritory(_anotherPlayerTerritory)
@@ -132,7 +132,7 @@ namespace RISK.Tests.Application
             [Fact]
             public void Can_attack()
             {
-                GetAttackeeCandidatesReturns(_anotherPlayerTerritoryGeography);
+                GetAttackeeCandidatesReturns(_anotherPlayerRegion);
 
                 var sut = Create(_gamePlaySetup);
 
@@ -142,20 +142,20 @@ namespace RISK.Tests.Application
             [Fact]
             public void Attacks()
             {
-                GetAttackeeCandidatesReturns(_anotherPlayerTerritoryGeography);
+                GetAttackeeCandidatesReturns(_anotherPlayerRegion);
 
                 var sut = Create(_gamePlaySetup);
                 sut.Attack(_playerTerritory, _anotherPlayerTerritory);
 
                 _battle.Received().Attack(_playerTerritory, _anotherPlayerTerritory);
-                sut.GetTerritory(_playerTerritory.TerritoryGeography).Player.Should().Be(_player);
-                sut.GetTerritory(_anotherPlayerTerritory.TerritoryGeography).Player.Should().Be(_anotherPlayer);
+                sut.GetTerritory(_playerTerritory.Region).Player.Should().Be(_player);
+                sut.GetTerritory(_anotherPlayerTerritory.Region).Player.Should().Be(_anotherPlayer);
             }
 
             [Fact(Skip = "Not implemented")]
             public void Attacks_and_updates_armies()
             {
-                GetAttackeeCandidatesReturns(_anotherPlayerTerritoryGeography);
+                GetAttackeeCandidatesReturns(_anotherPlayerRegion);
 
                 var sut = Create(_gamePlaySetup);
                 sut.Attack(_playerTerritory, _anotherPlayerTerritory);
@@ -176,7 +176,7 @@ namespace RISK.Tests.Application
             [Fact]
             public void Can_not_attack_with_another_players_territory()
             {
-                GetAttackeeCandidatesReturns(_anotherPlayerTerritoryGeography);
+                GetAttackeeCandidatesReturns(_anotherPlayerRegion);
 
                 var sut = Create(_gamePlaySetup);
 
@@ -188,7 +188,7 @@ namespace RISK.Tests.Application
             {
                 var defenderIsEliminated = Substitute.For<IBattleResult>();
                 defenderIsEliminated.IsDefenderEliminated().Returns(true);
-                GetAttackeeCandidatesReturns(_anotherPlayerTerritoryGeography);
+                GetAttackeeCandidatesReturns(_anotherPlayerRegion);
                 _battle.Attack(_playerTerritory, _anotherPlayerTerritory)
                     .Returns(defenderIsEliminated);
 
@@ -203,7 +203,7 @@ namespace RISK.Tests.Application
             {
                 var defenderIsEliminated = Substitute.For<IBattleResult>();
                 defenderIsEliminated.IsDefenderEliminated().Returns(true);
-                GetAttackeeCandidatesReturns(_anotherPlayerTerritoryGeography);
+                GetAttackeeCandidatesReturns(_anotherPlayerRegion);
                 _battle.Attack(_playerTerritory, _anotherPlayerTerritory)
                     .Returns(defenderIsEliminated);
 
@@ -223,7 +223,7 @@ namespace RISK.Tests.Application
             {
                 var defenderIsEliminated = Substitute.For<IBattleResult>();
                 defenderIsEliminated.IsDefenderEliminated().Returns(true);
-                GetAttackeeCandidatesReturns(_anotherPlayerTerritoryGeography);
+                GetAttackeeCandidatesReturns(_anotherPlayerRegion);
                 _battle.Attack(_playerTerritory, _anotherPlayerTerritory)
                     .Returns(defenderIsEliminated);
 
@@ -233,11 +233,11 @@ namespace RISK.Tests.Application
                 sut.AssertCanNotAttack(_playerTerritory, _anotherPlayerTerritory);
             }
 
-            private void GetAttackeeCandidatesReturns(params ITerritoryGeography[] territoryGeographies)
+            private void GetAttackeeCandidatesReturns(params IRegion[] regions)
             {
                 _gameRules.GetAttackeeCandidates(
-                    _playerTerritoryGeography, ArgListIsEquivalentTo(_playerTerritory, _anotherPlayerTerritory))
-                    .Returns(territoryGeographies);
+                    _playerRegion, ArgListIsEquivalentTo(_playerTerritory, _anotherPlayerTerritory))
+                    .Returns(regions);
             }
 
             private static IReadOnlyList<T> ArgListIsEquivalentTo<T>(params T[] equivalency)

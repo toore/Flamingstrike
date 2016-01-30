@@ -6,9 +6,9 @@ namespace RISK.Tests.Builders
     {
         private readonly Continent _continent = Continent.Europe;
 
-        public TerritoryGeography Build()
+        public Region Build()
         {
-            var territory = new TerritoryGeography(_continent);
+            var territory = new Region(_continent);
 
             return territory;
         }

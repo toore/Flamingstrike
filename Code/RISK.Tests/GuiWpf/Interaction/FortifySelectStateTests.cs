@@ -23,7 +23,7 @@ namespace RISK.Tests.GuiWpf.Interaction
         [Fact]
         public void Can_not_click_territory_not_occupied_by_current_player()
         {
-            var territoryGeographyToFortify = Substitute.For<ITerritoryGeography>();
+            var territoryGeographyToFortify = Substitute.For<IRegion>();
             _sut.AssertCanNotClickAndOnClickThrowsWhenInvoked(territoryGeographyToFortify);
         }
 
@@ -46,7 +46,7 @@ namespace RISK.Tests.GuiWpf.Interaction
 
             _sut.OnClick(territory);
 
-            _sut.SelectedTerritoryGeography.Should().Be(territory);
+            _sut.SelectedRegion.Should().Be(territory);
         }
     }
 }

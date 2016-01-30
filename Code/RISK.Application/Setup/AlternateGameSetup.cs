@@ -140,13 +140,13 @@ namespace RISK.Application.Setup
         private static Territory SelectTerritory(ITerritoryResponder territoryResponder, IReadOnlyList<Territory> territories, InSetupPlayer inSetupPlayer, List<Territory> territoriesAssignedToPlayer)
         {
             var options = territoriesAssignedToPlayer
-                .Select(x => x.TerritoryGeography)
+                .Select(x => x.Region)
                 .ToList();
 
             var parameter = new TerritoryRequestParameter(territories, options, inSetupPlayer);
             var selectedTerritoryId = territoryResponder.ProcessRequest(parameter);
 
-            var selectedTerritory = territoriesAssignedToPlayer.Single(x => x.TerritoryGeography == selectedTerritoryId);
+            var selectedTerritory = territoriesAssignedToPlayer.Single(x => x.Region == selectedTerritoryId);
             return selectedTerritory;
         }
     }

@@ -6,19 +6,19 @@ namespace RISK.Application.Play
 {
     public interface IGameRules
     {
-        IEnumerable<ITerritoryGeography> GetAttackeeCandidates(ITerritoryGeography attackingTerritoryGeography, IReadOnlyList<ITerritory> territories);
+        IEnumerable<IRegion> GetAttackeeCandidates(IRegion attackingRegion, IReadOnlyList<ITerritory> territories);
     }
 
     public class GameRules : IGameRules
     {
-        public IEnumerable<ITerritoryGeography> GetAttackeeCandidates(ITerritoryGeography attackingTerritoryGeography, IReadOnlyList<ITerritory> territories)
+        public IEnumerable<IRegion> GetAttackeeCandidates(IRegion attackingRegion, IReadOnlyList<ITerritory> territories)
         {
             var attacker = territories
-                .Single(x => x.TerritoryGeography == attackingTerritoryGeography);
+                .Single(x => x.Region == attackingRegion);
 
             var attackCandidates = territories
                 .Where(attackee => CanAttack(attacker, attackee))
-                .Select(x => x.TerritoryGeography)
+                .Select(x => x.Region)
                 .ToList();
 
             return attackCandidates;
@@ -26,7 +26,7 @@ namespace RISK.Application.Play
 
         private static bool CanAttack(ITerritory attacker, ITerritory attackee)
         {
-            var hasBorder = attacker.TerritoryGeography.HasBorder(attackee.TerritoryGeography);
+            var hasBorder = attacker.Region.HasBorder(attackee.Region);
             var attackerAndAttackeeIsDifferentPlayers = attacker.Player != attackee.Player;
             var hasEnoughArmiesToAttack = attacker.GetNumberOfArmiesAvailableForAttack() > 0;
 
