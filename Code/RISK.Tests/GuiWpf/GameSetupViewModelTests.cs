@@ -50,7 +50,7 @@ namespace RISK.Tests.GuiWpf
             var expectedWorldMapViewModel = new WorldMapViewModel();
             var territories = new List<ITerritory>();
             Action<IRegion> onClickAction = x => { };
-            var enabledTerritories = new List<IRegion> { Make.TerritoryGeography.Build() };
+            var enabledTerritories = new List<IRegion> { Make.Region.Build() };
             _worldMapViewModelFactory.Create(territories, onClickAction, enabledTerritories)
                 .Returns(expectedWorldMapViewModel);
             var gameSetupViewModel = Initialize();

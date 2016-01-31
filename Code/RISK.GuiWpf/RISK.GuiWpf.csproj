@@ -139,7 +139,7 @@
     <Compile Include="ViewModels\Settings\NeutralPlayerType.cs" />
     <Compile Include="ViewModels\Settings\PlayerIdFactory.cs" />
     <Compile Include="ViewModels\Settings\PlayerSetupViewModel.cs" />
-    <Compile Include="ViewModels\Gameplay\Map\ITerritoryLayoutViewModel.cs" />
+    <Compile Include="ViewModels\Gameplay\Map\IRegionViewModel.cs" />
     <Compile Include="TerritoryModels\WorldMapModelFactory.cs" />
     <Compile Include="ViewModels\Settings\PlayerTypeBase.cs" />
     <Compile Include="ViewModels\Settings\PlayerTypes.cs" />
@@ -170,7 +170,6 @@
     <Compile Include="TerritoryModels\IndiaModel.cs" />
     <Compile Include="TerritoryModels\IndonesiaModel.cs" />
     <Compile Include="TerritoryModels\IrkutskModel.cs" />
-    <Compile Include="ViewModels\Gameplay\Map\ITerritoryViewModelFactory.cs" />
     <Compile Include="Views\MainGameView.xaml.cs">
       <DependentUpon>MainGameView.xaml</DependentUpon>
     </Compile>
@@ -197,7 +196,7 @@
     <Compile Include="Views\WorldMapViews\TerritoryButtonUserControl.xaml.cs">
       <DependentUpon>TerritoryButtonUserControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewModels\Gameplay\Map\TerritoryViewModel.cs" />
+    <Compile Include="ViewModels\Gameplay\Map\RegionViewModel.cs" />
     <Compile Include="TerritoryModels\IRegionModel.cs" />
     <Compile Include="ViewModels\Gameplay\Map\WorldMapViewModelFactory.cs" />
     <Compile Include="ViewModels\Gameplay\Map\TitleViewModel.cs" />

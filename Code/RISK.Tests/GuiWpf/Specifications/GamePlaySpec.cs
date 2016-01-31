@@ -45,7 +45,8 @@ namespace RISK.Tests.GuiWpf.Specifications
 
             When.
                 player_one_selects_north_africa().
-                and_attacks_brazil_and_wins();
+                and_attacks_brazil_and_wins().
+                one_army_is_moved_to_brazil();
 
             Then.
                 player_1_should_occupy_Brazil_with_4_armies();
@@ -292,6 +293,12 @@ namespace RISK.Tests.GuiWpf.Specifications
             return this;
         }
 
+        private GamePlaySpec one_army_is_moved_to_brazil()
+        {
+            _game.MoveArmiesIntoOccupiedTerritory(1);
+            return this;
+        }
+
         private GamePlaySpec player_one_selects_scandinavia()
         {
             ClickOn(_worldMap.Scandinavia);
@@ -314,10 +321,10 @@ namespace RISK.Tests.GuiWpf.Specifications
             GetTerritoryViewModel(location).OnClick();
         }
 
-        private ITerritoryLayoutViewModel GetTerritoryViewModel(IRegion region)
+        private IRegionViewModel GetTerritoryViewModel(IRegion region)
         {
             return _gameboardViewModel.WorldMapViewModel.WorldMapViewModels
-                .OfType<TerritoryViewModel>()
+                .OfType<RegionViewModel>()
                 .Single(x => x.Region == region);
         }
 

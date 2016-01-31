@@ -2,7 +2,7 @@
 
 namespace GuiWpf.ViewModels.Gameplay.Map
 {
-    public interface ITerritoryLayoutViewModel : IWorldMapItemViewModel
+    public interface IRegionViewModel : IWorldMapItemViewModel
     {
         Color StrokeColor { get; set; }
         Color FillColor { get; set; }

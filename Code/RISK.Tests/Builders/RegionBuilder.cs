@@ -2,7 +2,7 @@ using RISK.Application.World;
 
 namespace RISK.Tests.Builders
 {
-    public class TerritoryGeographyBuilder
+    public class RegionBuilder
     {
         private readonly Continent _continent = Continent.Europe;
 

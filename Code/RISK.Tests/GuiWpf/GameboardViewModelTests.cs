@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Caliburn.Micro;
 using FluentAssertions;
 using GuiWpf.Extensions;
@@ -44,11 +43,11 @@ namespace RISK.Tests.GuiWpf
 
             ResourceManager.Instance = Substitute.For<IResourceManager>();
 
-            var viewModel = Substitute.For<ITerritoryLayoutViewModel>();
+            var viewModel = Substitute.For<IRegionViewModel>();
             var layoutViewModel1 = viewModel;
             var viewModel2 = Substitute.For<IWorldMapItemViewModel>();
             var textViewModel1 = viewModel2;
-            var viewModel1 = Substitute.For<ITerritoryLayoutViewModel>();
+            var viewModel1 = Substitute.For<IRegionViewModel>();
             var layoutViewModel2 = viewModel1;
             var viewModel3 = Substitute.For<IWorldMapItemViewModel>();
             var textViewModel2 = viewModel3;

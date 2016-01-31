@@ -119,7 +119,7 @@
     <Compile Include="GuiWpf\SynchronousTaskEx.cs" />
     <Compile Include="GuiWpf\UserInteractorTests.cs" />
     <Compile Include="GuiWpf\WorldMapModelFactoryTests.cs" />
-    <Compile Include="Builders\TerritoryGeographyBuilder.cs" />
+    <Compile Include="Builders\RegionBuilder.cs" />
     <Compile Include="Builders\Make.cs" />
     <Compile Include="GuiWpf\Interaction\SelectStateTests.cs" />
     <Compile Include="SpecBase.cs" />

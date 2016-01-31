@@ -114,7 +114,7 @@ namespace RISK.Application.Play
 
         public void MoveArmiesIntoOccupiedTerritory(int numberOfArmies)
         {
-            if (!MustConfirmMoveOfArmiesIntoOccupiedTerritory())
+            if (!_mustConfirmMoveOfArmiesIntoOccupiedTerritory)
             {
                 throw new InvalidOperationException();
             }

@@ -57,7 +57,7 @@ namespace GuiWpf.ViewModels.Gameplay.Map
 
         private static IEnumerable<IWorldMapItemViewModel> CreateViewModels(IRegionModel regionModel, Action<IRegion> onClick)
         {
-            yield return new TerritoryViewModel(regionModel, onClick);
+            yield return new RegionViewModel(regionModel, onClick);
             yield return new TitleViewModel(regionModel);
         }
     }

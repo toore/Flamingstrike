@@ -23,31 +23,31 @@ namespace GuiWpf.ViewModels.Gameplay.Map
             _colorService = colorService;
         }
 
-        public void Visit(TerritoryViewModel territoryViewModel)
+        public void Visit(RegionViewModel regionViewModel)
         {
-            var territoryColors = _territoryColorsFactory.Create(territoryViewModel.Region);
+            var territoryColors = _territoryColorsFactory.Create(regionViewModel.Region);
 
             var strokeColor = territoryColors.NormalStrokeColor;
             var fillColor = territoryColors.NormalFillColor;
             var mouseOverStrokeColor = territoryColors.MouseOverStrokeColor;
             var mouseOverFillColor = territoryColors.MouseOverFillColor;
 
-            if (_selectedRegion == territoryViewModel.Region)
+            if (_selectedRegion == regionViewModel.Region)
             {
                 fillColor = _colorService.SelectedTerritoryColor;
             }
 
-            territoryViewModel.StrokeColor = strokeColor;
-            territoryViewModel.FillColor = fillColor;
-            territoryViewModel.MouseOverStrokeColor = mouseOverStrokeColor;
-            territoryViewModel.MouseOverFillColor = mouseOverFillColor;
+            regionViewModel.StrokeColor = strokeColor;
+            regionViewModel.FillColor = fillColor;
+            regionViewModel.MouseOverStrokeColor = mouseOverStrokeColor;
+            regionViewModel.MouseOverFillColor = mouseOverFillColor;
 
-            territoryViewModel.IsEnabled = IsTerritoryEnabled(territoryViewModel);
+            regionViewModel.IsEnabled = IsTerritoryEnabled(regionViewModel);
         }
 
-        private bool IsTerritoryEnabled(TerritoryViewModel territoryViewModel)
+        private bool IsTerritoryEnabled(RegionViewModel regionViewModel)
         {
-            return _enabledTerritories.Contains(territoryViewModel.Region);
+            return _enabledTerritories.Contains(regionViewModel.Region);
         }
 
         public void Visit(TitleViewModel titleViewModel)

@@ -4,11 +4,11 @@
     xmlns:Map="clr-namespace:GuiWpf.ViewModels.Gameplay.Map"
     xmlns:MapViews="clr-namespace:GuiWpf.Views.WorldMapViews">
 
-    <DataTemplate DataType="{x:Type Map:TerritoryViewModel}">
+    <DataTemplate DataType="{x:Type Map:RegionViewModel}">
         <Canvas
             ZIndex="0">
             <MapViews:TerritoryButtonUserControl
-                Name="button"
+                x:Name="button"
                 FillColor="{Binding FillColor}"
                 StrokeColor="{Binding StrokeColor}"
                 MouseOverFillColor="{Binding MouseOverFillColor}"

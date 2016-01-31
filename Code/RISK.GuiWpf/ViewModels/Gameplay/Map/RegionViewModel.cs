@@ -5,12 +5,12 @@ using RISK.Application.World;
 
 namespace GuiWpf.ViewModels.Gameplay.Map
 {
-    public class TerritoryViewModel : ViewModelBase, ITerritoryLayoutViewModel
+    public class RegionViewModel : ViewModelBase, IRegionViewModel
     {
         private readonly IRegionModel _regionModel;
         private readonly Action<IRegion> _onClick;
 
-        public TerritoryViewModel(IRegionModel regionModel, Action<IRegion> onClick)
+        public RegionViewModel(IRegionModel regionModel, Action<IRegion> onClick)
         {
             _regionModel = regionModel;
             _onClick = onClick;
