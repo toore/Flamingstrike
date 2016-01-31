@@ -2,7 +2,7 @@
 
 namespace RISK.Application.World
 {
-    public interface IWorldMap
+    public interface IRegions
     {
         IEnumerable<IRegion> GetAll();
 
@@ -50,9 +50,9 @@ namespace RISK.Application.World
         IRegion WesternAustralia { get; }
     }
 
-    public class WorldMap : IWorldMap
+    public class Regions : IRegions
     {
-        public WorldMap()
+        public Regions()
         {
             var alaska = new Region(Continent.NorthAmerica);
             var alberta = new Region(Continent.NorthAmerica);

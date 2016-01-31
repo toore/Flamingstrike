@@ -33,7 +33,7 @@ namespace RISK.Tests.GuiWpf
 
         private IEnumerable<IRegionModel> Create()
         {
-            var worldMap = new WorldMap();
+            var worldMap = new Regions();
             var sut = new WorldMapModelFactory();
 
             return sut.Create(worldMap);

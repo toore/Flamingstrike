@@ -68,9 +68,15 @@ namespace RISK.Tests.Application
             [Fact]
             public void Initializes_territories()
             {
+                var region = Substitute.For<IRegion>();
+                var anotherRegion = Substitute.For<IRegion>();
+                _territory.Region.Returns(region);
+                _anotherTerritory.Region.Returns(anotherRegion);
+
                 var sut = Create(_gameSetup);
 
-                sut.GetTerritories().Should().BeEquivalentTo(_territory, _anotherTerritory);
+                sut.GetTerritory(region).Should().Be(_territory);
+                sut.GetTerritory(anotherRegion).Should().Be(_anotherTerritory);
             }
 
             [Fact]
@@ -110,8 +116,8 @@ namespace RISK.Tests.Application
 
             public AttackTests()
             {
-                _playerTerritory = Make.Territory.TerritoryGeography(_playerRegion).Player(_firstPlayer).Build();
-                _anotherPlayerTerritory = Make.Territory.TerritoryGeography(_anotherPlayerRegion).Player(_anotherPlayer).Build();
+                _playerTerritory = Make.Territory.Region(_playerRegion).Player(_firstPlayer).Build();
+                _anotherPlayerTerritory = Make.Territory.Region(_anotherPlayerRegion).Player(_anotherPlayer).Build();
                 _gamePlaySetup = Make.GamePlaySetup
                     .WithTerritory(_playerTerritory)
                     .WithTerritory(_anotherPlayerTerritory)

@@ -44,7 +44,7 @@ namespace GuiWpf.ViewModels
             var stateControllerFactory = new StateControllerFactory();
             var interactionStateFactory = new InteractionStateFactory();
             var colorService = new ColorService();
-            var worldMap = new WorldMap();
+            var worldMap = new Regions();
             var territoryColorsFactory = new TerritoryColorsFactory(colorService, worldMap);
             var worldMapModelFactory = new WorldMapModelFactory();
             var worldMapViewModelFactory = new WorldMapViewModelFactory(

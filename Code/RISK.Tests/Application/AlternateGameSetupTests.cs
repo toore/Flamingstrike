@@ -22,7 +22,7 @@ namespace RISK.Tests.Application
 
         public AlternateGameSetupTests()
         {
-            var worldMap = Substitute.For<IWorldMap>();
+            var worldMap = Substitute.For<IRegions>();
             var shuffler = Substitute.For<IShuffler>();
             var startingInfantryCalculator = Substitute.For<IStartingInfantryCalculator>();
             var players = new List<IPlayer> { null };

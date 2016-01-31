@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using System.Linq;
 using Caliburn.Micro;
 using GuiWpf.Services;
 using GuiWpf.ViewModels.Gameplay.Interaction;
 using GuiWpf.ViewModels.Gameplay.Map;
 using GuiWpf.ViewModels.Messages;
+using RISK.Application;
 using RISK.Application.Play;
 using RISK.Application.World;
 
@@ -12,7 +14,7 @@ namespace GuiWpf.ViewModels.Gameplay
 {
     public class GameboardViewModel : ViewModelBase, IGameboardViewModel, IActivate
     {
-        private readonly IWorldMap _worldMap;
+        private readonly IRegions _regions;
         private readonly IGame _game;
         private readonly IStateControllerFactory _stateControllerFactory;
         private readonly IInteractionStateFactory _interactionStateFactory;
@@ -28,14 +30,14 @@ namespace GuiWpf.ViewModels.Gameplay
             IGame game,
             IStateControllerFactory stateControllerFactory,
             IInteractionStateFactory interactionStateFactory,
-            IWorldMap worldMap,
+            IRegions regions,
             IWorldMapViewModelFactory worldMapViewModelFactory,
             IWindowManager windowManager,
             IGameOverViewModelFactory gameOverViewModelFactory,
             IDialogManager dialogManager,
             IEventAggregator eventAggregator)
         {
-            _worldMap = worldMap;
+            _regions = regions;
             _game = game;
             _stateControllerFactory = stateControllerFactory;
             _interactionStateFactory = interactionStateFactory;
@@ -69,12 +71,22 @@ namespace GuiWpf.ViewModels.Gameplay
 
         private void InitializeWorld()
         {
-            WorldMapViewModel = _worldMapViewModelFactory.Create(_game.GetTerritories(), OnTerritoryClick, Enumerable.Empty<IRegion>());
+            var allTerritories = GetAllTerritories();
+            WorldMapViewModel = _worldMapViewModelFactory.Create(allTerritories, OnTerritoryClick, Enumerable.Empty<IRegion>());
 
             _stateController = _stateControllerFactory.Create(_game);
             _stateController.CurrentState = _interactionStateFactory.CreateSelectState();
 
             UpdateGame();
+        }
+
+        private ReadOnlyCollection<ITerritory> GetAllTerritories()
+        {
+            var territories = _regions.GetAll()
+                .Select(region => _game.GetTerritory(region))
+                .ToList().AsReadOnly();
+
+            return territories;
         }
 
         public bool CanFortify()
@@ -136,11 +148,12 @@ namespace GuiWpf.ViewModels.Gameplay
 
         private void UpdateWorldMap()
         {
-            var enabledTerritories = _worldMap.GetAll()
+            var allTerritories = GetAllTerritories();
+            var enabledTerritories = _regions.GetAll()
                 .Where(x => _stateController.CanClick(x))
                 .ToList();
 
-            _worldMapViewModelFactory.Update(WorldMapViewModel, _game.GetTerritories(), _stateController.SelectedRegion, enabledTerritories);
+            _worldMapViewModelFactory.Update(WorldMapViewModel, allTerritories, _stateController.SelectedRegion, enabledTerritories);
         }
     }
 }

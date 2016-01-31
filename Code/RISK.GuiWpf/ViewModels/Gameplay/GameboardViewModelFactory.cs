@@ -15,7 +15,7 @@ namespace GuiWpf.ViewModels.Gameplay
     public class GameboardViewModelFactory : IGameboardViewModelFactory
     {
         private readonly IStateControllerFactory _stateControllerFactory;
-        private readonly IWorldMap _worldMap;
+        private readonly IRegions _regions;
         private readonly IWorldMapViewModelFactory _worldMapViewModelFactory;
         private readonly IWindowManager _windowManager;
         private readonly IGameOverViewModelFactory _gameOverViewModelFactory;
@@ -26,7 +26,7 @@ namespace GuiWpf.ViewModels.Gameplay
         public GameboardViewModelFactory(
             IStateControllerFactory stateControllerFactory,
             IInteractionStateFactory interactionStateFactory,
-            IWorldMap worldMap,
+            IRegions regions,
             IWorldMapViewModelFactory worldMapViewModelFactory,
             IWindowManager windowManager,
             IGameOverViewModelFactory gameOverViewModelFactory,
@@ -35,7 +35,7 @@ namespace GuiWpf.ViewModels.Gameplay
         {
             _stateControllerFactory = stateControllerFactory;
             _interactionStateFactory = interactionStateFactory;
-            _worldMap = worldMap;
+            _regions = regions;
             _worldMapViewModelFactory = worldMapViewModelFactory;
             _windowManager = windowManager;
             _gameOverViewModelFactory = gameOverViewModelFactory;
@@ -49,7 +49,7 @@ namespace GuiWpf.ViewModels.Gameplay
                 game,
                 _stateControllerFactory,
                 _interactionStateFactory,
-                _worldMap,
+                _regions,
                 _worldMapViewModelFactory,
                 _windowManager,
                 _gameOverViewModelFactory,

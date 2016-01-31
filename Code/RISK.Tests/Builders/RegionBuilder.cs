@@ -8,9 +8,9 @@ namespace RISK.Tests.Builders
 
         public Region Build()
         {
-            var territory = new Region(_continent);
+            var region = new Region(_continent);
 
-            return territory;
+            return region;
         }
     }
 }

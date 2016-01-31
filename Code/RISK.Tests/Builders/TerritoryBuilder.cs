@@ -15,7 +15,7 @@ namespace RISK.Tests.Builders
             return new Territory(_region, _player, _armies);
         }
 
-        public TerritoryBuilder TerritoryGeography(IRegion region)
+        public TerritoryBuilder Region(IRegion region)
         {
             _region = region;
             return this;

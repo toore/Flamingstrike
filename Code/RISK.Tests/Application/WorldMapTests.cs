@@ -8,11 +8,11 @@ namespace RISK.Tests.Application
 {
     public class WorldMapTests
     {
-        private readonly WorldMap _sut;
+        private readonly Regions _sut;
 
         public WorldMapTests()
         {
-            _sut = new WorldMap();
+            _sut = new Regions();
         }
 
         [Fact]

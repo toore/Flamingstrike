@@ -75,7 +75,7 @@
     <Compile Include="Shuffling\IShuffler.cs" />
     <Compile Include="Shuffling\RandomWrapper.cs" />
     <Compile Include="Shuffling\ShuffleExtensions.cs" />
-    <Compile Include="World\WorldMap.cs" />
+    <Compile Include="World\Regions.cs" />
     <Compile Include="World\Continents.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

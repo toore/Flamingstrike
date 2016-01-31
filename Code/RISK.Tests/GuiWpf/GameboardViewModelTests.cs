@@ -11,6 +11,7 @@ using NSubstitute;
 using RISK.Application;
 using RISK.Application.Play;
 using RISK.Application.World;
+using RISK.Tests.Extensions;
 using Xunit;
 
 namespace RISK.Tests.GuiWpf
@@ -20,7 +21,7 @@ namespace RISK.Tests.GuiWpf
         private readonly IGame _game;
         private readonly IStateControllerFactory _stateControllerFactory;
         private readonly IInteractionStateFactory _interactionStateFactory;
-        private readonly IWorldMap _worldMap;
+        private readonly IRegions _regions;
         private readonly IWorldMapViewModelFactory _worldMapViewModelFactory;
         private readonly IWindowManager _windowManager;
         private readonly IGameOverViewModelFactory _gameOverViewModelFactory;
@@ -34,7 +35,7 @@ namespace RISK.Tests.GuiWpf
             _game = Substitute.For<IGame>();
             _stateControllerFactory = Substitute.For<IStateControllerFactory>();
             _interactionStateFactory = Substitute.For<IInteractionStateFactory>();
-            _worldMap = Substitute.For<IWorldMap>();
+            _regions = Substitute.For<IRegions>();
             _worldMapViewModelFactory = Substitute.For<IWorldMapViewModelFactory>();
             _windowManager = Substitute.For<IWindowManager>();
             _gameOverViewModelFactory = Substitute.For<IGameOverViewModelFactory>();
@@ -61,7 +62,7 @@ namespace RISK.Tests.GuiWpf
             _gameboardViewModelFactory = new GameboardViewModelFactory(
                 _stateControllerFactory,
                 _interactionStateFactory,
-                _worldMap,
+                _regions,
                 _worldMapViewModelFactory,
                 _windowManager,
                 _gameOverViewModelFactory,
@@ -72,8 +73,22 @@ namespace RISK.Tests.GuiWpf
         [Fact]
         public void Activate_initializes_WorldMapViewModel()
         {
+            var region = Substitute.For<IRegion>();
+            var anotherRegion = Substitute.For<IRegion>();
+            var territory = Substitute.For<ITerritory>();
+            var anotherTerritory = Substitute.For<ITerritory>();
+            _regions.GetAll().Returns(new[]
+            {
+                region,
+                anotherRegion
+            });
+            _game.GetTerritory(region).Returns(territory);
+            _game.GetTerritory(anotherRegion).Returns(anotherTerritory);
             var sut = Initialize(activate: false);
-            _worldMapViewModelFactory.Create(_game.GetTerritories(), sut.OnTerritoryClick, Arg.Is<IEnumerable<IRegion>>(x => x.IsEmpty()))
+            _worldMapViewModelFactory.Create(
+                Arg.Is<IReadOnlyList<ITerritory>>(x => x.IsEquivalent(new[] { territory, anotherTerritory })),
+                sut.OnTerritoryClick,
+                Arg.Is<IEnumerable<IRegion>>(x => x.IsEmpty()))
                 .Returns(_worldMapViewModel);
 
             sut.Activate();

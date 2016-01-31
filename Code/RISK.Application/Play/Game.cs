@@ -10,7 +10,6 @@ namespace RISK.Application.Play
     public interface IGame
     {
         IPlayer CurrentPlayer { get; }
-        IReadOnlyList<ITerritory> GetTerritories();
         ITerritory GetTerritory(IRegion region);
         bool IsCurrentPlayerOccupyingTerritory(ITerritory territory);
         bool CanAttack(ITerritory attackingTerritory, ITerritory defendingTeraritory);
@@ -46,11 +45,6 @@ namespace RISK.Application.Play
         }
 
         public IPlayer CurrentPlayer { get; private set; }
-
-        public IReadOnlyList<ITerritory> GetTerritories()
-        {
-            return _territories;
-        }
 
         public ITerritory GetTerritory(IRegion region)
         {
@@ -132,7 +126,7 @@ namespace RISK.Application.Play
 
         private void ThrowIfTerritoriesDoesNotContain(ITerritory territory)
         {
-            if (!GetTerritories().Contains(territory))
+            if (!_territories.Contains(territory))
             {
                 throw new InvalidOperationException("Territory does not exist in game");
             }
@@ -166,7 +160,7 @@ namespace RISK.Application.Play
 
         public bool IsGameOver()
         {
-            var allTerritoriesAreOccupiedBySamePlayer = GetTerritories()
+            var allTerritoriesAreOccupiedBySamePlayer = _territories
                 .Select(x => x.Player)
                 .Distinct()
                 .Count() == 1;

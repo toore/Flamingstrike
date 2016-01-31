@@ -11,20 +11,20 @@ namespace RISK.Application.Setup
 
     public class AlternateGameSetupFactory : IAlternateGameSetupFactory
     {
-        private readonly IWorldMap _worldMap;
+        private readonly IRegions _regions;
         private readonly IShuffler _shuffler;
         private readonly IStartingInfantryCalculator _startingInfantryCalculator;
 
-        public AlternateGameSetupFactory(IWorldMap worldMap, IShuffler shuffler, IStartingInfantryCalculator startingInfantryCalculator)
+        public AlternateGameSetupFactory(IRegions regions, IShuffler shuffler, IStartingInfantryCalculator startingInfantryCalculator)
         {
-            _worldMap = worldMap;
+            _regions = regions;
             _shuffler = shuffler;
             _startingInfantryCalculator = startingInfantryCalculator;
         }
 
         public IAlternateGameSetup Create(IEnumerable<IPlayer> players)
         {
-            return new AlternateGameSetup(_worldMap, players, _startingInfantryCalculator, _shuffler);
+            return new AlternateGameSetup(_regions, players, _startingInfantryCalculator, _shuffler);
         }
     }
 }

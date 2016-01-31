@@ -23,18 +23,18 @@ namespace RISK.Application.Setup
     public class AlternateGameSetup : IAlternateGameSetup
     {
         private readonly IEnumerable<IPlayer> _players;
-        private readonly IWorldMap _worldMap;
+        private readonly IRegions _regions;
         private readonly IShuffler _shuffler;
         private readonly IStartingInfantryCalculator _startingInfantryCalculator;
 
         public AlternateGameSetup(
-            IWorldMap worldMap,
+            IRegions regions,
             IEnumerable<IPlayer> players,
             IStartingInfantryCalculator startingInfantryCalculator,
             IShuffler shuffler)
         {
             _players = players;
-            _worldMap = worldMap;
+            _regions = regions;
             _shuffler = shuffler;
             _startingInfantryCalculator = startingInfantryCalculator;
         }
@@ -83,7 +83,7 @@ namespace RISK.Application.Setup
         {
             var territories = new List<Territory>();
 
-            var territoryIds = _worldMap.GetAll()
+            var territoryIds = _regions.GetAll()
                 .Shuffle(_shuffler)
                 .ToList();
 

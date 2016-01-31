@@ -21,7 +21,7 @@ namespace RISK.Tests.GuiWpf.Specifications
     public class GamePlaySpec : SpecBase<GamePlaySpec>
     {
         private GameboardViewModel _gameboardViewModel;
-        private WorldMap _worldMap;
+        private Regions _regions;
         private IWindowManager _windowManager;
         private IPlayer _player1;
         private IPlayer _player2;
@@ -133,13 +133,13 @@ namespace RISK.Tests.GuiWpf.Specifications
 
         private GamePlaySpec player_1_selects_japan()
         {
-            ClickOn(_worldMap.Japan);
+            ClickOn(_regions.Japan);
             return this;
         }
 
         private void moves_2_armies_to_kamchatka()
         {
-            ClickOn(_worldMap.Kamchatka);
+            ClickOn(_regions.Kamchatka);
         }
 
         private void player_1_fortifies()
@@ -149,7 +149,7 @@ namespace RISK.Tests.GuiWpf.Specifications
 
         private GamePlaySpec a_game_with_two_players()
         {
-            _worldMap = new WorldMap();
+            _regions = new Regions();
 
             _dice = Substitute.For<IDice>();
             _windowManager = Substitute.For<IWindowManager>();
@@ -177,12 +177,12 @@ namespace RISK.Tests.GuiWpf.Specifications
             var worldMapModelFactory = new WorldMapModelFactory();
             var colorService = new ColorService();
             var eventAggregator = new EventAggregator();
-            var territoryColorsFactory = new TerritoryColorsFactory(colorService, _worldMap);
+            var territoryColorsFactory = new TerritoryColorsFactory(colorService, _regions);
             var screenService = new ScreenService();
             var confirmViewModelFactory = new ConfirmViewModelFactory(screenService);
             var userNotifier = new UserNotifier(_windowManager, confirmViewModelFactory);
             var dialogManager = new DialogManager(userNotifier);
-            var worldMapViewModelFactory = new WorldMapViewModelFactory(_worldMap, worldMapModelFactory, territoryColorsFactory, colorService);
+            var worldMapViewModelFactory = new WorldMapViewModelFactory(_regions, worldMapModelFactory, territoryColorsFactory, colorService);
 
             var gameOverViewModelFactory = Substitute.For<IGameOverViewModelFactory>();
             _gameOverAndPlayer1IsTheWinnerViewModel = new GameOverViewModel("");
@@ -192,7 +192,7 @@ namespace RISK.Tests.GuiWpf.Specifications
                 _game,
                 _stateControllerFactory,
                 _interactionStateFactory,
-                _worldMap,
+                _regions,
                 worldMapViewModelFactory,
                 _windowManager,
                 gameOverViewModelFactory,
@@ -206,7 +206,7 @@ namespace RISK.Tests.GuiWpf.Specifications
 
         private GamePlaySpec player_1_has_5_armies_in_north_africa()
         {
-            AddTerritoryToGameboard(_worldMap.NorthAfrica, _player1, 5);
+            AddTerritoryToGameboard(_regions.NorthAfrica, _player1, 5);
             //UpdateWorldMap(_player1, 5, _worldMap.NorthAfrica);
             return this;
         }
@@ -219,9 +219,9 @@ namespace RISK.Tests.GuiWpf.Specifications
         private GamePlaySpec player_1_occupies_every_territory_except_brazil_and_venezuela_and_north_africa_with_one_army_each()
         {
             GetAllTerritoriesExcept(
-                _worldMap.Brazil,
-                _worldMap.Venezuela,
-                _worldMap.NorthAfrica).
+                _regions.Brazil,
+                _regions.Venezuela,
+                _regions.NorthAfrica).
                 Apply(x => AddTerritoryToGameboard(x, _player1, 1));
 
             //UpdateWorldMap(_player1, 1, GetAllLocationsExcept(_worldMap.Brazil, _worldMap.Venezuela));
@@ -230,44 +230,44 @@ namespace RISK.Tests.GuiWpf.Specifications
 
         private GamePlaySpec player_2_occupies_brazil_and_venezuela_with_one_army_each()
         {
-            AddTerritoryToGameboard(_worldMap.Brazil, _player2, 1);
-            AddTerritoryToGameboard(_worldMap.Venezuela, _player2, 1);
+            AddTerritoryToGameboard(_regions.Brazil, _player2, 1);
+            AddTerritoryToGameboard(_regions.Venezuela, _player2, 1);
             //UpdateWorldMap(_player2, 1, _worldMap.Brazil, _worldMap.Venezuela);
             return this;
         }
 
         private GamePlaySpec player_1_occupies_every_territory_except_iceland_with_one_army_each()
         {
-            UpdateWorldMap(_player1, 1, GetAllTerritoriesExcept(_worldMap.Iceland));
+            UpdateWorldMap(_player1, 1, GetAllTerritoriesExcept(_regions.Iceland));
             return this;
         }
 
         private GamePlaySpec player_1_occupies_every_territory_except_indonesia_with_ten_armies_each()
         {
-            UpdateWorldMap(_player1, 10, GetAllTerritoriesExcept(_worldMap.Indonesia));
+            UpdateWorldMap(_player1, 10, GetAllTerritoriesExcept(_regions.Indonesia));
             return this;
         }
 
         private GamePlaySpec player_2_occupies_indonesia()
         {
-            UpdateWorldMap(_player2, 1, _worldMap.Indonesia);
+            UpdateWorldMap(_player2, 1, _regions.Indonesia);
             return this;
         }
 
         private GamePlaySpec player_1_has_2_armies_in_scandinavia()
         {
-            UpdateWorldMap(_player1, 2, _worldMap.Scandinavia);
+            UpdateWorldMap(_player1, 2, _regions.Scandinavia);
             return this;
         }
 
         private void player_2_occupies_iceland_with_one_army()
         {
-            UpdateWorldMap(_player2, 1, _worldMap.Iceland);
+            UpdateWorldMap(_player2, 1, _regions.Iceland);
         }
 
         private IRegion[] GetAllTerritoriesExcept(params IRegion[] excludedLocations)
         {
-            return _worldMap.GetAll().Except(excludedLocations).ToArray();
+            return _regions.GetAll().Except(excludedLocations).ToArray();
         }
 
         private void UpdateWorldMap(IPlayer player, int armies, params IRegion[] territoriesGeography)
@@ -282,14 +282,14 @@ namespace RISK.Tests.GuiWpf.Specifications
 
         private GamePlaySpec player_one_selects_north_africa()
         {
-            ClickOn(_worldMap.NorthAfrica);
+            ClickOn(_regions.NorthAfrica);
             return this;
         }
 
         private GamePlaySpec and_attacks_brazil_and_wins()
         {
             _dice.Roll().Returns(6, 5, 4, 5);
-            ClickOn(_worldMap.Brazil);
+            ClickOn(_regions.Brazil);
             return this;
         }
 
@@ -301,14 +301,14 @@ namespace RISK.Tests.GuiWpf.Specifications
 
         private GamePlaySpec player_one_selects_scandinavia()
         {
-            ClickOn(_worldMap.Scandinavia);
+            ClickOn(_regions.Scandinavia);
             return this;
         }
 
         private void and_attacks_iceland_and_wins()
         {
             _dice.Roll().Returns(2, 1);
-            ClickOn(_worldMap.Iceland);
+            ClickOn(_regions.Iceland);
         }
 
         private void turn_ends()
@@ -330,10 +330,10 @@ namespace RISK.Tests.GuiWpf.Specifications
 
         private void player_1_should_occupy_Brazil_with_4_armies()
         {
-            _game.GetTerritory(_worldMap.NorthAfrica).Player.Should().Be(_player1, "player 1 should occupy North Africa");
-            _game.GetTerritory(_worldMap.NorthAfrica).Armies.Should().Be(1, "North Africa should have 1 army");
-            _game.GetTerritory(_worldMap.Brazil).Player.Should().Be(_player1, "player 1 should occupy Brazil");
-            _game.GetTerritory(_worldMap.Brazil).Armies.Should().Be(4, "Brazil should have 4 armies");
+            _game.GetTerritory(_regions.NorthAfrica).Player.Should().Be(_player1, "player 1 should occupy North Africa");
+            _game.GetTerritory(_regions.NorthAfrica).Armies.Should().Be(1, "North Africa should have 1 army");
+            _game.GetTerritory(_regions.Brazil).Player.Should().Be(_player1, "player 1 should occupy Brazil");
+            _game.GetTerritory(_regions.Brazil).Armies.Should().Be(4, "Brazil should have 4 armies");
         }
 
         private void player_1_is_the_winner()

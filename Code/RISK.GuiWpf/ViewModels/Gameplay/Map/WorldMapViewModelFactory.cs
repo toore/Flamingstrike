@@ -17,14 +17,14 @@ namespace GuiWpf.ViewModels.Gameplay.Map
 
     public class WorldMapViewModelFactory : IWorldMapViewModelFactory
     {
-        private readonly IWorldMap _worldMap;
+        private readonly IRegions _regions;
         private readonly IWorldMapModelFactory _worldMapModelFactory;
         private readonly ITerritoryColorsFactory _territoryColorsFactory;
         private readonly IColorService _colorService;
 
-        public WorldMapViewModelFactory(IWorldMap worldMap, IWorldMapModelFactory worldMapModelFactory, ITerritoryColorsFactory territoryColorsFactory, IColorService colorService)
+        public WorldMapViewModelFactory(IRegions regions, IWorldMapModelFactory worldMapModelFactory, ITerritoryColorsFactory territoryColorsFactory, IColorService colorService)
         {
-            _worldMap = worldMap;
+            _regions = regions;
             _worldMapModelFactory = worldMapModelFactory;
             _territoryColorsFactory = territoryColorsFactory;
             _colorService = colorService;
@@ -32,7 +32,7 @@ namespace GuiWpf.ViewModels.Gameplay.Map
 
         public WorldMapViewModel Create(IReadOnlyList<ITerritory> territories, Action<IRegion> onClick, IEnumerable<IRegion> enabledTerritories)
         {
-            var territoryModels = _worldMapModelFactory.Create(_worldMap);
+            var territoryModels = _worldMapModelFactory.Create(_regions);
 
             var worldMapViewModels = territoryModels
                 .SelectMany(x => CreateViewModels(x, onClick))
