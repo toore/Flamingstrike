@@ -11,8 +11,7 @@ namespace RISK.Application.Play
     {
         IPlayer CurrentPlayer { get; }
         ITerritory GetTerritory(IRegion region);
-        bool IsCurrentPlayerOccupyingTerritory(ITerritory territory);
-        bool CanAttack(ITerritory attackingTerritory, ITerritory defendingTeraritory);
+        bool CanAttack(ITerritory attackingTerritory, ITerritory defendingTerritory);
         void Attack(ITerritory attackingTerritory, ITerritory defendingTerritory);
         bool MustConfirmMoveOfArmiesIntoOccupiedTerritory();
         void MoveArmiesIntoOccupiedTerritory(int numberOfArmies);
@@ -51,15 +50,6 @@ namespace RISK.Application.Play
             return _territories.Single(x => x.Region == region);
         }
 
-        public bool IsCurrentPlayerOccupyingTerritory(ITerritory territory)
-        {
-            ThrowIfTerritoriesDoesNotContain(territory);
-
-            var isCurrentPlayerOccupyingTerritory = territory.Player == CurrentPlayer;
-
-            return isCurrentPlayerOccupyingTerritory;
-        }
-
         private void SetStartingPlayer()
         {
             CurrentPlayer = _players.First();
@@ -72,7 +62,7 @@ namespace RISK.Application.Play
 
             if (_mustConfirmMoveOfArmiesIntoOccupiedTerritory
                 ||
-                !IsCurrentPlayerOccupyingTerritory(attackingTerritory))
+                IsCurrentPlayerAttacking(attackingTerritory))
             {
                 return false;
             }
@@ -81,6 +71,11 @@ namespace RISK.Application.Play
             var canAttack = candidates.Contains(defendingTerritory);
 
             return canAttack;
+        }
+
+        private bool IsCurrentPlayerAttacking(ITerritory attackingTerritory)
+        {
+            return CurrentPlayer != attackingTerritory.Player;
         }
 
         public void Attack(ITerritory attackingTerritory, ITerritory defendingTerritory)
@@ -204,5 +199,17 @@ namespace RISK.Application.Play
 
         ////    _stateController.CurrentState = _interactionStateFactory.CreateFortifiedState(Player, _worldMap);
         ////}
+    }
+
+    public static class GameExtensions
+    {
+        public static bool IsCurrentPlayerOccupyingTerritory(this IGame game, IRegion region)
+        {
+            var territory = game.GetTerritory(region);
+
+            var isCurrentPlayerOccupyingTerritory = territory.Player == game.CurrentPlayer;
+
+            return isCurrentPlayerOccupyingTerritory;
+        }
     }
 }

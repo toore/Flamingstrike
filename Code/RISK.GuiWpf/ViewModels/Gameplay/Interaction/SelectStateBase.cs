@@ -1,4 +1,5 @@
 ﻿using System;
+using RISK.Application.Play;
 using RISK.Application.World;
 
 namespace GuiWpf.ViewModels.Gameplay.Interaction
@@ -7,9 +8,7 @@ namespace GuiWpf.ViewModels.Gameplay.Interaction
     {
         public bool CanClick(IStateController stateController, IRegion region)
         {
-            var territory = stateController.Game.GetTerritory(region);
-
-            return stateController.Game.IsCurrentPlayerOccupyingTerritory(territory);
+            return stateController.Game.IsCurrentPlayerOccupyingTerritory(region);
         }
 
         public void OnClick(IStateController stateController, IRegion region)
