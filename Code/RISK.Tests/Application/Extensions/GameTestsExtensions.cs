@@ -17,9 +17,9 @@ namespace RISK.Tests.Application.Extensions
 
         public static void AssertCanNotMoveArmiesIntoCapturedTerritory(this IGame sut, int numberOfArmies)
         {
-            Action act = () => sut.MoveArmiesIntoOccupiedTerritory(numberOfArmies);
+            Action act = () => sut.SendInArmiesToOccupyTerritory(numberOfArmies);
 
-            sut.MustConfirmMoveOfArmiesIntoOccupiedTerritory().Should().BeFalse();
+            sut.MustSendInArmiesToOccupyTerritory().Should().BeFalse();
             act.ShouldThrow<InvalidOperationException>();
         }
 

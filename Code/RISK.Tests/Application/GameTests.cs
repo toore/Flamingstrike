@@ -241,7 +241,7 @@ namespace RISK.Tests.Application
                 var sut = Create(_gamePlaySetup);
                 sut.Attack(_currentPlayerTerritory, _anotherPlayerTerritory);
 
-                sut.MustConfirmMoveOfArmiesIntoOccupiedTerritory().Should().BeTrue();
+                sut.MustSendInArmiesToOccupyTerritory().Should().BeTrue();
             }
 
             [Fact(Skip = "Not implemented")]
@@ -255,7 +255,7 @@ namespace RISK.Tests.Application
 
                 var sut = Create(_gamePlaySetup);
                 sut.Attack(_currentPlayerTerritory, _anotherPlayerTerritory);
-                sut.MoveArmiesIntoOccupiedTerritory(3);
+                sut.SendInArmiesToOccupyTerritory(3);
 
                 // Move to own test fixture
                 // Test that canmove 

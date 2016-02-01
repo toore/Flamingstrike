@@ -13,8 +13,8 @@ namespace RISK.Application.Play
         ITerritory GetTerritory(IRegion region);
         bool CanAttack(ITerritory attackingTerritory, ITerritory defendingTerritory);
         void Attack(ITerritory attackingTerritory, ITerritory defendingTerritory);
-        bool MustConfirmMoveOfArmiesIntoOccupiedTerritory();
-        void MoveArmiesIntoOccupiedTerritory(int numberOfArmies);
+        void SendInArmiesToOccupyTerritory(int numberOfArmies);
+        bool MustSendInArmiesToOccupyTerritory();
         bool CanFortify(ITerritory sourceTerritory, ITerritory destinationTerritory);
         void Fortify(ITerritory sourceTerritory, ITerritory destinationFortify);
         void EndTurn();
@@ -28,7 +28,7 @@ namespace RISK.Application.Play
 
         private bool _playerShouldReceiveCardWhenTurnEnds;
         private readonly IReadOnlyList<IPlayer> _players;
-        private bool _mustConfirmMoveOfArmiesIntoOccupiedTerritory;
+        private bool _mustSendInArmiesToOccupyTerritory;
         private readonly IReadOnlyList<ITerritory> _territories;
 
         public Game(IReadOnlyList<IPlayer> players, IReadOnlyList<ITerritory> initialTerritories, ICardFactory cardFactory, IBattle battle)
@@ -57,7 +57,7 @@ namespace RISK.Application.Play
         {
             ThrowIfTerritoriesDoesNotContain(attackingTerritory);
             ThrowIfTerritoriesDoesNotContain(defendingTerritory);
-            if (_mustConfirmMoveOfArmiesIntoOccupiedTerritory
+            if (_mustSendInArmiesToOccupyTerritory
                 ||
                 !IsCurrentPlayerAttacking(attackingTerritory))
             {
@@ -102,7 +102,7 @@ namespace RISK.Application.Play
 
             var battleResult = _battle.Attack(attackingTerritory, defendingTerritory);
 
-            _mustConfirmMoveOfArmiesIntoOccupiedTerritory = battleResult.IsDefenderDefeated();
+            _mustSendInArmiesToOccupyTerritory = battleResult.IsDefenderDefeated();
 
             //if (HasPlayerOccupiedTerritory(to))
             //{
@@ -111,14 +111,14 @@ namespace RISK.Application.Play
             //}
         }
 
-        public bool MustConfirmMoveOfArmiesIntoOccupiedTerritory()
+        public bool MustSendInArmiesToOccupyTerritory()
         {
-            return _mustConfirmMoveOfArmiesIntoOccupiedTerritory;
+            return _mustSendInArmiesToOccupyTerritory;
         }
 
-        public void MoveArmiesIntoOccupiedTerritory(int numberOfArmies)
+        public void SendInArmiesToOccupyTerritory(int numberOfArmies)
         {
-            if (!_mustConfirmMoveOfArmiesIntoOccupiedTerritory)
+            if (!_mustSendInArmiesToOccupyTerritory)
             {
                 throw new InvalidOperationException();
             }
