@@ -66,14 +66,13 @@ namespace GuiWpf.ViewModels
                 dialogManager,
                 EventAggregator);
 
-            var gameboardRules = new GameRules();
             var cardFactory = new CardFactory();
             var battleCalculator = new BattleOutcomeCalculator();
             var randomWrapper = new RandomWrapper();
             var dice = new Dice(randomWrapper);
             var diceRoller = new DicesRoller(dice);
             var battle = new Battle(diceRoller, battleCalculator);
-            var gameFactory = new GameFactory(gameboardRules, cardFactory, battle);
+            var gameFactory = new GameFactory(cardFactory, battle);
 
             GameSetupViewModelFactory = new GameSetupViewModelFactory(
                 gameFactory,

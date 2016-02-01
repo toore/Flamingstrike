@@ -164,13 +164,12 @@ namespace RISK.Tests.GuiWpf.Specifications
 
         private GamePlaySpec game_is_started()
         {
-            var gameRules = new GameRules();
             var cardFactory = new CardFactory();
             var randomWrapper = new RandomWrapper();
             var dice = new Dice(randomWrapper);
             var dicesRoller = new DicesRoller(dice);
             var battle = new Battle(dicesRoller, new BattleOutcomeCalculator());
-            _game = new Game(_players, _territories, gameRules, cardFactory, battle);
+            _game = new Game(_players, _territories, cardFactory, battle);
             _stateControllerFactory = new StateControllerFactory();
             _interactionStateFactory = new InteractionStateFactory();
 

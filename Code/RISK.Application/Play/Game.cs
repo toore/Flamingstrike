@@ -23,7 +23,6 @@ namespace RISK.Application.Play
 
     public class Game : IGame
     {
-        private readonly IGameRules _gameRules;
         private readonly ICardFactory _cardFactory;
         private readonly IBattle _battle;
 
@@ -32,11 +31,10 @@ namespace RISK.Application.Play
         private bool _mustConfirmMoveOfArmiesIntoOccupiedTerritory;
         private readonly IReadOnlyList<ITerritory> _territories;
 
-        public Game(IReadOnlyList<IPlayer> players, IReadOnlyList<ITerritory> initialTerritories, IGameRules gameRules, ICardFactory cardFactory, IBattle battle)
+        public Game(IReadOnlyList<IPlayer> players, IReadOnlyList<ITerritory> initialTerritories, ICardFactory cardFactory, IBattle battle)
         {
             _players = players;
             _territories = initialTerritories;
-            _gameRules = gameRules;
             _cardFactory = cardFactory;
             _battle = battle;
 
@@ -45,37 +43,54 @@ namespace RISK.Application.Play
 
         public IPlayer CurrentPlayer { get; private set; }
 
-        public ITerritory GetTerritory(IRegion region)
-        {
-            return _territories.Single(x => x.Region == region);
-        }
-
         private void SetStartingPlayer()
         {
             CurrentPlayer = _players.First();
+        }
+
+        public ITerritory GetTerritory(IRegion region)
+        {
+            return _territories.Single(x => x.Region == region);
         }
 
         public bool CanAttack(ITerritory attackingTerritory, ITerritory defendingTerritory)
         {
             ThrowIfTerritoriesDoesNotContain(attackingTerritory);
             ThrowIfTerritoriesDoesNotContain(defendingTerritory);
-
             if (_mustConfirmMoveOfArmiesIntoOccupiedTerritory
                 ||
-                IsCurrentPlayerAttacking(attackingTerritory))
+                !IsCurrentPlayerAttacking(attackingTerritory))
             {
                 return false;
             }
 
-            var candidates = _gameRules.GetAttackCandidates(attackingTerritory, _territories);
-            var canAttack = candidates.Contains(defendingTerritory);
+            var canAttack = HasBorder(attackingTerritory, defendingTerritory)
+                            &&
+                            IsAttackerAndDefenderDifferentPlayers(attackingTerritory, defendingTerritory)
+                            &&
+                            HasAttackerEnoughArmiesToPerformAttack(attackingTerritory);
 
             return canAttack;
         }
 
         private bool IsCurrentPlayerAttacking(ITerritory attackingTerritory)
         {
-            return CurrentPlayer != attackingTerritory.Player;
+            return CurrentPlayer == attackingTerritory.Player;
+        }
+
+        private static bool HasBorder(ITerritory attackingTerritory, ITerritory defendingTerritory)
+        {
+            return attackingTerritory.Region.HasBorder(defendingTerritory.Region);
+        }
+
+        private static bool HasAttackerEnoughArmiesToPerformAttack(ITerritory attackingTerritory)
+        {
+            return attackingTerritory.GetNumberOfArmiesAvailableForAttack() > 0;
+        }
+
+        private static bool IsAttackerAndDefenderDifferentPlayers(ITerritory attackingTerritory, ITerritory defendingTerritory)
+        {
+            return attackingTerritory.Player != defendingTerritory.Player;
         }
 
         public void Attack(ITerritory attackingTerritory, ITerritory defendingTerritory)
