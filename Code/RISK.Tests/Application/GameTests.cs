@@ -26,7 +26,7 @@ namespace RISK.Tests.Application
             _newArmiesDraftCalculator = Substitute.For<INewArmiesDraftCalculator>();
 
             var gameStateFactory = new GameStateFactory(_battle, _newArmiesDraftCalculator);
-            _factory = new GameFactory(gameStateFactory);
+            _factory = new GameFactory(gameStateFactory, _newArmiesDraftCalculator);
         }
 
         private IGame Create(IGamePlaySetup gamePlaySetup)

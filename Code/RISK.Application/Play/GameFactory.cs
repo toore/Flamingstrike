@@ -11,15 +11,17 @@ namespace RISK.Application.Play
     public class GameFactory : IGameFactory
     {
         private readonly IGameStateFactory _gameStateFactory;
+        private readonly INewArmiesDraftCalculator _newArmiesDraftCalculator;
 
-        public GameFactory(IGameStateFactory gameStateFactory)
+        public GameFactory(IGameStateFactory gameStateFactory, INewArmiesDraftCalculator newArmiesDraftCalculator)
         {
             _gameStateFactory = gameStateFactory;
+            _newArmiesDraftCalculator = newArmiesDraftCalculator;
         }
 
         public IGame Create(IGamePlaySetup gamePlaySetup)
         {
-            var game = new Game(_gameStateFactory, gamePlaySetup.Players, gamePlaySetup.Territories);
+            var game = new Game(_gameStateFactory, _newArmiesDraftCalculator, gamePlaySetup.Players, gamePlaySetup.Territories);
 
             return game;
         }

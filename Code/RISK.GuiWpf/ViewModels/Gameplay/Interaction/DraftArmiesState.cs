@@ -1,4 +1,3 @@
-using System;
 using RISK.Application.Play;
 using RISK.Application.World;
 
@@ -15,7 +14,8 @@ namespace GuiWpf.ViewModels.Gameplay.Interaction
 
         public void OnClick(IStateController stateController, IRegion region)
         {
-            throw new NotImplementedException();
+            var numberOfArmies = 1;
+            stateController.Game.PlaceArmies(region, numberOfArmies);
         }
     }
 }

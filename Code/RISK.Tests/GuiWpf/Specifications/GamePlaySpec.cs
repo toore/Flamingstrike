@@ -49,7 +49,7 @@ namespace RISK.Tests.GuiWpf.Specifications
                 player_1_selects_north_africa();
 
             Then.
-                player_1_should_occupy_north_africa_with_2_armies();
+                player_1_should_occupy_north_africa_with_6_armies();
         }
 
         [Fact]
@@ -192,7 +192,7 @@ namespace RISK.Tests.GuiWpf.Specifications
             var battle = new Battle(dicesRoller, new BattleOutcomeCalculator());
             var newArmiesDraftCalculator = new NewArmiesDraftCalculator(_continents);
             var gameStateFactory = new GameStateFactory(battle, newArmiesDraftCalculator);
-            _game = new Game(gameStateFactory, _players, _territories);
+            _game = new Game(gameStateFactory, newArmiesDraftCalculator, _players, _territories);
             _stateControllerFactory = new StateControllerFactory();
             _interactionStateFactory = new InteractionStateFactory();
 
@@ -350,10 +350,10 @@ namespace RISK.Tests.GuiWpf.Specifications
                 .Single(x => x.Region == region);
         }
 
-        private GamePlaySpec player_1_should_occupy_north_africa_with_2_armies()
+        private GamePlaySpec player_1_should_occupy_north_africa_with_6_armies()
         {
-            _game.GetTerritory(_regions.Brazil).Player.Should().Be(_player1, "player 1 should occupy North Africa");
-            _game.GetTerritory(_regions.Brazil).Armies.Should().Be(4, "North Africa should have 2 armies");
+            _game.GetTerritory(_regions.NorthAfrica).Player.Should().Be(_player1, "player 1 should occupy North Africa");
+            _game.GetTerritory(_regions.NorthAfrica).Armies.Should().Be(6, "North Africa should have 6 armies");
             return this;
         }
 

@@ -11,6 +11,7 @@ namespace RISK.Application.Play
         IPlayer CurrentPlayer { get; }
         ITerritory GetTerritory(IRegion region);
         int GetNumberOfArmiesToDraft();
+        void PlaceArmies(IRegion region, int numberOfArmies);
         bool CanAttack(ITerritory attackingTerritory, ITerritory defendingTerritory);
         void Attack(ITerritory attackingTerritory, ITerritory defendingTerritory);
         bool MustSendInArmiesToOccupyTerritory();
@@ -24,11 +25,13 @@ namespace RISK.Application.Play
     public class Game : IGame
     {
         private readonly IGameStateFactory _gameStateFactory;
+        private readonly INewArmiesDraftCalculator _newArmiesDraftCalculator;
         private IGameState _gameState;
 
-        public Game(IGameStateFactory gameStateFactory, IReadOnlyList<IPlayer> players, IReadOnlyList<ITerritory> initialTerritories)
+        public Game(IGameStateFactory gameStateFactory, INewArmiesDraftCalculator newArmiesDraftCalculator, IReadOnlyList<IPlayer> players, IReadOnlyList<ITerritory> initialTerritories)
         {
             _gameStateFactory = gameStateFactory;
+            _newArmiesDraftCalculator = newArmiesDraftCalculator;
 
             var gameData = new GameData(players.First(), players, initialTerritories.ToList());
 
@@ -39,7 +42,8 @@ namespace RISK.Application.Play
 
         private void Initialize(GameData gameData)
         {
-            _gameState = _gameStateFactory.CreateDraftArmiesGameState(gameData);
+            var numberOfArmiesToDraft = _newArmiesDraftCalculator.Calculate(gameData.CurrentPlayer, gameData.Territories);
+            _gameState = _gameStateFactory.CreateDraftArmiesGameState(gameData, numberOfArmiesToDraft);
         }
 
         public ITerritory GetTerritory(IRegion region)
@@ -50,6 +54,11 @@ namespace RISK.Application.Play
         public int GetNumberOfArmiesToDraft()
         {
             return _gameState.GetNumberOfArmiesToDraft();
+        }
+
+        public void PlaceArmies(IRegion region, int numberOfArmies)
+        {
+            _gameState = _gameState.PlaceArmies(region, numberOfArmies);
         }
 
         public bool CanAttack(ITerritory attackingTerritory, ITerritory defendingTerritory)

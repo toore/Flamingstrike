@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using RISK.Application.World;
 
 namespace RISK.Application.Play.GamePhases
 {
@@ -10,6 +11,7 @@ namespace RISK.Application.Play.GamePhases
         IPlayer CurrentPlayer { get; }
 
         int GetNumberOfArmiesToDraft();
+        IGameState PlaceArmies(IRegion region, int numberOfArmiesToPlace);
         bool CanAttack(ITerritory attackingTerritory, ITerritory defendingTerritory);
         IGameState Attack(ITerritory attackingTerritory, ITerritory defendingTerritory);
         bool MustSendInArmiesToOccupyTerritory();
@@ -34,6 +36,11 @@ namespace RISK.Application.Play.GamePhases
         public IReadOnlyList<ITerritory> Territories => _gameData.Territories;
 
         public virtual int GetNumberOfArmiesToDraft()
+        {
+            throw new InvalidOperationException();
+        }
+
+        public virtual IGameState PlaceArmies(IRegion region, int numberOfArmiesToPlace)
         {
             throw new InvalidOperationException();
         }

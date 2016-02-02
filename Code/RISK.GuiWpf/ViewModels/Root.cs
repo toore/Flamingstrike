@@ -76,7 +76,7 @@ namespace GuiWpf.ViewModels
             var battle = new Battle(diceRoller, battleCalculator);
             var newArmiesDraftCalculator = new NewArmiesDraftCalculator(continents);
             var gameStateFactory = new GameStateFactory(battle, newArmiesDraftCalculator);
-            var gameFactory = new GameFactory(gameStateFactory);
+            var gameFactory = new GameFactory(gameStateFactory, newArmiesDraftCalculator);
 
             GameSetupViewModelFactory = new GameSetupViewModelFactory(
                 gameFactory,
