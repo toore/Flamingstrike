@@ -1,8 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using RISK.Application.Extensions;
-using RISK.Application.Play.Attacking;
+using RISK.Application.Play.GamePhases;
 using RISK.Application.World;
 
 namespace RISK.Application.Play
@@ -11,10 +10,11 @@ namespace RISK.Application.Play
     {
         IPlayer CurrentPlayer { get; }
         ITerritory GetTerritory(IRegion region);
+        int GetNumberOfArmiesToDraft();
         bool CanAttack(ITerritory attackingTerritory, ITerritory defendingTerritory);
         void Attack(ITerritory attackingTerritory, ITerritory defendingTerritory);
-        void SendInArmiesToOccupyTerritory(int numberOfArmies);
         bool MustSendInArmiesToOccupyTerritory();
+        void SendInArmiesToOccupyTerritory(int numberOfArmies);
         bool CanFortify(ITerritory sourceTerritory, ITerritory destinationTerritory);
         void Fortify(ITerritory sourceTerritory, ITerritory destinationFortify);
         void EndTurn();
@@ -23,159 +23,89 @@ namespace RISK.Application.Play
 
     public class Game : IGame
     {
-        private readonly ICardFactory _cardFactory;
-        private readonly IBattle _battle;
+        private readonly IGameStateFactory _gameStateFactory;
+        private IGameState _gameState;
 
-        private bool _playerShouldReceiveCardWhenTurnEnds;
-        private readonly IReadOnlyList<IPlayer> _players;
-        private bool _mustSendInArmiesToOccupyTerritory;
-        private readonly IReadOnlyList<ITerritory> _territories;
-
-        public Game(IReadOnlyList<IPlayer> players, IReadOnlyList<ITerritory> initialTerritories, ICardFactory cardFactory, IBattle battle)
+        public Game(IGameStateFactory gameStateFactory, IReadOnlyList<IPlayer> players, IReadOnlyList<ITerritory> initialTerritories)
         {
-            _players = players;
-            _territories = initialTerritories;
-            _cardFactory = cardFactory;
-            _battle = battle;
+            _gameStateFactory = gameStateFactory;
 
-            SetStartingPlayer();
+            var gameData = new GameData(players.First(), players, initialTerritories.ToList());
+
+            Initialize(gameData);
         }
 
-        public IPlayer CurrentPlayer { get; private set; }
+        public IPlayer CurrentPlayer => _gameState.CurrentPlayer;
 
-        private void SetStartingPlayer()
+        private void Initialize(GameData gameData)
         {
-            CurrentPlayer = _players.First();
+            _gameState = _gameStateFactory.CreateDraftArmiesGameState(gameData);
         }
 
         public ITerritory GetTerritory(IRegion region)
         {
-            return _territories.Single(x => x.Region == region);
+            return _gameState.Territories.Single(x => x.Region == region);
+        }
+
+        public int GetNumberOfArmiesToDraft()
+        {
+            throw new NotImplementedException();
         }
 
         public bool CanAttack(ITerritory attackingTerritory, ITerritory defendingTerritory)
         {
-            ThrowIfTerritoriesDoesNotContain(attackingTerritory);
-            ThrowIfTerritoriesDoesNotContain(defendingTerritory);
-            if (_mustSendInArmiesToOccupyTerritory
-                ||
-                !IsCurrentPlayerAttacking(attackingTerritory))
-            {
-                return false;
-            }
-
-            var canAttack = HasBorder(attackingTerritory, defendingTerritory)
-                            &&
-                            IsAttackerAndDefenderDifferentPlayers(attackingTerritory, defendingTerritory)
-                            &&
-                            HasAttackerEnoughArmiesToPerformAttack(attackingTerritory);
-
-            return canAttack;
-        }
-
-        private bool IsCurrentPlayerAttacking(ITerritory attackingTerritory)
-        {
-            return CurrentPlayer == attackingTerritory.Player;
-        }
-
-        private static bool HasBorder(ITerritory attackingTerritory, ITerritory defendingTerritory)
-        {
-            return attackingTerritory.Region.HasBorder(defendingTerritory.Region);
-        }
-
-        private static bool HasAttackerEnoughArmiesToPerformAttack(ITerritory attackingTerritory)
-        {
-            return attackingTerritory.GetNumberOfArmiesAvailableForAttack() > 0;
-        }
-
-        private static bool IsAttackerAndDefenderDifferentPlayers(ITerritory attackingTerritory, ITerritory defendingTerritory)
-        {
-            return attackingTerritory.Player != defendingTerritory.Player;
+            return _gameState.CanAttack(attackingTerritory, defendingTerritory);
         }
 
         public void Attack(ITerritory attackingTerritory, ITerritory defendingTerritory)
         {
-            if (!CanAttack(attackingTerritory, defendingTerritory))
-            {
-                throw new InvalidOperationException();
-            }
-
-            var battleResult = _battle.Attack(attackingTerritory, defendingTerritory);
-
-            _mustSendInArmiesToOccupyTerritory = battleResult.IsDefenderDefeated();
-
-            //if (HasPlayerOccupiedTerritory(to))
-            //{
-            //    _playerShouldReceiveCardWhenTurnEnds = true;
-            //    return AttackResult.SucceededAndOccupying;
-            //}
+            _gameState = _gameState.Attack(attackingTerritory, defendingTerritory);
         }
 
         public bool MustSendInArmiesToOccupyTerritory()
         {
-            return _mustSendInArmiesToOccupyTerritory;
+            //return _mustSendInArmiesToOccupyTerritory;
+            return _gameState.MustSendInArmiesToOccupyTerritory();
         }
 
         public void SendInArmiesToOccupyTerritory(int numberOfArmies)
         {
-            if (!_mustSendInArmiesToOccupyTerritory)
-            {
-                throw new InvalidOperationException();
-            }
+            //if (!_mustSendInArmiesToOccupyTerritory)
+            //{
+            //    throw new InvalidOperationException();
+            //}
 
             throw new NotImplementedException();
         }
 
         public bool CanFortify(ITerritory sourceTerritory, ITerritory destinationTerritory)
         {
-            ThrowIfTerritoriesDoesNotContain(sourceTerritory);
-            ThrowIfTerritoriesDoesNotContain(destinationTerritory);
+            return _gameState.CanFortify(sourceTerritory, destinationTerritory);
+            //ThrowIfTerritoriesDoesNotContain(sourceTerritory);
+            //ThrowIfTerritoriesDoesNotContain(destinationTerritory);
 
-            return false;
-        }
-
-        private void ThrowIfTerritoriesDoesNotContain(ITerritory territory)
-        {
-            if (!_territories.Contains(territory))
-            {
-                throw new InvalidOperationException("Territory does not exist in game");
-            }
+            //return false;
         }
 
         public void Fortify(ITerritory sourceTerritory, ITerritory destinationFortify)
         {
-            if (!CanFortify(sourceTerritory, destinationFortify))
-            {
-                throw new InvalidOperationException();
-            }
+            _gameState = _gameState.Fortify(sourceTerritory, destinationFortify);
+            //if (!CanFortify(sourceTerritory, destinationFortify))
+            //{
+            //    throw new InvalidOperationException();
+            //}
 
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         public void EndTurn()
         {
-            if (_playerShouldReceiveCardWhenTurnEnds)
-            {
-                //PlayerId.AddCard(_cardFactory.Create());
-            }
-
-            _playerShouldReceiveCardWhenTurnEnds = false;
-            CurrentPlayer = GetNextPlayer();
-        }
-
-        private IPlayer GetNextPlayer()
-        {
-            return _players.ToList().GetNextOrFirst(CurrentPlayer);
+            _gameState = _gameState.EndTurn();
         }
 
         public bool IsGameOver()
         {
-            var allTerritoriesAreOccupiedBySamePlayer = _territories
-                .Select(x => x.Player)
-                .Distinct()
-                .Count() == 1;
-
-            return allTerritoriesAreOccupiedBySamePlayer;
+            return _gameState.IsGameOver();
         }
 
         //public FortifyMoveState(ITerritory selectedTerritory)
@@ -214,6 +144,22 @@ namespace RISK.Application.Play
 
         ////    _stateController.CurrentState = _interactionStateFactory.CreateFortifiedState(Player, _worldMap);
         ////}
+    }
+
+    public class GameData
+    {
+        public GameData(IPlayer currentPlayer, IReadOnlyList<IPlayer> players, IList<ITerritory> territories)
+        {
+            CurrentPlayer = currentPlayer;
+            Players = players;
+            Territories = territories;
+        }
+
+        public IPlayer CurrentPlayer { get; }
+
+        public IReadOnlyList<IPlayer> Players { get; }
+
+        public IList<ITerritory> Territories { get; }
     }
 
     public static class GameExtensions

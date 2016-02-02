@@ -3,6 +3,7 @@ using NSubstitute;
 using RISK.Application;
 using RISK.Application.Play;
 using RISK.Application.Play.Attacking;
+using RISK.Application.Play.GamePhases;
 using RISK.Application.Setup;
 using RISK.Application.World;
 using RISK.Tests.Application.Extensions;
@@ -13,6 +14,7 @@ namespace RISK.Tests.Application
 {
     public abstract class GameTestsBase
     {
+        private readonly IGameStateFactory _gameStateFactory;
         private readonly ICardFactory _cardFactory;
         private readonly IBattle _battle;
         private readonly GameFactory _gameFactory;
@@ -22,7 +24,8 @@ namespace RISK.Tests.Application
             _cardFactory = Substitute.For<ICardFactory>();
             _battle = Substitute.For<IBattle>();
 
-            _gameFactory = new GameFactory(_cardFactory, _battle);
+            _gameStateFactory = new GameStateFactory(_battle);
+            _gameFactory = new GameFactory(_gameStateFactory);
         }
 
         private IGame Create(IGamePlaySetup gamePlaySetup)

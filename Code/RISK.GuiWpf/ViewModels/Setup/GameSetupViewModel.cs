@@ -108,7 +108,6 @@ namespace GuiWpf.ViewModels.Setup
 
             PlayerName = playerName;
 
-            //string.Format(Resources.PLACE_ARMY, armiesLeftToPlace);
             InformationText = string.Format(ResourceManager.Instance.GetString("PLACE_ARMY"), armiesLeftToPlace);
         }
 

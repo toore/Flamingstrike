@@ -1,4 +1,4 @@
-using RISK.Application.Play.Attacking;
+using RISK.Application.Play.GamePhases;
 using RISK.Application.Setup;
 
 namespace RISK.Application.Play
@@ -10,18 +10,16 @@ namespace RISK.Application.Play
 
     public class GameFactory : IGameFactory
     {
-        private readonly ICardFactory _cardFactory;
-        private readonly IBattle _battle;
+        private readonly IGameStateFactory _gameStateFactory;
 
-        public GameFactory(ICardFactory cardFactory, IBattle battle)
+        public GameFactory(IGameStateFactory gameStateFactory)
         {
-            _cardFactory = cardFactory;
-            _battle = battle;
+            _gameStateFactory = gameStateFactory;
         }
 
         public IGame Create(IGamePlaySetup gamePlaySetup)
         {
-            var game = new Game(gamePlaySetup.Players, gamePlaySetup.Territories, _cardFactory, _battle);
+            var game = new Game(_gameStateFactory, gamePlaySetup.Players, gamePlaySetup.Territories);
 
             return game;
         }

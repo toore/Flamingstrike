@@ -8,6 +8,7 @@ using GuiWpf.ViewModels.Settings;
 using GuiWpf.ViewModels.Setup;
 using RISK.Application.Play;
 using RISK.Application.Play.Attacking;
+using RISK.Application.Play.GamePhases;
 using RISK.Application.Setup;
 using RISK.Application.Shuffling;
 using RISK.Application.World;
@@ -72,7 +73,8 @@ namespace GuiWpf.ViewModels
             var dice = new Dice(randomWrapper);
             var diceRoller = new DicesRoller(dice);
             var battle = new Battle(diceRoller, battleCalculator);
-            var gameFactory = new GameFactory(cardFactory, battle);
+            var gameStateFactory = new GameStateFactory(battle);
+            var gameFactory = new GameFactory(gameStateFactory);
 
             GameSetupViewModelFactory = new GameSetupViewModelFactory(
                 gameFactory,

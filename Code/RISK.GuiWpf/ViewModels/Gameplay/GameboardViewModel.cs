@@ -75,7 +75,7 @@ namespace GuiWpf.ViewModels.Gameplay
             WorldMapViewModel = _worldMapViewModelFactory.Create(allTerritories, OnTerritoryClick, Enumerable.Empty<IRegion>());
 
             _stateController = _stateControllerFactory.Create(_game);
-            _stateController.CurrentState = _interactionStateFactory.CreateSelectState();
+            _stateController.CurrentState = _interactionStateFactory.CreateDraftArmiesState();
 
             UpdateGame();
         }

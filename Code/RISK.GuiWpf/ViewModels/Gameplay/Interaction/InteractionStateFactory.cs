@@ -1,7 +1,10 @@
+using RISK.Application.Play.GamePhases;
+
 namespace GuiWpf.ViewModels.Gameplay.Interaction
 {
     public interface IInteractionStateFactory
     {
+        IInteractionState CreateDraftArmiesState();
         IInteractionState CreateSelectState();
         IInteractionState CreateAttackState();
         IInteractionState CreateFortifySelectState();
@@ -11,6 +14,11 @@ namespace GuiWpf.ViewModels.Gameplay.Interaction
 
     public class InteractionStateFactory : IInteractionStateFactory
     {
+        public IInteractionState CreateDraftArmiesState()
+        {
+            return new DraftArmiesState();
+        }
+
         public IInteractionState CreateSelectState()
         {
             return new SelectState(this);

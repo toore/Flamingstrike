@@ -12,6 +12,7 @@ using NSubstitute;
 using RISK.Application;
 using RISK.Application.Play;
 using RISK.Application.Play.Attacking;
+using RISK.Application.Play.GamePhases;
 using RISK.Application.World;
 using Toore.Shuffling;
 using Xunit;
@@ -34,7 +35,7 @@ namespace RISK.Tests.GuiWpf.Specifications
         private IInteractionStateFactory _interactionStateFactory;
 
         [Fact]
-        public void Moves_armies_into_Brazil_after_win()
+        public void Armies_are_drafted()
         {
             Given.
                 a_game_with_two_players().
@@ -44,12 +45,30 @@ namespace RISK.Tests.GuiWpf.Specifications
                 game_is_started();
 
             When.
-                player_one_selects_north_africa().
-                and_attacks_brazil_and_wins().
-                one_army_is_moved_to_brazil();
+                player_1_selects_north_africa();
 
             Then.
-                player_1_should_occupy_Brazil_with_4_armies();
+                player_1_should_occupy_north_africa_with_2_armies();
+        }
+
+        [Fact]
+        public void Occupies_brazil_after_win()
+        {
+            Given.
+                a_game_with_two_players().
+                player_1_occupies_every_territory_except_brazil_and_venezuela_and_north_africa_with_one_army_each().
+                player_1_has_5_armies_in_north_africa().
+                player_2_occupies_brazil_and_venezuela_with_one_army_each().
+                game_is_started();
+
+            When.
+                player_1_selects_north_africa().
+                and_attacks_brazil_and_wins().
+                one_additional_army_is_sent_to_occupy_brazil();
+
+            Then.
+                player_1_should_occupy_brazil_with_4_armies().
+                player_1_has_one_army_in_north_africa();
         }
 
         [Fact]
@@ -79,7 +98,7 @@ namespace RISK.Tests.GuiWpf.Specifications
                 player_2_occupies_brazil_and_venezuela_with_one_army_each();
 
             When.
-                player_one_selects_north_africa().
+                player_1_selects_north_africa().
                 and_attacks_brazil_and_wins().
                 turn_ends();
 
@@ -169,7 +188,8 @@ namespace RISK.Tests.GuiWpf.Specifications
             var dice = new Dice(randomWrapper);
             var dicesRoller = new DicesRoller(dice);
             var battle = new Battle(dicesRoller, new BattleOutcomeCalculator());
-            _game = new Game(_players, _territories, cardFactory, battle);
+            var gameStateFactory = new GameStateFactory(battle);
+            _game = new Game(gameStateFactory, _players, _territories);
             _stateControllerFactory = new StateControllerFactory();
             _interactionStateFactory = new InteractionStateFactory();
 
@@ -279,7 +299,7 @@ namespace RISK.Tests.GuiWpf.Specifications
             //    });
         }
 
-        private GamePlaySpec player_one_selects_north_africa()
+        private GamePlaySpec player_1_selects_north_africa()
         {
             ClickOn(_regions.NorthAfrica);
             return this;
@@ -292,7 +312,7 @@ namespace RISK.Tests.GuiWpf.Specifications
             return this;
         }
 
-        private GamePlaySpec one_army_is_moved_to_brazil()
+        private GamePlaySpec one_additional_army_is_sent_to_occupy_brazil()
         {
             _game.SendInArmiesToOccupyTerritory(1);
             return this;
@@ -315,9 +335,9 @@ namespace RISK.Tests.GuiWpf.Specifications
             _gameboardViewModel.EndTurn();
         }
 
-        private void ClickOn(IRegion location)
+        private void ClickOn(IRegion region)
         {
-            GetTerritoryViewModel(location).OnClick();
+            GetTerritoryViewModel(region).OnClick();
         }
 
         private IRegionViewModel GetTerritoryViewModel(IRegion region)
@@ -327,12 +347,25 @@ namespace RISK.Tests.GuiWpf.Specifications
                 .Single(x => x.Region == region);
         }
 
-        private void player_1_should_occupy_Brazil_with_4_armies()
+        private GamePlaySpec player_1_should_occupy_north_africa_with_2_armies()
+        {
+            _game.GetTerritory(_regions.Brazil).Player.Should().Be(_player1, "player 1 should occupy North Africa");
+            _game.GetTerritory(_regions.Brazil).Armies.Should().Be(4, "North Africa should have 2 armies");
+            return this;
+        }
+
+        private GamePlaySpec player_1_should_occupy_brazil_with_4_armies()
+        {
+            _game.GetTerritory(_regions.Brazil).Player.Should().Be(_player1, "player 1 should occupy Brazil");
+            _game.GetTerritory(_regions.Brazil).Armies.Should().Be(4, "Brazil should have 4 armies");
+            return this;
+        }
+
+        private GamePlaySpec player_1_has_one_army_in_north_africa()
         {
             _game.GetTerritory(_regions.NorthAfrica).Player.Should().Be(_player1, "player 1 should occupy North Africa");
             _game.GetTerritory(_regions.NorthAfrica).Armies.Should().Be(1, "North Africa should have 1 army");
-            _game.GetTerritory(_regions.Brazil).Player.Should().Be(_player1, "player 1 should occupy Brazil");
-            _game.GetTerritory(_regions.Brazil).Armies.Should().Be(4, "Brazil should have 4 armies");
+            return this;
         }
 
         private void player_1_is_the_winner()

@@ -81,6 +81,7 @@
       <DependentUpon>GameSetupView.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\Gameplay\Interaction\AttackState.cs" />
+    <Compile Include="ViewModels\Gameplay\Interaction\DraftArmiesState.cs" />
     <Compile Include="ViewModels\Gameplay\Interaction\FortifyMoveState.cs" />
     <Compile Include="ViewModels\Gameplay\Interaction\FortifySelectState.cs" />
     <Compile Include="ViewModels\Gameplay\Interaction\IInteractionState.cs" />
