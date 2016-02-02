@@ -6,9 +6,10 @@ namespace RISK.Application.Play.GamePhases
 {
     public interface IGameState
     {
-        IList<ITerritory> Territories { get; }
+        IReadOnlyList<ITerritory> Territories { get; }
         IPlayer CurrentPlayer { get; }
 
+        int GetNumberOfArmiesToDraft();
         bool CanAttack(ITerritory attackingTerritory, ITerritory defendingTerritory);
         IGameState Attack(ITerritory attackingTerritory, ITerritory defendingTerritory);
         bool MustSendInArmiesToOccupyTerritory();
@@ -30,7 +31,12 @@ namespace RISK.Application.Play.GamePhases
 
         public IPlayer CurrentPlayer => _gameData.CurrentPlayer;
         protected IReadOnlyList<IPlayer> Players => _gameData.Players;
-        public IList<ITerritory> Territories => _gameData.Territories;
+        public IReadOnlyList<ITerritory> Territories => _gameData.Territories;
+
+        public virtual int GetNumberOfArmiesToDraft()
+        {
+            throw new InvalidOperationException();
+        }
 
         public virtual bool CanAttack(ITerritory attackingTerritory, ITerritory defendingTerritory)
         {

@@ -17,22 +17,20 @@ namespace GuiWpf.ViewModels.Gameplay.Map
 
     public class WorldMapViewModelFactory : IWorldMapViewModelFactory
     {
-        private readonly IRegions _regions;
-        private readonly IWorldMapModelFactory _worldMapModelFactory;
+        private readonly IRegionModelFactory _regionModelFactory;
         private readonly ITerritoryColorsFactory _territoryColorsFactory;
         private readonly IColorService _colorService;
 
-        public WorldMapViewModelFactory(IRegions regions, IWorldMapModelFactory worldMapModelFactory, ITerritoryColorsFactory territoryColorsFactory, IColorService colorService)
+        public WorldMapViewModelFactory(IRegionModelFactory regionModelFactory, ITerritoryColorsFactory territoryColorsFactory, IColorService colorService)
         {
-            _regions = regions;
-            _worldMapModelFactory = worldMapModelFactory;
+            _regionModelFactory = regionModelFactory;
             _territoryColorsFactory = territoryColorsFactory;
             _colorService = colorService;
         }
 
         public WorldMapViewModel Create(IReadOnlyList<ITerritory> territories, Action<IRegion> onClick, IEnumerable<IRegion> enabledTerritories)
         {
-            var territoryModels = _worldMapModelFactory.Create(_regions);
+            var territoryModels = _regionModelFactory.Create();
 
             var worldMapViewModels = territoryModels
                 .SelectMany(x => CreateViewModels(x, onClick))

@@ -141,7 +141,7 @@
     <Compile Include="ViewModels\Settings\PlayerIdFactory.cs" />
     <Compile Include="ViewModels\Settings\PlayerSetupViewModel.cs" />
     <Compile Include="ViewModels\Gameplay\Map\IRegionViewModel.cs" />
-    <Compile Include="TerritoryModels\WorldMapModelFactory.cs" />
+    <Compile Include="TerritoryModels\RegionModelFactory.cs" />
     <Compile Include="ViewModels\Settings\PlayerTypeBase.cs" />
     <Compile Include="ViewModels\Settings\PlayerTypes.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />

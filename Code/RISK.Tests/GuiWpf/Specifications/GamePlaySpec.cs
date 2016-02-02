@@ -33,6 +33,7 @@ namespace RISK.Tests.GuiWpf.Specifications
         private IGame _game;
         private IStateControllerFactory _stateControllerFactory;
         private IInteractionStateFactory _interactionStateFactory;
+        private Continents _continents;
 
         [Fact]
         public void Armies_are_drafted()
@@ -168,7 +169,8 @@ namespace RISK.Tests.GuiWpf.Specifications
 
         private GamePlaySpec a_game_with_two_players()
         {
-            _regions = new Regions();
+            _continents = new Continents();
+            _regions = new Regions(_continents);
 
             _dice = Substitute.For<IDice>();
             _windowManager = Substitute.For<IWindowManager>();
@@ -188,12 +190,13 @@ namespace RISK.Tests.GuiWpf.Specifications
             var dice = new Dice(randomWrapper);
             var dicesRoller = new DicesRoller(dice);
             var battle = new Battle(dicesRoller, new BattleOutcomeCalculator());
-            var gameStateFactory = new GameStateFactory(battle);
+            var newArmiesDraftCalculator = new NewArmiesDraftCalculator(_continents);
+            var gameStateFactory = new GameStateFactory(battle, newArmiesDraftCalculator);
             _game = new Game(gameStateFactory, _players, _territories);
             _stateControllerFactory = new StateControllerFactory();
             _interactionStateFactory = new InteractionStateFactory();
 
-            var worldMapModelFactory = new WorldMapModelFactory();
+            var regionModelFactory = new RegionModelFactory(_regions);
             var colorService = new ColorService();
             var eventAggregator = new EventAggregator();
             var territoryColorsFactory = new TerritoryColorsFactory(colorService, _regions);
@@ -201,7 +204,7 @@ namespace RISK.Tests.GuiWpf.Specifications
             var confirmViewModelFactory = new ConfirmViewModelFactory(screenService);
             var userNotifier = new UserNotifier(_windowManager, confirmViewModelFactory);
             var dialogManager = new DialogManager(userNotifier);
-            var worldMapViewModelFactory = new WorldMapViewModelFactory(_regions, worldMapModelFactory, territoryColorsFactory, colorService);
+            var worldMapViewModelFactory = new WorldMapViewModelFactory(regionModelFactory, territoryColorsFactory, colorService);
 
             var gameOverViewModelFactory = Substitute.For<IGameOverViewModelFactory>();
             _gameOverAndPlayer1IsTheWinnerViewModel = new GameOverViewModel("");

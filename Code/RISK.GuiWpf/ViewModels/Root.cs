@@ -45,11 +45,12 @@ namespace GuiWpf.ViewModels
             var stateControllerFactory = new StateControllerFactory();
             var interactionStateFactory = new InteractionStateFactory();
             var colorService = new ColorService();
-            var worldMap = new Regions();
-            var territoryColorsFactory = new TerritoryColorsFactory(colorService, worldMap);
-            var worldMapModelFactory = new WorldMapModelFactory();
+            var continents = new Continents();
+            var regions = new Regions(continents);
+            var territoryColorsFactory = new TerritoryColorsFactory(colorService, regions);
+            var regionModelFactory = new RegionModelFactory(regions);
             var worldMapViewModelFactory = new WorldMapViewModelFactory(
-                worldMap, worldMapModelFactory, territoryColorsFactory, colorService);
+                regionModelFactory, territoryColorsFactory, colorService);
             var windowManager = new WindowManager();
             var gameOverViewModelFactory = new GameOverViewModelFactory();
             var screenService = new ScreenService();
@@ -60,7 +61,7 @@ namespace GuiWpf.ViewModels
             GameboardViewModelFactory = new GameboardViewModelFactory(
                 stateControllerFactory,
                 interactionStateFactory,
-                worldMap,
+                regions,
                 worldMapViewModelFactory,
                 windowManager,
                 gameOverViewModelFactory,
@@ -73,7 +74,8 @@ namespace GuiWpf.ViewModels
             var dice = new Dice(randomWrapper);
             var diceRoller = new DicesRoller(dice);
             var battle = new Battle(diceRoller, battleCalculator);
-            var gameStateFactory = new GameStateFactory(battle);
+            var newArmiesDraftCalculator = new NewArmiesDraftCalculator(continents);
+            var gameStateFactory = new GameStateFactory(battle, newArmiesDraftCalculator);
             var gameFactory = new GameFactory(gameStateFactory);
 
             GameSetupViewModelFactory = new GameSetupViewModelFactory(
@@ -87,7 +89,7 @@ namespace GuiWpf.ViewModels
             var startingInfantryCalculator = new StartingInfantryCalculator();
 
             AlternateGameSetupFactory = new AlternateGameSetupFactory(
-                worldMap, shuffler, startingInfantryCalculator);
+                regions, shuffler, startingInfantryCalculator);
 
             var userInteractionFactory = new UserInteractionFactory();
             var guiThreadDispatcher = new GuiThreadDispatcher();

@@ -6,13 +6,16 @@ using Xunit;
 
 namespace RISK.Tests.Application
 {
-    public class WorldMapTests
+    public class RegionsTests
     {
         private readonly Regions _sut;
+        private readonly Continents _continents;
 
-        public WorldMapTests()
+        public RegionsTests()
         {
-            _sut = new Regions();
+            _continents = new Continents();
+
+            _sut = new Regions(_continents);
         }
 
         [Fact]
@@ -31,7 +34,7 @@ namespace RISK.Tests.Application
         [Fact]
         public void Alaska_is_in_north_america()
         {
-            Alaska.Continent.Should().Be(Continent.NorthAmerica);
+            Alaska.Continent.Should().Be(_continents.NorthAmerica);
         }
 
         [Fact]
@@ -43,7 +46,7 @@ namespace RISK.Tests.Application
         [Fact]
         public void Alberta_is_in_north_america_has_border_to_alaska_and_northwest_territory_and_ontario_and_western_united_states()
         {
-            Alberta.Continent.Should().Be(Continent.NorthAmerica);
+            Alberta.Continent.Should().Be(_continents.NorthAmerica);
             AssertTerritoryBorders(Alberta, Alaska, Northwest, Ontario, WesternUnitedStates);
         }
 
@@ -102,37 +105,37 @@ namespace RISK.Tests.Application
         [Fact]
         public void North_america_has_9()
         {
-            AssertTerritoriesInContinent(Continent.NorthAmerica, Alaska, Alberta, CentralAmerica, EasternUnitedStates, Greenland, Northwest, Ontario, Quebec, WesternUnitedStates);
+            AssertTerritoriesInContinent(_continents.NorthAmerica, Alaska, Alberta, CentralAmerica, EasternUnitedStates, Greenland, Northwest, Ontario, Quebec, WesternUnitedStates);
         }
 
         [Fact]
         public void South_america_has_4()
         {
-            AssertTerritoriesInContinent(Continent.SouthAmerica, Argentina, Brazil, Peru, Venezuela);
+            AssertTerritoriesInContinent(_continents.SouthAmerica, Argentina, Brazil, Peru, Venezuela);
         }
 
         [Fact]
         public void Europe_has_7()
         {
-            AssertTerritoriesInContinent(Continent.Europe, GreatBritain, Iceland, NorthernEurope, Scandinavia, SouthernEurope, Ukraine, WesternEurope);
+            AssertTerritoriesInContinent(_continents.Europe, GreatBritain, Iceland, NorthernEurope, Scandinavia, SouthernEurope, Ukraine, WesternEurope);
         }
 
         [Fact]
         public void Africa_has_6()
         {
-            AssertTerritoriesInContinent(Continent.Africa, Congo, EastAfrica, Egypt, Madagascar, NorthAfrica, SouthAfrica);
+            AssertTerritoriesInContinent(_continents.Africa, Congo, EastAfrica, Egypt, Madagascar, NorthAfrica, SouthAfrica);
         }
 
         [Fact]
         public void Asia_has_12()
         {
-            AssertTerritoriesInContinent(Continent.Asia, Afghanistan, China, India, Irkutsk, Japan, Kamchatka, MiddleEast, Mongolia, Siam, Siberia, Ural, Yakutsk);
+            AssertTerritoriesInContinent(_continents.Asia, Afghanistan, China, India, Irkutsk, Japan, Kamchatka, MiddleEast, Mongolia, Siam, Siberia, Ural, Yakutsk);
         }
 
         [Fact]
         public void Australia_has_4()
         {
-            AssertTerritoriesInContinent(Continent.Australia, EasternAustralia, Indonesia, NewGuinea, WesternAustralia);
+            AssertTerritoriesInContinent(_continents.Australia, EasternAustralia, Indonesia, NewGuinea, WesternAustralia);
         }
 
         [Fact]
@@ -196,9 +199,11 @@ namespace RISK.Tests.Application
             }
         }
 
-        private void AssertTerritoriesInContinent(Continent continent, params IRegion[] expected)
+        private void AssertTerritoriesInContinent(IContinent continent, params IRegion[] expected)
         {
-            var actual = GetAll().Where(x => x.Continent == continent).ToList();
+            var actual = GetAll()
+                .Where(x => x.Continent == continent)
+                .ToList();
 
             actual.Should().BeEquivalentTo(expected.AsEnumerable());
         }

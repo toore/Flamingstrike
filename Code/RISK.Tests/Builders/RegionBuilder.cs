@@ -4,7 +4,7 @@ namespace RISK.Tests.Builders
 {
     public class RegionBuilder
     {
-        private readonly Continent _continent = Continent.Europe;
+        private readonly Continent _continent = Make.Continent.Build();
 
         public Region Build()
         {

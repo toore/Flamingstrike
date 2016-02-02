@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using RISK.Application.Play.Attacking;
 
 namespace RISK.Application.Play.GamePhases
@@ -11,15 +12,19 @@ namespace RISK.Application.Play.GamePhases
     public class GameStateFactory : IGameStateFactory
     {
         private readonly IBattle _battle;
+        private readonly INewArmiesDraftCalculator _newArmiesDraftCalculator;
 
-        public GameStateFactory(IBattle battle)
+        public GameStateFactory(IBattle battle, INewArmiesDraftCalculator newArmiesDraftCalculator)
         {
             _battle = battle;
+            _newArmiesDraftCalculator = newArmiesDraftCalculator;
         }
 
         public IGameState CreateDraftArmiesGameState(GameData gameData)
         {
-            return new DraftArmiesGameState(this, gameData);
+            var numberOfArmiesToDraft = _newArmiesDraftCalculator.Calculate(gameData.CurrentPlayer, gameData.Territories);
+
+            return new DraftArmiesGameState(this, gameData, numberOfArmiesToDraft);
         }
 
         public IGameState CreateAttackState(GameData gameData)

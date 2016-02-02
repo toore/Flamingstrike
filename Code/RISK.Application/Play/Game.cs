@@ -49,7 +49,7 @@ namespace RISK.Application.Play
 
         public int GetNumberOfArmiesToDraft()
         {
-            throw new NotImplementedException();
+            return _gameState.GetNumberOfArmiesToDraft();
         }
 
         public bool CanAttack(ITerritory attackingTerritory, ITerritory defendingTerritory)
@@ -148,7 +148,7 @@ namespace RISK.Application.Play
 
     public class GameData
     {
-        public GameData(IPlayer currentPlayer, IReadOnlyList<IPlayer> players, IList<ITerritory> territories)
+        public GameData(IPlayer currentPlayer, IReadOnlyList<IPlayer> players, IReadOnlyList<ITerritory> territories)
         {
             CurrentPlayer = currentPlayer;
             Players = players;
@@ -159,7 +159,7 @@ namespace RISK.Application.Play
 
         public IReadOnlyList<IPlayer> Players { get; }
 
-        public IList<ITerritory> Territories { get; }
+        public IReadOnlyList<ITerritory> Territories { get; }
     }
 
     public static class GameExtensions

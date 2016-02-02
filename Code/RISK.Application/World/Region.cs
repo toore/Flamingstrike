@@ -4,7 +4,7 @@ namespace RISK.Application.World
 {
     public interface IRegion
     {
-        Continent Continent { get; }
+        IContinent Continent { get; }
         IReadOnlyList<IRegion> GetBorderingTerritories { get; }
         bool HasBorder(IRegion region);
     }
@@ -13,13 +13,13 @@ namespace RISK.Application.World
     {
         private readonly List<IRegion> _borderingTerritories;
 
-        public Region(Continent continent)
+        public Region(IContinent continent)
         {
             Continent = continent;
             _borderingTerritories = new List<IRegion>();
         }
 
-        public Continent Continent { get; }
+        public IContinent Continent { get; }
         public IReadOnlyList<IRegion> GetBorderingTerritories => _borderingTerritories;
 
         public bool HasBorder(IRegion region)

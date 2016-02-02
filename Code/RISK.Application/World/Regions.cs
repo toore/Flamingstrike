@@ -52,55 +52,55 @@ namespace RISK.Application.World
 
     public class Regions : IRegions
     {
-        public Regions()
+        public Regions(IContinents continents)
         {
-            var alaska = new Region(Continent.NorthAmerica);
-            var alberta = new Region(Continent.NorthAmerica);
-            var centralAmerica = new Region(Continent.NorthAmerica);
-            var easternUnitedStates = new Region(Continent.NorthAmerica);
-            var greenland = new Region(Continent.NorthAmerica);
-            var northwestTerritory = new Region(Continent.NorthAmerica);
-            var ontario = new Region(Continent.NorthAmerica);
-            var quebec = new Region(Continent.NorthAmerica);
-            var westernUnitedStates = new Region(Continent.NorthAmerica);
+            var alaska = new Region(continents.NorthAmerica);
+            var alberta = new Region(continents.NorthAmerica);
+            var centralAmerica = new Region(continents.NorthAmerica);
+            var easternUnitedStates = new Region(continents.NorthAmerica);
+            var greenland = new Region(continents.NorthAmerica);
+            var northwestTerritory = new Region(continents.NorthAmerica);
+            var ontario = new Region(continents.NorthAmerica);
+            var quebec = new Region(continents.NorthAmerica);
+            var westernUnitedStates = new Region(continents.NorthAmerica);
 
-            var argentina = new Region(Continent.SouthAmerica);
-            var brazil = new Region(Continent.SouthAmerica);
-            var peru = new Region(Continent.SouthAmerica);
-            var venezuela = new Region(Continent.SouthAmerica);
+            var argentina = new Region(continents.SouthAmerica);
+            var brazil = new Region(continents.SouthAmerica);
+            var peru = new Region(continents.SouthAmerica);
+            var venezuela = new Region(continents.SouthAmerica);
 
-            var greatBritain = new Region(Continent.Europe);
-            var iceland = new Region(Continent.Europe);
-            var northernEurope = new Region(Continent.Europe);
-            var scandinavia = new Region(Continent.Europe);
-            var southernEurope = new Region(Continent.Europe);
-            var ukraine = new Region(Continent.Europe);
-            var westernEurope = new Region(Continent.Europe);
+            var greatBritain = new Region(continents.Europe);
+            var iceland = new Region(continents.Europe);
+            var northernEurope = new Region(continents.Europe);
+            var scandinavia = new Region(continents.Europe);
+            var southernEurope = new Region(continents.Europe);
+            var ukraine = new Region(continents.Europe);
+            var westernEurope = new Region(continents.Europe);
 
-            var congo = new Region(Continent.Africa);
-            var eastAfrica = new Region(Continent.Africa);
-            var egypt = new Region(Continent.Africa);
-            var madagascar = new Region(Continent.Africa);
-            var northAfrica = new Region(Continent.Africa);
-            var southAfrica = new Region(Continent.Africa);
+            var congo = new Region(continents.Africa);
+            var eastAfrica = new Region(continents.Africa);
+            var egypt = new Region(continents.Africa);
+            var madagascar = new Region(continents.Africa);
+            var northAfrica = new Region(continents.Africa);
+            var southAfrica = new Region(continents.Africa);
 
-            var afghanistan = new Region(Continent.Asia);
-            var china = new Region(Continent.Asia);
-            var india = new Region(Continent.Asia);
-            var irkutsk = new Region(Continent.Asia);
-            var japan = new Region(Continent.Asia);
-            var kamchatka = new Region(Continent.Asia);
-            var middleEast = new Region(Continent.Asia);
-            var mongolia = new Region(Continent.Asia);
-            var siam = new Region(Continent.Asia);
-            var siberia = new Region(Continent.Asia);
-            var ural = new Region(Continent.Asia);
-            var yakutsk = new Region(Continent.Asia);
+            var afghanistan = new Region(continents.Asia);
+            var china = new Region(continents.Asia);
+            var india = new Region(continents.Asia);
+            var irkutsk = new Region(continents.Asia);
+            var japan = new Region(continents.Asia);
+            var kamchatka = new Region(continents.Asia);
+            var middleEast = new Region(continents.Asia);
+            var mongolia = new Region(continents.Asia);
+            var siam = new Region(continents.Asia);
+            var siberia = new Region(continents.Asia);
+            var ural = new Region(continents.Asia);
+            var yakutsk = new Region(continents.Asia);
 
-            var easternAustralia = new Region(Continent.Australia);
-            var indonesia = new Region(Continent.Australia);
-            var newGuinea = new Region(Continent.Australia);
-            var westernAustralia = new Region(Continent.Australia);
+            var easternAustralia = new Region(continents.Australia);
+            var indonesia = new Region(continents.Australia);
+            var newGuinea = new Region(continents.Australia);
+            var westernAustralia = new Region(continents.Australia);
 
             alaska.AddBorders(alberta, northwestTerritory, kamchatka);
             alberta.AddBorders(alaska, northwestTerritory, ontario, westernUnitedStates);

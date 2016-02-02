@@ -14,23 +14,24 @@ namespace RISK.Tests.Application
 {
     public abstract class GameTestsBase
     {
-        private readonly IGameStateFactory _gameStateFactory;
+        private readonly GameFactory _factory;
         private readonly ICardFactory _cardFactory;
         private readonly IBattle _battle;
-        private readonly GameFactory _gameFactory;
+        private readonly INewArmiesDraftCalculator _newArmiesDraftCalculator;
 
         protected GameTestsBase()
         {
             _cardFactory = Substitute.For<ICardFactory>();
             _battle = Substitute.For<IBattle>();
+            _newArmiesDraftCalculator = Substitute.For<INewArmiesDraftCalculator>();
 
-            _gameStateFactory = new GameStateFactory(_battle);
-            _gameFactory = new GameFactory(_gameStateFactory);
+            var gameStateFactory = new GameStateFactory(_battle, _newArmiesDraftCalculator);
+            _factory = new GameFactory(gameStateFactory);
         }
 
         private IGame Create(IGamePlaySetup gamePlaySetup)
         {
-            return _gameFactory.Create(gamePlaySetup);
+            return _factory.Create(gamePlaySetup);
         }
 
         public class InitializationTests : GameTestsBase
