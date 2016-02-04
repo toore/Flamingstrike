@@ -15,7 +15,7 @@ namespace GuiWpf.ViewModels.Gameplay.Interaction
         public void OnClick(IStateController stateController, IRegion region)
         {
             var numberOfArmies = 1;
-            stateController.Game.PlaceArmies(region, numberOfArmies);
+            stateController.Game.PlaceDraftArmies(region, numberOfArmies);
         }
     }
 }

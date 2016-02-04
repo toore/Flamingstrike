@@ -7,17 +7,17 @@ namespace RISK.Application.Play.GamePhases
 {
     public interface IGameState
     {
-        IReadOnlyList<ITerritory> Territories { get; }
         IPlayer CurrentPlayer { get; }
+        ITerritory GetTerritory(IRegion region);
 
         int GetNumberOfArmiesToDraft();
-        IGameState PlaceArmies(IRegion region, int numberOfArmiesToPlace);
-        bool CanAttack(ITerritory attackingTerritory, ITerritory defendingTerritory);
-        IGameState Attack(ITerritory attackingTerritory, ITerritory defendingTerritory);
-        bool MustSendInArmiesToOccupyTerritory();
-        void SendInArmiesToOccupyTerritory(int numberOfArmies);
-        bool CanFortify(ITerritory sourceTerritory, ITerritory destinationTerritory);
-        IGameState Fortify(ITerritory sourceTerritory, ITerritory destinationFortify);
+        IGameState PlaceDraftArmies(IRegion region, int numberOfArmiesToPlace);
+        bool CanAttack(IRegion attackingRegion, IRegion defendingRegion);
+        IGameState Attack(IRegion attackingRegion, IRegion defendingRegion);
+        bool CanSendInArmiesToOccupy();
+        IGameState SendInArmiesToOccupy(int numberOfArmies);
+        bool CanFortify(IRegion sourceTerritory, IRegion destinationTerritory);
+        IGameState Fortify(IRegion sourceTerritory, IRegion destinationFortify);
         IGameState EndTurn();
         bool IsGameOver();
     }
@@ -33,44 +33,49 @@ namespace RISK.Application.Play.GamePhases
 
         public IPlayer CurrentPlayer => _gameData.CurrentPlayer;
         protected IReadOnlyList<IPlayer> Players => _gameData.Players;
-        public IReadOnlyList<ITerritory> Territories => _gameData.Territories;
+        protected IReadOnlyList<ITerritory> Territories => _gameData.Territories;
+
+        public ITerritory GetTerritory(IRegion region)
+        {
+            return Territories.GetTerritory(region);
+        }
 
         public virtual int GetNumberOfArmiesToDraft()
         {
             throw new InvalidOperationException();
         }
 
-        public virtual IGameState PlaceArmies(IRegion region, int numberOfArmiesToPlace)
+        public virtual IGameState PlaceDraftArmies(IRegion region, int numberOfArmiesToPlace)
         {
             throw new InvalidOperationException();
         }
 
-        public virtual bool CanAttack(ITerritory attackingTerritory, ITerritory defendingTerritory)
+        public virtual bool CanAttack(IRegion attackingRegion, IRegion defendingRegion)
         {
             throw new InvalidOperationException();
         }
 
-        public virtual IGameState Attack(ITerritory attackingTerritory, ITerritory defendingTerritory)
+        public virtual IGameState Attack(IRegion attackingRegion, IRegion defendingRegion)
         {
             throw new InvalidOperationException();
         }
 
-        public virtual bool MustSendInArmiesToOccupyTerritory()
+        public virtual bool CanSendInArmiesToOccupy()
         {
             throw new InvalidOperationException();
         }
 
-        public virtual void SendInArmiesToOccupyTerritory(int numberOfArmies)
+        public virtual IGameState SendInArmiesToOccupy(int numberOfArmies)
         {
             throw new InvalidOperationException();
         }
 
-        public virtual bool CanFortify(ITerritory sourceTerritory, ITerritory destinationTerritory)
+        public virtual bool CanFortify(IRegion sourceTerritory, IRegion destinationTerritory)
         {
             throw new InvalidOperationException();
         }
 
-        public virtual IGameState Fortify(ITerritory sourceTerritory, ITerritory destinationFortify)
+        public virtual IGameState Fortify(IRegion sourceTerritory, IRegion destinationFortify)
         {
             throw new InvalidOperationException();
         }

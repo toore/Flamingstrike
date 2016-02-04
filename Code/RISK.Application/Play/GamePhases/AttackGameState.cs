@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using RISK.Application.Extensions;
 using RISK.Application.Play.Attacking;
+using RISK.Application.World;
 
 namespace RISK.Application.Play.GamePhases
 {
@@ -19,10 +20,10 @@ namespace RISK.Application.Play.GamePhases
             _newArmiesDraftCalculator = newArmiesDraftCalculator;
         }
 
-        public override bool CanAttack(ITerritory attackingTerritory, ITerritory defendingTerritory)
+        public override bool CanAttack(IRegion attackingRegion, IRegion defendingRegion)
         {
-            ThrowIfTerritoriesDoesNotContain(attackingTerritory);
-            ThrowIfTerritoriesDoesNotContain(defendingTerritory);
+            var attackingTerritory = Territories.Single(x => x.Region == attackingRegion);
+            var defendingTerritory = Territories.Single(x => x.Region == defendingRegion);
 
             if (!IsCurrentPlayerAttacking(attackingTerritory))
             {
@@ -58,13 +59,15 @@ namespace RISK.Application.Play.GamePhases
             return attackingTerritory.GetNumberOfArmiesAvailableForAttack() > 0;
         }
 
-        public override IGameState Attack(ITerritory attackingTerritory, ITerritory defendingTerritory)
+        public override IGameState Attack(IRegion attackingRegion, IRegion defendingRegion)
         {
-            if (!CanAttack(attackingTerritory, defendingTerritory))
+            if (!CanAttack(attackingRegion, defendingRegion))
             {
                 throw new InvalidOperationException();
             }
 
+            var attackingTerritory = GetTerritory(attackingRegion);
+            var defendingTerritory = GetTerritory(defendingRegion);
             var battleResult = _battle.Attack(attackingTerritory, defendingTerritory);
 
             // ... update territories here somewhere...
@@ -75,10 +78,10 @@ namespace RISK.Application.Play.GamePhases
             if (battleResult.IsDefenderDefeated())
             {
                 //_playerShouldReceiveCardWhenTurnEnds = true;
-                return _gameStateFactory.CreateSendInArmiesToOccupyState(gameData);
+                return _gameStateFactory.CreateSendInArmiesToOccupyGameState(gameData);
             }
 
-            return _gameStateFactory.CreateAttackState(gameData);
+            return _gameStateFactory.CreateAttackGameState(gameData);
         }
 
         public override IGameState EndTurn()

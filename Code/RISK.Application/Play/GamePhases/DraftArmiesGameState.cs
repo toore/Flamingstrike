@@ -21,7 +21,7 @@ namespace RISK.Application.Play.GamePhases
             return _numberOfArmiesToDraft;
         }
 
-        public override IGameState PlaceArmies(IRegion region, int numberOfArmiesToPlace)
+        public override IGameState PlaceDraftArmies(IRegion region, int numberOfArmiesToPlace)
         {
             var updatedTerritories = PlaceArmies(Territories, region, numberOfArmiesToPlace);
 

@@ -2,8 +2,8 @@ using System;
 using FluentAssertions;
 using FluentAssertions.Execution;
 using NSubstitute;
-using RISK.Application;
 using RISK.Application.Play;
+using RISK.Application.World;
 using Xunit;
 
 namespace RISK.Tests.Application.Extensions
@@ -11,14 +11,14 @@ namespace RISK.Tests.Application.Extensions
     public class GameTestsExtensionsTests
     {
         private readonly IGame _sut;
-        private readonly ITerritory _territory;
-        private readonly ITerritory _anotherTerritory;
+        private readonly IRegion _region;
+        private readonly IRegion _anotherRegion;
         private const int _numberOfArmies = 1;
 
         public GameTestsExtensionsTests()
         {
-            _territory = Substitute.For<ITerritory>();
-            _anotherTerritory = Substitute.For<ITerritory>();
+            _region = Substitute.For<IRegion>();
+            _anotherRegion = Substitute.For<IRegion>();
 
             _sut = Substitute.For<IGame>();
         }
@@ -27,48 +27,48 @@ namespace RISK.Tests.Application.Extensions
         public void AssertCanNotAttack_asserts_that_CanAttack_is_false()
         {
             AssertMethodThrowsAssertionFailedExceptionWhenIsEnabled(
-                x => x.AssertCanNotAttack(_territory, _anotherTerritory),
-                x => x.CanAttack(_territory, _anotherTerritory),
-                x => x.Attack(_territory, _anotherTerritory));
+                x => x.AssertCanNotAttack(_region, _anotherRegion),
+                x => x.CanAttack(_region, _anotherRegion),
+                x => x.Attack(_region, _anotherRegion));
         }
 
         [Fact]
         public void AssertCanNotAttack_asserts_that_Attack_throws()
         {
             AssertMethodThrowsAssertionFailedException(
-                x => x.AssertCanNotAttack(_territory, _anotherTerritory));
+                x => x.AssertCanNotAttack(_region, _anotherRegion));
         }
 
         [Fact]
-        public void AssertCanNotMoveArmiesIntoCapturedTerritory_asserts_that_CanMoveArmiesIntoCapturedTerritory_is_false()
+        public void AssertCanNotSendInArmiesToOccupy_asserts_that_CanSendInArmiesToOccupy_is_false()
         {
             AssertMethodThrowsAssertionFailedExceptionWhenIsEnabled(
-                x => x.AssertCanNotMoveArmiesIntoCapturedTerritory(_numberOfArmies),
-                x => x.MustSendInArmiesToOccupyTerritory(),
-                x => x.SendInArmiesToOccupyTerritory(_numberOfArmies));
+                x => x.AssertCanNotSendInArmiesToOccupy(_numberOfArmies),
+                x => x.CanSendInArmiesToOccupy(),
+                x => x.SendInArmiesToOccupy(_numberOfArmies));
         }
 
         [Fact]
-        public void AssertCanNotMoveArmiesIntoCapturedTerritory_asserts_that_MoveArmiesIntoCapturedTerritory_throws()
+        public void AssertCanNotSendInArmiesToOccupy_asserts_that_SendInArmiesToOccupy_throws()
         {
             AssertMethodThrowsAssertionFailedException(
-                x => x.AssertCanNotMoveArmiesIntoCapturedTerritory(_numberOfArmies));
+                x => x.AssertCanNotSendInArmiesToOccupy(_numberOfArmies));
         }
 
         [Fact]
         public void AssertCanNotFortify_asserts_that_CanFortify_is_false()
         {
             AssertMethodThrowsAssertionFailedExceptionWhenIsEnabled(
-                x => x.AssertCanNotFortify(_territory, _anotherTerritory),
-                x => x.CanFortify(_territory, _anotherTerritory),
-                x => x.Fortify(_territory, _anotherTerritory));
+                x => x.AssertCanNotFortify(_region, _anotherRegion),
+                x => x.CanFortify(_region, _anotherRegion),
+                x => x.Fortify(_region, _anotherRegion));
         }
 
         [Fact]
         public void AssertCanNotFortify_asserts_that_Fortify_throws()
         {
             AssertMethodThrowsAssertionFailedException(
-                x => x.AssertCanNotFortify(_territory, _anotherTerritory));
+                x => x.AssertCanNotFortify(_region, _anotherRegion));
         }
 
         private void AssertMethodThrowsAssertionFailedExceptionWhenIsEnabled(

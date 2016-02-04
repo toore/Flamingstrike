@@ -31,7 +31,7 @@ namespace RISK.Tests.GuiWpf.Interaction
         [Fact]
         public void Can_click_territory_that_can_be_fortified()
         {
-            _game.CanFortify(_selectedTerritory, _territoryToFortify).Returns(true);
+            _game.CanFortify(_selectedRegion, _regionToFortify).Returns(true);
 
             _sut.AssertCanClickAndOnClickCanBeInvoked(_regionToFortify);
         }
@@ -51,11 +51,11 @@ namespace RISK.Tests.GuiWpf.Interaction
         [Fact]
         public void OnClick_fortifies()
         {
-            _game.CanFortify(_selectedTerritory, _territoryToFortify).Returns(true);
+            _game.CanFortify(_selectedRegion, _regionToFortify).Returns(true);
 
             _sut.OnClick(_regionToFortify);
 
-            _game.Received().Fortify(_selectedTerritory, _territoryToFortify);
+            _game.Received().Fortify(_selectedRegion, _regionToFortify);
         }
 
         [Fact]
@@ -63,7 +63,7 @@ namespace RISK.Tests.GuiWpf.Interaction
         {
             var endTurnState = Substitute.For<IInteractionState>();
             _interactionStateFactory.CreateEndTurnState().Returns(endTurnState);
-            _game.CanFortify(_selectedTerritory, _territoryToFortify).Returns(true);
+            _game.CanFortify(_selectedRegion, _regionToFortify).Returns(true);
 
             _sut.OnClick(_regionToFortify);
 

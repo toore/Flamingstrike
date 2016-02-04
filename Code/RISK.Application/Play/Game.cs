@@ -11,13 +11,13 @@ namespace RISK.Application.Play
         IPlayer CurrentPlayer { get; }
         ITerritory GetTerritory(IRegion region);
         int GetNumberOfArmiesToDraft();
-        void PlaceArmies(IRegion region, int numberOfArmies);
-        bool CanAttack(ITerritory attackingTerritory, ITerritory defendingTerritory);
-        void Attack(ITerritory attackingTerritory, ITerritory defendingTerritory);
-        bool MustSendInArmiesToOccupyTerritory();
-        void SendInArmiesToOccupyTerritory(int numberOfArmies);
-        bool CanFortify(ITerritory sourceTerritory, ITerritory destinationTerritory);
-        void Fortify(ITerritory sourceTerritory, ITerritory destinationFortify);
+        void PlaceDraftArmies(IRegion region, int numberOfArmies);
+        bool CanAttack(IRegion attackingRegion, IRegion defendingRegion);
+        void Attack(IRegion attackingRegion, IRegion defendingRegion);
+        bool CanSendInArmiesToOccupy();
+        void SendInArmiesToOccupy(int numberOfArmies);
+        bool CanFortify(IRegion sourceRegion, IRegion destinationRegion);
+        void Fortify(IRegion sourceRegion, IRegion destinationRegion);
         void EndTurn();
         bool IsGameOver();
     }
@@ -48,7 +48,7 @@ namespace RISK.Application.Play
 
         public ITerritory GetTerritory(IRegion region)
         {
-            return _gameState.Territories.Single(x => x.Region == region);
+            return _gameState.GetTerritory(region);
         }
 
         public int GetNumberOfArmiesToDraft()
@@ -56,29 +56,30 @@ namespace RISK.Application.Play
             return _gameState.GetNumberOfArmiesToDraft();
         }
 
-        public void PlaceArmies(IRegion region, int numberOfArmies)
+        public void PlaceDraftArmies(IRegion region, int numberOfArmies)
         {
-            _gameState = _gameState.PlaceArmies(region, numberOfArmies);
+            _gameState = _gameState.PlaceDraftArmies(region, numberOfArmies);
         }
 
-        public bool CanAttack(ITerritory attackingTerritory, ITerritory defendingTerritory)
+        public bool CanAttack(IRegion attackingRegion, IRegion defendingRegion)
         {
-            return _gameState.CanAttack(attackingTerritory, defendingTerritory);
+            return _gameState.CanAttack(attackingRegion, defendingRegion);
         }
 
-        public void Attack(ITerritory attackingTerritory, ITerritory defendingTerritory)
+        public void Attack(IRegion attackingRegion, IRegion defendingRegion)
         {
-            _gameState = _gameState.Attack(attackingTerritory, defendingTerritory);
+            _gameState = _gameState.Attack(attackingRegion, defendingRegion);
         }
 
-        public bool MustSendInArmiesToOccupyTerritory()
+        public bool CanSendInArmiesToOccupy()
         {
             //return _mustSendInArmiesToOccupyTerritory;
-            return _gameState.MustSendInArmiesToOccupyTerritory();
+            return _gameState.CanSendInArmiesToOccupy();
         }
 
-        public void SendInArmiesToOccupyTerritory(int numberOfArmies)
+        public void SendInArmiesToOccupy(int numberOfArmies)
         {
+            _gameState = _gameState.SendInArmiesToOccupy(numberOfArmies);
             //if (!_mustSendInArmiesToOccupyTerritory)
             //{
             //    throw new InvalidOperationException();
@@ -87,18 +88,18 @@ namespace RISK.Application.Play
             throw new NotImplementedException();
         }
 
-        public bool CanFortify(ITerritory sourceTerritory, ITerritory destinationTerritory)
+        public bool CanFortify(IRegion sourceRegion, IRegion destinationRegion)
         {
-            return _gameState.CanFortify(sourceTerritory, destinationTerritory);
+            return _gameState.CanFortify(sourceRegion, destinationRegion);
             //ThrowIfTerritoriesDoesNotContain(sourceTerritory);
             //ThrowIfTerritoriesDoesNotContain(destinationTerritory);
 
             //return false;
         }
 
-        public void Fortify(ITerritory sourceTerritory, ITerritory destinationFortify)
+        public void Fortify(IRegion sourceRegion, IRegion destinationRegion)
         {
-            _gameState = _gameState.Fortify(sourceTerritory, destinationFortify);
+            _gameState = _gameState.Fortify(sourceRegion, destinationRegion);
             //if (!CanFortify(sourceTerritory, destinationFortify))
             //{
             //    throw new InvalidOperationException();

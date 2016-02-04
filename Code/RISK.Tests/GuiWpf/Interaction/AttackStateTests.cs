@@ -12,7 +12,7 @@ namespace RISK.Tests.GuiWpf.Interaction
         private readonly ITerritory _selectedTerritory;
         private readonly IRegion _selectedRegion;
         private readonly ITerritory _attackedTerritory;
-        private readonly IRegion _attackeeRegion;
+        private readonly IRegion _attackedRegion;
 
         public AttackStateTests()
         {
@@ -24,32 +24,32 @@ namespace RISK.Tests.GuiWpf.Interaction
             _sut.SelectedRegion = _selectedRegion;
 
             _attackedTerritory = Substitute.For<ITerritory>();
-            _attackeeRegion = Substitute.For<IRegion>();
-            _game.GetTerritory(_attackeeRegion).Returns(_attackedTerritory);
+            _attackedRegion = Substitute.For<IRegion>();
+            _game.GetTerritory(_attackedRegion).Returns(_attackedTerritory);
         }
 
         [Fact]
         public void Can_click_territory_that_can_be_attacked()
         {
-            _game.CanAttack(_selectedTerritory, _attackedTerritory).Returns(true);
+            _game.CanAttack(_selectedRegion, _attackedRegion).Returns(true);
 
-            _sut.AssertCanClickAndOnClickCanBeInvoked(_attackeeRegion);
+            _sut.AssertCanClickAndOnClickCanBeInvoked(_attackedRegion);
         }
 
         [Fact]
         public void OnClick_attacks()
         {
-            _game.CanAttack(_selectedTerritory, _attackedTerritory).Returns(true);
+            _game.CanAttack(_selectedRegion, _attackedRegion).Returns(true);
 
-            _sut.OnClick(_attackeeRegion);
+            _sut.OnClick(_attackedRegion);
 
-            _game.Received().Attack(_selectedTerritory, _attackedTerritory);
+            _game.Received().Attack(_selectedRegion, _attackedRegion);
         }
 
         [Fact]
         public void Can_not_click_on_remote_territory()
         {
-            _sut.AssertCanNotClickAndOnClickThrowsWhenInvoked(_attackeeRegion);
+            _sut.AssertCanNotClickAndOnClickThrowsWhenInvoked(_attackedRegion);
         }
 
         [Fact]

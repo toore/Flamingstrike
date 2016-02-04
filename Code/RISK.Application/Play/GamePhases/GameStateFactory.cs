@@ -25,12 +25,12 @@ namespace RISK.Application.Play.GamePhases
             return new DraftArmiesGameState(this, gameData, numberOfArmiesToDraft);
         }
 
-        public IGameState CreateAttackState(GameData gameData)
+        public IGameState CreateAttackGameState(GameData gameData)
         {
             return new AttackGameState(this, gameData, _battle, _newArmiesDraftCalculator);
         }
 
-        public IGameState CreateSendInArmiesToOccupyState(GameData gameData)
+        public IGameState CreateSendInArmiesToOccupyGameState(GameData gameData)
         {
             throw new NotImplementedException();
         }

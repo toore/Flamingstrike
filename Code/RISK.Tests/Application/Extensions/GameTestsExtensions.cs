@@ -1,33 +1,33 @@
 using System;
 using FluentAssertions;
-using RISK.Application;
 using RISK.Application.Play;
+using RISK.Application.World;
 
 namespace RISK.Tests.Application.Extensions
 {
     public static class GameTestsExtensions
     {
-        public static void AssertCanNotAttack(this IGame sut, ITerritory attackingTerritory, ITerritory attackedTerritory)
+        public static void AssertCanNotAttack(this IGame sut, IRegion attackingRegion, IRegion defendingRegion)
         {
-            Action act = () => sut.Attack(attackingTerritory, attackedTerritory);
+            Action act = () => sut.Attack(attackingRegion, defendingRegion);
 
-            sut.CanAttack(attackingTerritory, attackedTerritory).Should().BeFalse();
+            sut.CanAttack(attackingRegion, defendingRegion).Should().BeFalse();
             act.ShouldThrow<InvalidOperationException>();
         }
 
-        public static void AssertCanNotMoveArmiesIntoCapturedTerritory(this IGame sut, int numberOfArmies)
+        public static void AssertCanNotSendInArmiesToOccupy(this IGame sut, int numberOfArmies)
         {
-            Action act = () => sut.SendInArmiesToOccupyTerritory(numberOfArmies);
+            Action act = () => sut.SendInArmiesToOccupy(numberOfArmies);
 
-            sut.MustSendInArmiesToOccupyTerritory().Should().BeFalse();
+            sut.CanSendInArmiesToOccupy().Should().BeFalse();
             act.ShouldThrow<InvalidOperationException>();
         }
 
-        public static void AssertCanNotFortify(this IGame sut, ITerritory attackingTerritory, ITerritory attackedTerritory)
+        public static void AssertCanNotFortify(this IGame sut, IRegion sourceRegion, IRegion destinationRegion)
         {
-            Action act = () => sut.Fortify(attackingTerritory, attackedTerritory);
+            Action act = () => sut.Fortify(sourceRegion, destinationRegion);
 
-            sut.CanFortify(attackingTerritory, attackedTerritory).Should().BeFalse();
+            sut.CanFortify(sourceRegion, destinationRegion).Should().BeFalse();
             act.ShouldThrow<InvalidOperationException>();
         }
     }

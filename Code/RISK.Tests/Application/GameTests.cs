@@ -40,6 +40,8 @@ namespace RISK.Tests.Application
             private readonly IPlayer _firstPlayer;
             private readonly ITerritory _territory;
             private readonly ITerritory _anotherTerritory;
+            private readonly IRegion _region;
+            private readonly IRegion _anotherRegion;
 
             public InitializationTests()
             {
@@ -47,6 +49,11 @@ namespace RISK.Tests.Application
                 _anotherTerritory = Substitute.For<ITerritory>();
                 _firstPlayer = Substitute.For<IPlayer>();
                 var anotherPlayer = Substitute.For<IPlayer>();
+
+                _region = Substitute.For<IRegion>();
+                _anotherRegion = Substitute.For<IRegion>();
+                _territory.Region.Returns(_region);
+                _anotherTerritory.Region.Returns(_anotherRegion);
 
                 _gameSetup = Make.GamePlaySetup
                     .WithTerritory(_territory)
@@ -67,15 +74,10 @@ namespace RISK.Tests.Application
             [Fact]
             public void Initializes_territories()
             {
-                var region = Substitute.For<IRegion>();
-                var anotherRegion = Substitute.For<IRegion>();
-                _territory.Region.Returns(region);
-                _anotherTerritory.Region.Returns(anotherRegion);
-
                 var sut = Create(_gameSetup);
 
-                sut.GetTerritory(region).Should().Be(_territory);
-                sut.GetTerritory(anotherRegion).Should().Be(_anotherTerritory);
+                sut.GetTerritory(_region).Should().Be(_territory);
+                sut.GetTerritory(_anotherRegion).Should().Be(_anotherTerritory);
             }
 
             [Fact]
@@ -83,7 +85,7 @@ namespace RISK.Tests.Application
             {
                 var sut = Create(_gameSetup);
 
-                sut.AssertCanNotAttack(_territory, _anotherTerritory);
+                sut.AssertCanNotAttack(_region, _anotherRegion);
             }
 
             [Fact]
@@ -91,7 +93,7 @@ namespace RISK.Tests.Application
             {
                 var sut = Create(_gameSetup);
 
-                sut.AssertCanNotMoveArmiesIntoCapturedTerritory(1);
+                sut.AssertCanNotSendInArmiesToOccupy(1);
             }
 
             [Fact]
@@ -99,7 +101,7 @@ namespace RISK.Tests.Application
             {
                 var sut = Create(_gameSetup);
 
-                sut.AssertCanNotFortify(_territory, _anotherTerritory);
+                sut.AssertCanNotFortify(_region, _anotherRegion);
             }
         }
 
@@ -136,7 +138,7 @@ namespace RISK.Tests.Application
 
                 var sut = Create(_gamePlaySetup);
 
-                sut.CanAttack(_currentPlayerTerritory, _anotherPlayerTerritory).Should().BeTrue();
+                sut.CanAttack(_currentPlayerRegion, _anotherPlayerRegion).Should().BeTrue();
             }
 
             [Fact]
@@ -147,7 +149,7 @@ namespace RISK.Tests.Application
 
                 var sut = Create(_gamePlaySetup);
 
-                sut.AssertCanNotAttack(_currentPlayerTerritory, _anotherPlayerTerritory);
+                sut.AssertCanNotAttack(_currentPlayerRegion, _anotherPlayerRegion);
             }
 
             [Fact]
@@ -161,7 +163,7 @@ namespace RISK.Tests.Application
 
                 var sut = Create(_gamePlaySetup);
 
-                sut.AssertCanNotAttack(_currentPlayerTerritory, occupiedTerritory);
+                sut.AssertCanNotAttack(_currentPlayerRegion, occupiedRegion);
             }
 
             [Fact]
@@ -172,7 +174,7 @@ namespace RISK.Tests.Application
 
                 var sut = Create(_gamePlaySetup);
 
-                sut.AssertCanNotAttack(_currentPlayerTerritory, _anotherPlayerTerritory);
+                sut.AssertCanNotAttack(_currentPlayerRegion, _anotherPlayerRegion);
             }
 
             [Fact]
@@ -183,7 +185,7 @@ namespace RISK.Tests.Application
 
                 var sut = Create(_gamePlaySetup);
 
-                sut.AssertCanNotAttack(_anotherPlayerTerritory, _currentPlayerTerritory);
+                sut.AssertCanNotAttack(_anotherPlayerRegion, _currentPlayerRegion);
             }
         }
 
@@ -219,7 +221,7 @@ namespace RISK.Tests.Application
                 _currentPlayerTerritory.GetNumberOfArmiesAvailableForAttack().Returns(1);
 
                 var sut = Create(_gamePlaySetup);
-                sut.Attack(_currentPlayerTerritory, _anotherPlayerTerritory);
+                sut.Attack(_currentPlayerRegion, _anotherPlayerRegion);
 
                 _battle.Received().Attack(_currentPlayerTerritory, _anotherPlayerTerritory);
                 sut.GetTerritory(_currentPlayerRegion).Player.Should().Be(_currentPlayer);
@@ -230,7 +232,7 @@ namespace RISK.Tests.Application
             public void Attacks_and_defeats_defender()
             {
                 var sut = Create(_gamePlaySetup);
-                sut.Attack(_currentPlayerTerritory, _anotherPlayerTerritory);
+                sut.Attack(_currentPlayerRegion, _anotherPlayerRegion);
             }
 
             [Fact(Skip = "Not implemented")]
@@ -243,9 +245,9 @@ namespace RISK.Tests.Application
                     .Returns(defenderIsDefeated);
 
                 var sut = Create(_gamePlaySetup);
-                sut.Attack(_currentPlayerTerritory, _anotherPlayerTerritory);
+                sut.Attack(_currentPlayerRegion, _anotherPlayerRegion);
 
-                sut.MustSendInArmiesToOccupyTerritory().Should().BeTrue();
+                sut.CanSendInArmiesToOccupy().Should().BeTrue();
             }
 
             [Fact(Skip = "Not implemented")]
@@ -258,8 +260,8 @@ namespace RISK.Tests.Application
                     .Returns(defenderIsEliminated);
 
                 var sut = Create(_gamePlaySetup);
-                sut.Attack(_currentPlayerTerritory, _anotherPlayerTerritory);
-                sut.SendInArmiesToOccupyTerritory(3);
+                sut.Attack(_currentPlayerRegion, _anotherPlayerRegion);
+                sut.SendInArmiesToOccupy(3);
 
                 // Move to own test fixture
                 // Test that canmove 
@@ -278,9 +280,9 @@ namespace RISK.Tests.Application
                     .Returns(defenderIsEliminated);
 
                 var sut = Create(_gamePlaySetup);
-                sut.Attack(_currentPlayerTerritory, _anotherPlayerTerritory);
+                sut.Attack(_currentPlayerRegion, _anotherPlayerRegion);
 
-                sut.AssertCanNotAttack(_currentPlayerTerritory, _anotherPlayerTerritory);
+                sut.AssertCanNotAttack(_currentPlayerRegion, _anotherPlayerRegion);
             }
         }
 

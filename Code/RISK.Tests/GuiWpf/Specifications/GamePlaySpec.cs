@@ -317,7 +317,7 @@ namespace RISK.Tests.GuiWpf.Specifications
 
         private GamePlaySpec one_additional_army_is_sent_to_occupy_brazil()
         {
-            _game.SendInArmiesToOccupyTerritory(1);
+            _game.SendInArmiesToOccupy(1);
             return this;
         }
 

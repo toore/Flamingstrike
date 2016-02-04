@@ -48,19 +48,13 @@ namespace GuiWpf.ViewModels.Gameplay.Interaction
 
         private static bool CanFortify(IStateController stateController, IRegion regionToFortify)
         {
-            var sourceTerritory = stateController.Game.GetTerritory(stateController.SelectedRegion);
-            var territoryToFortify = stateController.Game.GetTerritory(regionToFortify);
-
-            var canFortify = stateController.Game.CanFortify(sourceTerritory, territoryToFortify);
+            var canFortify = stateController.Game.CanFortify(stateController.SelectedRegion, regionToFortify);
             return canFortify;
         }
 
         private void Fortify(IStateController stateController, IRegion regionToFortify)
         {
-            var sourceTerritory = stateController.Game.GetTerritory(stateController.SelectedRegion);
-            var territoryToFortify = stateController.Game.GetTerritory(regionToFortify);
-
-            stateController.Game.Fortify(sourceTerritory, territoryToFortify);
+            stateController.Game.Fortify(stateController.SelectedRegion, regionToFortify);
             stateController.CurrentState = _interactionStateFactory.CreateEndTurnState();
         }
     }
