@@ -89,7 +89,7 @@ namespace RISK.Tests.Application
             }
 
             [Fact]
-            public void Can_not_move_armies_into_captured_territory()
+            public void Can_not_send_in_armies_to_occupy()
             {
                 var sut = Create(_gameSetup);
 
