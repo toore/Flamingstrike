@@ -52,7 +52,7 @@ namespace RISK.Application.Play.GamePhases
 
         public virtual bool CanAttack(IRegion attackingRegion, IRegion defendingRegion)
         {
-            throw new InvalidOperationException();
+            return false;
         }
 
         public virtual IGameState Attack(IRegion attackingRegion, IRegion defendingRegion)
@@ -62,7 +62,7 @@ namespace RISK.Application.Play.GamePhases
 
         public virtual bool CanSendInArmiesToOccupy()
         {
-            throw new InvalidOperationException();
+            return false;
         }
 
         public virtual IGameState SendInArmiesToOccupy(int numberOfArmies)
@@ -72,7 +72,7 @@ namespace RISK.Application.Play.GamePhases
 
         public virtual bool CanFortify(IRegion sourceTerritory, IRegion destinationTerritory)
         {
-            throw new InvalidOperationException();
+            return false;
         }
 
         public virtual IGameState Fortify(IRegion sourceTerritory, IRegion destinationFortify)
