@@ -34,7 +34,7 @@ namespace RISK.Tests.Application
             return _factory.Create(gamePlaySetup);
         }
 
-        public class InitializationTests : GameTestsBase
+        public class DraftArmiesTests : GameTestsBase
         {
             private readonly IGamePlaySetup _gameSetup;
             private readonly IPlayer _firstPlayer;
@@ -43,7 +43,7 @@ namespace RISK.Tests.Application
             private readonly IRegion _region;
             private readonly IRegion _anotherRegion;
 
-            public InitializationTests()
+            public DraftArmiesTests()
             {
                 _territory = Substitute.For<ITerritory>();
                 _anotherTerritory = Substitute.For<ITerritory>();
