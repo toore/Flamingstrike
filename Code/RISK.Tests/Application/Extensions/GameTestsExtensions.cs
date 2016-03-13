@@ -17,9 +17,9 @@ namespace RISK.Tests.Application.Extensions
 
         public static void AssertCanNotSendInArmiesToOccupy(this IGame sut, int numberOfArmies)
         {
-            Action act = () => sut.SendInArmiesToOccupy(numberOfArmies);
+            Action act = () => sut.SendArmiesToOccupy(numberOfArmies);
 
-            sut.CanSendInArmiesToOccupy().Should().BeFalse();
+            sut.CanSendArmiesToOccupy().Should().BeFalse();
             act.ShouldThrow<InvalidOperationException>();
         }
 

@@ -12,12 +12,12 @@ namespace RISK.Application.Play.GamePhases
     public class GameStateFactory : IGameStateFactory
     {
         private readonly IBattle _battle;
-        private readonly INewArmiesDraftCalculator _newArmiesDraftCalculator;
+        private readonly IArmyDraftCalculator _armyDraftCalculator;
 
-        public GameStateFactory(IBattle battle, INewArmiesDraftCalculator newArmiesDraftCalculator)
+        public GameStateFactory(IBattle battle, IArmyDraftCalculator armyDraftCalculator)
         {
             _battle = battle;
-            _newArmiesDraftCalculator = newArmiesDraftCalculator;
+            _armyDraftCalculator = armyDraftCalculator;
         }
 
         public IGameState CreateDraftArmiesGameState(GameData gameData, int numberOfArmiesToDraft)
@@ -27,7 +27,7 @@ namespace RISK.Application.Play.GamePhases
 
         public IGameState CreateAttackGameState(GameData gameData)
         {
-            return new AttackGameState(this, gameData, _battle, _newArmiesDraftCalculator);
+            return new AttackGameState(this, gameData, _battle, _armyDraftCalculator);
         }
 
         public IGameState CreateSendInArmiesToOccupyGameState(GameData gameData)

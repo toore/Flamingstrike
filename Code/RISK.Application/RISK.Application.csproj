@@ -55,7 +55,7 @@
     <Compile Include="Play\GamePhases\DraftArmiesGameState.cs" />
     <Compile Include="Play\GamePhases\GameStateBase.cs" />
     <Compile Include="Play\GamePhases\GameStateFactory.cs" />
-    <Compile Include="Play\GamePhases\NewArmiesDraftCalculator.cs" />
+    <Compile Include="Play\GamePhases\ArmyDraftCalculator.cs" />
     <Compile Include="Setup\AlternateGameSetupFactory.cs" />
     <Compile Include="Territory.cs" />
     <Compile Include="Play\GameFactory.cs" />

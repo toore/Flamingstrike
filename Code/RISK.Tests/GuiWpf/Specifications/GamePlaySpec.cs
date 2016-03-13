@@ -190,7 +190,7 @@ namespace RISK.Tests.GuiWpf.Specifications
             var dice = new Dice(randomWrapper);
             var dicesRoller = new DicesRoller(dice);
             var battle = new Battle(dicesRoller, new BattleOutcomeCalculator());
-            var newArmiesDraftCalculator = new NewArmiesDraftCalculator(_continents);
+            var newArmiesDraftCalculator = new ArmyDraftCalculator(_continents);
             var gameStateFactory = new GameStateFactory(battle, newArmiesDraftCalculator);
             _game = new Game(gameStateFactory, newArmiesDraftCalculator, _players, _territories);
             _stateControllerFactory = new StateControllerFactory();
@@ -317,7 +317,7 @@ namespace RISK.Tests.GuiWpf.Specifications
 
         private GamePlaySpec one_additional_army_is_sent_to_occupy_brazil()
         {
-            _game.SendInArmiesToOccupy(1);
+            _game.SendArmiesToOccupy(1);
             return this;
         }
 

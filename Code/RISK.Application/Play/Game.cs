@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using RISK.Application.Play.GamePhases;
@@ -11,11 +10,13 @@ namespace RISK.Application.Play
         IPlayer CurrentPlayer { get; }
         ITerritory GetTerritory(IRegion region);
         int GetNumberOfArmiesToDraft();
+        bool CanPlaceDraftArmies(IRegion region);
         void PlaceDraftArmies(IRegion region, int numberOfArmies);
         bool CanAttack(IRegion attackingRegion, IRegion defendingRegion);
         void Attack(IRegion attackingRegion, IRegion defendingRegion);
-        bool CanSendInArmiesToOccupy();
-        void SendInArmiesToOccupy(int numberOfArmies);
+        bool CanSendArmiesToOccupy();
+        int GetNumberOfArmiesThatCanBeSentToOccupy();
+        void SendArmiesToOccupy(int numberOfArmies);
         bool CanFortify(IRegion sourceRegion, IRegion destinationRegion);
         void Fortify(IRegion sourceRegion, IRegion destinationRegion);
         void EndTurn();
@@ -25,13 +26,13 @@ namespace RISK.Application.Play
     public class Game : IGame
     {
         private readonly IGameStateFactory _gameStateFactory;
-        private readonly INewArmiesDraftCalculator _newArmiesDraftCalculator;
+        private readonly IArmyDraftCalculator _armyDraftCalculator;
         private IGameState _gameState;
 
-        public Game(IGameStateFactory gameStateFactory, INewArmiesDraftCalculator newArmiesDraftCalculator, IReadOnlyList<IPlayer> players, IReadOnlyList<ITerritory> initialTerritories)
+        public Game(IGameStateFactory gameStateFactory, IArmyDraftCalculator armyDraftCalculator, IReadOnlyList<IPlayer> players, IReadOnlyList<ITerritory> initialTerritories)
         {
             _gameStateFactory = gameStateFactory;
-            _newArmiesDraftCalculator = newArmiesDraftCalculator;
+            _armyDraftCalculator = armyDraftCalculator;
 
             var gameData = new GameData(players.First(), players, initialTerritories.ToList());
 
@@ -42,7 +43,7 @@ namespace RISK.Application.Play
 
         private void Initialize(GameData gameData)
         {
-            var numberOfArmiesToDraft = _newArmiesDraftCalculator.Calculate(gameData.CurrentPlayer, gameData.Territories);
+            var numberOfArmiesToDraft = _armyDraftCalculator.Calculate(gameData.CurrentPlayer, gameData.Territories);
             _gameState = _gameStateFactory.CreateDraftArmiesGameState(gameData, numberOfArmiesToDraft);
         }
 
@@ -54,6 +55,11 @@ namespace RISK.Application.Play
         public int GetNumberOfArmiesToDraft()
         {
             return _gameState.GetNumberOfArmiesToDraft();
+        }
+
+        public bool CanPlaceDraftArmies(IRegion region)
+        {
+            return _gameState.CanPlaceDraftArmies(region);
         }
 
         public void PlaceDraftArmies(IRegion region, int numberOfArmies)
@@ -71,41 +77,29 @@ namespace RISK.Application.Play
             _gameState = _gameState.Attack(attackingRegion, defendingRegion);
         }
 
-        public bool CanSendInArmiesToOccupy()
+        public bool CanSendArmiesToOccupy()
         {
-            //return _mustSendInArmiesToOccupyTerritory;
-            return _gameState.CanSendInArmiesToOccupy();
+            return _gameState.CanSendArmiesToOccupy();
         }
 
-        public void SendInArmiesToOccupy(int numberOfArmies)
+        public int GetNumberOfArmiesThatCanBeSentToOccupy()
         {
-            _gameState = _gameState.SendInArmiesToOccupy(numberOfArmies);
-            //if (!_mustSendInArmiesToOccupyTerritory)
-            //{
-            //    throw new InvalidOperationException();
-            //}
+            return _gameState.GetNumberOfArmiesThatCanBeSentToOccupy();
+        }
 
-            throw new NotImplementedException();
+        public void SendArmiesToOccupy(int numberOfArmies)
+        {
+            _gameState = _gameState.SendArmiesToOccupy(numberOfArmies);
         }
 
         public bool CanFortify(IRegion sourceRegion, IRegion destinationRegion)
         {
             return _gameState.CanFortify(sourceRegion, destinationRegion);
-            //ThrowIfTerritoriesDoesNotContain(sourceTerritory);
-            //ThrowIfTerritoriesDoesNotContain(destinationTerritory);
-
-            //return false;
         }
 
         public void Fortify(IRegion sourceRegion, IRegion destinationRegion)
         {
             _gameState = _gameState.Fortify(sourceRegion, destinationRegion);
-            //if (!CanFortify(sourceTerritory, destinationFortify))
-            //{
-            //    throw new InvalidOperationException();
-            //}
-
-            //throw new NotImplementedException();
         }
 
         public void EndTurn()
@@ -117,43 +111,6 @@ namespace RISK.Application.Play
         {
             return _gameState.IsGameOver();
         }
-
-        //public FortifyMoveState(ITerritory selectedTerritory)
-        //{
-        //    SelectedTerritory = selectedTerritory;
-        //}
-
-        //public ITerritory SelectedTerritory { get; }
-
-        //public bool CanClick(ITerritory territory)
-        //{
-        //    return true;
-
-        //    //return
-        //    //    SelectedTerritory.IsBordering(territory)
-        //    //        &&
-        //    //    territory.Occupant == Player;
-        //}
-
-        //public void OnClick(ITerritory territory)
-        //{
-        //    throw new NotImplementedException();
-        //}
-
-        ////public bool CanFortify(ILocation location)
-        ////{
-        ////    return SelectedTerritory.Location.IsBordering(location) 
-        ////        && 
-        ////        _worldMap.GetTerritory(location).Occupant == Player;
-        ////}
-
-        ////public void Fortify(ILocation location, int armies)
-        ////{
-        ////    _worldMap.GetTerritory(location).Armies += armies;
-        ////    SelectedTerritory.Armies -= armies;
-
-        ////    _stateController.CurrentState = _interactionStateFactory.CreateFortifiedState(Player, _worldMap);
-        ////}
     }
 
     public class GameData

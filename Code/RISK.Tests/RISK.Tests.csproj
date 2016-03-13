@@ -105,13 +105,16 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Application\Argx.cs" />
     <Compile Include="Application\BattleTests.cs" />
     <Compile Include="Application\DiceTests.cs" />
     <Compile Include="Application\DicesRollerTests.cs" />
     <Compile Include="Application\BattleOutcomeCalculatorTests.cs" />
+    <Compile Include="Application\GameFactoryTests.cs" />
     <Compile Include="Application\GameTests.cs" />
     <Compile Include="Application\Extensions\GameTestsExtensions.cs" />
     <Compile Include="Application\Extensions\GameTestsExtensionsTests.cs" />
+    <Compile Include="Application\GameStateTestsBase.cs" />
     <Compile Include="Builders\BattleOutcomeBuilder.cs" />
     <Compile Include="Builders\ContinentBuilder.cs" />
     <Compile Include="Builders\DicesBuilder.cs" />

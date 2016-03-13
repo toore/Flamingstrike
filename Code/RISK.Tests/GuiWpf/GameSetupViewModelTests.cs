@@ -57,10 +57,10 @@ namespace RISK.Tests.GuiWpf
             gameSetupViewModel.MonitorEvents();
 
             gameSetupViewModel.UpdateView(
-                territories: territories, 
-                selectTerritoryAction: onClickAction, 
-                enabledTerritories: enabledTerritories, 
-                playerName: null, 
+                territories: territories,
+                selectTerritoryAction: onClickAction,
+                enabledTerritories: enabledTerritories,
+                playerName: null,
                 armiesLeftToPlace: 0);
 
             gameSetupViewModel.WorldMapViewModel.Should().Be(expectedWorldMapViewModel);
@@ -97,10 +97,10 @@ namespace RISK.Tests.GuiWpf
             gameSetupViewModel.MonitorEvents();
 
             gameSetupViewModel.UpdateView(
-                territories: null, 
-                selectTerritoryAction: null, 
-                enabledTerritories: null, 
-                playerName: expectedPlayerName, 
+                territories: null,
+                selectTerritoryAction: null,
+                enabledTerritories: null,
+                playerName: expectedPlayerName,
                 armiesLeftToPlace: 0);
 
             gameSetupViewModel.PlayerName.Should().Be(expectedPlayerName);

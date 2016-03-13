@@ -44,8 +44,8 @@ namespace RISK.Tests.Application.Extensions
         {
             AssertMethodThrowsAssertionFailedExceptionWhenIsEnabled(
                 x => x.AssertCanNotSendInArmiesToOccupy(_numberOfArmies),
-                x => x.CanSendInArmiesToOccupy(),
-                x => x.SendInArmiesToOccupy(_numberOfArmies));
+                x => x.CanSendArmiesToOccupy(),
+                x => x.SendArmiesToOccupy(_numberOfArmies));
         }
 
         [Fact]

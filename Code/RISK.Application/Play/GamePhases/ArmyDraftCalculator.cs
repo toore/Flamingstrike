@@ -5,16 +5,16 @@ using RISK.Application.World;
 
 namespace RISK.Application.Play.GamePhases
 {
-    public interface INewArmiesDraftCalculator
+    public interface IArmyDraftCalculator
     {
         int Calculate(IPlayer currentPlayer, IEnumerable<ITerritory> territories);
     }
 
-    public class NewArmiesDraftCalculator : INewArmiesDraftCalculator
+    public class ArmyDraftCalculator : IArmyDraftCalculator
     {
         private readonly IContinents _continents;
 
-        public NewArmiesDraftCalculator(IContinents continents)
+        public ArmyDraftCalculator(IContinents continents)
         {
             _continents = continents;
         }

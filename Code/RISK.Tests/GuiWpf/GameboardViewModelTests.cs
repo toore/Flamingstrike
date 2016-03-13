@@ -11,7 +11,7 @@ using NSubstitute;
 using RISK.Application;
 using RISK.Application.Play;
 using RISK.Application.World;
-using RISK.Tests.Extensions;
+using RISK.Tests.Application;
 using Xunit;
 
 namespace RISK.Tests.GuiWpf
@@ -86,7 +86,7 @@ namespace RISK.Tests.GuiWpf
             _game.GetTerritory(anotherRegion).Returns(anotherTerritory);
             var sut = Initialize(activate: false);
             _worldMapViewModelFactory.Create(
-                Arg.Is<IReadOnlyList<ITerritory>>(x => x.IsEquivalent(new[] { territory, anotherTerritory })),
+                Argx.IsEquivalentReadOnly(territory, anotherTerritory),
                 sut.OnTerritoryClick,
                 Arg.Is<IEnumerable<IRegion>>(x => x.IsEmpty()))
                 .Returns(_worldMapViewModel);
