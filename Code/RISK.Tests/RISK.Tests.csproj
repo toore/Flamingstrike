@@ -112,8 +112,6 @@
     <Compile Include="Application\BattleOutcomeCalculatorTests.cs" />
     <Compile Include="Application\GameFactoryTests.cs" />
     <Compile Include="Application\GameTests.cs" />
-    <Compile Include="Application\Extensions\GameTestsExtensions.cs" />
-    <Compile Include="Application\Extensions\GameTestsExtensionsTests.cs" />
     <Compile Include="Application\GameStateTestsBase.cs" />
     <Compile Include="Builders\BattleOutcomeBuilder.cs" />
     <Compile Include="Builders\ContinentBuilder.cs" />

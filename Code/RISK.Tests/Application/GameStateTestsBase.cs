@@ -183,30 +183,6 @@ namespace RISK.Tests.Application
 
                 act.ShouldThrow<InvalidOperationException>();
             }
-
-            //[Fact]
-            //public void Can_not_attack()
-            //{
-            //    var sut = Create(_gamePlaySetup);
-
-            //    sut.AssertCanNotAttack(_region, _anotherRegion);
-            //}
-
-            //[Fact]
-            //public void Can_not_send_in_armies_to_occupy()
-            //{
-            //    var sut = Create(_gamePlaySetup);
-
-            //    sut.AssertCanNotSendInArmiesToOccupy(1);
-            //}
-
-            //[Fact]
-            //public void Can_not_fortify()
-            //{
-            //    var sut = Create(_gamePlaySetup);
-
-            //    sut.AssertCanNotFortify(_region, _anotherRegion);
-            //}
         }
 
         //public class CanAttackTests : GameStateTestsBase
