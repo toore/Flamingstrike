@@ -61,7 +61,7 @@ namespace RISK.Tests.Application.Extensions
             AssertMethodThrowsAssertionFailedExceptionWhenIsEnabled(
                 x => x.AssertCanNotFortify(_region, _anotherRegion),
                 x => x.CanFortify(_region, _anotherRegion),
-                x => x.Fortify(_region, _anotherRegion));
+                x => x.Fortify(_region, _anotherRegion, 1));
         }
 
         [Fact]

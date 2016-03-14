@@ -138,9 +138,9 @@ namespace RISK.Tests.Application
             var sourceRegion = Substitute.For<IRegion>();
             var destinationRegion = Substitute.For<IRegion>();
 
-            _sut.Fortify(sourceRegion, destinationRegion);
+            _sut.Fortify(sourceRegion, destinationRegion, 1);
 
-            _draftArmiesGameState.Received().Fortify(sourceRegion, destinationRegion);
+            _draftArmiesGameState.Received().Fortify(sourceRegion, destinationRegion, 1);
         }
 
         [Fact]
@@ -200,8 +200,8 @@ namespace RISK.Tests.Application
         {
             public Fortifying()
             {
-                _draftArmiesGameState.Fortify(null, null).ReturnsForAnyArgs(_nextGameState);
-                _sut.Fortify(null, null);
+                _draftArmiesGameState.Fortify(null, null, 1).ReturnsForAnyArgs(_nextGameState);
+                _sut.Fortify(null, null, 1);
             }
         }
 
@@ -241,9 +241,9 @@ namespace RISK.Tests.Application
         [Fact]
         public void Fortify_use_new_game_state()
         {
-            _sut.Fortify(null, null);
+            _sut.Fortify(null, null, 1);
 
-            _nextGameState.ReceivedWithAnyArgs().Fortify(null, null);
+            _nextGameState.ReceivedWithAnyArgs().Fortify(null, null, 1);
         }
 
         [Fact]

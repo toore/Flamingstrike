@@ -1,5 +1,3 @@
-using System;
-using System.Linq;
 using RISK.Application.Play.Attacking;
 
 namespace RISK.Application.Play.GamePhases
@@ -13,16 +11,18 @@ namespace RISK.Application.Play.GamePhases
     {
         private readonly IBattle _battle;
         private readonly IArmyDraftCalculator _armyDraftCalculator;
+        private readonly ITerritoryUpdater _territoryUpdater;
 
-        public GameStateFactory(IBattle battle, IArmyDraftCalculator armyDraftCalculator)
+        public GameStateFactory(IBattle battle, IArmyDraftCalculator armyDraftCalculator, ITerritoryUpdater territoryUpdater)
         {
             _battle = battle;
             _armyDraftCalculator = armyDraftCalculator;
+            _territoryUpdater = territoryUpdater;
         }
 
         public IGameState CreateDraftArmiesGameState(GameData gameData, int numberOfArmiesToDraft)
         {
-            return new DraftArmiesGameState(this, gameData, numberOfArmiesToDraft);
+            return new DraftArmiesGameState(this, gameData, numberOfArmiesToDraft, _territoryUpdater);
         }
 
         public IGameState CreateAttackGameState(GameData gameData)
@@ -32,7 +32,12 @@ namespace RISK.Application.Play.GamePhases
 
         public IGameState CreateSendInArmiesToOccupyGameState(GameData gameData)
         {
-            throw new NotImplementedException();
+            return new SendInArmiesToOccupyGameState(gameData);
+        }
+
+        public IGameState CreateGameOverGameState(GameData gameData)
+        {
+            return new GameOverGameState(gameData);
         }
     }
 }

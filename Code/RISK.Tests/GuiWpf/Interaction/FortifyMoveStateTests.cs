@@ -55,7 +55,7 @@ namespace RISK.Tests.GuiWpf.Interaction
 
             _sut.OnClick(_regionToFortify);
 
-            _game.Received().Fortify(_selectedRegion, _regionToFortify);
+            _game.Received().Fortify(_selectedRegion, _regionToFortify, 1);
         }
 
         [Fact]

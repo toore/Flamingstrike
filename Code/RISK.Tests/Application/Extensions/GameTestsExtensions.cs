@@ -25,7 +25,7 @@ namespace RISK.Tests.Application.Extensions
 
         public static void AssertCanNotFortify(this IGame sut, IRegion sourceRegion, IRegion destinationRegion)
         {
-            Action act = () => sut.Fortify(sourceRegion, destinationRegion);
+            Action act = () => sut.Fortify(sourceRegion, destinationRegion, 1);
 
             sut.CanFortify(sourceRegion, destinationRegion).Should().BeFalse();
             act.ShouldThrow<InvalidOperationException>();

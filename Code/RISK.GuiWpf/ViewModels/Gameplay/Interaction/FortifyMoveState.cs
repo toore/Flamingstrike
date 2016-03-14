@@ -54,7 +54,7 @@ namespace GuiWpf.ViewModels.Gameplay.Interaction
 
         private void Fortify(IStateController stateController, IRegion regionToFortify)
         {
-            stateController.Game.Fortify(stateController.SelectedRegion, regionToFortify);
+            stateController.Game.Fortify(stateController.SelectedRegion, regionToFortify, 1);
             stateController.CurrentState = _interactionStateFactory.CreateEndTurnState();
         }
     }

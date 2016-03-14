@@ -53,9 +53,12 @@
     <Compile Include="Play\Attacking\BattleResult.cs" />
     <Compile Include="Play\Card.cs" />
     <Compile Include="Play\GamePhases\DraftArmiesGameState.cs" />
+    <Compile Include="Play\GamePhases\GameOverGameState.cs" />
     <Compile Include="Play\GamePhases\GameStateBase.cs" />
     <Compile Include="Play\GamePhases\GameStateFactory.cs" />
     <Compile Include="Play\GamePhases\ArmyDraftCalculator.cs" />
+    <Compile Include="Play\GamePhases\SendInArmiesToOccupyGameState.cs" />
+    <Compile Include="Play\GamePhases\TerritoryUpdater.cs" />
     <Compile Include="Setup\AlternateGameSetupFactory.cs" />
     <Compile Include="Territory.cs" />
     <Compile Include="Play\GameFactory.cs" />

@@ -18,7 +18,7 @@ namespace RISK.Application.Play
         int GetNumberOfArmiesThatCanBeSentToOccupy();
         void SendArmiesToOccupy(int numberOfArmies);
         bool CanFortify(IRegion sourceRegion, IRegion destinationRegion);
-        void Fortify(IRegion sourceRegion, IRegion destinationRegion);
+        void Fortify(IRegion sourceRegion, IRegion destinationRegion, int armies);
         void EndTurn();
         bool IsGameOver();
     }
@@ -97,9 +97,9 @@ namespace RISK.Application.Play
             return _gameState.CanFortify(sourceRegion, destinationRegion);
         }
 
-        public void Fortify(IRegion sourceRegion, IRegion destinationRegion)
+        public void Fortify(IRegion sourceRegion, IRegion destinationRegion, int armies)
         {
-            _gameState = _gameState.Fortify(sourceRegion, destinationRegion);
+            _gameState = _gameState.Fortify(sourceRegion, destinationRegion, 1);
         }
 
         public void EndTurn()

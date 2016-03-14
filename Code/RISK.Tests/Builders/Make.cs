@@ -9,5 +9,6 @@ namespace RISK.Tests.Builders
         public static TerritoryBuilder Territory => new TerritoryBuilder();
         public static DicesBuilder Dices => new DicesBuilder();
         public static BattleOutcomeBuilder BattleOutcome => new BattleOutcomeBuilder();
+        public static GameDataBuilder GameData => new GameDataBuilder();
     }
 }
