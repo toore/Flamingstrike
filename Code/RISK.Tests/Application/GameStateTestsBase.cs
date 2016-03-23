@@ -119,6 +119,26 @@ namespace RISK.Tests.Application
             }
 
             [Fact]
+            public void Placing_draft_armies_returns_draft_armies_game_state()
+            {
+                var sut = _factory.CreateDraftArmiesGameState(_gameData, 3);
+
+                var result = sut.PlaceDraftArmies(_region, 2);
+
+                result.Should().BeOfType<DraftArmiesGameState>();
+            }
+
+            [Fact]
+            public void Placing_all_draft_armies_returns_attack_game_state()
+            {
+                var sut = _factory.CreateDraftArmiesGameState(_gameData, 2);
+
+                var result = sut.PlaceDraftArmies(_region, 2);
+
+                result.Should().BeOfType<AttackGameState>();
+            }
+
+            [Fact]
             public void Placing_more_draft_armies_than_left_throws()
             {
                 var sut = _factory.CreateDraftArmiesGameState(_gameData, 1);

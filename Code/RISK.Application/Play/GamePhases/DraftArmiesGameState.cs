@@ -37,9 +37,13 @@ namespace RISK.Application.Play.GamePhases
             var updatedTerritories = _territoryUpdater.PlaceArmies(Territories, region, numberOfArmiesToPlace);
 
             var gameData = new GameData(CurrentPlayer, Players, updatedTerritories);
-            var numberOfArmiesToPlaceLeft = _numberOfArmiesToDraft - numberOfArmiesToPlace;
+            var numberOfArmiesLeftToPlace = _numberOfArmiesToDraft - numberOfArmiesToPlace;
 
-            return _gameStateFactory.CreateDraftArmiesGameState(gameData, numberOfArmiesToPlaceLeft);
+            if (numberOfArmiesLeftToPlace > 0)
+            {
+                return _gameStateFactory.CreateDraftArmiesGameState(gameData, numberOfArmiesLeftToPlace);
+            }
+            return _gameStateFactory.CreateAttackGameState(gameData);
         }
     }
 }
