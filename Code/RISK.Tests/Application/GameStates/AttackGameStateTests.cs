@@ -1,11 +1,13 @@
+using System;
+using FluentAssertions;
 using NSubstitute;
 using RISK.Application;
 using RISK.Application.Play;
 using RISK.Application.Play.Attacking;
 using RISK.Application.Play.GamePhases;
-using RISK.Application.Setup;
 using RISK.Application.World;
 using RISK.Tests.Builders;
+using Xunit;
 
 namespace RISK.Tests.Application.GameStates
 {
@@ -33,65 +35,6 @@ namespace RISK.Tests.Application.GameStates
     //            .WithPlayer(_anotherPlayer)
     //            .Build();
     //    }
-
-    //[Fact]
-    //public void Can_attack()
-    //{
-    //    _currentPlayerRegion.HasBorder(_anotherPlayerRegion).Returns(true);
-    //    _currentPlayerTerritory.GetNumberOfArmiesAvailableForAttack().Returns(1);
-
-    //    var sut = Create(_gamePlaySetup);
-
-    //    sut.CanAttack(_currentPlayerRegion, _anotherPlayerRegion).Should().BeTrue();
-    //}
-
-    //[Fact]
-    //public void Can_not_attack_if_not_enough_attacking_armies()
-    //{
-    //    _currentPlayerRegion.HasBorder(_anotherPlayerRegion).Returns(true);
-    //    _currentPlayerTerritory.GetNumberOfArmiesAvailableForAttack().Returns(0);
-
-    //    var sut = Create(_gamePlaySetup);
-
-    //    sut.AssertCanNotAttack(_currentPlayerRegion, _anotherPlayerRegion);
-    //}
-
-    //[Fact]
-    //public void Can_not_attack_already_occupied_territory()
-    //{
-    //    var occupiedTerritory = _anotherPlayerTerritory;
-    //    var occupiedRegion = occupiedTerritory.Region;
-    //    occupiedTerritory.Player.Returns(_currentPlayer);
-    //    _currentPlayerRegion.HasBorder(occupiedRegion).Returns(true);
-    //    _currentPlayerTerritory.GetNumberOfArmiesAvailableForAttack().Returns(1);
-
-    //    var sut = Create(_gamePlaySetup);
-
-    //    sut.AssertCanNotAttack(_currentPlayerRegion, occupiedRegion);
-    //}
-
-    //[Fact]
-    //public void Can_not_attack_territory_without_having_border()
-    //{
-    //    _currentPlayerRegion.HasBorder(_anotherPlayerRegion).Returns(false);
-    //    _currentPlayerTerritory.GetNumberOfArmiesAvailableForAttack().Returns(1);
-
-    //    var sut = Create(_gamePlaySetup);
-
-    //    sut.AssertCanNotAttack(_currentPlayerRegion, _anotherPlayerRegion);
-    //}
-
-    //[Fact]
-    //public void Can_not_attack_with_another_players_territory()
-    //{
-    //    _anotherPlayerRegion.HasBorder(_currentPlayerRegion).Returns(true);
-    //    _anotherPlayerTerritory.GetNumberOfArmiesAvailableForAttack().Returns(1);
-
-    //    var sut = Create(_gamePlaySetup);
-
-    //    sut.AssertCanNotAttack(_anotherPlayerRegion, _currentPlayerRegion);
-    //}
-    //}
 
     //public class TurnEndsTests : GameStateTestsBase
     //{
@@ -140,32 +83,133 @@ namespace RISK.Tests.Application.GameStates
         private readonly IGameStateFactory _gameStateFactory;
         private readonly IBattle _battle;
         private readonly IArmyDraftCalculator _armyDraftCalculator;
+        private readonly ITerritoryUpdater _territoryUpdater;
 
-        private readonly IRegion _currentPlayerRegion = Substitute.For<IRegion>();
-        private readonly IRegion _anotherPlayerRegion = Substitute.For<IRegion>();
-        private readonly IPlayer _currentPlayer = Substitute.For<IPlayer>();
-        private readonly IPlayer _anotherPlayer = Substitute.For<IPlayer>();
-        private readonly ITerritory _currentPlayerTerritory = Substitute.For<ITerritory>();
-        private readonly ITerritory _anotherPlayerTerritory = Substitute.For<ITerritory>();
-        private readonly IGamePlaySetup _gamePlaySetup;
+        private readonly ITerritory _territory;
+        private readonly ITerritory _anotherTerritory;
+        private readonly IRegion _region;
+        private readonly IRegion _anotherRegion;
+        private readonly IPlayer _currentPlayer;
+        private readonly IPlayer _anotherPlayer;
+        private readonly GameData _gameData;
 
         public AttackGameStateTests()
         {
             _gameStateFactory = Substitute.For<IGameStateFactory>();
             _battle = Substitute.For<IBattle>();
             _armyDraftCalculator = Substitute.For<IArmyDraftCalculator>();
+            _territoryUpdater = Substitute.For<ITerritoryUpdater>();
 
-            _currentPlayerTerritory.Region.Returns(_currentPlayerRegion);
-            _currentPlayerTerritory.Player.Returns(_currentPlayer);
-            _anotherPlayerTerritory.Region.Returns(_anotherPlayerRegion);
-            _anotherPlayerTerritory.Player.Returns(_anotherPlayer);
+            _territory = Substitute.For<ITerritory>();
+            _anotherTerritory = Substitute.For<ITerritory>();
+            _currentPlayer = Substitute.For<IPlayer>();
+            _anotherPlayer = Substitute.For<IPlayer>();
 
-            _gamePlaySetup = Make.GamePlaySetup
-                .WithTerritory(_currentPlayerTerritory)
-                .WithTerritory(_anotherPlayerTerritory)
+            _region = Substitute.For<IRegion>();
+            _anotherRegion = Substitute.For<IRegion>();
+            _territory.Region.Returns(_region);
+            _territory.Player.Returns(_currentPlayer);
+            _anotherTerritory.Region.Returns(_anotherRegion);
+
+            _gameData = Make.GameData
+                .CurrentPlayer(_currentPlayer)
                 .WithPlayer(_currentPlayer)
                 .WithPlayer(_anotherPlayer)
+                .WithTerritory(_territory)
+                .WithTerritory(_anotherTerritory)
                 .Build();
+        }
+
+        [Fact]
+        public void Get_number_of_armies_to_draft_throws()
+        {
+            var sut = Create(_gameData);
+
+            Action act = () => sut.GetNumberOfArmiesToDraft();
+
+            act.ShouldThrow<InvalidOperationException>();
+        }
+
+        [Fact]
+        public void Can_not_place_draft_armies()
+        {
+            var sut = Create(_gameData);
+
+            sut.CanPlaceDraftArmies(_region).Should().BeFalse();
+        }
+
+        [Fact]
+        public void Place_draft_armies_throws()
+        {
+            var sut = Create(_gameData);
+
+            Action act = () => sut.PlaceDraftArmies(_region, 1);
+
+            act.ShouldThrow<InvalidOperationException>();
+        }
+
+        [Fact]
+        public void Can_attack()
+        {
+            _region.HasBorder(_anotherRegion).Returns(true);
+            _territory.GetNumberOfArmiesAvailableForAttack().Returns(1);
+
+            var sut = Create(_gameData);
+
+            sut.CanAttack(_region, _anotherRegion).Should().BeTrue();
+        }
+
+        [Fact]
+        public void Can_not_attack_if_not_enough_attacking_armies()
+        {
+            _region.HasBorder(_anotherRegion).Returns(true);
+            _territory.GetNumberOfArmiesAvailableForAttack().Returns(0);
+
+            var sut = Create(_gameData);
+
+            AssertCanNotAttack(sut, _region, _anotherRegion);
+        }
+
+        [Fact]
+        public void Can_not_attack_already_occupied_territory()
+        {
+            _region.HasBorder(_anotherRegion).Returns(true);
+            _territory.GetNumberOfArmiesAvailableForAttack().Returns(1);
+            _anotherTerritory.Player.Returns(_currentPlayer);
+
+            var sut = Create(_gameData);
+
+            AssertCanNotAttack(sut, _region, _anotherRegion);
+        }
+
+        [Fact]
+        public void Can_not_attack_territory_without_having_border()
+        {
+            _territory.GetNumberOfArmiesAvailableForAttack().Returns(1);
+
+            var sut = Create(_gameData);
+
+            AssertCanNotAttack(sut, _region, _anotherRegion);
+        }
+
+        [Fact]
+        public void Can_not_attack_with_another_players_territory()
+        {
+            _region.HasBorder(_anotherRegion).Returns(true);
+            _territory.GetNumberOfArmiesAvailableForAttack().Returns(1);
+            _territory.Player.Returns(_anotherPlayer);
+
+            var sut = Create(_gameData);
+
+            AssertCanNotAttack(sut, _region, _anotherRegion);
+        }
+
+        private static void AssertCanNotAttack(IGameState gameState, IRegion attackingRegion, IRegion defendingRegion)
+        {
+            Action attackMethod = () => gameState.Attack(attackingRegion, defendingRegion);
+
+            gameState.CanAttack(attackingRegion, defendingRegion).Should().BeFalse();
+            attackMethod.ShouldThrow<InvalidOperationException>();
         }
 
         //[Fact]
