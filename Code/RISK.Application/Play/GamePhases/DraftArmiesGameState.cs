@@ -5,11 +5,11 @@ namespace RISK.Application.Play.GamePhases
 {
     public class DraftArmiesGameState : GameStateBase
     {
-        private readonly GameStateFactory _gameStateFactory;
+        private readonly IGameStateFactory _gameStateFactory;
         private readonly int _numberOfArmiesToDraft;
         private readonly ITerritoryUpdater _territoryUpdater;
 
-        public DraftArmiesGameState(GameStateFactory gameStateFactory, GameData gameData, int numberOfArmiesToDraft, ITerritoryUpdater territoryUpdater)
+        public DraftArmiesGameState(IGameStateFactory gameStateFactory, ITerritoryUpdater territoryUpdater, GameData gameData, int numberOfArmiesToDraft)
             : base(gameData)
         {
             _gameStateFactory = gameStateFactory;
@@ -46,4 +46,6 @@ namespace RISK.Application.Play.GamePhases
             return _gameStateFactory.CreateAttackGameState(gameData);
         }
     }
+
+    public interface IGameDataFactory {}
 }

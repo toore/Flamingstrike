@@ -109,7 +109,7 @@ namespace RISK.Application.Play
 
         public bool IsGameOver()
         {
-            return _gameState.IsGameOver();
+            return false;
         }
     }
 

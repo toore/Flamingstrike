@@ -150,14 +150,6 @@ namespace RISK.Tests.Application
 
             _draftArmiesGameState.Received().EndTurn();
         }
-
-        [Fact]
-        public void Is_game_over()
-        {
-            _sut.IsGameOver();
-
-            _draftArmiesGameState.Received().IsGameOver();
-        }
     }
 
     public abstract class GameUpdatesGameStateAfter : GameTestsBase

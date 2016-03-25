@@ -119,6 +119,7 @@
     <Compile Include="Builders\GameDataBuilder.cs" />
     <Compile Include="Builders\TerritoryBuilder.cs" />
     <Compile Include="Extensions\EnumerableExtensions.cs" />
+    <Compile Include="Extensions\EnumerableExtensionsTests.cs" />
     <Compile Include="GuiWpf\Interaction\AttackStateTests.cs" />
     <Compile Include="GuiWpf\Interaction\EndTurnStateTests.cs" />
     <Compile Include="GuiWpf\Interaction\FortifyMoveStateTests.cs" />

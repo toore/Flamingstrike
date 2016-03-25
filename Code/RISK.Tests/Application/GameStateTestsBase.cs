@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using FluentAssertions;
 using NSubstitute;
 using Ploeh.AutoFixture.Xunit2;
@@ -9,26 +11,13 @@ using RISK.Application.Play.GamePhases;
 using RISK.Application.Setup;
 using RISK.Application.World;
 using RISK.Tests.Builders;
+using RISK.Tests.Extensions;
 using Xunit;
 
 namespace RISK.Tests.Application
 {
     public abstract class GameStateTestsBase
     {
-        private readonly IBattle _battle;
-        private readonly IArmyDraftCalculator _armyDraftCalculator;
-        private readonly ITerritoryUpdater _territoryUpdater;
-        private readonly GameStateFactory _factory;
-
-        protected GameStateTestsBase()
-        {
-            _battle = Substitute.For<IBattle>();
-            _armyDraftCalculator = Substitute.For<IArmyDraftCalculator>();
-            _territoryUpdater = Substitute.For<ITerritoryUpdater>();
-
-            _factory = new GameStateFactory(_battle, _armyDraftCalculator, _territoryUpdater);
-        }
-
         [Fact]
         public void Gets_current_player()
         {
@@ -37,10 +26,12 @@ namespace RISK.Tests.Application
                 .CurrentPlayer(currentPlayer)
                 .Build();
 
-            var sut = Initialize(gameData);
+            var sut = Create(gameData);
 
             sut.CurrentPlayer.Should().Be(currentPlayer);
         }
+
+        protected abstract IGameState Create(GameData gameData);
 
         [Fact]
         public void Gets_territory()
@@ -54,50 +45,53 @@ namespace RISK.Tests.Application
                 .WithTerritory(Substitute.For<ITerritory>())
                 .Build();
 
-            var sut = Initialize(gameData);
+            var sut = Create(gameData);
 
             sut.GetTerritory(region).Should().Be(territory);
         }
 
-        protected abstract Func<GameData, IGameState> Initialize { get; }
-
         public class DraftArmiesGameStateTests : GameStateTestsBase
         {
-            private readonly GameData _gameData;
+            private readonly IGameStateFactory _gameStateFactory;
+            private readonly ITerritoryUpdater _territoryUpdater;
+
+            private readonly ITerritory _territory;
+            private readonly ITerritory _anotherTerritory;
             private readonly IRegion _region;
             private readonly IRegion _anotherRegion;
+            private readonly IPlayer _currentPlayer;
+            private readonly IPlayer _anotherPlayer;
+            private readonly GameData _gameData;
 
             public DraftArmiesGameStateTests()
             {
-                var territory = Substitute.For<ITerritory>();
-                var anotherTerritory = Substitute.For<ITerritory>();
-                var currentPlayer = Substitute.For<IPlayer>();
-                var anotherPlayer = Substitute.For<IPlayer>();
+                _gameStateFactory = Substitute.For<IGameStateFactory>();
+                _territoryUpdater = Substitute.For<ITerritoryUpdater>();
+
+                _territory = Substitute.For<ITerritory>();
+                _anotherTerritory = Substitute.For<ITerritory>();
+                _currentPlayer = Substitute.For<IPlayer>();
+                _anotherPlayer = Substitute.For<IPlayer>();
 
                 _region = Substitute.For<IRegion>();
                 _anotherRegion = Substitute.For<IRegion>();
-                territory.Region.Returns(_region);
-                territory.Player.Returns(currentPlayer);
-                anotherTerritory.Region.Returns(_anotherRegion);
+                _territory.Region.Returns(_region);
+                _territory.Player.Returns(_currentPlayer);
+                _anotherTerritory.Region.Returns(_anotherRegion);
 
                 _gameData = Make.GameData
-                    .CurrentPlayer(currentPlayer)
-                    .WithPlayer(currentPlayer)
-                    .WithPlayer(anotherPlayer)
-                    .WithTerritory(territory)
-                    .WithTerritory(anotherTerritory)
+                    .CurrentPlayer(_currentPlayer)
+                    .WithPlayer(_currentPlayer)
+                    .WithPlayer(_anotherPlayer)
+                    .WithTerritory(_territory)
+                    .WithTerritory(_anotherTerritory)
                     .Build();
-            }
-
-            protected override Func<GameData, IGameState> Initialize
-            {
-                get { return gameData => _factory.CreateDraftArmiesGameState(gameData, 1); }
             }
 
             [Theory, AutoData]
             public void Gets_number_of_armies_to_draft(int numberOfArmiesToDraft)
             {
-                var sut = _factory.CreateDraftArmiesGameState(null, numberOfArmiesToDraft);
+                var sut = Create(_gameData, numberOfArmiesToDraft);
 
                 sut.GetNumberOfArmiesToDraft().Should().Be(numberOfArmiesToDraft);
             }
@@ -105,7 +99,7 @@ namespace RISK.Tests.Application
             [Fact]
             public void Can_place_draft_armies_for_occupied_territory()
             {
-                var sut = _factory.CreateDraftArmiesGameState(_gameData, 1);
+                var sut = Create(_gameData);
 
                 sut.CanPlaceDraftArmies(_region).Should().BeTrue();
             }
@@ -113,7 +107,7 @@ namespace RISK.Tests.Application
             [Fact]
             public void Can_not_place_draft_armies_for_another_territory()
             {
-                var sut = _factory.CreateDraftArmiesGameState(_gameData, 1);
+                var sut = Create(_gameData);
 
                 sut.CanPlaceDraftArmies(_anotherRegion).Should().BeFalse();
             }
@@ -121,27 +115,53 @@ namespace RISK.Tests.Application
             [Fact]
             public void Placing_draft_armies_returns_draft_armies_game_state()
             {
-                var sut = _factory.CreateDraftArmiesGameState(_gameData, 3);
+                var updatedTerritories = new List<ITerritory> { Make.Territory.Build() };
+                var draftArmiesGameState = Substitute.For<IGameState>();
+                _territoryUpdater
+                    .PlaceArmies(Argx.IsEquivalentReadOnly(_territory, _anotherTerritory), _region, 2)
+                    .Returns(updatedTerritories);
+                _gameStateFactory.CreateDraftArmiesGameState(Arg.Is<GameData>(x =>
+                    x.CurrentPlayer == _currentPlayer
+                    &&
+                    x.Players.IsEquivalent(_currentPlayer, _anotherPlayer)
+                    &&
+                    x.Territories.IsEquivalent(updatedTerritories)
+                    ),
+                    1)
+                    .Returns(draftArmiesGameState);
 
+                var sut = Create(_gameData, 3);
                 var result = sut.PlaceDraftArmies(_region, 2);
 
-                result.Should().BeOfType<DraftArmiesGameState>();
+                result.Should().Be(draftArmiesGameState);
             }
 
             [Fact]
             public void Placing_all_draft_armies_returns_attack_game_state()
             {
-                var sut = _factory.CreateDraftArmiesGameState(_gameData, 2);
+                var updatedTerritories = new List<ITerritory> { Make.Territory.Build() };
+                var attackGameState = Substitute.For<IGameState>();
+                _territoryUpdater
+                    .PlaceArmies(Argx.IsEquivalentReadOnly(_territory, _anotherTerritory), _region, 2)
+                    .Returns(updatedTerritories);
+                _gameStateFactory.CreateAttackGameState(Arg.Is<GameData>(x =>
+                    x.CurrentPlayer == _currentPlayer
+                    &&
+                    x.Players.IsEquivalent(_currentPlayer, _anotherPlayer)
+                    &&
+                    x.Territories.IsEquivalent(updatedTerritories)))
+                    .Returns(attackGameState);
 
+                var sut = Create(_gameData, 2);
                 var result = sut.PlaceDraftArmies(_region, 2);
 
-                result.Should().BeOfType<AttackGameState>();
+                result.Should().Be(attackGameState);
             }
 
             [Fact]
             public void Placing_more_draft_armies_than_left_throws()
             {
-                var sut = _factory.CreateDraftArmiesGameState(_gameData, 1);
+                var sut = Create(_gameData);
 
                 Action act = () => sut.PlaceDraftArmies(_region, 2);
 
@@ -151,13 +171,17 @@ namespace RISK.Tests.Application
             [Fact]
             public void Can_not_attack()
             {
-                Initialize(_gameData).CanAttack(_region, _anotherRegion).Should().BeFalse();
+                var sut = Create(_gameData);
+
+                sut.CanAttack(_region, _anotherRegion).Should().BeFalse();
             }
 
             [Fact]
             public void Attack_throws()
             {
-                Action act = () => Initialize(_gameData).Attack(_region, _anotherRegion);
+                var sut = Create(_gameData);
+
+                Action act = () => sut.Attack(_region, _anotherRegion);
 
                 act.ShouldThrow<InvalidOperationException>();
             }
@@ -165,13 +189,17 @@ namespace RISK.Tests.Application
             [Fact]
             public void Can_not_send_armies_to_occupy()
             {
-                Initialize(_gameData).CanSendArmiesToOccupy().Should().BeFalse();
+                var sut = Create(_gameData);
+
+                sut.CanSendArmiesToOccupy().Should().BeFalse();
             }
 
             [Fact]
             public void Sending_armies_to_occupy_throws()
             {
-                Action act = () => Initialize(_gameData).SendArmiesToOccupy(1);
+                var sut = Create(_gameData);
+
+                Action act = () => sut.SendArmiesToOccupy(1);
 
                 act.ShouldThrow<InvalidOperationException>();
             }
@@ -179,13 +207,17 @@ namespace RISK.Tests.Application
             [Fact]
             public void Can_not_fortify()
             {
-                Initialize(_gameData).CanFortify(_region, _anotherRegion).Should().BeFalse();
+                var sut = Create(_gameData);
+
+                sut.CanFortify(_region, _anotherRegion).Should().BeFalse();
             }
 
             [Fact]
             public void Fortifying_throws()
             {
-                Action act = () => Initialize(_gameData).Fortify(_region, _anotherRegion, 1);
+                var sut = Create(_gameData);
+
+                Action act = () => sut.Fortify(_region, _anotherRegion, 1);
 
                 act.ShouldThrow<InvalidOperationException>();
             }
@@ -193,15 +225,29 @@ namespace RISK.Tests.Application
             [Fact]
             public void Can_not_end_turn()
             {
-                Initialize(_gameData).CanEndTurn().Should().BeFalse();
+                var sut = Create(_gameData);
+
+                sut.CanEndTurn().Should().BeFalse();
             }
 
             [Fact]
             public void Ending_turn_throws()
             {
-                Action act = () => Initialize(_gameData).EndTurn();
+                var sut = Create(_gameData);
+
+                Action act = () => sut.EndTurn();
 
                 act.ShouldThrow<InvalidOperationException>();
+            }
+
+            protected override IGameState Create(GameData gameData)
+            {
+                return Create(gameData, 1);
+            }
+
+            private IGameState Create(GameData gameData, int numberOfArmiesToDraft)
+            {
+                return new DraftArmiesGameState(_gameStateFactory, _territoryUpdater, gameData, numberOfArmiesToDraft);
             }
         }
 
@@ -291,6 +337,10 @@ namespace RISK.Tests.Application
 
         public class AttackTests : GameStateTestsBase
         {
+            private readonly IGameStateFactory _gameStateFactory;
+            private readonly IBattle _battle;
+            private readonly IArmyDraftCalculator _armyDraftCalculator;
+
             private readonly IRegion _currentPlayerRegion = Substitute.For<IRegion>();
             private readonly IRegion _anotherPlayerRegion = Substitute.For<IRegion>();
             private readonly IPlayer _currentPlayer = Substitute.For<IPlayer>();
@@ -301,6 +351,10 @@ namespace RISK.Tests.Application
 
             public AttackTests()
             {
+                _gameStateFactory = Substitute.For<IGameStateFactory>();
+                _battle = Substitute.For<IBattle>();
+                _armyDraftCalculator = Substitute.For<IArmyDraftCalculator>();
+
                 _currentPlayerTerritory.Region.Returns(_currentPlayerRegion);
                 _currentPlayerTerritory.Player.Returns(_currentPlayer);
                 _anotherPlayerTerritory.Region.Returns(_anotherPlayerRegion);
@@ -312,11 +366,6 @@ namespace RISK.Tests.Application
                     .WithPlayer(_currentPlayer)
                     .WithPlayer(_anotherPlayer)
                     .Build();
-            }
-
-            protected override Func<GameData, IGameState> Initialize
-            {
-                get { return gameData => _factory.CreateAttackGameState(gameData); }
             }
 
             //[Fact]
@@ -389,23 +438,23 @@ namespace RISK.Tests.Application
 
             //    sut.AssertCanNotAttack(_currentPlayerRegion, _anotherPlayerRegion);
             //}
+
+            protected override IGameState Create(GameData gameData)
+            {
+                return new AttackGameState(_gameStateFactory, _battle, _armyDraftCalculator, gameData);
+            }
         }
 
         public class SendInArmiesToOccupyTests : GameStateTestsBase
         {
-            protected override Func<GameData, IGameState> Initialize
+            protected override IGameState Create(GameData gameData)
             {
-                get { return gameData => _factory.CreateSendInArmiesToOccupyGameState(gameData); }
+                return new SendInArmiesToOccupyGameState(gameData);
             }
         }
 
         public class GameOverTests : GameStateTestsBase
         {
-            protected override Func<GameData, IGameState> Initialize
-            {
-                get { return gameData => _factory.CreateGameOverGameState(gameData); }
-            }
-
             //[Fact]
             //public void Is_game_over_when_all_territories_belongs_to_one_player()
             //{
@@ -432,6 +481,11 @@ namespace RISK.Tests.Application
 
             //    sut.IsGameOver().Should().BeFalse();
             //}
+
+            protected override IGameState Create(GameData gameData)
+            {
+                return new GameOverGameState(gameData);
+            }
         }
 
         //public class TurnEndsTests : GameStateTestsBase

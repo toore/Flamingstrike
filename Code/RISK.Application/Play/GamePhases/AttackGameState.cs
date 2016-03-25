@@ -8,11 +8,11 @@ namespace RISK.Application.Play.GamePhases
 {
     public class AttackGameState : GameStateBase
     {
-        private readonly GameStateFactory _gameStateFactory;
+        private readonly IGameStateFactory _gameStateFactory;
         private readonly IBattle _battle;
         private readonly IArmyDraftCalculator _armyDraftCalculator;
 
-        public AttackGameState(GameStateFactory gameStateFactory, GameData gameData, IBattle battle, IArmyDraftCalculator armyDraftCalculator)
+        public AttackGameState(IGameStateFactory gameStateFactory, IBattle battle, IArmyDraftCalculator armyDraftCalculator, GameData gameData)
             : base(gameData)
         {
             _gameStateFactory = gameStateFactory;
@@ -104,6 +104,16 @@ namespace RISK.Application.Play.GamePhases
         private IPlayer GetNextPlayer()
         {
             return Players.ToList().GetNextOrFirst(CurrentPlayer);
+        }
+
+        public bool IsGameOver()
+        {
+            var allTerritoriesAreOccupiedBySamePlayer = Territories
+                .Select(x => x.Player)
+                .Distinct()
+                .Count() == 1;
+
+            return allTerritoriesAreOccupiedBySamePlayer;
         }
     }
 }

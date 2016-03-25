@@ -22,7 +22,6 @@ namespace RISK.Application.Play.GamePhases
         IGameState Fortify(IRegion sourceTerritory, IRegion destinationFortify, int armies);
         bool CanEndTurn();
         IGameState EndTurn();
-        bool IsGameOver();
     }
 
     public class GameStateBase : IGameState
@@ -101,16 +100,6 @@ namespace RISK.Application.Play.GamePhases
         public virtual IGameState EndTurn()
         {
             throw new InvalidOperationException();
-        }
-
-        public virtual bool IsGameOver()
-        {
-            var allTerritoriesAreOccupiedBySamePlayer = Territories
-                .Select(x => x.Player)
-                .Distinct()
-                .Count() == 1;
-
-            return allTerritoriesAreOccupiedBySamePlayer;
         }
 
         protected void ThrowIfTerritoriesDoesNotContain(ITerritory territory)
