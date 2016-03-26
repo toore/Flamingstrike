@@ -258,6 +258,24 @@ namespace RISK.Tests.Application.GameStates
             result.Should().Be(sendInArmiesToOccupyGameState);
         }
 
+        [Fact]
+        public void Can_not_send_in_armies_to_occupy()
+        {
+            var sut = Create(_gameData);
+
+            sut.CanSendArmiesToOccupy().Should().BeFalse();
+        }
+
+        [Fact]
+        public void Send_armies_to_occupy_throws()
+        {
+            var sut = Create(_gameData);
+
+            Action act = () => sut.SendArmiesToOccupy(1);
+
+            act.ShouldThrow<InvalidOperationException>();
+        }
+
         [Fact(Skip = "Not implemented")]
         public void Can_move_armies_into_captured_territory()
         {
