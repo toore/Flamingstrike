@@ -49,6 +49,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Extensions\EnumerableExtensions.cs" />
     <Compile Include="Play\GamePhases\AttackGameState.cs" />
     <Compile Include="Play\Attacking\BattleResult.cs" />
     <Compile Include="Play\Card.cs" />

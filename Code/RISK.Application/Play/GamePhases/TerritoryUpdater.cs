@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using RISK.Application.Extensions;
 using RISK.Application.World;
 
 namespace RISK.Application.Play.GamePhases
@@ -17,9 +18,7 @@ namespace RISK.Application.Play.GamePhases
             var currentNumberOfArmies = territoryToUpdate.Armies;
             var updatedTerritory = new Territory(region, territoryToUpdate.Player, currentNumberOfArmies + numberOfArmiesToPlace);
 
-            var updatedTerritories = territories
-                .Except(new[] { territoryToUpdate })
-                .Union(new[] { updatedTerritory })
+            var updatedTerritories = territories.Update(territoryToUpdate, updatedTerritory)
                 .ToList();
 
             return updatedTerritories;
