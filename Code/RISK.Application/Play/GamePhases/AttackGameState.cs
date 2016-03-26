@@ -70,8 +70,10 @@ namespace RISK.Application.Play.GamePhases
             var defendingTerritory = GetTerritory(defendingRegion);
             var battleResult = _battle.Attack(attackingTerritory, defendingTerritory);
 
-            // ... update territories here somewhere...
-            var updatedTerritories = Territories;
+            var updatedTerritories = Territories
+                .Update(attackingTerritory, battleResult.AttackingTerritory)
+                .Update(defendingTerritory, battleResult.DefendingTerritory)
+                .ToList();
 
             var gameData = new GameData(CurrentPlayer, Players, updatedTerritories);
 
