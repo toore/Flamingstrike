@@ -194,7 +194,7 @@ namespace RISK.Tests.Application.GameStates
         }
 
         [Fact]
-        public void Ending_turn_throws()
+        public void End_turn_throws()
         {
             var sut = Create(_gameData);
 
