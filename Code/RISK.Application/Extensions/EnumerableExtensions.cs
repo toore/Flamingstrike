@@ -13,5 +13,10 @@ namespace RISK.Application.Extensions
 
             return updatedList;
         }
+
+        public static Sequence<T> ToSequence<T>(this IEnumerable<T> items)
+        {
+            return new Sequence<T>(items.ToArray());
+        }
     }
 }

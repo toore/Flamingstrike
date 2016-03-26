@@ -42,7 +42,5 @@ namespace RISK.Tests.Application.GameStates
 
             sut.GetTerritory(region).Should().Be(territory);
         }
-
-        
     }
 }

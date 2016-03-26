@@ -28,7 +28,7 @@ namespace RISK.Tests.GuiWpf.Specifications
         private IPlayer _player2;
         private IDice _dice;
         private GameOverViewModel _gameOverAndPlayer1IsTheWinnerViewModel;
-        private IReadOnlyList<IPlayer> _players;
+        private Sequence<IPlayer> _players;
         private readonly List<Territory> _territories = new List<Territory>();
         private IGame _game;
         private IStateControllerFactory _stateControllerFactory;
@@ -178,7 +178,7 @@ namespace RISK.Tests.GuiWpf.Specifications
             _player1 = new Player("Player 1");
             _player2 = new Player("Player 2");
 
-            _players = new List<IPlayer> { _player1, _player2 };
+            _players = new Sequence<IPlayer>(_player1, _player2);
 
             return this;
         }

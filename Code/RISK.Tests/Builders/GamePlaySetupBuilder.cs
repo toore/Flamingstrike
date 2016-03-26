@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using RISK.Application;
+using RISK.Application.Extensions;
 using RISK.Application.Setup;
 
 namespace RISK.Tests.Builders
@@ -12,7 +13,7 @@ namespace RISK.Tests.Builders
 
         public IGamePlaySetup Build()
         {
-            return new GamePlaySetup(_players, _territories);
+            return new GamePlaySetup(_players.ToSequence(), _territories);
         }
 
         public GamePlaySetupBuilder WithPlayer(IPlayer player)

@@ -94,7 +94,7 @@ namespace RISK.Application.Play.GamePhases
             //}
 
             //_playerShouldReceiveCardWhenTurnEnds = false;
-            var nextPlayer = GetNextPlayer();
+            IPlayer nextPlayer = null;//GetNextPlayer();
 
             var gameData = new GameData(nextPlayer, Players, Territories);
 
@@ -103,10 +103,10 @@ namespace RISK.Application.Play.GamePhases
             return _gameStateFactory.CreateDraftArmiesGameState(gameData, numberOfArmiesToDraft);
         }
 
-        private IPlayer GetNextPlayer()
-        {
-            return Players.ToList().GetNextOrFirst(CurrentPlayer);
-        }
+        //private IPlayer GetNextPlayer()
+        //{
+        //    return Players.ToList().GetNextOrFirst(CurrentPlayer);
+        //}
 
         public bool IsGameOver()
         {

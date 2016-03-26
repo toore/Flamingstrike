@@ -60,6 +60,7 @@
     <Compile Include="Play\GamePhases\ArmyDraftCalculator.cs" />
     <Compile Include="Play\GamePhases\SendInArmiesToOccupyGameState.cs" />
     <Compile Include="Play\GamePhases\TerritoryUpdater.cs" />
+    <Compile Include="Sequence.cs" />
     <Compile Include="Setup\AlternateGameSetupFactory.cs" />
     <Compile Include="Territory.cs" />
     <Compile Include="Play\GameFactory.cs" />
@@ -67,7 +68,6 @@
     <Compile Include="Player.cs" />
     <Compile Include="World\Region.cs" />
     <Compile Include="PlayerType.cs" />
-    <Compile Include="Extensions\ListExtensions.cs" />
     <Compile Include="Play\Attacking\Dice.cs" />
     <Compile Include="Play\Game.cs" />
     <Compile Include="Setup\AlternateGameSetup.cs" />

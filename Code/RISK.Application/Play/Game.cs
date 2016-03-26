@@ -29,12 +29,12 @@ namespace RISK.Application.Play
         private readonly IArmyDraftCalculator _armyDraftCalculator;
         private IGameState _gameState;
 
-        public Game(IGameStateFactory gameStateFactory, IArmyDraftCalculator armyDraftCalculator, IReadOnlyList<IPlayer> players, IReadOnlyList<ITerritory> initialTerritories)
+        public Game(IGameStateFactory gameStateFactory, IArmyDraftCalculator armyDraftCalculator, Sequence<IPlayer> players, IReadOnlyList<ITerritory> initialTerritories)
         {
             _gameStateFactory = gameStateFactory;
             _armyDraftCalculator = armyDraftCalculator;
 
-            var gameData = new GameData(players.First(), players, initialTerritories.ToList());
+            var gameData = new GameData(players.Next(), players.ToList(), initialTerritories.ToList());
 
             Initialize(gameData);
         }

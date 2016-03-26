@@ -43,14 +43,41 @@ namespace RISK.Application.Setup
 
         public IGamePlaySetup Initialize()
         {
-            var playersInTakingTurnOrder = ShufflePlayers();
-            var territories = AssignPlayersToTerritories(playersInTakingTurnOrder);
-            var gameSetupPlayers = InitializeInfantryToPlace(playersInTakingTurnOrder, territories);
+            var playersInOrderOfTakingTurn = ShufflePlayers();
+            var territories = AssignPlayersToTerritories(playersInOrderOfTakingTurn.ToSequence());
+            var gameSetupPlayers = InitializeInfantryToPlace(playersInOrderOfTakingTurn, territories);
 
             PlaceArmies(TerritoryResponder, gameSetupPlayers, territories);
 
-            var gamePlaySetup = new GamePlaySetup(playersInTakingTurnOrder, territories);
+            var gamePlaySetup = new GamePlaySetup(playersInOrderOfTakingTurn.ToSequence(), territories);
             return gamePlaySetup;
+        }
+
+        private List<IPlayer> ShufflePlayers()
+        {
+            var shuffledPlayers = _players
+                .Shuffle(_shuffler)
+                .ToList();
+
+            return shuffledPlayers;
+        }
+
+        private List<Territory> AssignPlayersToTerritories(Sequence<IPlayer> players)
+        {
+            var territories = new List<Territory>();
+
+            var territoryIds = _regions.GetAll()
+                .Shuffle(_shuffler)
+                .ToList();
+
+            foreach (var territoryId in territoryIds)
+            {
+                var player = players.Next();
+                var territory = new Territory(territoryId, player, 1);
+                territories.Add(territory);
+            }
+
+            return territories;
         }
 
         private IList<InSetupPlayer> InitializeInfantryToPlace(IReadOnlyCollection<IPlayer> playerIds, IEnumerable<Territory> territories)
@@ -69,35 +96,6 @@ namespace RISK.Application.Setup
             var armiesToPlace = numberOfStartingInfantry - numberOfTerritoriesAssignedToPlayer;
             var inSetupPlayer = new InSetupPlayer(player, armiesToPlace);
             return inSetupPlayer;
-        }
-
-        private List<IPlayer> ShufflePlayers()
-        {
-            var shuffledPlayers = _players
-                .Shuffle(_shuffler)
-                .ToList();
-            return shuffledPlayers;
-        }
-
-        private List<Territory> AssignPlayersToTerritories(IList<IPlayer> players)
-        {
-            var territories = new List<Territory>();
-
-            var territoryIds = _regions.GetAll()
-                .Shuffle(_shuffler)
-                .ToList();
-
-            var player = players.First();
-
-            foreach (var territoryId in territoryIds)
-            {
-                var territory = new Territory(territoryId, player, 1);
-                territories.Add(territory);
-
-                player = players.GetNextOrFirst(player);
-            }
-
-            return territories;
         }
 
         private static void PlaceArmies(ITerritoryResponder territoryResponder, IList<InSetupPlayer> gameSetupPlayers, IReadOnlyList<Territory> territories)
