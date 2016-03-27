@@ -290,7 +290,7 @@ namespace RISK.Tests.GuiWpf.Specifications
 
         private IRegion[] GetAllTerritoriesExcept(params IRegion[] excludedLocations)
         {
-            return _regions.GetAll().Except(excludedLocations).ToArray();
+            return _regions.Except(excludedLocations).ToArray();
         }
 
         private void UpdateWorldMap(IPlayer player, int armies, params IRegion[] territoriesGeography)

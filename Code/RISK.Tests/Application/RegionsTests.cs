@@ -19,16 +19,16 @@ namespace RISK.Tests.Application
         }
 
         [Fact]
-        public void GetAll_returns_42()
+        public void Enumerating_all_returns_42()
         {
-            GetAll().Count().Should().Be(42);
-            GetAll().Should().OnlyHaveUniqueItems();
+            _sut.Count().Should().Be(42);
+            _sut.Should().OnlyHaveUniqueItems();
         }
 
         [Fact]
-        public void GetAll_contains_alaska()
+        public void Enumerating_all_contains_alaska()
         {
-            GetAll().Should().Contain(Alaska);
+            _sut.Should().Contain(Alaska);
         }
 
         [Fact]
@@ -139,7 +139,7 @@ namespace RISK.Tests.Application
         }
 
         [Fact]
-        public void GetAll_contains_all()
+        public void Enumerating_all_contains_all()
         {
             IEnumerable<IRegion> expected = new[]
             {
@@ -187,7 +187,7 @@ namespace RISK.Tests.Application
                 WesternAustralia
             };
 
-            GetAll().Should().BeEquivalentTo(expected);
+            _sut.Should().BeEquivalentTo(expected);
         }
 
         private void AssertTerritoryBorders(IRegion actual, params IRegion[] expectedItems)
@@ -201,16 +201,11 @@ namespace RISK.Tests.Application
 
         private void AssertTerritoriesInContinent(IContinent continent, params IRegion[] expected)
         {
-            var actual = GetAll()
+            var actual = _sut
                 .Where(x => x.Continent == continent)
                 .ToList();
 
             actual.Should().BeEquivalentTo(expected.AsEnumerable());
-        }
-
-        private IEnumerable<IRegion> GetAll()
-        {
-            return _sut.GetAll();
         }
 
         private IRegion Alaska => _sut.Alaska;

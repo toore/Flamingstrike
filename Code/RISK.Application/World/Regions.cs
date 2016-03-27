@@ -1,11 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 
 namespace RISK.Application.World
 {
-    public interface IRegions
+    public interface IRegions : IEnumerable<IRegion>
     {
-        IEnumerable<IRegion> GetAll();
-
         IRegion Alaska { get; }
         IRegion Alberta { get; }
         IRegion CentralAmerica { get; }
@@ -199,55 +198,6 @@ namespace RISK.Application.World
             WesternAustralia = westernAustralia;
         }
 
-        public IEnumerable<IRegion> GetAll()
-        {
-            return new[]
-            {
-                Alaska,
-                Alberta,
-                CentralAmerica,
-                EasternUnitedStates,
-                Greenland,
-                NorthwestRegion,
-                Ontario,
-                Quebec,
-                WesternUnitedStates,
-                Argentina,
-                Brazil,
-                Peru,
-                Venezuela,
-                GreatBritain,
-                Iceland,
-                NorthernEurope,
-                Scandinavia,
-                SouthernEurope,
-                Ukraine,
-                WesternEurope,
-                Congo,
-                EastAfrica,
-                Egypt,
-                Madagascar,
-                NorthAfrica,
-                SouthAfrica,
-                Afghanistan,
-                China,
-                India,
-                Irkutsk,
-                Japan,
-                Kamchatka,
-                MiddleEast,
-                Mongolia,
-                Siam,
-                Siberia,
-                Ural,
-                Yakutsk,
-                EasternAustralia,
-                Indonesia,
-                NewGuinea,
-                WesternAustralia
-            };
-        }
-
         public IRegion Alaska { get; }
         public IRegion Alberta { get; }
         public IRegion CentralAmerica { get; }
@@ -295,5 +245,59 @@ namespace RISK.Application.World
         public IRegion Indonesia { get; }
         public IRegion NewGuinea { get; }
         public IRegion WesternAustralia { get; }
+
+        public IEnumerator<IRegion> GetEnumerator()
+        {
+            return new List<IRegion>
+            {
+                Alaska,
+                Alberta,
+                CentralAmerica,
+                EasternUnitedStates,
+                Greenland,
+                NorthwestRegion,
+                Ontario,
+                Quebec,
+                WesternUnitedStates,
+                Argentina,
+                Brazil,
+                Peru,
+                Venezuela,
+                GreatBritain,
+                Iceland,
+                NorthernEurope,
+                Scandinavia,
+                SouthernEurope,
+                Ukraine,
+                WesternEurope,
+                Congo,
+                EastAfrica,
+                Egypt,
+                Madagascar,
+                NorthAfrica,
+                SouthAfrica,
+                Afghanistan,
+                China,
+                India,
+                Irkutsk,
+                Japan,
+                Kamchatka,
+                MiddleEast,
+                Mongolia,
+                Siam,
+                Siberia,
+                Ural,
+                Yakutsk,
+                EasternAustralia,
+                Indonesia,
+                NewGuinea,
+                WesternAustralia
+            }.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
     }
 }

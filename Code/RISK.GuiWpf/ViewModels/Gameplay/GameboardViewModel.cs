@@ -82,7 +82,7 @@ namespace GuiWpf.ViewModels.Gameplay
 
         private ReadOnlyCollection<ITerritory> GetAllTerritories()
         {
-            var territories = _regions.GetAll()
+            var territories = _regions
                 .Select(region => _game.GetTerritory(region))
                 .ToList().AsReadOnly();
 
@@ -149,7 +149,7 @@ namespace GuiWpf.ViewModels.Gameplay
         private void UpdateWorldMap()
         {
             var allTerritories = GetAllTerritories();
-            var enabledTerritories = _regions.GetAll()
+            var enabledTerritories = _regions
                 .Where(x => _stateController.CanClick(x))
                 .ToList();
 

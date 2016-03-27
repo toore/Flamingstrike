@@ -37,7 +37,7 @@ namespace RISK.Application.Play.GamePhases
 
         private int CalculateArmiesDraftedBasedOnContinentsOccupied(IPlayer currentPlayer, IEnumerable<ITerritory> territories)
         {
-            var armiesDraftedBasedOnContinentsOccupied = _continents.GetAll()
+            var armiesDraftedBasedOnContinentsOccupied = _continents
                 .Where(continent => IsContinentOccupiedByPlayer(continent, currentPlayer, territories))
                 .Sum(continent => continent.Bonus);
 

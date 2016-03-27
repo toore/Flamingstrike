@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 
 namespace RISK.Application.World
 {
@@ -17,10 +18,8 @@ namespace RISK.Application.World
         public int Bonus { get; }
     }
 
-    public interface IContinents
+    public interface IContinents : IEnumerable<IContinent>
     {
-        IEnumerable<IContinent> GetAll();
-
         IContinent Asia { get; }
         IContinent NorthAmerica { get; }
         IContinent Europe { get; }
@@ -41,9 +40,16 @@ namespace RISK.Application.World
             SouthAmerica = new Continent(2);
         }
 
-        public IEnumerable<IContinent> GetAll()
+        public IContinent Asia { get; }
+        public IContinent NorthAmerica { get; }
+        public IContinent Europe { get; }
+        public IContinent Africa { get; }
+        public IContinent Australia { get; }
+        public IContinent SouthAmerica { get; }
+
+        public IEnumerator<IContinent> GetEnumerator()
         {
-            return new[]
+            return new List<IContinent>
             {
                 Asia,
                 NorthAmerica,
@@ -51,14 +57,12 @@ namespace RISK.Application.World
                 Africa,
                 Australia,
                 SouthAmerica
-            };
+            }.GetEnumerator();
         }
 
-        public IContinent Asia { get; }
-        public IContinent NorthAmerica { get; }
-        public IContinent Europe { get; }
-        public IContinent Africa { get; }
-        public IContinent Australia { get; }
-        public IContinent SouthAmerica { get; }
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
     }
 }
