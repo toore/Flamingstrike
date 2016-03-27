@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using GuiWpf.Services;
 using GuiWpf.TerritoryModels;
@@ -6,8 +8,12 @@ using GuiWpf.ViewModels.Gameplay;
 using GuiWpf.ViewModels.Gameplay.Interaction;
 using GuiWpf.ViewModels.Gameplay.Map;
 using RISK.Application;
+using RISK.Application.Play;
+using RISK.Application.Play.Attacking;
+using RISK.Application.Play.GamePhases;
 using RISK.Application.Setup;
 using RISK.Application.World;
+using Toore.Shuffling;
 
 namespace GuiWpf.Views.WorldMapViews
 {
@@ -17,30 +23,23 @@ namespace GuiWpf.Views.WorldMapViews
 
         private GameboardViewModel Create()
         {
-            //var worldMap = new WorldMap();
-            //var colorService = new ColorService();
-            //var territoryColorsFactory = new TerritoryColorsFactory(colorService);
+            var continents = new Continents();
+            var regions = new Regions(continents);
+            var regionModelFactory = new RegionModelFactory(regions);
+            var colorService = new ColorService();
+            var territoryColorsFactory = new TerritoryColorsFactory(colorService, regions);
+            var worldMapViewModelFactory = new WorldMapViewModelFactory(regionModelFactory, territoryColorsFactory, colorService);
+            var sequence = new Sequence<IPlayer>(new Player("player 1"), new Player("player 1"));
+            IReadOnlyList<ITerritory> initialTerritories = regions.Select(region => new Territory(region, sequence.Next(), new Random().Next(99))).ToList();
+            var armyDraftCalculator = new ArmyDraftCalculator(continents);
+            var gameStateFactory = new GameStateFactory(null, null, null);
+            var game = new Game(gameStateFactory, armyDraftCalculator, sequence, initialTerritories);
+            var stateControllerFactory = new StateControllerFactory();
+            var interactionStateFactory = new InteractionStateFactory();
+            var gameboardViewModel = new GameboardViewModel(game, stateControllerFactory, interactionStateFactory, regions, worldMapViewModelFactory, null, null, null, null);
+            gameboardViewModel.Activate();
 
-            //var brazil = worldMap.Brazil;
-            //var humanPlayer = new Human("pelle");
-            //brazil.Occupant = humanPlayer;
-            //brazil.Armies = 99;
-            //var humanPlayer2 = new Human("kalle");
-            //var alaska = worldMap.Alaska;
-            //alaska.Occupant = humanPlayer2;
-            //alaska.Armies = 11;
-
-            //var worldMapViewModelFactory = new WorldMapViewModelFactory(new WorldMapModelFactory(), territoryColorsFactory, colorService);
-
-            //var players = new IPlayerId[] { humanPlayer, humanPlayer2 }.OrderBy(x => x.PlayerOrderIndex);
-            //var game = new Game(players, worldMap, new CardFactory(), null);
-            //var interactionStateFactory = new InteractionStateFactory();
-            //var gameAdapter = new GameAdapter(interactionStateFactory, new StateControllerFactory(interactionStateFactory), game);
-            //var gameboardViewModel = new GameboardViewModel(gameAdapter, worldMapViewModelFactory, null, new GameOverViewModelFactory(), null, null);
-
-            //return gameboardViewModel;
-
-            return null;
+            return gameboardViewModel;
         }
 
         public IRegion ProcessRequest(ITerritoryRequestParameter territoryRequestParameter)
