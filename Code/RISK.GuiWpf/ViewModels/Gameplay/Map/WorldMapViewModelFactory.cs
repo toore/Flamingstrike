@@ -30,18 +30,26 @@ namespace GuiWpf.ViewModels.Gameplay.Map
 
         public WorldMapViewModel Create(IReadOnlyList<ITerritory> territories, Action<IRegion> onClick, IEnumerable<IRegion> enabledTerritories)
         {
-            var territoryModels = _regionModelFactory.Create();
-
-            var worldMapViewModels = territoryModels
-                .SelectMany(x => CreateViewModels(x, onClick))
-                .ToList();
-
             var worldMapViewModel = new WorldMapViewModel();
+            var worldMapViewModels = CreateWorldMapItemViewModels(onClick);
             worldMapViewModel.WorldMapViewModels.Add(worldMapViewModels);
 
             Update(worldMapViewModel, territories, null, enabledTerritories);
 
             return worldMapViewModel;
+        }
+
+        private IEnumerable<IWorldMapItemViewModel> CreateWorldMapItemViewModels(Action<IRegion> onClick)
+        {
+            var regionModels = _regionModelFactory.Create().ToList();
+            IEnumerable<IWorldMapItemViewModel> regionViewModels = regionModels.Select(regionModel => new RegionViewModel(regionModel, onClick));
+            IEnumerable<IWorldMapItemViewModel> titleViewModels = regionModels.Select(regionModel => new TitleViewModel(regionModel));
+
+            var worldMapViewModels = regionViewModels
+                .Concat(titleViewModels)
+                .ToList();
+
+            return worldMapViewModels;
         }
 
         public void Update(WorldMapViewModel worldMapViewModel, IReadOnlyList<ITerritory> territories, IRegion selectedRegion, IEnumerable<IRegion> enabledTerritories)
@@ -51,12 +59,6 @@ namespace GuiWpf.ViewModels.Gameplay.Map
             {
                 worldMapItemViewModel.Accept(worldMapItemUpdater);
             }
-        }
-
-        private static IEnumerable<IWorldMapItemViewModel> CreateViewModels(IRegionModel regionModel, Action<IRegion> onClick)
-        {
-            yield return new RegionViewModel(regionModel, onClick);
-            yield return new TitleViewModel(regionModel);
         }
     }
 }

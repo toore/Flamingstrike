@@ -41,13 +41,12 @@
     <DataTemplate DataType="{x:Type Map:TitleViewModel}">
         <Canvas
             IsHitTestVisible="False"
-            Canvas.ZIndex="5">
+            Canvas.ZIndex="10">
             <Border
                 CornerRadius="25"
-                Opacity=".5"
                 Canvas.Left="{Binding Position.X}"
                 Canvas.Top="{Binding Position.Y}"
-                Background="Black">
+                Background="#80000000">
 
                 <StackPanel>
                     <Label
