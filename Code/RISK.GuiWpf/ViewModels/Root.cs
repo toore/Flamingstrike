@@ -9,6 +9,7 @@ using GuiWpf.ViewModels.Setup;
 using RISK.Application.Play;
 using RISK.Application.Play.Attacking;
 using RISK.Application.Play.GamePhases;
+using RISK.Application.Play.Planning;
 using RISK.Application.Setup;
 using RISK.Application.Shuffling;
 using RISK.Application.World;

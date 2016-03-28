@@ -13,6 +13,7 @@ using RISK.Application;
 using RISK.Application.Play;
 using RISK.Application.Play.Attacking;
 using RISK.Application.Play.GamePhases;
+using RISK.Application.Play.Planning;
 using RISK.Application.World;
 using Toore.Shuffling;
 using Xunit;

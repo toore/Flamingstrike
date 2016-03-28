@@ -3,7 +3,7 @@ using System.Linq;
 using RISK.Application.Extensions;
 using RISK.Application.World;
 
-namespace RISK.Application.Play.GamePhases
+namespace RISK.Application.Play.Planning
 {
     public interface IArmyDraftUpdater
     {

@@ -4,6 +4,7 @@ using Ploeh.AutoFixture.Xunit2;
 using RISK.Application;
 using RISK.Application.Play;
 using RISK.Application.Play.GamePhases;
+using RISK.Application.Play.Planning;
 using RISK.Application.World;
 using RISK.Tests.Builders;
 using Xunit;

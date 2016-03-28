@@ -3,17 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using GuiWpf.Services;
 using GuiWpf.TerritoryModels;
-using GuiWpf.ViewModels;
 using GuiWpf.ViewModels.Gameplay;
 using GuiWpf.ViewModels.Gameplay.Interaction;
 using GuiWpf.ViewModels.Gameplay.Map;
 using RISK.Application;
 using RISK.Application.Play;
-using RISK.Application.Play.Attacking;
 using RISK.Application.Play.GamePhases;
+using RISK.Application.Play.Planning;
 using RISK.Application.Setup;
 using RISK.Application.World;
-using Toore.Shuffling;
 
 namespace GuiWpf.Views.WorldMapViews
 {
