@@ -122,6 +122,14 @@ namespace RISK.Tests.Application.GameStates
         }
 
         [Fact]
+        public void Can_not_place_draft_armies()
+        {
+            var sut = Create(_gameData);
+
+            sut.CanPlaceDraftArmies(_region).Should().BeFalse();
+        }
+
+        [Fact]
         public void Get_number_of_armies_to_draft_throws()
         {
             var sut = Create(_gameData);
@@ -129,14 +137,6 @@ namespace RISK.Tests.Application.GameStates
             Action act = () => sut.GetNumberOfArmiesToDraft();
 
             act.ShouldThrow<InvalidOperationException>();
-        }
-
-        [Fact]
-        public void Can_not_place_draft_armies()
-        {
-            var sut = Create(_gameData);
-
-            sut.CanPlaceDraftArmies(_region).Should().BeFalse();
         }
 
         [Fact]

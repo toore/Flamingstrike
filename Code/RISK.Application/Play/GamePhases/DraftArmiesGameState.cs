@@ -17,14 +17,14 @@ namespace RISK.Application.Play.GamePhases
             _armyDraftUpdater = armyDraftUpdater;
         }
 
-        public override int GetNumberOfArmiesToDraft()
-        {
-            return _numberOfArmiesToDraft;
-        }
-
         public override bool CanPlaceDraftArmies(IRegion region)
         {
             return GetTerritory(region).Player == CurrentPlayer;
+        }
+
+        public override int GetNumberOfArmiesToDraft()
+        {
+            return _numberOfArmiesToDraft;
         }
 
         public override IGameState PlaceDraftArmies(IRegion region, int numberOfArmiesToPlace)

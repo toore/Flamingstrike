@@ -51,20 +51,20 @@ namespace RISK.Tests.Application.GameStates
                 .Build();
         }
 
-        [Theory, AutoData]
-        public void Gets_number_of_armies_to_draft(int numberOfArmiesToDraft)
-        {
-            var sut = Create(_gameData, numberOfArmiesToDraft);
-
-            sut.GetNumberOfArmiesToDraft().Should().Be(numberOfArmiesToDraft);
-        }
-
         [Fact]
         public void Can_place_draft_armies_for_occupied_territory()
         {
             var sut = Create(_gameData);
 
             sut.CanPlaceDraftArmies(_region).Should().BeTrue();
+        }
+
+        [Theory, AutoData]
+        public void Gets_number_of_armies_to_draft(int numberOfArmiesToDraft)
+        {
+            var sut = Create(_gameData, numberOfArmiesToDraft);
+
+            sut.GetNumberOfArmiesToDraft().Should().Be(numberOfArmiesToDraft);
         }
 
         [Fact]

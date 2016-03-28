@@ -49,15 +49,6 @@ namespace RISK.Tests.Application
             _sut.GetTerritory(region).Should().Be(territory);
         }
 
-        [Theory]
-        [AutoData]
-        public void Gets_number_of_armies_to_draft(int numberOfArmies)
-        {
-            _draftArmiesGameState.GetNumberOfArmiesToDraft().Returns(numberOfArmies);
-
-            _sut.GetNumberOfArmiesToDraft().Should().Be(numberOfArmies);
-        }
-
         [Theory, AutoData]
         public void Can_place_draft_armies(bool canPlaceArmies)
         {
@@ -65,6 +56,15 @@ namespace RISK.Tests.Application
             _draftArmiesGameState.CanPlaceDraftArmies(region).Returns(canPlaceArmies);
 
             _sut.CanPlaceDraftArmies(region).Should().Be(canPlaceArmies);
+        }
+
+        [Theory]
+        [AutoData]
+        public void Gets_number_of_armies_to_draft(int numberOfArmies)
+        {
+            _draftArmiesGameState.GetNumberOfArmiesToDraft().Returns(numberOfArmies);
+
+            _sut.GetNumberOfArmiesToDraft().Should().Be(numberOfArmies);
         }
 
         [Theory, AutoData]

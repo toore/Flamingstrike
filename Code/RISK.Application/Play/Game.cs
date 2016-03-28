@@ -9,8 +9,8 @@ namespace RISK.Application.Play
     {
         IPlayer CurrentPlayer { get; }
         ITerritory GetTerritory(IRegion region);
-        int GetNumberOfArmiesToDraft();
         bool CanPlaceDraftArmies(IRegion region);
+        int GetNumberOfArmiesToDraft();
         void PlaceDraftArmies(IRegion region, int numberOfArmies);
         bool CanAttack(IRegion attackingRegion, IRegion defendingRegion);
         void Attack(IRegion attackingRegion, IRegion defendingRegion);
@@ -52,14 +52,14 @@ namespace RISK.Application.Play
             return _gameState.GetTerritory(region);
         }
 
-        public int GetNumberOfArmiesToDraft()
-        {
-            return _gameState.GetNumberOfArmiesToDraft();
-        }
-
         public bool CanPlaceDraftArmies(IRegion region)
         {
             return _gameState.CanPlaceDraftArmies(region);
+        }
+
+        public int GetNumberOfArmiesToDraft()
+        {
+            return _gameState.GetNumberOfArmiesToDraft();
         }
 
         public void PlaceDraftArmies(IRegion region, int numberOfArmies)

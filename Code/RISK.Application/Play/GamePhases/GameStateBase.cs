@@ -10,8 +10,8 @@ namespace RISK.Application.Play.GamePhases
         IPlayer CurrentPlayer { get; }
         ITerritory GetTerritory(IRegion region);
 
-        int GetNumberOfArmiesToDraft();
         bool CanPlaceDraftArmies(IRegion region);
+        int GetNumberOfArmiesToDraft();
         IGameState PlaceDraftArmies(IRegion region, int numberOfArmiesToPlace);
         bool CanAttack(IRegion attackingRegion, IRegion defendingRegion);
         IGameState Attack(IRegion attackingRegion, IRegion defendingRegion);
@@ -42,14 +42,14 @@ namespace RISK.Application.Play.GamePhases
             return Territories.GetTerritory(region);
         }
 
-        public virtual int GetNumberOfArmiesToDraft()
-        {
-            throw new InvalidOperationException();
-        }
-
         public virtual bool CanPlaceDraftArmies(IRegion region)
         {
             return false;
+        }
+
+        public virtual int GetNumberOfArmiesToDraft()
+        {
+            throw new InvalidOperationException();
         }
 
         public virtual IGameState PlaceDraftArmies(IRegion region, int numberOfArmiesToPlace)
