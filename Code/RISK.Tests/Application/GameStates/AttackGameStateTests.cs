@@ -265,6 +265,16 @@ namespace RISK.Tests.Application.GameStates
         }
 
         [Fact]
+        public void Get_number_of_armies_that_can_be_sent_to_occupy_throws()
+        {
+            var sut = Create(_gameData);
+
+            Action act = () => sut.GetNumberOfArmiesThatCanBeSentToOccupy();
+
+            act.ShouldThrow<InvalidOperationException>();
+        }
+
+        [Fact]
         public void Send_armies_to_occupy_throws()
         {
             var sut = Create(_gameData);
