@@ -4,6 +4,7 @@ namespace RISK.Application.Play.GamePhases
 {
     public interface IGameStateFactory
     {
+        IGameState CreateDraftArmiesGameState(GameData gameData);
         IGameState CreateDraftArmiesGameState(GameData gameData, int numberOfArmiesToDraft);
         IGameState CreateAttackGameState(GameData gameData);
         IGameState CreateSendInArmiesToOccupyGameState(GameData gameData);
@@ -13,18 +14,25 @@ namespace RISK.Application.Play.GamePhases
     {
         private readonly IBattle _battle;
         private readonly IArmyDraftCalculator _armyDraftCalculator;
-        private readonly ITerritoryUpdater _territoryUpdater;
+        private readonly IArmyDraftUpdater _armyDraftUpdater;
 
-        public GameStateFactory(IBattle battle, IArmyDraftCalculator armyDraftCalculator, ITerritoryUpdater territoryUpdater)
+        public GameStateFactory(IBattle battle, IArmyDraftCalculator armyDraftCalculator, IArmyDraftUpdater armyDraftUpdater)
         {
             _battle = battle;
             _armyDraftCalculator = armyDraftCalculator;
-            _territoryUpdater = territoryUpdater;
+            _armyDraftUpdater = armyDraftUpdater;
+        }
+
+        public IGameState CreateDraftArmiesGameState(GameData gameData)
+        {
+            var numberOfArmiesToDraft = _armyDraftCalculator.Calculate(gameData.CurrentPlayer, gameData.Territories);
+
+            return CreateDraftArmiesGameState(gameData, numberOfArmiesToDraft);
         }
 
         public IGameState CreateDraftArmiesGameState(GameData gameData, int numberOfArmiesToDraft)
         {
-            return new DraftArmiesGameState(this, _territoryUpdater, gameData, numberOfArmiesToDraft);
+            return new DraftArmiesGameState(this, _armyDraftUpdater, gameData, numberOfArmiesToDraft);
         }
 
         public IGameState CreateAttackGameState(GameData gameData)

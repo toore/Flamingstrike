@@ -59,7 +59,7 @@
     <Compile Include="Play\GamePhases\GameStateFactory.cs" />
     <Compile Include="Play\GamePhases\ArmyDraftCalculator.cs" />
     <Compile Include="Play\GamePhases\SendInArmiesToOccupyGameState.cs" />
-    <Compile Include="Play\GamePhases\TerritoryUpdater.cs" />
+    <Compile Include="Play\GamePhases\ArmyDraftUpdater.cs" />
     <Compile Include="Sequence.cs" />
     <Compile Include="Setup\AlternateGameSetupFactory.cs" />
     <Compile Include="Territory.cs" />

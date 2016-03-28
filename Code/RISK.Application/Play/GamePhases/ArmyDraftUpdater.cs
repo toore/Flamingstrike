@@ -5,12 +5,12 @@ using RISK.Application.World;
 
 namespace RISK.Application.Play.GamePhases
 {
-    public interface ITerritoryUpdater
+    public interface IArmyDraftUpdater
     {
         IReadOnlyList<ITerritory> PlaceArmies(IReadOnlyList<ITerritory> territories, IRegion region, int numberOfArmiesToPlace);
     }
 
-    public class TerritoryUpdater : ITerritoryUpdater
+    public class ArmyDraftUpdater : IArmyDraftUpdater
     {
         public IReadOnlyList<ITerritory> PlaceArmies(IReadOnlyList<ITerritory> territories, IRegion region, int numberOfArmiesToPlace)
         {

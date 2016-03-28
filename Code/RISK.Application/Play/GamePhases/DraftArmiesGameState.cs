@@ -7,14 +7,14 @@ namespace RISK.Application.Play.GamePhases
     {
         private readonly IGameStateFactory _gameStateFactory;
         private readonly int _numberOfArmiesToDraft;
-        private readonly ITerritoryUpdater _territoryUpdater;
+        private readonly IArmyDraftUpdater _armyDraftUpdater;
 
-        public DraftArmiesGameState(IGameStateFactory gameStateFactory, ITerritoryUpdater territoryUpdater, GameData gameData, int numberOfArmiesToDraft)
+        public DraftArmiesGameState(IGameStateFactory gameStateFactory, IArmyDraftUpdater armyDraftUpdater, GameData gameData, int numberOfArmiesToDraft)
             : base(gameData)
         {
             _gameStateFactory = gameStateFactory;
             _numberOfArmiesToDraft = numberOfArmiesToDraft;
-            _territoryUpdater = territoryUpdater;
+            _armyDraftUpdater = armyDraftUpdater;
         }
 
         public override int GetNumberOfArmiesToDraft()
@@ -34,7 +34,7 @@ namespace RISK.Application.Play.GamePhases
                 throw new ArgumentOutOfRangeException(nameof(numberOfArmiesToPlace));
             }
 
-            var updatedTerritories = _territoryUpdater.PlaceArmies(Territories, region, numberOfArmiesToPlace);
+            var updatedTerritories = _armyDraftUpdater.PlaceArmies(Territories, region, numberOfArmiesToPlace);
 
             var gameData = new GameData(CurrentPlayer, Players, updatedTerritories);
             var numberOfArmiesLeftToPlace = _numberOfArmiesToDraft - numberOfArmiesToPlace;
