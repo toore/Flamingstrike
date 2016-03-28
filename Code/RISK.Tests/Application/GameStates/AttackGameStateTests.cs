@@ -83,7 +83,6 @@ namespace RISK.Tests.Application.GameStates
     {
         private readonly IGameStateFactory _gameStateFactory;
         private readonly IBattle _battle;
-        private readonly IArmyDraftCalculator _armyDraftCalculator;
 
         private readonly ITerritory _territory;
         private readonly ITerritory _anotherTerritory;
@@ -97,7 +96,6 @@ namespace RISK.Tests.Application.GameStates
         {
             _gameStateFactory = Substitute.For<IGameStateFactory>();
             _battle = Substitute.For<IBattle>();
-            _armyDraftCalculator = Substitute.For<IArmyDraftCalculator>();
 
             _territory = Substitute.For<ITerritory>();
             _anotherTerritory = Substitute.For<ITerritory>();
@@ -328,7 +326,7 @@ namespace RISK.Tests.Application.GameStates
 
         protected override IGameState Create(GameData gameData)
         {
-            return new AttackGameState(_gameStateFactory, _battle, _armyDraftCalculator, gameData);
+            return new AttackGameState(_gameStateFactory, _battle, gameData);
         }
     }
 }

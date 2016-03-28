@@ -37,7 +37,7 @@ namespace RISK.Application.Play.GamePhases
 
         public IGameState CreateAttackGameState(GameData gameData)
         {
-            return new AttackGameState(this, _battle, _armyDraftCalculator, gameData);
+            return new AttackGameState(this, _battle, gameData);
         }
 
         public IGameState CreateSendInArmiesToOccupyGameState(GameData gameData)

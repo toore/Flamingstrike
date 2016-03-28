@@ -10,14 +10,12 @@ namespace RISK.Application.Play.GamePhases
     {
         private readonly IGameStateFactory _gameStateFactory;
         private readonly IBattle _battle;
-        private readonly IArmyDraftCalculator _armyDraftCalculator;
 
-        public AttackGameState(IGameStateFactory gameStateFactory, IBattle battle, IArmyDraftCalculator armyDraftCalculator, GameData gameData)
+        public AttackGameState(IGameStateFactory gameStateFactory, IBattle battle, GameData gameData)
             : base(gameData)
         {
             _gameStateFactory = gameStateFactory;
             _battle = battle;
-            _armyDraftCalculator = armyDraftCalculator;
         }
 
         public override bool CanAttack(IRegion attackingRegion, IRegion defendingRegion)
@@ -98,9 +96,7 @@ namespace RISK.Application.Play.GamePhases
 
             var gameData = new GameData(nextPlayer, Players, Territories);
 
-            var numberOfArmiesToDraft = _armyDraftCalculator.Calculate(gameData.CurrentPlayer, gameData.Territories);
-
-            return _gameStateFactory.CreateDraftArmiesGameState(gameData, numberOfArmiesToDraft);
+            return _gameStateFactory.CreateDraftArmiesGameState(gameData);
         }
 
         //private IPlayer GetNextPlayer()
