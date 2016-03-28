@@ -30,7 +30,7 @@ namespace GuiWpf.Views.WorldMapViews
             var territoryColorsFactory = new TerritoryColorsFactory(colorService, regions);
             var worldMapViewModelFactory = new WorldMapViewModelFactory(regionModelFactory, territoryColorsFactory, colorService);
             var sequence = new Sequence<IPlayer>(new Player("player 1"), new Player("player 1"));
-            IReadOnlyList<ITerritory> initialTerritories = regions.Select(region => new Territory(region, sequence.Next(), new Random().Next(99))).ToList();
+            IReadOnlyList<ITerritory> initialTerritories = regions.GetAll().Select(region => new Territory(region, sequence.Next(), new Random().Next(99))).ToList();
             var armyDraftCalculator = new ArmyDraftCalculator(continents);
             var gameStateFactory = new GameStateFactory(null, null, null);
             var game = new Game(gameStateFactory, armyDraftCalculator, sequence, initialTerritories);

@@ -36,7 +36,7 @@ namespace RISK.Tests.Application
             shuffler.Shuffle(players).Returns(new[] { _player1, _player2 });
 
             var territories = new List<IRegion> { null };
-            worldMap.GetEnumerator().Returns(territories.GetEnumerator());
+            worldMap.GetAll().Returns(territories);
             _territory1 = Substitute.For<IRegion>();
             _territory2 = Substitute.For<IRegion>();
             _territory3 = Substitute.For<IRegion>();

@@ -77,11 +77,11 @@ namespace RISK.Tests.GuiWpf
             var anotherRegion = Substitute.For<IRegion>();
             var territory = Substitute.For<ITerritory>();
             var anotherTerritory = Substitute.For<ITerritory>();
-            _regions.GetEnumerator().Returns(new[]
+            _regions.GetAll().Returns(new[]
             {
                 region,
                 anotherRegion
-            }.GetEnumerator());
+            });
             _game.GetTerritory(region).Returns(territory);
             _game.GetTerritory(anotherRegion).Returns(anotherTerritory);
             var sut = Initialize(activate: false);

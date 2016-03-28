@@ -66,7 +66,7 @@ namespace RISK.Application.Setup
         {
             var territories = new List<Territory>();
 
-            var territoryIds = _regions
+            var territoryIds = _regions.GetAll()
                 .Shuffle(_shuffler)
                 .ToList();
 
