@@ -47,6 +47,4 @@ namespace RISK.Application.Play.GamePhases
             return _gameStateFactory.CreateAttackGameState(gameData);
         }
     }
-
-    public interface IGameDataFactory {}
 }
