@@ -356,6 +356,13 @@ namespace RISK.Tests.Application.GameStates
             act.ShouldThrow<InvalidOperationException>();
         }
 
+        [Fact]
+        public void Can_end_turn()
+        {
+            var sut = Create(_gameData);
+
+            sut.CanEndTurn().Should().BeTrue();
+        }
 
 
 

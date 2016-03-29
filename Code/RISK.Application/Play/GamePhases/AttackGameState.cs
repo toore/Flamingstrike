@@ -115,6 +115,10 @@ namespace RISK.Application.Play.GamePhases
             return _gameStateFactory.CreateFortifyState(gameData, sourceRegion, destinationRegion, armies);
         }
 
+        public override bool CanEndTurn()
+        {
+            return true;
+        }
         public override IGameState EndTurn()
         {
             //if (_playerShouldReceiveCardWhenTurnEnds)
