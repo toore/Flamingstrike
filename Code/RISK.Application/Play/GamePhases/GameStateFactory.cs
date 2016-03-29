@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using RISK.Application.Extensions;
 using RISK.Application.Play.Attacking;
 using RISK.Application.Play.Planning;
 using RISK.Application.World;
@@ -6,7 +8,7 @@ namespace RISK.Application.Play.GamePhases
 {
     public interface IGameStateFactory
     {
-        IGameState CreateDraftArmiesGameState(GameData gameData);
+        IGameState CreateNextTurnGameState(GameData gameData);
         IGameState CreateDraftArmiesGameState(GameData gameData, int numberOfArmiesToDraft);
         IGameState CreateAttackGameState(GameData gameData);
         IGameState CreateSendInArmiesToOccupyGameState(GameData gameData);
@@ -26,11 +28,23 @@ namespace RISK.Application.Play.GamePhases
             _armyDraftUpdater = armyDraftUpdater;
         }
 
-        public IGameState CreateDraftArmiesGameState(GameData gameData)
+        public IGameState CreateNextTurnGameState(GameData gameData)
         {
-            var numberOfArmiesToDraft = _armyDraftCalculator.Calculate(gameData.CurrentPlayer, gameData.Territories);
+            var nextPlayer = NextPlayer(gameData.Players, gameData.CurrentPlayer);
+            var numberOfArmiesToDraft = _armyDraftCalculator.Calculate(nextPlayer, gameData.Territories);
 
-            return CreateDraftArmiesGameState(gameData, numberOfArmiesToDraft);
+            var nextPlayerGameData = new GameData(nextPlayer, gameData.Players, gameData.Territories);
+
+            return CreateDraftArmiesGameState(nextPlayerGameData, numberOfArmiesToDraft);
+        }
+
+        private static IPlayer NextPlayer(IEnumerable<IPlayer> players, IPlayer currentPlayer)
+        {
+            var sequence = players.ToSequence();
+            while (sequence.Next() != currentPlayer)
+            { }
+
+            return sequence.Next();
         }
 
         public IGameState CreateDraftArmiesGameState(GameData gameData, int numberOfArmiesToDraft)
@@ -48,7 +62,7 @@ namespace RISK.Application.Play.GamePhases
             return new SendInArmiesToOccupyGameState(this, gameData);
         }
 
-        public IGameState CreateFortifyState(GameData gameData,IRegion sourceRegion, IRegion destinationRegion, int numberOfArmiesToFortify)
+        public IGameState CreateFortifyState(GameData gameData, IRegion sourceRegion, IRegion destinationRegion, int numberOfArmiesToFortify)
         {
             return new FortifyGameState(this, gameData);
         }
