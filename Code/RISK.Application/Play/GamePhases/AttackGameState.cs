@@ -119,6 +119,7 @@ namespace RISK.Application.Play.GamePhases
         {
             return true;
         }
+
         public override IGameState EndTurn()
         {
             //if (_playerShouldReceiveCardWhenTurnEnds)
@@ -127,7 +128,7 @@ namespace RISK.Application.Play.GamePhases
             //}
 
             //_playerShouldReceiveCardWhenTurnEnds = false;
-            IPlayer nextPlayer = null; //GetNextPlayer();
+            IPlayer nextPlayer = null;//Players.
 
             var gameData = new GameData(nextPlayer, Players, Territories);
 

@@ -12,73 +12,6 @@ using Xunit;
 
 namespace RISK.Tests.Application.GameStates
 {
-    //public class CanAttackTests : GameStateTestsBase
-    //{
-    //    private readonly IRegion _currentPlayerRegion = Substitute.For<IRegion>();
-    //    private readonly IRegion _anotherPlayerRegion = Substitute.For<IRegion>();
-    //    private readonly IPlayer _currentPlayer = Substitute.For<IPlayer>();
-    //    private readonly IPlayer _anotherPlayer = Substitute.For<IPlayer>();
-    //    private readonly ITerritory _currentPlayerTerritory = Substitute.For<ITerritory>();
-    //    private readonly ITerritory _anotherPlayerTerritory = Substitute.For<ITerritory>();
-    //    private readonly IGamePlaySetup _gamePlaySetup;
-
-    //    public CanAttackTests()
-    //    {
-    //        _currentPlayerTerritory.Region.Returns(_currentPlayerRegion);
-    //        _currentPlayerTerritory.Player.Returns(_currentPlayer);
-    //        _anotherPlayerTerritory.Region.Returns(_anotherPlayerRegion);
-    //        _anotherPlayerTerritory.Player.Returns(_anotherPlayer);
-
-    //        _gamePlaySetup = Make.GamePlaySetup
-    //            .WithTerritory(_currentPlayerTerritory)
-    //            .WithTerritory(_anotherPlayerTerritory)
-    //            .WithPlayer(_currentPlayer)
-    //            .WithPlayer(_anotherPlayer)
-    //            .Build();
-    //    }
-
-    //public class TurnEndsTests : GameStateTestsBase
-    //{
-    //[Fact]
-    //public void End_turn_passes_turn_to_next_player()
-    //{
-    //    var nextPlayer = Substitute.For<IPlayer>();
-    //    var gameSetup = Make.GamePlaySetup
-    //        .WithPlayer(Substitute.For<IPlayer>())
-    //        .WithPlayer(nextPlayer)
-    //        .Build();
-
-    //    var sut = Create(gameSetup);
-    //    sut.EndTurn();
-
-    //    sut.CurrentPlayer.Should().Be(nextPlayer);
-    //}
-
-    //[Fact]
-    //public void Player_should_receive_card_when_turn_ends()
-    //{
-    //    //_currentStateController.PlayerShouldReceiveCardWhenTurnEnds = true;
-    //    var card = Make.Card.Build();
-    //    _cardFactory.Create().Returns(card);
-
-    //    _sut.EndTurn();
-
-    //    //_currentPlayerId.Received().AddCard(card);
-    //    throw new NotImplementedException();
-    //}
-
-    //[Fact]
-    //public void Player_should_not_receive_card_when_turn_ends()
-    //{
-    //    //_currentStateController.PlayerShouldReceiveCardWhenTurnEnds = false;
-
-    //    _sut.EndTurn();
-
-    //    //_currentPlayerId.DidNotReceiveWithAnyArgs().AddCard(null);
-    //    throw new NotImplementedException();
-    //}
-    //}
-
     public class AttackGameStateTests : GameStateTestsBase
     {
         private readonly IGameStateFactory _gameStateFactory;
@@ -304,9 +237,9 @@ namespace RISK.Tests.Application.GameStates
                 x.Players.IsEquivalent(_currentPlayer, _anotherPlayer)
                 &&
                 x.Territories.IsEquivalent(_territory, _anotherTerritory)
-                ), 
-                _region, 
-                _anotherRegion, 
+                ),
+                _region,
+                _anotherRegion,
                 1)
                 .Returns(fortifyGameState);
 
@@ -364,9 +297,35 @@ namespace RISK.Tests.Application.GameStates
             sut.CanEndTurn().Should().BeTrue();
         }
 
+        [Fact]
+        public void End_turn_passes_turn_to_next_player()
+        {
+            var draftArmiesGameState = Substitute.For<IGameState>();
+            _gameStateFactory.CreateDraftArmiesGameState(Arg.Is<GameData>(x =>
+                x.CurrentPlayer == _anotherPlayer
+                &&
+                x.Players.IsEquivalent(_currentPlayer, _anotherPlayer)
+                &&
+                x.Territories.IsEquivalent(_territory, _anotherTerritory)
+                ))
+                .Returns(draftArmiesGameState);
 
+            var sut = Create(_gameData);
 
-        
+            sut.EndTurn().Should().Be(draftArmiesGameState);
+        }
+
+        [Fact]
+        public void Player_should_receive_card_when_turn_ends()
+        {
+            throw new NotImplementedException();
+        }
+
+        [Fact]
+        public void Player_should_not_receive_card_when_turn_ends()
+        {
+            throw new NotImplementedException();
+        }
 
         protected override IGameState Create(GameData gameData)
         {
