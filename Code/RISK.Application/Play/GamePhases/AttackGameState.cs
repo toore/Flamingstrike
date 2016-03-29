@@ -28,11 +28,12 @@ namespace RISK.Application.Play.GamePhases
                 return false;
             }
 
-            var canAttack = HasBorder(attackingTerritory, defendingTerritory)
-                            &&
-                            IsAttackerAndDefenderDifferentPlayers(attackingTerritory, defendingTerritory)
-                            &&
-                            HasAttackerEnoughArmiesToPerformAttack(attackingTerritory);
+            var canAttack =
+                HasBorder(attackingTerritory, defendingTerritory)
+                &&
+                IsAttackerAndDefenderDifferentPlayers(attackingTerritory, defendingTerritory)
+                &&
+                HasAttackerEnoughArmiesToPerformAttack(attackingTerritory);
 
             return canAttack;
         }
@@ -84,6 +85,36 @@ namespace RISK.Application.Play.GamePhases
             return _gameStateFactory.CreateAttackGameState(gameData);
         }
 
+        public override bool CanFortify(IRegion sourceRegion, IRegion destinationRegion)
+        {
+            var sourceTerritory = GetTerritory(sourceRegion);
+            var destinationTerritory = GetTerritory(destinationRegion);
+            var playerOccupiesBothTerritories =
+                sourceTerritory.Player == CurrentPlayer
+                &&
+                sourceTerritory.Player == destinationTerritory.Player;
+            var hasBorder = sourceRegion.HasBorder(destinationRegion);
+
+            var canFortify =
+                playerOccupiesBothTerritories
+                &&
+                hasBorder;
+
+            return canFortify;
+        }
+
+        public override IGameState Fortify(IRegion sourceRegion, IRegion destinationRegion, int armies)
+        {
+            if (!CanFortify(sourceRegion, destinationRegion))
+            {
+                throw new InvalidOperationException();
+            }
+
+            var gameData = new GameData(CurrentPlayer, Players, Territories);
+
+            return _gameStateFactory.CreateFortifyState(gameData, sourceRegion, destinationRegion, armies);
+        }
+
         public override IGameState EndTurn()
         {
             //if (_playerShouldReceiveCardWhenTurnEnds)
@@ -92,7 +123,7 @@ namespace RISK.Application.Play.GamePhases
             //}
 
             //_playerShouldReceiveCardWhenTurnEnds = false;
-            IPlayer nextPlayer = null;//GetNextPlayer();
+            IPlayer nextPlayer = null; //GetNextPlayer();
 
             var gameData = new GameData(nextPlayer, Players, Territories);
 

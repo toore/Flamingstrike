@@ -1,5 +1,6 @@
 using RISK.Application.Play.Attacking;
 using RISK.Application.Play.Planning;
+using RISK.Application.World;
 
 namespace RISK.Application.Play.GamePhases
 {
@@ -9,6 +10,7 @@ namespace RISK.Application.Play.GamePhases
         IGameState CreateDraftArmiesGameState(GameData gameData, int numberOfArmiesToDraft);
         IGameState CreateAttackGameState(GameData gameData);
         IGameState CreateSendInArmiesToOccupyGameState(GameData gameData);
+        IGameState CreateFortifyState(GameData gameData, IRegion sourceRegion, IRegion destinationRegion, int numberOfArmiesToFortify);
     }
 
     public class GameStateFactory : IGameStateFactory
@@ -43,7 +45,12 @@ namespace RISK.Application.Play.GamePhases
 
         public IGameState CreateSendInArmiesToOccupyGameState(GameData gameData)
         {
-            return new SendInArmiesToOccupyGameState(gameData);
+            return new SendInArmiesToOccupyGameState(this, gameData);
+        }
+
+        public IGameState CreateFortifyState(GameData gameData,IRegion sourceRegion, IRegion destinationRegion, int numberOfArmiesToFortify)
+        {
+            return new FortifyGameState(this, gameData);
         }
 
         public IGameState CreateGameOverGameState(GameData gameData)

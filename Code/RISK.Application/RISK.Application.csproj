@@ -54,6 +54,7 @@
     <Compile Include="Play\Attacking\BattleResult.cs" />
     <Compile Include="Play\Card.cs" />
     <Compile Include="Play\GamePhases\DraftArmiesGameState.cs" />
+    <Compile Include="Play\GamePhases\FortifyGameState.cs" />
     <Compile Include="Play\GamePhases\GameOverGameState.cs" />
     <Compile Include="Play\GamePhases\GameStateBase.cs" />
     <Compile Include="Play\GamePhases\GameStateFactory.cs" />
