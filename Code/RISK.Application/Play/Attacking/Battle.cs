@@ -32,7 +32,7 @@ namespace RISK.Application.Play.Attacking
                 return AttackerOccupiesNewTerritory(attackingArmies, attackingTerritory, defendingTerritory);
             }
 
-            return UpdateArmyCount(battleOutcome, attackingTerritory, defendingTerritory);
+            return UpdateArmies(battleOutcome, attackingTerritory, defendingTerritory);
         }
 
         private static IBattleResult AttackerOccupiesNewTerritory(int attackingArmies, ITerritory attackingTerritory, ITerritory territoryToBeOccupied)
@@ -46,7 +46,7 @@ namespace RISK.Application.Play.Attacking
             return new BattleResult(updatedAttackingTerritory, occupiedTerritory);
         }
 
-        private static IBattleResult UpdateArmyCount(BattleOutcome battleOutcome, ITerritory attackingTerritory, ITerritory defendingTerritory)
+        private static IBattleResult UpdateArmies(BattleOutcome battleOutcome, ITerritory attackingTerritory, ITerritory defendingTerritory)
         {
             var updatedAttackingArmies = attackingTerritory.Armies - battleOutcome.AttackerLosses;
             var updatedAttackingTerritory = new Territory(attackingTerritory.Region, attackingTerritory.Player, updatedAttackingArmies);
