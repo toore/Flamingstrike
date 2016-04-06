@@ -1,8 +1,4 @@
-RISK
-==
-
-
-TODO:
+TODO
 ==
 Game states:
 + DraftArmies 
@@ -14,22 +10,19 @@ Game states:
 - GameOver
 
 
-Fortifier
-- border, different players
-
+Good ideas?
+==
+Extract Fortifier? (border, different players)
 + GetNextOrFirst extension should be replaced by "Sequence" implementation
-- Sequence behöver testas
-
 
 
 Not used?
 ==
-AttackGameState - IsGameOver?
+AttackGameState::IsGameOver?
+GameStateBase::ThrowIfTerritoriesDoesNotContain?
 
-GameStateBase - ThrowIfTerritoriesDoesNotContain?
 
-
-Testa
+Add tests
 ==
-GameStateFactory
-- CreateNextTurnGameState, etc
+- GameStateFactory (CreateNextTurnGameState, etc)
+- Sequence
