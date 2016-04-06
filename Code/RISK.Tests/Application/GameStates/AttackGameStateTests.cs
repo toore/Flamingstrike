@@ -315,51 +315,6 @@ namespace RISK.Tests.Application.GameStates
             sut.EndTurn().Should().Be(draftArmiesGameState);
         }
 
-        //[Fact]
-        //public void End_turn_passes_turn_to_next_player()
-        //{
-        //    var draftArmiesGameState = Substitute.For<IGameState>();
-        //    _gameStateFactory.CreateDraftArmiesGameState(Arg.Is<GameData>(x =>
-        //        x.CurrentPlayer == _anotherPlayer
-        //        &&
-        //        x.Players.IsEquivalent(_currentPlayer, _anotherPlayer)
-        //        &&
-        //        x.Territories.IsEquivalent(_territory, _anotherTerritory)
-        //        ))
-        //        .Returns(draftArmiesGameState);
-
-        //    var sut = Create(_gameData);
-
-        //    sut.EndTurn().Should().Be(draftArmiesGameState);
-        //}
-
-        //[Fact]
-        //public void End_turn_passes_turn_to_first_player()
-        //{
-        //    var firstPlayer = Substitute.For<IPlayer>();
-        //    var gameData = Make.GameData
-        //        .CurrentPlayer(_currentPlayer)
-        //        .WithPlayer(firstPlayer)
-        //        .WithPlayer(_anotherPlayer)
-        //        .WithPlayer(_currentPlayer)
-        //        .WithTerritory(_territory)
-        //        .WithTerritory(_anotherTerritory)
-        //        .Build();
-        //    var draftArmiesGameState = Substitute.For<IGameState>();
-        //    _gameStateFactory.CreateDraftArmiesGameState(Arg.Is<GameData>(x =>
-        //        x.CurrentPlayer == firstPlayer
-        //        &&
-        //        x.Players.IsEquivalent(firstPlayer, _anotherPlayer, _currentPlayer)
-        //        &&
-        //        x.Territories.IsEquivalent(_territory, _anotherTerritory)
-        //        ))
-        //        .Returns(draftArmiesGameState);
-
-        //    var sut = Create(gameData);
-
-        //    sut.EndTurn().Should().Be(draftArmiesGameState);
-        //}
-
         [Fact]
         public void Player_should_receive_card_when_turn_ends()
         {
