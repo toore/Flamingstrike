@@ -20,7 +20,8 @@ namespace RISK.Tests.Application
         {
             var newArmiesDraftCalculator = Substitute.For<IArmyDraftCalculator>();
             var gameStateFactory = Substitute.For<IGameStateFactory>();
-            var gameFactory = new GameFactory(gameStateFactory, newArmiesDraftCalculator);
+            var deckFactory = Substitute.For<IDeckFactory>();
+            var gameFactory = new GameFactory(gameStateFactory, newArmiesDraftCalculator, deckFactory);
 
             _draftArmiesGameState = Substitute.For<IGameState>();
             gameStateFactory.CreateDraftArmiesGameState(null, 0).ReturnsForAnyArgs(_draftArmiesGameState);

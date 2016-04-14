@@ -9,10 +9,11 @@ namespace RISK.Tests.Builders
         private IPlayer _currentPlayer;
         private readonly List<IPlayer> _players = new List<IPlayer>();
         private readonly List<ITerritory> _territories = new List<ITerritory>();
+        private IDeck _deck = null;
 
         public GameData Build()
         {
-            return new GameData(_currentPlayer, _players, _territories);
+            return new GameData(_currentPlayer, _players, _territories, _deck);
         }
 
         public GameDataBuilder CurrentPlayer(IPlayer currentPlayer)
@@ -30,6 +31,12 @@ namespace RISK.Tests.Builders
         public GameDataBuilder WithTerritory(ITerritory territory)
         {
             _territories.Add(territory);
+            return this;
+        }
+
+        public GameDataBuilder WithDeck(IDeck deck)
+        {
+            _deck = deck;
             return this;
         }
     }

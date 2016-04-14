@@ -186,7 +186,6 @@ namespace RISK.Tests.GuiWpf.Specifications
 
         private GamePlaySpec game_is_started()
         {
-            var cardFactory = new CardFactory();
             var randomWrapper = new RandomWrapper();
             var dice = new Dice(randomWrapper);
             var dicesRoller = new DicesRoller(dice);
@@ -194,7 +193,7 @@ namespace RISK.Tests.GuiWpf.Specifications
             var newArmiesDraftCalculator = new ArmyDraftCalculator(_continents);
             var armyDraftUpdater = new ArmyDraftUpdater();
             var gameStateFactory = new GameStateFactory(battle, newArmiesDraftCalculator, armyDraftUpdater);
-            _game = new Game(gameStateFactory, newArmiesDraftCalculator, _players, _territories);
+            _game = new Game(gameStateFactory, newArmiesDraftCalculator, _players, _territories, null);
             _stateControllerFactory = new StateControllerFactory();
             _interactionStateFactory = new InteractionStateFactory();
 

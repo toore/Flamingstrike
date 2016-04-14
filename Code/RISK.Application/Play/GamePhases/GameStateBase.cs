@@ -36,6 +36,7 @@ namespace RISK.Application.Play.GamePhases
         public IPlayer CurrentPlayer => _gameData.CurrentPlayer;
         protected IReadOnlyList<IPlayer> Players => _gameData.Players;
         protected IReadOnlyList<ITerritory> Territories => _gameData.Territories;
+        protected IDeck Deck => _gameData.Deck;
 
         public ITerritory GetTerritory(IRegion region)
         {

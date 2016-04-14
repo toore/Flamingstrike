@@ -15,14 +15,17 @@ namespace RISK.Tests.Application
     {
         private readonly IArmyDraftCalculator _armyDraftCalculator;
         private readonly IGameStateFactory _gameStateFactory;
+        private IDeckFactory _deckFactory;
+        private GameFactory _gameFactory;
         private readonly GameFactory _sut;
 
         public GameFactoryTests()
         {
             _armyDraftCalculator = Substitute.For<IArmyDraftCalculator>();
             _gameStateFactory = Substitute.For<IGameStateFactory>();
+            _deckFactory = Substitute.For<IDeckFactory>();
 
-            _sut = new GameFactory(_gameStateFactory, _armyDraftCalculator);
+            _gameFactory = _sut = new GameFactory(_gameStateFactory, _armyDraftCalculator, _deckFactory);
         }
 
         [Theory]

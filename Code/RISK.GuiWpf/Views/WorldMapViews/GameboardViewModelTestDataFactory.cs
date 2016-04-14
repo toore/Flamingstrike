@@ -31,7 +31,7 @@ namespace GuiWpf.Views.WorldMapViews
             IReadOnlyList<ITerritory> initialTerritories = regions.GetAll().Select(region => new Territory(region, sequence.Next(), new Random().Next(99))).ToList();
             var armyDraftCalculator = new ArmyDraftCalculator(continents);
             var gameStateFactory = new GameStateFactory(null, null, null);
-            var game = new Game(gameStateFactory, armyDraftCalculator, sequence, initialTerritories);
+            var game = new Game(gameStateFactory, armyDraftCalculator, sequence, initialTerritories, new Deck(new[] { new WildCard() }));
             var stateControllerFactory = new StateControllerFactory();
             var interactionStateFactory = new InteractionStateFactory();
             var gameboardViewModel = new GameboardViewModel(game, stateControllerFactory, interactionStateFactory, regions, worldMapViewModelFactory, null, null, null, null);

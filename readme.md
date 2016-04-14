@@ -5,9 +5,11 @@ Game states:
 + Attacking
 -   SendInArmiesToOccupy
 -   DraftArmiesHoldingFiveOrMoreCards
+- 	GameOver
 - Fortifying
 - TurnEnding? 
-- GameOver
+
+CardFactory-->CardDeck? (fixed cards)
 
 
 Good ideas?
@@ -26,3 +28,5 @@ Add tests
 ==
 - GameStateFactory (CreateNextTurnGameState, etc)
 - Sequence
+- Deck
+- DeckFactory

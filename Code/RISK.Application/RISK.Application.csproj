@@ -50,9 +50,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Extensions\EnumerableExtensions.cs" />
+    <Compile Include="Play\DeckFactory.cs" />
     <Compile Include="Play\GamePhases\AttackGameState.cs" />
     <Compile Include="Play\Attacking\BattleResult.cs" />
-    <Compile Include="Play\Card.cs" />
+    <Compile Include="Play\ICard.cs" />
     <Compile Include="Play\GamePhases\DraftArmiesGameState.cs" />
     <Compile Include="Play\GamePhases\FortifyGameState.cs" />
     <Compile Include="Play\GamePhases\GameOverGameState.cs" />
@@ -73,7 +74,7 @@
     <Compile Include="Play\Game.cs" />
     <Compile Include="Setup\AlternateGameSetup.cs" />
     <Compile Include="Play\Attacking\Battle.cs" />
-    <Compile Include="Play\CardFactory.cs" />
+    <Compile Include="Play\Deck.cs" />
     <Compile Include="Play\Attacking\DicesRoller.cs" />
     <Compile Include="Play\Attacking\BattleOutcomeCalculator.cs" />
     <Compile Include="Setup\ITerritoryResponder.cs" />

@@ -37,7 +37,7 @@ namespace RISK.Application.Play.GamePhases
 
             var updatedTerritories = _armyDraftUpdater.PlaceArmies(Territories, region, numberOfArmiesToPlace);
 
-            var gameData = new GameData(CurrentPlayer, Players, updatedTerritories);
+            var gameData = new GameData(CurrentPlayer, Players, updatedTerritories, Deck);
             var numberOfArmiesLeftToPlace = _numberOfArmiesToDraft - numberOfArmiesToPlace;
 
             if (numberOfArmiesLeftToPlace > 0)

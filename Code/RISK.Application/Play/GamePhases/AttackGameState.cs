@@ -10,6 +10,7 @@ namespace RISK.Application.Play.GamePhases
     {
         private readonly IGameStateFactory _gameStateFactory;
         private readonly IBattle _battle;
+        private bool _playerShouldBeAwardedCardWhenTurnEnds;
 
         public AttackGameState(IGameStateFactory gameStateFactory, IBattle battle, GameData gameData)
             : base(gameData)
@@ -74,11 +75,11 @@ namespace RISK.Application.Play.GamePhases
                 .Update(defendingTerritory, battleResult.DefendingTerritory)
                 .ToList();
 
-            var gameData = new GameData(CurrentPlayer, Players, updatedTerritories);
+            var gameData = new GameData(CurrentPlayer, Players, updatedTerritories, Deck);
 
             if (battleResult.IsDefenderDefeated())
             {
-                //_playerShouldReceiveCardWhenTurnEnds = true;
+                _playerShouldBeAwardedCardWhenTurnEnds = true;
                 return _gameStateFactory.CreateSendInArmiesToOccupyGameState(gameData);
             }
 
@@ -110,7 +111,7 @@ namespace RISK.Application.Play.GamePhases
                 throw new InvalidOperationException();
             }
 
-            var gameData = new GameData(CurrentPlayer, Players, Territories);
+            var gameData = new GameData(CurrentPlayer, Players, Territories, Deck);
 
             return _gameStateFactory.CreateFortifyState(gameData, sourceRegion, destinationRegion, armies);
         }
@@ -122,20 +123,16 @@ namespace RISK.Application.Play.GamePhases
 
         public override IGameState EndTurn()
         {
-            //if (_playerShouldReceiveCardWhenTurnEnds)
-            //{
-            //    //PlayerId.AddCard(_cardFactory.Create());
-            //}
+            if (_playerShouldBeAwardedCardWhenTurnEnds)
+            {
+                var card = Deck.Draw();
+                CurrentPlayer.AddCard(card);
+            }
 
-            //_playerShouldReceiveCardWhenTurnEnds = false;
-            
-
-            var gameData = new GameData(CurrentPlayer, Players, Territories);
+            var gameData = new GameData(CurrentPlayer, Players, Territories, Deck);
 
             return _gameStateFactory.CreateNextTurnGameState(gameData);
         }
-
-        
 
         public bool IsGameOver()
         {

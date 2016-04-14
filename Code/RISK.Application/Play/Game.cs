@@ -30,12 +30,16 @@ namespace RISK.Application.Play
         private readonly IArmyDraftCalculator _armyDraftCalculator;
         private IGameState _gameState;
 
-        public Game(IGameStateFactory gameStateFactory, IArmyDraftCalculator armyDraftCalculator, Sequence<IPlayer> players, IReadOnlyList<ITerritory> initialTerritories)
+        public Game(IGameStateFactory gameStateFactory, IArmyDraftCalculator armyDraftCalculator, Sequence<IPlayer> players, IReadOnlyList<ITerritory> initialTerritories, IDeck deck)
         {
             _gameStateFactory = gameStateFactory;
             _armyDraftCalculator = armyDraftCalculator;
 
-            var gameData = new GameData(players.Next(), players.ToList(), initialTerritories.ToList());
+            var gameData = new GameData(
+                players.Next(), 
+                players.ToList(), 
+                initialTerritories.ToList(),
+                deck);
 
             Initialize(gameData);
         }
@@ -116,11 +120,12 @@ namespace RISK.Application.Play
 
     public class GameData
     {
-        public GameData(IPlayer currentPlayer, IReadOnlyList<IPlayer> players, IReadOnlyList<ITerritory> territories)
+        public GameData(IPlayer currentPlayer, IReadOnlyList<IPlayer> players, IReadOnlyList<ITerritory> territories, IDeck deck)
         {
             CurrentPlayer = currentPlayer;
             Players = players;
             Territories = territories;
+            Deck = deck;
         }
 
         public IPlayer CurrentPlayer { get; }
@@ -128,6 +133,8 @@ namespace RISK.Application.Play
         public IReadOnlyList<IPlayer> Players { get; }
 
         public IReadOnlyList<ITerritory> Territories { get; }
+
+        public IDeck Deck { get; }
     }
 
     public static class GameExtensions

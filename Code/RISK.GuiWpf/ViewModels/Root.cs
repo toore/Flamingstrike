@@ -69,7 +69,6 @@ namespace GuiWpf.ViewModels
                 dialogManager,
                 EventAggregator);
 
-            var cardFactory = new CardFactory();
             var battleCalculator = new BattleOutcomeCalculator();
             var randomWrapper = new RandomWrapper();
             var dice = new Dice(randomWrapper);
@@ -78,7 +77,9 @@ namespace GuiWpf.ViewModels
             var armyDraftCalculator = new ArmyDraftCalculator(continents);
             var armyDraftUpdater = new ArmyDraftUpdater();
             var gameStateFactory = new GameStateFactory(battle, armyDraftCalculator, armyDraftUpdater);
-            var gameFactory = new GameFactory(gameStateFactory, armyDraftCalculator);
+            var shuffler = new FisherYatesShuffler(randomWrapper);
+            var deckFactory = new DeckFactory(regions, shuffler);
+            var gameFactory = new GameFactory(gameStateFactory, armyDraftCalculator, deckFactory);
 
             GameSetupViewModelFactory = new GameSetupViewModelFactory(
                 gameFactory,
@@ -87,7 +88,6 @@ namespace GuiWpf.ViewModels
                 EventAggregator,
                 taskEx);
 
-            var shuffler = new FisherYatesShuffler(randomWrapper);
             var startingInfantryCalculator = new StartingInfantryCalculator();
 
             AlternateGameSetupFactory = new AlternateGameSetupFactory(

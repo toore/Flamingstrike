@@ -33,7 +33,11 @@ namespace RISK.Application.Play.GamePhases
             var nextPlayer = NextPlayer(gameData.Players, gameData.CurrentPlayer);
             var numberOfArmiesToDraft = _armyDraftCalculator.Calculate(nextPlayer, gameData.Territories);
 
-            var nextPlayerGameData = new GameData(nextPlayer, gameData.Players, gameData.Territories);
+            var nextPlayerGameData = new GameData(
+                nextPlayer, 
+                gameData.Players, 
+                gameData.Territories, 
+                gameData.Deck);
 
             return CreateDraftArmiesGameState(nextPlayerGameData, numberOfArmiesToDraft);
         }
@@ -41,8 +45,7 @@ namespace RISK.Application.Play.GamePhases
         private static IPlayer NextPlayer(IEnumerable<IPlayer> players, IPlayer currentPlayer)
         {
             var sequence = players.ToSequence();
-            while (sequence.Next() != currentPlayer)
-            { }
+            while (sequence.Next() != currentPlayer) {}
 
             return sequence.Next();
         }

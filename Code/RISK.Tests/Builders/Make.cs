@@ -4,11 +4,11 @@ namespace RISK.Tests.Builders
     {
         public static RegionBuilder Region => new RegionBuilder();
         public static ContinentBuilder Continent => new ContinentBuilder();
-        public static CardBuilder Card => new CardBuilder();
         public static GamePlaySetupBuilder GamePlaySetup => new GamePlaySetupBuilder();
         public static TerritoryBuilder Territory => new TerritoryBuilder();
         public static DicesBuilder Dices => new DicesBuilder();
         public static BattleOutcomeBuilder BattleOutcome => new BattleOutcomeBuilder();
         public static GameDataBuilder GameData => new GameDataBuilder();
+        public static PlayerBuilder Player => new PlayerBuilder();
     }
 }

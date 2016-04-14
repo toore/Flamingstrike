@@ -22,6 +22,7 @@ namespace RISK.Tests.Application.GameStates
         private readonly IRegion _anotherRegion;
         private readonly IPlayer _currentPlayer;
         private readonly IPlayer _anotherPlayer;
+        private readonly IDeck _deck;
         private readonly GameData _gameData;
 
         public AttackGameStateTests()
@@ -31,7 +32,7 @@ namespace RISK.Tests.Application.GameStates
 
             _territory = Substitute.For<ITerritory>();
             _anotherTerritory = Substitute.For<ITerritory>();
-            _currentPlayer = Substitute.For<IPlayer>();
+            _currentPlayer = Make.Player.Build();
             _anotherPlayer = Substitute.For<IPlayer>();
 
             _region = Substitute.For<IRegion>();
@@ -44,12 +45,15 @@ namespace RISK.Tests.Application.GameStates
             _region.HasBorder(_anotherRegion).Returns(true);
             _territory.GetNumberOfArmiesAvailableForAttack().Returns(1);
 
+            _deck = Substitute.For<IDeck>();
+
             _gameData = Make.GameData
                 .CurrentPlayer(_currentPlayer)
                 .WithPlayer(_currentPlayer)
                 .WithPlayer(_anotherPlayer)
                 .WithTerritory(_territory)
                 .WithTerritory(_anotherTerritory)
+                .WithDeck(_deck)
                 .Build();
         }
 
@@ -318,11 +322,56 @@ namespace RISK.Tests.Application.GameStates
         [Fact]
         public void Player_should_receive_card_when_turn_ends()
         {
-            throw new NotImplementedException();
+            var topDeckCard = Substitute.For<ICard>();
+            var battleResult = Substitute.For<IBattleResult>();
+            battleResult.IsDefenderDefeated().Returns(true);
+            _battle.Attack(_territory, _anotherTerritory).Returns(battleResult);
+            _deck.Draw().Returns(topDeckCard);
+
+            var sut = Create(_gameData);
+            sut.Attack(_region, _anotherRegion);
+            sut.EndTurn();
+
+            _currentPlayer.Cards.Should().BeEquivalentTo(topDeckCard);
+        }
+
+        [Fact]
+        public void Player_should_not_receive_card_after_attack()
+        {
+            var topDeckCard = Substitute.For<ICard>();
+            var battleResult = Substitute.For<IBattleResult>();
+            battleResult.IsDefenderDefeated().Returns(true);
+            _battle.Attack(_territory, _anotherTerritory).Returns(battleResult);
+            _deck.Draw().Returns(topDeckCard);
+
+            var sut = Create(_gameData);
+            sut.Attack(_region, _anotherRegion);
+
+            _currentPlayer.Cards.Should().BeEmpty();
         }
 
         [Fact]
         public void Player_should_not_receive_card_when_turn_ends()
+        {
+            var battleResult = Substitute.For<IBattleResult>();
+            battleResult.IsDefenderDefeated().Returns(false);
+            _battle.Attack(_territory, _anotherTerritory).Returns(battleResult);
+
+            var sut = Create(_gameData);
+            sut.Attack(_region, _anotherRegion);
+            sut.EndTurn();
+
+            _currentPlayer.Cards.Should().BeEmpty();
+        }
+
+        [Fact]
+        public void Player_should_receive_eliminated_players_cards()
+        {
+            throw new NotImplementedException();
+        }
+
+        [Fact]
+        public void Player_should_receive_eliminated_players_cards_and_draft_armies_immediately()
         {
             throw new NotImplementedException();
         }
