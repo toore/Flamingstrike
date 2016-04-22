@@ -30,4 +30,3 @@ Add tests
 - Sequence
 - Deck
 - DeckFactory
-- NextTurnGameStateFactory
