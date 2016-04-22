@@ -8,11 +8,11 @@ namespace RISK.Application.Play.GamePhases
 {
     public interface IGameStateFactory
     {
-        IGameState CreateNextTurnGameState(GameData gameData);
         IGameState CreateDraftArmiesGameState(GameData gameData, int numberOfArmiesToDraft);
         IGameState CreateAttackGameState(GameData gameData);
         IGameState CreateSendInArmiesToOccupyGameState(GameData gameData);
         IGameState CreateFortifyState(GameData gameData, IRegion sourceRegion, IRegion destinationRegion, int numberOfArmiesToFortify);
+        IGameState CreateNextTurnGameState(IGameState currentGameState);
     }
 
     public class GameStateFactory : IGameStateFactory
@@ -26,28 +26,6 @@ namespace RISK.Application.Play.GamePhases
             _battle = battle;
             _armyDraftCalculator = armyDraftCalculator;
             _armyDraftUpdater = armyDraftUpdater;
-        }
-
-        public IGameState CreateNextTurnGameState(GameData gameData)
-        {
-            var nextPlayer = NextPlayer(gameData.Players, gameData.CurrentPlayer);
-            var numberOfArmiesToDraft = _armyDraftCalculator.Calculate(nextPlayer, gameData.Territories);
-
-            var nextPlayerGameData = new GameData(
-                nextPlayer, 
-                gameData.Players, 
-                gameData.Territories, 
-                gameData.Deck);
-
-            return CreateDraftArmiesGameState(nextPlayerGameData, numberOfArmiesToDraft);
-        }
-
-        private static IPlayer NextPlayer(IEnumerable<IPlayer> players, IPlayer currentPlayer)
-        {
-            var sequence = players.ToSequence();
-            while (sequence.Next() != currentPlayer) {}
-
-            return sequence.Next();
         }
 
         public IGameState CreateDraftArmiesGameState(GameData gameData, int numberOfArmiesToDraft)
@@ -68,6 +46,26 @@ namespace RISK.Application.Play.GamePhases
         public IGameState CreateFortifyState(GameData gameData, IRegion sourceRegion, IRegion destinationRegion, int numberOfArmiesToFortify)
         {
             return new FortifyGameState(this, gameData);
+        }
+
+        public IGameState CreateNextTurnGameState(IGameState currentGameState)
+        {
+            var players = currentGameState.Players;
+            var nextPlayer = NextPlayer(players, currentGameState.CurrentPlayer);
+            var territories = currentGameState.Territories;
+            var numberOfArmiesToDraft = _armyDraftCalculator.Calculate(nextPlayer, territories);
+
+            var gameData = new GameData(nextPlayer, players, territories, currentGameState.Deck);
+
+            return CreateDraftArmiesGameState(gameData, numberOfArmiesToDraft);
+        }
+
+        private static IPlayer NextPlayer(IEnumerable<IPlayer> players, IPlayer currentPlayer)
+        {
+            var sequence = players.ToSequence();
+            while (sequence.Next() != currentPlayer) {}
+
+            return sequence.Next();
         }
 
         public IGameState CreateGameOverGameState(GameData gameData)

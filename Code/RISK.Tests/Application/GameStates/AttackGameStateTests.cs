@@ -304,19 +304,13 @@ namespace RISK.Tests.Application.GameStates
         [Fact]
         public void End_turn_passes_turn_to_next_player()
         {
-            var draftArmiesGameState = Substitute.For<IGameState>();
-            _gameStateFactory.CreateNextTurnGameState(Arg.Is<GameData>(x =>
-                x.CurrentPlayer == _currentPlayer
-                &&
-                x.Players.IsEquivalent(_currentPlayer, _anotherPlayer)
-                &&
-                x.Territories.IsEquivalent(_territory, _anotherTerritory)
-                ))
-                .Returns(draftArmiesGameState);
-
+            var nextGameState = Substitute.For<IGameState>();
             var sut = Create(_gameData);
+            _gameStateFactory.CreateNextTurnGameState(sut).Returns(nextGameState);
 
-            sut.EndTurn().Should().Be(draftArmiesGameState);
+            var actualGameState = sut.EndTurn();
+
+            actualGameState.Should().Be(nextGameState);
         }
 
         [Fact]

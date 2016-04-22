@@ -129,9 +129,7 @@ namespace RISK.Application.Play.GamePhases
                 CurrentPlayer.AddCard(card);
             }
 
-            var gameData = new GameData(CurrentPlayer, Players, Territories, Deck);
-
-            return _gameStateFactory.CreateNextTurnGameState(gameData);
+            return _gameStateFactory.CreateNextTurnGameState(this);
         }
 
         public bool IsGameOver()

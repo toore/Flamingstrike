@@ -8,6 +8,9 @@ namespace RISK.Application.Play.GamePhases
     public interface IGameState
     {
         IPlayer CurrentPlayer { get; }
+        IReadOnlyList<IPlayer> Players { get; }
+        IReadOnlyList<ITerritory> Territories { get; }
+        IDeck Deck { get; }
         ITerritory GetTerritory(IRegion region);
 
         bool CanPlaceDraftArmies(IRegion region);
@@ -34,9 +37,9 @@ namespace RISK.Application.Play.GamePhases
         }
 
         public IPlayer CurrentPlayer => _gameData.CurrentPlayer;
-        protected IReadOnlyList<IPlayer> Players => _gameData.Players;
-        protected IReadOnlyList<ITerritory> Territories => _gameData.Territories;
-        protected IDeck Deck => _gameData.Deck;
+        public IReadOnlyList<IPlayer> Players => _gameData.Players;
+        public IReadOnlyList<ITerritory> Territories => _gameData.Territories;
+        public IDeck Deck => _gameData.Deck;
 
         public ITerritory GetTerritory(IRegion region)
         {
