@@ -22,6 +22,7 @@ namespace RISK.Application.Play
         void Fortify(IRegion sourceRegion, IRegion destinationRegion, int armies);
         void EndTurn();
         bool IsGameOver();
+        bool IsCurrentPlayerOccupyingTerritory(IRegion region);
     }
 
     public class Game : IGame
@@ -36,8 +37,8 @@ namespace RISK.Application.Play
             _armyDraftCalculator = armyDraftCalculator;
 
             var gameData = new GameData(
-                players.Next(), 
-                players.ToList(), 
+                players.Next(),
+                players.ToList(),
                 initialTerritories.ToList(),
                 deck);
 
@@ -116,6 +117,15 @@ namespace RISK.Application.Play
         {
             return false;
         }
+
+        public bool IsCurrentPlayerOccupyingTerritory(IRegion region)
+        {
+            var territory = GetTerritory(region);
+
+            var isCurrentPlayerOccupyingTerritory = territory.Player == CurrentPlayer;
+
+            return isCurrentPlayerOccupyingTerritory;
+        }
     }
 
     public class GameData
@@ -135,17 +145,5 @@ namespace RISK.Application.Play
         public IReadOnlyList<ITerritory> Territories { get; }
 
         public IDeck Deck { get; }
-    }
-
-    public static class GameExtensions
-    {
-        public static bool IsCurrentPlayerOccupyingTerritory(this IGame game, IRegion region)
-        {
-            var territory = game.GetTerritory(region);
-
-            var isCurrentPlayerOccupyingTerritory = territory.Player == game.CurrentPlayer;
-
-            return isCurrentPlayerOccupyingTerritory;
-        }
     }
 }
