@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using RISK.Application.Extensions;
 using RISK.Application.Play.Attacking;
@@ -68,6 +69,7 @@ namespace RISK.Application.Play.GamePhases
 
             var attackingTerritory = GetTerritory(attackingRegion);
             var defendingTerritory = GetTerritory(defendingRegion);
+            var defendingPlayer = defendingTerritory.Player;
             var battleResult = _battle.Attack(attackingTerritory, defendingTerritory);
 
             var updatedTerritories = Territories
@@ -75,15 +77,50 @@ namespace RISK.Application.Play.GamePhases
                 .Update(defendingTerritory, battleResult.DefendingTerritory)
                 .ToList();
 
-            var gameData = new GameData(CurrentPlayer, Players, updatedTerritories, Deck);
-
             if (battleResult.IsDefenderDefeated())
             {
-                _playerShouldBeAwardedCardWhenTurnEnds = true;
-                return _gameStateFactory.CreateSendInArmiesToOccupyGameState(gameData);
+                return CreateSendInArmiesToOccupyState(defendingPlayer, updatedTerritories);
             }
 
+            return CreateAttackState(updatedTerritories);
+        }
+
+        private IGameState CreateSendInArmiesToOccupyState(IPlayer defeatedPlayer, IReadOnlyList<ITerritory> updatedTerritories)
+        {
+            _playerShouldBeAwardedCardWhenTurnEnds = true;
+
+            var isPlayerEliminated = IsPlayerEliminated(defeatedPlayer, updatedTerritories);
+            if (isPlayerEliminated)
+            {
+                AquireAllCardsFromEliminatedPlayer(defeatedPlayer);
+            }
+
+            var gameData = new GameData(CurrentPlayer, Players, updatedTerritories, Deck);
+
+            return _gameStateFactory.CreateSendInArmiesToOccupyGameState(gameData);
+        }
+
+        private void AquireAllCardsFromEliminatedPlayer(IPlayer eliminatedPlayer)
+        {
+            var aquiredCards = eliminatedPlayer.AquireAllCards();
+            foreach (var aquiredCard in aquiredCards)
+            {
+                CurrentPlayer.AddCard(aquiredCard);
+            }
+        }
+
+        private IGameState CreateAttackState(IReadOnlyList<ITerritory> updatedTerritories)
+        {
+            var gameData = new GameData(CurrentPlayer, Players, updatedTerritories, Deck);
+
             return _gameStateFactory.CreateAttackGameState(gameData);
+        }
+
+        private static bool IsPlayerEliminated(IPlayer player, IEnumerable<ITerritory> territories)
+        {
+            var playerOccupiesTerritories = territories.Any(x => x.Player == player);
+
+            return !playerOccupiesTerritories;
         }
 
         public override bool CanFortify(IRegion sourceRegion, IRegion destinationRegion)

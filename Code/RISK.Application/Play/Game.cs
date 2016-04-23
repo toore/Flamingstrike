@@ -39,7 +39,7 @@ namespace RISK.Application.Play
             var gameData = new GameData(
                 players.Next(),
                 players.ToList(),
-                initialTerritories.ToList(),
+                initialTerritories,
                 deck);
 
             Initialize(gameData);

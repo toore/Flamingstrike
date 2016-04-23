@@ -33,7 +33,7 @@ namespace RISK.Tests.Application.GameStates
             _territory = Substitute.For<ITerritory>();
             _anotherTerritory = Substitute.For<ITerritory>();
             _currentPlayer = Make.Player.Build();
-            _anotherPlayer = Substitute.For<IPlayer>();
+            _anotherPlayer = Make.Player.Build();
 
             _region = Substitute.For<IRegion>();
             _anotherRegion = Substitute.For<IRegion>();
@@ -361,12 +361,30 @@ namespace RISK.Tests.Application.GameStates
         [Fact]
         public void Player_should_receive_eliminated_players_cards()
         {
-            throw new NotImplementedException();
+            var aCard = Substitute.For<ICard>();
+            var aSecondCard = Substitute.For<ICard>();
+            _anotherPlayer.AddCard(aCard);
+            _anotherPlayer.AddCard(aSecondCard);
+            var eliminatedPlayersCards = new[] { aCard, aSecondCard };
+            var battleResult = Substitute.For<IBattleResult>();
+            battleResult.IsDefenderDefeated().Returns(true);
+            battleResult.DefendingTerritory.Returns(Substitute.For<ITerritory>());
+            _battle.Attack(_territory, _anotherTerritory).Returns(battleResult);
+
+            var sut = Create(_gameData);
+            sut.Attack(_region, _anotherRegion);
+
+            _currentPlayer.Cards.ShouldAllBeEquivalentTo(eliminatedPlayersCards, "all cards should be aquired");
+            _anotherPlayer.Cards.Should().BeEmpty("all cards should be handed over");
         }
 
         [Fact]
         public void Player_should_receive_eliminated_players_cards_and_draft_armies_immediately()
         {
+            // or should we move in armies first and then draft armies?
+            // 
+            // GameStateFactoryMethod: MoveOnToAttackPhase?
+            // When attack mode is started, check if any armies needs to be drafted, in that case draft!
             throw new NotImplementedException();
         }
 

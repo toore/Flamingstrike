@@ -12,7 +12,10 @@ namespace RISK.Application.Play.GamePhases
         IGameState CreateAttackGameState(GameData gameData);
         IGameState CreateSendInArmiesToOccupyGameState(GameData gameData);
         IGameState CreateFortifyState(GameData gameData, IRegion sourceRegion, IRegion destinationRegion, int numberOfArmiesToFortify);
+        //Rename PassTurnToNextPlayer
         IGameState CreateNextTurnGameState(IGameState currentGameState);
+
+        //IGameState MoveOnToAttackPhase(GameData gameData);
     }
 
     public class GameStateFactory : IGameStateFactory
