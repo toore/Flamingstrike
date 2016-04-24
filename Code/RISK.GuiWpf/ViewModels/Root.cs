@@ -69,17 +69,18 @@ namespace GuiWpf.ViewModels
                 dialogManager,
                 EventAggregator);
 
-            var battleCalculator = new BattleOutcomeCalculator();
             var randomWrapper = new RandomWrapper();
+            var shuffler = new FisherYatesShuffler(randomWrapper);
+            var deckFactory = new DeckFactory(regions, shuffler);
+            var armyDraftUpdater = new ArmyDraftUpdater();
+            var battleCalculator = new BattleOutcomeCalculator();
             var dice = new Dice(randomWrapper);
             var diceRoller = new DicesRoller(dice);
             var battle = new Battle(diceRoller, battleCalculator);
+            var gameStateFactory = new GameStateFactory(battle, armyDraftUpdater);
             var armyDraftCalculator = new ArmyDraftCalculator(continents);
-            var armyDraftUpdater = new ArmyDraftUpdater();
-            var gameStateFactory = new GameStateFactory(battle, armyDraftCalculator, armyDraftUpdater);
-            var shuffler = new FisherYatesShuffler(randomWrapper);
-            var deckFactory = new DeckFactory(regions, shuffler);
-            var gameFactory = new GameFactory(gameStateFactory, armyDraftCalculator, deckFactory);
+            var gameStateConductor = new GameStateConductor(gameStateFactory, armyDraftCalculator);
+            var gameFactory = new GameFactory(gameStateConductor, deckFactory);
 
             GameSetupViewModelFactory = new GameSetupViewModelFactory(
                 gameFactory,

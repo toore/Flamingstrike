@@ -189,11 +189,12 @@ namespace RISK.Tests.GuiWpf.Specifications
             var randomWrapper = new RandomWrapper();
             var dice = new Dice(randomWrapper);
             var dicesRoller = new DicesRoller(dice);
-            var battle = new Battle(dicesRoller, new BattleOutcomeCalculator());
-            var newArmiesDraftCalculator = new ArmyDraftCalculator(_continents);
+            var armyDraftCalculator = new ArmyDraftCalculator(_continents);
             var armyDraftUpdater = new ArmyDraftUpdater();
-            var gameStateFactory = new GameStateFactory(battle, newArmiesDraftCalculator, armyDraftUpdater);
-            _game = new Game(gameStateFactory, newArmiesDraftCalculator, _players, _territories, null);
+            var battle = new Battle(dicesRoller, new BattleOutcomeCalculator());
+            var gameStateFactory = new GameStateFactory(battle, armyDraftUpdater);
+            var gameStateConductor = new GameStateConductor(gameStateFactory, armyDraftCalculator);
+            _game = new Game(gameStateConductor, _players, _territories, null);
             _stateControllerFactory = new StateControllerFactory();
             _interactionStateFactory = new InteractionStateFactory();
 

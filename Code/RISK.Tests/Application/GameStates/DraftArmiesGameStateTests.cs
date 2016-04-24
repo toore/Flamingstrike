@@ -16,7 +16,7 @@ namespace RISK.Tests.Application.GameStates
 {
     public class DraftArmiesGameStateTests : GameStateTestsBase
     {
-        private readonly IGameStateFactory _gameStateFactory;
+        private readonly IGameStateConductor _gameStateConductor;
         private readonly IArmyDraftUpdater _armyDraftUpdater;
 
         private readonly ITerritory _territory;
@@ -29,7 +29,7 @@ namespace RISK.Tests.Application.GameStates
 
         public DraftArmiesGameStateTests()
         {
-            _gameStateFactory = Substitute.For<IGameStateFactory>();
+            _gameStateConductor = Substitute.For<IGameStateConductor>();
             _armyDraftUpdater = Substitute.For<IArmyDraftUpdater>();
 
             _territory = Substitute.For<ITerritory>();
@@ -84,7 +84,7 @@ namespace RISK.Tests.Application.GameStates
             _armyDraftUpdater
                 .PlaceArmies(Argx.IsEquivalentReadOnly(_territory, _anotherTerritory), _region, 2)
                 .Returns(updatedTerritories);
-            _gameStateFactory.CreateDraftArmiesGameState(Arg.Is<GameData>(x =>
+            _gameStateConductor.ContinueToDraftArmies(Arg.Is<GameData>(x =>
                 x.CurrentPlayer == _currentPlayer
                 &&
                 x.Players.IsEquivalent(_currentPlayer, _anotherPlayer)
@@ -108,7 +108,7 @@ namespace RISK.Tests.Application.GameStates
             _armyDraftUpdater
                 .PlaceArmies(Argx.IsEquivalentReadOnly(_territory, _anotherTerritory), _region, 2)
                 .Returns(updatedTerritories);
-            _gameStateFactory.CreateAttackGameState(Arg.Is<GameData>(x =>
+            _gameStateConductor.ContinueWithAttackPhase(Arg.Is<GameData>(x =>
                 x.CurrentPlayer == _currentPlayer
                 &&
                 x.Players.IsEquivalent(_currentPlayer, _anotherPlayer)
@@ -211,7 +211,7 @@ namespace RISK.Tests.Application.GameStates
 
         private IGameState Create(GameData gameData, int numberOfArmiesToDraft)
         {
-            return new DraftArmiesGameState(_gameStateFactory, _armyDraftUpdater, gameData, numberOfArmiesToDraft);
+            return new DraftArmiesGameState(_gameStateConductor, _armyDraftUpdater, gameData, numberOfArmiesToDraft);
         }
     }
 }

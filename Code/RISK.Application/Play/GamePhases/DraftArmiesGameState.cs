@@ -6,14 +6,14 @@ namespace RISK.Application.Play.GamePhases
 {
     public class DraftArmiesGameState : GameStateBase
     {
-        private readonly IGameStateFactory _gameStateFactory;
+        private readonly IGameStateConductor _gameStateConductor;
         private readonly int _numberOfArmiesToDraft;
         private readonly IArmyDraftUpdater _armyDraftUpdater;
 
-        public DraftArmiesGameState(IGameStateFactory gameStateFactory, IArmyDraftUpdater armyDraftUpdater, GameData gameData, int numberOfArmiesToDraft)
+        public DraftArmiesGameState(IGameStateConductor gameStateConductor, IArmyDraftUpdater armyDraftUpdater, GameData gameData, int numberOfArmiesToDraft)
             : base(gameData)
         {
-            _gameStateFactory = gameStateFactory;
+            _gameStateConductor = gameStateConductor;
             _numberOfArmiesToDraft = numberOfArmiesToDraft;
             _armyDraftUpdater = armyDraftUpdater;
         }
@@ -42,9 +42,10 @@ namespace RISK.Application.Play.GamePhases
 
             if (numberOfArmiesLeftToPlace > 0)
             {
-                return _gameStateFactory.CreateDraftArmiesGameState(gameData, numberOfArmiesLeftToPlace);
+                return _gameStateConductor.ContinueToDraftArmies(gameData, numberOfArmiesLeftToPlace);
             }
-            return _gameStateFactory.CreateAttackGameState(gameData);
+
+            return _gameStateConductor.ContinueWithAttackPhase(gameData);
         }
     }
 }

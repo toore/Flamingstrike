@@ -7,11 +7,11 @@ namespace RISK.Tests.Application.GameStates
 {
     public class SendInArmiesToOccupyGameStateTests : GameStateTestsBase
     {
-        private readonly IGameStateFactory _gameStateFactory;
+        private readonly IGameStateConductor _gameStateConductor;
 
         public SendInArmiesToOccupyGameStateTests()
         {
-            _gameStateFactory = Substitute.For<IGameStateFactory>();
+            _gameStateConductor = Substitute.For<IGameStateConductor>();
         }
 
         [Fact(Skip = "Not implemented")]
@@ -66,7 +66,7 @@ namespace RISK.Tests.Application.GameStates
 
         protected override IGameState Create(GameData gameData)
         {
-            return new SendInArmiesToOccupyGameState(_gameStateFactory, gameData);
+            return new SendInArmiesToOccupyGameState(_gameStateConductor, gameData);
         }
     }
 }

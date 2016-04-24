@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using RISK.Application.Play.GamePhases;
-using RISK.Application.Play.Planning;
 using RISK.Application.World;
 
 namespace RISK.Application.Play
@@ -27,31 +26,28 @@ namespace RISK.Application.Play
 
     public class Game : IGame
     {
-        private readonly IGameStateFactory _gameStateFactory;
-        private readonly IArmyDraftCalculator _armyDraftCalculator;
+        private readonly IGameStateConductor _gameStateConductor;
         private IGameState _gameState;
 
-        public Game(IGameStateFactory gameStateFactory, IArmyDraftCalculator armyDraftCalculator, Sequence<IPlayer> players, IReadOnlyList<ITerritory> initialTerritories, IDeck deck)
+        public Game(IGameStateConductor gameStateConductor, Sequence<IPlayer> players, IReadOnlyList<ITerritory> initialTerritories, IDeck deck)
         {
-            _gameStateFactory = gameStateFactory;
-            _armyDraftCalculator = armyDraftCalculator;
+            _gameStateConductor = gameStateConductor;
 
+            InitializeFirstPlayersTurn(players, initialTerritories, deck);
+        }
+
+        private void InitializeFirstPlayersTurn(Sequence<IPlayer> players, IReadOnlyList<ITerritory> initialTerritories, IDeck deck)
+        {
             var gameData = new GameData(
                 players.Next(),
                 players.ToList(),
                 initialTerritories,
                 deck);
 
-            Initialize(gameData);
+            _gameState = _gameStateConductor.InitializeFirstPlayerTurn(gameData);
         }
 
         public IPlayer CurrentPlayer => _gameState.CurrentPlayer;
-
-        private void Initialize(GameData gameData)
-        {
-            var numberOfArmiesToDraft = _armyDraftCalculator.Calculate(gameData.CurrentPlayer, gameData.Territories);
-            _gameState = _gameStateFactory.CreateDraftArmiesGameState(gameData, numberOfArmiesToDraft);
-        }
 
         public ITerritory GetTerritory(IRegion region)
         {

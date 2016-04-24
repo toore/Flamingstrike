@@ -14,7 +14,7 @@ namespace RISK.Tests.Application.GameStates
 {
     public class AttackGameStateTests : GameStateTestsBase
     {
-        private readonly IGameStateFactory _gameStateFactory;
+        private readonly IGameStateConductor _gameStateConductor;
         private readonly IBattle _battle;
         private readonly ITerritory _territory;
         private readonly ITerritory _anotherTerritory;
@@ -27,7 +27,7 @@ namespace RISK.Tests.Application.GameStates
 
         public AttackGameStateTests()
         {
-            _gameStateFactory = Substitute.For<IGameStateFactory>();
+            _gameStateConductor = Substitute.For<IGameStateConductor>();
             _battle = Substitute.For<IBattle>();
 
             _territory = Substitute.For<ITerritory>();
@@ -151,7 +151,7 @@ namespace RISK.Tests.Application.GameStates
             battleResult.AttackingTerritory.Returns(updatedAttackingTerritory);
             battleResult.DefendingTerritory.Returns(updatedDefendingTerritory);
             _battle.Attack(_territory, _anotherTerritory).Returns(battleResult);
-            _gameStateFactory.CreateAttackGameState(Arg.Is<GameData>(x =>
+            _gameStateConductor.ContinueWithAttackPhase(Arg.Is<GameData>(x =>
                 x.CurrentPlayer == _currentPlayer
                 &&
                 x.Players.IsEquivalent(_currentPlayer, _anotherPlayer)
@@ -177,7 +177,7 @@ namespace RISK.Tests.Application.GameStates
             battleResult.DefendingTerritory.Returns(defeatedTerritory);
             battleResult.IsDefenderDefeated().Returns(true);
             _battle.Attack(_territory, _anotherTerritory).Returns(battleResult);
-            _gameStateFactory.CreateSendInArmiesToOccupyGameState(Arg.Is<GameData>(x =>
+            _gameStateConductor.SendInArmiesToOccupy(Arg.Is<GameData>(x =>
                 x.CurrentPlayer == _currentPlayer
                 &&
                 x.Players.IsEquivalent(_currentPlayer, _anotherPlayer)
@@ -235,7 +235,7 @@ namespace RISK.Tests.Application.GameStates
         {
             var fortifyGameState = Substitute.For<IGameState>();
             _anotherTerritory.Player.Returns(_currentPlayer);
-            _gameStateFactory.CreateFortifyState(Arg.Is<GameData>(x =>
+            _gameStateConductor.Fortify(Arg.Is<GameData>(x =>
                 x.CurrentPlayer == _currentPlayer
                 &&
                 x.Players.IsEquivalent(_currentPlayer, _anotherPlayer)
@@ -306,7 +306,7 @@ namespace RISK.Tests.Application.GameStates
         {
             var nextGameState = Substitute.For<IGameState>();
             var sut = Create(_gameData);
-            _gameStateFactory.CreateNextTurnGameState(sut).Returns(nextGameState);
+            _gameStateConductor.PassTurnToNextPlayer(sut).Returns(nextGameState);
 
             var actualGameState = sut.EndTurn();
 
@@ -390,7 +390,7 @@ namespace RISK.Tests.Application.GameStates
 
         protected override IGameState Create(GameData gameData)
         {
-            return new AttackGameState(_gameStateFactory, _battle, gameData);
+            return new AttackGameState(_gameStateConductor, _battle, gameData);
         }
     }
 }

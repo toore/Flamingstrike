@@ -4,7 +4,6 @@ using Ploeh.AutoFixture.Xunit2;
 using RISK.Application;
 using RISK.Application.Play;
 using RISK.Application.Play.GamePhases;
-using RISK.Application.Play.Planning;
 using RISK.Application.World;
 using RISK.Tests.Builders;
 using Xunit;
@@ -13,18 +12,17 @@ namespace RISK.Tests.Application
 {
     public abstract class GameTestsBase
     {
-        protected readonly IGameState _draftArmiesGameState;
+        protected readonly IGameState _firstPlayersTurn;
         protected readonly IGame _sut;
 
         protected GameTestsBase()
         {
-            var newArmiesDraftCalculator = Substitute.For<IArmyDraftCalculator>();
-            var gameStateFactory = Substitute.For<IGameStateFactory>();
+            var gameStateConductor = Substitute.For<IGameStateConductor>();
             var deckFactory = Substitute.For<IDeckFactory>();
-            var gameFactory = new GameFactory(gameStateFactory, newArmiesDraftCalculator, deckFactory);
+            var gameFactory = new GameFactory(gameStateConductor, deckFactory);
 
-            _draftArmiesGameState = Substitute.For<IGameState>();
-            gameStateFactory.CreateDraftArmiesGameState(null, 0).ReturnsForAnyArgs(_draftArmiesGameState);
+            _firstPlayersTurn = Substitute.For<IGameState>();
+            gameStateConductor.InitializeFirstPlayerTurn(null).ReturnsForAnyArgs(_firstPlayersTurn);
 
             _sut = gameFactory.Create(Make.GamePlaySetup.Build());
         }
@@ -36,7 +34,7 @@ namespace RISK.Tests.Application
         public void Gets_current_player()
         {
             var player = Substitute.For<IPlayer>();
-            _draftArmiesGameState.CurrentPlayer.Returns(player);
+            _firstPlayersTurn.CurrentPlayer.Returns(player);
 
             _sut.CurrentPlayer.Should().Be(player);
         }
@@ -46,7 +44,7 @@ namespace RISK.Tests.Application
         {
             var region = Substitute.For<IRegion>();
             var territory = Substitute.For<ITerritory>();
-            _draftArmiesGameState.GetTerritory(region).Returns(territory);
+            _firstPlayersTurn.GetTerritory(region).Returns(territory);
 
             _sut.GetTerritory(region).Should().Be(territory);
         }
@@ -55,7 +53,7 @@ namespace RISK.Tests.Application
         public void Can_place_draft_armies(bool canPlaceArmies)
         {
             var region = Substitute.For<IRegion>();
-            _draftArmiesGameState.CanPlaceDraftArmies(region).Returns(canPlaceArmies);
+            _firstPlayersTurn.CanPlaceDraftArmies(region).Returns(canPlaceArmies);
 
             _sut.CanPlaceDraftArmies(region).Should().Be(canPlaceArmies);
         }
@@ -64,7 +62,7 @@ namespace RISK.Tests.Application
         [AutoData]
         public void Gets_number_of_armies_to_draft(int numberOfArmies)
         {
-            _draftArmiesGameState.GetNumberOfArmiesToDraft().Returns(numberOfArmies);
+            _firstPlayersTurn.GetNumberOfArmiesToDraft().Returns(numberOfArmies);
 
             _sut.GetNumberOfArmiesToDraft().Should().Be(numberOfArmies);
         }
@@ -76,7 +74,7 @@ namespace RISK.Tests.Application
 
             _sut.PlaceDraftArmies(region, numberOfArmies);
 
-            _draftArmiesGameState.Received().PlaceDraftArmies(region, numberOfArmies);
+            _firstPlayersTurn.Received().PlaceDraftArmies(region, numberOfArmies);
         }
 
         [Theory, AutoData]
@@ -84,7 +82,7 @@ namespace RISK.Tests.Application
         {
             var attackingRegion = Substitute.For<IRegion>();
             var defendingRegion = Substitute.For<IRegion>();
-            _draftArmiesGameState.CanAttack(attackingRegion, defendingRegion).Returns(canAttack);
+            _firstPlayersTurn.CanAttack(attackingRegion, defendingRegion).Returns(canAttack);
 
             _sut.CanAttack(attackingRegion, defendingRegion).Should().Be(canAttack);
         }
@@ -97,13 +95,13 @@ namespace RISK.Tests.Application
 
             _sut.Attack(attackingRegion, defendingRegion);
 
-            _draftArmiesGameState.Received().Attack(attackingRegion, defendingRegion);
+            _firstPlayersTurn.Received().Attack(attackingRegion, defendingRegion);
         }
 
         [Theory, AutoData]
         public void Gets_number_of_armies_that_can_be_sent_to_occupy(int numberOfArmies)
         {
-            _draftArmiesGameState.GetNumberOfArmiesThatCanBeSentToOccupy().Returns(numberOfArmies);
+            _firstPlayersTurn.GetNumberOfArmiesThatCanBeSentToOccupy().Returns(numberOfArmies);
 
             _sut.GetNumberOfArmiesThatCanBeSentToOccupy().Should().Be(numberOfArmies);
         }
@@ -111,7 +109,7 @@ namespace RISK.Tests.Application
         [Theory, AutoData]
         public void Can_send_armies_to_occupy(bool canSendInArmiesToOccupy)
         {
-            _draftArmiesGameState.CanSendArmiesToOccupy().Returns(canSendInArmiesToOccupy);
+            _firstPlayersTurn.CanSendArmiesToOccupy().Returns(canSendInArmiesToOccupy);
 
             _sut.CanSendArmiesToOccupy().Should().Be(canSendInArmiesToOccupy);
         }
@@ -121,7 +119,7 @@ namespace RISK.Tests.Application
         {
             _sut.SendArmiesToOccupy(numberOfArmies);
 
-            _draftArmiesGameState.Received().SendArmiesToOccupy(numberOfArmies);
+            _firstPlayersTurn.Received().SendArmiesToOccupy(numberOfArmies);
         }
 
         [Theory, AutoData]
@@ -129,7 +127,7 @@ namespace RISK.Tests.Application
         {
             var sourceRegion = Substitute.For<IRegion>();
             var destinationRegion = Substitute.For<IRegion>();
-            _draftArmiesGameState.CanFortify(sourceRegion, destinationRegion).Returns(canFortify);
+            _firstPlayersTurn.CanFortify(sourceRegion, destinationRegion).Returns(canFortify);
 
             _sut.CanFortify(sourceRegion, destinationRegion).Should().Be(canFortify);
         }
@@ -142,7 +140,7 @@ namespace RISK.Tests.Application
 
             _sut.Fortify(sourceRegion, destinationRegion, 1);
 
-            _draftArmiesGameState.Received().Fortify(sourceRegion, destinationRegion, 1);
+            _firstPlayersTurn.Received().Fortify(sourceRegion, destinationRegion, 1);
         }
 
         [Fact]
@@ -150,7 +148,7 @@ namespace RISK.Tests.Application
         {
             _sut.EndTurn();
 
-            _draftArmiesGameState.Received().EndTurn();
+            _firstPlayersTurn.Received().EndTurn();
         }
     }
 
@@ -167,7 +165,7 @@ namespace RISK.Tests.Application
         {
             public PlacingDraftArmies()
             {
-                _draftArmiesGameState.PlaceDraftArmies(null, 0).ReturnsForAnyArgs(_nextGameState);
+                _firstPlayersTurn.PlaceDraftArmies(null, 0).ReturnsForAnyArgs(_nextGameState);
                 _sut.PlaceDraftArmies(null, 0);
             }
         }
@@ -176,7 +174,7 @@ namespace RISK.Tests.Application
         {
             public Attacking()
             {
-                _draftArmiesGameState.Attack(null, null).ReturnsForAnyArgs(_nextGameState);
+                _firstPlayersTurn.Attack(null, null).ReturnsForAnyArgs(_nextGameState);
                 _sut.Attack(null, null);
             }
         }
@@ -185,7 +183,7 @@ namespace RISK.Tests.Application
         {
             public SendingArmiesToOccupy()
             {
-                _draftArmiesGameState.SendArmiesToOccupy(0).ReturnsForAnyArgs(_nextGameState);
+                _firstPlayersTurn.SendArmiesToOccupy(0).ReturnsForAnyArgs(_nextGameState);
                 _sut.SendArmiesToOccupy(0);
             }
         }
@@ -194,7 +192,7 @@ namespace RISK.Tests.Application
         {
             public Fortifying()
             {
-                _draftArmiesGameState.Fortify(null, null, 1).ReturnsForAnyArgs(_nextGameState);
+                _firstPlayersTurn.Fortify(null, null, 1).ReturnsForAnyArgs(_nextGameState);
                 _sut.Fortify(null, null, 1);
             }
         }
@@ -203,7 +201,7 @@ namespace RISK.Tests.Application
         {
             public EndingTurn()
             {
-                _draftArmiesGameState.EndTurn().ReturnsForAnyArgs(_nextGameState);
+                _firstPlayersTurn.EndTurn().ReturnsForAnyArgs(_nextGameState);
                 _sut.EndTurn();
             }
         }

@@ -1,5 +1,4 @@
 using RISK.Application.Play.GamePhases;
-using RISK.Application.Play.Planning;
 using RISK.Application.Setup;
 
 namespace RISK.Application.Play
@@ -11,22 +10,19 @@ namespace RISK.Application.Play
 
     public class GameFactory : IGameFactory
     {
-        private readonly IGameStateFactory _gameStateFactory;
-        private readonly IArmyDraftCalculator _armyDraftCalculator;
+        private readonly IGameStateConductor _gameStateConductor;
         private readonly IDeckFactory _deckFactory;
 
-        public GameFactory(IGameStateFactory gameStateFactory, IArmyDraftCalculator armyDraftCalculator, IDeckFactory deckFactory)
+        public GameFactory(IGameStateConductor gameStateConductor, IDeckFactory deckFactory)
         {
-            _gameStateFactory = gameStateFactory;
-            _armyDraftCalculator = armyDraftCalculator;
+            _gameStateConductor = gameStateConductor;
             _deckFactory = deckFactory;
         }
 
         public IGame Create(IGamePlaySetup gamePlaySetup)
         {
             var game = new Game(
-                _gameStateFactory,
-                _armyDraftCalculator,
+                _gameStateConductor,
                 gamePlaySetup.Players,
                 gamePlaySetup.Territories,
                 _deckFactory.Create());

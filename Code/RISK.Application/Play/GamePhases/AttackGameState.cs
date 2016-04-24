@@ -9,14 +9,14 @@ namespace RISK.Application.Play.GamePhases
 {
     public class AttackGameState : GameStateBase
     {
-        private readonly IGameStateFactory _gameStateFactory;
+        private readonly IGameStateConductor _gameStateConductor;
         private readonly IBattle _battle;
         private bool _playerShouldBeAwardedCardWhenTurnEnds;
 
-        public AttackGameState(IGameStateFactory gameStateFactory, IBattle battle, GameData gameData)
+        public AttackGameState(IGameStateConductor gameStateConductor, IBattle battle, GameData gameData)
             : base(gameData)
         {
-            _gameStateFactory = gameStateFactory;
+            _gameStateConductor = gameStateConductor;
             _battle = battle;
         }
 
@@ -82,7 +82,7 @@ namespace RISK.Application.Play.GamePhases
                 return CreateSendInArmiesToOccupyState(defendingPlayer, updatedTerritories);
             }
 
-            return CreateAttackState(updatedTerritories);
+            return MoveOnToAttackPhase(updatedTerritories);
         }
 
         private IGameState CreateSendInArmiesToOccupyState(IPlayer defeatedPlayer, IReadOnlyList<ITerritory> updatedTerritories)
@@ -97,7 +97,7 @@ namespace RISK.Application.Play.GamePhases
 
             var gameData = new GameData(CurrentPlayer, Players, updatedTerritories, Deck);
 
-            return _gameStateFactory.CreateSendInArmiesToOccupyGameState(gameData);
+            return _gameStateConductor.SendInArmiesToOccupy(gameData);
         }
 
         private void AquireAllCardsFromEliminatedPlayer(IPlayer eliminatedPlayer)
@@ -109,11 +109,11 @@ namespace RISK.Application.Play.GamePhases
             }
         }
 
-        private IGameState CreateAttackState(IReadOnlyList<ITerritory> updatedTerritories)
+        private IGameState MoveOnToAttackPhase(IReadOnlyList<ITerritory> updatedTerritories)
         {
             var gameData = new GameData(CurrentPlayer, Players, updatedTerritories, Deck);
 
-            return _gameStateFactory.CreateAttackGameState(gameData);
+            return _gameStateConductor.ContinueWithAttackPhase(gameData);
         }
 
         private static bool IsPlayerEliminated(IPlayer player, IEnumerable<ITerritory> territories)
@@ -150,7 +150,7 @@ namespace RISK.Application.Play.GamePhases
 
             var gameData = new GameData(CurrentPlayer, Players, Territories, Deck);
 
-            return _gameStateFactory.CreateFortifyState(gameData, sourceRegion, destinationRegion, armies);
+            return _gameStateConductor.Fortify(gameData, sourceRegion, destinationRegion, armies);
         }
 
         public override bool CanEndTurn()
@@ -166,7 +166,7 @@ namespace RISK.Application.Play.GamePhases
                 CurrentPlayer.AddCard(card);
             }
 
-            return _gameStateFactory.CreateNextTurnGameState(this);
+            return _gameStateConductor.PassTurnToNextPlayer(this);
         }
 
         public bool IsGameOver()
