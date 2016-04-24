@@ -11,7 +11,7 @@ namespace RISK.Application.Play.GamePhases
     {
         private readonly IGameStateConductor _gameStateConductor;
         private readonly IBattle _battle;
-        private bool _playerShouldBeAwardedCardWhenTurnEnds;
+        private ConqueringAchievement _conqueringAchievement = ConqueringAchievement.DoNotAwardCardAtEndOfTurn;
 
         public AttackGameState(IGameStateConductor gameStateConductor, IBattle battle, GameData gameData)
             : base(gameData)
@@ -87,7 +87,7 @@ namespace RISK.Application.Play.GamePhases
 
         private IGameState CreateSendInArmiesToOccupyState(IPlayer defeatedPlayer, IReadOnlyList<ITerritory> updatedTerritories)
         {
-            _playerShouldBeAwardedCardWhenTurnEnds = true;
+            _conqueringAchievement = ConqueringAchievement.AwardCardAtEndOfTurn;
 
             if (IsGameOver(updatedTerritories))
             {
@@ -140,14 +140,14 @@ namespace RISK.Application.Play.GamePhases
         {
             var gameData = new GameData(CurrentPlayer, Players, territories, Deck);
 
-            return _gameStateConductor.SendInArmiesToOccupy(gameData);
+            return _gameStateConductor.SendInArmiesToOccupy(gameData, _conqueringAchievement);
         }
 
         private IGameState MoveOnToAttackPhase(IReadOnlyList<ITerritory> updatedTerritories)
         {
             var gameData = new GameData(CurrentPlayer, Players, updatedTerritories, Deck);
 
-            return _gameStateConductor.ContinueWithAttackPhase(gameData);
+            return _gameStateConductor.ContinueWithAttackPhase(gameData, _conqueringAchievement);
         }
 
         public override bool CanFortify(IRegion sourceRegion, IRegion destinationRegion)
@@ -187,7 +187,7 @@ namespace RISK.Application.Play.GamePhases
 
         public override IGameState EndTurn()
         {
-            if (_playerShouldBeAwardedCardWhenTurnEnds)
+            if (_conqueringAchievement == ConqueringAchievement.AwardCardAtEndOfTurn)
             {
                 var card = Deck.Draw();
                 CurrentPlayer.AddCard(card);

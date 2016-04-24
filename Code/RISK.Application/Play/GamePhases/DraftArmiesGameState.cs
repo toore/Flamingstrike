@@ -45,7 +45,7 @@ namespace RISK.Application.Play.GamePhases
                 return _gameStateConductor.ContinueToDraftArmies(gameData, numberOfArmiesLeftToPlace);
             }
 
-            return _gameStateConductor.ContinueWithAttackPhase(gameData);
+            return _gameStateConductor.ContinueWithAttackPhase(gameData, ConqueringAchievement.DoNotAwardCardAtEndOfTurn);
         }
     }
 }

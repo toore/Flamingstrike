@@ -113,7 +113,8 @@ namespace RISK.Tests.Application.GameStates
                 &&
                 x.Players.IsEquivalent(_currentPlayer, _anotherPlayer)
                 &&
-                x.Territories.IsEquivalent(updatedTerritories)))
+                x.Territories.IsEquivalent(updatedTerritories)),
+                ConqueringAchievement.DoNotAwardCardAtEndOfTurn)
                 .Returns(attackGameState);
 
             var sut = Create(_gameData, 2);

@@ -157,7 +157,8 @@ namespace RISK.Tests.Application.GameStates
                 x.Players.IsEquivalent(_currentPlayer, _anotherPlayer)
                 &&
                 x.Territories.IsEquivalent(updatedAttackingTerritory, updatedDefendingTerritory)
-                ))
+                ),
+                ConqueringAchievement.DoNotAwardCardAtEndOfTurn)
                 .Returns(attackGameState);
 
             var sut = Create(_gameData);
@@ -183,7 +184,8 @@ namespace RISK.Tests.Application.GameStates
                 x.Players.IsEquivalent(_currentPlayer, _anotherPlayer)
                 &&
                 x.Territories.IsEquivalent(updatedAttackingTerritory, defeatedTerritory)
-                ))
+                ),
+                ConqueringAchievement.AwardCardAtEndOfTurn)
                 .Returns(sendInArmiesToOccupyGameState);
 
             var sut = Create(_gameData);

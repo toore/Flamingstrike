@@ -10,8 +10,8 @@ namespace RISK.Application.Play.GamePhases
     {
         IGameState InitializeFirstPlayerTurn(GameData gameData);
         IGameState ContinueToDraftArmies(GameData gameData, int numberOfArmiesToDraft);
-        IGameState ContinueWithAttackPhase(GameData gameData);
-        IGameState SendInArmiesToOccupy(GameData gameData);
+        IGameState ContinueWithAttackPhase(GameData gameData, ConqueringAchievement conqueringAchievement);
+        IGameState SendInArmiesToOccupy(GameData gameData, ConqueringAchievement conqueringAchievement);
         IGameState Fortify(GameData gameData, IRegion sourceRegion, IRegion destinationRegion, int numberOfArmiesToFortify);
         IGameState PassTurnToNextPlayer(IGameState currentGameState);
         IGameState GameIsOver(GameData gameData);
@@ -40,14 +40,14 @@ namespace RISK.Application.Play.GamePhases
             return _gameStateFactory.CreateDraftArmiesGameState(this, gameData, numberOfArmiesToDraft);
         }
 
-        public IGameState ContinueWithAttackPhase(GameData gameData)
+        public IGameState ContinueWithAttackPhase(GameData gameData, ConqueringAchievement conqueringAchievement)
         {
             throw new NotImplementedException();
         }
 
-        public IGameState SendInArmiesToOccupy(GameData gameData)
+        public IGameState SendInArmiesToOccupy(GameData gameData, ConqueringAchievement conqueringAchievement)
         {
-            return _gameStateFactory.CreateSendInArmiesToOccupyGameState(this, gameData);
+            return _gameStateFactory.CreateSendInArmiesToOccupyGameState(this, gameData, conqueringAchievement);
         }
 
         public IGameState Fortify(GameData gameData, IRegion sourceRegion, IRegion destinationRegion, int numberOfArmiesToFortify)

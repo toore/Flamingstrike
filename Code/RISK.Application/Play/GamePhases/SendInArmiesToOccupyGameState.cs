@@ -2,7 +2,7 @@ namespace RISK.Application.Play.GamePhases
 {
     public class SendInArmiesToOccupyGameState : GameStateBase
     {
-        public SendInArmiesToOccupyGameState(IGameStateConductor gameStateConductor, GameData gameData)
+        public SendInArmiesToOccupyGameState(IGameStateConductor gameStateConductor, GameData gameData, ConqueringAchievement conqueringAchievement)
             : base(gameData) {}
     }
 }
