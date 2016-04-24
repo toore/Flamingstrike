@@ -89,15 +89,42 @@ namespace RISK.Application.Play.GamePhases
         {
             _playerShouldBeAwardedCardWhenTurnEnds = true;
 
+            if (IsGameOver(updatedTerritories))
+            {
+                return GameIsOver(updatedTerritories);
+            }
+
             var isPlayerEliminated = IsPlayerEliminated(defeatedPlayer, updatedTerritories);
             if (isPlayerEliminated)
             {
                 AquireAllCardsFromEliminatedPlayer(defeatedPlayer);
             }
 
-            var gameData = new GameData(CurrentPlayer, Players, updatedTerritories, Deck);
+            return SendInArmiesToOccupy(updatedTerritories);
+        }
 
-            return _gameStateConductor.SendInArmiesToOccupy(gameData);
+        private static bool IsPlayerEliminated(IPlayer player, IEnumerable<ITerritory> territories)
+        {
+            var playerOccupiesTerritories = territories.Any(x => x.Player == player);
+
+            return !playerOccupiesTerritories;
+        }
+
+        private static bool IsGameOver(IEnumerable<ITerritory> territories)
+        {
+            var allTerritoriesAreOccupiedBySamePlayer = territories
+                .Select(x => x.Player)
+                .Distinct()
+                .Count() == 1;
+
+            return allTerritoriesAreOccupiedBySamePlayer;
+        }
+
+        private IGameState GameIsOver(IReadOnlyList<ITerritory> territories)
+        {
+            var gameData = new GameData(CurrentPlayer, Players, territories, Deck);
+
+            return _gameStateConductor.GameIsOver(gameData);
         }
 
         private void AquireAllCardsFromEliminatedPlayer(IPlayer eliminatedPlayer)
@@ -109,18 +136,18 @@ namespace RISK.Application.Play.GamePhases
             }
         }
 
+        private IGameState SendInArmiesToOccupy(IReadOnlyList<ITerritory> territories)
+        {
+            var gameData = new GameData(CurrentPlayer, Players, territories, Deck);
+
+            return _gameStateConductor.SendInArmiesToOccupy(gameData);
+        }
+
         private IGameState MoveOnToAttackPhase(IReadOnlyList<ITerritory> updatedTerritories)
         {
             var gameData = new GameData(CurrentPlayer, Players, updatedTerritories, Deck);
 
             return _gameStateConductor.ContinueWithAttackPhase(gameData);
-        }
-
-        private static bool IsPlayerEliminated(IPlayer player, IEnumerable<ITerritory> territories)
-        {
-            var playerOccupiesTerritories = territories.Any(x => x.Player == player);
-
-            return !playerOccupiesTerritories;
         }
 
         public override bool CanFortify(IRegion sourceRegion, IRegion destinationRegion)
@@ -167,16 +194,6 @@ namespace RISK.Application.Play.GamePhases
             }
 
             return _gameStateConductor.PassTurnToNextPlayer(this);
-        }
-
-        public bool IsGameOver()
-        {
-            var allTerritoriesAreOccupiedBySamePlayer = Territories
-                .Select(x => x.Player)
-                .Distinct()
-                .Count() == 1;
-
-            return allTerritoriesAreOccupiedBySamePlayer;
         }
     }
 }

@@ -53,6 +53,7 @@
     <Compile Include="Play\DeckFactory.cs" />
     <Compile Include="Play\GamePhases\AttackGameState.cs" />
     <Compile Include="Play\Attacking\BattleResult.cs" />
+    <Compile Include="Play\GamePhases\GameStateConductor.cs" />
     <Compile Include="Play\ICard.cs" />
     <Compile Include="Play\GamePhases\DraftArmiesGameState.cs" />
     <Compile Include="Play\GamePhases\FortifyGameState.cs" />

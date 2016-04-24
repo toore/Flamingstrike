@@ -363,10 +363,10 @@ namespace RISK.Tests.Application.GameStates
         {
             var aCard = Substitute.For<ICard>();
             var aSecondCard = Substitute.For<ICard>();
-            _anotherPlayer.AddCard(aCard);
-            _anotherPlayer.AddCard(aSecondCard);
             var eliminatedPlayersCards = new[] { aCard, aSecondCard };
             var battleResult = Substitute.For<IBattleResult>();
+            _anotherPlayer.AddCard(aCard);
+            _anotherPlayer.AddCard(aSecondCard);
             battleResult.IsDefenderDefeated().Returns(true);
             battleResult.DefendingTerritory.Returns(Substitute.For<ITerritory>());
             _battle.Attack(_territory, _anotherTerritory).Returns(battleResult);
@@ -379,13 +379,31 @@ namespace RISK.Tests.Application.GameStates
         }
 
         [Fact]
-        public void Player_should_receive_eliminated_players_cards_and_draft_armies_immediately()
+        public void When_last_defending_player_is_eliminated_the_game_is_over()
         {
-            // or should we move in armies first and then draft armies?
-            // 
-            // GameStateFactoryMethod: MoveOnToAttackPhase?
-            // When attack mode is started, check if any armies needs to be drafted, in that case draft!
-            throw new NotImplementedException();
+            var battleResult = Substitute.For<IBattleResult>();
+            var updatedTerritory = Substitute.For<ITerritory>();
+            var updatedAnotherTerritory = Substitute.For<ITerritory>();
+            battleResult.IsDefenderDefeated().Returns(true);
+            updatedTerritory.Player.Returns(_currentPlayer);
+            updatedAnotherTerritory.Player.Returns(_currentPlayer);
+            battleResult.AttackingTerritory.Returns(updatedTerritory);
+            battleResult.DefendingTerritory.Returns(updatedAnotherTerritory);
+            _battle.Attack(_territory, _anotherTerritory).Returns(battleResult);
+            var gameOverGameState = Substitute.For<IGameState>();
+            _gameStateConductor.GameIsOver(Arg.Is<GameData>(x =>
+                x.CurrentPlayer == _currentPlayer
+                &&
+                x.Players.IsEquivalent(_currentPlayer, _anotherPlayer)
+                &&
+                x.Territories.IsEquivalent(updatedTerritory, updatedAnotherTerritory)
+                ))
+                .Returns(gameOverGameState);
+
+            var sut = Create(_gameData);
+            var actualGameState = sut.Attack(_region, _anotherRegion);
+
+            actualGameState.Should().Be(gameOverGameState);
         }
 
         protected override IGameState Create(GameData gameData)
