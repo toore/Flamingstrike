@@ -9,7 +9,7 @@ Game states:
 - Fortifying
 - TurnEnding? 
 
-CardFactory-->CardDeck? (fixed cards)
+
 
 
 Good ideas?
