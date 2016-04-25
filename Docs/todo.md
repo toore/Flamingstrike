@@ -1,14 +1,13 @@
 TODO
 ====
 Game states:
-+ DraftArmies 
-+ Attacking
--   SendInArmiesToOccupy
--   DraftArmiesHoldingFiveOrMoreCards
-- 	GameOver
-- Fortifying
-- TurnEnding? 
-
+- TradeInSetsHoldingAtLeastThreeCards
++ DraftArmies
++ Attack
+- SendInArmiesToOccupy
+- TradeInSetsHoldingFiveOrMoreCards
+- Fortify
+- GameOver
 
 
 
