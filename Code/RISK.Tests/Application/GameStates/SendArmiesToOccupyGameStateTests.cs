@@ -16,6 +16,59 @@ namespace RISK.Tests.Application.GameStates
             _gameStateConductor = Substitute.For<IGameStateConductor>();
         }
 
+        [Fact]
+        public void Can_not_place_draft_armies()
+        {
+            var sut = Create(null);
+
+            sut.CanPlaceDraftArmies(null).Should().BeFalse();
+        }
+
+        [Fact]
+        public void Get_number_of_armies_to_draft_throws()
+        {
+            var sut = Create(null);
+
+            Action act = () => sut.GetNumberOfArmiesToDraft();
+
+            act.ShouldThrow<InvalidOperationException>();
+        }
+
+        [Fact]
+        public void Place_draft_armies_throws()
+        {
+            var sut = Create(null);
+
+            Action act = () => sut.PlaceDraftArmies(null, 0);
+
+            act.ShouldThrow<InvalidOperationException>();
+        }
+
+        [Fact]
+        public void Can_not_attack()
+        {
+            var sut = Create(null);
+
+            sut.CanAttack(null, null).Should().BeFalse();
+        }
+
+        [Fact]
+        public void Attack_throws()
+        {
+            var sut = Create(null);
+
+            Action act = () => sut.Attack(null, null);
+
+            act.ShouldThrow<InvalidOperationException>();
+        }
+
+        [Fact]
+        public void Can_send_armies_to_occupy()
+        {
+            var sut = Create(null);
+
+            sut.CanSendArmiesToOccupy().Should().BeTrue();
+        }
 
         [Fact(Skip = "Not implemented")]
         public void Can_move_armies_into_captured_territory()
