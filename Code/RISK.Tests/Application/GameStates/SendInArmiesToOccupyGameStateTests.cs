@@ -1,3 +1,5 @@
+using System;
+using FluentAssertions;
 using NSubstitute;
 using RISK.Application.Play;
 using RISK.Application.Play.GamePhases;
@@ -5,14 +7,15 @@ using Xunit;
 
 namespace RISK.Tests.Application.GameStates
 {
-    public class SendInArmiesToOccupyGameStateTests : GameStateTestsBase
+    public class SendArmiesToOccupyGameStateTests : GameStateTestsBase
     {
         private readonly IGameStateConductor _gameStateConductor;
 
-        public SendInArmiesToOccupyGameStateTests()
+        public SendArmiesToOccupyGameStateTests()
         {
             _gameStateConductor = Substitute.For<IGameStateConductor>();
         }
+
 
         [Fact(Skip = "Not implemented")]
         public void Can_move_armies_into_captured_territory()
@@ -66,7 +69,7 @@ namespace RISK.Tests.Application.GameStates
 
         protected override IGameState Create(GameData gameData)
         {
-            return new SendInArmiesToOccupyGameState(_gameStateConductor, gameData);
+            return new SendArmiesToOccupyGameState(_gameStateConductor, gameData, ConqueringAchievement.DoNotAwardCardAtEndOfTurn);
         }
     }
 }

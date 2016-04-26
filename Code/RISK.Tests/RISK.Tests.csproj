@@ -114,7 +114,7 @@
     <Compile Include="Application\GameStates\AttackGameStateTests.cs" />
     <Compile Include="Application\GameStates\DraftArmiesGameStateTests.cs" />
     <Compile Include="Application\GameStates\GameOverGameStateTests.cs" />
-    <Compile Include="Application\GameStates\SendInArmiesToOccupyGameStateTests.cs" />
+    <Compile Include="Application\GameStates\SendArmiesToOccupyGameStateTests.cs" />
     <Compile Include="Application\GameTests.cs" />
     <Compile Include="Application\GameStates\GameStateTestsBase.cs" />
     <Compile Include="Builders\BattleOutcomeBuilder.cs" />

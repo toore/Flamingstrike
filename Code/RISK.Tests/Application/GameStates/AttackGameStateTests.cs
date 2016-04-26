@@ -135,10 +135,10 @@ namespace RISK.Tests.Application.GameStates
 
         private static void AssertCanNotAttack(IGameState gameState, IRegion attackingRegion, IRegion defendingRegion)
         {
-            Action attackMethod = () => gameState.Attack(attackingRegion, defendingRegion);
+            Action act = () => gameState.Attack(attackingRegion, defendingRegion);
 
             gameState.CanAttack(attackingRegion, defendingRegion).Should().BeFalse();
-            attackMethod.ShouldThrow<InvalidOperationException>();
+            act.ShouldThrow<InvalidOperationException>();
         }
 
         [Fact]
@@ -178,7 +178,7 @@ namespace RISK.Tests.Application.GameStates
             battleResult.DefendingTerritory.Returns(defeatedTerritory);
             battleResult.IsDefenderDefeated().Returns(true);
             _battle.Attack(_territory, _anotherTerritory).Returns(battleResult);
-            _gameStateConductor.SendInArmiesToOccupy(Arg.Is<GameData>(x =>
+            _gameStateConductor.SendArmiesToOccupy(Arg.Is<GameData>(x =>
                 x.CurrentPlayer == _currentPlayer
                 &&
                 x.Players.IsEquivalent(_currentPlayer, _anotherPlayer)
@@ -195,7 +195,7 @@ namespace RISK.Tests.Application.GameStates
         }
 
         [Fact]
-        public void Can_not_send_in_armies_to_occupy()
+        public void Can_not_send_armies_to_occupy()
         {
             var sut = Create(_gameData);
 

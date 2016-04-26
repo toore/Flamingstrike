@@ -4,7 +4,7 @@ Game states:
 - TradeInSetsHoldingAtLeastThreeCards
 + DraftArmies
 + Attack
-- SendInArmiesToOccupy
+- SendArmiesToOccupy
 - TradeInSetsHoldingFiveOrMoreCards
 - Fortify
 - GameOver

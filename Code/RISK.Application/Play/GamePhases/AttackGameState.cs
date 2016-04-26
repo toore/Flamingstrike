@@ -79,13 +79,13 @@ namespace RISK.Application.Play.GamePhases
 
             if (battleResult.IsDefenderDefeated())
             {
-                return CreateSendInArmiesToOccupyState(defendingPlayer, updatedTerritories);
+                return CreateSendArmiesToOccupyState(defendingPlayer, updatedTerritories);
             }
 
             return MoveOnToAttackPhase(updatedTerritories);
         }
 
-        private IGameState CreateSendInArmiesToOccupyState(IPlayer defeatedPlayer, IReadOnlyList<ITerritory> updatedTerritories)
+        private IGameState CreateSendArmiesToOccupyState(IPlayer defeatedPlayer, IReadOnlyList<ITerritory> updatedTerritories)
         {
             _conqueringAchievement = ConqueringAchievement.AwardCardAtEndOfTurn;
 
@@ -100,7 +100,7 @@ namespace RISK.Application.Play.GamePhases
                 AquireAllCardsFromEliminatedPlayer(defeatedPlayer);
             }
 
-            return SendInArmiesToOccupy(updatedTerritories);
+            return SendArmiesToOccupy(updatedTerritories);
         }
 
         private static bool IsPlayerEliminated(IPlayer player, IEnumerable<ITerritory> territories)
@@ -136,11 +136,11 @@ namespace RISK.Application.Play.GamePhases
             }
         }
 
-        private IGameState SendInArmiesToOccupy(IReadOnlyList<ITerritory> territories)
+        private IGameState SendArmiesToOccupy(IReadOnlyList<ITerritory> territories)
         {
             var gameData = new GameData(CurrentPlayer, Players, territories, Deck);
 
-            return _gameStateConductor.SendInArmiesToOccupy(gameData, _conqueringAchievement);
+            return _gameStateConductor.SendArmiesToOccupy(gameData, _conqueringAchievement);
         }
 
         private IGameState MoveOnToAttackPhase(IReadOnlyList<ITerritory> updatedTerritories)
