@@ -19,6 +19,11 @@ namespace RISK.Application
     {
         public Territory(IRegion region, IPlayer player, int armies)
         {
+            if (armies <= 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(armies), armies, "A territory can't have equal or less than zero armies.");
+            }
+
             Region = region;
             Player = player;
             Armies = armies;

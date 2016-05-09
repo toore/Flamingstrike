@@ -8,7 +8,7 @@ namespace RISK.Application.Play.GamePhases
     {
         IGameState CreateDraftArmiesGameState(IGameStateConductor gameStateConductor, GameData gameData, int numberOfArmiesToDraft);
         IGameState CreateAttackGameState(IGameStateConductor gameStateConductor, GameData gameData);
-        IGameState CreateSendArmiesToOccupyGameState(IGameStateConductor gameStateConductor, GameData gameData, ConqueringAchievement conqueringAchievement);
+        IGameState CreateSendArmiesToOccupyGameState(IGameStateConductor gameStateConductor, GameData gameData, IRegion attackingRegion, IRegion occupiedRegion);
         IGameState CreateFortifyState(IGameStateConductor gameStateConductor, GameData gameData, IRegion sourceRegion, IRegion destinationRegion, int numberOfArmiesToFortify);
         IGameState CreateGameOverGameState(GameData gameData);
     }
@@ -16,17 +16,17 @@ namespace RISK.Application.Play.GamePhases
     public class GameStateFactory : IGameStateFactory
     {
         private readonly IBattle _battle;
-        private readonly IArmyDraftUpdater _armyDraftUpdater;
+        private readonly IArmyModifier _armyModifier;
 
-        public GameStateFactory(IBattle battle, IArmyDraftUpdater armyDraftUpdater)
+        public GameStateFactory(IBattle battle, IArmyModifier armyModifier)
         {
             _battle = battle;
-            _armyDraftUpdater = armyDraftUpdater;
+            _armyModifier = armyModifier;
         }
 
         public IGameState CreateDraftArmiesGameState(IGameStateConductor gameStateConductor, GameData gameData, int numberOfArmiesToDraft)
         {
-            return new DraftArmiesGameState(gameStateConductor, _armyDraftUpdater, gameData, numberOfArmiesToDraft);
+            return new DraftArmiesGameState(gameStateConductor, _armyModifier, gameData, numberOfArmiesToDraft);
         }
 
         public IGameState CreateAttackGameState(IGameStateConductor gameStateConductor, GameData gameData)
@@ -34,9 +34,9 @@ namespace RISK.Application.Play.GamePhases
             return new AttackGameState(gameStateConductor, _battle, gameData);
         }
 
-        public IGameState CreateSendArmiesToOccupyGameState(IGameStateConductor gameStateConductor, GameData gameData, ConqueringAchievement conqueringAchievement)
+        public IGameState CreateSendArmiesToOccupyGameState(IGameStateConductor gameStateConductor, GameData gameData, IRegion attackingRegion, IRegion occupiedRegion)
         {
-            return new SendArmiesToOccupyGameState(gameStateConductor, gameData, conqueringAchievement);
+            return new SendArmiesToOccupyGameState(gameStateConductor, _armyModifier, gameData, attackingRegion, occupiedRegion);
         }
 
         public IGameState CreateFortifyState(IGameStateConductor gameStateConductor, GameData gameData, IRegion sourceRegion, IRegion destinationRegion, int numberOfArmiesToFortify)

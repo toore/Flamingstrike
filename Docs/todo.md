@@ -10,6 +10,9 @@ Game states:
 - GameOver
 
 
+SendArmiesToOccupyGameState, should not be initiated if all available armies, were already moved into the territory
+
+GameStateBase should not contain helper methods for game data!
 
 Good ideas?
 ===========
@@ -30,3 +33,4 @@ Not/partially tested
 - Deck
 - DeckFactory
 - GameStateConductor
+- ArmyModifier

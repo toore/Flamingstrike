@@ -73,19 +73,19 @@ namespace RISK.Application.Play.GamePhases
             var battleResult = _battle.Attack(attackingTerritory, defendingTerritory);
 
             var updatedTerritories = Territories
-                .Update(attackingTerritory, battleResult.AttackingTerritory)
-                .Update(defendingTerritory, battleResult.DefendingTerritory)
+                .Replace(attackingTerritory, battleResult.AttackingTerritory)
+                .Replace(defendingTerritory, battleResult.DefendingTerritory)
                 .ToList();
 
             if (battleResult.IsDefenderDefeated())
             {
-                return CreateSendArmiesToOccupyState(defendingPlayer, updatedTerritories);
+                return DefenderIsDefeated(defendingPlayer, attackingRegion, defendingRegion, updatedTerritories);
             }
 
             return MoveOnToAttackPhase(updatedTerritories);
         }
 
-        private IGameState CreateSendArmiesToOccupyState(IPlayer defeatedPlayer, IReadOnlyList<ITerritory> updatedTerritories)
+        private IGameState DefenderIsDefeated(IPlayer defeatedPlayer, IRegion attackingRegion, IRegion defeatedRegion, IReadOnlyList<ITerritory> updatedTerritories)
         {
             _conqueringAchievement = ConqueringAchievement.AwardCardAtEndOfTurn;
 
@@ -100,7 +100,7 @@ namespace RISK.Application.Play.GamePhases
                 AquireAllCardsFromEliminatedPlayer(defeatedPlayer);
             }
 
-            return SendArmiesToOccupy(updatedTerritories);
+            return SendArmiesToOccupy(updatedTerritories, attackingRegion, defeatedRegion);
         }
 
         private static bool IsPlayerEliminated(IPlayer player, IEnumerable<ITerritory> territories)
@@ -136,11 +136,11 @@ namespace RISK.Application.Play.GamePhases
             }
         }
 
-        private IGameState SendArmiesToOccupy(IReadOnlyList<ITerritory> territories)
+        private IGameState SendArmiesToOccupy(IReadOnlyList<ITerritory> territories, IRegion sourceRegion, IRegion destinationRegion)
         {
             var gameData = new GameData(CurrentPlayer, Players, territories, Deck);
 
-            return _gameStateConductor.SendArmiesToOccupy(gameData, _conqueringAchievement);
+            return _gameStateConductor.SendArmiesToOccupy(gameData, sourceRegion, destinationRegion);
         }
 
         private IGameState MoveOnToAttackPhase(IReadOnlyList<ITerritory> updatedTerritories)

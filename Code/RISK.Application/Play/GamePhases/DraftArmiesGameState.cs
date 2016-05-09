@@ -8,14 +8,14 @@ namespace RISK.Application.Play.GamePhases
     {
         private readonly IGameStateConductor _gameStateConductor;
         private readonly int _numberOfArmiesToDraft;
-        private readonly IArmyDraftUpdater _armyDraftUpdater;
+        private readonly IArmyModifier _armyModifier;
 
-        public DraftArmiesGameState(IGameStateConductor gameStateConductor, IArmyDraftUpdater armyDraftUpdater, GameData gameData, int numberOfArmiesToDraft)
+        public DraftArmiesGameState(IGameStateConductor gameStateConductor, IArmyModifier armyModifier, GameData gameData, int numberOfArmiesToDraft)
             : base(gameData)
         {
             _gameStateConductor = gameStateConductor;
             _numberOfArmiesToDraft = numberOfArmiesToDraft;
-            _armyDraftUpdater = armyDraftUpdater;
+            _armyModifier = armyModifier;
         }
 
         public override bool CanPlaceDraftArmies(IRegion region)
@@ -35,7 +35,7 @@ namespace RISK.Application.Play.GamePhases
                 throw new ArgumentOutOfRangeException(nameof(numberOfArmiesToPlace));
             }
 
-            var updatedTerritories = _armyDraftUpdater.PlaceArmies(Territories, region, numberOfArmiesToPlace);
+            var updatedTerritories = _armyModifier.PlaceDraftArmies(Territories, region, numberOfArmiesToPlace);
 
             var gameData = new GameData(CurrentPlayer, Players, updatedTerritories, Deck);
             var numberOfArmiesLeftToPlace = _numberOfArmiesToDraft - numberOfArmiesToPlace;

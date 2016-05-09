@@ -72,7 +72,7 @@ namespace GuiWpf.ViewModels
             var randomWrapper = new RandomWrapper();
             var shuffler = new FisherYatesShuffler(randomWrapper);
             var deckFactory = new DeckFactory(regions, shuffler);
-            var armyDraftUpdater = new ArmyDraftUpdater();
+            var armyDraftUpdater = new ArmyModifier();
             var battleCalculator = new BattleOutcomeCalculator();
             var dice = new Dice(randomWrapper);
             var diceRoller = new DicesRoller(dice);

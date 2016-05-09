@@ -185,7 +185,8 @@ namespace RISK.Tests.Application.GameStates
                 &&
                 x.Territories.IsEquivalent(updatedAttackingTerritory, defeatedTerritory)
                 ),
-                ConqueringAchievement.AwardCardAtEndOfTurn)
+                _region,
+                _anotherRegion)
                 .Returns(sendInArmiesToOccupyGameState);
 
             var sut = Create(_gameData);

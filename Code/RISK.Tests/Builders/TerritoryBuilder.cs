@@ -8,7 +8,7 @@ namespace RISK.Tests.Builders
     {
         private IRegion _region = Substitute.For<IRegion>();
         private IPlayer _player = Substitute.For<IPlayer>();
-        private int _armies;
+        private int _armies = 1;
 
         public Territory Build()
         {

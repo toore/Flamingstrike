@@ -17,7 +17,7 @@ namespace RISK.Tests.Application.GameStates
     public class DraftArmiesGameStateTests : GameStateTestsBase
     {
         private readonly IGameStateConductor _gameStateConductor;
-        private readonly IArmyDraftUpdater _armyDraftUpdater;
+        private readonly IArmyModifier _armyModifier;
 
         private readonly ITerritory _territory;
         private readonly ITerritory _anotherTerritory;
@@ -30,7 +30,7 @@ namespace RISK.Tests.Application.GameStates
         public DraftArmiesGameStateTests()
         {
             _gameStateConductor = Substitute.For<IGameStateConductor>();
-            _armyDraftUpdater = Substitute.For<IArmyDraftUpdater>();
+            _armyModifier = Substitute.For<IArmyModifier>();
 
             _territory = Substitute.For<ITerritory>();
             _anotherTerritory = Substitute.For<ITerritory>();
@@ -81,8 +81,8 @@ namespace RISK.Tests.Application.GameStates
         {
             var updatedTerritories = new List<ITerritory> { Make.Territory.Build() };
             var draftArmiesGameState = Substitute.For<IGameState>();
-            _armyDraftUpdater
-                .PlaceArmies(Argx.IsEquivalentReadOnly(_territory, _anotherTerritory), _region, 2)
+            _armyModifier
+                .PlaceDraftArmies(Argx.IsEquivalentReadOnly(_territory, _anotherTerritory), _region, 2)
                 .Returns(updatedTerritories);
             _gameStateConductor.ContinueToDraftArmies(Arg.Is<GameData>(x =>
                 x.CurrentPlayer == _currentPlayer
@@ -105,8 +105,8 @@ namespace RISK.Tests.Application.GameStates
         {
             var updatedTerritories = new List<ITerritory> { Make.Territory.Build() };
             var attackGameState = Substitute.For<IGameState>();
-            _armyDraftUpdater
-                .PlaceArmies(Argx.IsEquivalentReadOnly(_territory, _anotherTerritory), _region, 2)
+            _armyModifier
+                .PlaceDraftArmies(Argx.IsEquivalentReadOnly(_territory, _anotherTerritory), _region, 2)
                 .Returns(updatedTerritories);
             _gameStateConductor.ContinueWithAttackPhase(Arg.Is<GameData>(x =>
                 x.CurrentPlayer == _currentPlayer
@@ -212,7 +212,7 @@ namespace RISK.Tests.Application.GameStates
 
         private IGameState Create(GameData gameData, int numberOfArmiesToDraft)
         {
-            return new DraftArmiesGameState(_gameStateConductor, _armyDraftUpdater, gameData, numberOfArmiesToDraft);
+            return new DraftArmiesGameState(_gameStateConductor, _armyModifier, gameData, numberOfArmiesToDraft);
         }
     }
 }
