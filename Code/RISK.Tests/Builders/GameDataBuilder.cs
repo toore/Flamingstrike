@@ -9,7 +9,7 @@ namespace RISK.Tests.Builders
         private IPlayer _currentPlayer;
         private readonly List<IPlayer> _players = new List<IPlayer>();
         private readonly List<ITerritory> _territories = new List<ITerritory>();
-        private IDeck _deck = null;
+        private IDeck _deck = new Deck(new[] { new WildCard() });
 
         public GameData Build()
         {

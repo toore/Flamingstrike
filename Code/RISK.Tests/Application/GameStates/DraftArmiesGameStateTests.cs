@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using FluentAssertions;
 using NSubstitute;
 using Ploeh.AutoFixture.Xunit2;
@@ -9,7 +8,6 @@ using RISK.Application.Play.GamePhases;
 using RISK.Application.Play.Planning;
 using RISK.Application.World;
 using RISK.Tests.Builders;
-using RISK.Tests.Extensions;
 using Xunit;
 
 namespace RISK.Tests.Application.GameStates
@@ -17,6 +15,7 @@ namespace RISK.Tests.Application.GameStates
     public class DraftArmiesGameStateTests : GameStateTestsBase
     {
         private readonly IGameStateConductor _gameStateConductor;
+        private readonly IGameDataFactory _gameDataFactory;
         private readonly IArmyModifier _armyModifier;
 
         private readonly ITerritory _territory;
@@ -25,11 +24,13 @@ namespace RISK.Tests.Application.GameStates
         private readonly IRegion _anotherRegion;
         private readonly IPlayer _currentPlayer;
         private readonly IPlayer _anotherPlayer;
+        private readonly IDeck _deck;
         private readonly GameData _gameData;
 
         public DraftArmiesGameStateTests()
         {
             _gameStateConductor = Substitute.For<IGameStateConductor>();
+            _gameDataFactory = Substitute.For<IGameDataFactory>();
             _armyModifier = Substitute.For<IArmyModifier>();
 
             _territory = Substitute.For<ITerritory>();
@@ -43,12 +44,15 @@ namespace RISK.Tests.Application.GameStates
             _territory.Player.Returns(_currentPlayer);
             _anotherTerritory.Region.Returns(_anotherRegion);
 
+            _deck = Substitute.For<IDeck>();
+
             _gameData = Make.GameData
                 .CurrentPlayer(_currentPlayer)
                 .WithPlayer(_currentPlayer)
                 .WithPlayer(_anotherPlayer)
                 .WithTerritory(_territory)
                 .WithTerritory(_anotherTerritory)
+                .WithDeck(_deck)
                 .Build();
         }
 
@@ -79,19 +83,19 @@ namespace RISK.Tests.Application.GameStates
         [Fact]
         public void Placing_draft_armies_returns_draft_armies_game_state()
         {
-            var updatedTerritories = new List<ITerritory> { Make.Territory.Build() };
+            var updatedTerritories = new ITerritory[] { Make.Territory.Build() };
+            var newGameData = Make.GameData.Build();
             var draftArmiesGameState = Substitute.For<IGameState>();
             _armyModifier
                 .PlaceDraftArmies(Argx.IsEquivalentReadOnly(_territory, _anotherTerritory), _region, 2)
                 .Returns(updatedTerritories);
-            _gameStateConductor.ContinueToDraftArmies(Arg.Is<GameData>(x =>
-                x.CurrentPlayer == _currentPlayer
-                &&
-                x.Players.IsEquivalent(_currentPlayer, _anotherPlayer)
-                &&
-                x.Territories.IsEquivalent(updatedTerritories)
-                ),
-                1)
+            _gameDataFactory.Create(
+                _currentPlayer,
+                Argx.IsEquivalentReadOnly(_currentPlayer, _anotherPlayer),
+                Argx.IsEquivalentReadOnly(updatedTerritories),
+                _deck)
+                .Returns(newGameData);
+            _gameStateConductor.ContinueToDraftArmies(newGameData, 1)
                 .Returns(draftArmiesGameState);
 
             var sut = Create(_gameData, 3);
@@ -103,18 +107,19 @@ namespace RISK.Tests.Application.GameStates
         [Fact]
         public void Placing_all_draft_armies_returns_attack_game_state()
         {
-            var updatedTerritories = new List<ITerritory> { Make.Territory.Build() };
+            var updatedTerritories = new ITerritory[] { Make.Territory.Build() };
+            var newGameData = Make.GameData.Build();
             var attackGameState = Substitute.For<IGameState>();
             _armyModifier
                 .PlaceDraftArmies(Argx.IsEquivalentReadOnly(_territory, _anotherTerritory), _region, 2)
                 .Returns(updatedTerritories);
-            _gameStateConductor.ContinueWithAttackPhase(Arg.Is<GameData>(x =>
-                x.CurrentPlayer == _currentPlayer
-                &&
-                x.Players.IsEquivalent(_currentPlayer, _anotherPlayer)
-                &&
-                x.Territories.IsEquivalent(updatedTerritories)),
-                ConqueringAchievement.DoNotAwardCardAtEndOfTurn)
+            _gameDataFactory.Create(
+                _currentPlayer,
+                Argx.IsEquivalentReadOnly(_currentPlayer, _anotherPlayer),
+                Argx.IsEquivalentReadOnly(updatedTerritories),
+                _deck)
+                .Returns(newGameData);
+            _gameStateConductor.ContinueWithAttackPhase(newGameData, ConqueringAchievement.DoNotAwardCardAtEndOfTurn)
                 .Returns(attackGameState);
 
             var sut = Create(_gameData, 2);
@@ -212,7 +217,7 @@ namespace RISK.Tests.Application.GameStates
 
         private IGameState Create(GameData gameData, int numberOfArmiesToDraft)
         {
-            return new DraftArmiesGameState(_gameStateConductor, _armyModifier, gameData, numberOfArmiesToDraft);
+            return new DraftArmiesGameState(_gameStateConductor, _gameDataFactory, _armyModifier, gameData, numberOfArmiesToDraft);
         }
     }
 }

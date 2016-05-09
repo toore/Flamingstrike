@@ -21,11 +21,13 @@ namespace RISK.Application.Play.GamePhases
     {
         private readonly IGameStateFactory _gameStateFactory;
         private readonly IArmyDraftCalculator _armyDraftCalculator;
+        private readonly IGameDataFactory _gameDataFactory;
 
-        public GameStateConductor(IGameStateFactory gameStateFactory, IArmyDraftCalculator armyDraftCalculator)
+        public GameStateConductor(IGameStateFactory gameStateFactory, IArmyDraftCalculator armyDraftCalculator, IGameDataFactory gameDataFactory)
         {
             _gameStateFactory = gameStateFactory;
             _armyDraftCalculator = armyDraftCalculator;
+            _gameDataFactory = gameDataFactory;
         }
 
         public IGameState InitializeFirstPlayerTurn(GameData gameData)
@@ -62,7 +64,7 @@ namespace RISK.Application.Play.GamePhases
             var territories = currentGameState.Territories;
             var numberOfArmiesToDraft = _armyDraftCalculator.Calculate(nextPlayer, territories);
 
-            var gameData = new GameData(nextPlayer, players, territories, currentGameState.Deck);
+            var gameData = _gameDataFactory.Create(nextPlayer, players, territories, currentGameState.Deck);
 
             return _gameStateFactory.CreateDraftArmiesGameState(this, gameData, numberOfArmiesToDraft);
         }

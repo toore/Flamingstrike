@@ -51,9 +51,11 @@
   <ItemGroup>
     <Compile Include="Extensions\EnumerableExtensions.cs" />
     <Compile Include="Play\DeckFactory.cs" />
+    <Compile Include="Play\GameData.cs" />
     <Compile Include="Play\GamePhases\AttackGameState.cs" />
     <Compile Include="Play\Attacking\BattleResult.cs" />
     <Compile Include="Play\GamePhases\ConqueringAchievement.cs" />
+    <Compile Include="Play\GameDataFactory.cs" />
     <Compile Include="Play\GamePhases\GameStateConductor.cs" />
     <Compile Include="Play\ICard.cs" />
     <Compile Include="Play\GamePhases\DraftArmiesGameState.cs" />

@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using FluentAssertions;
 using NSubstitute;
 using RISK.Application;
@@ -8,7 +7,6 @@ using RISK.Application.Play.GamePhases;
 using RISK.Application.Play.Planning;
 using RISK.Application.World;
 using RISK.Tests.Builders;
-using RISK.Tests.Extensions;
 using Xunit;
 
 namespace RISK.Tests.Application.GameStates
@@ -16,6 +14,7 @@ namespace RISK.Tests.Application.GameStates
     public class SendArmiesToOccupyGameStateTests : GameStateTestsBase
     {
         private readonly IGameStateConductor _gameStateConductor;
+        private readonly IGameDataFactory _gameDataFactory;
         private readonly IArmyModifier _armyModifier;
         private readonly ITerritory _attackingTerritory;
         private readonly ITerritory _occupiedTerritory;
@@ -23,12 +22,13 @@ namespace RISK.Tests.Application.GameStates
         private readonly IRegion _occupiedRegion;
         private readonly IPlayer _currentPlayer;
         private readonly IPlayer _anotherPlayer;
-        //private readonly IDeck _deck;
+        private readonly IDeck _deck;
         private readonly GameData _gameData;
 
         public SendArmiesToOccupyGameStateTests()
         {
             _gameStateConductor = Substitute.For<IGameStateConductor>();
+            _gameDataFactory = Substitute.For<IGameDataFactory>();
             _armyModifier = Substitute.For<IArmyModifier>();
 
             _attackingTerritory = Substitute.For<ITerritory>();
@@ -43,10 +43,7 @@ namespace RISK.Tests.Application.GameStates
             _occupiedTerritory.Region.Returns(_occupiedRegion);
             _occupiedTerritory.Player.Returns(_currentPlayer);
 
-            //_region.HasBorder(_anotherRegion).Returns(true);
-            //_territory.GetNumberOfArmiesAvailableForAttack().Returns(1);
-
-            //_deck = Substitute.For<IDeck>();
+            _deck = Substitute.For<IDeck>();
 
             _gameData = Make.GameData
                 .CurrentPlayer(_currentPlayer)
@@ -54,7 +51,7 @@ namespace RISK.Tests.Application.GameStates
                 .WithPlayer(_anotherPlayer)
                 .WithTerritory(_attackingTerritory)
                 .WithTerritory(_occupiedTerritory)
-                //  .WithDeck(_deck)
+                .WithDeck(_deck)
                 .Build();
         }
 
@@ -126,8 +123,9 @@ namespace RISK.Tests.Application.GameStates
         public void Sending_armies_to_occupy_continues_with_attack_state()
         {
             var attackGameState = Substitute.For<IGameState>();
+            var updatedTerritoriesAfterAdditionalArmiesHaveBeenSentToOccupy = new ITerritory[] { Make.Territory.Build(), Make.Territory.Build() };
+            var newGameData = Make.GameData.Build();
 
-            IReadOnlyList<ITerritory> updatedTerritoriesAfterAdditionalArmiesHaveBeenSentToOccupy = new ITerritory[] { Make.Territory.Build(), Make.Territory.Build() };
             _armyModifier.SendInAdditionalArmiesToOccupy(
                 Argx.IsEquivalentReadOnly(_attackingTerritory, _occupiedTerritory),
                 _attackingRegion,
@@ -135,13 +133,15 @@ namespace RISK.Tests.Application.GameStates
                 1)
                 .Returns(updatedTerritoriesAfterAdditionalArmiesHaveBeenSentToOccupy);
 
-            _gameStateConductor.ContinueWithAttackPhase(Arg.Is<GameData>(x =>
-                x.CurrentPlayer == _currentPlayer
-                &&
-                x.Players.IsEquivalent(_currentPlayer, _anotherPlayer)
-                &&
-                x.Territories.IsEquivalent(updatedTerritoriesAfterAdditionalArmiesHaveBeenSentToOccupy)
-                ),
+            _gameDataFactory.Create(
+                _currentPlayer,
+                Argx.IsEquivalentReadOnly(_currentPlayer, _anotherPlayer),
+                Argx.IsEquivalentReadOnly(updatedTerritoriesAfterAdditionalArmiesHaveBeenSentToOccupy),
+                _deck)
+                .Returns(newGameData);
+
+            _gameStateConductor.ContinueWithAttackPhase(
+                newGameData,
                 ConqueringAchievement.AwardCardAtEndOfTurn)
                 .Returns(attackGameState);
 
@@ -153,7 +153,7 @@ namespace RISK.Tests.Application.GameStates
 
         protected override IGameState Create(GameData gameData)
         {
-            return new SendArmiesToOccupyGameState(_gameStateConductor, _armyModifier, gameData, _attackingRegion, _occupiedRegion);
+            return new SendArmiesToOccupyGameState(_gameStateConductor, _gameDataFactory, _armyModifier, gameData, _attackingRegion, _occupiedRegion);
         }
     }
 }

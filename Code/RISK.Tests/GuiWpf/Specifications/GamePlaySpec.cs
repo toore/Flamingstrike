@@ -192,8 +192,9 @@ namespace RISK.Tests.GuiWpf.Specifications
             var armyDraftCalculator = new ArmyDraftCalculator(_continents);
             var armyDraftUpdater = new ArmyModifier();
             var battle = new Battle(dicesRoller, new BattleOutcomeCalculator());
-            var gameStateFactory = new GameStateFactory(battle, armyDraftUpdater);
-            var gameStateConductor = new GameStateConductor(gameStateFactory, armyDraftCalculator);
+            var gameDataFactory = new GameDataFactory();
+            var gameStateFactory = new GameStateFactory(gameDataFactory, battle, armyDraftUpdater);
+            var gameStateConductor = new GameStateConductor(gameStateFactory, armyDraftCalculator, gameDataFactory);
             _game = new Game(gameStateConductor, _players, _territories, null);
             _stateControllerFactory = new StateControllerFactory();
             _interactionStateFactory = new InteractionStateFactory();

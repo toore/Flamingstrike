@@ -10,13 +10,15 @@ namespace RISK.Application.Play.GamePhases
     public class AttackGameState : GameStateBase
     {
         private readonly IGameStateConductor _gameStateConductor;
+        private readonly IGameDataFactory _gameDataFactory;
         private readonly IBattle _battle;
         private ConqueringAchievement _conqueringAchievement = ConqueringAchievement.DoNotAwardCardAtEndOfTurn;
 
-        public AttackGameState(IGameStateConductor gameStateConductor, IBattle battle, GameData gameData)
+        public AttackGameState(IGameStateConductor gameStateConductor, IGameDataFactory gameDataFactory, IBattle battle, GameData gameData)
             : base(gameData)
         {
             _gameStateConductor = gameStateConductor;
+            _gameDataFactory = gameDataFactory;
             _battle = battle;
         }
 
@@ -122,7 +124,7 @@ namespace RISK.Application.Play.GamePhases
 
         private IGameState GameIsOver(IReadOnlyList<ITerritory> territories)
         {
-            var gameData = new GameData(CurrentPlayer, Players, territories, Deck);
+            var gameData = _gameDataFactory.Create(CurrentPlayer, Players, territories, Deck);
 
             return _gameStateConductor.GameIsOver(gameData);
         }
@@ -138,14 +140,14 @@ namespace RISK.Application.Play.GamePhases
 
         private IGameState SendArmiesToOccupy(IReadOnlyList<ITerritory> territories, IRegion sourceRegion, IRegion destinationRegion)
         {
-            var gameData = new GameData(CurrentPlayer, Players, territories, Deck);
+            var gameData = _gameDataFactory.Create(CurrentPlayer, Players, territories, Deck);
 
             return _gameStateConductor.SendArmiesToOccupy(gameData, sourceRegion, destinationRegion);
         }
 
         private IGameState MoveOnToAttackPhase(IReadOnlyList<ITerritory> updatedTerritories)
         {
-            var gameData = new GameData(CurrentPlayer, Players, updatedTerritories, Deck);
+            var gameData = _gameDataFactory.Create(CurrentPlayer, Players, updatedTerritories, Deck);
 
             return _gameStateConductor.ContinueWithAttackPhase(gameData, _conqueringAchievement);
         }
@@ -175,7 +177,7 @@ namespace RISK.Application.Play.GamePhases
                 throw new InvalidOperationException();
             }
 
-            var gameData = new GameData(CurrentPlayer, Players, Territories, Deck);
+            var gameData = _gameDataFactory.Create(CurrentPlayer, Players, Territories, Deck);
 
             return _gameStateConductor.Fortify(gameData, sourceRegion, destinationRegion, armies);
         }
