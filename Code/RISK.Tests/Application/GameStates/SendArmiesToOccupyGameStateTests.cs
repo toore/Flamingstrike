@@ -17,8 +17,8 @@ namespace RISK.Tests.Application.GameStates
     {
         private readonly IGameStateConductor _gameStateConductor;
         private readonly IArmyModifier _armyModifier;
-        private readonly ITerritory _territory;
-        private readonly ITerritory _anotherTerritory;
+        private readonly ITerritory _attackingTerritory;
+        private readonly ITerritory _occupiedTerritory;
         private readonly IRegion _attackingRegion;
         private readonly IRegion _occupiedRegion;
         private readonly IPlayer _currentPlayer;
@@ -31,17 +31,17 @@ namespace RISK.Tests.Application.GameStates
             _gameStateConductor = Substitute.For<IGameStateConductor>();
             _armyModifier = Substitute.For<IArmyModifier>();
 
-            _territory = Substitute.For<ITerritory>();
-            _anotherTerritory = Substitute.For<ITerritory>();
+            _attackingTerritory = Substitute.For<ITerritory>();
+            _occupiedTerritory = Substitute.For<ITerritory>();
             _currentPlayer = Make.Player.Build();
             _anotherPlayer = Make.Player.Build();
 
             _attackingRegion = Substitute.For<IRegion>();
             _occupiedRegion = Substitute.For<IRegion>();
-            _territory.Region.Returns(_attackingRegion);
-            _territory.Player.Returns(_currentPlayer);
-            _anotherTerritory.Region.Returns(_occupiedRegion);
-            _anotherTerritory.Player.Returns(_currentPlayer);
+            _attackingTerritory.Region.Returns(_attackingRegion);
+            _attackingTerritory.Player.Returns(_currentPlayer);
+            _occupiedTerritory.Region.Returns(_occupiedRegion);
+            _occupiedTerritory.Player.Returns(_currentPlayer);
 
             //_region.HasBorder(_anotherRegion).Returns(true);
             //_territory.GetNumberOfArmiesAvailableForAttack().Returns(1);
@@ -52,8 +52,8 @@ namespace RISK.Tests.Application.GameStates
                 .CurrentPlayer(_currentPlayer)
                 .WithPlayer(_currentPlayer)
                 .WithPlayer(_anotherPlayer)
-                .WithTerritory(_territory)
-                .WithTerritory(_anotherTerritory)
+                .WithTerritory(_attackingTerritory)
+                .WithTerritory(_occupiedTerritory)
                 //  .WithDeck(_deck)
                 .Build();
         }
@@ -105,13 +105,31 @@ namespace RISK.Tests.Application.GameStates
         }
 
         [Fact]
+        public void Can_send_additional_armies_to_occupy()
+        {
+            var sut = Create(_gameData);
+
+            sut.CanSendAdditionalArmiesToOccupy().Should().BeTrue();
+        }
+
+        [Fact]
+        public void Gets_the_number_of_additional_armies_that_can_be_sent_to_occupy()
+        {
+            _attackingTerritory.GetNumberOfArmiesThatCanBeSentToOccupy().Returns(1);
+
+            var sut = Create(_gameData);
+
+            sut.GetNumberOfAdditionalArmiesThatCanBeSentToOccupy().Should().Be(1);
+        }
+
+        [Fact]
         public void Sending_armies_to_occupy_continues_with_attack_state()
         {
             var attackGameState = Substitute.For<IGameState>();
 
             IReadOnlyList<ITerritory> updatedTerritoriesAfterAdditionalArmiesHaveBeenSentToOccupy = new ITerritory[] { Make.Territory.Build(), Make.Territory.Build() };
             _armyModifier.SendInAdditionalArmiesToOccupy(
-                Argx.IsEquivalentReadOnly(_territory, _anotherTerritory),
+                Argx.IsEquivalentReadOnly(_attackingTerritory, _occupiedTerritory),
                 _attackingRegion,
                 _occupiedRegion,
                 1)
@@ -128,67 +146,9 @@ namespace RISK.Tests.Application.GameStates
                 .Returns(attackGameState);
 
             var sut = Create(_gameData);
-            var gameState = sut.SendArmiesToOccupy(1);
+            var gameState = sut.SendAdditionalArmiesToOccupy(1);
 
             gameState.Should().Be(attackGameState);
-        }
-
-        [Fact]
-        public void Can_send_armies_to_occupy()
-        {
-            var sut = Create(_gameData);
-
-            sut.CanSendArmiesToOccupy().Should().BeTrue();
-        }
-
-        [Fact(Skip = "Not implemented")]
-        public void Can_move_armies_into_captured_territory()
-        {
-            //var defenderIsDefeated = Substitute.For<IBattleResult>();
-            //defenderIsDefeated.IsDefenderDefeated().Returns(true);
-            ////GetAttackCandidatesReturns(_anotherPlayerTerritory);
-            //_battle.Attack(_currentPlayerTerritory, _anotherPlayerTerritory)
-            //    .Returns(defenderIsDefeated);
-
-            //var sut = Create(_gamePlaySetup);
-            //sut.Attack(_currentPlayerRegion, _anotherPlayerRegion);
-
-            //sut.CanSendArmiesToOccupy().Should().BeTrue();
-        }
-
-        [Fact(Skip = "Not implemented")]
-        public void Moves_armies_into_captured_territory()
-        {
-            //var defenderIsEliminated = Substitute.For<IBattleResult>();
-            //defenderIsEliminated.IsDefenderDefeated().Returns(true);
-            ////GetAttackCandidatesReturns(_anotherPlayerTerritory);
-            //_battle.Attack(_currentPlayerTerritory, _anotherPlayerTerritory)
-            //    .Returns(defenderIsEliminated);
-
-            //var sut = Create(_gamePlaySetup);
-            //sut.Attack(_currentPlayerRegion, _anotherPlayerRegion);
-            //sut.SendArmiesToOccupy(3);
-
-            //// Move to own test fixture
-            //// Test that canmove 
-            //// test move
-            //// (test to attack and standard move)
-            //// TBD: test that canmove prevents other actions
-        }
-
-        [Fact(Skip = "Not implemented")]
-        public void Can_not_attack_before_move_into_captured_territory_has_been_confirmed()
-        {
-            //var defenderIsEliminated = Substitute.For<IBattleResult>();
-            //defenderIsEliminated.IsDefenderDefeated().Returns(true);
-            ////GetAttackCandidatesReturns(_anotherPlayerTerritory);
-            //_battle.Attack(_currentPlayerTerritory, _anotherPlayerTerritory)
-            //    .Returns(defenderIsEliminated);
-
-            //var sut = Create(_gamePlaySetup);
-            //sut.Attack(_currentPlayerRegion, _anotherPlayerRegion);
-
-            //sut.AssertCanNotAttack(_currentPlayerRegion, _anotherPlayerRegion);
         }
 
         protected override IGameState Create(GameData gameData)

@@ -200,7 +200,7 @@ namespace RISK.Tests.Application.GameStates
         {
             var sut = Create(_gameData);
 
-            sut.CanSendArmiesToOccupy().Should().BeFalse();
+            sut.CanSendAdditionalArmiesToOccupy().Should().BeFalse();
         }
 
         [Fact]
@@ -208,7 +208,7 @@ namespace RISK.Tests.Application.GameStates
         {
             var sut = Create(_gameData);
 
-            Action act = () => sut.GetNumberOfArmiesThatCanBeSentToOccupy();
+            Action act = () => sut.GetNumberOfAdditionalArmiesThatCanBeSentToOccupy();
 
             act.ShouldThrow<InvalidOperationException>();
         }
@@ -218,7 +218,7 @@ namespace RISK.Tests.Application.GameStates
         {
             var sut = Create(_gameData);
 
-            Action act = () => sut.SendArmiesToOccupy(1);
+            Action act = () => sut.SendAdditionalArmiesToOccupy(1);
 
             act.ShouldThrow<InvalidOperationException>();
         }

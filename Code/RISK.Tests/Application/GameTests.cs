@@ -101,15 +101,15 @@ namespace RISK.Tests.Application
         [Theory, AutoData]
         public void Gets_number_of_armies_that_can_be_sent_to_occupy(int numberOfArmies)
         {
-            _firstPlayersTurn.GetNumberOfArmiesThatCanBeSentToOccupy().Returns(numberOfArmies);
+            _firstPlayersTurn.GetNumberOfAdditionalArmiesThatCanBeSentToOccupy().Returns(numberOfArmies);
 
             _sut.GetNumberOfArmiesThatCanBeSentToOccupy().Should().Be(numberOfArmies);
         }
 
         [Theory, AutoData]
-        public void Can_send_armies_to_occupy(bool canSendInArmiesToOccupy)
+        public void Can_send_additional_armies_to_occupy(bool canSendInArmiesToOccupy)
         {
-            _firstPlayersTurn.CanSendArmiesToOccupy().Returns(canSendInArmiesToOccupy);
+            _firstPlayersTurn.CanSendAdditionalArmiesToOccupy().Returns(canSendInArmiesToOccupy);
 
             _sut.CanSendArmiesToOccupy().Should().Be(canSendInArmiesToOccupy);
         }
@@ -119,7 +119,7 @@ namespace RISK.Tests.Application
         {
             _sut.SendArmiesToOccupy(numberOfArmies);
 
-            _firstPlayersTurn.Received().SendArmiesToOccupy(numberOfArmies);
+            _firstPlayersTurn.Received().SendAdditionalArmiesToOccupy(numberOfArmies);
         }
 
         [Theory, AutoData]
@@ -183,7 +183,7 @@ namespace RISK.Tests.Application
         {
             public SendingArmiesToOccupy()
             {
-                _firstPlayersTurn.SendArmiesToOccupy(0).ReturnsForAnyArgs(_nextGameState);
+                _firstPlayersTurn.SendAdditionalArmiesToOccupy(0).ReturnsForAnyArgs(_nextGameState);
                 _sut.SendArmiesToOccupy(0);
             }
         }
@@ -227,7 +227,7 @@ namespace RISK.Tests.Application
         {
             _sut.SendArmiesToOccupy(0);
 
-            _nextGameState.ReceivedWithAnyArgs().SendArmiesToOccupy(0);
+            _nextGameState.ReceivedWithAnyArgs().SendAdditionalArmiesToOccupy(0);
         }
 
         [Fact]

@@ -34,3 +34,4 @@ Not/partially tested
 - DeckFactory
 - GameStateConductor
 - ArmyModifier
+- Territory

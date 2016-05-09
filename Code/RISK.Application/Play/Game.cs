@@ -81,17 +81,17 @@ namespace RISK.Application.Play
 
         public bool CanSendArmiesToOccupy()
         {
-            return _gameState.CanSendArmiesToOccupy();
+            return _gameState.CanSendAdditionalArmiesToOccupy();
         }
 
         public int GetNumberOfArmiesThatCanBeSentToOccupy()
         {
-            return _gameState.GetNumberOfArmiesThatCanBeSentToOccupy();
+            return _gameState.GetNumberOfAdditionalArmiesThatCanBeSentToOccupy();
         }
 
         public void SendArmiesToOccupy(int numberOfArmies)
         {
-            _gameState = _gameState.SendArmiesToOccupy(numberOfArmies);
+            _gameState = _gameState.SendAdditionalArmiesToOccupy(numberOfArmies);
         }
 
         public bool CanFortify(IRegion sourceRegion, IRegion destinationRegion)

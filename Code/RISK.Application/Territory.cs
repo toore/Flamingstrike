@@ -13,6 +13,7 @@ namespace RISK.Application
 
         int GetNumberOfArmiesAvailableForAttack();
         int GetNumberOfArmiesUsedForDefence();
+        int GetNumberOfArmiesThatCanBeSentToOccupy();
     }
 
     public class Territory : ITerritory
@@ -41,6 +42,11 @@ namespace RISK.Application
         public int GetNumberOfArmiesUsedForDefence()
         {
             return Armies;
+        }
+
+        public int GetNumberOfArmiesThatCanBeSentToOccupy()
+        {
+            return Math.Max(Armies - 1, 0);
         }
     }
 

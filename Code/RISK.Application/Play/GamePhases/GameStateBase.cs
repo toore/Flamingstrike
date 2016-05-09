@@ -18,9 +18,9 @@ namespace RISK.Application.Play.GamePhases
         IGameState PlaceDraftArmies(IRegion region, int numberOfArmiesToPlace);
         bool CanAttack(IRegion attackingRegion, IRegion defendingRegion);
         IGameState Attack(IRegion attackingRegion, IRegion defendingRegion);
-        bool CanSendArmiesToOccupy();
-        int GetNumberOfArmiesThatCanBeSentToOccupy();
-        IGameState SendArmiesToOccupy(int numberOfArmies);
+        bool CanSendAdditionalArmiesToOccupy();
+        int GetNumberOfAdditionalArmiesThatCanBeSentToOccupy();
+        IGameState SendAdditionalArmiesToOccupy(int numberOfArmies);
         bool CanFortify(IRegion sourceRegion, IRegion destinationRegion);
         IGameState Fortify(IRegion sourceRegion, IRegion destinationRegion, int armies);
         bool CanEndTurn();
@@ -71,17 +71,17 @@ namespace RISK.Application.Play.GamePhases
             throw new InvalidOperationException();
         }
 
-        public virtual bool CanSendArmiesToOccupy()
+        public virtual bool CanSendAdditionalArmiesToOccupy()
         {
             return false;
         }
 
-        public int GetNumberOfArmiesThatCanBeSentToOccupy()
+        public virtual int GetNumberOfAdditionalArmiesThatCanBeSentToOccupy()
         {
             throw new InvalidOperationException();
         }
 
-        public virtual IGameState SendArmiesToOccupy(int numberOfArmies)
+        public virtual IGameState SendAdditionalArmiesToOccupy(int numberOfArmies)
         {
             throw new InvalidOperationException();
         }

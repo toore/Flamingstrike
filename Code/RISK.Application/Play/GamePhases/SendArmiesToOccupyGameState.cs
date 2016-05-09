@@ -19,12 +19,17 @@ namespace RISK.Application.Play.GamePhases
             _occupiedRegion = occupiedRegion;
         }
 
-        public override bool CanSendArmiesToOccupy()
+        public override bool CanSendAdditionalArmiesToOccupy()
         {
             return true;
         }
 
-        public override IGameState SendArmiesToOccupy(int numberOfArmies)
+        public override int GetNumberOfAdditionalArmiesThatCanBeSentToOccupy()
+        {
+            return GetTerritory(_attackingRegion).GetNumberOfArmiesThatCanBeSentToOccupy();
+        }
+
+        public override IGameState SendAdditionalArmiesToOccupy(int numberOfArmies)
         {
             var updatedTerritories = _armyModifier.SendInAdditionalArmiesToOccupy(Territories, _attackingRegion, _occupiedRegion, numberOfArmies);
             var gameData = new GameData(CurrentPlayer, Players, updatedTerritories, Deck);
