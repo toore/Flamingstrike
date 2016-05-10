@@ -151,6 +151,42 @@ namespace RISK.Tests.Application.GameStates
             gameState.Should().Be(attackGameState);
         }
 
+        [Fact]
+        public void Can_not_fortify()
+        {
+            var sut = Create(_gameData);
+
+            sut.CanFortify(_attackingRegion, _occupiedRegion).Should().BeFalse();
+        }
+
+        [Fact]
+        public void Fortifying_throws()
+        {
+            var sut = Create(_gameData);
+
+            Action act = () => sut.Fortify(_attackingRegion, _occupiedRegion, 1);
+
+            act.ShouldThrow<InvalidOperationException>();
+        }
+
+        [Fact]
+        public void Can_not_end_turn()
+        {
+            var sut = Create(_gameData);
+
+            sut.CanEndTurn().Should().BeFalse();
+        }
+
+        [Fact]
+        public void End_turn_throws()
+        {
+            var sut = Create(_gameData);
+
+            Action act = () => sut.EndTurn();
+
+            act.ShouldThrow<InvalidOperationException>();
+        }
+
         protected override IGameState Create(GameData gameData)
         {
             return new SendArmiesToOccupyGameState(_gameStateConductor, _gameDataFactory, _armyModifier, gameData, _attackingRegion, _occupiedRegion);
