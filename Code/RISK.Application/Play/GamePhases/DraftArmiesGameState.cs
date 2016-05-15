@@ -1,36 +1,43 @@
 using System;
+using System.Collections.Generic;
 using RISK.Application.Play.Planning;
 using RISK.Application.World;
 
 namespace RISK.Application.Play.GamePhases
 {
-    public class DraftArmiesGameState : GameStateBase
+    public class DraftArmiesGameState : IGameState
     {
         private readonly IGameStateConductor _gameStateConductor;
         private readonly IGameDataFactory _gameDataFactory;
         private readonly int _numberOfArmiesToDraft;
         private readonly IArmyModifier _armyModifier;
+        private readonly GameData _gameData;
 
         public DraftArmiesGameState(IGameStateConductor gameStateConductor, IGameDataFactory gameDataFactory, IArmyModifier armyModifier, GameData gameData, int numberOfArmiesToDraft)
-            : base(gameData)
         {
             _gameStateConductor = gameStateConductor;
             _gameDataFactory = gameDataFactory;
             _numberOfArmiesToDraft = numberOfArmiesToDraft;
             _armyModifier = armyModifier;
+            _gameData = gameData;
         }
 
-        public override bool CanPlaceDraftArmies(IRegion region)
+        public IPlayer CurrentPlayer => _gameData.CurrentPlayer;
+        public IReadOnlyList<IPlayer> Players => _gameData.Players;
+        public IReadOnlyList<ITerritory> Territories => _gameData.Territories;
+        public IDeck Deck => _gameData.Deck;
+
+        public bool CanPlaceDraftArmies(IRegion region)
         {
             return GetTerritory(region).Player == CurrentPlayer;
         }
 
-        public override int GetNumberOfArmiesToDraft()
+        public int GetNumberOfArmiesToDraft()
         {
             return _numberOfArmiesToDraft;
         }
 
-        public override IGameState PlaceDraftArmies(IRegion region, int numberOfArmiesToPlace)
+        public IGameState PlaceDraftArmies(IRegion region, int numberOfArmiesToPlace)
         {
             if (numberOfArmiesToPlace > _numberOfArmiesToDraft)
             {
@@ -48,6 +55,56 @@ namespace RISK.Application.Play.GamePhases
             }
 
             return _gameStateConductor.ContinueWithAttackPhase(gameData, ConqueringAchievement.DoNotAwardCardAtEndOfTurn);
+        }
+
+        public ITerritory GetTerritory(IRegion region)
+        {
+            return Territories.GetTerritory(region);
+        }
+
+        public bool CanAttack(IRegion attackingRegion, IRegion defendingRegion)
+        {
+            return false;
+        }
+
+        public IGameState Attack(IRegion attackingRegion, IRegion defendingRegion)
+        {
+            throw new InvalidOperationException();
+        }
+
+        public bool CanSendAdditionalArmiesToOccupy()
+        {
+            return false;
+        }
+
+        public int GetNumberOfAdditionalArmiesThatCanBeSentToOccupy()
+        {
+            throw new InvalidOperationException();
+        }
+
+        public IGameState SendAdditionalArmiesToOccupy(int numberOfArmies)
+        {
+            throw new InvalidOperationException();
+        }
+
+        public bool CanFortify(IRegion sourceRegion, IRegion destinationRegion)
+        {
+            return false;
+        }
+
+        public IGameState Fortify(IRegion sourceRegion, IRegion destinationRegion, int armies)
+        {
+            throw new InvalidOperationException();
+        }
+
+        public bool CanEndTurn()
+        {
+            return false;
+        }
+
+        public IGameState EndTurn()
+        {
+            throw new InvalidOperationException();
         }
     }
 }

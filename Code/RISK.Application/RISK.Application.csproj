@@ -61,7 +61,7 @@
     <Compile Include="Play\GamePhases\DraftArmiesGameState.cs" />
     <Compile Include="Play\GamePhases\FortifyGameState.cs" />
     <Compile Include="Play\GamePhases\GameOverGameState.cs" />
-    <Compile Include="Play\GamePhases\GameStateBase.cs" />
+    <Compile Include="Play\GamePhases\IGameState.cs" />
     <Compile Include="Play\GamePhases\GameStateFactory.cs" />
     <Compile Include="Play\Planning\ArmyDraftCalculator.cs" />
     <Compile Include="Play\GamePhases\SendArmiesToOccupyGameState.cs" />

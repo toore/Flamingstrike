@@ -1,43 +1,51 @@
+using System;
+using System.Collections.Generic;
 using RISK.Application.Play.Planning;
 using RISK.Application.World;
 
 namespace RISK.Application.Play.GamePhases
 {
-    public class SendArmiesToOccupyGameState : GameStateBase
+    public class SendArmiesToOccupyGameState : IGameState
     {
         private readonly IGameStateConductor _gameStateConductor;
         private readonly IGameDataFactory _gameDataFactory;
         private readonly IArmyModifier _armyModifier;
+        private readonly GameData _gameData;
         private readonly IRegion _attackingRegion;
         private readonly IRegion _occupiedRegion;
 
         public SendArmiesToOccupyGameState(
-            IGameStateConductor gameStateConductor, 
+            IGameStateConductor gameStateConductor,
             IGameDataFactory gameDataFactory,
-            IArmyModifier armyModifier, 
-            GameData gameData, 
-            IRegion attackingRegion, 
+            IArmyModifier armyModifier,
+            GameData gameData,
+            IRegion attackingRegion,
             IRegion occupiedRegion)
-            : base(gameData)
         {
             _gameStateConductor = gameStateConductor;
             _gameDataFactory = gameDataFactory;
             _armyModifier = armyModifier;
+            _gameData = gameData;
             _attackingRegion = attackingRegion;
             _occupiedRegion = occupiedRegion;
         }
 
-        public override bool CanSendAdditionalArmiesToOccupy()
+        public IPlayer CurrentPlayer => _gameData.CurrentPlayer;
+        public IReadOnlyList<IPlayer> Players => _gameData.Players;
+        public IReadOnlyList<ITerritory> Territories => _gameData.Territories;
+        public IDeck Deck => _gameData.Deck;
+
+        public bool CanSendAdditionalArmiesToOccupy()
         {
             return true;
         }
 
-        public override int GetNumberOfAdditionalArmiesThatCanBeSentToOccupy()
+        public int GetNumberOfAdditionalArmiesThatCanBeSentToOccupy()
         {
             return GetTerritory(_attackingRegion).GetNumberOfArmiesThatCanBeSentToOccupy();
         }
 
-        public override IGameState SendAdditionalArmiesToOccupy(int numberOfArmies)
+        public IGameState SendAdditionalArmiesToOccupy(int numberOfArmies)
         {
             var updatedTerritories = _armyModifier.SendInAdditionalArmiesToOccupy(Territories, _attackingRegion, _occupiedRegion, numberOfArmies);
             var gameData = _gameDataFactory.Create(CurrentPlayer, Players, updatedTerritories, Deck);
@@ -46,6 +54,55 @@ namespace RISK.Application.Play.GamePhases
 
             return attackPhase;
         }
-    }
 
+        public ITerritory GetTerritory(IRegion region)
+        {
+            return Territories.GetTerritory(region);
+        }
+
+        public bool CanPlaceDraftArmies(IRegion region)
+        {
+            return false;
+        }
+
+        public int GetNumberOfArmiesToDraft()
+        {
+            throw new InvalidOperationException();
+        }
+
+        public IGameState PlaceDraftArmies(IRegion region, int numberOfArmiesToPlace)
+        {
+            throw new InvalidOperationException();
+        }
+
+        public bool CanAttack(IRegion attackingRegion, IRegion defendingRegion)
+        {
+            return false;
+        }
+
+        public IGameState Attack(IRegion attackingRegion, IRegion defendingRegion)
+        {
+            throw new InvalidOperationException();
+        }
+
+        public bool CanFortify(IRegion sourceRegion, IRegion destinationRegion)
+        {
+            return false;
+        }
+
+        public IGameState Fortify(IRegion sourceRegion, IRegion destinationRegion, int armies)
+        {
+            throw new InvalidOperationException();
+        }
+
+        public bool CanEndTurn()
+        {
+            return false;
+        }
+
+        public IGameState EndTurn()
+        {
+            throw new InvalidOperationException();
+        }
+    }
 }

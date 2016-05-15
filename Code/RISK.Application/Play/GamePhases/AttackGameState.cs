@@ -7,22 +7,28 @@ using RISK.Application.World;
 
 namespace RISK.Application.Play.GamePhases
 {
-    public class AttackGameState : GameStateBase
+    public class AttackGameState : IGameState
     {
         private readonly IGameStateConductor _gameStateConductor;
         private readonly IGameDataFactory _gameDataFactory;
         private readonly IBattle _battle;
+        private readonly GameData _gameData;
         private ConqueringAchievement _conqueringAchievement = ConqueringAchievement.DoNotAwardCardAtEndOfTurn;
 
         public AttackGameState(IGameStateConductor gameStateConductor, IGameDataFactory gameDataFactory, IBattle battle, GameData gameData)
-            : base(gameData)
         {
             _gameStateConductor = gameStateConductor;
             _gameDataFactory = gameDataFactory;
             _battle = battle;
+            _gameData = gameData;
         }
 
-        public override bool CanAttack(IRegion attackingRegion, IRegion defendingRegion)
+        public IPlayer CurrentPlayer => _gameData.CurrentPlayer;
+        public IReadOnlyList<IPlayer> Players => _gameData.Players;
+        public IReadOnlyList<ITerritory> Territories => _gameData.Territories;
+        public IDeck Deck => _gameData.Deck;
+
+        public bool CanAttack(IRegion attackingRegion, IRegion defendingRegion)
         {
             var attackingTerritory = Territories.Single(x => x.Region == attackingRegion);
             var defendingTerritory = Territories.Single(x => x.Region == defendingRegion);
@@ -62,7 +68,7 @@ namespace RISK.Application.Play.GamePhases
             return attackingTerritory.GetNumberOfArmiesAvailableForAttack() > 0;
         }
 
-        public override IGameState Attack(IRegion attackingRegion, IRegion defendingRegion)
+        public IGameState Attack(IRegion attackingRegion, IRegion defendingRegion)
         {
             if (!CanAttack(attackingRegion, defendingRegion))
             {
@@ -152,7 +158,7 @@ namespace RISK.Application.Play.GamePhases
             return _gameStateConductor.ContinueWithAttackPhase(gameData, _conqueringAchievement);
         }
 
-        public override bool CanFortify(IRegion sourceRegion, IRegion destinationRegion)
+        public bool CanFortify(IRegion sourceRegion, IRegion destinationRegion)
         {
             var sourceTerritory = GetTerritory(sourceRegion);
             var destinationTerritory = GetTerritory(destinationRegion);
@@ -170,7 +176,7 @@ namespace RISK.Application.Play.GamePhases
             return canFortify;
         }
 
-        public override IGameState Fortify(IRegion sourceRegion, IRegion destinationRegion, int armies)
+        public IGameState Fortify(IRegion sourceRegion, IRegion destinationRegion, int armies)
         {
             if (!CanFortify(sourceRegion, destinationRegion))
             {
@@ -182,12 +188,12 @@ namespace RISK.Application.Play.GamePhases
             return _gameStateConductor.Fortify(gameData, sourceRegion, destinationRegion, armies);
         }
 
-        public override bool CanEndTurn()
+        public bool CanEndTurn()
         {
             return true;
         }
 
-        public override IGameState EndTurn()
+        public IGameState EndTurn()
         {
             if (_conqueringAchievement == ConqueringAchievement.AwardCardAtEndOfTurn)
             {
@@ -196,6 +202,41 @@ namespace RISK.Application.Play.GamePhases
             }
 
             return _gameStateConductor.PassTurnToNextPlayer(this);
+        }
+
+        public ITerritory GetTerritory(IRegion region)
+        {
+            return Territories.GetTerritory(region);
+        }
+
+        public bool CanPlaceDraftArmies(IRegion region)
+        {
+            return false;
+        }
+
+        public int GetNumberOfArmiesToDraft()
+        {
+            throw new InvalidOperationException();
+        }
+
+        public IGameState PlaceDraftArmies(IRegion region, int numberOfArmiesToPlace)
+        {
+            throw new InvalidOperationException();
+        }
+
+        public bool CanSendAdditionalArmiesToOccupy()
+        {
+            return false;
+        }
+
+        public int GetNumberOfAdditionalArmiesThatCanBeSentToOccupy()
+        {
+            throw new InvalidOperationException();
+        }
+
+        public IGameState SendAdditionalArmiesToOccupy(int numberOfArmies)
+        {
+            throw new InvalidOperationException();
         }
     }
 }
