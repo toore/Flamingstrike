@@ -1,4 +1,4 @@
-using RISK.Application;
+using RISK.Core;
 
 namespace RISK.Tests.Builders
 {

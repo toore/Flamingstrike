@@ -106,17 +106,17 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Application\Argx.cs" />
-    <Compile Include="Application\BattleTests.cs" />
-    <Compile Include="Application\DiceTests.cs" />
-    <Compile Include="Application\DicesRollerTests.cs" />
-    <Compile Include="Application\BattleOutcomeCalculatorTests.cs" />
+    <Compile Include="Core\BattleTests.cs" />
+    <Compile Include="Core\DiceTests.cs" />
+    <Compile Include="Core\DicesRollerTests.cs" />
+    <Compile Include="Core\ArmiesLostCalculatorTests.cs" />
     <Compile Include="Application\GameStateFsmTests.cs" />
     <Compile Include="Application\GameStates\AttackGameStateTests.cs" />
     <Compile Include="Application\GameStates\DraftArmiesGameStateTests.cs" />
     <Compile Include="Application\GameStates\GameOverGameStateTests.cs" />
     <Compile Include="Application\GameStates\SendArmiesToOccupyGameStateTests.cs" />
     <Compile Include="Application\GameTests.cs" />
-    <Compile Include="Builders\BattleOutcomeBuilder.cs" />
+    <Compile Include="Builders\ArmiesLostBuilder.cs" />
     <Compile Include="Builders\ContinentBuilder.cs" />
     <Compile Include="Builders\DicesBuilder.cs" />
     <Compile Include="Builders\GameDataBuilder.cs" />
@@ -162,7 +162,7 @@
     <Compile Include="Application\AlternateGameSetupTests.cs" />
     <Compile Include="GuiWpf\ColorServiceTests.cs" />
     <Compile Include="GuiWpf\GameboardViewModelTests.cs" />
-    <Compile Include="Application\RegionsTests.cs" />
+    <Compile Include="Core\RegionsTests.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -200,6 +200,10 @@
     <ProjectReference Include="..\RISK.Application\RISK.Application.csproj">
       <Project>{6de17fca-3f04-4923-8ab8-e3fa376a54ff}</Project>
       <Name>RISK.Application</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\RISK.Core\RISK.Core.csproj">
+      <Project>{8F24E4E6-125C-4ED4-A6C0-767B0675A8CD}</Project>
+      <Name>RISK.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\RISK.GuiWpf\RISK.GuiWpf.csproj">
       <Project>{3b937f0e-e727-442d-b1da-e5ed6ef939d5}</Project>

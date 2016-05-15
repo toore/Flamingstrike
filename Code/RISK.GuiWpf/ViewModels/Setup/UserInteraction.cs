@@ -1,6 +1,6 @@
 ﻿using System.Threading;
 using RISK.Application.Setup;
-using RISK.Application.World;
+using RISK.Core;
 
 namespace GuiWpf.ViewModels.Setup
 {

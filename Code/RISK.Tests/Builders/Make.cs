@@ -7,7 +7,7 @@ namespace RISK.Tests.Builders
         public static GamePlaySetupBuilder GamePlaySetup => new GamePlaySetupBuilder();
         public static TerritoryBuilder Territory => new TerritoryBuilder();
         public static DicesBuilder Dices => new DicesBuilder();
-        public static BattleOutcomeBuilder BattleOutcome => new BattleOutcomeBuilder();
+        public static ArmiesLostBuilder ArmiesLost => new ArmiesLostBuilder();
         public static GameDataBuilder GameData => new GameDataBuilder();
         public static PlayerBuilder Player => new PlayerBuilder();
     }

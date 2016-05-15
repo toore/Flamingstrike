@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using RISK.Application.Play.Attacking;
+using RISK.Core;
 
 namespace RISK.Tests.Builders
 {

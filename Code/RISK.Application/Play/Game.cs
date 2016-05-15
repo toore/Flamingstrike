@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using RISK.Application.Play.GamePhases;
-using RISK.Application.World;
+using RISK.Core;
 
 namespace RISK.Application.Play
 {

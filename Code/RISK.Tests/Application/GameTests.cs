@@ -1,11 +1,10 @@
 using FluentAssertions;
 using NSubstitute;
 using Ploeh.AutoFixture.Xunit2;
-using RISK.Application;
 using RISK.Application.Play;
 using RISK.Application.Play.GamePhases;
 using RISK.Application.Setup;
-using RISK.Application.World;
+using RISK.Core;
 using RISK.Tests.Builders;
 using Xunit;
 

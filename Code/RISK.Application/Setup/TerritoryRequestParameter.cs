@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using RISK.Application.World;
+using RISK.Core;
 
 namespace RISK.Application.Setup
 {

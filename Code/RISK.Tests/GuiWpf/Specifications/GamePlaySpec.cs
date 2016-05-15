@@ -11,10 +11,8 @@ using GuiWpf.ViewModels.Gameplay.Map;
 using NSubstitute;
 using RISK.Application;
 using RISK.Application.Play;
-using RISK.Application.Play.Attacking;
 using RISK.Application.Play.GamePhases;
-using RISK.Application.Play.Planning;
-using RISK.Application.World;
+using RISK.Core;
 using Toore.Shuffling;
 using Xunit;
 
@@ -191,7 +189,7 @@ namespace RISK.Tests.GuiWpf.Specifications
             var dicesRoller = new DicesRoller(dice);
             var armyDraftCalculator = new ArmyDraftCalculator(_continents);
             var armyDraftUpdater = new ArmyModifier();
-            var battle = new Battle(dicesRoller, new BattleOutcomeCalculator());
+            var battle = new Battle(dicesRoller, new ArmiesLostCalculator());
             var gameDataFactory = new GameDataFactory();
             var gameStateFactory = new GameStateFactory(gameDataFactory, battle, armyDraftUpdater);
             var gameStateFsm = new GameStateFsm();

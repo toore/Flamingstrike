@@ -1,7 +1,6 @@
-using System.Runtime.InteropServices;
 using GuiWpf.Services;
 using RISK.Application.Setup;
-using RISK.Application.World;
+using RISK.Core;
 
 namespace GuiWpf.ViewModels.Setup
 {

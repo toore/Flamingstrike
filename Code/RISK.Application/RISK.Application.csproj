@@ -53,51 +53,41 @@
     <Compile Include="Play\DeckFactory.cs" />
     <Compile Include="Play\GameData.cs" />
     <Compile Include="Play\GamePhases\AttackGameState.cs" />
-    <Compile Include="Play\Attacking\BattleResult.cs" />
     <Compile Include="Play\GamePhases\ConqueringAchievement.cs" />
     <Compile Include="Play\GameDataFactory.cs" />
     <Compile Include="Play\GamePhases\GameStateConductor.cs" />
     <Compile Include="Play\GamePhases\GameStateFsm.cs" />
-    <Compile Include="Play\ICard.cs" />
     <Compile Include="Play\GamePhases\DraftArmiesGameState.cs" />
     <Compile Include="Play\GamePhases\FortifyGameState.cs" />
     <Compile Include="Play\GamePhases\GameOverGameState.cs" />
     <Compile Include="Play\GamePhases\IGameState.cs" />
     <Compile Include="Play\GamePhases\GameStateFactory.cs" />
-    <Compile Include="Play\Planning\ArmyDraftCalculator.cs" />
     <Compile Include="Play\GamePhases\SendArmiesToOccupyGameState.cs" />
-    <Compile Include="Play\Planning\ArmyModifier.cs" />
+    <Compile Include="Play\ArmyModifier.cs" />
     <Compile Include="Sequence.cs" />
     <Compile Include="Setup\AlternateGameSetupFactory.cs" />
-    <Compile Include="Territory.cs" />
     <Compile Include="Play\GameFactory.cs" />
     <Compile Include="Setup\GamePlaySetup.cs" />
-    <Compile Include="Player.cs" />
-    <Compile Include="World\Region.cs" />
     <Compile Include="PlayerType.cs" />
-    <Compile Include="Play\Attacking\Dice.cs" />
     <Compile Include="Play\Game.cs" />
     <Compile Include="Setup\AlternateGameSetup.cs" />
-    <Compile Include="Play\Attacking\Battle.cs" />
     <Compile Include="Play\Deck.cs" />
-    <Compile Include="Play\Attacking\DicesRoller.cs" />
-    <Compile Include="Play\Attacking\BattleOutcomeCalculator.cs" />
     <Compile Include="Setup\ITerritoryResponder.cs" />
     <Compile Include="Setup\StartingInfantryCalculator.cs" />
     <Compile Include="Setup\InSetupPlayer.cs" />
     <Compile Include="Setup\TerritoryRequestParameter.cs" />
-    <Compile Include="Shuffling\FisherYatesShuffler.cs" />
-    <Compile Include="Shuffling\IShuffler.cs" />
-    <Compile Include="Shuffling\RandomWrapper.cs" />
-    <Compile Include="Shuffling\ShuffleExtensions.cs" />
-    <Compile Include="World\Regions.cs" />
-    <Compile Include="World\Continents.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Play\TerritoryExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\RISK.Core\RISK.Core.csproj">
+      <Project>{8f24e4e6-125c-4ed4-a6c0-767b0675a8cd}</Project>
+      <Name>RISK.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

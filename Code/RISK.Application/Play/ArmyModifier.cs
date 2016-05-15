@@ -1,10 +1,9 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using RISK.Application.Extensions;
-using RISK.Application.World;
+using RISK.Core;
 
-namespace RISK.Application.Play.Planning
+namespace RISK.Application.Play
 {
     public interface IArmyModifier
     {

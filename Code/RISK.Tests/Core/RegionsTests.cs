@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using FluentAssertions;
-using RISK.Application.World;
+using RISK.Core;
 using Xunit;
 
-namespace RISK.Tests.Application
+namespace RISK.Tests.Core
 {
     public class RegionsTests
     {

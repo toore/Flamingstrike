@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 
-namespace RISK.Application.Shuffling
+namespace Toore.Shuffling
 {
-    public interface IShuffler
+    public interface IShuffle
     {
         IEnumerable<T> Shuffle<T>(IEnumerable<T> elements);
     }

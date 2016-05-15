@@ -6,9 +6,8 @@ using GuiWpf.Services;
 using GuiWpf.ViewModels.Gameplay.Interaction;
 using GuiWpf.ViewModels.Gameplay.Map;
 using GuiWpf.ViewModels.Messages;
-using RISK.Application;
 using RISK.Application.Play;
-using RISK.Application.World;
+using RISK.Core;
 
 namespace GuiWpf.ViewModels.Gameplay
 {

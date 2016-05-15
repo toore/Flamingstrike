@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace RISK.Application.World
+namespace RISK.Core
 {
     public interface IRegions
     {

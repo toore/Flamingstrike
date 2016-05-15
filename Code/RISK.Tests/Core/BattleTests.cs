@@ -2,25 +2,25 @@
 using System.Reflection;
 using FluentAssertions;
 using NSubstitute;
-using RISK.Application.Play.Attacking;
+using RISK.Core;
 using RISK.Tests.Builders;
 using Xunit;
 using Xunit.Sdk;
 
-namespace RISK.Tests.Application
+namespace RISK.Tests.Core
 {
     public abstract class BattleTests
     {
         private readonly Battle _sut;
         private readonly IDicesRoller _dicesRoller;
-        private readonly IBattleOutcomeCalculator _battleOutcomeCalculator;
+        private readonly IArmiesLostCalculator _armiesLostCalculator;
 
         protected BattleTests()
         {
             _dicesRoller = Substitute.For<IDicesRoller>();
-            _battleOutcomeCalculator = Substitute.For<IBattleOutcomeCalculator>();
+            _armiesLostCalculator = Substitute.For<IArmiesLostCalculator>();
 
-            _sut = new Battle(_dicesRoller, _battleOutcomeCalculator);
+            _sut = new Battle(_dicesRoller, _armiesLostCalculator);
         }
 
         public class Uses_correct_number_of_dices_with_respect_to_number_of_armies : BattleTests
@@ -28,7 +28,7 @@ namespace RISK.Tests.Application
             public Uses_correct_number_of_dices_with_respect_to_number_of_armies()
             {
                 _dicesRoller.Roll(Arg.Any<int>(), Arg.Any<int>()).ReturnsForAnyArgs(Make.Dices.Build());
-                _battleOutcomeCalculator.Battle(null, null).ReturnsForAnyArgs(Make.BattleOutcome.Build());
+                _armiesLostCalculator.Calculate(null, null).ReturnsForAnyArgs(Make.ArmiesLost.Build());
             }
 
             private class NumberOfAttackingDicesCasesAttribute : DataAttribute
@@ -83,17 +83,17 @@ namespace RISK.Tests.Application
             {
                 var attackingTerritory = Make.Territory.Armies(3).Build();
                 var defendingTerritory = Make.Territory.Armies(1).Build();
-                var attackerLosesOne = new BattleOutcome(1, 0);
-                SetActualBattleOutcome(2, 1, attackerLosesOne);
+                var attackerLosesOne = new ArmiesLost(1, 0);
+                SetArmiesLost(2, 1, attackerLosesOne);
 
                 var battleResult = _sut.Attack(attackingTerritory, defendingTerritory);
 
-                battleResult.AttackingTerritory.Region.Should().Be(attackingTerritory.Region);
-                battleResult.AttackingTerritory.Player.Should().Be(attackingTerritory.Player);
-                battleResult.AttackingTerritory.Armies.Should().Be(2);
-                battleResult.DefendingTerritory.Region.Should().Be(defendingTerritory.Region);
-                battleResult.DefendingTerritory.Player.Should().Be(defendingTerritory.Player);
-                battleResult.DefendingTerritory.Armies.Should().Be(1);
+                battleResult.UpdatedAttackingTerritory.Region.Should().Be(attackingTerritory.Region);
+                battleResult.UpdatedAttackingTerritory.Player.Should().Be(attackingTerritory.Player);
+                battleResult.UpdatedAttackingTerritory.Armies.Should().Be(2);
+                battleResult.UpdatedDefendingTerritory.Region.Should().Be(defendingTerritory.Region);
+                battleResult.UpdatedDefendingTerritory.Player.Should().Be(defendingTerritory.Player);
+                battleResult.UpdatedDefendingTerritory.Armies.Should().Be(1);
             }
 
             [Fact]
@@ -101,17 +101,17 @@ namespace RISK.Tests.Application
             {
                 var attackingTerritory = Make.Territory.Armies(2).Build();
                 var defendingTerritory = Make.Territory.Armies(2).Build();
-                var defenderLosesOne = new BattleOutcome(0, 1);
-                SetActualBattleOutcome(1, 2, defenderLosesOne);
+                var defenderLosesOne = new ArmiesLost(0, 1);
+                SetArmiesLost(1, 2, defenderLosesOne);
 
                 var battleResult = _sut.Attack(attackingTerritory, defendingTerritory);
 
-                battleResult.AttackingTerritory.Region.Should().Be(attackingTerritory.Region);
-                battleResult.AttackingTerritory.Player.Should().Be(attackingTerritory.Player);
-                battleResult.AttackingTerritory.Armies.Should().Be(2);
-                battleResult.DefendingTerritory.Region.Should().Be(defendingTerritory.Region);
-                battleResult.DefendingTerritory.Player.Should().Be(defendingTerritory.Player);
-                battleResult.DefendingTerritory.Armies.Should().Be(1);
+                battleResult.UpdatedAttackingTerritory.Region.Should().Be(attackingTerritory.Region);
+                battleResult.UpdatedAttackingTerritory.Player.Should().Be(attackingTerritory.Player);
+                battleResult.UpdatedAttackingTerritory.Armies.Should().Be(2);
+                battleResult.UpdatedDefendingTerritory.Region.Should().Be(defendingTerritory.Region);
+                battleResult.UpdatedDefendingTerritory.Player.Should().Be(defendingTerritory.Player);
+                battleResult.UpdatedDefendingTerritory.Armies.Should().Be(1);
             }
 
             [Fact]
@@ -119,17 +119,17 @@ namespace RISK.Tests.Application
             {
                 var attackingTerritory = Make.Territory.Armies(4).Build();
                 var defendingTerritory = Make.Territory.Armies(2).Build();
-                var draw = new BattleOutcome(1, 1);
-                SetActualBattleOutcome(3, 2, draw);
+                var draw = new ArmiesLost(1, 1);
+                SetArmiesLost(3, 2, draw);
 
                 var battleResult = _sut.Attack(attackingTerritory, defendingTerritory);
 
-                battleResult.AttackingTerritory.Region.Should().Be(attackingTerritory.Region);
-                battleResult.AttackingTerritory.Player.Should().Be(attackingTerritory.Player);
-                battleResult.AttackingTerritory.Armies.Should().Be(3);
-                battleResult.DefendingTerritory.Region.Should().Be(defendingTerritory.Region);
-                battleResult.DefendingTerritory.Player.Should().Be(defendingTerritory.Player);
-                battleResult.DefendingTerritory.Armies.Should().Be(1);
+                battleResult.UpdatedAttackingTerritory.Region.Should().Be(attackingTerritory.Region);
+                battleResult.UpdatedAttackingTerritory.Player.Should().Be(attackingTerritory.Player);
+                battleResult.UpdatedAttackingTerritory.Armies.Should().Be(3);
+                battleResult.UpdatedDefendingTerritory.Region.Should().Be(defendingTerritory.Region);
+                battleResult.UpdatedDefendingTerritory.Player.Should().Be(defendingTerritory.Player);
+                battleResult.UpdatedDefendingTerritory.Armies.Should().Be(1);
             }
 
             [Fact]
@@ -137,26 +137,26 @@ namespace RISK.Tests.Application
             {
                 var attackingTerritory = Make.Territory.Armies(2).Build();
                 var defendingTerritory = Make.Territory.Armies(1).Build();
-                var defenderLosesOne = new BattleOutcome(0, 1);
-                SetActualBattleOutcome(1, 1, defenderLosesOne);
+                var defenderLosesOne = new ArmiesLost(0, 1);
+                SetArmiesLost(1, 1, defenderLosesOne);
 
                 var battleResult = _sut.Attack(attackingTerritory, defendingTerritory);
 
-                battleResult.AttackingTerritory.Region.Should().Be(attackingTerritory.Region);
-                battleResult.AttackingTerritory.Player.Should().Be(attackingTerritory.Player);
-                battleResult.AttackingTerritory.Armies.Should().Be(1);
-                battleResult.DefendingTerritory.Region.Should().Be(defendingTerritory.Region);
-                battleResult.DefendingTerritory.Player.Should().Be(attackingTerritory.Player);
-                battleResult.DefendingTerritory.Armies.Should().Be(1);
+                battleResult.UpdatedAttackingTerritory.Region.Should().Be(attackingTerritory.Region);
+                battleResult.UpdatedAttackingTerritory.Player.Should().Be(attackingTerritory.Player);
+                battleResult.UpdatedAttackingTerritory.Armies.Should().Be(1);
+                battleResult.UpdatedDefendingTerritory.Region.Should().Be(defendingTerritory.Region);
+                battleResult.UpdatedDefendingTerritory.Player.Should().Be(attackingTerritory.Player);
+                battleResult.UpdatedDefendingTerritory.Armies.Should().Be(1);
             }
 
-            private void SetActualBattleOutcome(int numberOfAttackDices, int numberOfDefenceDices, BattleOutcome battleOutcome)
+            private void SetArmiesLost(int numberOfAttackDices, int numberOfDefenceDices, ArmiesLost armiesLost)
             {
                 var attackValues = new List<int>();
                 var defenceValues = new List<int>();
 
                 _dicesRoller.Roll(numberOfAttackDices, numberOfDefenceDices).Returns(new Dices(attackValues, defenceValues));
-                _battleOutcomeCalculator.Battle(attackValues, defenceValues).Returns(battleOutcome);
+                _armiesLostCalculator.Calculate(attackValues, defenceValues).Returns(armiesLost);
             }
         }
     }

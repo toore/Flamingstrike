@@ -1,4 +1,6 @@
-﻿namespace RISK.Application.Setup
+﻿using RISK.Core;
+
+namespace RISK.Application.Setup
 {
     public class InSetupPlayer
     {

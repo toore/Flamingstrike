@@ -1,8 +1,7 @@
 ﻿using FluentAssertions;
 using GuiWpf.ViewModels.Gameplay.Interaction;
 using NSubstitute;
-using RISK.Application;
-using RISK.Application.World;
+using RISK.Core;
 using Xunit;
 
 namespace RISK.Tests.GuiWpf.Interaction

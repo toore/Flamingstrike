@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using RISK.Application.Play;
 
-namespace RISK.Application
+namespace RISK.Core
 {
     public interface IPlayer
     {

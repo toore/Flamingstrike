@@ -7,10 +7,9 @@ using GuiWpf.ViewModels.Gameplay.Map;
 using GuiWpf.ViewModels.Messages;
 using GuiWpf.ViewModels.Setup;
 using NSubstitute;
-using RISK.Application;
 using RISK.Application.Play;
 using RISK.Application.Setup;
-using RISK.Application.World;
+using RISK.Core;
 using RISK.Tests.Builders;
 using Xunit;
 

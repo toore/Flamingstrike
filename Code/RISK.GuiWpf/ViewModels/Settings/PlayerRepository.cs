@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using RISK.Application;
+using RISK.Core;
 
 namespace GuiWpf.ViewModels.Settings
 {

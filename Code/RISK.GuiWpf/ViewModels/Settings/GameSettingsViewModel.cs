@@ -5,20 +5,20 @@ using Caliburn.Micro;
 using GuiWpf.Extensions;
 using GuiWpf.Properties;
 using GuiWpf.ViewModels.Messages;
-using RISK.Application;
+using RISK.Core;
 
 namespace GuiWpf.ViewModels.Settings
 {
     public class GameSettingsViewModel : ViewModelBase, IGameSettingsViewModel
     {
-        private readonly IPlayerIdFactory _playerIdFactory;
+        private readonly IPlayerFactory _playerFactory;
         private readonly IPlayerTypes _playerTypes;
         private readonly IEventAggregator _eventAggregator;
         private readonly IPlayerRepository _playerRepository;
 
-        public GameSettingsViewModel(IPlayerIdFactory playerIdFactory, IPlayerTypes playerTypes, IPlayerRepository playerRepository, IEventAggregator eventAggregator)
+        public GameSettingsViewModel(IPlayerFactory playerFactory, IPlayerTypes playerTypes, IPlayerRepository playerRepository, IEventAggregator eventAggregator)
         {
-            _playerIdFactory = playerIdFactory;
+            _playerFactory = playerFactory;
             _playerTypes = playerTypes;
             _eventAggregator = eventAggregator;
             _playerRepository = playerRepository;
@@ -62,7 +62,7 @@ namespace GuiWpf.ViewModels.Settings
         private IEnumerable<IPlayer> CreatePlayers()
         {
             return GetEnabledPlayers()
-                .Select(_playerIdFactory.Create)
+                .Select(_playerFactory.Create)
                 .ToList();
         }
 

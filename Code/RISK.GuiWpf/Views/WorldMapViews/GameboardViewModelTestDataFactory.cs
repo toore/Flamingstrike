@@ -10,7 +10,7 @@ using RISK.Application;
 using RISK.Application.Play;
 using RISK.Application.Play.GamePhases;
 using RISK.Application.Setup;
-using RISK.Application.World;
+using RISK.Core;
 
 namespace GuiWpf.Views.WorldMapViews
 {

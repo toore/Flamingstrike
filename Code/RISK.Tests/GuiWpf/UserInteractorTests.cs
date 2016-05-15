@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using FluentAssertions;
 using GuiWpf.ViewModels.Setup;
 using NSubstitute;
-using RISK.Application;
 using RISK.Application.Setup;
-using RISK.Application.World;
+using RISK.Core;
 using RISK.Tests.Builders;
 using Xunit;
 
@@ -47,7 +46,8 @@ namespace RISK.Tests.GuiWpf
         {
             var territoryRequestParameter = Substitute.For<ITerritoryRequestParameter>();
             var gameSetupViewModel = Substitute.For<IGameSetupViewModel>();
-            var territories = new List<ITerritory>();
+            var territories = new List<
+                ITerritory>();
             Action<IRegion> selectTerritoryAction = _userInteraction.SelectTerritory;
             var enabledTerritories = new List<IRegion> { Make.Region.Build() };
             const string playerName = "any player";

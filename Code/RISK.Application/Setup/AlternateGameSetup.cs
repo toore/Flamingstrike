@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using RISK.Application.Extensions;
-using RISK.Application.Shuffling;
-using RISK.Application.World;
+using RISK.Core;
 using Toore.Shuffling;
 
 namespace RISK.Application.Setup
@@ -24,18 +23,18 @@ namespace RISK.Application.Setup
     {
         private readonly IEnumerable<IPlayer> _players;
         private readonly IRegions _regions;
-        private readonly IShuffler _shuffler;
+        private readonly IShuffle _shuffle;
         private readonly IStartingInfantryCalculator _startingInfantryCalculator;
 
         public AlternateGameSetup(
             IRegions regions,
             IEnumerable<IPlayer> players,
             IStartingInfantryCalculator startingInfantryCalculator,
-            IShuffler shuffler)
+            IShuffle shuffle)
         {
             _players = players;
             _regions = regions;
-            _shuffler = shuffler;
+            _shuffle = shuffle;
             _startingInfantryCalculator = startingInfantryCalculator;
         }
 
@@ -56,7 +55,7 @@ namespace RISK.Application.Setup
         private List<IPlayer> ShufflePlayers()
         {
             var shuffledPlayers = _players
-                .Shuffle(_shuffler)
+                .Shuffle(_shuffle)
                 .ToList();
 
             return shuffledPlayers;
@@ -67,7 +66,7 @@ namespace RISK.Application.Setup
             var territories = new List<Territory>();
 
             var territoryIds = _regions.GetAll()
-                .Shuffle(_shuffler)
+                .Shuffle(_shuffle)
                 .ToList();
 
             foreach (var territoryId in territoryIds)

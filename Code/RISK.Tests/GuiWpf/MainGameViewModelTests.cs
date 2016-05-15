@@ -5,11 +5,10 @@ using GuiWpf.ViewModels.Messages;
 using GuiWpf.ViewModels.Settings;
 using GuiWpf.ViewModels.Setup;
 using NSubstitute;
-using RISK.Application;
 using RISK.Application.Play;
 using RISK.Application.Setup;
+using RISK.Core;
 using Xunit;
-using IPlayer = RISK.Application.IPlayer;
 
 namespace RISK.Tests.GuiWpf
 {

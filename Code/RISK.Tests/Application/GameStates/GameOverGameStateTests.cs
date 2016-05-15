@@ -1,8 +1,8 @@
 using FluentAssertions;
 using NSubstitute;
-using RISK.Application;
 using RISK.Application.Play;
 using RISK.Application.Play.GamePhases;
+using RISK.Core;
 using RISK.Tests.Builders;
 using Xunit;
 

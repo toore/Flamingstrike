@@ -1,7 +1,7 @@
 using System;
 using FluentAssertions;
 using GuiWpf.ViewModels.Gameplay.Interaction;
-using RISK.Application.World;
+using RISK.Core;
 
 namespace RISK.Tests.GuiWpf.Interaction
 {

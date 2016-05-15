@@ -1,8 +1,7 @@
 ﻿using GuiWpf.ViewModels.Gameplay.Interaction;
 using NSubstitute;
-using RISK.Application;
 using RISK.Application.Play;
-using RISK.Application.World;
+using RISK.Core;
 using RISK.Tests.Builders;
 
 namespace RISK.Tests.GuiWpf.Interaction

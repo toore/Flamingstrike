@@ -1,6 +1,4 @@
-﻿using RISK.Application.World;
-
-namespace RISK.Application.Play
+﻿namespace RISK.Core
 {
     public enum CardSymbol
     {

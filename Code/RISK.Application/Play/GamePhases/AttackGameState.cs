@@ -2,8 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using RISK.Application.Extensions;
-using RISK.Application.Play.Attacking;
-using RISK.Application.World;
+using RISK.Core;
 
 namespace RISK.Application.Play.GamePhases
 {
@@ -81,8 +80,8 @@ namespace RISK.Application.Play.GamePhases
             var battleResult = _battle.Attack(attackingTerritory, defendingTerritory);
 
             var updatedTerritories = _gameData.Territories
-                .Replace(attackingTerritory, battleResult.AttackingTerritory)
-                .Replace(defendingTerritory, battleResult.DefendingTerritory)
+                .Replace(attackingTerritory, battleResult.UpdatedAttackingTerritory)
+                .Replace(defendingTerritory, battleResult.UpdatedDefendingTerritory)
                 .ToList();
 
             if (battleResult.IsDefenderDefeated())

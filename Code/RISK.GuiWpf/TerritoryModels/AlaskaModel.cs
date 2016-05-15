@@ -1,13 +1,12 @@
 ﻿using System.Windows;
 using GuiWpf.Properties;
-using RISK.Application.World;
+using RISK.Core;
 
 namespace GuiWpf.TerritoryModels
 {
     public class AlaskaModel : RegionModelBase
     {
-        public AlaskaModel(IRegion alaska)
-            : base(alaska) {}
+        public AlaskaModel(IRegion alaska) : base(alaska) {}
 
         public override string Name => Resources.ALASKA;
         public override Point NamePosition => new Point(50, 40);

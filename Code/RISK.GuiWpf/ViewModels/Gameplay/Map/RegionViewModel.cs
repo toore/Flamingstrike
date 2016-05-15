@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Media;
 using GuiWpf.TerritoryModels;
-using RISK.Application.World;
+using RISK.Core;
 
 namespace GuiWpf.ViewModels.Gameplay.Map
 {

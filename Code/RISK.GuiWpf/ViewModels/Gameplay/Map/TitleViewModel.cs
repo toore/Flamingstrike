@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 using GuiWpf.TerritoryModels;
-using RISK.Application.World;
+using RISK.Core;
 
 namespace GuiWpf.ViewModels.Gameplay.Map
 {

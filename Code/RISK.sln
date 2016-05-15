@@ -1,13 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.30110.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RISK.GuiWpf", "RISK.GuiWpf\RISK.GuiWpf.csproj", "{3B937F0E-E727-442D-B1DA-E5ED6EF939D5}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RISK.Application", "RISK.Application\RISK.Application.csproj", "{6DE17FCA-3F04-4923-8AB8-E3FA376A54FF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RISK.Tests", "RISK.Tests\RISK.Tests.csproj", "{F02CB4F8-34FC-4D10-9039-C3CCE3AF5CDB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RISK.Core", "RISK.Core\RISK.Core.csproj", "{8F24E4E6-125C-4ED4-A6C0-767B0675A8CD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{F02CB4F8-34FC-4D10-9039-C3CCE3AF5CDB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F02CB4F8-34FC-4D10-9039-C3CCE3AF5CDB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F02CB4F8-34FC-4D10-9039-C3CCE3AF5CDB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8F24E4E6-125C-4ED4-A6C0-767B0675A8CD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8F24E4E6-125C-4ED4-A6C0-767B0675A8CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8F24E4E6-125C-4ED4-A6C0-767B0675A8CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8F24E4E6-125C-4ED4-A6C0-767B0675A8CD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

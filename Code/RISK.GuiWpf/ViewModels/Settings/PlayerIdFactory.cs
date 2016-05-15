@@ -1,13 +1,13 @@
-﻿using RISK.Application;
+﻿using RISK.Core;
 
 namespace GuiWpf.ViewModels.Settings
 {
-    public interface IPlayerIdFactory
+    public interface IPlayerFactory
     {
         IPlayer Create(PlayerSetupViewModel playerSetupViewModel);
     }
 
-    public class PlayerIdFactory : IPlayerIdFactory
+    public class PlayerFactory : IPlayerFactory
     {
         public IPlayer Create(PlayerSetupViewModel playerSetupViewModel)
         {

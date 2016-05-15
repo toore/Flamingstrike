@@ -2,10 +2,9 @@
 using System.Linq;
 using FluentAssertions;
 using NSubstitute;
-using RISK.Application;
 using RISK.Application.Setup;
-using RISK.Application.Shuffling;
-using RISK.Application.World;
+using RISK.Core;
+using Toore.Shuffling;
 using Xunit;
 
 namespace RISK.Tests.Application
@@ -23,7 +22,7 @@ namespace RISK.Tests.Application
         public AlternateGameSetupTests()
         {
             var worldMap = Substitute.For<IRegions>();
-            var shuffler = Substitute.For<IShuffler>();
+            var shuffler = Substitute.For<IShuffle>();
             var startingInfantryCalculator = Substitute.For<IStartingInfantryCalculator>();
             var players = new List<IPlayer> { null };
             _territoryResponder = Substitute.For<ITerritoryResponder>();

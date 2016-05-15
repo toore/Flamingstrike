@@ -1,9 +1,6 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using RISK.Application.World;
 
-namespace RISK.Application
+namespace RISK.Core
 {
     public interface ITerritory
     {
@@ -47,14 +44,6 @@ namespace RISK.Application
         public int GetNumberOfArmiesThatCanBeSentToOccupy()
         {
             return Math.Max(Armies - 1, 0);
-        }
-    }
-
-    public static class TerritoryExtensions
-    {
-        public static ITerritory GetTerritory(this IEnumerable<ITerritory> territories, IRegion region)
-        {
-            return territories.Single(x => x.Region == region);
         }
     }
 }

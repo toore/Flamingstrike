@@ -1,7 +1,6 @@
 using System;
 using System.Linq;
-using RISK.Application.Shuffling;
-using RISK.Application.World;
+using RISK.Core;
 using Toore.Shuffling;
 
 namespace RISK.Application.Play
@@ -14,9 +13,9 @@ namespace RISK.Application.Play
     public class DeckFactory : IDeckFactory
     {
         private readonly IRegions _regions;
-        private readonly IShuffler _shuffler;
+        private readonly IShuffle _shuffler;
 
-        public DeckFactory(IRegions regions, IShuffler shuffler)
+        public DeckFactory(IRegions regions, IShuffle shuffler)
         {
             _regions = regions;
             _shuffler = shuffler;

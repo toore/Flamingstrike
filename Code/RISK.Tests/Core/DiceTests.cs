@@ -1,10 +1,10 @@
 ﻿using FluentAssertions;
 using NSubstitute;
-using RISK.Application.Play.Attacking;
+using RISK.Core;
 using Toore.Shuffling;
 using Xunit;
 
-namespace RISK.Tests.Application
+namespace RISK.Tests.Core
 {
     public class DiceTests
     {

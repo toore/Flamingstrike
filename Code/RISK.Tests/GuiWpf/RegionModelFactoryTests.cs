@@ -2,7 +2,7 @@
 using FluentAssertions;
 using GuiWpf.TerritoryModels;
 using NSubstitute;
-using RISK.Application.World;
+using RISK.Core;
 using Xunit;
 
 namespace RISK.Tests.GuiWpf

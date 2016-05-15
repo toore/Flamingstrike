@@ -2,45 +2,35 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace RISK.Application.Play.Attacking
+namespace RISK.Core
 {
-    public interface IBattleOutcomeCalculator
+    public interface IArmiesLostCalculator
     {
-        BattleOutcome Battle(IEnumerable<int> attack, IEnumerable<int> defence);
+        ArmiesLost Calculate(IEnumerable<int> attack, IEnumerable<int> defence);
     }
 
-    public class BattleOutcome
+    public class ArmiesLost
     {
-        public BattleOutcome(int attackerLosses, int defenderLosses)
+        public ArmiesLost(int attackingArmiesLost, int defendingArmiesLost)
         {
-            AttackerLosses = attackerLosses;
-            DefenderLosses = defenderLosses;
+            AttackingArmiesLost = attackingArmiesLost;
+            DefendingArmiesLost = defendingArmiesLost;
         }
 
-        public int AttackerLosses { get; }
-        public int DefenderLosses { get; }
+        public int AttackingArmiesLost { get; }
+        public int DefendingArmiesLost { get; }
     }
 
-    public class BattleOutcomeCalculator : IBattleOutcomeCalculator
+    public class ArmiesLostCalculator : IArmiesLostCalculator
     {
-        public BattleOutcome Battle(IEnumerable<int> attack, IEnumerable<int> defence)
+        public ArmiesLost Calculate(IEnumerable<int> attack, IEnumerable<int> defence)
         {
             var matchedAttackAndDefenceValues = MatchAttackAndDefenceValues(attack.ToList(), defence.ToList())
                 .ToList();
 
-            return new BattleOutcome(
+            return new ArmiesLost(
                 GetAttackerLosses(matchedAttackAndDefenceValues),
                 GetDefenderLosses(matchedAttackAndDefenceValues));
-        }
-
-        private static int GetAttackerLosses(IEnumerable<AttackAndDefenceMatch> attackAndDefenceMatches)
-        {
-            return attackAndDefenceMatches.Count(x => HasDefenderWon(x.Attack, x.Defence));
-        }
-
-        private static int GetDefenderLosses(IEnumerable<AttackAndDefenceMatch> attackAndDefenceMatches)
-        {
-            return attackAndDefenceMatches.Count(x => HasAttackerWon(x.Attack, x.Defence));
         }
 
         private static IEnumerable<AttackAndDefenceMatch> MatchAttackAndDefenceValues(ICollection<int> attackValues, ICollection<int> defenceValues)
@@ -59,6 +49,16 @@ namespace RISK.Application.Play.Attacking
                 .Select(x => new AttackAndDefenceMatch(x, defendersValuesStack.Pop()));
 
             return matchedAttackAndDefenceValues;
+        }
+
+        private static int GetAttackerLosses(IEnumerable<AttackAndDefenceMatch> attackAndDefenceMatches)
+        {
+            return attackAndDefenceMatches.Count(x => HasDefenderWon(x.Attack, x.Defence));
+        }
+
+        private static int GetDefenderLosses(IEnumerable<AttackAndDefenceMatch> attackAndDefenceMatches)
+        {
+            return attackAndDefenceMatches.Count(x => HasAttackerWon(x.Attack, x.Defence));
         }
 
         private static bool HasDefenderWon(int attack, int defence)

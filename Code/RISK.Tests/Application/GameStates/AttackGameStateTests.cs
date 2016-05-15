@@ -1,11 +1,9 @@
 using System;
 using FluentAssertions;
 using NSubstitute;
-using RISK.Application;
 using RISK.Application.Play;
-using RISK.Application.Play.Attacking;
 using RISK.Application.Play.GamePhases;
-using RISK.Application.World;
+using RISK.Core;
 using RISK.Tests.Builders;
 using Xunit;
 
@@ -147,10 +145,10 @@ namespace RISK.Tests.Application.GameStates
         {
             var updatedAttackingTerritory = Substitute.For<ITerritory>();
             var updatedDefendingTerritory = Substitute.For<ITerritory>();
-            var battleResult = Substitute.For<IBattleResult>();
+            var battleResult = Substitute.For<IBattleOutcome>();
             var newGameData = Make.GameData.Build();
-            battleResult.AttackingTerritory.Returns(updatedAttackingTerritory);
-            battleResult.DefendingTerritory.Returns(updatedDefendingTerritory);
+            battleResult.UpdatedAttackingTerritory.Returns(updatedAttackingTerritory);
+            battleResult.UpdatedDefendingTerritory.Returns(updatedDefendingTerritory);
             _battle.Attack(_territory, _anotherTerritory).Returns(battleResult);
             _gameDataFactory.Create(
                 _currentPlayer,
@@ -172,10 +170,10 @@ namespace RISK.Tests.Application.GameStates
         {
             var updatedAttackingTerritory = Substitute.For<ITerritory>();
             var defeatedTerritory = Substitute.For<ITerritory>();
-            var battleResult = Substitute.For<IBattleResult>();
+            var battleResult = Substitute.For<IBattleOutcome>();
             var newGameData = Make.GameData.Build();
-            battleResult.AttackingTerritory.Returns(updatedAttackingTerritory);
-            battleResult.DefendingTerritory.Returns(defeatedTerritory);
+            battleResult.UpdatedAttackingTerritory.Returns(updatedAttackingTerritory);
+            battleResult.UpdatedDefendingTerritory.Returns(defeatedTerritory);
             battleResult.IsDefenderDefeated().Returns(true);
             _battle.Attack(_territory, _anotherTerritory).Returns(battleResult);
             _gameDataFactory.Create(
@@ -311,7 +309,7 @@ namespace RISK.Tests.Application.GameStates
         public void Player_should_receive_card_when_turn_ends()
         {
             var topDeckCard = Substitute.For<ICard>();
-            var battleResult = Substitute.For<IBattleResult>();
+            var battleResult = Substitute.For<IBattleOutcome>();
             battleResult.IsDefenderDefeated().Returns(true);
             _battle.Attack(_territory, _anotherTerritory).Returns(battleResult);
             _deck.Draw().Returns(topDeckCard);
@@ -327,7 +325,7 @@ namespace RISK.Tests.Application.GameStates
         public void Player_should_not_receive_card_after_attack()
         {
             var topDeckCard = Substitute.For<ICard>();
-            var battleResult = Substitute.For<IBattleResult>();
+            var battleResult = Substitute.For<IBattleOutcome>();
             battleResult.IsDefenderDefeated().Returns(true);
             _battle.Attack(_territory, _anotherTerritory).Returns(battleResult);
             _deck.Draw().Returns(topDeckCard);
@@ -341,7 +339,7 @@ namespace RISK.Tests.Application.GameStates
         [Fact]
         public void Player_should_not_receive_card_when_turn_ends()
         {
-            var battleResult = Substitute.For<IBattleResult>();
+            var battleResult = Substitute.For<IBattleOutcome>();
             battleResult.IsDefenderDefeated().Returns(false);
             _battle.Attack(_territory, _anotherTerritory).Returns(battleResult);
 
@@ -358,11 +356,11 @@ namespace RISK.Tests.Application.GameStates
             var aCard = Substitute.For<ICard>();
             var aSecondCard = Substitute.For<ICard>();
             var eliminatedPlayersCards = new[] { aCard, aSecondCard };
-            var battleResult = Substitute.For<IBattleResult>();
+            var battleResult = Substitute.For<IBattleOutcome>();
             _anotherPlayer.AddCard(aCard);
             _anotherPlayer.AddCard(aSecondCard);
             battleResult.IsDefenderDefeated().Returns(true);
-            battleResult.DefendingTerritory.Returns(Substitute.For<ITerritory>());
+            battleResult.UpdatedDefendingTerritory.Returns(Substitute.For<ITerritory>());
             _battle.Attack(_territory, _anotherTerritory).Returns(battleResult);
 
             var sut = Create(_gameData);
@@ -375,15 +373,15 @@ namespace RISK.Tests.Application.GameStates
         [Fact]
         public void When_last_defending_player_is_eliminated_the_game_is_over()
         {
-            var battleResult = Substitute.For<IBattleResult>();
+            var battleResult = Substitute.For<IBattleOutcome>();
             var updatedTerritory = Substitute.For<ITerritory>();
             var anotherUpdatedTerritory = Substitute.For<ITerritory>();
             var newGameData = Make.GameData.Build();
             battleResult.IsDefenderDefeated().Returns(true);
             updatedTerritory.Player.Returns(_currentPlayer);
             anotherUpdatedTerritory.Player.Returns(_currentPlayer);
-            battleResult.AttackingTerritory.Returns(updatedTerritory);
-            battleResult.DefendingTerritory.Returns(anotherUpdatedTerritory);
+            battleResult.UpdatedAttackingTerritory.Returns(updatedTerritory);
+            battleResult.UpdatedDefendingTerritory.Returns(anotherUpdatedTerritory);
             _battle.Attack(_territory, _anotherTerritory).Returns(battleResult);
             _gameDataFactory.Create(
                 _currentPlayer,

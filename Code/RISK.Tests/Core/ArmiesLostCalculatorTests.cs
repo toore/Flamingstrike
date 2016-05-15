@@ -1,17 +1,17 @@
 ﻿using System.Collections.Generic;
 using FluentAssertions;
-using RISK.Application.Play.Attacking;
+using RISK.Core;
 using Xunit;
 
-namespace RISK.Tests.Application
+namespace RISK.Tests.Core
 {
-    public class BattleOutcomeCalculatorTests
+    public class ArmiesLostCalculatorTests
     {
-        private readonly BattleOutcomeCalculator _sut;
+        private readonly ArmiesLostCalculator _sut;
 
-        public BattleOutcomeCalculatorTests()
+        public ArmiesLostCalculatorTests()
         {
-            _sut = new BattleOutcomeCalculator();
+            _sut = new ArmiesLostCalculator();
         }
 
         public static IEnumerable<object[]> _attackerCasualtiesCases
@@ -33,7 +33,7 @@ namespace RISK.Tests.Application
         [MemberData(nameof(_attackerCasualtiesCases))]
         public void CalculateAttackerCasualties(int expectedCasualties, IEnumerable<int> attack, IEnumerable<int> defence)
         {
-            _sut.Battle(attack, defence).AttackerLosses
+            _sut.Calculate(attack, defence).AttackingArmiesLost
                 .Should().Be(expectedCasualties);
         }
 
@@ -56,7 +56,7 @@ namespace RISK.Tests.Application
         [MemberData(nameof(_defenderCasualtiesCases))]
         public void CalculateDefenderCasualties(int expectedCasualties, IEnumerable<int> attack, IEnumerable<int> defence)
         {
-            _sut.Battle(attack, defence).DefenderLosses
+            _sut.Calculate(attack, defence).DefendingArmiesLost
                 .Should().Be(expectedCasualties);
         }
     }

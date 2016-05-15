@@ -6,7 +6,7 @@ using GuiWpf.ViewModels.Gameplay;
 using GuiWpf.ViewModels.Settings;
 using GuiWpf.ViewModels.Setup;
 using RISK.Application.Setup;
-using RISK.Application.World;
+using RISK.Core;
 using Xunit;
 
 namespace RISK.Tests.GuiWpf.Specifications

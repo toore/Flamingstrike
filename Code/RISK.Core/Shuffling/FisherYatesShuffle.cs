@@ -1,14 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Toore.Shuffling;
 
-namespace RISK.Application.Shuffling
+namespace Toore.Shuffling
 {
-    public class FisherYatesShuffler : IShuffler
+    public class FisherYatesShuffle : IShuffle
     {
         private readonly IRandomWrapper _random;
 
-        public FisherYatesShuffler(IRandomWrapper random)
+        public FisherYatesShuffle(IRandomWrapper random)
         {
             _random = random;
         }

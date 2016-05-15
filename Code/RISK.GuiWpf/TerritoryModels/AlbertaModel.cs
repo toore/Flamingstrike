@@ -1,13 +1,12 @@
 using System.Windows;
 using GuiWpf.Properties;
-using RISK.Application.World;
+using RISK.Core;
 
 namespace GuiWpf.TerritoryModels
 {
     public class AlbertaModel : RegionModelBase
     {
-        public AlbertaModel(IRegion alberta)
-            : base(alberta) {}
+        public AlbertaModel(IRegion alberta): base(alberta) {}
 
         public override string Name => Resources.ALBERTA;
         public override Point NamePosition => new Point(140, 110);

@@ -7,12 +7,9 @@ using GuiWpf.ViewModels.Gameplay.Map;
 using GuiWpf.ViewModels.Settings;
 using GuiWpf.ViewModels.Setup;
 using RISK.Application.Play;
-using RISK.Application.Play.Attacking;
 using RISK.Application.Play.GamePhases;
-using RISK.Application.Play.Planning;
 using RISK.Application.Setup;
-using RISK.Application.Shuffling;
-using RISK.Application.World;
+using RISK.Core;
 using Toore.Shuffling;
 
 namespace GuiWpf.ViewModels
@@ -32,7 +29,7 @@ namespace GuiWpf.ViewModels
 
         public Root(ITaskEx taskEx)
         {
-            var playerIdFactory = new PlayerIdFactory();
+            var playerIdFactory = new PlayerFactory();
             var playerTypes = new PlayerTypes();
             PlayerRepository = new PlayerRepository();
             EventAggregator = new EventAggregator();
@@ -70,10 +67,10 @@ namespace GuiWpf.ViewModels
                 EventAggregator);
 
             var randomWrapper = new RandomWrapper();
-            var shuffler = new FisherYatesShuffler(randomWrapper);
-            var deckFactory = new DeckFactory(regions, shuffler);
+            var shuffle = new FisherYatesShuffle(randomWrapper);
+            var deckFactory = new DeckFactory(regions, shuffle);
             var armyDraftUpdater = new ArmyModifier();
-            var battleCalculator = new BattleOutcomeCalculator();
+            var battleCalculator = new ArmiesLostCalculator();
             var dice = new Dice(randomWrapper);
             var diceRoller = new DicesRoller(dice);
             var battle = new Battle(diceRoller, battleCalculator);
@@ -94,7 +91,7 @@ namespace GuiWpf.ViewModels
             var startingInfantryCalculator = new StartingInfantryCalculator();
 
             AlternateGameSetupFactory = new AlternateGameSetupFactory(
-                regions, shuffler, startingInfantryCalculator);
+                regions, shuffle, startingInfantryCalculator);
 
             var userInteractionFactory = new UserInteractionFactory();
             var guiThreadDispatcher = new GuiThreadDispatcher();

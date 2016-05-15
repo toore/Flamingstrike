@@ -1,9 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using RISK.Application.World;
 
-namespace RISK.Application.Play.Planning
+namespace RISK.Core
 {
     public interface IArmyDraftCalculator
     {
