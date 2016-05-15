@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using RISK.Core;
+using RISK.GameEngine.Extensions;
 
 namespace RISK.GameEngine.Play.GamePhases
 {
@@ -26,14 +27,14 @@ namespace RISK.GameEngine.Play.GamePhases
             _gameData = gameData;
         }
 
-        public IPlayer CurrentPlayer => _gameData.CurrentPlayer;
-        public IReadOnlyList<IPlayer> Players => _gameData.Players;
+        public IInGamePlayer CurrentPlayer => _gameData.CurrentPlayer;
+        public IReadOnlyList<IInGamePlayer> Players => _gameData.Players;
         public IReadOnlyList<ITerritory> Territories => _gameData.Territories;
         public IDeck Deck => _gameData.Deck;
 
         public bool CanPlaceDraftArmies(IRegion region)
         {
-            return _gameData.Territories.GetTerritory(region).Player == CurrentPlayer;
+            return _gameData.Territories.GetTerritory(region).Player == _gameData.CurrentPlayer;
         }
 
         public int GetNumberOfArmiesToDraft()
@@ -50,7 +51,7 @@ namespace RISK.GameEngine.Play.GamePhases
 
             var updatedTerritories = _armyModifier.PlaceDraftArmies(_gameData.Territories, region, numberOfArmiesToPlace);
 
-            var gameData = _gameDataFactory.Create(CurrentPlayer, _gameData.Players, updatedTerritories, Deck);
+            var gameData = _gameDataFactory.Create(_gameData.CurrentPlayer, _gameData.Players, updatedTerritories, Deck);
             var numberOfArmiesLeftToPlace = _numberOfArmiesToDraft - numberOfArmiesToPlace;
 
             if (numberOfArmiesLeftToPlace > 0)

@@ -4,8 +4,6 @@ namespace RISK.GameEngine.Setup
 {
     public class InSetupPlayer
     {
-        public int ArmiesToPlace { get; set; }
-
         public InSetupPlayer(IPlayer player, int armiesToPlace)
         {
             Player = player;
@@ -13,6 +11,8 @@ namespace RISK.GameEngine.Setup
         }
 
         public IPlayer Player { get; }
+
+        public int ArmiesToPlace { get; set; }
 
         public bool HasArmiesLeftToPlace()
         {

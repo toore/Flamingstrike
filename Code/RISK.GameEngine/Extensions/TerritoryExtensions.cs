@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using RISK.Core;
 
-namespace RISK.GameEngine.Play
+namespace RISK.GameEngine.Extensions
 {
     public static class TerritoryExtensions
     {

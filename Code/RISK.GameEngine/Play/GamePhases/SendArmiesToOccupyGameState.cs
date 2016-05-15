@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using RISK.Core;
+using RISK.GameEngine.Extensions;
 
 namespace RISK.GameEngine.Play.GamePhases
 {
@@ -29,8 +30,8 @@ namespace RISK.GameEngine.Play.GamePhases
             _occupiedRegion = occupiedRegion;
         }
 
-        public IPlayer CurrentPlayer => _gameData.CurrentPlayer;
-        public IReadOnlyList<IPlayer> Players => _gameData.Players;
+        public IInGamePlayer CurrentPlayer => _gameData.CurrentPlayer;
+        public IReadOnlyList<IInGamePlayer> Players => _gameData.Players;
         public IReadOnlyList<ITerritory> Territories => _gameData.Territories;
         public IDeck Deck => _gameData.Deck;
 
@@ -47,7 +48,7 @@ namespace RISK.GameEngine.Play.GamePhases
         public void SendAdditionalArmiesToOccupy(int numberOfArmies)
         {
             var updatedTerritories = _armyModifier.SendInAdditionalArmiesToOccupy(_gameData.Territories, _attackingRegion, _occupiedRegion, numberOfArmies);
-            var gameData = _gameDataFactory.Create(CurrentPlayer, Players, updatedTerritories, Deck);
+            var gameData = _gameDataFactory.Create(_gameData.CurrentPlayer, Players, updatedTerritories, Deck);
 
             _gameStateConductor.ContinueWithAttackPhase(gameData, ConqueringAchievement.AwardCardAtEndOfTurn);
         }

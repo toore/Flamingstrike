@@ -5,8 +5,8 @@ namespace RISK.GameEngine.Play.GamePhases
 {
     public interface IGameState
     {
-        IPlayer CurrentPlayer { get; }
-        IReadOnlyList<IPlayer> Players { get; }
+        IInGamePlayer CurrentPlayer { get; }
+        IReadOnlyList<IInGamePlayer> Players { get; }
         IReadOnlyList<ITerritory> Territories { get; }
         IDeck Deck { get; }
         bool CanPlaceDraftArmies(IRegion region);

@@ -7,7 +7,7 @@ namespace RISK.GameEngine.Play
 {
     public interface IGame
     {
-        IPlayer CurrentPlayer { get; }
+        IPlayerInfo CurrentPlayer { get; }
         ITerritory GetTerritory(IRegion region);
         bool CanPlaceDraftArmies(IRegion region);
         int GetNumberOfArmiesToDraft();
@@ -51,16 +51,23 @@ namespace RISK.GameEngine.Play
 
         public void Initialize()
         {
+            var currentPlayer = new InGamePlayer(_players.Next());
+            var players = _players
+                .Select(p => new InGamePlayer(p))
+                .ToList();
+
             var gameData = _gameDataFactory.Create(
-                _players.Next(),
-                _players.ToList(),
+                currentPlayer,
+                players,
                 _initialTerritories,
                 _initialDeck);
 
             _gameStateConductor.InitializeFirstPlayerTurn(gameData);
         }
 
-        public IPlayer CurrentPlayer => _gameStateFsm.CurrentPlayer;
+        public IPlayerInfo CurrentPlayer => new PlayerInfo(
+            _gameStateFsm.CurrentPlayer.Player.Name,
+            _gameStateFsm.CurrentPlayer.Cards.ToList());
 
         public ITerritory GetTerritory(IRegion region)
         {
@@ -131,7 +138,7 @@ namespace RISK.GameEngine.Play
         {
             var territory = GetTerritory(region);
 
-            var isCurrentPlayerOccupyingTerritory = territory.Player == CurrentPlayer;
+            var isCurrentPlayerOccupyingTerritory = territory.Player == _gameStateFsm.CurrentPlayer.Player;
 
             return isCurrentPlayerOccupyingTerritory;
         }
