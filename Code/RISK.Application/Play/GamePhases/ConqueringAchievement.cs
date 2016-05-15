@@ -1,4 +1,4 @@
-namespace RISK.Application.Play.GamePhases
+namespace RISK.GameEngine.Play.GamePhases
 {
     public enum ConqueringAchievement
     {

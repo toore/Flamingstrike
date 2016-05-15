@@ -1,6 +1,6 @@
 ﻿using System.Threading;
-using RISK.Application.Setup;
 using RISK.Core;
+using RISK.GameEngine.Setup;
 
 namespace GuiWpf.ViewModels.Setup
 {

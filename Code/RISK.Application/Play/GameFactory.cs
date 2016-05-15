@@ -1,7 +1,7 @@
-using RISK.Application.Play.GamePhases;
-using RISK.Application.Setup;
+using RISK.GameEngine.Play.GamePhases;
+using RISK.GameEngine.Setup;
 
-namespace RISK.Application.Play
+namespace RISK.GameEngine.Play
 {
     public interface IGameFactory
     {

@@ -1,6 +1,6 @@
 ﻿using RISK.Core;
 
-namespace RISK.Application.Setup
+namespace RISK.GameEngine.Setup
 {
     public class InSetupPlayer
     {

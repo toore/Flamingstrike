@@ -1,5 +1,3 @@
-using RISK.Application.Play.GamePhases;
-
 namespace GuiWpf.ViewModels.Gameplay.Interaction
 {
     public interface IInteractionStateFactory

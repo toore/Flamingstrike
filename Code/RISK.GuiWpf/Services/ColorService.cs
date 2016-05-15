@@ -1,5 +1,4 @@
 using System.Windows.Media;
-using RISK.Application;
 using RISK.Core;
 
 namespace GuiWpf.Services

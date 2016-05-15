@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using RISK.Core;
 
-namespace RISK.Application.Play.GamePhases
+namespace RISK.GameEngine.Play.GamePhases
 {
     public interface IGameState
     {

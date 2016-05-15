@@ -1,7 +1,7 @@
 using System.Collections.Generic;
-using RISK.Application.Extensions;
-using RISK.Application.Setup;
 using RISK.Core;
+using RISK.GameEngine.Extensions;
+using RISK.GameEngine.Setup;
 
 namespace RISK.Tests.Builders
 {

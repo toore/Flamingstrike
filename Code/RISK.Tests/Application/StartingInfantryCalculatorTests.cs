@@ -1,5 +1,5 @@
 ﻿using FluentAssertions;
-using RISK.Application.Setup;
+using RISK.GameEngine.Setup;
 using Xunit;
 
 namespace RISK.Tests.Application

@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
-using RISK.Application.Play.GamePhases;
 using RISK.Core;
+using RISK.GameEngine.Play.GamePhases;
 
-namespace RISK.Application.Play
+namespace RISK.GameEngine.Play
 {
     public interface IGame
     {

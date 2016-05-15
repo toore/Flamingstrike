@@ -3,7 +3,7 @@ using System.Linq;
 using RISK.Core;
 using Toore.Shuffling;
 
-namespace RISK.Application.Play
+namespace RISK.GameEngine.Play
 {
     public interface IDeckFactory
     {

@@ -308,9 +308,9 @@
     <None Include="Views\App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\RISK.Application\RISK.Application.csproj">
+    <ProjectReference Include="..\RISK.Application\RISK.GameEngine.csproj">
       <Project>{6DE17FCA-3F04-4923-8AB8-E3FA376A54FF}</Project>
-      <Name>RISK.Application</Name>
+      <Name>RISK.GameEngine</Name>
     </ProjectReference>
     <ProjectReference Include="..\RISK.Core\RISK.Core.csproj">
       <Project>{8F24E4E6-125C-4ED4-A6C0-767B0675A8CD}</Project>

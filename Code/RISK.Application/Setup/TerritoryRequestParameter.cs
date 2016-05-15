@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using RISK.Core;
 
-namespace RISK.Application.Setup
+namespace RISK.GameEngine.Setup
 {
     public interface ITerritoryRequestParameter
     {

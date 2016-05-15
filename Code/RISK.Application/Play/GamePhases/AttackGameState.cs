@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using RISK.Application.Extensions;
 using RISK.Core;
+using RISK.GameEngine.Extensions;
 
-namespace RISK.Application.Play.GamePhases
+namespace RISK.GameEngine.Play.GamePhases
 {
     public class AttackGameState : IGameState
     {

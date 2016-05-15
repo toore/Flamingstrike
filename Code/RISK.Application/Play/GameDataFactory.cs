@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using RISK.Core;
 
-namespace RISK.Application.Play
+namespace RISK.GameEngine.Play
 {
     public interface IGameDataFactory
     {

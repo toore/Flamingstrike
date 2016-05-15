@@ -6,10 +6,10 @@ using GuiWpf.ViewModels.Gameplay.Interaction;
 using GuiWpf.ViewModels.Gameplay.Map;
 using GuiWpf.ViewModels.Settings;
 using GuiWpf.ViewModels.Setup;
-using RISK.Application.Play;
-using RISK.Application.Play.GamePhases;
-using RISK.Application.Setup;
 using RISK.Core;
+using RISK.GameEngine.Play;
+using RISK.GameEngine.Play.GamePhases;
+using RISK.GameEngine.Setup;
 using Toore.Shuffling;
 
 namespace GuiWpf.ViewModels

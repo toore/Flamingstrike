@@ -3,8 +3,8 @@ using GuiWpf.ViewModels.Gameplay;
 using GuiWpf.ViewModels.Messages;
 using GuiWpf.ViewModels.Settings;
 using GuiWpf.ViewModels.Setup;
-using RISK.Application.Play;
-using RISK.Application.Setup;
+using RISK.GameEngine.Play;
+using RISK.GameEngine.Setup;
 
 namespace GuiWpf.ViewModels
 {

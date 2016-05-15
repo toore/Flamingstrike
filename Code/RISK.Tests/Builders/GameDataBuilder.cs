@@ -1,6 +1,6 @@
 using System.Collections.Generic;
-using RISK.Application.Play;
 using RISK.Core;
+using RISK.GameEngine.Play;
 
 namespace RISK.Tests.Builders
 {

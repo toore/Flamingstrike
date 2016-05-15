@@ -5,7 +5,7 @@ VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RISK.GuiWpf", "RISK.GuiWpf\RISK.GuiWpf.csproj", "{3B937F0E-E727-442D-B1DA-E5ED6EF939D5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RISK.Application", "RISK.Application\RISK.Application.csproj", "{6DE17FCA-3F04-4923-8AB8-E3FA376A54FF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RISK.GameEngine", "RISK.Application\RISK.GameEngine.csproj", "{6DE17FCA-3F04-4923-8AB8-E3FA376A54FF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RISK.Tests", "RISK.Tests\RISK.Tests.csproj", "{F02CB4F8-34FC-4D10-9039-C3CCE3AF5CDB}"
 EndProject

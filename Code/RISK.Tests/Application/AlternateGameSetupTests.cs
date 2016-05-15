@@ -2,8 +2,8 @@
 using System.Linq;
 using FluentAssertions;
 using NSubstitute;
-using RISK.Application.Setup;
 using RISK.Core;
+using RISK.GameEngine.Setup;
 using Toore.Shuffling;
 using Xunit;
 

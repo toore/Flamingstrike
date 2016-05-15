@@ -2,7 +2,7 @@
 using RISK.Core;
 using Toore.Shuffling;
 
-namespace RISK.Application.Setup
+namespace RISK.GameEngine.Setup
 {
     public interface IAlternateGameSetupFactory
     {

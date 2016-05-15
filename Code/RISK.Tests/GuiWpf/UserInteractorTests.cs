@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using FluentAssertions;
 using GuiWpf.ViewModels.Setup;
 using NSubstitute;
-using RISK.Application.Setup;
 using RISK.Core;
+using RISK.GameEngine.Setup;
 using RISK.Tests.Builders;
 using Xunit;
 

@@ -4,8 +4,6 @@ using FluentAssertions;
 using GuiWpf.ViewModels.Messages;
 using GuiWpf.ViewModels.Settings;
 using NSubstitute;
-using RISK.Application;
-using RISK.Application.Extensions;
 using Xunit;
 
 namespace RISK.Tests.GuiWpf

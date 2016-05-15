@@ -1,5 +1,4 @@
 ﻿using Caliburn.Micro;
-using RISK.Application;
 
 namespace GuiWpf.ViewModels.Settings
 {

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace RISK.Application
+namespace RISK.GameEngine
 {
     public class Sequence<T> : IEnumerable<T>
     {

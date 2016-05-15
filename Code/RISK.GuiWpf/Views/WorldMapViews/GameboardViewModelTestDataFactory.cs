@@ -6,11 +6,11 @@ using GuiWpf.TerritoryModels;
 using GuiWpf.ViewModels.Gameplay;
 using GuiWpf.ViewModels.Gameplay.Interaction;
 using GuiWpf.ViewModels.Gameplay.Map;
-using RISK.Application;
-using RISK.Application.Play;
-using RISK.Application.Play.GamePhases;
-using RISK.Application.Setup;
 using RISK.Core;
+using RISK.GameEngine;
+using RISK.GameEngine.Play;
+using RISK.GameEngine.Play.GamePhases;
+using RISK.GameEngine.Setup;
 
 namespace GuiWpf.Views.WorldMapViews
 {

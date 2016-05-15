@@ -5,8 +5,8 @@ using GuiWpf.ViewModels;
 using GuiWpf.ViewModels.Gameplay;
 using GuiWpf.ViewModels.Settings;
 using GuiWpf.ViewModels.Setup;
-using RISK.Application.Setup;
 using RISK.Core;
+using RISK.GameEngine.Setup;
 using Xunit;
 
 namespace RISK.Tests.GuiWpf.Specifications

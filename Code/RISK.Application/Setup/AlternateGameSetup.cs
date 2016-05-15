@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using RISK.Application.Extensions;
 using RISK.Core;
+using RISK.GameEngine.Extensions;
 using Toore.Shuffling;
 
-namespace RISK.Application.Setup
+namespace RISK.GameEngine.Setup
 {
     /* Alternate
      * An alternate and quicker method of setup from the original French rules is to deal out the entire deck of Risk cards (minus the wild cards), 

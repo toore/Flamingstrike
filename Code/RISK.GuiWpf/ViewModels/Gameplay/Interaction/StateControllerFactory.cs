@@ -1,4 +1,4 @@
-﻿using RISK.Application.Play;
+﻿using RISK.GameEngine.Play;
 
 namespace GuiWpf.ViewModels.Gameplay.Interaction
 {

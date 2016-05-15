@@ -1,4 +1,4 @@
-﻿namespace RISK.Application
+﻿namespace RISK.GameEngine
 {
     public interface IPlayerType {}
 
