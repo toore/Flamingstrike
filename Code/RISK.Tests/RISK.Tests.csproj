@@ -197,13 +197,13 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\RISK.Application\RISK.GameEngine.csproj">
-      <Project>{6de17fca-3f04-4923-8ab8-e3fa376a54ff}</Project>
-      <Name>RISK.GameEngine</Name>
-    </ProjectReference>
     <ProjectReference Include="..\RISK.Core\RISK.Core.csproj">
       <Project>{8F24E4E6-125C-4ED4-A6C0-767B0675A8CD}</Project>
       <Name>RISK.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\RISK.GameEngine\RISK.GameEngine.csproj">
+      <Project>{eab6640b-f975-48b2-886b-83380fa7cace}</Project>
+      <Name>RISK.GameEngine</Name>
     </ProjectReference>
     <ProjectReference Include="..\RISK.GuiWpf\RISK.GuiWpf.csproj">
       <Project>{3b937f0e-e727-442d-b1da-e5ed6ef939d5}</Project>

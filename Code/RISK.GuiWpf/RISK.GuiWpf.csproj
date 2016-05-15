@@ -308,13 +308,13 @@
     <None Include="Views\App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\RISK.Application\RISK.GameEngine.csproj">
-      <Project>{6DE17FCA-3F04-4923-8AB8-E3FA376A54FF}</Project>
-      <Name>RISK.GameEngine</Name>
-    </ProjectReference>
     <ProjectReference Include="..\RISK.Core\RISK.Core.csproj">
       <Project>{8F24E4E6-125C-4ED4-A6C0-767B0675A8CD}</Project>
       <Name>RISK.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\RISK.GameEngine\RISK.GameEngine.csproj">
+      <Project>{EAB6640B-F975-48B2-886B-83380FA7CACE}</Project>
+      <Name>RISK.GameEngine</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

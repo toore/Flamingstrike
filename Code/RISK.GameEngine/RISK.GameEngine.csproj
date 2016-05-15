@@ -1,17 +1,20 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
+    <MinimumVisualStudioVersion>11.0</MinimumVisualStudioVersion>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{6DE17FCA-3F04-4923-8AB8-E3FA376A54FF}</ProjectGuid>
+    <ProjectGuid>{EAB6640B-F975-48B2-886B-83380FA7CACE}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>RISK.GameEngine</RootNamespace>
     <AssemblyName>RISK.GameEngine</AssemblyName>
-    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <DefaultLanguage>en-US</DefaultLanguage>
     <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
+    <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <TargetFrameworkProfile>Profile111</TargetFrameworkProfile>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -30,68 +33,44 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-  <PropertyGroup>
-    <StartupObject />
-  </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="Caliburn.Micro, Version=2.0.2.0, Culture=neutral, PublicKeyToken=8e5891231f2ed21f, processorArchitecture=MSIL">
-      <HintPath>..\packages\Caliburn.Micro.Core.2.0.2\lib\net45\Caliburn.Micro.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Caliburn.Micro.Platform, Version=2.0.2.0, Culture=neutral, PublicKeyToken=8e5891231f2ed21f, processorArchitecture=MSIL">
-      <HintPath>..\packages\Caliburn.Micro.2.0.2\lib\net45\Caliburn.Micro.Platform.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
-  </ItemGroup>
   <ItemGroup>
     <Compile Include="Extensions\EnumerableExtensions.cs" />
+    <Compile Include="PlayerType.cs" />
+    <Compile Include="Play\ArmyModifier.cs" />
+    <Compile Include="Play\Deck.cs" />
     <Compile Include="Play\DeckFactory.cs" />
+    <Compile Include="Play\Game.cs" />
     <Compile Include="Play\GameData.cs" />
+    <Compile Include="Play\GameDataFactory.cs" />
+    <Compile Include="Play\GameFactory.cs" />
     <Compile Include="Play\GamePhases\AttackGameState.cs" />
     <Compile Include="Play\GamePhases\ConqueringAchievement.cs" />
-    <Compile Include="Play\GameDataFactory.cs" />
-    <Compile Include="Play\GamePhases\GameStateConductor.cs" />
-    <Compile Include="Play\GamePhases\GameStateFsm.cs" />
     <Compile Include="Play\GamePhases\DraftArmiesGameState.cs" />
     <Compile Include="Play\GamePhases\FortifyGameState.cs" />
     <Compile Include="Play\GamePhases\GameOverGameState.cs" />
-    <Compile Include="Play\GamePhases\IGameState.cs" />
+    <Compile Include="Play\GamePhases\GameStateConductor.cs" />
     <Compile Include="Play\GamePhases\GameStateFactory.cs" />
+    <Compile Include="Play\GamePhases\GameStateFsm.cs" />
+    <Compile Include="Play\GamePhases\IGameState.cs" />
     <Compile Include="Play\GamePhases\SendArmiesToOccupyGameState.cs" />
-    <Compile Include="Play\ArmyModifier.cs" />
+    <Compile Include="Play\TerritoryExtensions.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Sequence.cs" />
-    <Compile Include="Setup\AlternateGameSetupFactory.cs" />
-    <Compile Include="Play\GameFactory.cs" />
-    <Compile Include="Setup\GamePlaySetup.cs" />
-    <Compile Include="PlayerType.cs" />
-    <Compile Include="Play\Game.cs" />
     <Compile Include="Setup\AlternateGameSetup.cs" />
-    <Compile Include="Play\Deck.cs" />
+    <Compile Include="Setup\AlternateGameSetupFactory.cs" />
+    <Compile Include="Setup\GamePlaySetup.cs" />
+    <Compile Include="Setup\InSetupPlayer.cs" />
     <Compile Include="Setup\ITerritoryResponder.cs" />
     <Compile Include="Setup\StartingInfantryCalculator.cs" />
-    <Compile Include="Setup\InSetupPlayer.cs" />
     <Compile Include="Setup\TerritoryRequestParameter.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Play\TerritoryExtensions.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\RISK.Core\RISK.Core.csproj">
-      <Project>{8f24e4e6-125c-4ed4-a6c0-767b0675a8cd}</Project>
+      <Project>{8F24E4E6-125C-4ED4-A6C0-767B0675A8CD}</Project>
       <Name>RISK.Core</Name>
     </ProjectReference>
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
