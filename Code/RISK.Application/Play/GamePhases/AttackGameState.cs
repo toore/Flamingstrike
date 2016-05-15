@@ -30,8 +30,8 @@ namespace RISK.Application.Play.GamePhases
 
         public bool CanAttack(IRegion attackingRegion, IRegion defendingRegion)
         {
-            var attackingTerritory = Territories.Single(x => x.Region == attackingRegion);
-            var defendingTerritory = Territories.Single(x => x.Region == defendingRegion);
+            var attackingTerritory = _gameData.Territories.Single(x => x.Region == attackingRegion);
+            var defendingTerritory = _gameData.Territories.Single(x => x.Region == defendingRegion);
 
             if (!IsCurrentPlayerAttacking(attackingTerritory))
             {
@@ -75,12 +75,12 @@ namespace RISK.Application.Play.GamePhases
                 throw new InvalidOperationException();
             }
 
-            var attackingTerritory = Territories.GetTerritory(attackingRegion);
-            var defendingTerritory = Territories.GetTerritory(defendingRegion);
+            var attackingTerritory = _gameData.Territories.GetTerritory(attackingRegion);
+            var defendingTerritory = _gameData.Territories.GetTerritory(defendingRegion);
             var defendingPlayer = defendingTerritory.Player;
             var battleResult = _battle.Attack(attackingTerritory, defendingTerritory);
 
-            var updatedTerritories = Territories
+            var updatedTerritories = _gameData.Territories
                 .Replace(attackingTerritory, battleResult.AttackingTerritory)
                 .Replace(defendingTerritory, battleResult.DefendingTerritory)
                 .ToList();
@@ -164,8 +164,8 @@ namespace RISK.Application.Play.GamePhases
 
         public bool CanFortify(IRegion sourceRegion, IRegion destinationRegion)
         {
-            var sourceTerritory = Territories.GetTerritory(sourceRegion);
-            var destinationTerritory = Territories.GetTerritory(destinationRegion);
+            var sourceTerritory = _gameData.Territories.GetTerritory(sourceRegion);
+            var destinationTerritory = _gameData.Territories.GetTerritory(destinationRegion);
             var playerOccupiesBothTerritories =
                 sourceTerritory.Player == CurrentPlayer
                 &&
@@ -187,9 +187,14 @@ namespace RISK.Application.Play.GamePhases
                 throw new InvalidOperationException();
             }
 
-            var gameData = _gameDataFactory.Create(CurrentPlayer, Players, Territories, Deck);
+            var gameData = _gameDataFactory.Create(CurrentPlayer, Players, _gameData.Territories, Deck);
 
             _gameStateConductor.Fortify(gameData, sourceRegion, destinationRegion, armies);
+        }
+
+        public bool CanEndTurn()
+        {
+            return true;
         }
 
         public void EndTurn()

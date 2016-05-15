@@ -19,6 +19,7 @@ namespace RISK.Application.Play.GamePhases
         void SendAdditionalArmiesToOccupy(int numberOfArmies);
         bool CanFortify(IRegion sourceRegion, IRegion destinationRegion);
         void Fortify(IRegion sourceRegion, IRegion destinationRegion, int armies);
+        bool CanEndTurn();
         void EndTurn();
     }
 }

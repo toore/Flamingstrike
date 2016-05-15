@@ -111,6 +111,10 @@
     <Compile Include="Application\DicesRollerTests.cs" />
     <Compile Include="Application\BattleOutcomeCalculatorTests.cs" />
     <Compile Include="Application\GameStateFsmTests.cs" />
+    <Compile Include="Application\GameStates\AttackGameStateTests.cs" />
+    <Compile Include="Application\GameStates\DraftArmiesGameStateTests.cs" />
+    <Compile Include="Application\GameStates\GameOverGameStateTests.cs" />
+    <Compile Include="Application\GameStates\SendArmiesToOccupyGameStateTests.cs" />
     <Compile Include="Application\GameTests.cs" />
     <Compile Include="Builders\BattleOutcomeBuilder.cs" />
     <Compile Include="Builders\ContinentBuilder.cs" />

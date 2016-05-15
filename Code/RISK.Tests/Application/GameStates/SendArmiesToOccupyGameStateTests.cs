@@ -122,17 +122,14 @@ namespace RISK.Tests.Application.GameStates
         [Fact]
         public void Sending_armies_to_occupy_continues_with_attack_state()
         {
-            var attackGameState = Substitute.For<IGameState>();
             var updatedTerritoriesAfterAdditionalArmiesHaveBeenSentToOccupy = new ITerritory[] { Make.Territory.Build(), Make.Territory.Build() };
             var newGameData = Make.GameData.Build();
-
             _armyModifier.SendInAdditionalArmiesToOccupy(
                 Argx.IsEquivalentReadOnly(_attackingTerritory, _occupiedTerritory),
                 _attackingRegion,
                 _occupiedRegion,
                 1)
                 .Returns(updatedTerritoriesAfterAdditionalArmiesHaveBeenSentToOccupy);
-
             _gameDataFactory.Create(
                 _currentPlayer,
                 Argx.IsEquivalentReadOnly(_currentPlayer, _anotherPlayer),
@@ -140,15 +137,12 @@ namespace RISK.Tests.Application.GameStates
                 _deck)
                 .Returns(newGameData);
 
-            _gameStateConductor.ContinueWithAttackPhase(
-                newGameData,
-                ConqueringAchievement.AwardCardAtEndOfTurn)
-                .Returns(attackGameState);
-
             var sut = Create(_gameData);
-            var gameState = sut.SendAdditionalArmiesToOccupy(1);
+            sut.SendAdditionalArmiesToOccupy(1);
 
-            gameState.Should().Be(attackGameState);
+            _gameStateConductor.Received().ContinueWithAttackPhase(
+                newGameData,
+                ConqueringAchievement.AwardCardAtEndOfTurn);
         }
 
         [Fact]

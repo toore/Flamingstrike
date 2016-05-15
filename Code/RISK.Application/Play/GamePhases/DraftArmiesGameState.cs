@@ -34,7 +34,7 @@ namespace RISK.Application.Play.GamePhases
 
         public bool CanPlaceDraftArmies(IRegion region)
         {
-            return Territories.GetTerritory(region).Player == CurrentPlayer;
+            return _gameData.Territories.GetTerritory(region).Player == CurrentPlayer;
         }
 
         public int GetNumberOfArmiesToDraft()
@@ -49,9 +49,9 @@ namespace RISK.Application.Play.GamePhases
                 throw new ArgumentOutOfRangeException(nameof(numberOfArmiesToPlace));
             }
 
-            var updatedTerritories = _armyModifier.PlaceDraftArmies(Territories, region, numberOfArmiesToPlace);
+            var updatedTerritories = _armyModifier.PlaceDraftArmies(_gameData.Territories, region, numberOfArmiesToPlace);
 
-            var gameData = _gameDataFactory.Create(CurrentPlayer, Players, updatedTerritories, Deck);
+            var gameData = _gameDataFactory.Create(CurrentPlayer, _gameData.Players, updatedTerritories, Deck);
             var numberOfArmiesLeftToPlace = _numberOfArmiesToDraft - numberOfArmiesToPlace;
 
             if (numberOfArmiesLeftToPlace > 0)

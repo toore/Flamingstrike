@@ -21,11 +21,6 @@ namespace RISK.Application.Play.GamePhases
         public IReadOnlyList<ITerritory> Territories => _gameData.Territories;
         public IDeck Deck => _gameData.Deck;
 
-        public ITerritory GetTerritory(IRegion region)
-        {
-            return Territories.GetTerritory(region);
-        }
-
         public bool CanPlaceDraftArmies(IRegion region)
         {
             return false;

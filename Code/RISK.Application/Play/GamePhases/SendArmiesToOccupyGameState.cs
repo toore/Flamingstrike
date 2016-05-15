@@ -42,12 +42,12 @@ namespace RISK.Application.Play.GamePhases
 
         public int GetNumberOfAdditionalArmiesThatCanBeSentToOccupy()
         {
-            return Territories.GetTerritory(_attackingRegion).GetNumberOfArmiesThatCanBeSentToOccupy();
+            return _gameData.Territories.GetTerritory(_attackingRegion).GetNumberOfArmiesThatCanBeSentToOccupy();
         }
 
         public void SendAdditionalArmiesToOccupy(int numberOfArmies)
         {
-            var updatedTerritories = _armyModifier.SendInAdditionalArmiesToOccupy(Territories, _attackingRegion, _occupiedRegion, numberOfArmies);
+            var updatedTerritories = _armyModifier.SendInAdditionalArmiesToOccupy(_gameData.Territories, _attackingRegion, _occupiedRegion, numberOfArmies);
             var gameData = _gameDataFactory.Create(CurrentPlayer, Players, updatedTerritories, Deck);
 
             _gameStateConductor.ContinueWithAttackPhase(gameData, ConqueringAchievement.AwardCardAtEndOfTurn);
@@ -86,6 +86,11 @@ namespace RISK.Application.Play.GamePhases
         public void Fortify(IRegion sourceRegion, IRegion destinationRegion, int armies)
         {
             throw new InvalidOperationException();
+        }
+
+        public bool CanEndTurn()
+        {
+            return false;
         }
 
         public void EndTurn()

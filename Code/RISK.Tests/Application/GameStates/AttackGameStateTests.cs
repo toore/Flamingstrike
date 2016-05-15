@@ -149,7 +149,6 @@ namespace RISK.Tests.Application.GameStates
             var updatedDefendingTerritory = Substitute.For<ITerritory>();
             var battleResult = Substitute.For<IBattleResult>();
             var newGameData = Make.GameData.Build();
-            var attackGameState = Substitute.For<IGameState>();
             battleResult.AttackingTerritory.Returns(updatedAttackingTerritory);
             battleResult.DefendingTerritory.Returns(updatedDefendingTerritory);
             _battle.Attack(_territory, _anotherTerritory).Returns(battleResult);
@@ -159,15 +158,13 @@ namespace RISK.Tests.Application.GameStates
                 Argx.IsEquivalentReadOnly(updatedAttackingTerritory, updatedDefendingTerritory),
                 _deck)
                 .Returns(newGameData);
-            _gameStateConductor.ContinueWithAttackPhase(
-                newGameData,
-                ConqueringAchievement.DoNotAwardCardAtEndOfTurn)
-                .Returns(attackGameState);
 
             var sut = Create(_gameData);
-            var result = sut.Attack(_region, _anotherRegion);
+            sut.Attack(_region, _anotherRegion);
 
-            result.Should().Be(attackGameState);
+            _gameStateConductor.Received().ContinueWithAttackPhase(
+                newGameData,
+                ConqueringAchievement.DoNotAwardCardAtEndOfTurn);
         }
 
         [Fact]
@@ -177,7 +174,6 @@ namespace RISK.Tests.Application.GameStates
             var defeatedTerritory = Substitute.For<ITerritory>();
             var battleResult = Substitute.For<IBattleResult>();
             var newGameData = Make.GameData.Build();
-            var sendInArmiesToOccupyGameState = Substitute.For<IGameState>();
             battleResult.AttackingTerritory.Returns(updatedAttackingTerritory);
             battleResult.DefendingTerritory.Returns(defeatedTerritory);
             battleResult.IsDefenderDefeated().Returns(true);
@@ -188,16 +184,14 @@ namespace RISK.Tests.Application.GameStates
                 Argx.IsEquivalentReadOnly(updatedAttackingTerritory, defeatedTerritory),
                 _deck)
                 .Returns(newGameData);
-            _gameStateConductor.SendArmiesToOccupy(
-                newGameData,
-                _region,
-                _anotherRegion)
-                .Returns(sendInArmiesToOccupyGameState);
 
             var sut = Create(_gameData);
-            var result = sut.Attack(_region, _anotherRegion);
+            sut.Attack(_region, _anotherRegion);
 
-            result.Should().Be(sendInArmiesToOccupyGameState);
+            _gameStateConductor.Received().SendArmiesToOccupy(
+                newGameData,
+                _region,
+                _anotherRegion);
         }
 
         [Fact]
@@ -242,7 +236,6 @@ namespace RISK.Tests.Application.GameStates
         public void Fortifies()
         {
             var newGameData = Make.GameData.Build();
-            var fortifyGameState = Substitute.For<IGameState>();
             _anotherTerritory.Player.Returns(_currentPlayer);
             _gameDataFactory.Create(
                 _currentPlayer,
@@ -250,12 +243,11 @@ namespace RISK.Tests.Application.GameStates
                 Argx.IsEquivalentReadOnly(_territory, _anotherTerritory),
                 _deck)
                 .Returns(newGameData);
-            _gameStateConductor.Fortify(newGameData, _region, _anotherRegion, 1).Returns(fortifyGameState);
 
             var sut = Create(_gameData);
-            var actual = sut.Fortify(_region, _anotherRegion, 1);
+            sut.Fortify(_region, _anotherRegion, 1);
 
-            actual.Should().Be(fortifyGameState);
+            _gameStateConductor.Received().Fortify(newGameData, _region, _anotherRegion, 1);
         }
 
         [Fact]
@@ -309,13 +301,10 @@ namespace RISK.Tests.Application.GameStates
         [Fact]
         public void End_turn_passes_turn_to_next_player()
         {
-            var nextGameState = Substitute.For<IGameState>();
             var sut = Create(_gameData);
-            _gameStateConductor.PassTurnToNextPlayer(sut).Returns(nextGameState);
+            sut.EndTurn();
 
-            var actualGameState = sut.EndTurn();
-
-            actualGameState.Should().Be(nextGameState);
+            _gameStateConductor.Received().PassTurnToNextPlayer(sut);
         }
 
         [Fact]
@@ -390,7 +379,6 @@ namespace RISK.Tests.Application.GameStates
             var updatedTerritory = Substitute.For<ITerritory>();
             var anotherUpdatedTerritory = Substitute.For<ITerritory>();
             var newGameData = Make.GameData.Build();
-            var gameOverGameState = Substitute.For<IGameState>();
             battleResult.IsDefenderDefeated().Returns(true);
             updatedTerritory.Player.Returns(_currentPlayer);
             anotherUpdatedTerritory.Player.Returns(_currentPlayer);
@@ -403,12 +391,11 @@ namespace RISK.Tests.Application.GameStates
                 Argx.IsEquivalentReadOnly(updatedTerritory, anotherUpdatedTerritory),
                 _deck)
                 .Returns(newGameData);
-            _gameStateConductor.GameIsOver(newGameData).Returns(gameOverGameState);
 
             var sut = Create(_gameData);
-            var actualGameState = sut.Attack(_region, _anotherRegion);
+            sut.Attack(_region, _anotherRegion);
 
-            actualGameState.Should().Be(gameOverGameState);
+            _gameStateConductor.Received().GameIsOver(newGameData);
         }
 
         private IGameState Create(GameData gameData)

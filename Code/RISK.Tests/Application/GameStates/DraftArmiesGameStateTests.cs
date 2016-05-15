@@ -81,11 +81,10 @@ namespace RISK.Tests.Application.GameStates
         }
 
         [Fact]
-        public void Placing_draft_armies_returns_draft_armies_game_state()
+        public void After_placing_draft_armies_continues_to_draft_armies()
         {
             var updatedTerritories = new ITerritory[] { Make.Territory.Build() };
             var newGameData = Make.GameData.Build();
-            var draftArmiesGameState = Substitute.For<IGameState>();
             _armyModifier
                 .PlaceDraftArmies(Argx.IsEquivalentReadOnly(_territory, _anotherTerritory), _region, 2)
                 .Returns(updatedTerritories);
@@ -95,21 +94,18 @@ namespace RISK.Tests.Application.GameStates
                 Argx.IsEquivalentReadOnly(updatedTerritories),
                 _deck)
                 .Returns(newGameData);
-            _gameStateConductor.ContinueToDraftArmies(newGameData, 1)
-                .Returns(draftArmiesGameState);
 
             var sut = Create(_gameData, 3);
-            var result = sut.PlaceDraftArmies(_region, 2);
+            sut.PlaceDraftArmies(_region, 2);
 
-            result.Should().Be(draftArmiesGameState);
+            _gameStateConductor.Received().ContinueToDraftArmies(newGameData, 1);
         }
 
         [Fact]
-        public void Placing_all_draft_armies_returns_attack_game_state()
+        public void After_placing_all_draft_armies_continues_with_attack_phase()
         {
             var updatedTerritories = new ITerritory[] { Make.Territory.Build() };
             var newGameData = Make.GameData.Build();
-            var attackGameState = Substitute.For<IGameState>();
             _armyModifier
                 .PlaceDraftArmies(Argx.IsEquivalentReadOnly(_territory, _anotherTerritory), _region, 2)
                 .Returns(updatedTerritories);
@@ -119,13 +115,11 @@ namespace RISK.Tests.Application.GameStates
                 Argx.IsEquivalentReadOnly(updatedTerritories),
                 _deck)
                 .Returns(newGameData);
-            _gameStateConductor.ContinueWithAttackPhase(newGameData, ConqueringAchievement.DoNotAwardCardAtEndOfTurn)
-                .Returns(attackGameState);
 
             var sut = Create(_gameData, 2);
-            var result = sut.PlaceDraftArmies(_region, 2);
+            sut.PlaceDraftArmies(_region, 2);
 
-            result.Should().Be(attackGameState);
+            _gameStateConductor.Received().ContinueWithAttackPhase(newGameData, ConqueringAchievement.DoNotAwardCardAtEndOfTurn);
         }
 
         [Fact]
