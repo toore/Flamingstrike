@@ -68,15 +68,15 @@ namespace RISK.Application.Play.GamePhases
             return attackingTerritory.GetNumberOfArmiesAvailableForAttack() > 0;
         }
 
-        public IGameState Attack(IRegion attackingRegion, IRegion defendingRegion)
+        public void Attack(IRegion attackingRegion, IRegion defendingRegion)
         {
             if (!CanAttack(attackingRegion, defendingRegion))
             {
                 throw new InvalidOperationException();
             }
 
-            var attackingTerritory = GetTerritory(attackingRegion);
-            var defendingTerritory = GetTerritory(defendingRegion);
+            var attackingTerritory = Territories.GetTerritory(attackingRegion);
+            var defendingTerritory = Territories.GetTerritory(defendingRegion);
             var defendingPlayer = defendingTerritory.Player;
             var battleResult = _battle.Attack(attackingTerritory, defendingTerritory);
 
@@ -87,28 +87,32 @@ namespace RISK.Application.Play.GamePhases
 
             if (battleResult.IsDefenderDefeated())
             {
-                return DefenderIsDefeated(defendingPlayer, attackingRegion, defendingRegion, updatedTerritories);
+                DefenderIsDefeated(defendingPlayer, attackingRegion, defendingRegion, updatedTerritories);
             }
-
-            return MoveOnToAttackPhase(updatedTerritories);
+            else
+            {
+                MoveOnToAttackPhase(updatedTerritories);
+            }
         }
 
-        private IGameState DefenderIsDefeated(IPlayer defeatedPlayer, IRegion attackingRegion, IRegion defeatedRegion, IReadOnlyList<ITerritory> updatedTerritories)
+        private void DefenderIsDefeated(IPlayer defeatedPlayer, IRegion attackingRegion, IRegion defeatedRegion, IReadOnlyList<ITerritory> updatedTerritories)
         {
             _conqueringAchievement = ConqueringAchievement.AwardCardAtEndOfTurn;
 
             if (IsGameOver(updatedTerritories))
             {
-                return GameIsOver(updatedTerritories);
+                GameIsOver(updatedTerritories);
             }
-
-            var isPlayerEliminated = IsPlayerEliminated(defeatedPlayer, updatedTerritories);
-            if (isPlayerEliminated)
+            else
             {
-                AquireAllCardsFromEliminatedPlayer(defeatedPlayer);
-            }
+                var isPlayerEliminated = IsPlayerEliminated(defeatedPlayer, updatedTerritories);
+                if (isPlayerEliminated)
+                {
+                    AquireAllCardsFromEliminatedPlayer(defeatedPlayer);
+                }
 
-            return SendArmiesToOccupy(updatedTerritories, attackingRegion, defeatedRegion);
+                SendArmiesToOccupy(updatedTerritories, attackingRegion, defeatedRegion);
+            }
         }
 
         private static bool IsPlayerEliminated(IPlayer player, IEnumerable<ITerritory> territories)
@@ -128,11 +132,11 @@ namespace RISK.Application.Play.GamePhases
             return allTerritoriesAreOccupiedBySamePlayer;
         }
 
-        private IGameState GameIsOver(IReadOnlyList<ITerritory> territories)
+        private void GameIsOver(IReadOnlyList<ITerritory> territories)
         {
             var gameData = _gameDataFactory.Create(CurrentPlayer, Players, territories, Deck);
 
-            return _gameStateConductor.GameIsOver(gameData);
+            _gameStateConductor.GameIsOver(gameData);
         }
 
         private void AquireAllCardsFromEliminatedPlayer(IPlayer eliminatedPlayer)
@@ -144,24 +148,24 @@ namespace RISK.Application.Play.GamePhases
             }
         }
 
-        private IGameState SendArmiesToOccupy(IReadOnlyList<ITerritory> territories, IRegion sourceRegion, IRegion destinationRegion)
+        private void SendArmiesToOccupy(IReadOnlyList<ITerritory> territories, IRegion sourceRegion, IRegion destinationRegion)
         {
             var gameData = _gameDataFactory.Create(CurrentPlayer, Players, territories, Deck);
 
-            return _gameStateConductor.SendArmiesToOccupy(gameData, sourceRegion, destinationRegion);
+            _gameStateConductor.SendArmiesToOccupy(gameData, sourceRegion, destinationRegion);
         }
 
-        private IGameState MoveOnToAttackPhase(IReadOnlyList<ITerritory> updatedTerritories)
+        private void MoveOnToAttackPhase(IReadOnlyList<ITerritory> updatedTerritories)
         {
             var gameData = _gameDataFactory.Create(CurrentPlayer, Players, updatedTerritories, Deck);
 
-            return _gameStateConductor.ContinueWithAttackPhase(gameData, _conqueringAchievement);
+            _gameStateConductor.ContinueWithAttackPhase(gameData, _conqueringAchievement);
         }
 
         public bool CanFortify(IRegion sourceRegion, IRegion destinationRegion)
         {
-            var sourceTerritory = GetTerritory(sourceRegion);
-            var destinationTerritory = GetTerritory(destinationRegion);
+            var sourceTerritory = Territories.GetTerritory(sourceRegion);
+            var destinationTerritory = Territories.GetTerritory(destinationRegion);
             var playerOccupiesBothTerritories =
                 sourceTerritory.Player == CurrentPlayer
                 &&
@@ -176,7 +180,7 @@ namespace RISK.Application.Play.GamePhases
             return canFortify;
         }
 
-        public IGameState Fortify(IRegion sourceRegion, IRegion destinationRegion, int armies)
+        public void Fortify(IRegion sourceRegion, IRegion destinationRegion, int armies)
         {
             if (!CanFortify(sourceRegion, destinationRegion))
             {
@@ -185,15 +189,10 @@ namespace RISK.Application.Play.GamePhases
 
             var gameData = _gameDataFactory.Create(CurrentPlayer, Players, Territories, Deck);
 
-            return _gameStateConductor.Fortify(gameData, sourceRegion, destinationRegion, armies);
+            _gameStateConductor.Fortify(gameData, sourceRegion, destinationRegion, armies);
         }
 
-        public bool CanEndTurn()
-        {
-            return true;
-        }
-
-        public IGameState EndTurn()
+        public void EndTurn()
         {
             if (_conqueringAchievement == ConqueringAchievement.AwardCardAtEndOfTurn)
             {
@@ -201,12 +200,7 @@ namespace RISK.Application.Play.GamePhases
                 CurrentPlayer.AddCard(card);
             }
 
-            return _gameStateConductor.PassTurnToNextPlayer(this);
-        }
-
-        public ITerritory GetTerritory(IRegion region)
-        {
-            return Territories.GetTerritory(region);
+            _gameStateConductor.PassTurnToNextPlayer(this);
         }
 
         public bool CanPlaceDraftArmies(IRegion region)
@@ -219,7 +213,7 @@ namespace RISK.Application.Play.GamePhases
             throw new InvalidOperationException();
         }
 
-        public IGameState PlaceDraftArmies(IRegion region, int numberOfArmiesToPlace)
+        public void PlaceDraftArmies(IRegion region, int numberOfArmiesToPlace)
         {
             throw new InvalidOperationException();
         }
@@ -234,7 +228,7 @@ namespace RISK.Application.Play.GamePhases
             throw new InvalidOperationException();
         }
 
-        public IGameState SendAdditionalArmiesToOccupy(int numberOfArmies)
+        public void SendAdditionalArmiesToOccupy(int numberOfArmies)
         {
             throw new InvalidOperationException();
         }

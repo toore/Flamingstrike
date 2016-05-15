@@ -194,8 +194,9 @@ namespace RISK.Tests.GuiWpf.Specifications
             var battle = new Battle(dicesRoller, new BattleOutcomeCalculator());
             var gameDataFactory = new GameDataFactory();
             var gameStateFactory = new GameStateFactory(gameDataFactory, battle, armyDraftUpdater);
-            var gameStateConductor = new GameStateConductor(gameStateFactory, armyDraftCalculator, gameDataFactory);
-            _game = new Game(gameStateConductor, _players, _territories, null);
+            var gameStateFsm = new GameStateFsm();
+            var gameStateConductor = new GameStateConductor(gameStateFactory, armyDraftCalculator, gameDataFactory, gameStateFsm);
+            _game = new Game(gameDataFactory, gameStateConductor, _players, _territories, null, gameStateFsm);
             _stateControllerFactory = new StateControllerFactory();
             _interactionStateFactory = new InteractionStateFactory();
 

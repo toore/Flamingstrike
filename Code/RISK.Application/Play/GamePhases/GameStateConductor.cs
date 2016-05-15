@@ -8,13 +8,13 @@ namespace RISK.Application.Play.GamePhases
 {
     public interface IGameStateConductor
     {
-        IGameState InitializeFirstPlayerTurn(GameData gameData);
-        IGameState ContinueToDraftArmies(GameData gameData, int numberOfArmiesToDraft);
-        IGameState ContinueWithAttackPhase(GameData gameData, ConqueringAchievement conqueringAchievement);
-        IGameState SendArmiesToOccupy(GameData gameData, IRegion attackingRegion, IRegion occupiedRegion);
-        IGameState Fortify(GameData gameData, IRegion sourceRegion, IRegion destinationRegion, int numberOfArmiesToFortify);
-        IGameState PassTurnToNextPlayer(IGameState currentGameState);
-        IGameState GameIsOver(GameData gameData);
+        void InitializeFirstPlayerTurn(GameData gameData);
+        void ContinueToDraftArmies(GameData gameData, int numberOfArmiesToDraft);
+        void ContinueWithAttackPhase(GameData gameData, ConqueringAchievement conqueringAchievement);
+        void SendArmiesToOccupy(GameData gameData, IRegion attackingRegion, IRegion occupiedRegion);
+        void Fortify(GameData gameData, IRegion sourceRegion, IRegion destinationRegion, int numberOfArmiesToFortify);
+        void PassTurnToNextPlayer(IGameState currentGameState);
+        void GameIsOver(GameData gameData);
     }
 
     public class GameStateConductor : IGameStateConductor
@@ -22,42 +22,48 @@ namespace RISK.Application.Play.GamePhases
         private readonly IGameStateFactory _gameStateFactory;
         private readonly IArmyDraftCalculator _armyDraftCalculator;
         private readonly IGameDataFactory _gameDataFactory;
+        private readonly IGameStateFsm _gameStateFsm;
 
-        public GameStateConductor(IGameStateFactory gameStateFactory, IArmyDraftCalculator armyDraftCalculator, IGameDataFactory gameDataFactory)
+        public GameStateConductor(
+            IGameStateFactory gameStateFactory,
+            IArmyDraftCalculator armyDraftCalculator,
+            IGameDataFactory gameDataFactory,
+            IGameStateFsm gameStateFsm)
         {
             _gameStateFactory = gameStateFactory;
             _armyDraftCalculator = armyDraftCalculator;
             _gameDataFactory = gameDataFactory;
+            _gameStateFsm = gameStateFsm;
         }
 
-        public IGameState InitializeFirstPlayerTurn(GameData gameData)
+        public void InitializeFirstPlayerTurn(GameData gameData)
         {
             var numberOfArmiesToDraft = _armyDraftCalculator.Calculate(gameData.CurrentPlayer, gameData.Territories);
 
-            return ContinueToDraftArmies(gameData, numberOfArmiesToDraft);
+            ContinueToDraftArmies(gameData, numberOfArmiesToDraft);
         }
 
-        public IGameState ContinueToDraftArmies(GameData gameData, int numberOfArmiesToDraft)
+        public void ContinueToDraftArmies(GameData gameData, int numberOfArmiesToDraft)
         {
-            return _gameStateFactory.CreateDraftArmiesGameState(this, gameData, numberOfArmiesToDraft);
+            _gameStateFsm.Set(_gameStateFactory.CreateDraftArmiesGameState(this, gameData, numberOfArmiesToDraft));
         }
 
-        public IGameState ContinueWithAttackPhase(GameData gameData, ConqueringAchievement conqueringAchievement)
+        public void ContinueWithAttackPhase(GameData gameData, ConqueringAchievement conqueringAchievement)
         {
             throw new NotImplementedException();
         }
 
-        public IGameState SendArmiesToOccupy(GameData gameData, IRegion attackingRegion, IRegion occupiedRegion)
+        public void SendArmiesToOccupy(GameData gameData, IRegion attackingRegion, IRegion occupiedRegion)
         {
-            return _gameStateFactory.CreateSendArmiesToOccupyGameState(this, gameData, attackingRegion, occupiedRegion);
+            _gameStateFsm.Set(_gameStateFactory.CreateSendArmiesToOccupyGameState(this, gameData, attackingRegion, occupiedRegion));
         }
 
-        public IGameState Fortify(GameData gameData, IRegion sourceRegion, IRegion destinationRegion, int numberOfArmiesToFortify)
+        public void Fortify(GameData gameData, IRegion sourceRegion, IRegion destinationRegion, int numberOfArmiesToFortify)
         {
-            return _gameStateFactory.CreateFortifyState(this, gameData, sourceRegion, destinationRegion, numberOfArmiesToFortify);
+            _gameStateFsm.Set(_gameStateFactory.CreateFortifyState(this, gameData, sourceRegion, destinationRegion, numberOfArmiesToFortify));
         }
 
-        public IGameState PassTurnToNextPlayer(IGameState currentGameState)
+        public void PassTurnToNextPlayer(IGameState currentGameState)
         {
             var players = currentGameState.Players;
             var nextPlayer = NextPlayer(players, currentGameState.CurrentPlayer);
@@ -66,7 +72,7 @@ namespace RISK.Application.Play.GamePhases
 
             var gameData = _gameDataFactory.Create(nextPlayer, players, territories, currentGameState.Deck);
 
-            return _gameStateFactory.CreateDraftArmiesGameState(this, gameData, numberOfArmiesToDraft);
+            _gameStateFsm.Set(_gameStateFactory.CreateDraftArmiesGameState(this, gameData, numberOfArmiesToDraft));
         }
 
         private static IPlayer NextPlayer(IEnumerable<IPlayer> players, IPlayer currentPlayer)
@@ -77,9 +83,9 @@ namespace RISK.Application.Play.GamePhases
             return sequence.Next();
         }
 
-        public IGameState GameIsOver(GameData gameData)
+        public void GameIsOver(GameData gameData)
         {
-            return _gameStateFactory.CreateGameOverGameState(gameData);
+            _gameStateFsm.Set(_gameStateFactory.CreateGameOverGameState(gameData));
         }
     }
 }

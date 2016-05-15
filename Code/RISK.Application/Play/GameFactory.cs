@@ -10,22 +10,34 @@ namespace RISK.Application.Play
 
     public class GameFactory : IGameFactory
     {
+        private readonly IGameDataFactory _gameDataFactory;
         private readonly IGameStateConductor _gameStateConductor;
         private readonly IDeckFactory _deckFactory;
+        private readonly IGameStateFsm _gameStateFsm;
 
-        public GameFactory(IGameStateConductor gameStateConductor, IDeckFactory deckFactory)
+        public GameFactory(
+            IGameDataFactory gameDataFactory,
+            IGameStateConductor gameStateConductor,
+            IDeckFactory deckFactory,
+            IGameStateFsm gameStateFsm)
         {
+            _gameDataFactory = gameDataFactory;
             _gameStateConductor = gameStateConductor;
             _deckFactory = deckFactory;
+            _gameStateFsm = gameStateFsm;
         }
 
         public IGame Create(IGamePlaySetup gamePlaySetup)
         {
             var game = new Game(
+                _gameDataFactory,
                 _gameStateConductor,
                 gamePlaySetup.Players,
                 gamePlaySetup.Territories,
-                _deckFactory.Create());
+                _deckFactory.Create(),
+                _gameStateFsm);
+
+            game.Initialize();
 
             return game;
         }

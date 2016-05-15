@@ -11,7 +11,7 @@ using Xunit;
 
 namespace RISK.Tests.Application.GameStates
 {
-    public class AttackGameStateTests : GameStateTestsBase
+    public class AttackGameStateTests
     {
         private readonly IGameStateConductor _gameStateConductor;
         private readonly IGameDataFactory _gameDataFactory;
@@ -411,9 +411,22 @@ namespace RISK.Tests.Application.GameStates
             actualGameState.Should().Be(gameOverGameState);
         }
 
-        protected override IGameState Create(GameData gameData)
+        private IGameState Create(GameData gameData)
         {
             return new AttackGameState(_gameStateConductor, _gameDataFactory, _battle, gameData);
+        }
+
+        [Fact]
+        public void Gets_current_player()
+        {
+            var currentPlayer = Substitute.For<IPlayer>();
+            var gameData = Make.GameData
+                .CurrentPlayer(currentPlayer)
+                .Build();
+
+            var sut = Create(gameData);
+
+            sut.CurrentPlayer.Should().Be(currentPlayer);
         }
     }
 }

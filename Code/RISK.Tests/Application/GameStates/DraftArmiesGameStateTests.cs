@@ -12,7 +12,7 @@ using Xunit;
 
 namespace RISK.Tests.Application.GameStates
 {
-    public class DraftArmiesGameStateTests : GameStateTestsBase
+    public class DraftArmiesGameStateTests
     {
         private readonly IGameStateConductor _gameStateConductor;
         private readonly IGameDataFactory _gameDataFactory;
@@ -210,14 +210,22 @@ namespace RISK.Tests.Application.GameStates
             act.ShouldThrow<InvalidOperationException>();
         }
 
-        protected override IGameState Create(GameData gameData)
-        {
-            return Create(gameData, 1);
-        }
-
-        private IGameState Create(GameData gameData, int numberOfArmiesToDraft)
+        private IGameState Create(GameData gameData, int numberOfArmiesToDraft = 1)
         {
             return new DraftArmiesGameState(_gameStateConductor, _gameDataFactory, _armyModifier, gameData, numberOfArmiesToDraft);
+        }
+
+        [Fact]
+        public void Gets_current_player()
+        {
+            var currentPlayer = Substitute.For<IPlayer>();
+            var gameData = Make.GameData
+                .CurrentPlayer(currentPlayer)
+                .Build();
+
+            var sut = Create(gameData);
+
+            sut.CurrentPlayer.Should().Be(currentPlayer);
         }
     }
 }

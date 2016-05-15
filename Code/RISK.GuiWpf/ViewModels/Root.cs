@@ -80,8 +80,9 @@ namespace GuiWpf.ViewModels
             var gameDataFactory = new GameDataFactory();
             var gameStateFactory = new GameStateFactory(gameDataFactory, battle, armyDraftUpdater);
             var armyDraftCalculator = new ArmyDraftCalculator(continents);
-            var gameStateConductor = new GameStateConductor(gameStateFactory, armyDraftCalculator, gameDataFactory);
-            var gameFactory = new GameFactory(gameStateConductor, deckFactory);
+            var gameStateFsm = new GameStateFsm();
+            var gameStateConductor = new GameStateConductor(gameStateFactory, armyDraftCalculator, gameDataFactory, gameStateFsm);
+            var gameFactory = new GameFactory(gameDataFactory, gameStateConductor, deckFactory, gameStateFsm);
 
             GameSetupViewModelFactory = new GameSetupViewModelFactory(
                 gameFactory,

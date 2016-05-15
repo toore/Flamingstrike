@@ -33,7 +33,7 @@ namespace RISK.Application.Play.GamePhases
             throw new InvalidOperationException();
         }
 
-        public IGameState PlaceDraftArmies(IRegion region, int numberOfArmiesToPlace)
+        public void PlaceDraftArmies(IRegion region, int numberOfArmiesToPlace)
         {
             throw new InvalidOperationException();
         }
@@ -43,7 +43,7 @@ namespace RISK.Application.Play.GamePhases
             return false;
         }
 
-        public IGameState Attack(IRegion attackingRegion, IRegion defendingRegion)
+        public void Attack(IRegion attackingRegion, IRegion defendingRegion)
         {
             throw new InvalidOperationException();
         }
@@ -58,7 +58,7 @@ namespace RISK.Application.Play.GamePhases
             throw new InvalidOperationException();
         }
 
-        public IGameState SendAdditionalArmiesToOccupy(int numberOfArmies)
+        public void SendAdditionalArmiesToOccupy(int numberOfArmies)
         {
             throw new InvalidOperationException();
         }
@@ -68,7 +68,7 @@ namespace RISK.Application.Play.GamePhases
             return false;
         }
 
-        public IGameState Fortify(IRegion sourceRegion, IRegion destinationRegion, int armies)
+        public void Fortify(IRegion sourceRegion, IRegion destinationRegion, int armies)
         {
             throw new InvalidOperationException();
         }
@@ -78,7 +78,7 @@ namespace RISK.Application.Play.GamePhases
             return false;
         }
 
-        public IGameState EndTurn()
+        public void EndTurn()
         {
             throw new InvalidOperationException();
         }

@@ -26,87 +26,100 @@ namespace RISK.Application.Play
 
     public class Game : IGame
     {
+        private readonly IGameDataFactory _gameDataFactory;
         private readonly IGameStateConductor _gameStateConductor;
-        private IGameState _gameState;
+        private readonly Sequence<IPlayer> _players;
+        private readonly IReadOnlyList<ITerritory> _initialTerritories;
+        private readonly IDeck _initialDeck;
+        private readonly IGameStateFsm _gameStateFsm;
 
-        public Game(IGameStateConductor gameStateConductor, Sequence<IPlayer> players, IReadOnlyList<ITerritory> initialTerritories, IDeck deck)
+        public Game(
+            IGameDataFactory gameDataFactory,
+            IGameStateConductor gameStateConductor,
+            Sequence<IPlayer> players,
+            IReadOnlyList<ITerritory> initialTerritories,
+            IDeck initialDeck,
+            IGameStateFsm gameStateFsm)
         {
+            _gameDataFactory = gameDataFactory;
             _gameStateConductor = gameStateConductor;
-
-            InitializeFirstPlayersTurn(players, initialTerritories, deck);
+            _players = players;
+            _initialTerritories = initialTerritories;
+            _initialDeck = initialDeck;
+            _gameStateFsm = gameStateFsm;
         }
 
-        private void InitializeFirstPlayersTurn(Sequence<IPlayer> players, IReadOnlyList<ITerritory> initialTerritories, IDeck deck)
+        public void Initialize()
         {
-            var gameData = new GameData(
-                players.Next(),
-                players.ToList(),
-                initialTerritories,
-                deck);
+            var gameData = _gameDataFactory.Create(
+                _players.Next(),
+                _players.ToList(),
+                _initialTerritories,
+                _initialDeck);
 
-            _gameState = _gameStateConductor.InitializeFirstPlayerTurn(gameData);
+            _gameStateConductor.InitializeFirstPlayerTurn(gameData);
         }
 
-        public IPlayer CurrentPlayer => _gameState.CurrentPlayer;
+        public IPlayer CurrentPlayer => _gameStateFsm.CurrentPlayer;
 
         public ITerritory GetTerritory(IRegion region)
         {
-            return _gameState.GetTerritory(region);
+            return _gameStateFsm.GetTerritory(region);
         }
 
         public bool CanPlaceDraftArmies(IRegion region)
         {
-            return _gameState.CanPlaceDraftArmies(region);
+            return _gameStateFsm.CanPlaceDraftArmies(region);
         }
 
         public int GetNumberOfArmiesToDraft()
         {
-            return _gameState.GetNumberOfArmiesToDraft();
+            return _gameStateFsm.GetNumberOfArmiesToDraft();
         }
 
         public void PlaceDraftArmies(IRegion region, int numberOfArmies)
         {
-            _gameState = _gameState.PlaceDraftArmies(region, numberOfArmies);
+            _gameStateFsm.PlaceDraftArmies(region, numberOfArmies);
         }
 
         public bool CanAttack(IRegion attackingRegion, IRegion defendingRegion)
         {
-            return _gameState.CanAttack(attackingRegion, defendingRegion);
+            return _gameStateFsm.CanAttack(attackingRegion, defendingRegion);
         }
 
         public void Attack(IRegion attackingRegion, IRegion defendingRegion)
         {
-            _gameState = _gameState.Attack(attackingRegion, defendingRegion);
+            _gameStateFsm.Attack(attackingRegion, defendingRegion);
         }
 
         public bool CanSendArmiesToOccupy()
         {
-            return _gameState.CanSendAdditionalArmiesToOccupy();
+            return _gameStateFsm.CanSendAdditionalArmiesToOccupy();
         }
 
         public int GetNumberOfArmiesThatCanBeSentToOccupy()
         {
-            return _gameState.GetNumberOfAdditionalArmiesThatCanBeSentToOccupy();
+            return _gameStateFsm.GetNumberOfAdditionalArmiesThatCanBeSentToOccupy();
         }
 
         public void SendArmiesToOccupy(int numberOfArmies)
         {
-            _gameState = _gameState.SendAdditionalArmiesToOccupy(numberOfArmies);
+            _gameStateFsm.SendAdditionalArmiesToOccupy(numberOfArmies);
         }
 
         public bool CanFortify(IRegion sourceRegion, IRegion destinationRegion)
         {
-            return _gameState.CanFortify(sourceRegion, destinationRegion);
+            return _gameStateFsm.CanFortify(sourceRegion, destinationRegion);
         }
 
         public void Fortify(IRegion sourceRegion, IRegion destinationRegion, int armies)
         {
-            _gameState = _gameState.Fortify(sourceRegion, destinationRegion, 1);
+            _gameStateFsm.Fortify(sourceRegion, destinationRegion, armies);
         }
 
         public void EndTurn()
         {
-            _gameState = _gameState.EndTurn();
+            _gameStateFsm.EndTurn();
         }
 
         public bool IsGameOver()

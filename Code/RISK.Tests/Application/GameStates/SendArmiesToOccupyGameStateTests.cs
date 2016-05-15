@@ -11,7 +11,7 @@ using Xunit;
 
 namespace RISK.Tests.Application.GameStates
 {
-    public class SendArmiesToOccupyGameStateTests : GameStateTestsBase
+    public class SendArmiesToOccupyGameStateTests
     {
         private readonly IGameStateConductor _gameStateConductor;
         private readonly IGameDataFactory _gameDataFactory;
@@ -187,9 +187,22 @@ namespace RISK.Tests.Application.GameStates
             act.ShouldThrow<InvalidOperationException>();
         }
 
-        protected override IGameState Create(GameData gameData)
+        private IGameState Create(GameData gameData)
         {
             return new SendArmiesToOccupyGameState(_gameStateConductor, _gameDataFactory, _armyModifier, gameData, _attackingRegion, _occupiedRegion);
+        }
+
+        [Fact]
+        public void Gets_current_player()
+        {
+            var currentPlayer = Substitute.For<IPlayer>();
+            var gameData = Make.GameData
+                .CurrentPlayer(currentPlayer)
+                .Build();
+
+            var sut = Create(gameData);
+
+            sut.CurrentPlayer.Should().Be(currentPlayer);
         }
     }
 }

@@ -42,22 +42,15 @@ namespace RISK.Application.Play.GamePhases
 
         public int GetNumberOfAdditionalArmiesThatCanBeSentToOccupy()
         {
-            return GetTerritory(_attackingRegion).GetNumberOfArmiesThatCanBeSentToOccupy();
+            return Territories.GetTerritory(_attackingRegion).GetNumberOfArmiesThatCanBeSentToOccupy();
         }
 
-        public IGameState SendAdditionalArmiesToOccupy(int numberOfArmies)
+        public void SendAdditionalArmiesToOccupy(int numberOfArmies)
         {
             var updatedTerritories = _armyModifier.SendInAdditionalArmiesToOccupy(Territories, _attackingRegion, _occupiedRegion, numberOfArmies);
             var gameData = _gameDataFactory.Create(CurrentPlayer, Players, updatedTerritories, Deck);
 
-            var attackPhase = _gameStateConductor.ContinueWithAttackPhase(gameData, ConqueringAchievement.AwardCardAtEndOfTurn);
-
-            return attackPhase;
-        }
-
-        public ITerritory GetTerritory(IRegion region)
-        {
-            return Territories.GetTerritory(region);
+            _gameStateConductor.ContinueWithAttackPhase(gameData, ConqueringAchievement.AwardCardAtEndOfTurn);
         }
 
         public bool CanPlaceDraftArmies(IRegion region)
@@ -70,7 +63,7 @@ namespace RISK.Application.Play.GamePhases
             throw new InvalidOperationException();
         }
 
-        public IGameState PlaceDraftArmies(IRegion region, int numberOfArmiesToPlace)
+        public void PlaceDraftArmies(IRegion region, int numberOfArmiesToPlace)
         {
             throw new InvalidOperationException();
         }
@@ -80,7 +73,7 @@ namespace RISK.Application.Play.GamePhases
             return false;
         }
 
-        public IGameState Attack(IRegion attackingRegion, IRegion defendingRegion)
+        public void Attack(IRegion attackingRegion, IRegion defendingRegion)
         {
             throw new InvalidOperationException();
         }
@@ -90,17 +83,12 @@ namespace RISK.Application.Play.GamePhases
             return false;
         }
 
-        public IGameState Fortify(IRegion sourceRegion, IRegion destinationRegion, int armies)
+        public void Fortify(IRegion sourceRegion, IRegion destinationRegion, int armies)
         {
             throw new InvalidOperationException();
         }
 
-        public bool CanEndTurn()
-        {
-            return false;
-        }
-
-        public IGameState EndTurn()
+        public void EndTurn()
         {
             throw new InvalidOperationException();
         }
