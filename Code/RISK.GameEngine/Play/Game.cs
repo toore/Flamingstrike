@@ -7,7 +7,7 @@ namespace RISK.GameEngine.Play
 {
     public interface IGame
     {
-        IPlayerInfo CurrentPlayer { get; }
+        IPlayer CurrentPlayer { get; }
         ITerritory GetTerritory(IRegion region);
         bool CanPlaceDraftArmies(IRegion region);
         int GetNumberOfArmiesToDraft();
@@ -36,10 +36,10 @@ namespace RISK.GameEngine.Play
         public Game(
             IGameDataFactory gameDataFactory,
             IGameStateConductor gameStateConductor,
+            IGameStateFsm gameStateFsm,
             Sequence<IPlayer> players,
             IReadOnlyList<ITerritory> initialTerritories,
-            IDeck initialDeck,
-            IGameStateFsm gameStateFsm)
+            IDeck initialDeck)
         {
             _gameDataFactory = gameDataFactory;
             _gameStateConductor = gameStateConductor;
@@ -51,23 +51,16 @@ namespace RISK.GameEngine.Play
 
         public void Initialize()
         {
-            var currentPlayer = new InGamePlayer(_players.Next());
-            var players = _players
-                .Select(p => new InGamePlayer(p))
-                .ToList();
-
             var gameData = _gameDataFactory.Create(
-                currentPlayer,
-                players,
+                _players.Next(),
+                _players.ToList(),
                 _initialTerritories,
                 _initialDeck);
 
             _gameStateConductor.InitializeFirstPlayerTurn(gameData);
         }
 
-        public IPlayerInfo CurrentPlayer => new PlayerInfo(
-            _gameStateFsm.CurrentPlayer.Player.Name,
-            _gameStateFsm.CurrentPlayer.Cards.ToList());
+        public IPlayer CurrentPlayer => _gameStateFsm.CurrentPlayer;
 
         public ITerritory GetTerritory(IRegion region)
         {
@@ -138,7 +131,7 @@ namespace RISK.GameEngine.Play
         {
             var territory = GetTerritory(region);
 
-            var isCurrentPlayerOccupyingTerritory = territory.Player == _gameStateFsm.CurrentPlayer.Player;
+            var isCurrentPlayerOccupyingTerritory = territory.Player == _gameStateFsm.CurrentPlayer;
 
             return isCurrentPlayerOccupyingTerritory;
         }

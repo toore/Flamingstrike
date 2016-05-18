@@ -37,7 +37,7 @@ namespace RISK.GameEngine.Play.GamePhases
 
         public void InitializeFirstPlayerTurn(GameData gameData)
         {
-            var numberOfArmiesToDraft = _armyDraftCalculator.Calculate(gameData.CurrentPlayer.Player, gameData.Territories);
+            var numberOfArmiesToDraft = _armyDraftCalculator.Calculate(gameData.CurrentPlayer, gameData.Territories);
 
             ContinueToDraftArmies(gameData, numberOfArmiesToDraft);
         }
@@ -67,14 +67,14 @@ namespace RISK.GameEngine.Play.GamePhases
             var players = currentGameState.Players;
             var nextPlayer = NextPlayer(players, currentGameState.CurrentPlayer);
             var territories = currentGameState.Territories;
-            var numberOfArmiesToDraft = _armyDraftCalculator.Calculate(nextPlayer.Player, territories);
+            var numberOfArmiesToDraft = _armyDraftCalculator.Calculate(nextPlayer, territories);
 
             var gameData = _gameDataFactory.Create(nextPlayer, players, territories, currentGameState.Deck);
 
             _gameStateFsm.Set(_gameStateFactory.CreateDraftArmiesGameState(this, gameData, numberOfArmiesToDraft));
         }
 
-        private static IInGamePlayer NextPlayer(IEnumerable<IInGamePlayer> players, IInGamePlayer currentPlayer)
+        private static IPlayer NextPlayer(IEnumerable<IPlayer> players, IPlayer currentPlayer)
         {
             var sequence = players.ToSequence();
             while (sequence.Next() != currentPlayer) {}

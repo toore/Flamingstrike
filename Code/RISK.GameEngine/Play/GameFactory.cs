@@ -32,10 +32,10 @@ namespace RISK.GameEngine.Play
             var game = new Game(
                 _gameDataFactory,
                 _gameStateConductor,
+                _gameStateFsm,
                 gamePlaySetup.Players,
                 gamePlaySetup.Territories,
-                _deckFactory.Create(),
-                _gameStateFsm);
+                _deckFactory.Create());
 
             game.Initialize();
 

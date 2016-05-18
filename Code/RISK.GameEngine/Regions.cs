@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
+using RISK.Core;
 
-namespace RISK.Core
+namespace RISK.GameEngine
 {
     public interface IRegions
     {

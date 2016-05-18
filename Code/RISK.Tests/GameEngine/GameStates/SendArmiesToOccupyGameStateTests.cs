@@ -6,8 +6,9 @@ using RISK.GameEngine.Play;
 using RISK.GameEngine.Play.GamePhases;
 using RISK.Tests.Builders;
 using Xunit;
+using IPlayer = RISK.GameEngine.Play.IPlayer;
 
-namespace RISK.Tests.Application.GameStates
+namespace RISK.Tests.GameEngine.GameStates
 {
     public class SendArmiesToOccupyGameStateTests
     {

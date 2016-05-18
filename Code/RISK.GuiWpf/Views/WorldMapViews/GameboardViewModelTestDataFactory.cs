@@ -11,6 +11,7 @@ using RISK.GameEngine;
 using RISK.GameEngine.Play;
 using RISK.GameEngine.Play.GamePhases;
 using RISK.GameEngine.Setup;
+using IPlayer = RISK.GameEngine.Play.IPlayer;
 
 namespace GuiWpf.Views.WorldMapViews
 {
@@ -26,10 +27,10 @@ namespace GuiWpf.Views.WorldMapViews
             var colorService = new ColorService();
             var territoryColorsFactory = new TerritoryColorsFactory(colorService, regions);
             var worldMapViewModelFactory = new WorldMapViewModelFactory(regionModelFactory, territoryColorsFactory, colorService);
-            var sequence = new Sequence<IPlayer>(new Player("player 1"), new Player("player 1"));
-            IReadOnlyList<ITerritory> initialTerritories = regions.GetAll().Select(region => new Territory(region, sequence.Next(), new Random().Next(99))).ToList();
+            var players = new Sequence<IPlayer>(new Player("player 1"), new Player("player 1"));
+            IReadOnlyList<ITerritory> initialTerritories = regions.GetAll().Select(region => new Territory(region, players.Next(), new Random().Next(99))).ToList();
             var gameStateConductor = new GameStateConductor(null, null, null, null);
-            var game = new Game(null, gameStateConductor, sequence, initialTerritories, new Deck(new[] { new WildCard() }), null);
+            var game = new Game(null, gameStateConductor, null, players, initialTerritories, new Deck(new[] { new WildCard() }));
             var stateControllerFactory = new StateControllerFactory();
             var interactionStateFactory = new InteractionStateFactory();
             var gameboardViewModel = new GameboardViewModel(game, stateControllerFactory, interactionStateFactory, regions, worldMapViewModelFactory, null, null, null, null);

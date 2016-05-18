@@ -14,12 +14,13 @@ namespace RISK.Tests.Application.GameStates
         private readonly IGameStateConductor _gameStateConductor;
         private readonly IGameDataFactory _gameDataFactory;
         private readonly IBattle _battle;
+        private readonly IAttackPhaseRules _attackPhaseRules;
         private readonly ITerritory _territory;
         private readonly ITerritory _anotherTerritory;
         private readonly IRegion _region;
         private readonly IRegion _anotherRegion;
-        private readonly IPlayer _currentPlayer;
-        private readonly IPlayer _anotherPlayer;
+        private readonly IInGamePlayer _currentPlayer;
+        private readonly IInGamePlayer _anotherPlayer;
         private readonly IDeck _deck;
         private readonly GameData _gameData;
 
@@ -28,6 +29,7 @@ namespace RISK.Tests.Application.GameStates
             _gameStateConductor = Substitute.For<IGameStateConductor>();
             _gameDataFactory = Substitute.For<IGameDataFactory>();
             _battle = Substitute.For<IBattle>();
+            _attackPhaseRules = Substitute.For<IAttackPhaseRules>();
 
             _territory = Substitute.For<ITerritory>();
             _anotherTerritory = Substitute.For<ITerritory>();
@@ -398,13 +400,13 @@ namespace RISK.Tests.Application.GameStates
 
         private IGameState Create(GameData gameData)
         {
-            return new AttackGameState(_gameStateConductor, _gameDataFactory, _battle, gameData);
+            return new AttackGameState(_gameStateConductor, _gameDataFactory, _battle, _attackPhaseRules, gameData);
         }
 
         [Fact]
         public void Gets_current_player()
         {
-            var currentPlayer = Substitute.For<IPlayer>();
+            var currentPlayer = Substitute.For<IInGamePlayer>();
             var gameData = Make.GameData
                 .CurrentPlayer(currentPlayer)
                 .Build();

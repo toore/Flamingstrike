@@ -15,6 +15,7 @@ using RISK.GameEngine.Play;
 using RISK.GameEngine.Play.GamePhases;
 using Toore.Shuffling;
 using Xunit;
+using IPlayer = RISK.GameEngine.Play.IPlayer;
 
 namespace RISK.Tests.GuiWpf.Specifications
 {
@@ -188,13 +189,14 @@ namespace RISK.Tests.GuiWpf.Specifications
             var dice = new Dice(randomWrapper);
             var dicesRoller = new DicesRoller(dice);
             var armyDraftCalculator = new ArmyDraftCalculator(_continents);
-            var armyDraftUpdater = new ArmyModifier();
+            var armyModifier = new ArmyModifier();
             var battle = new Battle(dicesRoller, new ArmiesLostCalculator());
             var gameDataFactory = new GameDataFactory();
-            var gameStateFactory = new GameStateFactory(gameDataFactory, battle, armyDraftUpdater);
+            var attackPhaseRules = new AttackPhaseRules();
+            var gameStateFactory = new GameStateFactory(gameDataFactory, armyModifier, battle, attackPhaseRules);
             var gameStateFsm = new GameStateFsm();
             var gameStateConductor = new GameStateConductor(gameStateFactory, armyDraftCalculator, gameDataFactory, gameStateFsm);
-            _game = new Game(gameDataFactory, gameStateConductor, _players, _territories, null, gameStateFsm);
+            _game = new Game(gameDataFactory, gameStateConductor, gameStateFsm, _players, _territories, null);
             _stateControllerFactory = new StateControllerFactory();
             _interactionStateFactory = new InteractionStateFactory();
 

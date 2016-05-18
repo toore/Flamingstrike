@@ -5,8 +5,9 @@ using RISK.Core;
 using RISK.GameEngine.Play.GamePhases;
 using RISK.Tests.Builders;
 using Xunit;
+using IPlayer = RISK.GameEngine.Play.IPlayer;
 
-namespace RISK.Tests.Application
+namespace RISK.Tests.GameEngine
 {
     public class GameStateFsmTests
     {

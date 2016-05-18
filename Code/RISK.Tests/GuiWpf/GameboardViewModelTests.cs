@@ -9,8 +9,9 @@ using GuiWpf.ViewModels.Gameplay.Interaction;
 using GuiWpf.ViewModels.Gameplay.Map;
 using NSubstitute;
 using RISK.Core;
+using RISK.GameEngine;
 using RISK.GameEngine.Play;
-using RISK.Tests.Application;
+using RISK.Tests.GameEngine;
 using Xunit;
 
 namespace RISK.Tests.GuiWpf
@@ -98,22 +99,20 @@ namespace RISK.Tests.GuiWpf
         [Fact]
         public void Player_takes_turn()
         {
-            var player = Substitute.For<IPlayer>();
-            player.Name.Returns("player");
-            _game.CurrentPlayer.Returns(player);
+            var currentPlayer = new Player("player taking turn");
+            _game.CurrentPlayer.Returns(currentPlayer);
 
             var sut = Initialize();
 
-            sut.PlayerName.Should().Be("player");
+            sut.PlayerName.Should().Be("player taking turn");
         }
 
         [Fact]
         public void Player_is_updated_when_turn_ends()
         {
             var sut = Initialize();
-            var player = Substitute.For<IPlayer>();
-            player.Name.Returns("next player");
-            _game.CurrentPlayer.Returns(player);
+            var nextPlayer = new Player("next player");
+            _game.CurrentPlayer.Returns(nextPlayer);
 
             sut.EndTurn();
 
@@ -123,11 +122,9 @@ namespace RISK.Tests.GuiWpf
         [Fact]
         public void Show_game_over_when_game_is_updated_after_user_action()
         {
-            var winner = Substitute.For<IPlayer>();
-            winner.Name.Returns("the winner's name");
-            _game.CurrentPlayer.Returns(winner);
+            _game.CurrentPlayer.Returns(new Player("the winner"));
             var gameOverViewModel = new GameOverViewModel("");
-            _gameOverViewModelFactory.Create("the winner's name").Returns(gameOverViewModel);
+            _gameOverViewModelFactory.Create("the winner").Returns(gameOverViewModel);
             _game.IsGameOver().Returns(true);
             var sut = Initialize();
 

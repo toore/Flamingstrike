@@ -15,12 +15,14 @@ namespace RISK.GameEngine.Play.GamePhases
     {
         private readonly IGameDataFactory _gameDataFactory;
         private readonly IBattle _battle;
+        private readonly IAttackPhaseRules _attackPhaseRules;
         private readonly IArmyModifier _armyModifier;
 
-        public GameStateFactory(IGameDataFactory gameDataFactory, IBattle battle, IArmyModifier armyModifier)
+        public GameStateFactory(IGameDataFactory gameDataFactory, IArmyModifier armyModifier, IBattle battle, IAttackPhaseRules attackPhaseRules)
         {
             _gameDataFactory = gameDataFactory;
             _battle = battle;
+            _attackPhaseRules = attackPhaseRules;
             _armyModifier = armyModifier;
         }
 
@@ -31,7 +33,7 @@ namespace RISK.GameEngine.Play.GamePhases
 
         public IGameState CreateAttackGameState(IGameStateConductor gameStateConductor, GameData gameData)
         {
-            return new AttackGameState(gameStateConductor, _gameDataFactory, _battle, gameData);
+            return new AttackGameState(gameStateConductor, _gameDataFactory, _battle, _attackPhaseRules, gameData);
         }
 
         public IGameState CreateSendArmiesToOccupyGameState(IGameStateConductor gameStateConductor, GameData gameData, IRegion attackingRegion, IRegion occupiedRegion)

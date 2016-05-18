@@ -3,6 +3,7 @@ using System.Linq;
 using RISK.Core;
 using RISK.GameEngine.Extensions;
 using Toore.Shuffling;
+using IPlayer = RISK.GameEngine.Play.IPlayer;
 
 namespace RISK.GameEngine.Setup
 {
@@ -44,11 +45,12 @@ namespace RISK.GameEngine.Setup
         {
             var playersInOrderOfTakingTurn = ShufflePlayers();
             var territories = AssignPlayersToTerritories(playersInOrderOfTakingTurn.ToSequence());
-            var gameSetupPlayers = InitializeInfantryToPlace(playersInOrderOfTakingTurn, territories);
 
-            PlaceArmies(TerritoryResponder, gameSetupPlayers, territories);
+            InitializeInfantryToPlace(playersInOrderOfTakingTurn, territories);
+            PlaceArmies(TerritoryResponder, playersInOrderOfTakingTurn, territories);
 
             var gamePlaySetup = new GamePlaySetup(playersInOrderOfTakingTurn.ToSequence(), territories);
+
             return gamePlaySetup;
         }
 
@@ -65,39 +67,39 @@ namespace RISK.GameEngine.Setup
         {
             var territories = new List<Territory>();
 
-            var territoryIds = _regions.GetAll()
+            var regions = _regions.GetAll()
                 .Shuffle(_shuffle)
                 .ToList();
 
-            foreach (var territoryId in territoryIds)
+            foreach (var region in regions)
             {
                 var player = players.Next();
-                var territory = new Territory(territoryId, player, 1);
+                var territory = new Territory(region, player, 1);
                 territories.Add(territory);
             }
 
             return territories;
         }
 
-        private IList<InSetupPlayer> InitializeInfantryToPlace(IReadOnlyCollection<IPlayer> playerIds, IEnumerable<Territory> territories)
+        private void InitializeInfantryToPlace(IList<IPlayer> players, IList<Territory> territories)
         {
-            var numberOfStartingInfantry = _startingInfantryCalculator.Get(playerIds.Count);
+            var numberOfStartingInfantry = _startingInfantryCalculator.Get(players.ToList().Count);
 
-            var players = playerIds
-                .Select(player => CreatePlayer(player, numberOfStartingInfantry, territories))
-                .ToList();
-            return players;
+            foreach (var player in players)
+            {
+                var armiesToPlace = GetNumberOfArmiesToPlace(territories, player, numberOfStartingInfantry);
+                player.SetArmiesToPlace(armiesToPlace);
+            }
         }
 
-        private static InSetupPlayer CreatePlayer(IPlayer player, int numberOfStartingInfantry, IEnumerable<Territory> territories)
+        private static int GetNumberOfArmiesToPlace(IEnumerable<Territory> territories, IPlayer player, int numberOfStartingInfantry)
         {
-            var numberOfTerritoriesAssignedToPlayer = territories.Count(t => t.Player == player);
+            var numberOfTerritoriesAssignedToPlayer = territories.Count(territory => territory.Player == player);
             var armiesToPlace = numberOfStartingInfantry - numberOfTerritoriesAssignedToPlayer;
-            var inSetupPlayer = new InSetupPlayer(player, armiesToPlace);
-            return inSetupPlayer;
+            return armiesToPlace;
         }
 
-        private static void PlaceArmies(ITerritoryResponder territoryResponder, IList<InSetupPlayer> gameSetupPlayers, IReadOnlyList<Territory> territories)
+        private static void PlaceArmies(ITerritoryResponder territoryResponder, IList<IPlayer> gameSetupPlayers, IReadOnlyList<Territory> territories)
         {
             while (AnyArmiesLeftToPlace(gameSetupPlayers))
             {
@@ -105,12 +107,12 @@ namespace RISK.GameEngine.Setup
             }
         }
 
-        private static bool AnyArmiesLeftToPlace(IEnumerable<InSetupPlayer> players)
+        private static bool AnyArmiesLeftToPlace(IEnumerable<IPlayer> players)
         {
             return players.Any(x => x.HasArmiesLeftToPlace());
         }
 
-        private static void PlaceArmiesForOneRound(ITerritoryResponder territoryResponder, IEnumerable<InSetupPlayer> gameSetupPlayers, IReadOnlyList<Territory> territories)
+        private static void PlaceArmiesForOneRound(ITerritoryResponder territoryResponder, IEnumerable<IPlayer> gameSetupPlayers, IReadOnlyList<Territory> territories)
         {
             var playersWithArmiesLeftToPlace = gameSetupPlayers
                 .Where(x => x.HasArmiesLeftToPlace())
@@ -122,25 +124,24 @@ namespace RISK.GameEngine.Setup
             }
         }
 
-        private static void PlaceArmy(ITerritoryResponder territoryResponder, InSetupPlayer inSetupPlayer, IReadOnlyList<Territory> territories)
+        private static void PlaceArmy(ITerritoryResponder territoryResponder, IPlayer player, IReadOnlyList<Territory> territories)
         {
             var territoriesAssignedToPlayer = territories
-                .Where(x => x.Player == inSetupPlayer.Player)
+                .Where(territory => territory.Player == player)
                 .ToList();
 
-            var selectedTerritory = SelectTerritory(territoryResponder, territories, inSetupPlayer, territoriesAssignedToPlayer);
+            var selectedTerritory = SelectTerritory(territoryResponder, territories, player, territoriesAssignedToPlayer);
 
-            selectedTerritory.Armies++;
-            inSetupPlayer.ArmiesToPlace--;
+            player.PlaceArmy(selectedTerritory);
         }
 
-        private static Territory SelectTerritory(ITerritoryResponder territoryResponder, IReadOnlyList<Territory> territories, InSetupPlayer inSetupPlayer, List<Territory> territoriesAssignedToPlayer)
+        private static Territory SelectTerritory(ITerritoryResponder territoryResponder, IReadOnlyList<Territory> territories, IPlayer IPlayer, List<Territory> territoriesAssignedToPlayer)
         {
             var options = territoriesAssignedToPlayer
                 .Select(x => x.Region)
                 .ToList();
 
-            var parameter = new TerritoryRequestParameter(territories, options, inSetupPlayer);
+            var parameter = new TerritoryRequestParameter(territories, options, IPlayer);
             var selectedTerritoryId = territoryResponder.ProcessRequest(parameter);
 
             var selectedTerritory = territoriesAssignedToPlayer.Single(x => x.Region == selectedTerritoryId);

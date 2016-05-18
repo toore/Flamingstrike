@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using RISK.Core;
+using RISK.GameEngine;
 
 namespace GuiWpf.TerritoryModels
 {

@@ -6,7 +6,7 @@ namespace RISK.GameEngine.Play.GamePhases
     public interface IGameStateFsm
     {
         void Set(IGameState gameState);
-        IInGamePlayer CurrentPlayer { get; }
+        IPlayer CurrentPlayer { get; }
         ITerritory GetTerritory(IRegion region);
         bool CanPlaceDraftArmies(IRegion region);
         int GetNumberOfArmiesToDraft();
@@ -30,7 +30,7 @@ namespace RISK.GameEngine.Play.GamePhases
             _currentState = gameState;
         }
 
-        public IInGamePlayer CurrentPlayer => _currentState.CurrentPlayer;
+        public IPlayer CurrentPlayer => _currentState.CurrentPlayer;
 
         public ITerritory GetTerritory(IRegion region)
         {

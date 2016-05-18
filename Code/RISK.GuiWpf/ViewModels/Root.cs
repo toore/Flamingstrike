@@ -7,6 +7,7 @@ using GuiWpf.ViewModels.Gameplay.Map;
 using GuiWpf.ViewModels.Settings;
 using GuiWpf.ViewModels.Setup;
 using RISK.Core;
+using RISK.GameEngine;
 using RISK.GameEngine.Play;
 using RISK.GameEngine.Play.GamePhases;
 using RISK.GameEngine.Setup;
@@ -29,13 +30,13 @@ namespace GuiWpf.ViewModels
 
         public Root(ITaskEx taskEx)
         {
-            var playerIdFactory = new PlayerFactory();
+            var playerFactory = new PlayerFactory();
             var playerTypes = new PlayerTypes();
             PlayerRepository = new PlayerRepository();
             EventAggregator = new EventAggregator();
 
             GameInitializationViewModelFactory = new GameInitializationViewModelFactory(
-                playerIdFactory,
+                playerFactory,
                 playerTypes,
                 PlayerRepository,
                 EventAggregator);
@@ -69,13 +70,14 @@ namespace GuiWpf.ViewModels
             var randomWrapper = new RandomWrapper();
             var shuffle = new FisherYatesShuffle(randomWrapper);
             var deckFactory = new DeckFactory(regions, shuffle);
-            var armyDraftUpdater = new ArmyModifier();
+            var armyModifier = new ArmyModifier();
             var battleCalculator = new ArmiesLostCalculator();
             var dice = new Dice(randomWrapper);
             var diceRoller = new DicesRoller(dice);
             var battle = new Battle(diceRoller, battleCalculator);
             var gameDataFactory = new GameDataFactory();
-            var gameStateFactory = new GameStateFactory(gameDataFactory, battle, armyDraftUpdater);
+            var attackPhaseRules = new AttackPhaseRules();
+            var gameStateFactory = new GameStateFactory(gameDataFactory, armyModifier, battle, attackPhaseRules);
             var armyDraftCalculator = new ArmyDraftCalculator(continents);
             var gameStateFsm = new GameStateFsm();
             var gameStateConductor = new GameStateConductor(gameStateFactory, armyDraftCalculator, gameDataFactory, gameStateFsm);

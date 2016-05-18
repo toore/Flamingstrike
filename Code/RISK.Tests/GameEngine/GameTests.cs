@@ -7,8 +7,9 @@ using RISK.GameEngine.Play.GamePhases;
 using RISK.GameEngine.Setup;
 using RISK.Tests.Builders;
 using Xunit;
+using IPlayer = RISK.GameEngine.Play.IPlayer;
 
-namespace RISK.Tests.Application
+namespace RISK.Tests.GameEngine
 {
     public class GameTests
     {
@@ -38,7 +39,6 @@ namespace RISK.Tests.Application
             var secondPlayer = Substitute.For<IPlayer>();
             var thirdPlayer = Substitute.For<IPlayer>();
             var deck = Substitute.For<IDeck>();
-            _deckFactory.Create().Returns(deck);
             var gameData = Make.GameData.Build();
             var gamePlaySetup = Make.GamePlaySetup
                 .WithTerritory(territory)
@@ -47,6 +47,9 @@ namespace RISK.Tests.Application
                 .WithPlayer(secondPlayer)
                 .WithPlayer(thirdPlayer)
                 .Build();
+
+            _deckFactory.Create().Returns(deck);
+
             _gameDataFactory.Create(
                 firstPlayer,
                 Argx.IsEquivalentReadOnly(firstPlayer, secondPlayer, thirdPlayer),
@@ -60,7 +63,7 @@ namespace RISK.Tests.Application
         }
 
         [Fact]
-        public void Gets_current_player()
+        public void Gets_player_status()
         {
             var player = Substitute.For<IPlayer>();
             _gameStateFsm.CurrentPlayer.Returns(player);

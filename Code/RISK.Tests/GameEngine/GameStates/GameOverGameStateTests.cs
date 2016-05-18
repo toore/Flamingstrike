@@ -1,12 +1,11 @@
 using FluentAssertions;
 using NSubstitute;
-using RISK.Core;
 using RISK.GameEngine.Play;
 using RISK.GameEngine.Play.GamePhases;
 using RISK.Tests.Builders;
 using Xunit;
 
-namespace RISK.Tests.Application.GameStates
+namespace RISK.Tests.GameEngine.GameStates
 {
     public class GameOverGameStateTests
     {

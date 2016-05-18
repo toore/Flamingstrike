@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using NSubstitute;
 using RISK.Tests.Extensions;
 
-namespace RISK.Tests.Application
+namespace RISK.Tests.GameEngine
 {
     public static class Argx
     {

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using RISK.Core;
+using IPlayer = RISK.GameEngine.Play.IPlayer;
 
 namespace RISK.GameEngine.Setup
 {
@@ -13,22 +14,20 @@ namespace RISK.GameEngine.Setup
 
     public class TerritoryRequestParameter : ITerritoryRequestParameter
     {
-        private readonly InSetupPlayer _inSetupPlayer;
-
-        public TerritoryRequestParameter(IReadOnlyList<Territory> territories, IReadOnlyList<IRegion> enabledTerritories, InSetupPlayer inSetupPlayer)
+        public TerritoryRequestParameter(IReadOnlyList<Territory> territories, IReadOnlyList<IRegion> enabledTerritories, IPlayer player)
         {
             Territories = territories;
-            _inSetupPlayer = inSetupPlayer;
+            Player = player;
             EnabledTerritories = enabledTerritories;
         }
 
         public IReadOnlyList<ITerritory> Territories { get; }
         public IReadOnlyList<IRegion> EnabledTerritories { get; }
-        public IPlayer Player => _inSetupPlayer.Player;
+        public IPlayer Player { get; }
 
         public int GetArmiesLeftToPlace()
         {
-            return _inSetupPlayer.ArmiesToPlace;
+            return Player.ArmiesToPlace;
         }
     }
 }

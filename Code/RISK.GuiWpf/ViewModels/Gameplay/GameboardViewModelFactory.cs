@@ -3,6 +3,7 @@ using GuiWpf.Services;
 using GuiWpf.ViewModels.Gameplay.Interaction;
 using GuiWpf.ViewModels.Gameplay.Map;
 using RISK.Core;
+using RISK.GameEngine;
 using RISK.GameEngine.Play;
 
 namespace GuiWpf.ViewModels.Gameplay

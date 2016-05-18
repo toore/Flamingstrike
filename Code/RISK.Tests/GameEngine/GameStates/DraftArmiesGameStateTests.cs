@@ -20,8 +20,8 @@ namespace RISK.Tests.Application.GameStates
         private readonly ITerritory _anotherTerritory;
         private readonly IRegion _region;
         private readonly IRegion _anotherRegion;
-        private readonly IPlayer _currentPlayer;
-        private readonly IPlayer _anotherPlayer;
+        private readonly IInGamePlayer _currentPlayer;
+        private readonly IInGamePlayer _anotherPlayer;
         private readonly IDeck _deck;
         private readonly GameData _gameData;
 
@@ -210,7 +210,7 @@ namespace RISK.Tests.Application.GameStates
         [Fact]
         public void Gets_current_player()
         {
-            var currentPlayer = Substitute.For<IPlayer>();
+            var currentPlayer = Substitute.For<IInGamePlayer>();
             var gameData = Make.GameData
                 .CurrentPlayer(currentPlayer)
                 .Build();

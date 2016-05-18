@@ -20,8 +20,8 @@ Extract Fortifier? (border, different players)
 + GetNextOrFirst extension should be replaced by "Sequence" implementation
 
 Move application domain logic (currently put in the game states) into Core (functional)?
-Player in domain, should be stateless
-
+Player in domain, should be stateless... IN PROGRESS
+Player in domain, does not need Name property, right?
 
 
 Not used?

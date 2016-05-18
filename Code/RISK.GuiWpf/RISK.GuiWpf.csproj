@@ -138,7 +138,7 @@
     <Compile Include="ViewModels\IMainViewModel.cs" />
     <Compile Include="ViewModels\Settings\IPlayerTypes.cs" />
     <Compile Include="ViewModels\Settings\NeutralPlayerType.cs" />
-    <Compile Include="ViewModels\Settings\PlayerIdFactory.cs" />
+    <Compile Include="ViewModels\Settings\PlayerFactory.cs" />
     <Compile Include="ViewModels\Settings\PlayerSetupViewModel.cs" />
     <Compile Include="ViewModels\Gameplay\Map\IRegionViewModel.cs" />
     <Compile Include="TerritoryModels\RegionModelFactory.cs" />

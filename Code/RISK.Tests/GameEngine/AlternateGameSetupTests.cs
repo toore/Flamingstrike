@@ -3,20 +3,23 @@ using System.Linq;
 using FluentAssertions;
 using NSubstitute;
 using RISK.Core;
+using RISK.GameEngine;
 using RISK.GameEngine.Setup;
+using RISK.Tests.Builders;
 using Toore.Shuffling;
 using Xunit;
+using IPlayer = RISK.GameEngine.Play.IPlayer;
 
-namespace RISK.Tests.Application
+namespace RISK.Tests.GameEngine
 {
     public class AlternateGameSetupTests
     {
         private readonly AlternateGameSetup _sut;
         private readonly IPlayer _player1;
         private readonly IPlayer _player2;
-        private readonly IRegion _territory1;
-        private readonly IRegion _territory2;
-        private readonly IRegion _territory3;
+        private readonly IRegion _region1;
+        private readonly IRegion _region2;
+        private readonly IRegion _region3;
         private readonly ITerritoryResponder _territoryResponder;
 
         public AlternateGameSetupTests()
@@ -30,16 +33,16 @@ namespace RISK.Tests.Application
             _sut = new AlternateGameSetup(worldMap, players, startingInfantryCalculator, shuffler);
             _sut.TerritoryResponder = _territoryResponder;
 
-            _player1 = Substitute.For<IPlayer>();
-            _player2 = Substitute.For<IPlayer>();
+            _player1 = Make.Player.Build();
+            _player2 = Make.Player.Build();
             shuffler.Shuffle(players).Returns(new[] { _player1, _player2 });
 
-            var territories = new List<IRegion> { null };
-            worldMap.GetAll().Returns(territories);
-            _territory1 = Substitute.For<IRegion>();
-            _territory2 = Substitute.For<IRegion>();
-            _territory3 = Substitute.For<IRegion>();
-            shuffler.Shuffle(territories).Returns(new[] { _territory1, _territory2, _territory3 });
+            var regions = new List<IRegion> { null };
+            worldMap.GetAll().Returns(regions);
+            _region1 = Substitute.For<IRegion>();
+            _region2 = Substitute.For<IRegion>();
+            _region3 = Substitute.For<IRegion>();
+            shuffler.Shuffle(regions).Returns(new[] { _region1, _region2, _region3 });
 
             startingInfantryCalculator.Get(2).Returns(3);
         }
@@ -63,9 +66,9 @@ namespace RISK.Tests.Application
 
             actual.Territories.ShouldAllBeEquivalentTo(new[]
             {
-                new Territory(_territory1, _player1, 2),
-                new Territory(_territory2, _player2, 3),
-                new Territory(_territory3, _player1, 1)
+                new Territory(_region1, _player1, 2),
+                new Territory(_region2, _player2, 3),
+                new Territory(_region3, _player1, 1)
             });
         }
 

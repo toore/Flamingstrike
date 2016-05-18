@@ -2,9 +2,10 @@
 using System.Linq;
 using FluentAssertions;
 using RISK.Core;
+using RISK.GameEngine;
 using Xunit;
 
-namespace RISK.Tests.Core
+namespace RISK.Tests.GameEngine
 {
     public class RegionsTests
     {

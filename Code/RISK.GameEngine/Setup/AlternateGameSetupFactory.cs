@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using RISK.Core;
+using RISK.GameEngine.Play;
 using Toore.Shuffling;
 
 namespace RISK.GameEngine.Setup

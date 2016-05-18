@@ -1,4 +1,4 @@
-using RISK.Core;
+using RISK.GameEngine.Play;
 
 namespace RISK.Tests.Builders
 {

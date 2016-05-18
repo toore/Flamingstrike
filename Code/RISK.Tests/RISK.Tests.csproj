@@ -105,17 +105,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Application\Argx.cs" />
+    <Compile Include="GameEngine\Argx.cs" />
+    <Compile Include="GameEngine\GameStates\SendArmiesToOccupyGameStateTests.cs" />
     <Compile Include="Core\BattleTests.cs" />
     <Compile Include="Core\DiceTests.cs" />
     <Compile Include="Core\DicesRollerTests.cs" />
     <Compile Include="Core\ArmiesLostCalculatorTests.cs" />
-    <Compile Include="Application\GameStateFsmTests.cs" />
-    <Compile Include="Application\GameStates\AttackGameStateTests.cs" />
-    <Compile Include="Application\GameStates\DraftArmiesGameStateTests.cs" />
-    <Compile Include="Application\GameStates\GameOverGameStateTests.cs" />
-    <Compile Include="Application\GameStates\SendArmiesToOccupyGameStateTests.cs" />
-    <Compile Include="Application\GameTests.cs" />
+    <Compile Include="GameEngine\GameStateFsmTests.cs" />
+    <Compile Include="GameEngine\GameStates\GameOverGameStateTests.cs" />
+    <Compile Include="GameEngine\GameTests.cs" />
     <Compile Include="Builders\ArmiesLostBuilder.cs" />
     <Compile Include="Builders\ContinentBuilder.cs" />
     <Compile Include="Builders\DicesBuilder.cs" />
@@ -131,7 +129,7 @@
     <Compile Include="GuiWpf\Interaction\InteractionStateFactoryTests.cs" />
     <Compile Include="GuiWpf\Interaction\InteractionStateTestsBase.cs" />
     <Compile Include="GuiWpf\Interaction\StateControllerExtensions.cs" />
-    <Compile Include="Application\StartingInfantryCalculatorTests.cs" />
+    <Compile Include="GameEngine\StartingInfantryCalculatorTests.cs" />
     <Compile Include="Builders\GamePlaySetupBuilder.cs" />
     <Compile Include="GuiWpf\CurrentThreadDispatcher.cs" />
     <Compile Include="GuiWpf\MainGameViewModelDecorator.cs" />
@@ -159,10 +157,10 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Application\AlternateGameSetupTests.cs" />
+    <Compile Include="GameEngine\AlternateGameSetupTests.cs" />
     <Compile Include="GuiWpf\ColorServiceTests.cs" />
     <Compile Include="GuiWpf\GameboardViewModelTests.cs" />
-    <Compile Include="Core\RegionsTests.cs" />
+    <Compile Include="GameEngine\RegionsTests.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>

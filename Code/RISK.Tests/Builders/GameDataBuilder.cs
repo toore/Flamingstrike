@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using RISK.Core;
 using RISK.GameEngine.Play;
+using IPlayer = RISK.GameEngine.Play.IPlayer;
 
 namespace RISK.Tests.Builders
 {

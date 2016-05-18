@@ -16,8 +16,8 @@ namespace RISK.GameEngine.Play.GamePhases
             _gameData = gameData;
         }
 
-        public IInGamePlayer CurrentPlayer => _gameData.CurrentPlayer;
-        public IReadOnlyList<IInGamePlayer> Players => _gameData.Players;
+        public IPlayer CurrentPlayer => _gameData.CurrentPlayer;
+        public IReadOnlyList<IPlayer> Players => _gameData.Players;
         public IReadOnlyList<ITerritory> Territories => _gameData.Territories;
         public IDeck Deck => _gameData.Deck;
 

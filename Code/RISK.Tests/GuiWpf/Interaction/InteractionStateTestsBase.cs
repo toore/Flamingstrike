@@ -3,6 +3,7 @@ using NSubstitute;
 using RISK.Core;
 using RISK.GameEngine.Play;
 using RISK.Tests.Builders;
+using IPlayer = RISK.Core.IPlayer;
 
 namespace RISK.Tests.GuiWpf.Interaction
 {
@@ -21,6 +22,7 @@ namespace RISK.Tests.GuiWpf.Interaction
             _interactionStateFactory = Substitute.For<IInteractionStateFactory>();
 
             _currentPlayer = Substitute.For<IPlayer>();
+
             _game.CurrentPlayer.Returns(_currentPlayer);
         }
 

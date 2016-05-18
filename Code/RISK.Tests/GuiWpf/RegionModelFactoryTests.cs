@@ -3,6 +3,7 @@ using FluentAssertions;
 using GuiWpf.TerritoryModels;
 using NSubstitute;
 using RISK.Core;
+using RISK.GameEngine;
 using Xunit;
 
 namespace RISK.Tests.GuiWpf
