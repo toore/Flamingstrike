@@ -19,7 +19,7 @@ namespace RISK.GameEngine.Play
     public class Player : IPlayer
     {
         private readonly IList<ICard> _cards = new List<ICard>();
-        private int _armiesToPlace = 0;
+        private int _armiesToPlace;
 
         public Player(string name)
         {
