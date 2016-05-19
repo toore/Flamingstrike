@@ -7,8 +7,9 @@ using RISK.GameEngine.Play;
 using RISK.GameEngine.Play.GamePhases;
 using RISK.Tests.Builders;
 using Xunit;
+using IPlayer = RISK.GameEngine.IPlayer;
 
-namespace RISK.Tests.Application.GameStates
+namespace RISK.Tests.GameEngine.GameStates
 {
     public class DraftArmiesGameStateTests
     {
@@ -20,8 +21,8 @@ namespace RISK.Tests.Application.GameStates
         private readonly ITerritory _anotherTerritory;
         private readonly IRegion _region;
         private readonly IRegion _anotherRegion;
-        private readonly IInGamePlayer _currentPlayer;
-        private readonly IInGamePlayer _anotherPlayer;
+        private readonly IPlayer _currentPlayer;
+        private readonly IPlayer _anotherPlayer;
         private readonly IDeck _deck;
         private readonly GameData _gameData;
 
@@ -210,7 +211,7 @@ namespace RISK.Tests.Application.GameStates
         [Fact]
         public void Gets_current_player()
         {
-            var currentPlayer = Substitute.For<IInGamePlayer>();
+            var currentPlayer = Substitute.For<IPlayer>();
             var gameData = Make.GameData
                 .CurrentPlayer(currentPlayer)
                 .Build();

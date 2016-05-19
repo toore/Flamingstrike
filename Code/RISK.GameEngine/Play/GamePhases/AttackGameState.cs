@@ -39,44 +39,12 @@ namespace RISK.GameEngine.Play.GamePhases
             }
 
             return _attackPhaseRules.CanAttack(_gameData.Territories, attackingRegion, defendingRegion);
-
-            //var attackingTerritory = _gameData.Territories.Single(x => x.Region == attackingRegion);
-            //var defendingTerritory = _gameData.Territories.Single(x => x.Region == defendingRegion);
-
-            //if (!IsCurrentPlayerAttacking(attackingTerritory))
-            //{
-            //    return false;
-            //}
-
-            //var canAttack =
-            //    HasBorder(attackingTerritory, defendingTerritory)
-            //    &&
-            //    IsAttackerAndDefenderDifferentPlayers(attackingTerritory, defendingTerritory)
-            //    &&
-            //    HasAttackerEnoughArmiesToPerformAttack(attackingTerritory);
-
-            //return canAttack;
         }
 
         private bool IsCurrentPlayerOccupyingTerritory(ITerritory territory)
         {
             return _gameData.CurrentPlayer == territory.Player;
         }
-
-        //private static bool HasBorder(ITerritory attackingTerritory, ITerritory defendingTerritory)
-        //{
-        //    return attackingTerritory.Region.HasBorder(defendingTerritory.Region);
-        //}
-
-        //private static bool IsAttackerAndDefenderDifferentPlayers(ITerritory attackingTerritory, ITerritory defendingTerritory)
-        //{
-        //    return attackingTerritory.Player != defendingTerritory.Player;
-        //}
-
-        //private static bool HasAttackerEnoughArmiesToPerformAttack(ITerritory attackingTerritory)
-        //{
-        //    return attackingTerritory.GetNumberOfArmiesAvailableForAttack() > 0;
-        //}
 
         public void Attack(IRegion attackingRegion, IRegion defendingRegion)
         {
@@ -126,23 +94,6 @@ namespace RISK.GameEngine.Play.GamePhases
             }
         }
 
-        //private static bool IsPlayerEliminated(IInGamePlayer inGamePlayer, IEnumerable<ITerritory> territories)
-        //{
-        //    var playerOccupiesTerritories = territories.Any(x => x.Player == inGamePlayer.Player);
-
-        //    return !playerOccupiesTerritories;
-        //}
-
-        //private static bool IsGameOver(IEnumerable<ITerritory> territories)
-        //{
-        //    var allTerritoriesAreOccupiedBySamePlayer = territories
-        //        .Select(x => x.Player)
-        //        .Distinct()
-        //        .Count() == 1;
-
-        //    return allTerritoriesAreOccupiedBySamePlayer;
-        //}
-
         private void GameIsOver(IReadOnlyList<ITerritory> territories)
         {
             var gameData = _gameDataFactory.Create(_gameData.CurrentPlayer, Players, territories, Deck);
@@ -183,21 +134,6 @@ namespace RISK.GameEngine.Play.GamePhases
             }
 
             return _attackPhaseRules.CanFortify(_gameData.Territories, sourceRegion, destinationRegion);
-
-            //var sourceTerritory = _gameData.Territories.GetTerritory(sourceRegion);
-            //var destinationTerritory = _gameData.Territories.GetTerritory(destinationRegion);
-            //var playerOccupiesBothTerritories =
-            //    sourceTerritory.Player == _gameData.CurrentPlayer.Player
-            //    &&
-            //    sourceTerritory.Player == destinationTerritory.Player;
-            //var hasBorder = sourceRegion.HasBorder(destinationRegion);
-
-            //var canFortify =
-            //    playerOccupiesBothTerritories
-            //    &&
-            //    hasBorder;
-
-            //return canFortify;
         }
 
         public void Fortify(IRegion sourceRegion, IRegion destinationRegion, int armies)
