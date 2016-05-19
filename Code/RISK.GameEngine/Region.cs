@@ -14,7 +14,6 @@ namespace RISK.GameEngine
         }
 
         public IContinent Continent { get; }
-        public IReadOnlyList<IRegion> GetBorderingTerritories => _borderingTerritories;
 
         public bool HasBorder(IRegion region)
         {

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using RISK.Core;
+using RISK.GameEngine;
 using RISK.GameEngine.Play;
 using IPlayer = RISK.GameEngine.Play.IPlayer;
 

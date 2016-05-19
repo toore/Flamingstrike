@@ -1,34 +1,8 @@
 ﻿using System.Collections.Generic;
+using RISK.Core;
 
-namespace RISK.Core
+namespace RISK.GameEngine
 {
-    public interface IContinent
-    {
-        int Bonus { get; }
-    }
-
-    public class Continent : IContinent
-    {
-        public Continent(int bonus)
-        {
-            Bonus = bonus;
-        }
-
-        public int Bonus { get; }
-    }
-
-    public interface IContinents
-    {
-        IEnumerable<IContinent> GetAll();
-
-        IContinent Asia { get; }
-        IContinent NorthAmerica { get; }
-        IContinent Europe { get; }
-        IContinent Africa { get; }
-        IContinent Australia { get; }
-        IContinent SouthAmerica { get; }
-    }
-
     public class Continents : IContinents
     {
         public Continents()

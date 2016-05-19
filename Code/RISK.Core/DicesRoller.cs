@@ -8,18 +8,6 @@ namespace RISK.Core
         Dices Roll(int numberOfAttackDices, int numberOfDefenceDices);
     }
 
-    public class Dices
-    {
-        public Dices(IList<int> attackValues, IList<int> defenceValues)
-        {
-            DefenceValues = defenceValues;
-            AttackValues = attackValues;
-        }
-
-        public IList<int> AttackValues { get; }
-        public IList<int> DefenceValues { get; }
-    }
-
     public class DicesRoller : IDicesRoller
     {
         private readonly IDice _dice;

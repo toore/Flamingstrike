@@ -34,6 +34,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Continent.cs" />
+    <Compile Include="Continents.cs" />
     <Compile Include="Extensions\EnumerableExtensions.cs" />
     <Compile Include="PlayerType.cs" />
     <Compile Include="Play\ArmyModifier.cs" />
@@ -65,6 +67,8 @@
     <Compile Include="Setup\ITerritoryResponder.cs" />
     <Compile Include="Setup\StartingInfantryCalculator.cs" />
     <Compile Include="Setup\TerritoryRequestParameter.cs" />
+    <Compile Include="StandardCard.cs" />
+    <Compile Include="WildCard.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\RISK.Core\RISK.Core.csproj">
