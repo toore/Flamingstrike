@@ -4,7 +4,7 @@ using FluentAssertions;
 using GuiWpf.ViewModels.Setup;
 using NSubstitute;
 using RISK.Core;
-using RISK.GameEngine.Play;
+using RISK.GameEngine;
 using RISK.GameEngine.Setup;
 using RISK.Tests.Builders;
 using Xunit;

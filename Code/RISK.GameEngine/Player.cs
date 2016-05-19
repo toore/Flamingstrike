@@ -2,7 +2,7 @@
 using System.Linq;
 using RISK.Core;
 
-namespace RISK.GameEngine.Play
+namespace RISK.GameEngine
 {
     public interface IPlayer : Core.IPlayer
     {

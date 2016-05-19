@@ -7,7 +7,7 @@ using RISK.GameEngine.Play.GamePhases;
 using RISK.GameEngine.Setup;
 using RISK.Tests.Builders;
 using Xunit;
-using IPlayer = RISK.GameEngine.Play.IPlayer;
+using IPlayer = RISK.GameEngine.IPlayer;
 
 namespace RISK.Tests.GameEngine
 {

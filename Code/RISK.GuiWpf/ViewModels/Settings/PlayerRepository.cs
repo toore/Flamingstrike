@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using RISK.GameEngine.Play;
+using RISK.GameEngine;
 
 namespace GuiWpf.ViewModels.Settings
 {

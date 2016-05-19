@@ -11,7 +11,7 @@ using RISK.GameEngine;
 using RISK.GameEngine.Play;
 using RISK.GameEngine.Play.GamePhases;
 using RISK.GameEngine.Setup;
-using IPlayer = RISK.GameEngine.Play.IPlayer;
+using IPlayer = RISK.GameEngine.IPlayer;
 
 namespace GuiWpf.Views.WorldMapViews
 {

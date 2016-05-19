@@ -55,7 +55,7 @@
     <Compile Include="Play\GamePhases\GameStateFsm.cs" />
     <Compile Include="Play\GamePhases\IGameState.cs" />
     <Compile Include="Play\GamePhases\SendArmiesToOccupyGameState.cs" />
-    <Compile Include="Play\Player.cs" />
+    <Compile Include="Player.cs" />
     <Compile Include="Extensions\TerritoryExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Region.cs" />

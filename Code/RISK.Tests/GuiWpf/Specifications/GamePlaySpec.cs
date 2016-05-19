@@ -15,7 +15,7 @@ using RISK.GameEngine.Play;
 using RISK.GameEngine.Play.GamePhases;
 using Toore.Shuffling;
 using Xunit;
-using IPlayer = RISK.GameEngine.Play.IPlayer;
+using IPlayer = RISK.GameEngine.IPlayer;
 
 namespace RISK.Tests.GuiWpf.Specifications
 {

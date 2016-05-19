@@ -3,7 +3,6 @@ using System.Linq;
 using RISK.Core;
 using RISK.GameEngine.Extensions;
 using Toore.Shuffling;
-using IPlayer = RISK.GameEngine.Play.IPlayer;
 
 namespace RISK.GameEngine.Setup
 {
