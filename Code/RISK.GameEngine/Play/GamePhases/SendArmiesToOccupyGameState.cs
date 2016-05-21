@@ -9,7 +9,7 @@ namespace RISK.GameEngine.Play.GamePhases
     {
         private readonly IGameStateConductor _gameStateConductor;
         private readonly IGameDataFactory _gameDataFactory;
-        private readonly IArmyModifier _armyModifier;
+        private readonly ITerritoryModifier _territoryModifier;
         private readonly GameData _gameData;
         private readonly IRegion _attackingRegion;
         private readonly IRegion _occupiedRegion;
@@ -17,14 +17,14 @@ namespace RISK.GameEngine.Play.GamePhases
         public SendArmiesToOccupyGameState(
             IGameStateConductor gameStateConductor,
             IGameDataFactory gameDataFactory,
-            IArmyModifier armyModifier,
+            ITerritoryModifier territoryModifier,
             GameData gameData,
             IRegion attackingRegion,
             IRegion occupiedRegion)
         {
             _gameStateConductor = gameStateConductor;
             _gameDataFactory = gameDataFactory;
-            _armyModifier = armyModifier;
+            _territoryModifier = territoryModifier;
             _gameData = gameData;
             _attackingRegion = attackingRegion;
             _occupiedRegion = occupiedRegion;
@@ -47,7 +47,7 @@ namespace RISK.GameEngine.Play.GamePhases
 
         public void SendAdditionalArmiesToOccupy(int numberOfArmies)
         {
-            var updatedTerritories = _armyModifier.SendInAdditionalArmiesToOccupy(_gameData.Territories, _attackingRegion, _occupiedRegion, numberOfArmies);
+            var updatedTerritories = _territoryModifier.SendInAdditionalArmiesToOccupy(_gameData.Territories, _attackingRegion, _occupiedRegion, numberOfArmies);
             var gameData = _gameDataFactory.Create(_gameData.CurrentPlayer, Players, updatedTerritories, Deck);
 
             _gameStateConductor.ContinueWithAttackPhase(gameData, ConqueringAchievement.AwardCardAtEndOfTurn);

@@ -3,13 +3,13 @@ using System.Linq;
 
 namespace RISK.Core
 {
-    public interface IArmyModifier
+    public interface ITerritoryModifier
     {
         IReadOnlyList<ITerritory> PlaceDraftArmies(IReadOnlyList<ITerritory> territories, IRegion regionToReinforce, int numberOfArmiesToPlace);
         IReadOnlyList<ITerritory> SendInAdditionalArmiesToOccupy(IReadOnlyList<ITerritory> territories, IRegion attackingRegion, IRegion occupiedRegion, int numberOfAdditionalArmiesToSendIn);
     }
 
-    public class ArmyModifier : IArmyModifier
+    public class TerritoryModifier : ITerritoryModifier
     {
         public IReadOnlyList<ITerritory> PlaceDraftArmies(IReadOnlyList<ITerritory> territories, IRegion regionToReinforce, int numberOfArmiesToPlace)
         {

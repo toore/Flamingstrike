@@ -14,7 +14,7 @@ namespace RISK.Tests.GameEngine.GameStates
     {
         private readonly IGameStateConductor _gameStateConductor;
         private readonly IGameDataFactory _gameDataFactory;
-        private readonly IArmyModifier _armyModifier;
+        private readonly ITerritoryModifier _territoryModifier;
         private readonly ITerritory _attackingTerritory;
         private readonly ITerritory _occupiedTerritory;
         private readonly IRegion _attackingRegion;
@@ -28,7 +28,7 @@ namespace RISK.Tests.GameEngine.GameStates
         {
             _gameStateConductor = Substitute.For<IGameStateConductor>();
             _gameDataFactory = Substitute.For<IGameDataFactory>();
-            _armyModifier = Substitute.For<IArmyModifier>();
+            _territoryModifier = Substitute.For<ITerritoryModifier>();
 
             _attackingTerritory = Substitute.For<ITerritory>();
             _occupiedTerritory = Substitute.For<ITerritory>();
@@ -123,7 +123,7 @@ namespace RISK.Tests.GameEngine.GameStates
         {
             var updatedTerritoriesAfterAdditionalArmiesHaveBeenSentToOccupy = new ITerritory[] { Make.Territory.Build(), Make.Territory.Build() };
             var newGameData = Make.GameData.Build();
-            _armyModifier.SendInAdditionalArmiesToOccupy(
+            _territoryModifier.SendInAdditionalArmiesToOccupy(
                 Argx.IsEquivalentReadOnly(_attackingTerritory, _occupiedTerritory),
                 _attackingRegion,
                 _occupiedRegion,
@@ -182,7 +182,7 @@ namespace RISK.Tests.GameEngine.GameStates
 
         private IGameState Create(GameData gameData)
         {
-            return new SendArmiesToOccupyGameState(_gameStateConductor, _gameDataFactory, _armyModifier, gameData, _attackingRegion, _occupiedRegion);
+            return new SendArmiesToOccupyGameState(_gameStateConductor, _gameDataFactory, _territoryModifier, gameData, _attackingRegion, _occupiedRegion);
         }
 
         [Fact]

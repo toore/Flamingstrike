@@ -189,7 +189,7 @@ namespace RISK.Tests.GuiWpf.Specifications
             var dice = new Dice(randomWrapper);
             var dicesRoller = new DicesRoller(dice);
             var armyDraftCalculator = new ArmyDraftCalculator(_continents);
-            var armyModifier = new ArmyModifier();
+            var armyModifier = new TerritoryModifier();
             var battle = new Battle(dicesRoller, new ArmiesLostCalculator());
             var gameDataFactory = new GameDataFactory();
             var attackPhaseRules = new AttackPhaseRules();

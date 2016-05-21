@@ -15,7 +15,7 @@ namespace RISK.Tests.GameEngine.GameStates
     {
         private readonly IGameStateConductor _gameStateConductor;
         private readonly IGameDataFactory _gameDataFactory;
-        private readonly IArmyModifier _armyModifier;
+        private readonly ITerritoryModifier _territoryModifier;
 
         private readonly ITerritory _territory;
         private readonly ITerritory _anotherTerritory;
@@ -30,7 +30,7 @@ namespace RISK.Tests.GameEngine.GameStates
         {
             _gameStateConductor = Substitute.For<IGameStateConductor>();
             _gameDataFactory = Substitute.For<IGameDataFactory>();
-            _armyModifier = Substitute.For<IArmyModifier>();
+            _territoryModifier = Substitute.For<ITerritoryModifier>();
 
             _territory = Substitute.For<ITerritory>();
             _anotherTerritory = Substitute.For<ITerritory>();
@@ -84,7 +84,7 @@ namespace RISK.Tests.GameEngine.GameStates
         {
             var updatedTerritories = new ITerritory[] { Make.Territory.Build() };
             var newGameData = Make.GameData.Build();
-            _armyModifier
+            _territoryModifier
                 .PlaceDraftArmies(Argx.IsEquivalentReadOnly(_territory, _anotherTerritory), _region, 2)
                 .Returns(updatedTerritories);
             _gameDataFactory.Create(
@@ -105,7 +105,7 @@ namespace RISK.Tests.GameEngine.GameStates
         {
             var updatedTerritories = new ITerritory[] { Make.Territory.Build() };
             var newGameData = Make.GameData.Build();
-            _armyModifier
+            _territoryModifier
                 .PlaceDraftArmies(Argx.IsEquivalentReadOnly(_territory, _anotherTerritory), _region, 2)
                 .Returns(updatedTerritories);
             _gameDataFactory.Create(
@@ -205,7 +205,7 @@ namespace RISK.Tests.GameEngine.GameStates
 
         private IGameState Create(GameData gameData, int numberOfArmiesToDraft = 1)
         {
-            return new DraftArmiesGameState(_gameStateConductor, _gameDataFactory, _armyModifier, gameData, numberOfArmiesToDraft);
+            return new DraftArmiesGameState(_gameStateConductor, _gameDataFactory, _territoryModifier, gameData, numberOfArmiesToDraft);
         }
 
         [Fact]

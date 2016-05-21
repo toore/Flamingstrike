@@ -40,7 +40,7 @@
   <ItemGroup>
     <Compile Include="ArmiesLostCalculator.cs" />
     <Compile Include="ArmyDraftCalculator.cs" />
-    <Compile Include="ArmyModifier.cs" />
+    <Compile Include="TerritoryModifier.cs" />
     <Compile Include="AttackPhaseRules.cs" />
     <Compile Include="Battle.cs" />
     <Compile Include="BattleOutcome.cs" />

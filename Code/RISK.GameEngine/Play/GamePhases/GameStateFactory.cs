@@ -16,19 +16,19 @@ namespace RISK.GameEngine.Play.GamePhases
         private readonly IGameDataFactory _gameDataFactory;
         private readonly IBattle _battle;
         private readonly IAttackPhaseRules _attackPhaseRules;
-        private readonly IArmyModifier _armyModifier;
+        private readonly ITerritoryModifier _territoryModifier;
 
-        public GameStateFactory(IGameDataFactory gameDataFactory, IArmyModifier armyModifier, IBattle battle, IAttackPhaseRules attackPhaseRules)
+        public GameStateFactory(IGameDataFactory gameDataFactory, ITerritoryModifier territoryModifier, IBattle battle, IAttackPhaseRules attackPhaseRules)
         {
             _gameDataFactory = gameDataFactory;
             _battle = battle;
             _attackPhaseRules = attackPhaseRules;
-            _armyModifier = armyModifier;
+            _territoryModifier = territoryModifier;
         }
 
         public IGameState CreateDraftArmiesGameState(IGameStateConductor gameStateConductor, GameData gameData, int numberOfArmiesToDraft)
         {
-            return new DraftArmiesGameState(gameStateConductor, _gameDataFactory, _armyModifier, gameData, numberOfArmiesToDraft);
+            return new DraftArmiesGameState(gameStateConductor, _gameDataFactory, _territoryModifier, gameData, numberOfArmiesToDraft);
         }
 
         public IGameState CreateAttackGameState(IGameStateConductor gameStateConductor, GameData gameData)
@@ -38,7 +38,7 @@ namespace RISK.GameEngine.Play.GamePhases
 
         public IGameState CreateSendArmiesToOccupyGameState(IGameStateConductor gameStateConductor, GameData gameData, IRegion attackingRegion, IRegion occupiedRegion)
         {
-            return new SendArmiesToOccupyGameState(gameStateConductor, _gameDataFactory, _armyModifier, gameData, attackingRegion, occupiedRegion);
+            return new SendArmiesToOccupyGameState(gameStateConductor, _gameDataFactory, _territoryModifier, gameData, attackingRegion, occupiedRegion);
         }
 
         public IGameState CreateFortifyState(IGameStateConductor gameStateConductor, GameData gameData, IRegion sourceRegion, IRegion destinationRegion, int numberOfArmiesToFortify)
