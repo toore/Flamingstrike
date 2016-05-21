@@ -1,9 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
-using RISK.Core;
-using RISK.GameEngine.Extensions;
 
-namespace RISK.GameEngine.Play
+namespace RISK.Core
 {
     public interface IArmyModifier
     {
@@ -42,6 +40,18 @@ namespace RISK.GameEngine.Play
                 .ToList();
 
             return updatedTerritories;
+        }
+    }
+
+    public static class EnumerableExtensions
+    {
+        public static IEnumerable<T> Replace<T>(this IEnumerable<T> items, T exclude, T include)
+        {
+            var updatedList = items
+                .Except(new[] { exclude })
+                .Union(new[] { include });
+
+            return updatedList;
         }
     }
 }

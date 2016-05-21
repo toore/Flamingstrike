@@ -6,7 +6,7 @@ namespace RISK.Core
 {
     public interface IArmyDraftCalculator
     {
-        int Calculate(IPlayer currentPlayer, IEnumerable<ITerritory> territories);
+        int Calculate(IPlayer currentPlayer, IReadOnlyList<ITerritory> territories);
     }
 
     public class ArmyDraftCalculator : IArmyDraftCalculator
@@ -18,7 +18,7 @@ namespace RISK.Core
             _continents = continents;
         }
 
-        public int Calculate(IPlayer currentPlayer, IEnumerable<ITerritory> territories)
+        public int Calculate(IPlayer currentPlayer, IReadOnlyList<ITerritory> territories)
         {
             var armiesDraftedBasedOnTerritoriesOccupied = CalculateArmiesDraftedBasedOnTerritoriesOccupied(currentPlayer, territories);
             var armiesDraftedBasedOnContinentsOccupied = CalculateArmiesDraftedBasedOnContinentsOccupied(currentPlayer, territories);

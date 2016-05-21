@@ -38,7 +38,6 @@
     <Compile Include="Continents.cs" />
     <Compile Include="Extensions\EnumerableExtensions.cs" />
     <Compile Include="PlayerType.cs" />
-    <Compile Include="Play\ArmyModifier.cs" />
     <Compile Include="Play\Deck.cs" />
     <Compile Include="Play\DeckFactory.cs" />
     <Compile Include="Play\Game.cs" />
