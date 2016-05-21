@@ -40,7 +40,8 @@
   <ItemGroup>
     <Compile Include="ArmiesLostCalculator.cs" />
     <Compile Include="ArmyDraftCalculator.cs" />
-    <Compile Include="TerritoryModifier.cs" />
+    <Compile Include="EnumerableExtensions.cs" />
+    <Compile Include="ArmyDrafter.cs" />
     <Compile Include="AttackPhaseRules.cs" />
     <Compile Include="Battle.cs" />
     <Compile Include="BattleOutcome.cs" />
@@ -58,6 +59,7 @@
     <Compile Include="Shuffling\RandomWrapper.cs" />
     <Compile Include="Shuffling\ShuffleExtensions.cs" />
     <Compile Include="Territory.cs" />
+    <Compile Include="TerritoryOccupier.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

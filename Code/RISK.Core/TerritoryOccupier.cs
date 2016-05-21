@@ -3,27 +3,13 @@ using System.Linq;
 
 namespace RISK.Core
 {
-    public interface ITerritoryModifier
+    public interface ITerritoryOccupier
     {
-        IReadOnlyList<ITerritory> PlaceDraftArmies(IReadOnlyList<ITerritory> territories, IRegion regionToReinforce, int numberOfArmiesToPlace);
         IReadOnlyList<ITerritory> SendInAdditionalArmiesToOccupy(IReadOnlyList<ITerritory> territories, IRegion attackingRegion, IRegion occupiedRegion, int numberOfAdditionalArmiesToSendIn);
     }
 
-    public class TerritoryModifier : ITerritoryModifier
+    public class TerritoryOccupier : ITerritoryOccupier
     {
-        public IReadOnlyList<ITerritory> PlaceDraftArmies(IReadOnlyList<ITerritory> territories, IRegion regionToReinforce, int numberOfArmiesToPlace)
-        {
-            var territoryToReinforce = territories.Single(x => x.Region == regionToReinforce);
-            var currentArmies = territoryToReinforce.Armies;
-            var updatedTerritory = new Territory(regionToReinforce, territoryToReinforce.Player, currentArmies + numberOfArmiesToPlace);
-
-            var updatedTerritories = territories
-                .Replace(territoryToReinforce, updatedTerritory)
-                .ToList();
-
-            return updatedTerritories;
-        }
-
         public IReadOnlyList<ITerritory> SendInAdditionalArmiesToOccupy(IReadOnlyList<ITerritory> territories, IRegion attackingRegion, IRegion occupiedRegion, int numberOfAdditionalArmiesToSendIn)
         {
             var attackingTerritory = territories.Single(x => x.Region == attackingRegion);
@@ -40,18 +26,6 @@ namespace RISK.Core
                 .ToList();
 
             return updatedTerritories;
-        }
-    }
-
-    public static class EnumerableExtensions
-    {
-        public static IEnumerable<T> Replace<T>(this IEnumerable<T> items, T exclude, T include)
-        {
-            var updatedList = items
-                .Except(new[] { exclude })
-                .Union(new[] { include });
-
-            return updatedList;
         }
     }
 }

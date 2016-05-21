@@ -70,14 +70,15 @@ namespace GuiWpf.ViewModels
             var randomWrapper = new RandomWrapper();
             var shuffle = new FisherYatesShuffle(randomWrapper);
             var deckFactory = new DeckFactory(regions, shuffle);
-            var armyModifier = new TerritoryModifier();
             var battleCalculator = new ArmiesLostCalculator();
             var dice = new Dice(randomWrapper);
             var diceRoller = new DicesRoller(dice);
             var battle = new Battle(diceRoller, battleCalculator);
             var gameDataFactory = new GameDataFactory();
+            var armyDrafter = new ArmyDrafter();
+            var territoryOccupier = new TerritoryOccupier();
             var attackPhaseRules = new AttackPhaseRules();
-            var gameStateFactory = new GameStateFactory(gameDataFactory, armyModifier, battle, attackPhaseRules);
+            var gameStateFactory = new GameStateFactory(gameDataFactory, armyDrafter, territoryOccupier, battle, attackPhaseRules);
             var armyDraftCalculator = new ArmyDraftCalculator(continents);
             var gameStateFsm = new GameStateFsm();
             var gameStateConductor = new GameStateConductor(gameStateFactory, armyDraftCalculator, gameDataFactory, gameStateFsm);
