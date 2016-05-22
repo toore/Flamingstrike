@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using FluentAssertions;
 using NSubstitute;
 using RISK.Core;
@@ -14,8 +15,8 @@ namespace RISK.Tests.GameEngine.GameStates
     {
         private readonly IGameStateConductor _gameStateConductor;
         private readonly IGameDataFactory _gameDataFactory;
-        private readonly IBattle _battle;
-        private readonly IAttackPhaseRules _attackPhaseRules;
+        private readonly IAttacker _attacker;
+        private readonly IFortifier _fortifier;
         private readonly ITerritory _territory;
         private readonly ITerritory _anotherTerritory;
         private readonly IRegion _region;
@@ -29,8 +30,8 @@ namespace RISK.Tests.GameEngine.GameStates
         {
             _gameStateConductor = Substitute.For<IGameStateConductor>();
             _gameDataFactory = Substitute.For<IGameDataFactory>();
-            _battle = Substitute.For<IBattle>();
-            _attackPhaseRules = Substitute.For<IAttackPhaseRules>();
+            _attacker = Substitute.For<IAttacker>();
+            _fortifier = Substitute.For<IFortifier>();
 
             _territory = Substitute.For<ITerritory>();
             _anotherTerritory = Substitute.For<ITerritory>();
@@ -87,7 +88,7 @@ namespace RISK.Tests.GameEngine.GameStates
         [Fact]
         public void Can_attack()
         {
-            _attackPhaseRules.CanAttack(
+            _attacker.CanAttack(
                 Argx.IsEquivalentReadOnly(_territory, _anotherTerritory),
                 _region, _anotherRegion)
                 .Returns(true);
@@ -147,23 +148,18 @@ namespace RISK.Tests.GameEngine.GameStates
         [Fact]
         public void Attacks_but_territory_is_defended()
         {
-            var updatedAttackingTerritory = Substitute.For<ITerritory>();
-            var updatedDefendingTerritory = Substitute.For<ITerritory>();
-            var battleResult = Substitute.For<IBattleOutcome>();
+            var updatedTerritories = new List<ITerritory>();
+            var attackOutcome = new AttackOutcome(updatedTerritories, DefendingArmy.IsNotEliminated);
             var newGameData = Make.GameData.Build();
-            battleResult.UpdatedAttackingTerritory.Returns(updatedAttackingTerritory);
-            battleResult.UpdatedDefendingTerritory.Returns(updatedDefendingTerritory);
-            _battle.Attack(_territory, _anotherTerritory).Returns(battleResult);
+            _attacker.Attack(
+                Argx.IsEquivalentReadOnly(_territory, _anotherTerritory),
+                _region,
+                _anotherRegion).Returns(attackOutcome);
             _gameDataFactory.Create(
                 _currentPlayer,
                 Argx.IsEquivalentReadOnly(_currentPlayer, _anotherPlayer),
-                Argx.IsEquivalentReadOnly(updatedAttackingTerritory, updatedDefendingTerritory),
-                _deck)
-                .Returns(newGameData);
-            _attackPhaseRules.CanAttack(
-                Argx.IsEquivalentReadOnly(_territory, _anotherTerritory),
-                _region, _anotherRegion)
-                .Returns(true);
+                updatedTerritories,
+                _deck).Returns(newGameData);
 
             var sut = Create(_gameData);
             sut.Attack(_region, _anotherRegion);
@@ -176,24 +172,18 @@ namespace RISK.Tests.GameEngine.GameStates
         [Fact]
         public void Attacks_and_defeats_defender()
         {
-            var updatedAttackingTerritory = Substitute.For<ITerritory>();
-            var defeatedTerritory = Substitute.For<ITerritory>();
-            var battleResult = Substitute.For<IBattleOutcome>();
+            var updatedTerritories = new List<ITerritory>();
+            var attackOutcome = new AttackOutcome(updatedTerritories, DefendingArmy.IsEliminated);
             var newGameData = Make.GameData.Build();
-            battleResult.UpdatedAttackingTerritory.Returns(updatedAttackingTerritory);
-            battleResult.UpdatedDefendingTerritory.Returns(defeatedTerritory);
-            battleResult.IsDefenderDefeated().Returns(true);
-            _battle.Attack(_territory, _anotherTerritory).Returns(battleResult);
+            _attacker.Attack(
+                Argx.IsEquivalentReadOnly(_territory, _anotherTerritory),
+                _region,
+                _anotherRegion).Returns(attackOutcome);
             _gameDataFactory.Create(
                 _currentPlayer,
                 Argx.IsEquivalentReadOnly(_currentPlayer, _anotherPlayer),
-                Argx.IsEquivalentReadOnly(updatedAttackingTerritory, defeatedTerritory),
-                _deck)
-                .Returns(newGameData);
-            _attackPhaseRules.CanAttack(
-                Argx.IsEquivalentReadOnly(_territory, _anotherTerritory),
-                _region, _anotherRegion)
-                .Returns(true);
+                updatedTerritories,
+                _deck).Returns(newGameData);
 
             var sut = Create(_gameData);
             sut.Attack(_region, _anotherRegion);
@@ -235,7 +225,7 @@ namespace RISK.Tests.GameEngine.GameStates
         [Fact]
         public void Can_fortify()
         {
-            _attackPhaseRules.CanFortify(
+            _fortifier.CanFortify(
                 Argx.IsEquivalentReadOnly(_territory, _anotherTerritory),
                 _region, _anotherRegion)
                 .Returns(true);
@@ -255,7 +245,7 @@ namespace RISK.Tests.GameEngine.GameStates
                 Argx.IsEquivalentReadOnly(_territory, _anotherTerritory),
                 _deck)
                 .Returns(newGameData);
-            _attackPhaseRules.CanFortify(
+            _fortifier.CanFortify(
                 Argx.IsEquivalentReadOnly(_territory, _anotherTerritory),
                 _region, _anotherRegion)
                 .Returns(true);
@@ -327,14 +317,13 @@ namespace RISK.Tests.GameEngine.GameStates
         public void Player_should_receive_card_when_turn_ends()
         {
             var topDeckCard = Substitute.For<ICard>();
-            var battleResult = Substitute.For<IBattleOutcome>();
-            battleResult.IsDefenderDefeated().Returns(true);
-            _battle.Attack(_territory, _anotherTerritory).Returns(battleResult);
-            _deck.Draw().Returns(topDeckCard);
-            _attackPhaseRules.CanAttack(
+            var updatedTerritories = new List<ITerritory>();
+            var attackOutcome = new AttackOutcome(updatedTerritories, DefendingArmy.IsEliminated);
+            _attacker.Attack(
                 Argx.IsEquivalentReadOnly(_territory, _anotherTerritory),
-                _region, _anotherRegion)
-                .Returns(true);
+                _region,
+                _anotherRegion).Returns(attackOutcome);
+            _deck.Draw().Returns(topDeckCard);
 
             var sut = Create(_gameData);
             sut.Attack(_region, _anotherRegion);
@@ -347,14 +336,13 @@ namespace RISK.Tests.GameEngine.GameStates
         public void Player_should_not_receive_card_after_attack()
         {
             var topDeckCard = Substitute.For<ICard>();
-            var battleResult = Substitute.For<IBattleOutcome>();
-            battleResult.IsDefenderDefeated().Returns(true);
-            _battle.Attack(_territory, _anotherTerritory).Returns(battleResult);
-            _deck.Draw().Returns(topDeckCard);
-            _attackPhaseRules.CanAttack(
+            var updatedTerritories = new List<ITerritory>();
+            var attackOutcome = new AttackOutcome(updatedTerritories, DefendingArmy.IsEliminated);
+            _attacker.Attack(
                 Argx.IsEquivalentReadOnly(_territory, _anotherTerritory),
-                _region, _anotherRegion)
-                .Returns(true);
+                _region,
+                _anotherRegion).Returns(attackOutcome);
+            _deck.Draw().Returns(topDeckCard);
 
             var sut = Create(_gameData);
             sut.Attack(_region, _anotherRegion);
@@ -365,13 +353,12 @@ namespace RISK.Tests.GameEngine.GameStates
         [Fact]
         public void Player_should_not_receive_card_when_turn_ends()
         {
-            var battleResult = Substitute.For<IBattleOutcome>();
-            battleResult.IsDefenderDefeated().Returns(false);
-            _battle.Attack(_territory, _anotherTerritory).Returns(battleResult);
-            _attackPhaseRules.CanAttack(
+            var updatedTerritories = new List<ITerritory>();
+            var attackOutcome = new AttackOutcome(updatedTerritories, DefendingArmy.IsNotEliminated);
+            _attacker.Attack(
                 Argx.IsEquivalentReadOnly(_territory, _anotherTerritory),
-                _region, _anotherRegion)
-                .Returns(true);
+                _region,
+                _anotherRegion).Returns(attackOutcome);
 
             var sut = Create(_gameData);
             sut.Attack(_region, _anotherRegion);
@@ -386,21 +373,16 @@ namespace RISK.Tests.GameEngine.GameStates
             var aCard = Substitute.For<ICard>();
             var aSecondCard = Substitute.For<ICard>();
             var eliminatedPlayersCards = new[] { aCard, aSecondCard };
-            var battleResult = Substitute.For<IBattleOutcome>();
-            var updatedAttackingTerritory = Substitute.For<ITerritory>();
-            var updatedDefendingTerritory = Substitute.For<ITerritory>();
             _anotherPlayer.AddCard(aCard);
             _anotherPlayer.AddCard(aSecondCard);
-            battleResult.IsDefenderDefeated().Returns(true);
-            battleResult.UpdatedAttackingTerritory.Returns(updatedAttackingTerritory);
-            battleResult.UpdatedDefendingTerritory.Returns(updatedDefendingTerritory);
-            _battle.Attack(_territory, _anotherTerritory).Returns(battleResult);
-            _attackPhaseRules.CanAttack(
+            var updatedTerritories = new List<ITerritory>();
+            var attackOutcome = new AttackOutcome(updatedTerritories, DefendingArmy.IsEliminated);
+            _attacker.Attack(
                 Argx.IsEquivalentReadOnly(_territory, _anotherTerritory),
-                _region, _anotherRegion)
-                .Returns(true);
-            _attackPhaseRules.IsPlayerEliminated(
-                Argx.IsEquivalentReadOnly(updatedAttackingTerritory, updatedDefendingTerritory),
+                _region,
+                _anotherRegion).Returns(attackOutcome);
+            _attacker.IsPlayerEliminated(
+                updatedTerritories,
                 _anotherPlayer)
                 .Returns(true);
 
@@ -414,27 +396,20 @@ namespace RISK.Tests.GameEngine.GameStates
         [Fact]
         public void When_last_defending_player_is_eliminated_the_game_is_over()
         {
-            var battleResult = Substitute.For<IBattleOutcome>();
-            var updatedTerritory = Substitute.For<ITerritory>();
-            var anotherUpdatedTerritory = Substitute.For<ITerritory>();
             var newGameData = Make.GameData.Build();
-            battleResult.IsDefenderDefeated().Returns(true);
-            updatedTerritory.Player.Returns(_currentPlayer);
-            anotherUpdatedTerritory.Player.Returns(_currentPlayer);
-            battleResult.UpdatedAttackingTerritory.Returns(updatedTerritory);
-            battleResult.UpdatedDefendingTerritory.Returns(anotherUpdatedTerritory);
-            _battle.Attack(_territory, _anotherTerritory).Returns(battleResult);
+            var updatedTerritories = new List<ITerritory>();
+            var attackOutcome = new AttackOutcome(updatedTerritories, DefendingArmy.IsEliminated);
+            _attacker.Attack(
+                Argx.IsEquivalentReadOnly(_territory, _anotherTerritory),
+                _region,
+                _anotherRegion).Returns(attackOutcome);
             _gameDataFactory.Create(
                 _currentPlayer,
                 Argx.IsEquivalentReadOnly(_currentPlayer, _anotherPlayer),
-                Argx.IsEquivalentReadOnly(updatedTerritory, anotherUpdatedTerritory),
+                updatedTerritories,
                 _deck)
                 .Returns(newGameData);
-            _attackPhaseRules.CanAttack(
-                Argx.IsEquivalentReadOnly(_territory, _anotherTerritory),
-                _region, _anotherRegion)
-                .Returns(true);
-            _attackPhaseRules.IsGameOver(Argx.IsEquivalent(updatedTerritory, anotherUpdatedTerritory)).Returns(true);
+            _attacker.IsGameOver(updatedTerritories).Returns(true);
 
             var sut = Create(_gameData);
             sut.Attack(_region, _anotherRegion);
@@ -444,7 +419,7 @@ namespace RISK.Tests.GameEngine.GameStates
 
         private IGameState Create(GameData gameData)
         {
-            return new AttackGameState(_gameStateConductor, _gameDataFactory, _battle, _attackPhaseRules, gameData);
+            return new AttackGameState(_gameStateConductor, _gameDataFactory, _attacker, _fortifier, gameData);
         }
 
         [Fact]

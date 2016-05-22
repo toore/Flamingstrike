@@ -42,10 +42,11 @@
     <Compile Include="ArmyDraftCalculator.cs" />
     <Compile Include="EnumerableExtensions.cs" />
     <Compile Include="ArmyDrafter.cs" />
-    <Compile Include="AttackPhaseRules.cs" />
     <Compile Include="Battle.cs" />
     <Compile Include="BattleOutcome.cs" />
     <Compile Include="Dices.cs" />
+    <Compile Include="Attacker.cs" />
+    <Compile Include="Fortifier.cs" />
     <Compile Include="IContinents.cs" />
     <Compile Include="Dice.cs" />
     <Compile Include="DicesRoller.cs" />

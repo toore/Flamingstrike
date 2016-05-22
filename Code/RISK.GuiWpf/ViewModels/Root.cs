@@ -26,7 +26,8 @@ namespace GuiWpf.ViewModels
         public IUserInteractorFactory UserInteractorFactory { get; set; }
 
         public Root() : this(
-            taskEx: new TaskEx()) {}
+            taskEx: new TaskEx())
+        { }
 
         public Root(ITaskEx taskEx)
         {
@@ -77,8 +78,9 @@ namespace GuiWpf.ViewModels
             var gameDataFactory = new GameDataFactory();
             var armyDrafter = new ArmyDrafter();
             var territoryOccupier = new TerritoryOccupier();
-            var attackPhaseRules = new AttackPhaseRules();
-            var gameStateFactory = new GameStateFactory(gameDataFactory, armyDrafter, territoryOccupier, battle, attackPhaseRules);
+            var fortifier = new Fortifier();
+            var attacker = new Attacker(battle);
+            var gameStateFactory = new GameStateFactory(gameDataFactory, armyDrafter, territoryOccupier, attacker, fortifier);
             var armyDraftCalculator = new ArmyDraftCalculator(continents);
             var gameStateFsm = new GameStateFsm();
             var gameStateConductor = new GameStateConductor(gameStateFactory, armyDraftCalculator, gameDataFactory, gameStateFsm);

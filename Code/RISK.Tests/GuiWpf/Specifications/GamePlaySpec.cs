@@ -193,8 +193,9 @@ namespace RISK.Tests.GuiWpf.Specifications
             var gameDataFactory = new GameDataFactory();
             var armyDrafter = new ArmyDrafter();
             var territoryOccupier = new TerritoryOccupier();
-            var attackPhaseRules = new AttackPhaseRules();
-            var gameStateFactory = new GameStateFactory(gameDataFactory, armyDrafter, territoryOccupier, battle, attackPhaseRules);
+            var fortifier = new Fortifier();
+            var attacker = new Attacker(battle);
+            var gameStateFactory = new GameStateFactory(gameDataFactory, armyDrafter, territoryOccupier, attacker, fortifier);
             var gameStateFsm = new GameStateFsm();
             var gameStateConductor = new GameStateConductor(gameStateFactory, armyDraftCalculator, gameDataFactory, gameStateFsm);
             _game = new Game(gameDataFactory, gameStateConductor, gameStateFsm, _players, _territories, null);

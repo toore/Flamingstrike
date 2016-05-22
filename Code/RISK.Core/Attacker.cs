@@ -1,18 +1,26 @@
-﻿using System.Collections.Generic;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace RISK.Core
 {
-    public interface IAttackPhaseRules
+    public interface IAttacker
     {
         bool CanAttack(IReadOnlyList<ITerritory> territories, IRegion attackingRegion, IRegion defendingRegion);
-        bool CanFortify(IReadOnlyList<ITerritory> territories, IRegion sourceRegion, IRegion destinationRegion);
+        AttackOutcome Attack(IReadOnlyList<ITerritory> territories, IRegion attackingRegion, IRegion defendingRegion);
         bool IsPlayerEliminated(IEnumerable<ITerritory> territories, IPlayer player);
         bool IsGameOver(IEnumerable<ITerritory> territories);
     }
 
-    public class AttackPhaseRules : IAttackPhaseRules
+    public class Attacker : IAttacker
     {
+        private readonly IBattle _battle;
+
+        public Attacker(IBattle battle)
+        {
+            _battle = battle;
+        }
+
         public bool CanAttack(IReadOnlyList<ITerritory> territories, IRegion attackingRegion, IRegion defendingRegion)
         {
             var attackingTerritory = territories.Single(x => x.Region == attackingRegion);
@@ -43,19 +51,27 @@ namespace RISK.Core
             return attackingTerritory.GetNumberOfArmiesAvailableForAttack() > 0;
         }
 
-        public bool CanFortify(IReadOnlyList<ITerritory> territories, IRegion sourceRegion, IRegion destinationRegion)
+        public AttackOutcome Attack(IReadOnlyList<ITerritory> territories, IRegion attackingRegion, IRegion defendingRegion)
         {
-            var sourceTerritory = territories.Single(x => x.Region == sourceRegion);
-            var destinationTerritory = territories.Single(x => x.Region == destinationRegion);
-            var playerOccupiesBothTerritories = sourceTerritory.Player == destinationTerritory.Player;
-            var hasBorder = sourceRegion.HasBorder(destinationRegion);
+            if (!CanAttack(territories, attackingRegion, defendingRegion))
+            {
+                throw new InvalidOperationException("Can't attack");
+            }
 
-            var canFortify =
-                playerOccupiesBothTerritories
-                &&
-                hasBorder;
+            var attackingTerritory = territories.Single(territory => territory.Region == attackingRegion);
+            var defendingTerritory = territories.Single(territory => territory.Region == defendingRegion);
 
-            return canFortify;
+            var battleResult = _battle.Attack(attackingTerritory, defendingTerritory);
+
+            var updatedTerritories = territories
+                .Replace(attackingTerritory, battleResult.UpdatedAttackingTerritory)
+                .Replace(defendingTerritory, battleResult.UpdatedDefendingTerritory)
+                .ToList();
+
+            var attackOutcome = battleResult.IsDefenderDefeated() ? DefendingArmy.IsEliminated
+                : DefendingArmy.IsNotEliminated;
+
+            return new AttackOutcome(updatedTerritories, attackOutcome);
         }
 
         public bool IsPlayerEliminated(IEnumerable<ITerritory> territories, IPlayer player)
@@ -73,6 +89,24 @@ namespace RISK.Core
                 .Count() == 1;
 
             return allTerritoriesAreOccupiedBySamePlayer;
+        }
+    }
+
+    public enum DefendingArmy
+    {
+        IsNotEliminated,
+        IsEliminated
+    }
+
+    public class AttackOutcome
+    {
+        public IReadOnlyList<ITerritory> Territories { get; }
+        public DefendingArmy DefendingArmy { get; }
+
+        public AttackOutcome(IReadOnlyList<ITerritory> territories, DefendingArmy defendingArmy)
+        {
+            Territories = territories;
+            DefendingArmy = defendingArmy;
         }
     }
 }
