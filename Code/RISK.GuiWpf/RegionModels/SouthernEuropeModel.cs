@@ -2,7 +2,7 @@ using System.Windows;
 using GuiWpf.Properties;
 using RISK.Core;
 
-namespace GuiWpf.TerritoryModels
+namespace GuiWpf.RegionModels
 {
     public class SouthernEuropeModel : RegionModelBase
     {

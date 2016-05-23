@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Windows.Media;
-using GuiWpf.TerritoryModels;
+using GuiWpf.RegionModels;
 using RISK.Core;
 
 namespace GuiWpf.ViewModels.Gameplay.Map

@@ -2,8 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using GuiWpf.Extensions;
+using GuiWpf.RegionModels;
 using GuiWpf.Services;
-using GuiWpf.TerritoryModels;
 using RISK.Core;
 
 namespace GuiWpf.ViewModels.Gameplay.Map

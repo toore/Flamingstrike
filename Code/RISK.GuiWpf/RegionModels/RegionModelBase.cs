@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using RISK.Core;
 
-namespace GuiWpf.TerritoryModels
+namespace GuiWpf.RegionModels
 {
     public abstract class RegionModelBase : IRegionModel
     {
