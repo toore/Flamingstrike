@@ -127,14 +127,12 @@ namespace RISK.Tests.GameEngine.GameStates
                 Argx.IsEquivalentReadOnly(_attackingTerritory, _occupiedTerritory),
                 _attackingRegion,
                 _occupiedRegion,
-                1)
-                .Returns(updatedTerritoriesAfterAdditionalArmiesHaveBeenSentToOccupy);
+                1).Returns(updatedTerritoriesAfterAdditionalArmiesHaveBeenSentToOccupy);
             _gameDataFactory.Create(
                 _currentPlayer,
                 Argx.IsEquivalentReadOnly(_currentPlayer, _anotherPlayer),
                 Argx.IsEquivalentReadOnly(updatedTerritoriesAfterAdditionalArmiesHaveBeenSentToOccupy),
-                _deck)
-                .Returns(newGameData);
+                _deck).Returns(newGameData);
 
             var sut = Create(_gameData);
             sut.SendAdditionalArmiesToOccupy(1);

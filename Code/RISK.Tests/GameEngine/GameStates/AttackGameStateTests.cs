@@ -90,7 +90,7 @@ namespace RISK.Tests.GameEngine.GameStates
         {
             _attacker.CanAttack(
                 Argx.IsEquivalentReadOnly(_territory, _anotherTerritory),
-                _region, 
+                _region,
                 _anotherRegion).Returns(true);
 
             var sut = Create(_gameData);
@@ -113,7 +113,7 @@ namespace RISK.Tests.GameEngine.GameStates
                 Argx.IsEquivalentReadOnly(_territory, _anotherTerritory),
                 _region,
                 _anotherRegion).Returns(true);
-            _territory.Player.Returns(_anotherPlayer);  
+            _territory.Player.Returns(_anotherPlayer);
 
             var sut = Create(_gameData);
 
@@ -202,7 +202,7 @@ namespace RISK.Tests.GameEngine.GameStates
         {
             _fortifier.CanFortify(
                 Argx.IsEquivalentReadOnly(_territory, _anotherTerritory),
-                _region, 
+                _region,
                 _anotherRegion).Returns(true);
 
             var sut = Create(_gameData);
@@ -338,8 +338,7 @@ namespace RISK.Tests.GameEngine.GameStates
                 _anotherRegion).Returns(attackOutcome);
             _attacker.IsPlayerEliminated(
                 updatedTerritories,
-                _anotherPlayer)
-                .Returns(true);
+                _anotherPlayer).Returns(true);
 
             var sut = Create(_gameData);
             sut.Attack(_region, _anotherRegion);
@@ -362,8 +361,7 @@ namespace RISK.Tests.GameEngine.GameStates
                 _currentPlayer,
                 Argx.IsEquivalentReadOnly(_currentPlayer, _anotherPlayer),
                 updatedTerritories,
-                _deck)
-                .Returns(newGameData);
+                _deck).Returns(newGameData);
             _attacker.IsGameOver(updatedTerritories).Returns(true);
 
             var sut = Create(_gameData);

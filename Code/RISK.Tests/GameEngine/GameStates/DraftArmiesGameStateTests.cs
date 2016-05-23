@@ -84,15 +84,15 @@ namespace RISK.Tests.GameEngine.GameStates
         {
             var updatedTerritories = new ITerritory[] { Make.Territory.Build() };
             var newGameData = Make.GameData.Build();
-            _armyDrafter
-                .PlaceDraftArmies(Argx.IsEquivalentReadOnly(_territory, _anotherTerritory), _region, 2)
-                .Returns(updatedTerritories);
+            _armyDrafter.PlaceDraftArmies(
+                Argx.IsEquivalentReadOnly(_territory, _anotherTerritory),
+                _region,
+                2).Returns(updatedTerritories);
             _gameDataFactory.Create(
                 _currentPlayer,
                 Argx.IsEquivalentReadOnly(_currentPlayer, _anotherPlayer),
                 Argx.IsEquivalentReadOnly(updatedTerritories),
-                _deck)
-                .Returns(newGameData);
+                _deck).Returns(newGameData);
 
             var sut = Create(_gameData, 3);
             sut.PlaceDraftArmies(_region, 2);
@@ -105,15 +105,15 @@ namespace RISK.Tests.GameEngine.GameStates
         {
             var updatedTerritories = new ITerritory[] { Make.Territory.Build() };
             var newGameData = Make.GameData.Build();
-            _armyDrafter
-                .PlaceDraftArmies(Argx.IsEquivalentReadOnly(_territory, _anotherTerritory), _region, 2)
-                .Returns(updatedTerritories);
+            _armyDrafter.PlaceDraftArmies(
+                Argx.IsEquivalentReadOnly(_territory, _anotherTerritory),
+                _region,
+                2).Returns(updatedTerritories);
             _gameDataFactory.Create(
                 _currentPlayer,
                 Argx.IsEquivalentReadOnly(_currentPlayer, _anotherPlayer),
                 Argx.IsEquivalentReadOnly(updatedTerritories),
-                _deck)
-                .Returns(newGameData);
+                _deck).Returns(newGameData);
 
             var sut = Create(_gameData, 2);
             sut.PlaceDraftArmies(_region, 2);
