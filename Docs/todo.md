@@ -12,22 +12,16 @@ Game states:
 
 SendArmiesToOccupyGameState, should not be initiated if all available armies, were already moved into the territory
 
-GameStateBase should not contain helper methods for game data!
 
 Good ideas?
 ===========
 Extract Fortifier? (border, different players)
 + GetNextOrFirst extension should be replaced by "Sequence" implementation
 
-Move application domain logic (currently put in the game states) into Core (functional)?
-Player in domain, should be stateless... IN PROGRESS
-Player in domain, does not need Name property, right?
-
 
 Not used?
 =========
 AttackGameState::IsGameOver?
-GameStateBase::ThrowIfTerritoriesDoesNotContain?
 
 
 Not/partially tested
