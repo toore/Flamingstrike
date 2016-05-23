@@ -17,7 +17,7 @@ namespace RISK.Core
             var sourceTerritory = territories.Single(x => x.Region == sourceRegion);
             var destinationTerritory = territories.Single(x => x.Region == destinationRegion);
             var playerOccupiesBothTerritories = sourceTerritory.Player == destinationTerritory.Player;
-            var hasBorder = sourceRegion.HasBorder(destinationRegion);
+            var hasBorder = IsTerritoriesAdjacent(sourceRegion, destinationRegion);
 
             var canFortify =
                 playerOccupiesBothTerritories
@@ -27,9 +27,19 @@ namespace RISK.Core
             return canFortify;
         }
 
+        private static bool IsTerritoriesAdjacent(IRegion sourceRegion, IRegion destinationRegion)
+        {
+            return sourceRegion.HasBorder(destinationRegion);
+        }
+
         public IReadOnlyList<ITerritory> Fortify(IReadOnlyList<ITerritory> territories, IRegion sourceRegion, IRegion destinationRegion, int armies)
         {
-            throw new NotImplementedException();
+            if (!CanFortify(territories, sourceRegion, destinationRegion))
+            {
+                throw new InvalidOperationException("Can't fortify");
+            }
+
+            return null;
         }
     }
 }
