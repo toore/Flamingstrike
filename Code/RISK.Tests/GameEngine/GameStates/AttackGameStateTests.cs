@@ -235,15 +235,18 @@ namespace RISK.Tests.GameEngine.GameStates
         [Fact]
         public void Fortifies()
         {
+            var updatedTerritories = new List<ITerritory>();
             var newGameData = Make.GameData.Build();
+            _fortifier.Fortify(
+                Argx.IsEquivalentReadOnly(_territory, _anotherTerritory),
+                _region,
+                _anotherRegion,
+                1).Returns(updatedTerritories);
             _gameDataFactory.Create(
                 _currentPlayer,
                 Argx.IsEquivalentReadOnly(_currentPlayer, _anotherPlayer),
-                Argx.IsEquivalentReadOnly(_territory, _anotherTerritory),
+                updatedTerritories,
                 _deck).Returns(newGameData);
-            _fortifier.CanFortify(
-                Argx.IsEquivalentReadOnly(_territory, _anotherTerritory),
-                _region, _anotherRegion).Returns(true);
 
             var sut = Create(_gameData);
             sut.Fortify(_region, _anotherRegion, 1);

@@ -131,7 +131,13 @@ namespace RISK.GameEngine.Play.GamePhases
 
         public void Fortify(IRegion sourceRegion, IRegion destinationRegion, int armies)
         {
-            var gameData = _gameDataFactory.Create(_gameData.CurrentPlayer, Players, _gameData.Territories, Deck);
+            var updatedTerritories = _fortifier.Fortify(_gameData.Territories, sourceRegion, destinationRegion, armies);
+
+            var gameData = _gameDataFactory.Create(
+                _gameData.CurrentPlayer,
+                Players,
+                updatedTerritories,
+                Deck);
 
             _gameStateConductor.Fortify(gameData, sourceRegion, destinationRegion, armies);
         }

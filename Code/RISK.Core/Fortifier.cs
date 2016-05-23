@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -6,6 +7,7 @@ namespace RISK.Core
     public interface IFortifier
     {
         bool CanFortify(IReadOnlyList<ITerritory> territories, IRegion sourceRegion, IRegion destinationRegion);
+        IReadOnlyList<ITerritory> Fortify(IReadOnlyList<ITerritory> territories, IRegion sourceRegion, IRegion destinationRegion, int armies);
     }
 
     public class Fortifier : IFortifier
@@ -23,6 +25,11 @@ namespace RISK.Core
                 hasBorder;
 
             return canFortify;
+        }
+
+        public IReadOnlyList<ITerritory> Fortify(IReadOnlyList<ITerritory> territories, IRegion sourceRegion, IRegion destinationRegion, int armies)
+        {
+            throw new NotImplementedException();
         }
     }
 }
