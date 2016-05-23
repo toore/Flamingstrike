@@ -5,25 +5,23 @@
     xmlns:MapViews="clr-namespace:GuiWpf.Views.WorldMapViews">
 
     <DataTemplate DataType="{x:Type Map:RegionOutlineViewModel}">
-        <Canvas>
-            <MapViews:TerritoryButtonUserControl
-                x:Name="button"
-                FillColor="{Binding FillColor}"
-                StrokeColor="{Binding StrokeColor}"
-                MouseOverFillColor="{Binding MouseOverFillColor}"
-                MouseOverStrokeColor="{Binding MouseOverStrokeColor}"
-                IsEnabled="{Binding IsEnabled}">
-                
-                <MapViews:TerritoryButtonUserControl.GeometryChildren>
-                    <GeometryCollection>
-                        <PathGeometry
-                            Figures="{Binding Path}"
-                            FillRule="NonZero" />
-                    </GeometryCollection>
-                </MapViews:TerritoryButtonUserControl.GeometryChildren>
+        <MapViews:TerritoryButtonUserControl
+            x:Name="button"
+            FillColor="{Binding FillColor}"
+            StrokeColor="{Binding StrokeColor}"
+            MouseOverFillColor="{Binding MouseOverFillColor}"
+            MouseOverStrokeColor="{Binding MouseOverStrokeColor}"
+            IsEnabled="{Binding IsEnabled}">
 
-            </MapViews:TerritoryButtonUserControl>
-        </Canvas>
+            <MapViews:TerritoryButtonUserControl.GeometryChildren>
+                <GeometryCollection>
+                    <PathGeometry
+                        Figures="{Binding Path}"
+                        FillRule="NonZero" />
+                </GeometryCollection>
+            </MapViews:TerritoryButtonUserControl.GeometryChildren>
+
+        </MapViews:TerritoryButtonUserControl>
     </DataTemplate>
 
     <Style x:Key="RegionNameLabelStyle" TargetType="{x:Type Label}">
