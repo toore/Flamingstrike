@@ -5,16 +5,16 @@ using RISK.GameEngine;
 
 namespace GuiWpf.Services
 {
-    public interface ITerritoryColorsFactory
+    public interface IRegionColorSettingFactory
     {
         ITerritoryColors Create(IRegion region);
     }
 
-    public class TerritoryColorsFactory : ITerritoryColorsFactory
+    public class RegionColorSettingFactory : IRegionColorSettingFactory
     {
         private readonly Dictionary<IRegion, Func<ITerritoryColors>> _colors;
 
-        public TerritoryColorsFactory(IColorService colorService, IRegions regions)
+        public RegionColorSettingFactory(IColorService colorService, IRegions regions)
         {
             _colors = new Dictionary<IRegion, Func<ITerritoryColors>>
             {

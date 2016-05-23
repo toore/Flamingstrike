@@ -17,13 +17,13 @@ namespace GuiWpf.ViewModels.Gameplay.Map
     public class WorldMapViewModelFactory : IWorldMapViewModelFactory
     {
         private readonly IRegionModelFactory _regionModelFactory;
-        private readonly ITerritoryColorsFactory _territoryColorsFactory;
+        private readonly IRegionColorSettingFactory _regionColorSettingFactory;
         private readonly IColorService _colorService;
 
-        public WorldMapViewModelFactory(IRegionModelFactory regionModelFactory, ITerritoryColorsFactory territoryColorsFactory, IColorService colorService)
+        public WorldMapViewModelFactory(IRegionModelFactory regionModelFactory, IRegionColorSettingFactory regionColorSettingFactory, IColorService colorService)
         {
             _regionModelFactory = regionModelFactory;
-            _territoryColorsFactory = territoryColorsFactory;
+            _regionColorSettingFactory = regionColorSettingFactory;
             _colorService = colorService;
         }
 
@@ -53,7 +53,7 @@ namespace GuiWpf.ViewModels.Gameplay.Map
 
         public void Update(WorldMapViewModel worldMapViewModel, IReadOnlyList<ITerritory> territories, IRegion selectedRegion, IEnumerable<IRegion> enabledTerritories)
         {
-            var worldMapItemUpdater = new WorldMapItemUpdater(territories, enabledTerritories, selectedRegion, _territoryColorsFactory, _colorService);
+            var worldMapItemUpdater = new WorldMapItemUpdater(territories, enabledTerritories, selectedRegion, _regionColorSettingFactory, _colorService);
             foreach (var worldMapItemViewModel in worldMapViewModel.WorldMapViewModels)
             {
                 worldMapItemViewModel.Accept(worldMapItemUpdater);

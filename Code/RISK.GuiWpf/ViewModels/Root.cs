@@ -47,10 +47,10 @@ namespace GuiWpf.ViewModels
             var colorService = new ColorService();
             var continents = new Continents();
             var regions = new Regions(continents);
-            var territoryColorsFactory = new TerritoryColorsFactory(colorService, regions);
+            var regionColorSettingFactory = new RegionColorSettingFactory(colorService, regions);
             var regionModelFactory = new RegionModelFactory(regions);
             var worldMapViewModelFactory = new WorldMapViewModelFactory(
-                regionModelFactory, territoryColorsFactory, colorService);
+                regionModelFactory, regionColorSettingFactory, colorService);
             var windowManager = new WindowManager();
             var gameOverViewModelFactory = new GameOverViewModelFactory();
             var screenService = new ScreenService();

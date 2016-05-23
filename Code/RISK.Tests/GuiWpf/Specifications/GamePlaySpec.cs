@@ -205,12 +205,12 @@ namespace RISK.Tests.GuiWpf.Specifications
             var regionModelFactory = new RegionModelFactory(_regions);
             var colorService = new ColorService();
             var eventAggregator = new EventAggregator();
-            var territoryColorsFactory = new TerritoryColorsFactory(colorService, _regions);
+            var regionColorSettingFactory = new RegionColorSettingFactory(colorService, _regions);
             var screenService = new ScreenService();
             var confirmViewModelFactory = new ConfirmViewModelFactory(screenService);
             var userNotifier = new UserNotifier(_windowManager, confirmViewModelFactory);
             var dialogManager = new DialogManager(userNotifier);
-            var worldMapViewModelFactory = new WorldMapViewModelFactory(regionModelFactory, territoryColorsFactory, colorService);
+            var worldMapViewModelFactory = new WorldMapViewModelFactory(regionModelFactory, regionColorSettingFactory, colorService);
 
             var gameOverViewModelFactory = Substitute.For<IGameOverViewModelFactory>();
             _gameOverAndPlayer1IsTheWinnerViewModel = new GameOverViewModel("");
