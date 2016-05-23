@@ -9,7 +9,7 @@
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="TerritoryStyles.xaml" />
+                <ResourceDictionary Source="RegionStyles.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
             <Style x:Key="ContinentPathBaseStyle" TargetType="Path">

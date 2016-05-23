@@ -4,7 +4,7 @@
     xmlns:Map="clr-namespace:GuiWpf.ViewModels.Gameplay.Map">
 
     <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="TerritoryStyles.xaml" />
+        <ResourceDictionary Source="RegionStyles.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
     <DataTemplate DataType="{x:Type Map:WorldMapViewModel}">

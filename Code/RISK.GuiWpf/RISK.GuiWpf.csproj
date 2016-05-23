@@ -201,8 +201,8 @@
     <Compile Include="RegionModels\SiberiaModel.cs" />
     <Compile Include="RegionModels\SouthAfricaModel.cs" />
     <Compile Include="RegionModels\SouthernEuropeModel.cs" />
-    <Compile Include="Views\WorldMapViews\TerritoryButtonUserControl.xaml.cs">
-      <DependentUpon>TerritoryButtonUserControl.xaml</DependentUpon>
+    <Compile Include="Views\WorldMapViews\RegionButtonUserControl.xaml.cs">
+      <DependentUpon>RegionButtonUserControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\Gameplay\Map\RegionOutlineViewModel.cs" />
     <Compile Include="RegionModels\IRegionModel.cs" />
@@ -267,11 +267,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\WorldMapViews\TerritoryButtonUserControl.xaml">
+    <Page Include="Views\WorldMapViews\RegionButtonUserControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\WorldMapViews\TerritoryStyles.xaml">
+    <Page Include="Views\WorldMapViews\RegionStyles.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
