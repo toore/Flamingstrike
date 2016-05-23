@@ -90,59 +90,34 @@ namespace RISK.Tests.GameEngine.GameStates
         {
             _attacker.CanAttack(
                 Argx.IsEquivalentReadOnly(_territory, _anotherTerritory),
-                _region, _anotherRegion)
-                .Returns(true);
+                _region, 
+                _anotherRegion).Returns(true);
+
             var sut = Create(_gameData);
 
             sut.CanAttack(_region, _anotherRegion).Should().BeTrue();
         }
 
         [Fact]
-        public void Can_not_attack_if_not_enough_attacking_armies()
+        public void Can_not_attack()
         {
-            _territory.GetNumberOfArmiesAvailableForAttack().Returns(0);
-
             var sut = Create(_gameData);
 
-            AssertCanNotAttack(sut, _region, _anotherRegion);
+            sut.CanAttack(_region, _anotherRegion).Should().BeFalse();
         }
 
         [Fact]
-        public void Can_not_attack_already_occupied_territory()
+        public void Can_not_attack_from_another_players_territory()
         {
-            _anotherTerritory.Player.Returns(_currentPlayer);
+            _attacker.CanAttack(
+                Argx.IsEquivalentReadOnly(_territory, _anotherTerritory),
+                _region,
+                _anotherRegion).Returns(true);
+            _territory.Player.Returns(_anotherPlayer);  
 
             var sut = Create(_gameData);
 
-            AssertCanNotAttack(sut, _region, _anotherRegion);
-        }
-
-        [Fact]
-        public void Can_not_attack_territory_without_having_border()
-        {
-            _region.HasBorder(_anotherRegion).Returns(false);
-
-            var sut = Create(_gameData);
-
-            AssertCanNotAttack(sut, _region, _anotherRegion);
-        }
-
-        [Fact]
-        public void Can_not_attack_with_another_players_territory()
-        {
-            _territory.Player.Returns(_anotherPlayer);
-
-            var sut = Create(_gameData);
-
-            AssertCanNotAttack(sut, _region, _anotherRegion);
-        }
-
-        private static void AssertCanNotAttack(IGameState gameState, IRegion attackingRegion, IRegion defendingRegion)
-        {
-            Action act = () => gameState.Attack(attackingRegion, defendingRegion);
-
-            gameState.CanAttack(attackingRegion, defendingRegion).Should().BeFalse();
-            act.ShouldThrow<InvalidOperationException>();
+            sut.CanAttack(_region, _anotherRegion).Should().BeFalse();
         }
 
         [Fact]
@@ -227,12 +202,34 @@ namespace RISK.Tests.GameEngine.GameStates
         {
             _fortifier.CanFortify(
                 Argx.IsEquivalentReadOnly(_territory, _anotherTerritory),
-                _region, _anotherRegion)
-                .Returns(true);
+                _region, 
+                _anotherRegion).Returns(true);
 
             var sut = Create(_gameData);
 
             sut.CanFortify(_region, _anotherRegion).Should().BeTrue();
+        }
+
+        [Fact]
+        public void Can_not_fortify_from_another_players_territory()
+        {
+            _fortifier.CanFortify(
+                Argx.IsEquivalentReadOnly(_territory, _anotherTerritory),
+                _region,
+                _anotherRegion).Returns(true);
+            _territory.Player.Returns(_anotherPlayer);
+
+            var sut = Create(_gameData);
+
+            sut.CanFortify(_region, _anotherRegion).Should().BeFalse();
+        }
+
+        [Fact]
+        public void Can_not_fortify()
+        {
+            var sut = Create(_gameData);
+
+            sut.CanFortify(_region, _anotherRegion).Should().BeFalse();
         }
 
         [Fact]
@@ -243,57 +240,15 @@ namespace RISK.Tests.GameEngine.GameStates
                 _currentPlayer,
                 Argx.IsEquivalentReadOnly(_currentPlayer, _anotherPlayer),
                 Argx.IsEquivalentReadOnly(_territory, _anotherTerritory),
-                _deck)
-                .Returns(newGameData);
+                _deck).Returns(newGameData);
             _fortifier.CanFortify(
                 Argx.IsEquivalentReadOnly(_territory, _anotherTerritory),
-                _region, _anotherRegion)
-                .Returns(true);
+                _region, _anotherRegion).Returns(true);
 
             var sut = Create(_gameData);
             sut.Fortify(_region, _anotherRegion, 1);
 
             _gameStateConductor.Received().Fortify(newGameData, _region, _anotherRegion, 1);
-        }
-
-        [Fact]
-        public void Can_not_fortify_non_bordering_regions()
-        {
-            _anotherTerritory.Player.Returns(_currentPlayer);
-            _region.HasBorder(_anotherRegion).Returns(false);
-
-            var sut = Create(_gameData);
-
-            AssertCanNotFortify(sut, _region, _anotherRegion, 1);
-        }
-
-        [Fact]
-        public void Can_not_fortify_from_another_players_territory()
-        {
-            _territory.Player.Returns(_anotherPlayer);
-            _anotherRegion.HasBorder(_region).Returns(true);
-
-            var sut = Create(_gameData);
-
-            AssertCanNotFortify(sut, _anotherRegion, _region, 1);
-        }
-
-        [Fact]
-        public void Can_not_fortify_to_another_players_territory()
-        {
-            _anotherTerritory.Player.Returns(_currentPlayer);
-
-            var sut = Create(_gameData);
-
-            AssertCanNotFortify(sut, _anotherRegion, _region, 1);
-        }
-
-        private static void AssertCanNotFortify(IGameState gameState, IRegion sourceRegion, IRegion destinationRegion, int armies)
-        {
-            Action act = () => gameState.Fortify(sourceRegion, destinationRegion, armies);
-
-            gameState.CanFortify(sourceRegion, destinationRegion).Should().BeFalse();
-            act.ShouldThrow<InvalidOperationException>();
         }
 
         [Fact]

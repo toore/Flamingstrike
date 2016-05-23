@@ -48,23 +48,7 @@ namespace RISK.GameEngine.Play.GamePhases
 
         public void Attack(IRegion attackingRegion, IRegion defendingRegion)
         {
-            //if (!CanAttack(attackingRegion, defendingRegion))
-            //{
-            //    throw new InvalidOperationException();
-            //}
-
             var attackOutcome = _attacker.Attack(_gameData.Territories, attackingRegion, defendingRegion);
-
-            //var attackingTerritory = _gameData.Territories.GetTerritory(attackingRegion);
-            //var defendingTerritory = _gameData.Territories.GetTerritory(defendingRegion);
-            //var defendingPlayer = _gameData.Players.Single(player => player == defendingTerritory.Player);
-
-            //var battleResult = _attacker.Attack(attackingTerritory, defendingTerritory);
-
-            //var updatedTerritories = _gameData.Territories
-            //    .Replace(attackingTerritory, battleResult.UpdatedAttackingTerritory)
-            //    .Replace(defendingTerritory, battleResult.UpdatedDefendingTerritory)
-            //    .ToList();
 
             if (attackOutcome.DefendingArmy == DefendingArmy.IsEliminated)
             {
@@ -147,14 +131,6 @@ namespace RISK.GameEngine.Play.GamePhases
 
         public void Fortify(IRegion sourceRegion, IRegion destinationRegion, int armies)
         {
-            //Fortifier should throw
-            //if (!CanFortify(sourceRegion, destinationRegion))
-            //{
-            //    throw new InvalidOperationException();
-            //}
-
-            // Call fortifier... => _fortifier.Fortify
-
             var gameData = _gameDataFactory.Create(_gameData.CurrentPlayer, Players, _gameData.Territories, Deck);
 
             _gameStateConductor.Fortify(gameData, sourceRegion, destinationRegion, armies);
