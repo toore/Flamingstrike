@@ -4,9 +4,8 @@
     xmlns:Map="clr-namespace:GuiWpf.ViewModels.Gameplay.Map"
     xmlns:MapViews="clr-namespace:GuiWpf.Views.WorldMapViews">
 
-    <DataTemplate DataType="{x:Type Map:RegionViewModel}">
-        <Canvas
-            ZIndex="0">
+    <DataTemplate DataType="{x:Type Map:RegionOutlineViewModel}">
+        <Canvas>
             <MapViews:TerritoryButtonUserControl
                 x:Name="button"
                 FillColor="{Binding FillColor}"
@@ -27,7 +26,7 @@
         </Canvas>
     </DataTemplate>
 
-    <Style x:Key="TerritoryNameLabelStyle" TargetType="{x:Type Label}">
+    <Style x:Key="RegionNameLabelStyle" TargetType="{x:Type Label}">
         <Setter Property="FontSize" Value="14" />
         <Setter Property="Foreground" Value="White" />
     </Style>
@@ -38,10 +37,9 @@
         <Setter Property="FontWeight" Value="Bold" />
     </Style>
 
-    <DataTemplate DataType="{x:Type Map:TitleViewModel}">
+    <DataTemplate DataType="{x:Type Map:RegionNameViewModel}">
         <Canvas
-            IsHitTestVisible="False"
-            Canvas.ZIndex="10">
+            IsHitTestVisible="False">
             <Border
                 CornerRadius="25"
                 Canvas.Left="{Binding Position.X}"
@@ -51,7 +49,7 @@
                 <StackPanel>
                     <Label
                         HorizontalAlignment="Center"
-                        Style="{StaticResource TerritoryNameLabelStyle}"
+                        Style="{StaticResource RegionNameLabelStyle}"
                         Content="{Binding Name}" />
 
                     <Label

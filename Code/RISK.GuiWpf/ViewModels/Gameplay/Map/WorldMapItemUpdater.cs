@@ -22,7 +22,7 @@ namespace GuiWpf.ViewModels.Gameplay.Map
             _colorService = colorService;
         }
 
-        public void Visit(RegionViewModel regionViewModel)
+        public void Visit(RegionOutlineViewModel regionViewModel)
         {
             var territoryColors = _territoryColorsFactory.Create(regionViewModel.Region);
 
@@ -44,22 +44,22 @@ namespace GuiWpf.ViewModels.Gameplay.Map
             regionViewModel.IsEnabled = IsTerritoryEnabled(regionViewModel);
         }
 
-        private bool IsTerritoryEnabled(RegionViewModel regionViewModel)
+        private bool IsTerritoryEnabled(RegionOutlineViewModel regionViewModel)
         {
             return _enabledTerritories.Contains(regionViewModel.Region);
         }
 
-        public void Visit(TitleViewModel titleViewModel)
+        public void Visit(RegionNameViewModel regionNameViewModel)
         {
-            UpdateArmiesForTerritory(titleViewModel);
+            UpdateArmiesForTerritory(regionNameViewModel);
         }
 
-        private void UpdateArmiesForTerritory(TitleViewModel titleViewModel)
+        private void UpdateArmiesForTerritory(RegionNameViewModel regionNameViewModel)
         {
             var gameboardTerritory = _territories
-                .Single(x => x.Region == titleViewModel.Region);
+                .Single(x => x.Region == regionNameViewModel.Region);
 
-            titleViewModel.Armies = gameboardTerritory.Armies;
+            regionNameViewModel.Armies = gameboardTerritory.Armies;
         }
     }
 }

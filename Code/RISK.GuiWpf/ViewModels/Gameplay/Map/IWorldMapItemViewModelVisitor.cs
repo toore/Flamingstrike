@@ -2,7 +2,7 @@ namespace GuiWpf.ViewModels.Gameplay.Map
 {
     public interface IWorldMapItemViewModelVisitor
     {
-        void Visit(RegionViewModel regionViewModel);
-        void Visit(TitleViewModel titleViewModel);
+        void Visit(RegionOutlineViewModel regionViewModel);
+        void Visit(RegionNameViewModel regionNameViewModel);
     }
 }

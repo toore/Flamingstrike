@@ -204,10 +204,10 @@
     <Compile Include="Views\WorldMapViews\TerritoryButtonUserControl.xaml.cs">
       <DependentUpon>TerritoryButtonUserControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewModels\Gameplay\Map\RegionViewModel.cs" />
+    <Compile Include="ViewModels\Gameplay\Map\RegionOutlineViewModel.cs" />
     <Compile Include="TerritoryModels\IRegionModel.cs" />
     <Compile Include="ViewModels\Gameplay\Map\WorldMapViewModelFactory.cs" />
-    <Compile Include="ViewModels\Gameplay\Map\TitleViewModel.cs" />
+    <Compile Include="ViewModels\Gameplay\Map\RegionNameViewModel.cs" />
     <Compile Include="TerritoryModels\UkraineModel.cs" />
     <Compile Include="TerritoryModels\UralModel.cs" />
     <Compile Include="TerritoryModels\VenezuelaModel.cs" />

@@ -4,11 +4,11 @@ using RISK.Core;
 
 namespace GuiWpf.ViewModels.Gameplay.Map
 {
-    public class TitleViewModel : ViewModelBase, IWorldMapItemViewModel
+    public class RegionNameViewModel : ViewModelBase, IWorldMapItemViewModel
     {
         private readonly IRegionModel _regionModel;
 
-        public TitleViewModel(IRegionModel regionModel)
+        public RegionNameViewModel(IRegionModel regionModel)
         {
             _regionModel = regionModel;
         }
