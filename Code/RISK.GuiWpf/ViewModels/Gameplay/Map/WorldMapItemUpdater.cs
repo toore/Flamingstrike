@@ -22,7 +22,7 @@ namespace GuiWpf.ViewModels.Gameplay.Map
             _colorService = colorService;
         }
 
-        public void Visit(RegionOutlineViewModel regionViewModel)
+        public void Visit(RegionViewModel regionViewModel)
         {
             var territoryColors = _regionColorSettingFactory.Create(regionViewModel.Region);
 
@@ -44,7 +44,7 @@ namespace GuiWpf.ViewModels.Gameplay.Map
             regionViewModel.IsEnabled = IsTerritoryEnabled(regionViewModel);
         }
 
-        private bool IsTerritoryEnabled(RegionOutlineViewModel regionViewModel)
+        private bool IsTerritoryEnabled(RegionViewModel regionViewModel)
         {
             return _enabledTerritories.Contains(regionViewModel.Region);
         }

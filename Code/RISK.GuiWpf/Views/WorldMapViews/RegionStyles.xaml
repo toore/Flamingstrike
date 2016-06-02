@@ -4,7 +4,7 @@
     xmlns:Map="clr-namespace:GuiWpf.ViewModels.Gameplay.Map"
     xmlns:MapViews="clr-namespace:GuiWpf.Views.WorldMapViews">
 
-    <DataTemplate DataType="{x:Type Map:RegionOutlineViewModel}">
+    <DataTemplate DataType="{x:Type Map:RegionViewModel}">
         <MapViews:RegionButtonUserControl
             x:Name="button"
             FillColor="{Binding FillColor}"

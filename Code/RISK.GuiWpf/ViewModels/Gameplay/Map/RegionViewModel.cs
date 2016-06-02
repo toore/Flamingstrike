@@ -5,12 +5,22 @@ using RISK.Core;
 
 namespace GuiWpf.ViewModels.Gameplay.Map
 {
-    public class RegionOutlineViewModel : ViewModelBase, IRegionViewModel
+    public interface IRegionViewModel : IWorldMapItemViewModel
+    {
+        Color StrokeColor { get; set; }
+        Color FillColor { get; set; }
+        Color MouseOverStrokeColor { get; set; }
+        Color MouseOverFillColor { get; set; }
+
+        void OnClick();
+    }
+
+    public class RegionViewModel : ViewModelBase, IRegionViewModel
     {
         private readonly IRegionModel _regionModel;
         private readonly Action<IRegion> _onClick;
 
-        public RegionOutlineViewModel(IRegionModel regionModel, Action<IRegion> onClick)
+        public RegionViewModel(IRegionModel regionModel, Action<IRegion> onClick)
         {
             _regionModel = regionModel;
             _onClick = onClick;

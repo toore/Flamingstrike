@@ -41,7 +41,7 @@ namespace GuiWpf.ViewModels.Gameplay.Map
         private IEnumerable<IWorldMapItemViewModel> CreateWorldMapItemViewModels(Action<IRegion> onClick)
         {
             var regionModels = _regionModelFactory.Create().ToList();
-            IEnumerable<IWorldMapItemViewModel> regionViewModels = regionModels.Select(regionModel => new RegionOutlineViewModel(regionModel, onClick));
+            IEnumerable<IWorldMapItemViewModel> regionViewModels = regionModels.Select(regionModel => new RegionViewModel(regionModel, onClick));
             IEnumerable<IWorldMapItemViewModel> titleViewModels = regionModels.Select(regionModel => new RegionNameViewModel(regionModel));
 
             var worldMapViewModels = regionViewModels

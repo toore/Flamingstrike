@@ -352,7 +352,7 @@ namespace RISK.Tests.GuiWpf.Specifications
         private IRegionViewModel GetTerritoryViewModel(IRegion region)
         {
             return _gameboardViewModel.WorldMapViewModel.WorldMapViewModels
-                .OfType<RegionOutlineViewModel>()
+                .OfType<RegionViewModel>()
                 .Single(x => x.Region == region);
         }
 
