@@ -78,6 +78,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="ContentClickButton.cs" />
     <Compile Include="Extensions\EnumerableExtensions.cs" />
     <Compile Include="Services\GuiThreadDispatcher.cs" />
     <Compile Include="Services\ResourceManager.cs" />
