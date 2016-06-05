@@ -25,7 +25,7 @@ namespace GuiWpf.Views.WorldMapViews
             var regions = new Regions(continents);
             var regionModelFactory = new RegionModelFactory(regions);
             var colorService = new ColorService();
-            var regionColorSettingFactory = new RegionColorSettingFactory(colorService, regions);
+            var regionColorSettingFactory = new RegionColorSettingsFactory(colorService, regions);
             var worldMapViewModelFactory = new WorldMapViewModelFactory(regionModelFactory, regionColorSettingFactory, colorService);
             var players = new Sequence<IPlayer>(new Player("player 1"), new Player("player 1"));
             IReadOnlyList<ITerritory> initialTerritories = regions.GetAll().Select(region => new Territory(region, players.Next(), new Random().Next(99))).ToList();

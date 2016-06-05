@@ -7,18 +7,18 @@ namespace RISK.Tests.GuiWpf
 {
     public class ScreenServiceTests
     {
-        private readonly ScreenService _screenService;
+        private readonly ScreenConfirmationService _screenConfirmationService;
 
         public ScreenServiceTests()
         {
-            _screenService = new ScreenService();
+            _screenConfirmationService = new ScreenConfirmationService();
         }
 
         [Fact]
         public void Confirm_calls_try_close_with_dialog_result_true()
         {
             var screen = Substitute.For<Screen>();
-            _screenService.Confirm(screen);
+            _screenConfirmationService.Confirm(screen);
 
             screen.Received().TryClose(true);
         }
@@ -27,7 +27,7 @@ namespace RISK.Tests.GuiWpf
         public void Cancle_calls_try_close_with_dialog_result_false()
         {
             var screen = Substitute.For<Screen>();
-            _screenService.Cancel(screen);
+            _screenConfirmationService.Cancel(screen);
 
             screen.Received().TryClose(false);
         }

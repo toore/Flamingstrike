@@ -3,6 +3,11 @@ using GuiWpf.ViewModels;
 
 namespace GuiWpf.Services
 {
+    public interface IUserNotifier
+    {
+        bool? Confirm(string message, string displayName, string confirmText, string abortText);
+    }
+
     public class UserNotifier : IUserNotifier
     {
         private readonly IWindowManager _windowManager;

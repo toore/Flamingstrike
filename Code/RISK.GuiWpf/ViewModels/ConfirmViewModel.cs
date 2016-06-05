@@ -5,11 +5,11 @@ namespace GuiWpf.ViewModels
 {
     public class ConfirmViewModel : Screen
     {
-        private readonly IScreenService _screenService;
+        private readonly IScreenConfirmationService _screenConfirmationService;
 
-        public ConfirmViewModel(IScreenService screenService)
+        public ConfirmViewModel(IScreenConfirmationService screenConfirmationService)
         {
-            _screenService = screenService;
+            _screenConfirmationService = screenConfirmationService;
         }
 
         public string Message { get; set; }
@@ -19,12 +19,12 @@ namespace GuiWpf.ViewModels
 
         public void Confirm()
         {
-            _screenService.Confirm(this);
+            _screenConfirmationService.Confirm(this);
         }
 
         public void Cancel()
         {
-            _screenService.Cancel(this);
+            _screenConfirmationService.Cancel(this);
         }
     }
 }

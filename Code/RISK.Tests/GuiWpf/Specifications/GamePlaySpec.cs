@@ -205,8 +205,8 @@ namespace RISK.Tests.GuiWpf.Specifications
             var regionModelFactory = new RegionModelFactory(_regions);
             var colorService = new ColorService();
             var eventAggregator = new EventAggregator();
-            var regionColorSettingFactory = new RegionColorSettingFactory(colorService, _regions);
-            var screenService = new ScreenService();
+            var regionColorSettingFactory = new RegionColorSettingsFactory(colorService, _regions);
+            var screenService = new ScreenConfirmationService();
             var confirmViewModelFactory = new ConfirmViewModelFactory(screenService);
             var userNotifier = new UserNotifier(_windowManager, confirmViewModelFactory);
             var dialogManager = new DialogManager(userNotifier);

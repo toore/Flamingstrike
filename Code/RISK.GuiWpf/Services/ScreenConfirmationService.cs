@@ -2,13 +2,13 @@
 
 namespace GuiWpf.Services
 {
-    public interface IScreenService
+    public interface IScreenConfirmationService
     {
         void Confirm(Screen screen);
         void Cancel(Screen screen);
     }
 
-    public class ScreenService : IScreenService
+    public class ScreenConfirmationService : IScreenConfirmationService
     {
         public void Confirm(Screen screen)
         {

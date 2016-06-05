@@ -2,9 +2,17 @@ using System.Windows.Media;
 
 namespace GuiWpf.Services
 {
-    public class RegionColorSetting : ITerritoryColors
+    public interface IRegionColorSettings
     {
-        public RegionColorSetting(Color normalStrokeColor, Color normalFillColor, Color mouseOverStrokeColor, Color mouseOverFillColor)
+        Color NormalStrokeColor { get; }
+        Color NormalFillColor { get; }
+        Color MouseOverStrokeColor { get; }
+        Color MouseOverFillColor { get; }
+    }
+
+    public class RegionColorSettings : IRegionColorSettings
+    {
+        public RegionColorSettings(Color normalStrokeColor, Color normalFillColor, Color mouseOverStrokeColor, Color mouseOverFillColor)
         {
             MouseOverFillColor = mouseOverFillColor;
             MouseOverStrokeColor = mouseOverStrokeColor;

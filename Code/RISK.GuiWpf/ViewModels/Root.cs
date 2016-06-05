@@ -26,8 +26,7 @@ namespace GuiWpf.ViewModels
         public IUserInteractorFactory UserInteractorFactory { get; set; }
 
         public Root() : this(
-            taskEx: new TaskEx())
-        { }
+            taskEx: new TaskEx()) {}
 
         public Root(ITaskEx taskEx)
         {
@@ -47,14 +46,14 @@ namespace GuiWpf.ViewModels
             var colorService = new ColorService();
             var continents = new Continents();
             var regions = new Regions(continents);
-            var regionColorSettingFactory = new RegionColorSettingFactory(colorService, regions);
+            var regionColorSettingsFactory = new RegionColorSettingsFactory(colorService, regions);
             var regionModelFactory = new RegionModelFactory(regions);
             var worldMapViewModelFactory = new WorldMapViewModelFactory(
-                regionModelFactory, regionColorSettingFactory, colorService);
+                regionModelFactory, regionColorSettingsFactory, colorService);
             var windowManager = new WindowManager();
             var gameOverViewModelFactory = new GameOverViewModelFactory();
-            var screenService = new ScreenService();
-            var confirmViewModelFactory = new ConfirmViewModelFactory(screenService);
+            var screenConfirmationService = new ScreenConfirmationService();
+            var confirmViewModelFactory = new ConfirmViewModelFactory(screenConfirmationService);
             var userNotifier = new UserNotifier(windowManager, confirmViewModelFactory);
             var dialogManager = new DialogManager(userNotifier);
 

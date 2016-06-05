@@ -10,21 +10,21 @@ namespace GuiWpf.ViewModels.Gameplay.Map
         private readonly IReadOnlyList<ITerritory> _territories;
         private readonly IEnumerable<IRegion> _enabledTerritories;
         private readonly IRegion _selectedRegion;
-        private readonly IRegionColorSettingFactory _regionColorSettingFactory;
+        private readonly IRegionColorSettingsFactory _regionColorSettingsFactory;
         private readonly IColorService _colorService;
 
-        public WorldMapItemUpdater(IReadOnlyList<ITerritory> territories, IEnumerable<IRegion> enabledTerritories, IRegion selectedRegion, IRegionColorSettingFactory regionColorSettingFactory, IColorService colorService)
+        public WorldMapItemUpdater(IReadOnlyList<ITerritory> territories, IEnumerable<IRegion> enabledTerritories, IRegion selectedRegion, IRegionColorSettingsFactory regionColorSettingsFactory, IColorService colorService)
         {
             _territories = territories;
             _enabledTerritories = enabledTerritories;
             _selectedRegion = selectedRegion;
-            _regionColorSettingFactory = regionColorSettingFactory;
+            _regionColorSettingsFactory = regionColorSettingsFactory;
             _colorService = colorService;
         }
 
         public void Visit(RegionViewModel regionViewModel)
         {
-            var territoryColors = _regionColorSettingFactory.Create(regionViewModel.Region);
+            var territoryColors = _regionColorSettingsFactory.Create(regionViewModel.Region);
 
             var strokeColor = territoryColors.NormalStrokeColor;
             var fillColor = territoryColors.NormalFillColor;

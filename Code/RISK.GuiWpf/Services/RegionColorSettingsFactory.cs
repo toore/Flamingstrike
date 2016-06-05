@@ -5,18 +5,18 @@ using RISK.GameEngine;
 
 namespace GuiWpf.Services
 {
-    public interface IRegionColorSettingFactory
+    public interface IRegionColorSettingsFactory
     {
-        ITerritoryColors Create(IRegion region);
+        IRegionColorSettings Create(IRegion region);
     }
 
-    public class RegionColorSettingFactory : IRegionColorSettingFactory
+    public class RegionColorSettingsFactory : IRegionColorSettingsFactory
     {
-        private readonly Dictionary<IRegion, Func<ITerritoryColors>> _colors;
+        private readonly Dictionary<IRegion, Func<IRegionColorSettings>> _colors;
 
-        public RegionColorSettingFactory(IColorService colorService, IRegions regions)
+        public RegionColorSettingsFactory(IColorService colorService, IRegions regions)
         {
-            _colors = new Dictionary<IRegion, Func<ITerritoryColors>>
+            _colors = new Dictionary<IRegion, Func<IRegionColorSettings>>
             {
                 { regions.Alaska, () => colorService.NorthAmericaColors },
                 { regions.Alberta, () => colorService.NorthAmericaColors },
@@ -63,7 +63,7 @@ namespace GuiWpf.Services
             };
         }
 
-        public ITerritoryColors Create(IRegion region)
+        public IRegionColorSettings Create(IRegion region)
         {
             //if (territory.IsOccupied())
             //{

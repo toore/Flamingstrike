@@ -5,69 +5,69 @@ namespace GuiWpf.Services
 {
     public interface IColorService
     {
-        ITerritoryColors NorthAmericaColors { get; }
-        ITerritoryColors SouthAmericaColors { get; }
-        ITerritoryColors EuropeColors { get; }
-        ITerritoryColors AfricaColors { get; }
-        ITerritoryColors AsiaColors { get; }
-        ITerritoryColors AustraliaColors { get; }
+        IRegionColorSettings NorthAmericaColors { get; }
+        IRegionColorSettings SouthAmericaColors { get; }
+        IRegionColorSettings EuropeColors { get; }
+        IRegionColorSettings AfricaColors { get; }
+        IRegionColorSettings AsiaColors { get; }
+        IRegionColorSettings AustraliaColors { get; }
 
-        ITerritoryColors GetPlayerTerritoryColors(IPlayer player);
+        IRegionColorSettings GetPlayerTerritoryColors(IPlayer player);
 
         Color SelectedTerritoryColor { get; }
     }
 
     public class ColorService : IColorService
     {
-        public ITerritoryColors NorthAmericaColors { get; private set; }
-        public ITerritoryColors SouthAmericaColors { get; private set; }
-        public ITerritoryColors EuropeColors { get; private set; }
-        public ITerritoryColors AfricaColors { get; private set; }
-        public ITerritoryColors AsiaColors { get; private set; }
-        public ITerritoryColors AustraliaColors { get; private set; }
+        public IRegionColorSettings NorthAmericaColors { get; private set; }
+        public IRegionColorSettings SouthAmericaColors { get; private set; }
+        public IRegionColorSettings EuropeColors { get; private set; }
+        public IRegionColorSettings AfricaColors { get; private set; }
+        public IRegionColorSettings AsiaColors { get; private set; }
+        public IRegionColorSettings AustraliaColors { get; private set; }
 
         public ColorService()
         {
-            NorthAmericaColors = new RegionColorSetting(
+            NorthAmericaColors = new RegionColorSettings(
                 normalStrokeColor: Colors.DarkOrange,
                 normalFillColor: Colors.Yellow,
                 mouseOverStrokeColor: Colors.Orange,
                 mouseOverFillColor: Color.FromArgb(255, 255, 255, 210));
 
-            SouthAmericaColors = new RegionColorSetting(
+            SouthAmericaColors = new RegionColorSettings(
                 normalStrokeColor: Colors.DarkRed,
                 normalFillColor: Colors.Red,
                 mouseOverStrokeColor: Color.FromArgb(255, 159, 50, 50),
                 mouseOverFillColor: Color.FromArgb(255, 255, 150, 150));
 
-            EuropeColors = new RegionColorSetting(
+            EuropeColors = new RegionColorSettings(
                 normalStrokeColor: Colors.Blue,
                 normalFillColor: Colors.LightBlue,
                 mouseOverStrokeColor: Color.FromArgb(255, 25, 25, 255),
                 mouseOverFillColor: Color.FromArgb(255, 218, 235, 255));
 
-            AfricaColors = new RegionColorSetting(
+            AfricaColors = new RegionColorSettings(
                 normalStrokeColor: Colors.SaddleBrown,
                 normalFillColor: Colors.Orange,
                 mouseOverStrokeColor: Color.FromArgb(255, 169, 99, 49),
                 mouseOverFillColor: Color.FromArgb(255, 255, 225, 150));
 
-            AsiaColors = new RegionColorSetting(
+            AsiaColors = new RegionColorSettings(
                 normalStrokeColor: Colors.DarkGreen,
                 normalFillColor: Colors.LightGreen,
                 mouseOverStrokeColor: Color.FromArgb(255, 25, 115, 25),
                 mouseOverFillColor: Color.FromArgb(255, 214, 250, 214));
 
-            AustraliaColors = new RegionColorSetting(
+            AustraliaColors = new RegionColorSettings(
                 normalStrokeColor: Colors.Purple,
                 normalFillColor: Colors.Pink,
                 mouseOverStrokeColor: Color.FromArgb(255, 156, 0, 156),
                 mouseOverFillColor: Color.FromArgb(255, 255, 237, 230));
         }
 
-        public ITerritoryColors GetPlayerTerritoryColors(IPlayer player)
+        public IRegionColorSettings GetPlayerTerritoryColors(IPlayer player)
         {
-            return new RegionColorSetting(
+            return new RegionColorSettings(
                 normalStrokeColor: Colors.Black,
                 normalFillColor: Colors.Gray,
                 mouseOverStrokeColor: Color.FromArgb(255, 50, 50, 50),

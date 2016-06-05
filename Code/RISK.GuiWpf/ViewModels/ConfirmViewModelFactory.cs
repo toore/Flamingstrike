@@ -4,11 +4,11 @@ namespace GuiWpf.ViewModels
 {
     public class ConfirmViewModelFactory : IConfirmViewModelFactory
     {
-        private readonly IScreenService _screenService;
+        private readonly IScreenConfirmationService _screenConfirmationService;
 
-        public ConfirmViewModelFactory(IScreenService screenService)
+        public ConfirmViewModelFactory(IScreenConfirmationService screenConfirmationService)
         {
-            _screenService = screenService;
+            _screenConfirmationService = screenConfirmationService;
         }
 
         public ConfirmViewModel Create(string message, string displayName, string confirmText, string abortText)
@@ -23,7 +23,7 @@ namespace GuiWpf.ViewModels
                 abortText = ResourceManager.Instance.GetString("CANCEL");
             }
 
-            return new ConfirmViewModel(_screenService)
+            return new ConfirmViewModel(_screenConfirmationService)
                 {
                     Message = message,
                     DisplayName = displayName,

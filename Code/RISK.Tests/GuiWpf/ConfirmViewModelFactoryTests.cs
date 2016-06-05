@@ -8,12 +8,12 @@ namespace RISK.Tests.GuiWpf
 {
     public class ConfirmViewModelFactoryTests
     {
-        private readonly IScreenService _screenService;
+        private readonly IScreenConfirmationService _screenConfirmationService;
         private readonly IResourceManager _resourceManager;
 
         public ConfirmViewModelFactoryTests()
         {
-            _screenService = Substitute.For<IScreenService>();
+            _screenConfirmationService = Substitute.For<IScreenConfirmationService>();
             _resourceManager = Substitute.For<IResourceManager>();
 
             ResourceManager.Instance = _resourceManager;
@@ -52,7 +52,7 @@ namespace RISK.Tests.GuiWpf
 
             confirmViewModel.Confirm();
 
-            _screenService.Received(1).Confirm(confirmViewModel);
+            _screenConfirmationService.Received(1).Confirm(confirmViewModel);
         }
 
         [Fact]
@@ -62,7 +62,7 @@ namespace RISK.Tests.GuiWpf
 
             confirmViewModel.Cancel();
 
-            _screenService.Received(1).Cancel(confirmViewModel);
+            _screenConfirmationService.Received(1).Cancel(confirmViewModel);
         }
 
         [Fact]
@@ -75,7 +75,7 @@ namespace RISK.Tests.GuiWpf
 
         public ConfirmViewModel Create(string message, string displayName = null, string confirmText = null, string abortText = null)
         {
-            var factory = new ConfirmViewModelFactory(_screenService);
+            var factory = new ConfirmViewModelFactory(_screenConfirmationService);
 
             return factory.Create(message, displayName, confirmText, abortText);
         }
