@@ -13,6 +13,7 @@ using RISK.Core;
 using RISK.GameEngine;
 using RISK.GameEngine.Play;
 using RISK.GameEngine.Play.GamePhases;
+using RISK.GameEngine.Setup;
 using Toore.Shuffling;
 using Xunit;
 using IPlayer = RISK.GameEngine.IPlayer;
@@ -38,12 +39,12 @@ namespace RISK.Tests.GuiWpf.Specifications
         [Fact]
         public void Armies_are_drafted()
         {
-            Given.
-                a_game_with_two_players().
-                player_1_occupies_every_territory_except_brazil_and_venezuela_and_north_africa_with_one_army_each().
-                player_1_has_5_armies_in_north_africa().
-                player_2_occupies_brazil_and_venezuela_with_one_army_each().
-                game_is_started();
+            Given
+                .a_game_with_two_players()
+                .player_1_occupies_every_territory_except_brazil_and_venezuela_and_north_africa_with_one_army_each()
+                .player_1_has_5_armies_in_north_africa()
+                .player_2_occupies_brazil_and_venezuela_with_one_army_each()
+                .game_is_started();
 
             When.
                 player_1_selects_north_africa();
@@ -198,19 +199,22 @@ namespace RISK.Tests.GuiWpf.Specifications
             var gameStateFactory = new GameStateFactory(gameDataFactory, armyDrafter, territoryOccupier, attacker, fortifier);
             var gameStateFsm = new GameStateFsm();
             var gameStateConductor = new GameStateConductor(gameStateFactory, armyDraftCalculator, gameDataFactory, gameStateFsm);
-            _game = new Game(gameDataFactory, gameStateConductor, gameStateFsm, _players, _territories, null);
+            var deckFactory = new DeckFactory(_regions, new FisherYatesShuffle(new RandomWrapper()));
+            var gameFactory = new GameFactory(gameDataFactory, gameStateConductor, deckFactory, gameStateFsm);
+            var gamePlaySetup = new GamePlaySetup(_players, _territories);
+            _game = gameFactory.Create(gamePlaySetup);
             _stateControllerFactory = new StateControllerFactory();
             _interactionStateFactory = new InteractionStateFactory();
 
             var regionModelFactory = new RegionModelFactory(_regions);
             var colorService = new ColorService();
             var eventAggregator = new EventAggregator();
-            var regionColorSettingFactory = new RegionColorSettingsFactory(colorService, _regions);
-            var screenService = new ScreenConfirmationService();
-            var confirmViewModelFactory = new ConfirmViewModelFactory(screenService);
+            var regionColorSettingsFactory = new RegionColorSettingsFactory(colorService, _regions);
+            var screenConfirmationService = new ScreenConfirmationService();
+            var confirmViewModelFactory = new ConfirmViewModelFactory(screenConfirmationService);
             var userNotifier = new UserNotifier(_windowManager, confirmViewModelFactory);
             var dialogManager = new DialogManager(userNotifier);
-            var worldMapViewModelFactory = new WorldMapViewModelFactory(regionModelFactory, regionColorSettingFactory, colorService);
+            var worldMapViewModelFactory = new WorldMapViewModelFactory(regionModelFactory, regionColorSettingsFactory, colorService);
 
             var gameOverViewModelFactory = Substitute.For<IGameOverViewModelFactory>();
             _gameOverAndPlayer1IsTheWinnerViewModel = new GameOverViewModel("");
@@ -251,7 +255,6 @@ namespace RISK.Tests.GuiWpf.Specifications
                 _regions.Venezuela,
                 _regions.NorthAfrica).
                 Apply(x => AddTerritoryToGameboard(x, _player1, 1));
-
             //UpdateWorldMap(_player1, 1, GetAllLocationsExcept(_worldMap.Brazil, _worldMap.Venezuela));
             return this;
         }

@@ -65,11 +65,6 @@ namespace GuiWpf.Services
 
         public IRegionColorSettings Create(IRegion region)
         {
-            //if (territory.IsOccupied())
-            //{
-            //    return _colorService.GetPlayerTerritoryColors(territory.Occupant);
-            //}
-
             return _colors[region]();
         }
     }
