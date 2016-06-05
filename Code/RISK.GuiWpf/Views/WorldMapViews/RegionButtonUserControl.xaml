@@ -5,12 +5,13 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
     xmlns:Micro="http://www.caliburnproject.org"
+    xmlns:GuiWpf="clr-namespace:GuiWpf"
     mc:Ignorable="d"
     d:DesignHeight="300" d:DesignWidth="300">
 
     <UserControl.Resources>
 
-        <ControlTemplate x:Key="RegionButtonTemplate" TargetType="Button">
+        <ControlTemplate x:Key="RegionButtonTemplate" TargetType="{x:Type Button}">
             <Border Name="RootElement">
 
                 <VisualStateManager.VisualStateGroups>
@@ -20,36 +21,55 @@
                             <Storyboard>
                                 <ColorAnimation Storyboard.TargetName="fill"
                                     Storyboard.TargetProperty="Color"
-                                    To="#B0000000"
-                                    Duration="0:0:0.2"  />
+                                    To="#80FFFFFF"
+                                    Duration="0:0:0.2" />
                                 <ColorAnimation Storyboard.TargetName="stroke"
                                     Storyboard.TargetProperty="Color"
-                                    To="#C0F5F5F5"
+                                    To="#60FFFFFF"
                                     Duration="0:0:0.2" />
                             </Storyboard>
                         </VisualState>
-                        <VisualState x:Name="Pressed" />
+                        <VisualState x:Name="Pressed">
+                            <Storyboard>
+                                <ColorAnimation Storyboard.TargetName="fill"
+                                    Storyboard.TargetProperty="Color"
+                                    To="#60FFFFFF"
+                                    Duration="0:0:0.2" />
+                            </Storyboard>
+                        </VisualState>
                         <VisualState x:Name="Disabled" />
                     </VisualStateGroup>
-                    
                 </VisualStateManager.VisualStateGroups>
 
                 <Canvas>
-                    <Path StrokeThickness="3">
+                <Canvas ZIndex="50">
+                    <Path StrokeThickness="1">
                         <Path.Fill>
-                            <SolidColorBrush x:Name="fill" Color="{Binding Path=FillColor, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" />
+                            <SolidColorBrush x:Name="fill" Color="#00000000" />
                         </Path.Fill>
                         <Path.Stroke>
-                            <SolidColorBrush x:Name="stroke" Color="{Binding Path=StrokeColor, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" />
+                                <SolidColorBrush x:Name="stroke" Color="#00000000" />
                         </Path.Stroke>
-
                         <Path.Data>
                             <GeometryGroup Children="{Binding Path=GeometryChildren, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" />
                         </Path.Data>
-
                     </Path>
+                </Canvas>
+                <Canvas ZIndex="10">
+                    <Path StrokeThickness="3">
+                        <Path.Fill>
+                            <SolidColorBrush Color="{Binding Path=FillColor, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" />
+                        </Path.Fill>
+                        <Path.Stroke>
+                            <SolidColorBrush Color="{Binding Path=StrokeColor, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" />
+                        </Path.Stroke>
+                        <Path.Data>
+                            <GeometryGroup Children="{Binding Path=GeometryChildren, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" />
+                        </Path.Data>
+                    </Path>
+                </Canvas>
 
-                    <ContentPresenter
+                <ContentPresenter
                         HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                         VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
                 </Canvas>
@@ -64,18 +84,18 @@
 
         <Style x:Key="RegionButtonStyle" TargetType="{x:Type Button}">
             <Setter Property="Template" Value="{StaticResource RegionButtonTemplate}" />
-            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Background" Value="{x:Null}" />
             <Setter Property="Focusable" Value="False" />
         </Style>
 
     </UserControl.Resources>
 
-    <Button Style="{StaticResource RegionButtonStyle}">
+    <GuiWpf:ContentClickButton Style="{StaticResource RegionButtonStyle}">
         <i:Interaction.Triggers>
             <i:EventTrigger EventName="Click">
                 <Micro:ActionMessage MethodName="OnClick" />
             </i:EventTrigger>
         </i:Interaction.Triggers>
-    </Button>
+    </GuiWpf:ContentClickButton>
 
 </UserControl>
