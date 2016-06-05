@@ -6,7 +6,6 @@
 
     <DataTemplate DataType="{x:Type Map:RegionViewModel}">
         <MapViews:RegionButtonUserControl
-            x:Name="button"
             FillColor="{Binding FillColor}"
             StrokeColor="{Binding StrokeColor}"
             MouseOverFillColor="{Binding MouseOverFillColor}"
