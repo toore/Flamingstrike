@@ -38,7 +38,7 @@ namespace RISK.GameEngine.Play
                 gamePlaySetup.Territories,
                 _deckFactory.Create());
 
-            _gameStateConductor.InitializeFirstPlayerTurn(gameData);
+            _gameStateConductor.CurrentPlayerStartsNewTurn(gameData);
 
             return new Game(_gameStateFsm);
         }

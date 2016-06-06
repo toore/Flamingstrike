@@ -59,7 +59,7 @@ namespace RISK.Tests.GameEngine
 
             Create(gamePlaySetup);
 
-            _gameStateConductor.Received(1).InitializeFirstPlayerTurn(gameData);
+            _gameStateConductor.Received(1).CurrentPlayerStartsNewTurn(gameData);
         }
 
         [Fact]
