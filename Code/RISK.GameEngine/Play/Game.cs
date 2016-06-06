@@ -29,14 +29,6 @@ namespace RISK.GameEngine.Play
         public Game(IGameStateFsm gameStateFsm)
         {
             _gameStateFsm = gameStateFsm;
-
-            //var gameData = gameDataFactory.Create(
-            //    players.Next(),
-            //    players.ToList(),
-            //    initialTerritories,
-            //    initialDeck);
-
-            //gameStateConductor.InitializeFirstPlayerTurn(gameData);
         }
 
         public IPlayer CurrentPlayer => _gameStateFsm.CurrentPlayer;
