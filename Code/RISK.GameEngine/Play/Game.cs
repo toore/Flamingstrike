@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-using System.Linq;
 using RISK.Core;
 using RISK.GameEngine.Play.GamePhases;
 
@@ -26,38 +24,19 @@ namespace RISK.GameEngine.Play
 
     public class Game : IGame
     {
-        private readonly IGameDataFactory _gameDataFactory;
-        private readonly IGameStateConductor _gameStateConductor;
-        private readonly Sequence<IPlayer> _players;
-        private readonly IReadOnlyList<ITerritory> _initialTerritories;
-        private readonly IDeck _initialDeck;
         private readonly IGameStateFsm _gameStateFsm;
 
-        public Game(
-            IGameDataFactory gameDataFactory,
-            IGameStateConductor gameStateConductor,
-            IGameStateFsm gameStateFsm,
-            Sequence<IPlayer> players,
-            IReadOnlyList<ITerritory> initialTerritories,
-            IDeck initialDeck)
+        public Game(IGameStateFsm gameStateFsm)
         {
-            _gameDataFactory = gameDataFactory;
-            _gameStateConductor = gameStateConductor;
-            _players = players;
-            _initialTerritories = initialTerritories;
-            _initialDeck = initialDeck;
             _gameStateFsm = gameStateFsm;
-        }
 
-        public void Initialize()
-        {
-            var gameData = _gameDataFactory.Create(
-                _players.Next(),
-                _players.ToList(),
-                _initialTerritories,
-                _initialDeck);
+            //var gameData = gameDataFactory.Create(
+            //    players.Next(),
+            //    players.ToList(),
+            //    initialTerritories,
+            //    initialDeck);
 
-            _gameStateConductor.InitializeFirstPlayerTurn(gameData);
+            //gameStateConductor.InitializeFirstPlayerTurn(gameData);
         }
 
         public IPlayer CurrentPlayer => _gameStateFsm.CurrentPlayer;

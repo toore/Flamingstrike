@@ -1,3 +1,4 @@
+using System.Linq;
 using RISK.GameEngine.Play.GamePhases;
 using RISK.GameEngine.Setup;
 
@@ -29,17 +30,17 @@ namespace RISK.GameEngine.Play
 
         public IGame Create(IGamePlaySetup gamePlaySetup)
         {
-            var game = new Game(
-                _gameDataFactory,
-                _gameStateConductor,
-                _gameStateFsm,
-                gamePlaySetup.Players,
+            var players = gamePlaySetup.Players;
+
+            var gameData = _gameDataFactory.Create(
+                players.Next(),
+                players.ToList(),
                 gamePlaySetup.Territories,
                 _deckFactory.Create());
 
-            game.Initialize();
+            _gameStateConductor.InitializeFirstPlayerTurn(gameData);
 
-            return game;
+            return new Game(_gameStateFsm);
         }
     }
 }
