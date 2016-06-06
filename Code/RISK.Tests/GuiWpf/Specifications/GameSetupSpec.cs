@@ -70,7 +70,10 @@ namespace RISK.Tests.GuiWpf.Specifications
 
         private GameSetupSpec all_armies_are_placed_on_the_map()
         {
-            const int numberOfArmiesToPlace = (40 - 21) * 2;
+            const int numberOfArmiesForEachPlayerToDeployInTwoPlayerMode = 40;
+            const int nonOptionalArmyDeploymentPerPlayer = 21;
+            const int numberOfPlayers = 2;
+            const int numberOfArmiesToPlace = (numberOfArmiesForEachPlayerToDeployInTwoPlayerMode - nonOptionalArmyDeploymentPerPlayer) * numberOfPlayers;
 
             _autoRespondingUserInteraction.NumberOfCallsToWaitForTerritoryToBeSelected.Should().Be(numberOfArmiesToPlace);
 
