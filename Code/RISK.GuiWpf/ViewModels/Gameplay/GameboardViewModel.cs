@@ -72,7 +72,7 @@ namespace GuiWpf.ViewModels.Gameplay
         private void InitializeWorld()
         {
             var allTerritories = GetAllTerritories();
-            WorldMapViewModel = _worldMapViewModelFactory.Create(allTerritories, OnTerritoryClick, Enumerable.Empty<IRegion>());
+            WorldMapViewModel = _worldMapViewModelFactory.Create(allTerritories, OnRegionClick, Enumerable.Empty<IRegion>());
 
             _stateController = _stateControllerFactory.Create(_game);
             _stateController.CurrentState = _interactionStateFactory.CreateDraftArmiesState();
@@ -121,7 +121,7 @@ namespace GuiWpf.ViewModels.Gameplay
             }
         }
 
-        public void OnTerritoryClick(IRegion region)
+        public void OnRegionClick(IRegion region)
         {
             _stateController.OnClick(region);
 

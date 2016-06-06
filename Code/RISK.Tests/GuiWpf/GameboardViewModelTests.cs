@@ -87,7 +87,7 @@ namespace RISK.Tests.GuiWpf
             var sut = Initialize(activate: false);
             _worldMapViewModelFactory.Create(
                 Argx.IsEquivalentReadOnly(territory, anotherTerritory),
-                sut.OnTerritoryClick,
+                sut.OnRegionClick,
                 Arg.Is<IEnumerable<IRegion>>(x => x.IsEmpty()))
                 .Returns(_worldMapViewModel);
 
@@ -128,7 +128,7 @@ namespace RISK.Tests.GuiWpf
             _game.IsGameOver().Returns(true);
             var sut = Initialize();
 
-            sut.OnTerritoryClick(null);
+            sut.OnRegionClick(null);
 
             _windowManager.Received().ShowDialog(gameOverViewModel);
         }
@@ -139,7 +139,7 @@ namespace RISK.Tests.GuiWpf
             var sut = Initialize();
             _game.IsGameOver().Returns(false);
 
-            sut.OnTerritoryClick(null);
+            sut.OnRegionClick(null);
 
             _windowManager.DidNotReceiveWithAnyArgs().ShowDialog(null);
         }
@@ -162,7 +162,7 @@ namespace RISK.Tests.GuiWpf
             var territoryId = Substitute.For<IRegion>();
             var sut = Initialize();
 
-            sut.OnTerritoryClick(territoryId);
+            sut.OnRegionClick(territoryId);
 
             stateController.Received().OnClick(territoryId);
         }
