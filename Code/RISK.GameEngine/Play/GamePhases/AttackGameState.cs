@@ -31,9 +31,7 @@ namespace RISK.GameEngine.Play.GamePhases
 
         public bool CanAttack(IRegion attackingRegion, IRegion defendingRegion)
         {
-            var attackingTerritory = _gameData.Territories.GetTerritory(attackingRegion);
-
-            if (!IsCurrentPlayerOccupyingTerritory(attackingTerritory))
+            if (!IsCurrentPlayerOccupyingRegion(attackingRegion))
             {
                 return false;
             }
@@ -41,13 +39,18 @@ namespace RISK.GameEngine.Play.GamePhases
             return _attacker.CanAttack(_gameData.Territories, attackingRegion, defendingRegion);
         }
 
-        private bool IsCurrentPlayerOccupyingTerritory(ITerritory territory)
+        private bool IsCurrentPlayerOccupyingRegion(IRegion region)
         {
-            return _gameData.CurrentPlayer == territory.Player;
+            return _gameData.CurrentPlayer == _gameData.Territories.GetTerritory(region).Player;
         }
 
         public void Attack(IRegion attackingRegion, IRegion defendingRegion)
         {
+            if (!IsCurrentPlayerOccupyingRegion(attackingRegion))
+            {
+                throw new InvalidOperationException($"Current player is not occupying {nameof(attackingRegion)}.");
+            }
+
             var attackOutcome = _attacker.Attack(_gameData.Territories, attackingRegion, defendingRegion);
 
             if (attackOutcome.DefendingArmy == DefendingArmy.IsEliminated)
@@ -119,9 +122,7 @@ namespace RISK.GameEngine.Play.GamePhases
 
         public bool CanFortify(IRegion sourceRegion, IRegion destinationRegion)
         {
-            var sourceTerritory = _gameData.Territories.GetTerritory(sourceRegion);
-
-            if (!IsCurrentPlayerOccupyingTerritory(sourceTerritory))
+            if (!IsCurrentPlayerOccupyingRegion(sourceRegion))
             {
                 return false;
             }
@@ -131,6 +132,11 @@ namespace RISK.GameEngine.Play.GamePhases
 
         public void Fortify(IRegion sourceRegion, IRegion destinationRegion, int armies)
         {
+            if (!IsCurrentPlayerOccupyingRegion(sourceRegion))
+            {
+                throw new InvalidOperationException($"Current player is not occupying {nameof(sourceRegion)}.");
+            }
+
             var updatedTerritories = _fortifier.Fortify(_gameData.Territories, sourceRegion, destinationRegion, armies);
 
             var gameData = _gameDataFactory.Create(

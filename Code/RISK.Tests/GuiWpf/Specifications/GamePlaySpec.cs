@@ -37,7 +37,7 @@ namespace RISK.Tests.GuiWpf.Specifications
         private Continents _continents;
 
         [Fact]
-        public void First_player_draft_armies()
+        public void First_players_draft_armies()
         {
             Given
                 .a_game_with_two_players()
@@ -47,10 +47,47 @@ namespace RISK.Tests.GuiWpf.Specifications
                 .game_is_started();
 
             When
-                .player_1_selects_north_africa();
+                .player_selects_north_africa();
 
             Then
                 .player_1_should_occupy_north_africa_with_6_armies();
+        }
+
+        [Fact]
+        public void Second_player_draft_armies()
+        {
+            Given
+                .a_game_with_two_players()
+                .player_1_occupies_every_territory_except_brazil_and_venezuela_and_north_africa_with_one_army_each()
+                .player_1_has_5_armies_in_north_africa()
+                .player_2_occupies_brazil_and_venezuela_with_one_army_each()
+                .game_is_started()
+                .player_selects_north_africa();
+
+            When
+                .player_selects_brazil();
+
+            Then
+                .player_2_should_occupy_brazil_with_2_armies();
+        }
+
+        [Fact]
+        public void First_player_draft_armies_second_turn()
+        {
+            Given
+                .a_game_with_two_players()
+                .player_1_occupies_every_territory_except_brazil_and_venezuela_and_north_africa_with_one_army_each()
+                .player_1_has_5_armies_in_north_africa()
+                .player_2_occupies_brazil_and_venezuela_with_one_army_each()
+                .game_is_started()
+                .player_selects_north_africa()
+                .player_selects_brazil();
+
+            When
+                .player_ends_turn();
+
+            Then
+                .player_2_should_take_turn();
         }
 
         [Fact]
@@ -64,7 +101,7 @@ namespace RISK.Tests.GuiWpf.Specifications
                 .game_is_started();
 
             When
-                .player_1_selects_north_africa()
+                .player_selects_north_africa()
                 .and_attacks_brazil_and_wins()
                 .one_additional_army_is_sent_to_occupy_brazil();
 
@@ -100,9 +137,9 @@ namespace RISK.Tests.GuiWpf.Specifications
                 player_2_occupies_brazil_and_venezuela_with_one_army_each();
 
             When.
-                player_1_selects_north_africa().
+                player_selects_north_africa().
                 and_attacks_brazil_and_wins().
-                turn_ends();
+                player_ends_turn();
 
             Then.
                 player_1_should_have_a_card().
@@ -116,7 +153,7 @@ namespace RISK.Tests.GuiWpf.Specifications
                 a_game_with_two_players();
 
             When.
-                turn_ends();
+                player_ends_turn();
 
             Then.
                 player_1_should_not_have_any_card().
@@ -311,9 +348,15 @@ namespace RISK.Tests.GuiWpf.Specifications
             //    });
         }
 
-        private GamePlaySpec player_1_selects_north_africa()
+        private GamePlaySpec player_selects_north_africa()
         {
             ClickOn(_regions.NorthAfrica);
+            return this;
+        }
+
+        private GamePlaySpec player_selects_brazil()
+        {
+            ClickOn(_regions.Brazil);
             return this;
         }
 
@@ -342,7 +385,7 @@ namespace RISK.Tests.GuiWpf.Specifications
             ClickOn(_regions.Iceland);
         }
 
-        private void turn_ends()
+        private void player_ends_turn()
         {
             _gameboardViewModel.EndTurn();
         }
@@ -363,6 +406,13 @@ namespace RISK.Tests.GuiWpf.Specifications
         {
             _game.GetTerritory(_regions.NorthAfrica).Player.Should().Be(_player1, "player 1 should occupy North Africa");
             _game.GetTerritory(_regions.NorthAfrica).Armies.Should().Be(6, "North Africa should have 6 armies");
+            return this;
+        }
+
+        private GamePlaySpec player_2_should_occupy_brazil_with_2_armies()
+        {
+            _game.GetTerritory(_regions.Brazil).Player.Should().Be(_player2, "player 2 should occupy Brazil");
+            _game.GetTerritory(_regions.Brazil).Armies.Should().Be(2, "Brazil should have 2 armies");
             return this;
         }
 

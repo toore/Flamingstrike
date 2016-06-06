@@ -34,7 +34,12 @@ namespace RISK.GameEngine.Play.GamePhases
 
         public bool CanPlaceDraftArmies(IRegion region)
         {
-            return _gameData.Territories.GetTerritory(region).Player == _gameData.CurrentPlayer;
+            return IsCurrentPlayerOccupyingRegion(region);
+        }
+
+        private bool IsCurrentPlayerOccupyingRegion(IRegion region)
+        {
+            return _gameData.CurrentPlayer == _gameData.Territories.GetTerritory(region).Player;
         }
 
         public int GetNumberOfArmiesToDraft()
@@ -47,6 +52,10 @@ namespace RISK.GameEngine.Play.GamePhases
             if (numberOfArmiesToPlace > _numberOfArmiesToDraft)
             {
                 throw new ArgumentOutOfRangeException(nameof(numberOfArmiesToPlace));
+            }
+            if (!IsCurrentPlayerOccupyingRegion(region))
+            {
+                throw new InvalidOperationException($"Current player is not occupying {nameof(region)}.");
             }
 
             var updatedTerritories = _armyDrafter.PlaceDraftArmies(_gameData.Territories, region, numberOfArmiesToPlace);

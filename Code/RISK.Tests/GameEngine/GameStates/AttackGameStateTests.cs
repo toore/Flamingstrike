@@ -111,13 +111,21 @@ namespace RISK.Tests.GameEngine.GameStates
         {
             _attacker.CanAttack(
                 Argx.IsEquivalentReadOnly(_territory, _anotherTerritory),
-                _region,
-                _anotherRegion).Returns(true);
-            _territory.Player.Returns(_anotherPlayer);
+                _anotherRegion,
+                _region).Returns(true);
 
             var sut = Create(_gameData);
 
-            sut.CanAttack(_region, _anotherRegion).Should().BeFalse();
+            sut.CanAttack(_anotherRegion, _region).Should().BeFalse();
+        }
+
+        [Fact]
+        public void Attack_from_another_players_territory_throws()
+        {
+            var sut = Create(_gameData);
+            Action act = () => sut.Attack(_anotherRegion, _region);
+
+            act.ShouldThrow<InvalidOperationException>();
         }
 
         [Fact]

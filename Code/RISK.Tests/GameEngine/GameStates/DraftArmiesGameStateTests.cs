@@ -16,7 +16,6 @@ namespace RISK.Tests.GameEngine.GameStates
         private readonly IGameStateConductor _gameStateConductor;
         private readonly IGameDataFactory _gameDataFactory;
         private readonly IArmyDrafter _armyDrafter;
-
         private readonly ITerritory _territory;
         private readonly ITerritory _anotherTerritory;
         private readonly IRegion _region;
@@ -77,6 +76,15 @@ namespace RISK.Tests.GameEngine.GameStates
             var sut = Create(_gameData);
 
             sut.CanPlaceDraftArmies(_anotherRegion).Should().BeFalse();
+        }
+
+        [Fact]
+        public void Place_draft_armies_throws_for_another_territory()
+        {
+            var sut = Create(_gameData);
+            Action act = () => sut.PlaceDraftArmies(_anotherRegion, 1);
+
+            act.ShouldThrow<InvalidOperationException>();
         }
 
         [Fact]
