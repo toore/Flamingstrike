@@ -1,20 +1,22 @@
+using System;
 using RISK.Core;
 
 namespace GuiWpf.ViewModels.Gameplay.Interaction
 {
     public class DraftArmiesState : IInteractionState
     {
-        public bool CanClick(IStateController stateController, IRegion selectedRegion)
+        public bool CanClick(IInteractionStateFsm interactionStateFsm, IRegion selectedRegion)
         {
-            return stateController.Game.IsCurrentPlayerOccupyingTerritory(selectedRegion)
+            return interactionStateFsm.Game.IsCurrentPlayerOccupyingTerritory(selectedRegion)
                    &&
-                   stateController.Game.GetNumberOfArmiesToDraft() > 0;
+                   interactionStateFsm.Game.GetNumberOfArmiesToDraft() > 0;
         }
 
-        public void OnClick(IStateController stateController, IRegion region)
+        public void OnClick(IInteractionStateFsm interactionStateFsm, IRegion region)
         {
             var numberOfArmies = 1;
-            stateController.Game.PlaceDraftArmies(region, numberOfArmies);
+            interactionStateFsm.Game.PlaceDraftArmies(region, numberOfArmies);
+
         }
     }
 }

@@ -24,7 +24,7 @@ namespace GuiWpf.ViewModels.Gameplay
         private readonly IDialogManager _dialogManager;
         private readonly IEventAggregator _eventAggregator;
         private string _playerName;
-        private IStateController _stateController;
+        private IInteractionStateFsm _interactionStateFsm;
 
         public GameboardViewModel(
             IGame game,
@@ -74,8 +74,9 @@ namespace GuiWpf.ViewModels.Gameplay
             var allTerritories = GetAllTerritories();
             WorldMapViewModel = _worldMapViewModelFactory.Create(allTerritories, OnRegionClick, Enumerable.Empty<IRegion>());
 
-            _stateController = _stateControllerFactory.Create(_game);
-            _stateController.CurrentState = _interactionStateFactory.CreateDraftArmiesState();
+            _interactionStateFsm = _stateControllerFactory.Create(_game);
+            var draftArmiesState = _interactionStateFactory.CreateDraftArmiesState();
+            _interactionStateFsm.Set(draftArmiesState);
 
             UpdateGame();
         }
@@ -96,7 +97,8 @@ namespace GuiWpf.ViewModels.Gameplay
 
         public void Fortify()
         {
-            _stateController.CurrentState = _interactionStateFactory.CreateFortifySelectState();
+            var fortifySelectState = _interactionStateFactory.CreateFortifySelectState();
+            _interactionStateFsm.Set(fortifySelectState);
         }
 
         public bool CanEndTurn()
@@ -123,7 +125,7 @@ namespace GuiWpf.ViewModels.Gameplay
 
         public void OnRegionClick(IRegion region)
         {
-            _stateController.OnClick(region);
+            _interactionStateFsm.OnClick(region);
 
             UpdateGame();
 
@@ -150,10 +152,10 @@ namespace GuiWpf.ViewModels.Gameplay
         {
             var allTerritories = GetAllTerritories();
             var enabledTerritories = _regions.GetAll()
-                .Where(x => _stateController.CanClick(x))
+                .Where(x => _interactionStateFsm.CanClick(x))
                 .ToList();
 
-            _worldMapViewModelFactory.Update(WorldMapViewModel, allTerritories, _stateController.SelectedRegion, enabledTerritories);
+            _worldMapViewModelFactory.Update(WorldMapViewModel, allTerritories, _interactionStateFsm.SelectedRegion, enabledTerritories);
         }
     }
 }

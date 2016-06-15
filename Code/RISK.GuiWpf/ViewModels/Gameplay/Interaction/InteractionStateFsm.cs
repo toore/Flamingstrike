@@ -3,35 +3,40 @@ using RISK.GameEngine.Play;
 
 namespace GuiWpf.ViewModels.Gameplay.Interaction
 {
-    public interface IStateController
+    public interface IInteractionStateFsm
     {
-        IInteractionState CurrentState { get; set; }
         IGame Game { get; }
         IRegion SelectedRegion { get; set; }
 
+        void Set(IInteractionState interactionState);
         bool CanClick(IRegion region);
         void OnClick(IRegion region);
     }
 
-    public class StateController : IStateController
+    public class InteractionStateFsm : IInteractionStateFsm
     {
-        public IInteractionState CurrentState { get; set; }
+        private IInteractionState _interactionState;
         public IGame Game { get; }
         public IRegion SelectedRegion { get; set; }
 
-        public StateController(IGame game)
+        public InteractionStateFsm(IGame game)
         {
             Game = game;
         }
 
+        public void Set(IInteractionState interactionState)
+        {
+            _interactionState = interactionState;
+        }
+
         public bool CanClick(IRegion region)
         {
-            return CurrentState.CanClick(this, region);
+            return _interactionState.CanClick(this, region);
         }
 
         public void OnClick(IRegion region)
         {
-            CurrentState.OnClick(this, region);
+            _interactionState.OnClick(this, region);
         }
     }
 }

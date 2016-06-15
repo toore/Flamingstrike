@@ -96,7 +96,7 @@
     <Compile Include="ViewModels\Gameplay\Interaction\InteractionStateFactory.cs" />
     <Compile Include="ViewModels\Gameplay\Interaction\SelectState.cs" />
     <Compile Include="ViewModels\Gameplay\Interaction\SelectStateBase.cs" />
-    <Compile Include="ViewModels\Gameplay\Interaction\StateController.cs" />
+    <Compile Include="ViewModels\Gameplay\Interaction\InteractionStateFsm.cs" />
     <Compile Include="ViewModels\Gameplay\Interaction\StateControllerFactory.cs" />
     <Compile Include="ViewModels\Gameplay\Interaction\EndTurnState.cs" />
     <Compile Include="ViewModels\Gameplay\Map\IWorldMapItemViewModelVisitor.cs" />

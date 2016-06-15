@@ -157,7 +157,7 @@ namespace RISK.Tests.GuiWpf
         [Fact]
         public void Clicked_territory_is_proxied_to_state_controller()
         {
-            var stateController = Substitute.For<IStateController>();
+            var stateController = Substitute.For<IInteractionStateFsm>();
             _stateControllerFactory.Create(_game).Returns(stateController);
             var territoryId = Substitute.For<IRegion>();
             var sut = Initialize();
@@ -170,7 +170,7 @@ namespace RISK.Tests.GuiWpf
         [Fact]
         public void Fortifies_armies()
         {
-            var stateController = Substitute.For<IStateController>();
+            var stateController = Substitute.For<IInteractionStateFsm>();
             _stateControllerFactory.Create(_game).Returns(stateController);
             var fortifyState = Substitute.For<IInteractionState>();
             _interactionStateFactory.CreateFortifySelectState().Returns(fortifyState);

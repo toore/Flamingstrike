@@ -12,22 +12,22 @@ namespace GuiWpf.ViewModels.Gameplay.Interaction
             _interactionStateFactory = interactionStateFactory;
         }
 
-        public bool CanClick(IStateController stateController, IRegion selectedRegion)
+        public bool CanClick(IInteractionStateFsm interactionStateFsm, IRegion selectedRegion)
         {
-            return CanFortify(stateController, selectedRegion)
+            return CanFortify(interactionStateFsm, selectedRegion)
                    ||
-                   CanDeselect(stateController, selectedRegion);
+                   CanDeselect(interactionStateFsm, selectedRegion);
         }
 
-        public void OnClick(IStateController stateController, IRegion region)
+        public void OnClick(IInteractionStateFsm interactionStateFsm, IRegion region)
         {
-            if (CanDeselect(stateController, region))
+            if (CanDeselect(interactionStateFsm, region))
             {
-                Deselect(stateController);
+                Deselect(interactionStateFsm);
             }
-            else if (CanFortify(stateController, region))
+            else if (CanFortify(interactionStateFsm, region))
             {
-                Fortify(stateController, region);
+                Fortify(interactionStateFsm, region);
             }
             else
             {
@@ -35,27 +35,30 @@ namespace GuiWpf.ViewModels.Gameplay.Interaction
             }
         }
 
-        private static bool CanDeselect(IStateController stateController, IRegion region)
+        private static bool CanDeselect(IInteractionStateFsm interactionStateFsm, IRegion region)
         {
-            return region == stateController.SelectedRegion;
+            return region == interactionStateFsm.SelectedRegion;
         }
 
-        private void Deselect(IStateController stateController)
+        private void Deselect(IInteractionStateFsm interactionStateFsm)
         {
-            stateController.CurrentState = _interactionStateFactory.CreateFortifySelectState();
-            stateController.SelectedRegion = null;
+            var fortifySelectState = _interactionStateFactory.CreateFortifySelectState();
+            interactionStateFsm.Set(fortifySelectState);
+
+            interactionStateFsm.SelectedRegion = null;
         }
 
-        private static bool CanFortify(IStateController stateController, IRegion regionToFortify)
+        private static bool CanFortify(IInteractionStateFsm interactionStateFsm, IRegion regionToFortify)
         {
-            var canFortify = stateController.Game.CanFortify(stateController.SelectedRegion, regionToFortify);
+            var canFortify = interactionStateFsm.Game.CanFortify(interactionStateFsm.SelectedRegion, regionToFortify);
             return canFortify;
         }
 
-        private void Fortify(IStateController stateController, IRegion regionToFortify)
+        private void Fortify(IInteractionStateFsm interactionStateFsm, IRegion regionToFortify)
         {
-            stateController.Game.Fortify(stateController.SelectedRegion, regionToFortify, 1);
-            stateController.CurrentState = _interactionStateFactory.CreateEndTurnState();
+            interactionStateFsm.Game.Fortify(interactionStateFsm.SelectedRegion, regionToFortify, 1);
+            var endTurnState = _interactionStateFactory.CreateEndTurnState();
+            interactionStateFsm.Set(endTurnState);
         }
     }
 }

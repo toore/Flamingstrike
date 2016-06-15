@@ -5,20 +5,21 @@ namespace GuiWpf.ViewModels.Gameplay.Interaction
 {
     public abstract class SelectStateBase : IInteractionState
     {
-        public bool CanClick(IStateController stateController, IRegion region)
+        public bool CanClick(IInteractionStateFsm interactionStateFsm, IRegion region)
         {
-            return stateController.Game.IsCurrentPlayerOccupyingTerritory(region);
+            return interactionStateFsm.Game.IsCurrentPlayerOccupyingTerritory(region);
         }
 
-        public void OnClick(IStateController stateController, IRegion region)
+        public void OnClick(IInteractionStateFsm interactionStateFsm, IRegion region)
         {
-            if (!CanClick(stateController, region))
+            if (!CanClick(interactionStateFsm, region))
             {
                 throw new InvalidOperationException();
             }
 
-            stateController.SelectedRegion = region;
-            stateController.CurrentState = CreateStateToEnterWhenSelected();
+            interactionStateFsm.SelectedRegion = region;
+            var stateToEnterWhenSelected = CreateStateToEnterWhenSelected();
+            interactionStateFsm.Set(stateToEnterWhenSelected);
         }
 
         protected abstract IInteractionState CreateStateToEnterWhenSelected();

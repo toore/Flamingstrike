@@ -5,12 +5,12 @@ namespace GuiWpf.ViewModels.Gameplay.Interaction
 {
     public class EndTurnState : IInteractionState
     {
-        public bool CanClick(IStateController stateController, IRegion selectedRegion)
+        public bool CanClick(IInteractionStateFsm interactionStateFsm, IRegion selectedRegion)
         {
             return false;
         }
 
-        public void OnClick(IStateController stateController, IRegion region)
+        public void OnClick(IInteractionStateFsm interactionStateFsm, IRegion region)
         {
             throw new InvalidOperationException();
         }

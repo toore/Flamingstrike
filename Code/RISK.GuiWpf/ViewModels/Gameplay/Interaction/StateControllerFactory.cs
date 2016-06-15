@@ -4,14 +4,14 @@ namespace GuiWpf.ViewModels.Gameplay.Interaction
 {
     public interface IStateControllerFactory
     {
-        IStateController Create(IGame game);
+        IInteractionStateFsm Create(IGame game);
     }
 
     public class StateControllerFactory : IStateControllerFactory
     {
-        public IStateController Create(IGame game)
+        public IInteractionStateFsm Create(IGame game)
         {
-            return new StateController(game);
+            return new InteractionStateFsm(game);
         }
     }
 }

@@ -12,22 +12,22 @@ namespace GuiWpf.ViewModels.Gameplay.Interaction
             _interactionStateFactory = interactionStateFactory;
         }
 
-        public bool CanClick(IStateController stateController, IRegion selectedRegion)
+        public bool CanClick(IInteractionStateFsm interactionStateFsm, IRegion selectedRegion)
         {
-            return CanAttack(stateController, selectedRegion)
+            return CanAttack(interactionStateFsm, selectedRegion)
                    ||
-                   CanDeselect(stateController, selectedRegion);
+                   CanDeselect(interactionStateFsm, selectedRegion);
         }
 
-        public void OnClick(IStateController stateController, IRegion region)
+        public void OnClick(IInteractionStateFsm interactionStateFsm, IRegion region)
         {
-            if (CanDeselect(stateController, region))
+            if (CanDeselect(interactionStateFsm, region))
             {
-                Deselect(stateController);
+                Deselect(interactionStateFsm);
             }
-            else if (CanAttack(stateController, region))
+            else if (CanAttack(interactionStateFsm, region))
             {
-                Attack(stateController, region);
+                Attack(interactionStateFsm, region);
             }
             else
             {
@@ -35,27 +35,29 @@ namespace GuiWpf.ViewModels.Gameplay.Interaction
             }
         }
 
-        private static bool CanDeselect(IStateController stateController, IRegion region)
+        private static bool CanDeselect(IInteractionStateFsm interactionStateFsm, IRegion region)
         {
-            return region == stateController.SelectedRegion;
+            return region == interactionStateFsm.SelectedRegion;
         }
 
-        private void Deselect(IStateController stateController)
+        private void Deselect(IInteractionStateFsm interactionStateFsm)
         {
-            stateController.CurrentState = _interactionStateFactory.CreateSelectState();
-            stateController.SelectedRegion = null;
+            var selectState = _interactionStateFactory.CreateSelectState();
+            interactionStateFsm.Set(selectState);
+
+            interactionStateFsm.SelectedRegion = null;
         }
 
-        private static bool CanAttack(IStateController stateController, IRegion attackeeRegion)
+        private static bool CanAttack(IInteractionStateFsm interactionStateFsm, IRegion attackeeRegion)
         {
-            var canAttack = stateController.Game.CanAttack(stateController.SelectedRegion, attackeeRegion);
+            var canAttack = interactionStateFsm.Game.CanAttack(interactionStateFsm.SelectedRegion, attackeeRegion);
 
             return canAttack;
         }
 
-        private static void Attack(IStateController stateController, IRegion attackedRegion)
+        private static void Attack(IInteractionStateFsm interactionStateFsm, IRegion attackedRegion)
         {
-            stateController.Game.Attack(stateController.SelectedRegion, attackedRegion);
+            interactionStateFsm.Game.Attack(interactionStateFsm.SelectedRegion, attackedRegion);
         }
     }
 }
