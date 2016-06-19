@@ -13,10 +13,11 @@ namespace GuiWpf
 
             if (e.Handled)
             {
-                // Handled by ButtonBase, means that IsPressed has been updated. 
-                // We might need to correct, since ButtonBase checks rectangle-size only
+                // When mouse event args has been handled by ButtonBase, it means that 
+                // IsPressed has been updated. 
+                // Because ButtonBase only checks a rectangle, we need to check if 
+                // mouse is really over any child, and update IsPressed accordingly.
                 var isMouseOverChild = IsMouseOverChild(e);
-
                 IsPressed = isMouseOverChild;
             }
         }
