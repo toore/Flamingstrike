@@ -13,18 +13,18 @@ namespace GuiWpf.ViewModels.Setup
     public class UserInteraction : IUserInteraction
     {
         private IRegion _selectedRegion;
-        private readonly AutoResetEvent _territoryIdHasBeenSet = new AutoResetEvent(false);
+        private readonly AutoResetEvent _autoResetEvent = new AutoResetEvent(false);
 
         public IRegion WaitForTerritoryToBeSelected(ITerritoryRequestParameter territoryRequestParameter)
         {
-            _territoryIdHasBeenSet.WaitOne();
+            _autoResetEvent.WaitOne();
             return _selectedRegion;
         }
 
         public void SelectTerritory(IRegion region)
         {
             _selectedRegion = region;
-            _territoryIdHasBeenSet.Set();
+            _autoResetEvent.Set();
         }
     }
 }
