@@ -32,7 +32,6 @@ namespace RISK.Tests.GuiWpf.Specifications
         private Sequence<IPlayer> _players;
         private readonly List<Territory> _territories = new List<Territory>();
         private IGame _game;
-        private IStateControllerFactory _stateControllerFactory;
         private IInteractionStateFactory _interactionStateFactory;
         private Continents _continents;
 
@@ -62,6 +61,8 @@ namespace RISK.Tests.GuiWpf.Specifications
                 .player_1_has_5_armies_in_north_africa()
                 .player_2_occupies_brazil_and_venezuela_with_one_army_each()
                 .game_is_started()
+                .player_selects_north_africa()
+                .player_selects_north_africa()
                 .player_selects_north_africa();
 
             When
@@ -240,8 +241,8 @@ namespace RISK.Tests.GuiWpf.Specifications
             var gameFactory = new GameFactory(gameDataFactory, gameStateConductor, deckFactory, gameStateFsm);
             var gamePlaySetup = new GamePlaySetup(_players, _territories);
             _game = gameFactory.Create(gamePlaySetup);
-            _stateControllerFactory = new StateControllerFactory();
-            _interactionStateFactory = new InteractionStateFactory();
+            var interactionStateFsm = new InteractionStateFsm();
+            _interactionStateFactory = new InteractionStateFactory(interactionStateFsm);
 
             var regionModelFactory = new RegionModelFactory(_regions);
             var colorService = new ColorService();
@@ -259,7 +260,7 @@ namespace RISK.Tests.GuiWpf.Specifications
 
             _gameboardViewModel = new GameboardViewModel(
                 _game,
-                _stateControllerFactory,
+                interactionStateFsm,
                 _interactionStateFactory,
                 _regions,
                 worldMapViewModelFactory,

@@ -24,9 +24,9 @@ namespace GuiWpf.Views.WorldMapViews
             var regionColorSettingFactory = new RegionColorSettingsFactory(colorService, regions);
             var worldMapViewModelFactory = new WorldMapViewModelFactory(regionModelFactory, regionColorSettingFactory, colorService);
             var game = new Game(null);
-            var stateControllerFactory = new StateControllerFactory();
-            var interactionStateFactory = new InteractionStateFactory();
-            var gameboardViewModel = new GameboardViewModel(game, stateControllerFactory, interactionStateFactory, regions, worldMapViewModelFactory, null, null, null, null);
+            var interactionStateFsm = new InteractionStateFsm();
+            var interactionStateFactory = new InteractionStateFactory(interactionStateFsm);
+            var gameboardViewModel = new GameboardViewModel(game, interactionStateFsm, interactionStateFactory, regions, worldMapViewModelFactory, null, null, null, null);
             gameboardViewModel.Activate();
 
             return gameboardViewModel;

@@ -1,45 +1,55 @@
+using RISK.Core;
+using RISK.GameEngine.Play;
+
 namespace GuiWpf.ViewModels.Gameplay.Interaction
 {
     public interface IInteractionStateFactory
     {
-        IInteractionState CreateDraftArmiesState();
-        IInteractionState CreateSelectState();
-        IInteractionState CreateAttackState();
-        IInteractionState CreateFortifySelectState();
-        IInteractionState CreateFortifyMoveState();
-        IInteractionState CreateEndTurnState();
+        IInteractionState CreateDraftArmiesInteractionState(IGame game);
+        IInteractionState CreateSelectInteractionState(IGame game);
+        IInteractionState CreateAttackInteractionState(IGame game, IRegion selectedRegion);
+        IInteractionState CreateFortifySelectInteractionState(IGame game);
+        IInteractionState CreateFortifyMoveInteractionState(IGame game, IRegion selectedRegion);
+        IInteractionState CreateEndTurnInteractionState();
     }
 
     public class InteractionStateFactory : IInteractionStateFactory
     {
-        public IInteractionState CreateDraftArmiesState()
+        private readonly IInteractionStateFsm _interactionStateFsm;
+
+        public InteractionStateFactory(IInteractionStateFsm interactionStateFsm)
         {
-            return new DraftArmiesState();
+            _interactionStateFsm = interactionStateFsm;
         }
 
-        public IInteractionState CreateSelectState()
+        public IInteractionState CreateDraftArmiesInteractionState(IGame game)
         {
-            return new SelectState(this);
+            return new DraftArmiesInteractionState(_interactionStateFsm, this, game);
         }
 
-        public IInteractionState CreateAttackState()
+        public IInteractionState CreateSelectInteractionState(IGame game)
         {
-            return new AttackState(this);
+            return new SelectInteractionState(_interactionStateFsm, this, game);
         }
 
-        public IInteractionState CreateFortifySelectState()
+        public IInteractionState CreateAttackInteractionState(IGame game, IRegion selectedRegion)
         {
-            return new FortifySelectState(this);
+            return new AttackInteractionState(_interactionStateFsm, this, game, selectedRegion);
         }
 
-        public IInteractionState CreateFortifyMoveState()
+        public IInteractionState CreateFortifySelectInteractionState(IGame game)
         {
-            return new FortifyMoveState(this);
+            return new FortifySelectInteractionState(_interactionStateFsm, this, game);
         }
 
-        public IInteractionState CreateEndTurnState()
+        public IInteractionState CreateFortifyMoveInteractionState(IGame game, IRegion selectedRegion)
         {
-            return new EndTurnState();
+            return new FortifyMoveInteractionState(_interactionStateFsm, this, game, selectedRegion);
+        }
+
+        public IInteractionState CreateEndTurnInteractionState()
+        {
+            return new EndTurnInteractionState();
         }
     }
 }

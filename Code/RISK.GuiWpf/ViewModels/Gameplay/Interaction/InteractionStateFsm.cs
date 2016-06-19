@@ -1,13 +1,10 @@
 using RISK.Core;
-using RISK.GameEngine.Play;
 
 namespace GuiWpf.ViewModels.Gameplay.Interaction
 {
     public interface IInteractionStateFsm
     {
-        IGame Game { get; }
-        IRegion SelectedRegion { get; set; }
-
+        IRegion SelectedRegion { get; }
         void Set(IInteractionState interactionState);
         bool CanClick(IRegion region);
         void OnClick(IRegion region);
@@ -16,13 +13,8 @@ namespace GuiWpf.ViewModels.Gameplay.Interaction
     public class InteractionStateFsm : IInteractionStateFsm
     {
         private IInteractionState _interactionState;
-        public IGame Game { get; }
-        public IRegion SelectedRegion { get; set; }
 
-        public InteractionStateFsm(IGame game)
-        {
-            Game = game;
-        }
+        public IRegion SelectedRegion => _interactionState.SelectedRegion;
 
         public void Set(IInteractionState interactionState)
         {
@@ -31,12 +23,12 @@ namespace GuiWpf.ViewModels.Gameplay.Interaction
 
         public bool CanClick(IRegion region)
         {
-            return _interactionState.CanClick(this, region);
+            return _interactionState.CanClick(region);
         }
 
         public void OnClick(IRegion region)
         {
-            _interactionState.OnClick(this, region);
+            _interactionState.OnClick(region);
         }
     }
 }

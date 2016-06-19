@@ -41,8 +41,8 @@ namespace GuiWpf.ViewModels
                 PlayerRepository,
                 EventAggregator);
 
-            var stateControllerFactory = new StateControllerFactory();
-            var interactionStateFactory = new InteractionStateFactory();
+            var interactionStateFsm = new InteractionStateFsm();
+            var interactionStateFactory = new InteractionStateFactory(interactionStateFsm);
             var colorService = new ColorService();
             var continents = new Continents();
             var regions = new Regions(continents);
@@ -58,7 +58,7 @@ namespace GuiWpf.ViewModels
             var dialogManager = new DialogManager(userNotifier);
 
             GameboardViewModelFactory = new GameboardViewModelFactory(
-                stateControllerFactory,
+                interactionStateFsm,
                 interactionStateFactory,
                 regions,
                 worldMapViewModelFactory,

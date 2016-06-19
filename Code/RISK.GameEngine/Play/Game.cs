@@ -19,7 +19,7 @@ namespace RISK.GameEngine.Play
         void Fortify(IRegion sourceRegion, IRegion destinationRegion, int armies);
         void EndTurn();
         bool IsGameOver();
-        bool IsCurrentPlayerOccupyingTerritory(IRegion region);
+        bool IsCurrentPlayerOccupyingRegion(IRegion region);
     }
 
     public class Game : IGame
@@ -98,7 +98,7 @@ namespace RISK.GameEngine.Play
             return false;
         }
 
-        public bool IsCurrentPlayerOccupyingTerritory(IRegion region)
+        public bool IsCurrentPlayerOccupyingRegion(IRegion region)
         {
             var territory = GetTerritory(region);
 

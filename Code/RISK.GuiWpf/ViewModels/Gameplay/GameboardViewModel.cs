@@ -16,7 +16,7 @@ namespace GuiWpf.ViewModels.Gameplay
     {
         private readonly IRegions _regions;
         private readonly IGame _game;
-        private readonly IStateControllerFactory _stateControllerFactory;
+        private readonly IInteractionStateFsm _interactionInteractionStateFsm;
         private readonly IInteractionStateFactory _interactionStateFactory;
         private readonly IWorldMapViewModelFactory _worldMapViewModelFactory;
         private readonly IWindowManager _windowManager;
@@ -24,11 +24,10 @@ namespace GuiWpf.ViewModels.Gameplay
         private readonly IDialogManager _dialogManager;
         private readonly IEventAggregator _eventAggregator;
         private string _playerName;
-        private IInteractionStateFsm _interactionStateFsm;
 
         public GameboardViewModel(
             IGame game,
-            IStateControllerFactory stateControllerFactory,
+            IInteractionStateFsm interactionStateFsm,
             IInteractionStateFactory interactionStateFactory,
             IRegions regions,
             IWorldMapViewModelFactory worldMapViewModelFactory,
@@ -39,7 +38,7 @@ namespace GuiWpf.ViewModels.Gameplay
         {
             _regions = regions;
             _game = game;
-            _stateControllerFactory = stateControllerFactory;
+            _interactionInteractionStateFsm = interactionStateFsm;
             _interactionStateFactory = interactionStateFactory;
             _worldMapViewModelFactory = worldMapViewModelFactory;
             _windowManager = windowManager;
@@ -65,18 +64,24 @@ namespace GuiWpf.ViewModels.Gameplay
             InitializeWorld();
         }
 
-        public bool IsActive { get; private set; }
+        public bool IsActive
+        {
+            get { throw new InvalidOperationException($"{nameof(IsActive)} is not used"); }
+        }
 
-        public event EventHandler<ActivationEventArgs> Activated;
+        public event EventHandler<ActivationEventArgs> Activated
+        {
+            add { throw new InvalidOperationException($"{nameof(Activated)} is not used"); }
+            remove { throw new InvalidOperationException($"{nameof(Activated)} is not used"); }
+        }
 
         private void InitializeWorld()
         {
             var allTerritories = GetAllTerritories();
             WorldMapViewModel = _worldMapViewModelFactory.Create(allTerritories, OnRegionClick, Enumerable.Empty<IRegion>());
 
-            _interactionStateFsm = _stateControllerFactory.Create(_game);
-            var draftArmiesState = _interactionStateFactory.CreateDraftArmiesState();
-            _interactionStateFsm.Set(draftArmiesState);
+            var draftArmiesState = _interactionStateFactory.CreateDraftArmiesInteractionState(_game);
+            _interactionInteractionStateFsm.Set(draftArmiesState);
 
             UpdateGame();
         }
@@ -97,8 +102,8 @@ namespace GuiWpf.ViewModels.Gameplay
 
         public void Fortify()
         {
-            var fortifySelectState = _interactionStateFactory.CreateFortifySelectState();
-            _interactionStateFsm.Set(fortifySelectState);
+            var fortifySelectState = _interactionStateFactory.CreateFortifySelectInteractionState(_game);
+            _interactionInteractionStateFsm.Set(fortifySelectState);
         }
 
         public bool CanEndTurn()
@@ -125,7 +130,7 @@ namespace GuiWpf.ViewModels.Gameplay
 
         public void OnRegionClick(IRegion region)
         {
-            _interactionStateFsm.OnClick(region);
+            _interactionInteractionStateFsm.OnClick(region);
 
             UpdateGame();
 
@@ -152,10 +157,12 @@ namespace GuiWpf.ViewModels.Gameplay
         {
             var allTerritories = GetAllTerritories();
             var enabledTerritories = _regions.GetAll()
-                .Where(x => _interactionStateFsm.CanClick(x))
+                .Where(x => _interactionInteractionStateFsm.CanClick(x))
                 .ToList();
 
-            _worldMapViewModelFactory.Update(WorldMapViewModel, allTerritories, _interactionStateFsm.SelectedRegion, enabledTerritories);
+            var selectedRegion = _interactionInteractionStateFsm.SelectedRegion;
+
+            _worldMapViewModelFactory.Update(WorldMapViewModel, allTerritories, selectedRegion, enabledTerritories);
         }
     }
 }

@@ -51,7 +51,9 @@ namespace RISK.GameEngine.Play.GamePhases
 
         public void ContinueWithAttackPhase(GameData gameData, ConqueringAchievement conqueringAchievement)
         {
-            throw new NotImplementedException();
+            var attackGameState = _gameStateFactory.CreateAttackGameState(this, gameData);
+
+            _gameStateFsm.Set(attackGameState);
         }
 
         public void SendArmiesToOccupy(GameData gameData, IRegion attackingRegion, IRegion occupiedRegion)

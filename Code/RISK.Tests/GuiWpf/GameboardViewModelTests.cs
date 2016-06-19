@@ -19,7 +19,7 @@ namespace RISK.Tests.GuiWpf
     public class GameboardViewModelTests
     {
         private readonly IGame _game;
-        private readonly IStateControllerFactory _stateControllerFactory;
+        private readonly IInteractionStateFsm _interactionStateFsm;
         private readonly IInteractionStateFactory _interactionStateFactory;
         private readonly IRegions _regions;
         private readonly IWorldMapViewModelFactory _worldMapViewModelFactory;
@@ -33,7 +33,7 @@ namespace RISK.Tests.GuiWpf
         public GameboardViewModelTests()
         {
             _game = Substitute.For<IGame>();
-            _stateControllerFactory = Substitute.For<IStateControllerFactory>();
+            _interactionStateFsm = Substitute.For<IInteractionStateFsm>();
             _interactionStateFactory = Substitute.For<IInteractionStateFactory>();
             _regions = Substitute.For<IRegions>();
             _worldMapViewModelFactory = Substitute.For<IWorldMapViewModelFactory>();
@@ -60,7 +60,7 @@ namespace RISK.Tests.GuiWpf
             _worldMapViewModel.WorldMapViewModels.Add(textViewModel2);
 
             _gameboardViewModelFactory = new GameboardViewModelFactory(
-                _stateControllerFactory,
+                _interactionStateFsm,
                 _interactionStateFactory,
                 _regions,
                 _worldMapViewModelFactory,
@@ -155,30 +155,26 @@ namespace RISK.Tests.GuiWpf
         }
 
         [Fact]
-        public void Clicked_territory_is_proxied_to_state_controller()
+        public void Clicked_territory_is_routed_to_state_fsm()
         {
-            var stateController = Substitute.For<IInteractionStateFsm>();
-            _stateControllerFactory.Create(_game).Returns(stateController);
-            var territoryId = Substitute.For<IRegion>();
+            var region = Substitute.For<IRegion>();
             var sut = Initialize();
 
-            sut.OnRegionClick(territoryId);
+            sut.OnRegionClick(region);
 
-            stateController.Received().OnClick(territoryId);
+            _interactionStateFsm.Received().OnClick(region);
         }
 
         [Fact]
         public void Fortifies_armies()
         {
-            var stateController = Substitute.For<IInteractionStateFsm>();
-            _stateControllerFactory.Create(_game).Returns(stateController);
             var fortifyState = Substitute.For<IInteractionState>();
-            _interactionStateFactory.CreateFortifySelectState().Returns(fortifyState);
+            _interactionStateFactory.CreateFortifySelectInteractionState(_game).Returns(fortifyState);
             var sut = Initialize();
 
             sut.Fortify();
 
-            stateController.CurrentState.Should().Be(fortifyState);
+            _interactionStateFsm.Received().Set(fortifyState);
         }
 
         private GameboardViewModel Initialize(bool activate = true)

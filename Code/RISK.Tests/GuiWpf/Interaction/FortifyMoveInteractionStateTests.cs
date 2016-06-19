@@ -2,29 +2,38 @@ using FluentAssertions;
 using GuiWpf.ViewModels.Gameplay.Interaction;
 using NSubstitute;
 using RISK.Core;
+using RISK.GameEngine.Play;
 using Xunit;
 
 namespace RISK.Tests.GuiWpf.Interaction
 {
-    public class FortifyMoveStateTests : InteractionStateTestsBase
+    public class FortifyMoveInteractionStateTests
     {
         private readonly IRegion _selectedRegion;
-        private readonly ITerritory _selectedTerritory;
-        private readonly ITerritory _territoryToFortify;
         private readonly IRegion _regionToFortify;
+        private readonly IInteractionStateFsm _interactionStateFsm;
+        private readonly IInteractionStateFactory _interactionStateFactory;
+        private readonly IGame _game;
+        private readonly FortifyMoveInteractionState _sut;
 
-        public FortifyMoveStateTests()
+        public FortifyMoveInteractionStateTests()
         {
-            _selectedTerritory = Substitute.For<ITerritory>();
-            _selectedRegion = _selectedTerritory.Region;
-            _game.GetTerritory(_selectedRegion).Returns(_selectedTerritory);
+            _interactionStateFsm = Substitute.For<IInteractionStateFsm>();
+            _interactionStateFactory = Substitute.For<IInteractionStateFactory>();
+            _game = Substitute.For<IGame>();
+            _selectedRegion = Substitute.For<IRegion>();
 
-            _sut.CurrentState = new FortifyMoveState(_interactionStateFactory);
-            _sut.SelectedRegion = _selectedRegion;
+            _sut = new FortifyMoveInteractionState(_interactionStateFsm, _interactionStateFactory, _game, _selectedRegion);
 
-            _territoryToFortify = Substitute.For<ITerritory>();
             _regionToFortify = Substitute.For<IRegion>();
-            _game.GetTerritory(_regionToFortify).Returns(_territoryToFortify);
+        }
+
+        [Fact]
+        public void Selected_region_is_defined()
+        {
+            _sut.OnClick(_selectedRegion);
+
+            _sut.SelectedRegion.Should().Be(_selectedRegion);
         }
 
         [Fact]
@@ -44,7 +53,7 @@ namespace RISK.Tests.GuiWpf.Interaction
         [Fact]
         public void Can_not_click_when_fortification_is_not_allowed()
         {
-            _sut.AssertCanNotClickAndOnClickThrowsWhenInvoked(_regionToFortify);
+            _sut.AssertCanNotClickAndOnClickThrowsInvalidOperationException(_regionToFortify);
         }
 
         [Fact]
@@ -61,31 +70,23 @@ namespace RISK.Tests.GuiWpf.Interaction
         public void OnClick_enters_end_turn_state_after_fortification()
         {
             var endTurnState = Substitute.For<IInteractionState>();
-            _interactionStateFactory.CreateEndTurnState().Returns(endTurnState);
+            _interactionStateFactory.CreateEndTurnInteractionState().Returns(endTurnState);
             _game.CanFortify(_selectedRegion, _regionToFortify).Returns(true);
 
             _sut.OnClick(_regionToFortify);
 
-            _sut.CurrentState.Should().Be(endTurnState);
+            _interactionStateFsm.Received().Set(endTurnState);
         }
 
         [Fact]
         public void OnClick_on_selected_territory_enters_fortify_select_state()
         {
             var fortifySelectState = Substitute.For<IInteractionState>();
-            _interactionStateFactory.CreateFortifySelectState().Returns(fortifySelectState);
+            _interactionStateFactory.CreateFortifySelectInteractionState(_game).Returns(fortifySelectState);
 
             _sut.OnClick(_selectedRegion);
 
-            _sut.CurrentState.Should().Be(fortifySelectState);
-        }
-
-        [Fact]
-        public void OnClick_reset_selected_territory_before_entering_fortify_select_state()
-        {
-            _sut.OnClick(_selectedRegion);
-
-            _sut.SelectedRegion.Should().BeNull();
+            _interactionStateFsm.Received().Set(fortifySelectState);
         }
     }
 }
