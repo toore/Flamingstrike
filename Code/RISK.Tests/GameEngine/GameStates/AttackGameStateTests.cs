@@ -66,13 +66,11 @@ namespace RISK.Tests.GameEngine.GameStates
         }
 
         [Fact]
-        public void Get_number_of_armies_to_draft_throws()
+        public void Get_number_of_armies_is_zero()
         {
             var sut = Create(_gameData);
 
-            Action act = () => sut.GetNumberOfArmiesToDraft();
-
-            act.ShouldThrow<InvalidOperationException>();
+            sut.GetNumberOfArmiesToDraft().Should().Be(0);
         }
 
         [Fact]

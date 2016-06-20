@@ -66,7 +66,8 @@ namespace RISK.Tests.GuiWpf.Specifications
                 .player_selects_north_africa();
 
             When
-                .player_selects_brazil();
+                .player_selects_north_africa()
+                .player_attacks_brazil();
 
             Then
                 .player_2_should_occupy_brazil_with_2_armies();
@@ -352,6 +353,12 @@ namespace RISK.Tests.GuiWpf.Specifications
         private GamePlaySpec player_selects_north_africa()
         {
             ClickOn(_regions.NorthAfrica);
+            return this;
+        }
+
+        private GamePlaySpec player_attacks_brazil()
+        {
+            ClickOn(_regions.Brazil);
             return this;
         }
 

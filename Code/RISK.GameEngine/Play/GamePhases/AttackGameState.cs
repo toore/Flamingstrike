@@ -171,7 +171,7 @@ namespace RISK.GameEngine.Play.GamePhases
 
         public int GetNumberOfArmiesToDraft()
         {
-            throw new InvalidOperationException();
+            return 0;
         }
 
         public void PlaceDraftArmies(IRegion region, int numberOfArmiesToPlace)

@@ -107,4 +107,12 @@ namespace RISK.GameEngine.Play
             return isCurrentPlayerOccupyingTerritory;
         }
     }
+
+    public static class GameExtensions
+    {
+        public static bool HasArmiesToDraft(this IGame game)
+        {
+            return game.GetNumberOfArmiesToDraft() > 0;
+        }
+    }
 }

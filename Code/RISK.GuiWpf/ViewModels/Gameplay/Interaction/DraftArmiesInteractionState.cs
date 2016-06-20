@@ -31,10 +31,10 @@ namespace GuiWpf.ViewModels.Gameplay.Interaction
             var numberOfArmies = 1;
             _game.PlaceDraftArmies(region, numberOfArmies);
 
-            throw new NotImplementedException();
-            if (_game.GetNumberOfArmiesToDraft() == 0)
+            if (_game.HasArmiesToDraft())
             {
-                //interactionStateFsm.CurrentState
+                var selectInteractionState = _interactionStateFactory.CreateSelectInteractionState(_game);
+                _interactionStateFsm.Set(selectInteractionState);
             }
         }
     }
