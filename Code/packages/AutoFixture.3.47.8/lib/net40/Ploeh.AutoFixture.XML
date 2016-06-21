@@ -248,136 +248,21 @@
             is a request for <typeparamref name="T"/>; otherwise, a <see cref="T:Ploeh.AutoFixture.Kernel.NoSpecimen"/> instance.
             </returns>
         </member>
-        <member name="T:Ploeh.AutoFixture.LambdaExpressionGenerator">
+        <member name="T:Ploeh.AutoFixture.Kernel.SortedSetSpecification">
             <summary>
-            Creates new lambda expressions represented by the <see cref="T:System.Linq.Expressions.Expression`1"/> type.
+            Encapsulates logic that determines whether a request is a request for a
+            <see cref="T:System.Collections.Generic.SortedSet`1"/>.
             </summary>
-            <remarks>
-            Specimens are typically either of type <see>
-                    <cref>Expression{Func{T}}</cref>
-                </see>
-                or <see cref="T:System.Linq.Expressions.Expression`1"/>. 
-            </remarks>
         </member>
-        <member name="M:Ploeh.AutoFixture.LambdaExpressionGenerator.Create(System.Object,Ploeh.AutoFixture.Kernel.ISpecimenContext)">
+        <member name="M:Ploeh.AutoFixture.Kernel.SortedSetSpecification.IsSatisfiedBy(System.Object)">
             <summary>
-            Creates a new lambda expression represented by the <see cref="T:System.Linq.Expressions.Expression`1"/> type.
+            Evaluates a request for a specimen to determine whether it's a request for a
+            <see cref="T:System.Collections.Generic.SortedSet`1"/>.
             </summary>
-            <param name="request">The request that describes what to create.</param>
-            <param name="context">Not used.</param>
+            <param name="request">The specimen request.</param>
             <returns>
-            A new <see cref="T:System.Linq.Expressions.Expression`1"/> instance, if <paramref name="request"/> is a request for a
-            <see cref="T:System.Linq.Expressions.Expression`1"/>; otherwise, a <see cref="T:Ploeh.AutoFixture.Kernel.NoSpecimen"/> instance.
-            </returns>
-        </member>
-        <member name="T:Ploeh.AutoFixture.FixtureRepeater">
-            <summary>
-            Contains extension methods for repeating a function in <see cref="T:Ploeh.AutoFixture.IFixture"/> instances.
-            </summary>
-        </member>
-        <member name="M:Ploeh.AutoFixture.FixtureRepeater.Repeat``1(Ploeh.AutoFixture.IFixture,System.Func{``0})">
-            <summary>
-            Repeats a function many times.
-            </summary>
-            <typeparam name="T">
-            The type of object that <paramref name="function"/> creates.
-            </typeparam>
-            <param name="fixture">
-            The <see cref="T:Ploeh.AutoFixture.IFixture"/>to use
-            </param>
-            <param name="function">
-            A function that creates an instance of <typeparamref name="T"/>.
-            </param>
-            <returns>A sequence of objects created by <paramref name="function"/>.</returns>
-            <remarks>
-            <para>
-            The number of times <paramref name="function"/> is invoked is determined by
-            <see cref="P:Ploeh.AutoFixture.IFixture.RepeatCount"/>.
-            </para>
-            </remarks>
-        </member>
-        <member name="T:Ploeh.AutoFixture.InvariantCultureGenerator">
-            <summary>
-            Handles creation requests for <see cref="T:System.Globalization.CultureInfo"/> instances, 
-            returning always the same <see cref="P:System.Globalization.CultureInfo.InvariantCulture"/>.
-            </summary>
-        </member>
-        <member name="M:Ploeh.AutoFixture.InvariantCultureGenerator.Create(System.Object,Ploeh.AutoFixture.Kernel.ISpecimenContext)">
-            <summary>
-            Generates a CultureInfo specimen based on a <see cref="T:System.Globalization.CultureInfo"/> type request.
-            </summary>
-            <param name="request">The request that describes what to create.</param>
-            <param name="context">A context that can be used to create other specimens.</param>
-            <returns>
-            The requested specimen if possible; otherwise a <see cref="T:Ploeh.AutoFixture.Kernel.NoSpecimen"/> instance.
-            </returns>
-            <remarks>>
-            The generated CultureInfo will always be the same as <see cref="P:System.Globalization.CultureInfo.InvariantCulture"/>.
-            </remarks>
-        </member>
-        <member name="T:Ploeh.AutoFixture.EmailAddressLocalPart">
-            <summary>
-            Represents the local part of the email address, defined as everything up to, but not including, the @ sign.  
-            Since EmailAddressLocalPart is used in constructing MailAddress, enforcement of rules on a valid email address
-            is performed by <see cref="T:System.Net.Mail.MailAddress"/> and not EmailAddressLocalPart other than as noted. 
-            </summary>
-        </member>
-        <member name="M:Ploeh.AutoFixture.EmailAddressLocalPart.#ctor(System.String)">
-            <summary>
-            Initializes a new instance of the <see cref="T:Ploeh.AutoFixture.EmailAddressLocalPart"/> class. Throws ArgumentNullException
-            if localPart is null.  Throws ArgumentException if localPart is empty.
-            </summary>
-            <param name="localPart">The local part.</param>                
-        </member>
-        <member name="P:Ploeh.AutoFixture.EmailAddressLocalPart.LocalPart">
-            <summary>
-            Get the local part.
-            </summary>
-        </member>
-        <member name="M:Ploeh.AutoFixture.EmailAddressLocalPart.Equals(System.Object)">
-            <summary>
-            Determines whether the specified <see cref="T:System.Object"/> is equal to this instance.
-            </summary>
-            <param name="obj">The <see cref="T:System.Object"/> to compare with this instance.
-            </param>
-            <returns>
-              <c>true</c> if the specified <see cref="T:System.Object"/> is equal to this instance; 
-            otherwise, <c>false</c>.
-            </returns>
-            <exception cref="T:System.NullReferenceException">
-            The <paramref name="obj"/> parameter is null.
-              </exception>
-        </member>
-        <member name="M:Ploeh.AutoFixture.EmailAddressLocalPart.GetHashCode">
-            <summary>
-            Returns a hash code for this instance.
-            </summary>
-            <returns>
-            A hash code for this instance, suitable for use in hashing algorithms and data 
-            structures like a hash table. 
-            </returns>
-        </member>
-        <member name="M:Ploeh.AutoFixture.EmailAddressLocalPart.ToString">
-            <summary>
-            Returns a <see cref="T:System.String"/> that represents the local part for this instance.
-            </summary>
-            <returns>
-            A <see cref="T:System.String"/> that represents the local part for this instance.
-            </returns>
-        </member>
-        <member name="T:Ploeh.AutoFixture.EmailAddressLocalPartGenerator">
-            <summary>
-            Creates new <see cref="T:Ploeh.AutoFixture.EmailAddressLocalPart"/> instances.
-            </summary>
-        </member>
-        <member name="M:Ploeh.AutoFixture.EmailAddressLocalPartGenerator.Create(System.Object,Ploeh.AutoFixture.Kernel.ISpecimenContext)">
-            <summary>
-            Creates a new specimen based on a request.
-            </summary>
-            <param name="request">The request that describes what to create</param>
-            <param name="context">A context that can be used to create other specimens.</param>
-            <returns>
-            The requested specimen if possible; otherwise a <see cref="T:Ploeh.AutoFixture.Kernel.NoSpecimen"/> instance.
+            <see langword="true"/> if <paramref name="request"/> is a request for a
+            <see cref="T:System.Collections.Generic.SortedSet`1" />; otherwise, <see langword="false"/>.
             </returns>
         </member>
         <member name="T:Ploeh.AutoFixture.Kernel.CompositeSpecimenCommand">
@@ -3105,6 +2990,10 @@
             In case of two factory methods with an equal number of parameters, the ordering is
             unspecified.
             </para>
+            <para>
+            Factory methods that contain parameters of the requested <paramref name="type"/> 
+            are skipped in order to avoid circular references.
+            </para>
             </remarks>
         </member>
         <member name="T:Ploeh.AutoFixture.Kernel.ListFavoringConstructorQuery">
@@ -5628,6 +5517,138 @@
             <returns>
             A new <see cref="T:Ploeh.AutoFixture.Kernel.ISpecimenBuilderNode" /> instance containing
             <paramref name="builders" /> as child nodes.
+            </returns>
+        </member>
+        <member name="T:Ploeh.AutoFixture.LambdaExpressionGenerator">
+            <summary>
+            Creates new lambda expressions represented by the <see cref="T:System.Linq.Expressions.Expression`1"/> type.
+            </summary>
+            <remarks>
+            Specimens are typically either of type <see>
+                    <cref>Expression{Func{T}}</cref>
+                </see>
+                or <see cref="T:System.Linq.Expressions.Expression`1"/>. 
+            </remarks>
+        </member>
+        <member name="M:Ploeh.AutoFixture.LambdaExpressionGenerator.Create(System.Object,Ploeh.AutoFixture.Kernel.ISpecimenContext)">
+            <summary>
+            Creates a new lambda expression represented by the <see cref="T:System.Linq.Expressions.Expression`1"/> type.
+            </summary>
+            <param name="request">The request that describes what to create.</param>
+            <param name="context">Not used.</param>
+            <returns>
+            A new <see cref="T:System.Linq.Expressions.Expression`1"/> instance, if <paramref name="request"/> is a request for a
+            <see cref="T:System.Linq.Expressions.Expression`1"/>; otherwise, a <see cref="T:Ploeh.AutoFixture.Kernel.NoSpecimen"/> instance.
+            </returns>
+        </member>
+        <member name="T:Ploeh.AutoFixture.FixtureRepeater">
+            <summary>
+            Contains extension methods for repeating a function in <see cref="T:Ploeh.AutoFixture.IFixture"/> instances.
+            </summary>
+        </member>
+        <member name="M:Ploeh.AutoFixture.FixtureRepeater.Repeat``1(Ploeh.AutoFixture.IFixture,System.Func{``0})">
+            <summary>
+            Repeats a function many times.
+            </summary>
+            <typeparam name="T">
+            The type of object that <paramref name="function"/> creates.
+            </typeparam>
+            <param name="fixture">
+            The <see cref="T:Ploeh.AutoFixture.IFixture"/>to use
+            </param>
+            <param name="function">
+            A function that creates an instance of <typeparamref name="T"/>.
+            </param>
+            <returns>A sequence of objects created by <paramref name="function"/>.</returns>
+            <remarks>
+            <para>
+            The number of times <paramref name="function"/> is invoked is determined by
+            <see cref="P:Ploeh.AutoFixture.IFixture.RepeatCount"/>.
+            </para>
+            </remarks>
+        </member>
+        <member name="T:Ploeh.AutoFixture.InvariantCultureGenerator">
+            <summary>
+            Handles creation requests for <see cref="T:System.Globalization.CultureInfo"/> instances, 
+            returning always the same <see cref="P:System.Globalization.CultureInfo.InvariantCulture"/>.
+            </summary>
+        </member>
+        <member name="M:Ploeh.AutoFixture.InvariantCultureGenerator.Create(System.Object,Ploeh.AutoFixture.Kernel.ISpecimenContext)">
+            <summary>
+            Generates a CultureInfo specimen based on a <see cref="T:System.Globalization.CultureInfo"/> type request.
+            </summary>
+            <param name="request">The request that describes what to create.</param>
+            <param name="context">A context that can be used to create other specimens.</param>
+            <returns>
+            The requested specimen if possible; otherwise a <see cref="T:Ploeh.AutoFixture.Kernel.NoSpecimen"/> instance.
+            </returns>
+            <remarks>>
+            The generated CultureInfo will always be the same as <see cref="P:System.Globalization.CultureInfo.InvariantCulture"/>.
+            </remarks>
+        </member>
+        <member name="T:Ploeh.AutoFixture.EmailAddressLocalPart">
+            <summary>
+            Represents the local part of the email address, defined as everything up to, but not including, the @ sign.  
+            Since EmailAddressLocalPart is used in constructing MailAddress, enforcement of rules on a valid email address
+            is performed by <see cref="T:System.Net.Mail.MailAddress"/> and not EmailAddressLocalPart other than as noted. 
+            </summary>
+        </member>
+        <member name="M:Ploeh.AutoFixture.EmailAddressLocalPart.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Ploeh.AutoFixture.EmailAddressLocalPart"/> class. Throws ArgumentNullException
+            if localPart is null.  Throws ArgumentException if localPart is empty.
+            </summary>
+            <param name="localPart">The local part.</param>                
+        </member>
+        <member name="P:Ploeh.AutoFixture.EmailAddressLocalPart.LocalPart">
+            <summary>
+            Get the local part.
+            </summary>
+        </member>
+        <member name="M:Ploeh.AutoFixture.EmailAddressLocalPart.Equals(System.Object)">
+            <summary>
+            Determines whether the specified <see cref="T:System.Object"/> is equal to this instance.
+            </summary>
+            <param name="obj">The <see cref="T:System.Object"/> to compare with this instance.
+            </param>
+            <returns>
+              <c>true</c> if the specified <see cref="T:System.Object"/> is equal to this instance; 
+            otherwise, <c>false</c>.
+            </returns>
+            <exception cref="T:System.NullReferenceException">
+            The <paramref name="obj"/> parameter is null.
+              </exception>
+        </member>
+        <member name="M:Ploeh.AutoFixture.EmailAddressLocalPart.GetHashCode">
+            <summary>
+            Returns a hash code for this instance.
+            </summary>
+            <returns>
+            A hash code for this instance, suitable for use in hashing algorithms and data 
+            structures like a hash table. 
+            </returns>
+        </member>
+        <member name="M:Ploeh.AutoFixture.EmailAddressLocalPart.ToString">
+            <summary>
+            Returns a <see cref="T:System.String"/> that represents the local part for this instance.
+            </summary>
+            <returns>
+            A <see cref="T:System.String"/> that represents the local part for this instance.
+            </returns>
+        </member>
+        <member name="T:Ploeh.AutoFixture.EmailAddressLocalPartGenerator">
+            <summary>
+            Creates new <see cref="T:Ploeh.AutoFixture.EmailAddressLocalPart"/> instances.
+            </summary>
+        </member>
+        <member name="M:Ploeh.AutoFixture.EmailAddressLocalPartGenerator.Create(System.Object,Ploeh.AutoFixture.Kernel.ISpecimenContext)">
+            <summary>
+            Creates a new specimen based on a request.
+            </summary>
+            <param name="request">The request that describes what to create</param>
+            <param name="context">A context that can be used to create other specimens.</param>
+            <returns>
+            The requested specimen if possible; otherwise a <see cref="T:Ploeh.AutoFixture.Kernel.NoSpecimen"/> instance.
             </returns>
         </member>
         <member name="T:Ploeh.AutoFixture.LazyRelay">
