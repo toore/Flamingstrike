@@ -53,6 +53,28 @@ namespace RISK.Tests.GuiWpf.Specifications
         }
 
         [Fact]
+        public void First_player_occupies_brazil_after_win()
+        {
+            Given
+                .a_game_with_two_players()
+                .player_1_occupies_every_territory_except_brazil_and_venezuela_and_north_africa_with_one_army_each()
+                .player_1_has_5_armies_in_north_africa()
+                .player_2_occupies_brazil_and_venezuela_with_one_army_each()
+                .game_is_started()
+                .player_selects_north_africa()
+                .player_selects_north_africa()
+                .player_selects_north_africa();
+
+            When
+                .and_attacks_brazil_and_wins()
+                .one_additional_army_is_sent_to_occupy_brazil();
+
+            Then
+                .player_1_should_occupy_brazil_with_4_armies()
+                .player_1_has_one_army_in_north_africa();
+        }
+
+        [Fact]
         public void Second_player_draft_armies()
         {
             Given
@@ -90,26 +112,6 @@ namespace RISK.Tests.GuiWpf.Specifications
 
             Then
                 .player_2_should_take_turn();
-        }
-
-        [Fact]
-        public void First_player_occupies_brazil_after_win()
-        {
-            Given
-                .a_game_with_two_players()
-                .player_1_occupies_every_territory_except_brazil_and_venezuela_and_north_africa_with_one_army_each()
-                .player_1_has_5_armies_in_north_africa()
-                .player_2_occupies_brazil_and_venezuela_with_one_army_each()
-                .game_is_started();
-
-            When
-                .player_selects_north_africa()
-                .and_attacks_brazil_and_wins()
-                .one_additional_army_is_sent_to_occupy_brazil();
-
-            Then
-                .player_1_should_occupy_brazil_with_4_armies()
-                .player_1_has_one_army_in_north_africa();
         }
 
         [Fact]
