@@ -136,6 +136,7 @@
     <Compile Include="GameEngine\StartingInfantryCalculatorTests.cs" />
     <Compile Include="Builders\GamePlaySetupBuilder.cs" />
     <Compile Include="GuiWpf\CurrentThreadDispatcher.cs" />
+    <Compile Include="GuiWpf\Interaction\DraftArmiesInteractionStateTests.cs" />
     <Compile Include="GuiWpf\MainGameViewModelDecorator.cs" />
     <Compile Include="GuiWpf\SynchronousTaskEx.cs" />
     <Compile Include="GuiWpf\UserInteractorTests.cs" />

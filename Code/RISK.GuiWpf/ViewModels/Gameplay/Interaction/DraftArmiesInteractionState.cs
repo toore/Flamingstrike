@@ -23,15 +23,20 @@ namespace GuiWpf.ViewModels.Gameplay.Interaction
         {
             return _game.IsCurrentPlayerOccupyingRegion(region)
                    &&
-                   _game.GetNumberOfArmiesToDraft() > 0;
+                   _game.HasArmiesToDraft();
         }
 
         public void OnClick(IRegion region)
         {
+            if (!CanClick(region))
+            {
+                throw new InvalidOperationException();    
+            }
+
             var numberOfArmies = 1;
             _game.PlaceDraftArmies(region, numberOfArmies);
 
-            if (_game.HasArmiesToDraft())
+            if (!_game.HasArmiesToDraft())
             {
                 var selectInteractionState = _interactionStateFactory.CreateSelectInteractionState(_game);
                 _interactionStateFsm.Set(selectInteractionState);
