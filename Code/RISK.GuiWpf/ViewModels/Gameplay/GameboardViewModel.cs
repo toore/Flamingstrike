@@ -115,6 +115,9 @@ namespace GuiWpf.ViewModels.Gameplay
         {
             _game.EndTurn();
 
+            var draftArmiesInteractionState = _interactionStateFactory.CreateDraftArmiesInteractionState(_game);
+            _interactionStateFsm.Set(draftArmiesInteractionState);
+
             UpdateGame();
         }
 

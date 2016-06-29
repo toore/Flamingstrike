@@ -108,7 +108,7 @@ namespace RISK.Tests.GuiWpf
         }
 
         [Fact]
-        public void Player_is_updated_when_turn_ends()
+        public void When_turn_ends_player_is_updated()
         {
             var sut = Initialize();
             var nextPlayer = new Player("next player");
@@ -117,6 +117,22 @@ namespace RISK.Tests.GuiWpf
             sut.EndTurn();
 
             sut.PlayerName.Should().Be("next player");
+        }
+
+        [Fact]
+        public void When_turn_ends_the_interaction_state_defaults_to_draft_armies()
+        {
+            var draftArmiesInteractionStateForFirstPlayer = Substitute.For<IInteractionState>();
+            var draftArmiesInteractionStateForNextPlayer = Substitute.For<IInteractionState>();
+            _interactionStateFactory.CreateDraftArmiesInteractionState(_game)
+                .Returns(
+                    draftArmiesInteractionStateForFirstPlayer,
+                    draftArmiesInteractionStateForNextPlayer);
+            var sut = Initialize();
+
+            sut.EndTurn();
+
+            _interactionStateFsm.Received().Set(draftArmiesInteractionStateForNextPlayer);
         }
 
         [Fact]

@@ -30,7 +30,7 @@ namespace RISK.Core
         {
             var numberOfOccupiedTerritories = territories.Count(territory => territory.Player == currentPlayer);
 
-            var armiesDraftedBasedOnTerritoriesOccupied = Math.Min(numberOfOccupiedTerritories / 3, 3);
+            var armiesDraftedBasedOnTerritoriesOccupied = Math.Max(numberOfOccupiedTerritories / 3, 3);
             return armiesDraftedBasedOnTerritoriesOccupied;
         }
 
@@ -46,10 +46,8 @@ namespace RISK.Core
         private static bool IsContinentOccupiedByPlayer(IContinent continent, IPlayer player, IEnumerable<ITerritory> territories)
         {
             var isContinentOccupiedByPlayer = territories
-                .All(x =>
-                    x.Region.Continent == continent
-                    &&
-                    x.Player == player);
+                .Where(x => x.Region.Continent == continent)
+                .All(x => x.Player == player);
 
             return isContinentOccupiedByPlayer;
         }
