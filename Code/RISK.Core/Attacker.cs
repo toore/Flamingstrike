@@ -8,8 +8,6 @@ namespace RISK.Core
     {
         bool CanAttack(IReadOnlyList<ITerritory> territories, IRegion attackingRegion, IRegion defendingRegion);
         AttackOutcome Attack(IReadOnlyList<ITerritory> territories, IRegion attackingRegion, IRegion defendingRegion);
-        bool IsPlayerEliminated(IEnumerable<ITerritory> territories, IPlayer player);
-        bool IsGameOver(IEnumerable<ITerritory> territories);
     }
 
     public class Attacker : IAttacker
@@ -72,23 +70,6 @@ namespace RISK.Core
                 : DefendingArmy.IsNotEliminated;
 
             return new AttackOutcome(updatedTerritories, attackOutcome);
-        }
-
-        public bool IsPlayerEliminated(IEnumerable<ITerritory> territories, IPlayer player)
-        {
-            var playerOccupiesTerritories = territories.Any(x => x.Player == player);
-
-            return !playerOccupiesTerritories;
-        }
-
-        public bool IsGameOver(IEnumerable<ITerritory> territories)
-        {
-            var allTerritoriesAreOccupiedBySamePlayer = territories
-                .Select(x => x.Player)
-                .Distinct()
-                .Count() == 1;
-
-            return allTerritoriesAreOccupiedBySamePlayer;
         }
     }
 

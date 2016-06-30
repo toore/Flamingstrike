@@ -41,7 +41,7 @@ namespace RISK.Tests.GuiWpf.Specifications
             Given
                 .a_game_with_two_human_players()
                 .player_1_occupies_every_territory_except_brazil_and_venezuela_and_north_africa_with_one_army_each()
-                .player_1_has_five_armies_in_north_africa()
+                .player_1_occupies_north_africa_with_five_armies()
                 .player_2_occupies_brazil_and_venezuela_with_one_army_each()
                 .game_is_started();
 
@@ -58,7 +58,7 @@ namespace RISK.Tests.GuiWpf.Specifications
             Given
                 .a_game_with_two_human_players()
                 .player_1_occupies_every_territory_except_brazil_and_venezuela_and_north_africa_with_one_army_each()
-                .player_1_has_five_armies_in_north_africa()
+                .player_1_occupies_north_africa_with_five_armies()
                 .player_2_occupies_brazil_and_venezuela_with_one_army_each()
                 .game_is_started()
                 .player_drafts_three_armies_in_north_africa()
@@ -80,7 +80,7 @@ namespace RISK.Tests.GuiWpf.Specifications
             Given
                 .a_game_with_two_human_players()
                 .player_1_occupies_every_territory_except_brazil_and_venezuela_and_north_africa_with_one_army_each()
-                .player_1_has_five_armies_in_north_africa()
+                .player_1_occupies_north_africa_with_five_armies()
                 .player_2_occupies_brazil_and_venezuela_with_one_army_each()
                 .game_is_started()
                 .player_drafts_thirtyfive_armies_in_scandinavia()
@@ -99,30 +99,32 @@ namespace RISK.Tests.GuiWpf.Specifications
             Given
                 .a_game_with_two_human_players()
                 .player_1_occupies_every_territory_except_brazil_and_venezuela_and_north_africa_with_one_army_each()
-                .player_1_has_five_armies_in_north_africa()
+                .player_1_occupies_north_africa_with_five_armies()
                 .player_2_occupies_brazil_and_venezuela_with_one_army_each()
                 .game_is_started()
-                .player_selects_north_africa()
-                .player_selects_brazil();
+                .player_drafts_thirtyfive_armies_in_scandinavia()
+                .player_ends_turn()
+                .player_drafts_three_armies_in_brazil();
 
             When
                 .player_ends_turn();
 
             Then
-                .player_2_should_take_turn();
+                .player_1_should_take_turn();
         }
 
         [Fact]
-        public void Game_over_after_player_occupies_all_territories()
+        public void Game_over_when_player_occupies_all_territories()
         {
-            Given.
-                a_game_with_two_human_players().
-                player_1_occupies_every_territory_except_iceland_with_one_army_each().
-                player_1_has_2_armies_in_scandinavia().
-                player_2_occupies_iceland_with_one_army();
+            Given
+                .a_game_with_two_human_players()
+                .player_1_occupies_every_territory_except_iceland_with_one_army_each()
+                .player_2_occupies_iceland_with_one_army()
+                .game_is_started()
+                .player_drafts_one_army_in_scandinavia_and_the_rest_in_alaska();
 
             When.
-                player_one_selects_scandinavia().
+                player_selects_scandinavia().
                 and_attacks_iceland_and_wins();
 
             Then.
@@ -135,7 +137,7 @@ namespace RISK.Tests.GuiWpf.Specifications
             Given.
                 a_game_with_two_human_players().
                 //player_1_occupies_every_territory_except_brazil_and_venezuela_with_one_army_each().
-                player_1_has_five_armies_in_north_africa().
+                player_1_occupies_north_africa_with_five_armies().
                 player_2_occupies_brazil_and_venezuela_with_one_army_each();
 
             When.
@@ -212,21 +214,15 @@ namespace RISK.Tests.GuiWpf.Specifications
             _continents = new Continents();
             _regions = new Regions(_continents);
 
-            _dice = Substitute.For<IDice>();
-            _windowManager = Substitute.For<IWindowManager>();
-
             _player1 = new Player("Player 1");
             _player2 = new Player("Player 2");
-
-            _players = new Sequence<IPlayer>(_player1, _player2);
 
             return this;
         }
 
         private GamePlaySpec game_is_started()
         {
-            //var randomWrapper = new RandomWrapper();
-            //var dice = new Dice(randomWrapper);
+            _dice = Substitute.For<IDice>();
             var dicesRoller = new DicesRoller(_dice);
             var armyDraftCalculator = new ArmyDraftCalculator(_continents);
             var battle = new Battle(dicesRoller, new ArmiesLostCalculator());
@@ -235,11 +231,14 @@ namespace RISK.Tests.GuiWpf.Specifications
             var territoryOccupier = new TerritoryOccupier();
             var fortifier = new Fortifier();
             var attacker = new Attacker(battle);
-            var gameStateFactory = new GameStateFactory(gameDataFactory, armyDrafter, territoryOccupier, attacker, fortifier);
+            var gameRules = new GameRules();
+            var gameStateFactory = new GameStateFactory(gameDataFactory, armyDrafter, territoryOccupier, attacker, fortifier, gameRules);
             var gameStateFsm = new GameStateFsm();
             var gameStateConductor = new GameStateConductor(gameStateFactory, armyDraftCalculator, gameDataFactory, gameStateFsm);
             var deckFactory = new DeckFactory(_regions, new FisherYatesShuffle(new RandomWrapper()));
-            var gameFactory = new GameFactory(gameDataFactory, gameStateConductor, deckFactory, gameStateFsm);
+            var gameFactory = new GameFactory(gameDataFactory, gameStateConductor, deckFactory, gameStateFsm, gameRules);
+
+            _players = new Sequence<IPlayer>(_player1, _player2);
             var gamePlaySetup = new GamePlaySetup(_players, _territories);
             _game = gameFactory.Create(gamePlaySetup);
             var interactionStateFsm = new InteractionStateFsm();
@@ -251,6 +250,7 @@ namespace RISK.Tests.GuiWpf.Specifications
             var regionColorSettingsFactory = new RegionColorSettingsFactory(colorService, _regions);
             var screenConfirmationService = new ScreenConfirmationService();
             var confirmViewModelFactory = new ConfirmViewModelFactory(screenConfirmationService);
+            _windowManager = Substitute.For<IWindowManager>();
             var userNotifier = new UserNotifier(_windowManager, confirmViewModelFactory);
             var dialogManager = new DialogManager(userNotifier);
             var worldMapViewModelFactory = new WorldMapViewModelFactory(regionModelFactory, regionColorSettingsFactory, colorService);
@@ -293,6 +293,13 @@ namespace RISK.Tests.GuiWpf.Specifications
             return this;
         }
 
+        private GamePlaySpec player_drafts_one_army_in_scandinavia_and_the_rest_in_alaska()
+        {
+            ClickOnRegionNumberOfTimes(_regions.Scandinavia, 1);
+            ClickOnRegionNumberOfTimes(_regions.Alaska, 31);
+            return this;
+        }
+
         private GamePlaySpec player_drafts_three_armies_in_brazil()
         {
             ClickOnRegionNumberOfTimes(_regions.Brazil, 3);
@@ -307,7 +314,7 @@ namespace RISK.Tests.GuiWpf.Specifications
             }
         }
 
-        private GamePlaySpec player_1_has_five_armies_in_north_africa()
+        private GamePlaySpec player_1_occupies_north_africa_with_five_armies()
         {
             AddTerritoryToGameboard(_regions.NorthAfrica, _player1, 5);
             //UpdateWorldMap(_player1, 5, _worldMap.NorthAfrica);
@@ -340,7 +347,9 @@ namespace RISK.Tests.GuiWpf.Specifications
 
         private GamePlaySpec player_1_occupies_every_territory_except_iceland_with_one_army_each()
         {
-            UpdateWorldMap(_player1, 1, GetAllTerritoriesExcept(_regions.Iceland));
+            GetAllTerritoriesExcept(
+                _regions.Iceland).
+                Apply(x => AddTerritoryToGameboard(x, _player1, 1));
             return this;
         }
 
@@ -356,15 +365,11 @@ namespace RISK.Tests.GuiWpf.Specifications
             return this;
         }
 
-        private GamePlaySpec player_1_has_2_armies_in_scandinavia()
+        private GamePlaySpec player_2_occupies_iceland_with_one_army()
         {
-            UpdateWorldMap(_player1, 2, _regions.Scandinavia);
+            AddTerritoryToGameboard(_regions.Iceland, _player2, 1);
+            //UpdateWorldMap(_player2, 1, _regions.Iceland);
             return this;
-        }
-
-        private void player_2_occupies_iceland_with_one_army()
-        {
-            UpdateWorldMap(_player2, 1, _regions.Iceland);
         }
 
         private IRegion[] GetAllTerritoriesExcept(params IRegion[] excludedLocations)
@@ -413,7 +418,7 @@ namespace RISK.Tests.GuiWpf.Specifications
             return this;
         }
 
-        private GamePlaySpec player_one_selects_scandinavia()
+        private GamePlaySpec player_selects_scandinavia()
         {
             ClickOn(_regions.Scandinavia);
             return this;
@@ -425,9 +430,10 @@ namespace RISK.Tests.GuiWpf.Specifications
             ClickOn(_regions.Iceland);
         }
 
-        private void player_ends_turn()
+        private GamePlaySpec player_ends_turn()
         {
             _gameboardViewModel.EndTurn();
+            return this;
         }
 
         private void ClickOn(IRegion region)
@@ -487,9 +493,14 @@ namespace RISK.Tests.GuiWpf.Specifications
             return this;
         }
 
+        private void player_1_should_take_turn()
+        {
+            _game.CurrentPlayer.Should().Be(_player1);
+        }
+
         private void player_2_should_take_turn()
         {
-            _gameboardViewModel.PlayerName.Should().Be(_player2.Name);
+            _game.CurrentPlayer.Should().Be(_player2);
         }
     }
 }

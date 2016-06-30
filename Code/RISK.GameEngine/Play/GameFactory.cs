@@ -1,4 +1,5 @@
 using System.Linq;
+using RISK.Core;
 using RISK.GameEngine.Play.GamePhases;
 using RISK.GameEngine.Setup;
 
@@ -15,17 +16,20 @@ namespace RISK.GameEngine.Play
         private readonly IGameStateConductor _gameStateConductor;
         private readonly IDeckFactory _deckFactory;
         private readonly IGameStateFsm _gameStateFsm;
+        private readonly IGameRules _gameRules;
 
         public GameFactory(
             IGameDataFactory gameDataFactory,
             IGameStateConductor gameStateConductor,
             IDeckFactory deckFactory,
-            IGameStateFsm gameStateFsm)
+            IGameStateFsm gameStateFsm,
+            IGameRules gameRules)
         {
             _gameDataFactory = gameDataFactory;
             _gameStateConductor = gameStateConductor;
             _deckFactory = deckFactory;
             _gameStateFsm = gameStateFsm;
+            _gameRules = gameRules;
         }
 
         public IGame Create(IGamePlaySetup gamePlaySetup)
@@ -40,7 +44,7 @@ namespace RISK.GameEngine.Play
 
             _gameStateConductor.CurrentPlayerStartsNewTurn(gameData);
 
-            return new Game(_gameStateFsm);
+            return new Game(_gameStateFsm, _gameRules);
         }
     }
 }

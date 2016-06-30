@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using FluentAssertions;
 using NSubstitute;
 using Ploeh.AutoFixture.Xunit2;
@@ -18,6 +19,7 @@ namespace RISK.Tests.GameEngine
         private readonly IGameStateConductor _gameStateConductor;
         private readonly IDeckFactory _deckFactory;
         private readonly IGameStateFsm _gameStateFsm;
+        private readonly IGameRules _gameRules;
 
         public GameTests()
         {
@@ -25,12 +27,12 @@ namespace RISK.Tests.GameEngine
             _gameStateConductor = Substitute.For<IGameStateConductor>();
             _deckFactory = Substitute.For<IDeckFactory>();
             _gameStateFsm = Substitute.For<IGameStateFsm>();
+            _gameRules = Substitute.For<IGameRules>();
 
-            _factory = new GameFactory(_gameDataFactory, _gameStateConductor, _deckFactory, _gameStateFsm);
+            _factory = new GameFactory(_gameDataFactory, _gameStateConductor, _deckFactory, _gameStateFsm, _gameRules);
         }
 
-        [Theory]
-        [AutoData]
+        [Theory, AutoData]
         public void Game_initializes_draft_armies_game_state()
         {
             var territory = Substitute.For<ITerritory>();
@@ -96,8 +98,7 @@ namespace RISK.Tests.GameEngine
             sut.CanPlaceDraftArmies(region).Should().Be(canPlaceArmies);
         }
 
-        [Theory]
-        [AutoData]
+        [Theory, AutoData]
         public void Gets_number_of_armies_to_draft(int numberOfArmies)
         {
             _gameStateFsm.GetNumberOfArmiesToDraft().Returns(numberOfArmies);
@@ -202,6 +203,28 @@ namespace RISK.Tests.GameEngine
             sut.EndTurn();
 
             _gameStateFsm.Received().EndTurn();
+        }
+
+        [Fact]
+        public void Game_is_not_over()
+        {
+            var sut = Create(Make.GamePlaySetup.Build());
+            var isGameOver = sut.IsGameOver();
+
+            isGameOver.Should().BeFalse();
+        }
+
+        [Fact]
+        public void Game_is_over()
+        {
+            var territories = new List<ITerritory>();
+            _gameStateFsm.Territories.Returns(territories);
+            _gameRules.IsGameOver(territories).Returns(true);
+
+            var sut = Create(Make.GamePlaySetup.Build());
+            var isGameOver = sut.IsGameOver();
+
+            isGameOver.Should().BeTrue();
         }
 
         private IGame Create(IGamePlaySetup gamePlaySetup)

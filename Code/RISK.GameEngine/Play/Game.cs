@@ -25,10 +25,12 @@ namespace RISK.GameEngine.Play
     public class Game : IGame
     {
         private readonly IGameStateFsm _gameStateFsm;
+        private readonly IGameRules _gameRules;
 
-        public Game(IGameStateFsm gameStateFsm)
+        public Game(IGameStateFsm gameStateFsm, IGameRules gameRules)
         {
             _gameStateFsm = gameStateFsm;
+            _gameRules = gameRules;
         }
 
         public IPlayer CurrentPlayer => _gameStateFsm.CurrentPlayer;
@@ -95,7 +97,7 @@ namespace RISK.GameEngine.Play
 
         public bool IsGameOver()
         {
-            return false;
+            return _gameRules.IsGameOver(_gameStateFsm.Territories);
         }
 
         public bool IsCurrentPlayerOccupyingRegion(IRegion region)

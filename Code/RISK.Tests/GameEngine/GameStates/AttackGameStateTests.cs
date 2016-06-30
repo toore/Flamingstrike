@@ -17,6 +17,7 @@ namespace RISK.Tests.GameEngine.GameStates
         private readonly IGameDataFactory _gameDataFactory;
         private readonly IAttacker _attacker;
         private readonly IFortifier _fortifier;
+        private readonly IGameRules _gameRules;
         private readonly ITerritory _territory;
         private readonly ITerritory _anotherTerritory;
         private readonly IRegion _region;
@@ -32,6 +33,7 @@ namespace RISK.Tests.GameEngine.GameStates
             _gameDataFactory = Substitute.For<IGameDataFactory>();
             _attacker = Substitute.For<IAttacker>();
             _fortifier = Substitute.For<IFortifier>();
+            _gameRules = Substitute.For<IGameRules>();
 
             _territory = Substitute.For<ITerritory>();
             _anotherTerritory = Substitute.For<ITerritory>();
@@ -345,7 +347,7 @@ namespace RISK.Tests.GameEngine.GameStates
                 Argx.IsEquivalentReadOnly(_territory, _anotherTerritory),
                 _region,
                 _anotherRegion).Returns(attackOutcome);
-            _attacker.IsPlayerEliminated(
+            _gameRules.IsPlayerEliminated(
                 updatedTerritories,
                 _anotherPlayer).Returns(true);
 
@@ -371,7 +373,7 @@ namespace RISK.Tests.GameEngine.GameStates
                 Argx.IsEquivalentReadOnly(_currentPlayer, _anotherPlayer),
                 updatedTerritories,
                 _deck).Returns(newGameData);
-            _attacker.IsGameOver(updatedTerritories).Returns(true);
+            _gameRules.IsGameOver(updatedTerritories).Returns(true);
 
             var sut = Create(_gameData);
             sut.Attack(_region, _anotherRegion);
@@ -381,7 +383,13 @@ namespace RISK.Tests.GameEngine.GameStates
 
         private IGameState Create(GameData gameData)
         {
-            return new AttackGameState(_gameStateConductor, _gameDataFactory, _attacker, _fortifier, gameData);
+            return new AttackGameState(
+                _gameStateConductor, 
+                _gameDataFactory, 
+                _attacker, 
+                _fortifier, 
+                _gameRules, 
+                gameData);
         }
 
         [Fact]

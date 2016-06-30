@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using RISK.Core;
 using RISK.GameEngine.Extensions;
 
@@ -7,6 +8,7 @@ namespace RISK.GameEngine.Play.GamePhases
     {
         void Set(IGameState gameState);
         IPlayer CurrentPlayer { get; }
+        IReadOnlyList<ITerritory> Territories { get; }
         ITerritory GetTerritory(IRegion region);
         bool CanPlaceDraftArmies(IRegion region);
         int GetNumberOfArmiesToDraft();
@@ -31,6 +33,8 @@ namespace RISK.GameEngine.Play.GamePhases
         }
 
         public IPlayer CurrentPlayer => _currentState.CurrentPlayer;
+
+        public IReadOnlyList<ITerritory> Territories => _currentState.Territories;
 
         public ITerritory GetTerritory(IRegion region)
         {

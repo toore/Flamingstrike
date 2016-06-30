@@ -47,6 +47,7 @@
     <Compile Include="Dices.cs" />
     <Compile Include="Attacker.cs" />
     <Compile Include="Fortifier.cs" />
+    <Compile Include="GameRules.cs" />
     <Compile Include="IContinents.cs" />
     <Compile Include="Dice.cs" />
     <Compile Include="DicesRoller.cs" />

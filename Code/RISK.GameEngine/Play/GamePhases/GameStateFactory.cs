@@ -18,12 +18,20 @@ namespace RISK.GameEngine.Play.GamePhases
         private readonly ITerritoryOccupier _territoryOccupier;
         private readonly IAttacker _attacker;
         private readonly IFortifier _fortifier;
+        private readonly IGameRules _gameRules;
 
-        public GameStateFactory(IGameDataFactory gameDataFactory, IArmyDrafter armyDrafter, ITerritoryOccupier territoryOccupier, IAttacker attacker, IFortifier fortifier)
+        public GameStateFactory(
+            IGameDataFactory gameDataFactory,
+            IArmyDrafter armyDrafter,
+            ITerritoryOccupier territoryOccupier,
+            IAttacker attacker,
+            IFortifier fortifier,
+            IGameRules gameRules)
         {
             _gameDataFactory = gameDataFactory;
             _attacker = attacker;
             _fortifier = fortifier;
+            _gameRules = gameRules;
             _armyDrafter = armyDrafter;
             _territoryOccupier = territoryOccupier;
         }
@@ -35,7 +43,7 @@ namespace RISK.GameEngine.Play.GamePhases
 
         public IGameState CreateAttackGameState(IGameStateConductor gameStateConductor, GameData gameData)
         {
-            return new AttackGameState(gameStateConductor, _gameDataFactory, _attacker, _fortifier, gameData);
+            return new AttackGameState(gameStateConductor, _gameDataFactory, _attacker, _fortifier, _gameRules, gameData);
         }
 
         public IGameState CreateSendArmiesToOccupyGameState(IGameStateConductor gameStateConductor, GameData gameData, IRegion attackingRegion, IRegion occupiedRegion)

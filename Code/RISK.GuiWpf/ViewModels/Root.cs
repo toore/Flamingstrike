@@ -79,11 +79,12 @@ namespace GuiWpf.ViewModels
             var territoryOccupier = new TerritoryOccupier();
             var fortifier = new Fortifier();
             var attacker = new Attacker(battle);
-            var gameStateFactory = new GameStateFactory(gameDataFactory, armyDrafter, territoryOccupier, attacker, fortifier);
+            var gameRules = new GameRules();
+            var gameStateFactory = new GameStateFactory(gameDataFactory, armyDrafter, territoryOccupier, attacker, fortifier, gameRules);
             var armyDraftCalculator = new ArmyDraftCalculator(continents);
             var gameStateFsm = new GameStateFsm();
             var gameStateConductor = new GameStateConductor(gameStateFactory, armyDraftCalculator, gameDataFactory, gameStateFsm);
-            var gameFactory = new GameFactory(gameDataFactory, gameStateConductor, deckFactory, gameStateFsm);
+            var gameFactory = new GameFactory(gameDataFactory, gameStateConductor, deckFactory, gameStateFsm, gameRules);
 
             GameSetupViewModelFactory = new GameSetupViewModelFactory(
                 gameFactory,

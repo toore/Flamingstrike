@@ -12,15 +12,23 @@ namespace RISK.GameEngine.Play.GamePhases
         private readonly IGameDataFactory _gameDataFactory;
         private readonly IAttacker _attacker;
         private readonly IFortifier _fortifier;
+        private readonly IGameRules _gameRules;
         private readonly GameData _gameData;
         private ConqueringAchievement _conqueringAchievement = ConqueringAchievement.DoNotAwardCardAtEndOfTurn;
 
-        public AttackGameState(IGameStateConductor gameStateConductor, IGameDataFactory gameDataFactory, IAttacker attacker, IFortifier fortifier, GameData gameData)
+        public AttackGameState(
+            IGameStateConductor gameStateConductor, 
+            IGameDataFactory gameDataFactory, 
+            IAttacker attacker, 
+            IFortifier fortifier, 
+            IGameRules gameRules,
+            GameData gameData)
         {
             _gameStateConductor = gameStateConductor;
             _gameDataFactory = gameDataFactory;
             _attacker = attacker;
             _fortifier = fortifier;
+            _gameRules = gameRules;
             _gameData = gameData;
         }
 
@@ -68,11 +76,11 @@ namespace RISK.GameEngine.Play.GamePhases
         {
             _conqueringAchievement = ConqueringAchievement.AwardCardAtEndOfTurn;
 
-            if (_attacker.IsGameOver(updatedTerritories))
+            if (_gameRules.IsGameOver(updatedTerritories))
             {
                 GameIsOver(updatedTerritories);
             }
-            else if (_attacker.IsPlayerEliminated(updatedTerritories, defeatedPlayer))
+            else if (_gameRules.IsPlayerEliminated(updatedTerritories, defeatedPlayer))
             {
                 AquireAllCardsFromPlayerAndSendArmiesToOccupy(defeatedPlayer, attackingRegion, defeatedRegion, updatedTerritories);
             }
