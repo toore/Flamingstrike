@@ -5,7 +5,7 @@ namespace RISK.GameEngine.Play.GamePhases
     public interface IGameStateFactory
     {
         IGameState CreateDraftArmiesGameState(IGameStateConductor gameStateConductor, GameData gameData, int numberOfArmiesToDraft);
-        IGameState CreateAttackGameState(IGameStateConductor gameStateConductor, GameData gameData);
+        IGameState CreateAttackGameState(IGameStateConductor gameStateConductor, GameData gameData, TurnConqueringAchievement turnConqueringAchievement);
         IGameState CreateSendArmiesToOccupyGameState(IGameStateConductor gameStateConductor, GameData gameData, IRegion attackingRegion, IRegion occupiedRegion);
         IGameState CreateFortifyState(IGameStateConductor gameStateConductor, GameData gameData, IRegion sourceRegion, IRegion destinationRegion, int numberOfArmiesToFortify);
         IGameState CreateGameOverGameState(GameData gameData);
@@ -41,9 +41,9 @@ namespace RISK.GameEngine.Play.GamePhases
             return new DraftArmiesGameState(gameStateConductor, _gameDataFactory, _armyDrafter, gameData, numberOfArmiesToDraft);
         }
 
-        public IGameState CreateAttackGameState(IGameStateConductor gameStateConductor, GameData gameData)
+        public IGameState CreateAttackGameState(IGameStateConductor gameStateConductor, GameData gameData, TurnConqueringAchievement turnConqueringAchievement)
         {
-            return new AttackGameState(gameStateConductor, _gameDataFactory, _attacker, _fortifier, _gameRules, gameData);
+            return new AttackGameState(gameStateConductor, _gameDataFactory, _attacker, _fortifier, _gameRules, gameData, turnConqueringAchievement);
         }
 
         public IGameState CreateSendArmiesToOccupyGameState(IGameStateConductor gameStateConductor, GameData gameData, IRegion attackingRegion, IRegion occupiedRegion)

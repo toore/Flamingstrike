@@ -14,7 +14,7 @@ namespace RISK.GameEngine.Play.GamePhases
         private readonly IFortifier _fortifier;
         private readonly IGameRules _gameRules;
         private readonly GameData _gameData;
-        private ConqueringAchievement _conqueringAchievement = ConqueringAchievement.DoNotAwardCardAtEndOfTurn;
+        private TurnConqueringAchievement _turnConqueringAchievement;
 
         public AttackGameState(
             IGameStateConductor gameStateConductor, 
@@ -22,7 +22,8 @@ namespace RISK.GameEngine.Play.GamePhases
             IAttacker attacker, 
             IFortifier fortifier, 
             IGameRules gameRules,
-            GameData gameData)
+            GameData gameData,
+            TurnConqueringAchievement turnConqueringAchievement)
         {
             _gameStateConductor = gameStateConductor;
             _gameDataFactory = gameDataFactory;
@@ -30,6 +31,7 @@ namespace RISK.GameEngine.Play.GamePhases
             _fortifier = fortifier;
             _gameRules = gameRules;
             _gameData = gameData;
+            _turnConqueringAchievement = turnConqueringAchievement;
         }
 
         public IPlayer CurrentPlayer => _gameData.CurrentPlayer;
@@ -74,7 +76,7 @@ namespace RISK.GameEngine.Play.GamePhases
 
         private void DefendingArmyIsEliminated(Core.IPlayer defeatedPlayer, IRegion attackingRegion, IRegion defeatedRegion, IReadOnlyList<ITerritory> updatedTerritories)
         {
-            _conqueringAchievement = ConqueringAchievement.AwardCardAtEndOfTurn;
+            _turnConqueringAchievement = TurnConqueringAchievement.SuccessfullyConqueredAtLeastOneTerritory;
 
             if (_gameRules.IsGameOver(updatedTerritories))
             {
@@ -125,7 +127,7 @@ namespace RISK.GameEngine.Play.GamePhases
         {
             var gameData = _gameDataFactory.Create(_gameData.CurrentPlayer, Players, updatedTerritories, Deck);
 
-            _gameStateConductor.ContinueWithAttackPhase(gameData, _conqueringAchievement);
+            _gameStateConductor.ContinueWithAttackPhase(gameData, _turnConqueringAchievement);
         }
 
         public bool CanFortify(IRegion sourceRegion, IRegion destinationRegion)
@@ -163,7 +165,7 @@ namespace RISK.GameEngine.Play.GamePhases
 
         public void EndTurn()
         {
-            if (_conqueringAchievement == ConqueringAchievement.AwardCardAtEndOfTurn)
+            if (_turnConqueringAchievement == TurnConqueringAchievement.SuccessfullyConqueredAtLeastOneTerritory)
             {
                 var card = Deck.Draw();
                 _gameData.CurrentPlayer.AddCard(card);

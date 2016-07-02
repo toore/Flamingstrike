@@ -132,7 +132,7 @@ namespace RISK.Tests.GuiWpf.Specifications
                 .player_ends_turn();
 
             Then
-                .player_1_should_have_received_a_card();
+                .player_1_should_have_a_card();
         }
 
         [Fact]
@@ -185,7 +185,7 @@ namespace RISK.Tests.GuiWpf.Specifications
                 player_1_is_the_winner();
         }
 
-        private void player_1_should_have_received_a_card()
+        private void player_1_should_have_a_card()
         {
             _player1.Cards.Count().Should().Be(1);
         }

@@ -9,7 +9,7 @@ namespace RISK.GameEngine.Play.GamePhases
     {
         void CurrentPlayerStartsNewTurn(GameData gameData);
         void ContinueToDraftArmies(GameData gameData, int numberOfArmiesToDraft);
-        void ContinueWithAttackPhase(GameData gameData, ConqueringAchievement conqueringAchievement);
+        void ContinueWithAttackPhase(GameData gameData, TurnConqueringAchievement turnConqueringAchievement);
         void SendArmiesToOccupy(GameData gameData, IRegion attackingRegion, IRegion occupiedRegion);
         void Fortify(GameData gameData, IRegion sourceRegion, IRegion destinationRegion, int numberOfArmiesToFortify);
         void PassTurnToNextPlayer(IGameState currentGameState);
@@ -49,9 +49,9 @@ namespace RISK.GameEngine.Play.GamePhases
             _gameStateFsm.Set(draftArmiesGameState);
         }
 
-        public void ContinueWithAttackPhase(GameData gameData, ConqueringAchievement conqueringAchievement)
+        public void ContinueWithAttackPhase(GameData gameData, TurnConqueringAchievement turnConqueringAchievement)
         {
-            var attackGameState = _gameStateFactory.CreateAttackGameState(this, gameData);
+            var attackGameState = _gameStateFactory.CreateAttackGameState(this, gameData, turnConqueringAchievement);
 
             _gameStateFsm.Set(attackGameState);
         }

@@ -69,7 +69,7 @@ namespace RISK.GameEngine.Play.GamePhases
             }
             else
             {
-                _gameStateConductor.ContinueWithAttackPhase(gameData, ConqueringAchievement.DoNotAwardCardAtEndOfTurn);
+                _gameStateConductor.ContinueWithAttackPhase(gameData, TurnConqueringAchievement.NoTerritoryHasBeenConquered);
             }
         }
 

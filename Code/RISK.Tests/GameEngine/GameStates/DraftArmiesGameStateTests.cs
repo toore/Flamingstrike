@@ -126,7 +126,7 @@ namespace RISK.Tests.GameEngine.GameStates
             var sut = Create(_gameData, 2);
             sut.PlaceDraftArmies(_region, 2);
 
-            _gameStateConductor.Received().ContinueWithAttackPhase(newGameData, ConqueringAchievement.DoNotAwardCardAtEndOfTurn);
+            _gameStateConductor.Received().ContinueWithAttackPhase(newGameData, TurnConqueringAchievement.NoTerritoryHasBeenConquered);
         }
 
         [Fact]

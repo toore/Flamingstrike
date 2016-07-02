@@ -139,7 +139,7 @@ namespace RISK.Tests.GameEngine.GameStates
 
             _gameStateConductor.Received().ContinueWithAttackPhase(
                 newGameData,
-                ConqueringAchievement.AwardCardAtEndOfTurn);
+                TurnConqueringAchievement.SuccessfullyConqueredAtLeastOneTerritory);
         }
 
         [Fact]

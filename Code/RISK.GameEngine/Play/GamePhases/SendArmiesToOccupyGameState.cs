@@ -50,7 +50,7 @@ namespace RISK.GameEngine.Play.GamePhases
             var updatedTerritories = _territoryOccupier.SendInAdditionalArmiesToOccupy(_gameData.Territories, _attackingRegion, _occupiedRegion, numberOfArmies);
             var gameData = _gameDataFactory.Create(_gameData.CurrentPlayer, Players, updatedTerritories, Deck);
 
-            _gameStateConductor.ContinueWithAttackPhase(gameData, ConqueringAchievement.AwardCardAtEndOfTurn);
+            _gameStateConductor.ContinueWithAttackPhase(gameData, TurnConqueringAchievement.SuccessfullyConqueredAtLeastOneTerritory);
         }
 
         public bool CanPlaceDraftArmies(IRegion region)

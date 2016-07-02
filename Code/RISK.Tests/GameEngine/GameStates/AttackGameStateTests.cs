@@ -26,6 +26,7 @@ namespace RISK.Tests.GameEngine.GameStates
         private readonly IPlayer _anotherPlayer;
         private readonly IDeck _deck;
         private readonly GameData _gameData;
+        private TurnConqueringAchievement _turnConqueringAchievement = TurnConqueringAchievement.NoTerritoryHasBeenConquered;
 
         public AttackGameStateTests()
         {
@@ -149,7 +150,7 @@ namespace RISK.Tests.GameEngine.GameStates
 
             _gameStateConductor.Received().ContinueWithAttackPhase(
                 newGameData,
-                ConqueringAchievement.DoNotAwardCardAtEndOfTurn);
+                TurnConqueringAchievement.NoTerritoryHasBeenConquered);
         }
 
         [Fact]
@@ -283,19 +284,24 @@ namespace RISK.Tests.GameEngine.GameStates
         public void Player_should_receive_card_when_turn_ends()
         {
             var topDeckCard = Substitute.For<ICard>();
-            var updatedTerritories = new List<ITerritory>();
-            var attackOutcome = new AttackOutcome(updatedTerritories, DefendingArmy.IsEliminated);
-            _attacker.Attack(
-                Argx.IsEquivalentReadOnly(_territory, _anotherTerritory),
-                _region,
-                _anotherRegion).Returns(attackOutcome);
             _deck.Draw().Returns(topDeckCard);
+            _turnConqueringAchievement = TurnConqueringAchievement.SuccessfullyConqueredAtLeastOneTerritory;
 
             var sut = Create(_gameData);
-            sut.Attack(_region, _anotherRegion);
             sut.EndTurn();
 
             _currentPlayer.Cards.Should().BeEquivalentTo(topDeckCard);
+        }
+
+        [Fact]
+        public void Player_should_not_receive_card_when_turn_ends()
+        {
+            _turnConqueringAchievement = TurnConqueringAchievement.NoTerritoryHasBeenConquered;
+
+            var sut = Create(_gameData);
+            sut.EndTurn();
+
+            _currentPlayer.Cards.Should().BeEmpty();
         }
 
         [Fact]
@@ -312,23 +318,6 @@ namespace RISK.Tests.GameEngine.GameStates
 
             var sut = Create(_gameData);
             sut.Attack(_region, _anotherRegion);
-
-            _currentPlayer.Cards.Should().BeEmpty();
-        }
-
-        [Fact]
-        public void Player_should_not_receive_card_when_turn_ends()
-        {
-            var updatedTerritories = new List<ITerritory>();
-            var attackOutcome = new AttackOutcome(updatedTerritories, DefendingArmy.IsNotEliminated);
-            _attacker.Attack(
-                Argx.IsEquivalentReadOnly(_territory, _anotherTerritory),
-                _region,
-                _anotherRegion).Returns(attackOutcome);
-
-            var sut = Create(_gameData);
-            sut.Attack(_region, _anotherRegion);
-            sut.EndTurn();
 
             _currentPlayer.Cards.Should().BeEmpty();
         }
@@ -381,15 +370,16 @@ namespace RISK.Tests.GameEngine.GameStates
             _gameStateConductor.Received().GameIsOver(newGameData);
         }
 
-        private IGameState Create(GameData gameData)
+        private AttackGameState Create(GameData gameData)
         {
             return new AttackGameState(
-                _gameStateConductor, 
-                _gameDataFactory, 
-                _attacker, 
-                _fortifier, 
-                _gameRules, 
-                gameData);
+                _gameStateConductor,
+                _gameDataFactory,
+                _attacker,
+                _fortifier,
+                _gameRules,
+                gameData,
+                _turnConqueringAchievement);
         }
 
         [Fact]

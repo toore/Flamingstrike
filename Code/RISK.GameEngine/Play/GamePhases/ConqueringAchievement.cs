@@ -1,8 +1,8 @@
 namespace RISK.GameEngine.Play.GamePhases
 {
-    public enum ConqueringAchievement
+    public enum TurnConqueringAchievement
     {
-        DoNotAwardCardAtEndOfTurn,
-        AwardCardAtEndOfTurn
+        NoTerritoryHasBeenConquered,
+        SuccessfullyConqueredAtLeastOneTerritory
     }
 }
