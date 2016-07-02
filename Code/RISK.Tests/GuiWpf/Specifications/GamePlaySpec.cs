@@ -53,28 +53,6 @@ namespace RISK.Tests.GuiWpf.Specifications
         }
 
         [Fact]
-        public void First_player_occupies_brazil_after_win()
-        {
-            Given
-                .a_game_with_two_human_players()
-                .player_1_occupies_every_territory_except_brazil_and_venezuela_and_north_africa_with_one_army_each()
-                .player_1_occupies_north_africa_with_five_armies()
-                .player_2_occupies_brazil_and_venezuela_with_one_army_each()
-                .game_is_started()
-                .player_drafts_three_armies_in_north_africa()
-                .player_drafts_thirtytwo_armies_in_iceland();
-
-            When
-                .player_selects_north_africa()
-                .attacks_brazil_and_wins()
-                .two_additional_armies_is_sent_to_occupy_brazil();
-
-            Then
-                .player_1_should_occupy_brazil_with_five_armies()
-                .player_1_should_occupy_north_africa_with_three_armies();
-        }
-
-        [Fact]
         public void Second_player_draft_armies()
         {
             Given
@@ -114,94 +92,102 @@ namespace RISK.Tests.GuiWpf.Specifications
         }
 
         [Fact]
-        public void Game_over_when_player_occupies_all_territories()
+        public void First_player_occupies_brazil_after_win()
         {
             Given
                 .a_game_with_two_human_players()
-                .player_1_occupies_every_territory_except_iceland_with_one_army_each()
-                .player_2_occupies_iceland_with_one_army()
+                .player_1_occupies_every_territory_except_brazil_and_venezuela_and_north_africa_with_one_army_each()
+                .player_1_occupies_north_africa_with_five_armies()
+                .player_2_occupies_brazil_and_venezuela_with_one_army_each()
                 .game_is_started()
-                .player_drafts_one_army_in_scandinavia_and_the_rest_in_alaska();
+                .player_drafts_three_armies_in_north_africa()
+                .player_drafts_thirtytwo_armies_in_iceland();
 
-            When.
-                player_selects_scandinavia().
-                and_attacks_iceland_and_wins();
+            When
+                .player_selects_north_africa()
+                .player_attacks_brazil_and_wins()
+                .two_additional_armies_is_sent_to_occupy_brazil();
 
-            Then.
-                player_1_is_the_winner();
+            Then
+                .player_1_should_occupy_brazil_with_five_armies()
+                .player_1_should_occupy_north_africa_with_three_armies();
         }
 
         [Fact]
         public void Receives_a_card_when_ending_turn()
         {
-            Given.
-                a_game_with_two_human_players().
-                //player_1_occupies_every_territory_except_brazil_and_venezuela_with_one_army_each().
-                player_1_occupies_north_africa_with_five_armies().
-                player_2_occupies_brazil_and_venezuela_with_one_army_each();
+            Given
+                .a_game_with_two_human_players()
+                .player_1_occupies_every_territory_except_brazil_and_venezuela_and_north_africa_with_one_army_each()
+                .player_1_occupies_north_africa_with_five_armies()
+                .player_2_occupies_brazil_and_venezuela_with_one_army_each()
+                .game_is_started()
+                .player_drafts_three_armies_in_north_africa()
+                .player_drafts_thirtytwo_armies_in_iceland();
 
-            When.
-                player_selects_north_africa().
-                attacks_brazil_and_wins().
-                player_ends_turn();
+            When
+                .player_selects_north_africa()
+                .player_attacks_brazil_and_wins()
+                .two_additional_armies_is_sent_to_occupy_brazil()
+                .player_ends_turn();
 
-            Then.
-                player_1_should_have_a_card().
-                player_2_should_take_turn();
+            Then
+                .player_1_should_have_received_a_card();
         }
 
         [Fact]
         public void Does_not_receive_a_card_when_ending_turn()
         {
-            Given.
-                a_game_with_two_human_players();
+            //Given.
+            //    a_game_with_two_human_players();
 
-            When.
-                player_ends_turn();
+            //When.
+            //    player_ends_turn();
 
-            Then.
-                player_1_should_not_have_any_card().
-                player_2_should_take_turn();
+            //Then.
+            //    player_1_should_not_have_any_card().
+            //    player_2_should_take_turn();
         }
 
         [Fact]
         public void Fortifies_armies()
         {
-            Given.
-                a_game_with_two_human_players().
-                player_1_occupies_every_territory_except_indonesia_with_ten_armies_each().
-                player_2_occupies_indonesia().
-                player_1_fortifies();
+            //Given.
+            //    a_game_with_two_human_players().
+            //    player_1_occupies_every_territory_except_indonesia_with_ten_armies_each().
+            //    player_2_occupies_indonesia().
+            //    player_1_fortifies();
+
+            //When.
+            //    player_1_selects_japan().
+            //    moves_2_armies_to_kamchatka();
+
+            //Then.
+            //    japan_should_have_8_armies().
+            //    kamchatka_should_have_12_armies();
+        }
+
+        [Fact]
+        public void Game_over_when_player_occupies_all_territories()
+        {
+            Given
+                .a_game_with_two_human_players()
+                .player_1_occupies_every_territory_except_brazil_with_one_army_each()
+                .player_2_occupies_brazil_with_one_army()
+                .game_is_started()
+                .player_drafts_thirtyfive_armies_in_north_africa();
 
             When.
-                player_1_selects_japan().
-                moves_2_armies_to_kamchatka();
+                player_selects_north_africa().
+                player_attacks_brazil_and_wins();
 
             Then.
-                japan_should_have_8_armies().
-                kamchatka_should_have_12_armies();
+                player_1_is_the_winner();
         }
 
-        private void kamchatka_should_have_12_armies()
+        private void player_1_should_have_received_a_card()
         {
-            //_worldMap.Kamchatka.Armies.Should().Be(12);
-        }
-
-        private GamePlaySpec japan_should_have_8_armies()
-        {
-            //_worldMap.Japan.Armies.Should().Be(8);
-            return this;
-        }
-
-        private GamePlaySpec player_1_selects_japan()
-        {
-            ClickOn(_regions.Japan);
-            return this;
-        }
-
-        private void moves_2_armies_to_kamchatka()
-        {
-            ClickOn(_regions.Kamchatka);
+            _player1.Cards.Count().Should().Be(1);
         }
 
         private void player_1_fortifies()
@@ -293,10 +279,9 @@ namespace RISK.Tests.GuiWpf.Specifications
             return this;
         }
 
-        private GamePlaySpec player_drafts_one_army_in_scandinavia_and_the_rest_in_alaska()
+        private GamePlaySpec player_drafts_thirtyfive_armies_in_north_africa()
         {
-            ClickOnRegionNumberOfTimes(_regions.Scandinavia, 1);
-            ClickOnRegionNumberOfTimes(_regions.Alaska, 31);
+            ClickOnRegionNumberOfTimes(_regions.NorthAfrica, 35);
             return this;
         }
 
@@ -317,7 +302,6 @@ namespace RISK.Tests.GuiWpf.Specifications
         private GamePlaySpec player_1_occupies_north_africa_with_five_armies()
         {
             AddTerritoryToGameboard(_regions.NorthAfrica, _player1, 5);
-            //UpdateWorldMap(_player1, 5, _worldMap.NorthAfrica);
             return this;
         }
 
@@ -333,7 +317,7 @@ namespace RISK.Tests.GuiWpf.Specifications
                 _regions.Venezuela,
                 _regions.NorthAfrica).
                 Apply(x => AddTerritoryToGameboard(x, _player1, 1));
-            //UpdateWorldMap(_player1, 1, GetAllLocationsExcept(_worldMap.Brazil, _worldMap.Venezuela));
+
             return this;
         }
 
@@ -341,34 +325,20 @@ namespace RISK.Tests.GuiWpf.Specifications
         {
             AddTerritoryToGameboard(_regions.Brazil, _player2, 1);
             AddTerritoryToGameboard(_regions.Venezuela, _player2, 1);
-            //UpdateWorldMap(_player2, 1, _worldMap.Brazil, _worldMap.Venezuela);
             return this;
         }
 
-        private GamePlaySpec player_1_occupies_every_territory_except_iceland_with_one_army_each()
+        private GamePlaySpec player_1_occupies_every_territory_except_brazil_with_one_army_each()
         {
             GetAllTerritoriesExcept(
-                _regions.Iceland).
+                _regions.Brazil).
                 Apply(x => AddTerritoryToGameboard(x, _player1, 1));
             return this;
         }
 
-        private GamePlaySpec player_1_occupies_every_territory_except_indonesia_with_ten_armies_each()
+        private GamePlaySpec player_2_occupies_brazil_with_one_army()
         {
-            UpdateWorldMap(_player1, 10, GetAllTerritoriesExcept(_regions.Indonesia));
-            return this;
-        }
-
-        private GamePlaySpec player_2_occupies_indonesia()
-        {
-            UpdateWorldMap(_player2, 1, _regions.Indonesia);
-            return this;
-        }
-
-        private GamePlaySpec player_2_occupies_iceland_with_one_army()
-        {
-            AddTerritoryToGameboard(_regions.Iceland, _player2, 1);
-            //UpdateWorldMap(_player2, 1, _regions.Iceland);
+            AddTerritoryToGameboard(_regions.Brazil, _player2, 1);
             return this;
         }
 
@@ -377,35 +347,13 @@ namespace RISK.Tests.GuiWpf.Specifications
             return _regions.GetAll().Except(excludedLocations).ToArray();
         }
 
-        private void UpdateWorldMap(IPlayer player, int armies, params IRegion[] territoriesGeography)
-        {
-            //territories
-            //    .Apply(territory =>
-            //    {
-            //        territory.Occupant = playerId;
-            //        territory.Armies = armies;
-            //    });
-        }
-
         private GamePlaySpec player_selects_north_africa()
         {
             ClickOn(_regions.NorthAfrica);
             return this;
         }
 
-        private GamePlaySpec player_attacks_brazil()
-        {
-            ClickOn(_regions.Brazil);
-            return this;
-        }
-
-        private GamePlaySpec player_selects_brazil()
-        {
-            ClickOn(_regions.Brazil);
-            return this;
-        }
-
-        private GamePlaySpec attacks_brazil_and_wins()
+        private GamePlaySpec player_attacks_brazil_and_wins()
         {
             _dice.Roll().Returns(6, 5, 4, 5);
             ClickOn(_regions.Brazil);
@@ -416,18 +364,6 @@ namespace RISK.Tests.GuiWpf.Specifications
         {
             _game.SendArmiesToOccupy(2);
             return this;
-        }
-
-        private GamePlaySpec player_selects_scandinavia()
-        {
-            ClickOn(_regions.Scandinavia);
-            return this;
-        }
-
-        private void and_attacks_iceland_and_wins()
-        {
-            _dice.Roll().Returns(2, 1);
-            ClickOn(_regions.Iceland);
         }
 
         private GamePlaySpec player_ends_turn()
@@ -481,26 +417,9 @@ namespace RISK.Tests.GuiWpf.Specifications
             _windowManager.Received().ShowDialog(_gameOverAndPlayer1IsTheWinnerViewModel);
         }
 
-        private GamePlaySpec player_1_should_have_a_card()
-        {
-            //_player1.Cards.Count().Should().Be(1, "player 1 should have one card");
-            return this;
-        }
-
-        private GamePlaySpec player_1_should_not_have_any_card()
-        {
-            //_player1.Cards.Count().Should().Be(0, "player 1 should not have any card");
-            return this;
-        }
-
         private void player_1_should_take_turn()
         {
             _game.CurrentPlayer.Should().Be(_player1);
-        }
-
-        private void player_2_should_take_turn()
-        {
-            _game.CurrentPlayer.Should().Be(_player2);
         }
     }
 }
