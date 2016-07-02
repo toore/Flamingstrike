@@ -138,15 +138,20 @@ namespace RISK.Tests.GuiWpf.Specifications
         [Fact]
         public void Does_not_receive_a_card_when_ending_turn()
         {
-            //Given.
-            //    a_game_with_two_human_players();
+            Given
+                .a_game_with_two_human_players()
+                .player_1_occupies_every_territory_except_brazil_and_venezuela_and_north_africa_with_one_army_each()
+                .player_1_occupies_north_africa_with_five_armies()
+                .player_2_occupies_brazil_and_venezuela_with_one_army_each()
+                .game_is_started()
+                .player_drafts_three_armies_in_north_africa()
+                .player_drafts_thirtytwo_armies_in_iceland();
 
-            //When.
-            //    player_ends_turn();
+            When
+                .player_ends_turn();
 
-            //Then.
-            //    player_1_should_not_have_any_card().
-            //    player_2_should_take_turn();
+            Then
+                .player_1_should_not_have_any_card();
         }
 
         [Fact]
@@ -188,6 +193,11 @@ namespace RISK.Tests.GuiWpf.Specifications
         private void player_1_should_have_a_card()
         {
             _player1.Cards.Count().Should().Be(1);
+        }
+
+        private void player_1_should_not_have_any_card()
+        {
+            _player1.Cards.Should().BeEmpty();
         }
 
         private void player_1_fortifies()
