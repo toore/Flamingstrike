@@ -39,7 +39,7 @@ namespace RISK.Core
                 throw new InvalidOperationException("Can't fortify");
             }
 
-            return null;
+            throw new NotImplementedException();
         }
     }
 }

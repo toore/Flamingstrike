@@ -157,19 +157,22 @@ namespace RISK.Tests.GuiWpf.Specifications
         [Fact]
         public void Fortifies_armies()
         {
-            //Given.
-            //    a_game_with_two_human_players().
-            //    player_1_occupies_every_territory_except_indonesia_with_ten_armies_each().
-            //    player_2_occupies_indonesia().
-            //    player_1_fortifies();
+            Given
+                .a_game_with_two_human_players()
+                .player_1_occupies_every_territory_except_brazil_and_venezuela_and_north_africa_with_one_army_each()
+                .player_1_occupies_north_africa_with_five_armies()
+                .player_2_occupies_brazil_and_venezuela_with_one_army_each()
+                .game_is_started()
+                .player_drafts_three_armies_in_north_africa()
+                .player_drafts_thirtytwo_armies_in_iceland();
 
-            //When.
-            //    player_1_selects_japan().
-            //    moves_2_armies_to_kamchatka();
+            When
+                .player_sets_fortify_mode()
+                .player_selects_north_africa()
+                .player_moves_one_army_to_east_africa();
 
-            //Then.
-            //    japan_should_have_8_armies().
-            //    kamchatka_should_have_12_armies();
+            Then
+                .east_africa_should_have_two_armies();
         }
 
         [Fact]
@@ -200,9 +203,15 @@ namespace RISK.Tests.GuiWpf.Specifications
             _player1.Cards.Should().BeEmpty();
         }
 
-        private void player_1_fortifies()
+        private GamePlaySpec player_sets_fortify_mode()
         {
             _gameboardViewModel.Fortify();
+            return this;
+        }
+
+        private void player_moves_one_army_to_east_africa()
+        {
+            ClickOn(_regions.EastAfrica);
         }
 
         private GamePlaySpec a_game_with_two_human_players()
@@ -396,30 +405,35 @@ namespace RISK.Tests.GuiWpf.Specifications
 
         private GamePlaySpec player_1_should_occupy_north_africa_with_six_armies()
         {
-            _game.GetTerritory(_regions.NorthAfrica).Player.Should().Be(_player1, "player 1 should occupy North Africa");
-            _game.GetTerritory(_regions.NorthAfrica).Armies.Should().Be(6, "North Africa should have 6 armies");
+            _game.GetTerritory(_regions.NorthAfrica).Player.Should().Be(_player1);
+            _game.GetTerritory(_regions.NorthAfrica).Armies.Should().Be(6);
             return this;
         }
 
         private GamePlaySpec player_2_should_occupy_brazil_with_4_armies()
         {
-            _game.GetTerritory(_regions.Brazil).Player.Should().Be(_player2, "player 2 should occupy Brazil");
-            _game.GetTerritory(_regions.Brazil).Armies.Should().Be(4, "Brazil should have 4 armies");
+            _game.GetTerritory(_regions.Brazil).Player.Should().Be(_player2);
+            _game.GetTerritory(_regions.Brazil).Armies.Should().Be(4);
             return this;
         }
 
         private GamePlaySpec player_1_should_occupy_brazil_with_five_armies()
         {
-            _game.GetTerritory(_regions.Brazil).Player.Should().Be(_player1, "player 1 should occupy Brazil");
-            _game.GetTerritory(_regions.Brazil).Armies.Should().Be(5, "Brazil should have 5 armies");
+            _game.GetTerritory(_regions.Brazil).Player.Should().Be(_player1);
+            _game.GetTerritory(_regions.Brazil).Armies.Should().Be(5);
             return this;
         }
 
         private GamePlaySpec player_1_should_occupy_north_africa_with_three_armies()
         {
-            _game.GetTerritory(_regions.NorthAfrica).Player.Should().Be(_player1, "player 1 should occupy North Africa");
-            _game.GetTerritory(_regions.NorthAfrica).Armies.Should().Be(3, "North Africa should have 1 army");
+            _game.GetTerritory(_regions.NorthAfrica).Player.Should().Be(_player1);
+            _game.GetTerritory(_regions.NorthAfrica).Armies.Should().Be(3);
             return this;
+        }
+
+        private void east_africa_should_have_two_armies()
+        {
+            _game.GetTerritory(_regions.EastAfrica).Armies.Should().Be(2);
         }
 
         private void player_1_is_the_winner()
