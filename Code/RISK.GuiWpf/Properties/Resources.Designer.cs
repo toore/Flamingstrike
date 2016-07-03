@@ -196,7 +196,7 @@ namespace GuiWpf.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to End game.
+        ///   Looks up a localized string similar to End Game.
         /// </summary>
         internal static string END_GAME {
             get {
@@ -430,7 +430,7 @@ namespace GuiWpf.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select territory.
+        ///   Looks up a localized string similar to Select Territory.
         /// </summary>
         internal static string SELECT_TERRITORY {
             get {
@@ -471,6 +471,15 @@ namespace GuiWpf.Properties {
         internal static string SOUTHERN_EUROPE {
             get {
                 return ResourceManager.GetString("SOUTHERN_EUROPE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Start Game.
+        /// </summary>
+        internal static string START_GAME {
+            get {
+                return ResourceManager.GetString("START_GAME", resourceCulture);
             }
         }
         

@@ -163,7 +163,7 @@
     <value>Egypt</value>
   </data>
   <data name="END_GAME" xml:space="preserve">
-    <value>End game</value>
+    <value>End Game</value>
   </data>
   <data name="GAME_OVER" xml:space="preserve">
     <value>Game Over</value>
@@ -243,7 +243,7 @@
     <value>Scandinavia</value>
   </data>
   <data name="SELECT_TERRITORY" xml:space="preserve">
-    <value>Select territory</value>
+    <value>Select Territory</value>
   </data>
   <data name="SIAM" xml:space="preserve">
     <value>Siam</value>
@@ -256,6 +256,9 @@
   </data>
   <data name="SOUTH_AFRICA" xml:space="preserve">
     <value>South Africa</value>
+  </data>
+  <data name="START_GAME" xml:space="preserve">
+    <value>Start Game</value>
   </data>
   <data name="UKRAINE" xml:space="preserve">
     <value>Ukraine</value>
