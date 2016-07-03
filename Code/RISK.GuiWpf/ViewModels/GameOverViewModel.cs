@@ -3,7 +3,10 @@ using GuiWpf.Properties;
 
 namespace GuiWpf.ViewModels
 {
-    public interface IGameOverViewModel { }
+    public interface IGameOverViewModel
+    {
+        string PlayerNameIsTheWinnerText { get; }
+    }
 
     public class GameOverViewModel : Screen, IGameOverViewModel
     {

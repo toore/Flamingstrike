@@ -118,7 +118,6 @@
       <DependentUpon>ConfirmView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ConfirmViewModelTestDataFactory.cs" />
-    <Compile Include="Views\GameOverViewModelTestDataFactory.cs" />
     <Compile Include="ViewModels\Settings\GameSettingsView.xaml.cs">
       <DependentUpon>GameSettingsView.xaml</DependentUpon>
     </Compile>
