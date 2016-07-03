@@ -85,9 +85,6 @@
     <Compile Include="RegionModels\RegionModelBase.cs" />
     <Compile Include="ViewModels\ConfirmViewModel.cs" />
     <Compile Include="ViewModels\ConfirmViewModelFactory.cs" />
-    <Compile Include="ViewModels\Gameplay\GameSetupView.xaml.cs">
-      <DependentUpon>GameSetupView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="ViewModels\Gameplay\Interaction\AttackInteractionState.cs" />
     <Compile Include="ViewModels\Gameplay\Interaction\DraftArmiesInteractionState.cs" />
     <Compile Include="ViewModels\Gameplay\Interaction\FortifyMoveInteractionState.cs" />
@@ -220,10 +217,6 @@
       <DependentUpon>WorldMapTestUserControl.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="ViewModels\Gameplay\GameSetupView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="ViewModels\Setup\GameSetupView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
