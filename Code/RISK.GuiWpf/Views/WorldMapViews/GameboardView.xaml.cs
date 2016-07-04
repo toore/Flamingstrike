@@ -1,4 +1,13 @@
-﻿namespace GuiWpf.Views.WorldMapViews
+﻿using System;
+using System.Linq;
+using GuiWpf.RegionModels;
+using GuiWpf.Services;
+using GuiWpf.ViewModels.Gameplay;
+using GuiWpf.ViewModels.Gameplay.Map;
+using RISK.Core;
+using RISK.GameEngine;
+
+namespace GuiWpf.Views.WorldMapViews
 {
     public partial class GameboardView
     {
@@ -6,5 +15,32 @@
         {
             InitializeComponent();
         }
+    }
+
+    public class GameboardViewModelDesignerData : IGameboardViewModel
+    {
+        public GameboardViewModelDesignerData()
+        {
+            var continents = new Continents();
+            var regions = new Regions(continents);
+            var regionModelFactory = new RegionModelFactory(regions);
+            var colorService = new ColorService();
+            var regionColorSettingFactory = new RegionColorSettingsFactory(colorService, regions);
+            var worldMapViewModelFactory = new WorldMapViewModelFactory(regionModelFactory, regionColorSettingFactory, colorService);
+
+            var random = new Random();
+
+            var territories = regions.GetAll()
+            .Select(region => new Territory(region, new Player("player"), random.Next(99)))
+            .ToList().AsReadOnly();
+
+            WorldMapViewModel = worldMapViewModelFactory.Create(territories, x => { }, Enumerable.Empty<IRegion>());
+        }
+
+        public WorldMapViewModel WorldMapViewModel { get; }
+
+        public string PlayerName => "Player name is shown here";
+
+        public string InformationText => "Information text is shown here";
     }
 }

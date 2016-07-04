@@ -49,15 +49,15 @@ namespace GuiWpf.ViewModels.Gameplay
             InformationText = ResourceManager.Instance.GetString("SELECT_TERRITORY");
         }
 
-        public WorldMapViewModel WorldMapViewModel { get; set; }
+        public WorldMapViewModel WorldMapViewModel { get; private set; }
 
         public string PlayerName
         {
             get { return _playerName; }
-            set { NotifyOfPropertyChange(value, () => PlayerName, x => _playerName = x); }
+            private set { NotifyOfPropertyChange(value, () => PlayerName, x => _playerName = x); }
         }
 
-        public string InformationText { get; private set; }
+        public string InformationText { get; }
 
         public void Activate()
         {
@@ -97,7 +97,7 @@ namespace GuiWpf.ViewModels.Gameplay
 
         public bool CanFortify()
         {
-            return false; //_game.CanFortify();??
+            throw new NotImplementedException();
         }
 
         public void Fortify()
@@ -108,7 +108,7 @@ namespace GuiWpf.ViewModels.Gameplay
 
         public bool CanEndTurn()
         {
-            return true;
+            throw new NotImplementedException();
         }
 
         public void EndTurn()

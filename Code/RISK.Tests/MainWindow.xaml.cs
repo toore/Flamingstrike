@@ -7,8 +7,6 @@ namespace RISK.Tests
         public MainWindow()
         {
             InitializeComponent();
-
-            DataContext = GameboardViewModelTestDataFactory.ViewModel;
         }
     }
 }

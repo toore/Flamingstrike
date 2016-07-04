@@ -8,7 +8,7 @@
     xmlns:Micro="http://www.caliburnproject.org"
     mc:Ignorable="d"
     d:DesignHeight="768" d:DesignWidth="1366"
-    d:DataContext="{Binding Source={x:Static WorldMapViews:GameboardViewModelTestDataFactory.ViewModel}}">
+    d:DataContext="{d:DesignInstance d:Type=WorldMapViews:GameboardViewModelDesignerData, IsDesignTimeCreatable=True}">
 
     <UserControl.Resources>
         <ResourceDictionary>

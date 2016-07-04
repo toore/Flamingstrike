@@ -154,7 +154,6 @@
       <DependentUpon>GameSettingsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Bootstrapper.cs" />
-    <Compile Include="Views\WorldMapViews\GameboardViewModelTestDataFactory.cs" />
     <Compile Include="RegionModels\AfghanistanModel.cs" />
     <Compile Include="RegionModels\AlbertaModel.cs" />
     <Compile Include="RegionModels\ArgentinaModel.cs" />
