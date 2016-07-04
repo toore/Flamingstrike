@@ -21,11 +21,11 @@
                             <Storyboard>
                                 <ColorAnimation Storyboard.TargetName="fill"
                                     Storyboard.TargetProperty="Color"
-                                    To="#A0FFFFFF"
+                                    To="#00000000"
                                     Duration="0:0:0.2" />
                                 <ColorAnimation Storyboard.TargetName="stroke"
                                     Storyboard.TargetProperty="Color"
-                                    To="#50FFFFFF"
+                                    To="#00000000"
                                     Duration="0:0:0.2" />
                             </Storyboard>
                         </VisualState>
@@ -33,11 +33,11 @@
                             <Storyboard>
                                 <ColorAnimation Storyboard.TargetName="fill"
                                     Storyboard.TargetProperty="Color"
-                                    To="#70FFFFFF"
+                                    To="#50000000"
                                     Duration="0:0:0.2" />
                                 <ColorAnimation Storyboard.TargetName="stroke"
                                     Storyboard.TargetProperty="Color"
-                                    To="#50FFFFFF"
+                                    To="#50000000"
                                     Duration="0:0:0.2" />
                             </Storyboard>
                         </VisualState>
@@ -47,12 +47,12 @@
 
                 <Canvas>
                     <Canvas ZIndex="50">
-                        <Path StrokeThickness="3">
+                        <Path StrokeThickness="2">
                             <Path.Fill>
-                                <SolidColorBrush x:Name="fill" Color="#00FFFFFF" />
+                                <SolidColorBrush x:Name="fill" Color="#60FFFFFF" />
                             </Path.Fill>
                             <Path.Stroke>
-                                <SolidColorBrush x:Name="stroke" Color="#00FFFFFF" />
+                                <SolidColorBrush x:Name="stroke" Color="#60FFFFFF" />
                             </Path.Stroke>
                             <Path.Data>
                                 <GeometryGroup Children="{Binding Path=GeometryChildren, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" />
@@ -60,7 +60,7 @@
                         </Path>
                     </Canvas>
                     <Canvas ZIndex="10">
-                        <Path StrokeThickness="3">
+                        <Path StrokeThickness="2">
                             <Path.Fill>
                                 <SolidColorBrush Color="{Binding Path=FillColor, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" />
                             </Path.Fill>
