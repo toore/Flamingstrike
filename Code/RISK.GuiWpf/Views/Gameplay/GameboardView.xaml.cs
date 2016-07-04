@@ -3,7 +3,6 @@ using System.Linq;
 using GuiWpf.RegionModels;
 using GuiWpf.Services;
 using GuiWpf.ViewModels.Gameplay;
-using GuiWpf.ViewModels.Gameplay.Map;
 using RISK.Core;
 using RISK.GameEngine;
 

@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Media;
 
-namespace GuiWpf.Views
+namespace GuiWpf.Views.Gameplay
 {
     public partial class RegionButtonUserControl
     {

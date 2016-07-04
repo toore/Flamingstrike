@@ -95,8 +95,8 @@
     <Compile Include="ViewModels\Gameplay\Interaction\SelectInteractionStateBase.cs" />
     <Compile Include="ViewModels\Gameplay\Interaction\InteractionStateFsm.cs" />
     <Compile Include="ViewModels\Gameplay\Interaction\EndTurnInteractionState.cs" />
-    <Compile Include="ViewModels\Gameplay\Map\IWorldMapItemViewModelVisitor.cs" />
-    <Compile Include="ViewModels\Gameplay\Map\WorldMapItemUpdater.cs" />
+    <Compile Include="ViewModels\Gameplay\IWorldMapItemViewModelVisitor.cs" />
+    <Compile Include="ViewModels\Gameplay\WorldMapItemUpdater.cs" />
     <Compile Include="ViewModels\IConfirmViewModelFactory.cs" />
     <Compile Include="Services\UserNotifier.cs" />
     <Compile Include="Services\ScreenConfirmationService.cs" />
@@ -129,7 +129,7 @@
     <Compile Include="ViewModels\GameOverViewModelFactory.cs" />
     <Compile Include="ViewModels\Setup\GameSetupViewModel.cs" />
     <Compile Include="ViewModels\Gameplay\GameboardViewModelFactory.cs" />
-    <Compile Include="ViewModels\Messages\SetupGameMessage.cs" />
+    <Compile Include="ViewModels\Messages\StartGameSetupMessage.cs" />
     <Compile Include="ViewModels\Setup\GameSetupViewModelFactory.cs" />
     <Compile Include="ViewModels\Preparation\GamePreparationViewModel.cs" />
     <Compile Include="ViewModels\Preparation\HumanPlayerType.cs" />
@@ -171,7 +171,7 @@
     <Compile Include="Views\MainGameView.xaml.cs">
       <DependentUpon>MainGameView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewModels\Gameplay\Map\IWorldMapItemViewModel.cs" />
+    <Compile Include="ViewModels\Gameplay\IWorldMapItemViewModel.cs" />
     <Compile Include="RegionModels\JapanModel.cs" />
     <Compile Include="RegionModels\KamchatkaModel.cs" />
     <Compile Include="RegionModels\MadagascarModel.cs" />
@@ -194,10 +194,10 @@
     <Compile Include="Views\Gameplay\RegionButtonUserControl.xaml.cs">
       <DependentUpon>RegionButtonUserControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewModels\Gameplay\Map\RegionViewModel.cs" />
+    <Compile Include="ViewModels\Gameplay\RegionViewModel.cs" />
     <Compile Include="RegionModels\IRegionModel.cs" />
-    <Compile Include="ViewModels\Gameplay\Map\WorldMapViewModelFactory.cs" />
-    <Compile Include="ViewModels\Gameplay\Map\RegionNameViewModel.cs" />
+    <Compile Include="ViewModels\Gameplay\WorldMapViewModelFactory.cs" />
+    <Compile Include="ViewModels\Gameplay\RegionNameViewModel.cs" />
     <Compile Include="RegionModels\UkraineModel.cs" />
     <Compile Include="RegionModels\UralModel.cs" />
     <Compile Include="RegionModels\VenezuelaModel.cs" />
@@ -208,7 +208,7 @@
     <Compile Include="Views\Gameplay\GameboardView.xaml.cs">
       <DependentUpon>GameboardView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewModels\Gameplay\Map\WorldMapViewModel.cs" />
+    <Compile Include="ViewModels\Gameplay\WorldMapViewModel.cs" />
     <Page Include="Views\Setup\GameSetupView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

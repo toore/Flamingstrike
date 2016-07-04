@@ -1,7 +1,6 @@
 ﻿using Caliburn.Micro;
 using GuiWpf.Services;
 using GuiWpf.ViewModels.Gameplay.Interaction;
-using GuiWpf.ViewModels.Gameplay.Map;
 using RISK.GameEngine;
 using RISK.GameEngine.Play;
 

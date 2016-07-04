@@ -67,7 +67,7 @@ namespace RISK.Tests.GuiWpf
             _gameSetupViewModelFactory.Create(alternateGameSetup).Returns(gameSetupViewModel);
 
             var sut = Initialize();
-            sut.Handle(new SetupGameMessage());
+            sut.Handle(new StartGameSetupMessage());
 
             sut.ActiveItem.Should().Be(gameSetupViewModel);
         }

@@ -10,7 +10,7 @@ namespace GuiWpf.ViewModels.Preparation
             Values = Create().ToList();
         }
 
-        public List<PlayerTypeBase> Values { get; private set; }
+        public List<PlayerTypeBase> Values { get; }
 
         private static IEnumerable<PlayerTypeBase> Create()
         {

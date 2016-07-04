@@ -1,26 +1,27 @@
 ﻿<ResourceDictionary
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:Map="clr-namespace:GuiWpf.ViewModels.Gameplay.Map"
-    xmlns:Views="clr-namespace:GuiWpf.Views">
+    xmlns:Views="clr-namespace:GuiWpf.Views"
+    xmlns:Map="clr-namespace:GuiWpf.ViewModels.Gameplay"
+    xmlns:Gameplay="clr-namespace:GuiWpf.Views.Gameplay">
 
     <DataTemplate DataType="{x:Type Map:RegionViewModel}">
-        <Views:RegionButtonUserControl
+        <Gameplay:RegionButtonUserControl
             FillColor="{Binding FillColor}"
             StrokeColor="{Binding StrokeColor}"
             MouseOverFillColor="{Binding MouseOverFillColor}"
             MouseOverStrokeColor="{Binding MouseOverStrokeColor}"
             IsEnabled="{Binding IsEnabled}">
 
-            <Views:RegionButtonUserControl.GeometryChildren>
+            <Gameplay:RegionButtonUserControl.GeometryChildren>
                 <GeometryCollection>
                     <PathGeometry
                         Figures="{Binding Path}"
                         FillRule="NonZero" />
                 </GeometryCollection>
-            </Views:RegionButtonUserControl.GeometryChildren>
+            </Gameplay:RegionButtonUserControl.GeometryChildren>
 
-        </Views:RegionButtonUserControl>
+        </Gameplay:RegionButtonUserControl>
     </DataTemplate>
 
     <Style x:Key="RegionNameLabelStyle" TargetType="{x:Type Label}">

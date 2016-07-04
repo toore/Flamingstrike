@@ -62,7 +62,7 @@ namespace GuiWpf.ViewModels.Preparation
                 _playerRepository.Add(player);
             }
 
-            _eventAggregator.PublishOnUIThread(new SetupGameMessage());
+            _eventAggregator.PublishOnUIThread(new StartGameSetupMessage());
         }
 
         private IEnumerable<IPlayer> CreatePlayers()

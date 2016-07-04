@@ -8,7 +8,7 @@ using RISK.GameEngine.Setup;
 
 namespace GuiWpf.ViewModels
 {
-    public class MainGameViewModel : Conductor<IMainViewModel>, IHandle<SetupGameMessage>, IHandle<StartGameplayMessage>, IHandle<NewGameMessage>
+    public class MainGameViewModel : Conductor<IMainViewModel>, IHandle<StartGameSetupMessage>, IHandle<StartGameplayMessage>, IHandle<NewGameMessage>
     {
         private readonly IGamePreparationViewModelFactory _gamePreparationViewModelFactory;
         private readonly IGameboardViewModelFactory _gameboardViewModelFactory;
@@ -66,7 +66,7 @@ namespace GuiWpf.ViewModels
             InitializeNewGame();
         }
 
-        public void Handle(SetupGameMessage setupGameMessage)
+        public void Handle(StartGameSetupMessage startGameSetupMessage)
         {
             StartGameSetup();
         }

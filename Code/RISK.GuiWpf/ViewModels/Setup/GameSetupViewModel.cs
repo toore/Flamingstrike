@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Caliburn.Micro;
 using GuiWpf.Services;
-using GuiWpf.ViewModels.Gameplay.Map;
+using GuiWpf.ViewModels.Gameplay;
 using GuiWpf.ViewModels.Messages;
 using RISK.Core;
 using RISK.GameEngine.Play;

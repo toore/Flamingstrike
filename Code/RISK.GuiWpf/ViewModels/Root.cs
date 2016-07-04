@@ -3,7 +3,6 @@ using GuiWpf.RegionModels;
 using GuiWpf.Services;
 using GuiWpf.ViewModels.Gameplay;
 using GuiWpf.ViewModels.Gameplay.Interaction;
-using GuiWpf.ViewModels.Gameplay.Map;
 using GuiWpf.ViewModels.Preparation;
 using GuiWpf.ViewModels.Setup;
 using RISK.Core;

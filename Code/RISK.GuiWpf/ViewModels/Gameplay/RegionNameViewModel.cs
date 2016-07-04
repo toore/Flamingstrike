@@ -2,7 +2,7 @@
 using GuiWpf.RegionModels;
 using RISK.Core;
 
-namespace GuiWpf.ViewModels.Gameplay.Map
+namespace GuiWpf.ViewModels.Gameplay
 {
     public class RegionNameViewModel : ViewModelBase, IWorldMapItemViewModel
     {

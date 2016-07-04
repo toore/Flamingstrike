@@ -3,7 +3,7 @@ using System.Linq;
 using GuiWpf.Services;
 using RISK.Core;
 
-namespace GuiWpf.ViewModels.Gameplay.Map
+namespace GuiWpf.ViewModels.Gameplay
 {
     public class WorldMapItemUpdater : IWorldMapItemViewModelVisitor
     {
