@@ -2,7 +2,7 @@
 using System.Windows;
 using GuiWpf.ViewModels.Settings;
 
-namespace GuiWpf.Views.GameSetupViews
+namespace GuiWpf.Views
 {
     public partial class GamePreparationInnerView
     {

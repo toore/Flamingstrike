@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using GuiWpf.ViewModels.Settings;
 
-namespace GuiWpf.ViewModels.Settings
+namespace GuiWpf.Views
 {
     public partial class GamePreparationView
     {
