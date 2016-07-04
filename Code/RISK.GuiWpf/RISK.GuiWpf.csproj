@@ -117,7 +117,6 @@
     <Compile Include="Views\ConfirmView.xaml.cs">
       <DependentUpon>ConfirmView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ConfirmViewModelTestDataFactory.cs" />
     <Compile Include="Views\GamePreparationView.xaml.cs">
       <DependentUpon>GamePreparationView.xaml</DependentUpon>
     </Compile>

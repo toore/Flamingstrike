@@ -3,7 +3,14 @@ using GuiWpf.Services;
 
 namespace GuiWpf.ViewModels
 {
-    public class ConfirmViewModel : Screen
+    public interface IConfirmViewModel
+    {
+        string Message { get; }
+        string ConfirmText { get; }
+        string AbortText { get; }
+    }
+
+    public class ConfirmViewModel : Screen, IConfirmViewModel
     {
         private readonly IScreenConfirmationService _screenConfirmationService;
 
