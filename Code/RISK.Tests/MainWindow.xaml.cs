@@ -1,6 +1,4 @@
-﻿using GuiWpf.Views.WorldMapViews;
-
-namespace RISK.Tests
+﻿namespace RISK.Tests
 {
     public partial class MainWindow
     {

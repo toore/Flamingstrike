@@ -193,7 +193,7 @@
     <Compile Include="RegionModels\SiberiaModel.cs" />
     <Compile Include="RegionModels\SouthAfricaModel.cs" />
     <Compile Include="RegionModels\SouthernEuropeModel.cs" />
-    <Compile Include="Views\WorldMapViews\RegionButtonUserControl.xaml.cs">
+    <Compile Include="Views\RegionButtonUserControl.xaml.cs">
       <DependentUpon>RegionButtonUserControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\Gameplay\Map\RegionViewModel.cs" />
@@ -207,11 +207,11 @@
     <Compile Include="RegionModels\WesternEuropeModel.cs" />
     <Compile Include="RegionModels\WesternUnitedStatesModel.cs" />
     <Compile Include="RegionModels\YakutskModel.cs" />
-    <Compile Include="Views\WorldMapViews\GameboardView.xaml.cs">
+    <Compile Include="Views\GameboardView.xaml.cs">
       <DependentUpon>GameboardView.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\Gameplay\Map\WorldMapViewModel.cs" />
-    <Compile Include="Views\WorldMapViews\WorldMapTestUserControl.xaml.cs">
+    <Compile Include="Views\WorldMapTestUserControl.xaml.cs">
       <DependentUpon>WorldMapTestUserControl.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
@@ -235,7 +235,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\WorldMapViews\GameboardView.xaml">
+    <Page Include="Views\GameboardView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -255,19 +255,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\WorldMapViews\RegionButtonUserControl.xaml">
+    <Page Include="Views\RegionButtonUserControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\WorldMapViews\RegionStyles.xaml">
+    <Page Include="Views\RegionStyles.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\WorldMapViews\WorldMapResources.xaml">
+    <Page Include="Views\WorldMapResources.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\WorldMapViews\WorldMapTestUserControl.xaml">
+    <Page Include="Views\WorldMapTestUserControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
