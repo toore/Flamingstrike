@@ -209,10 +209,6 @@
       <DependentUpon>GameboardView.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\Gameplay\Map\WorldMapViewModel.cs" />
-    <Compile Include="WorldMapTestUserControl.xaml.cs">
-      <DependentUpon>WorldMapTestUserControl.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
     <Page Include="Views\Setup\GameSetupView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -262,10 +258,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Gameplay\WorldMapResources.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="WorldMapTestUserControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

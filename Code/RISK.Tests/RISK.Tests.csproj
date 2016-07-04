@@ -154,6 +154,9 @@
     <Compile Include="GuiWpf\ScreenServiceTests.cs" />
     <Compile Include="GuiWpf\ConfirmViewModelFactoryTests.cs" />
     <Compile Include="GuiWpf\UserNotifierTests.cs" />
+    <Compile Include="WorldMapTestUserControl.xaml.cs">
+      <DependentUpon>WorldMapTestUserControl.xaml</DependentUpon>
+    </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -170,6 +173,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="WorldMapTestUserControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
