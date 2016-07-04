@@ -4,7 +4,7 @@ using GuiWpf.Services;
 using GuiWpf.ViewModels.Gameplay;
 using GuiWpf.ViewModels.Gameplay.Interaction;
 using GuiWpf.ViewModels.Gameplay.Map;
-using GuiWpf.ViewModels.Settings;
+using GuiWpf.ViewModels.Preparation;
 using GuiWpf.ViewModels.Setup;
 using RISK.Core;
 using RISK.GameEngine;
@@ -20,7 +20,7 @@ namespace GuiWpf.ViewModels
         public PlayerRepository PlayerRepository { get; }
         public IEventAggregator EventAggregator { get; }
         public IAlternateGameSetupFactory AlternateGameSetupFactory { get; private set; }
-        public IGameInitializationViewModelFactory GameInitializationViewModelFactory { get; private set; }
+        public IGamePreparationViewModelFactory GamePreparationViewModelFactory { get; private set; }
         public IGameboardViewModelFactory GameboardViewModelFactory { get; private set; }
         public IGameSetupViewModelFactory GameSetupViewModelFactory { get; private set; }
         public IUserInteractorFactory UserInteractorFactory { get; set; }
@@ -35,7 +35,7 @@ namespace GuiWpf.ViewModels
             PlayerRepository = new PlayerRepository();
             EventAggregator = new EventAggregator();
 
-            GameInitializationViewModelFactory = new GameInitializationViewModelFactory(
+            GamePreparationViewModelFactory = new GamePreparationViewModelFactory(
                 playerFactory,
                 playerTypes,
                 PlayerRepository,

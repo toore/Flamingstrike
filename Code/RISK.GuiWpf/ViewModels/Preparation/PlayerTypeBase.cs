@@ -1,4 +1,4 @@
-﻿namespace GuiWpf.ViewModels.Settings
+﻿namespace GuiWpf.ViewModels.Preparation
 {
     public abstract class PlayerTypeBase
     {

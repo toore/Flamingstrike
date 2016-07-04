@@ -1,4 +1,4 @@
-﻿namespace GuiWpf.Views
+﻿namespace GuiWpf.Views.Setup
 {
     public partial class GameSetupView
     {

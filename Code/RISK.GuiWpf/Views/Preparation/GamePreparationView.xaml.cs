@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.ObjectModel;
-using GuiWpf.ViewModels.Settings;
+using GuiWpf.ViewModels.Preparation;
 
-namespace GuiWpf.Views
+namespace GuiWpf.Views.Preparation
 {
     public partial class GamePreparationView
     {
@@ -18,15 +18,15 @@ namespace GuiWpf.Views
         {
             var playerTypes = new PlayerTypes();
 
-            Players = new ObservableCollection<PlayerSetupViewModel>(new[]
+            Players = new ObservableCollection<GamePreparationPlayerViewModel>(new[]
             {
-                new PlayerSetupViewModel(playerTypes) { Name = "Player 1" },
-                new PlayerSetupViewModel(playerTypes) { Name = "Player 2" },
-                new PlayerSetupViewModel(playerTypes) { Name = "Player 3" }
+                new GamePreparationPlayerViewModel(playerTypes) { Name = "Player 1" },
+                new GamePreparationPlayerViewModel(playerTypes) { Name = "Player 2" },
+                new GamePreparationPlayerViewModel(playerTypes) { Name = "Player 3" }
             });
         }
 
-        public ObservableCollection<PlayerSetupViewModel> Players { get; }
+        public ObservableCollection<GamePreparationPlayerViewModel> Players { get; }
 
         public void Confirm()
         {

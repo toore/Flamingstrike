@@ -1,7 +1,7 @@
 ﻿using Caliburn.Micro;
 using GuiWpf.ViewModels.Gameplay;
 using GuiWpf.ViewModels.Messages;
-using GuiWpf.ViewModels.Settings;
+using GuiWpf.ViewModels.Preparation;
 using GuiWpf.ViewModels.Setup;
 using RISK.GameEngine.Play;
 using RISK.GameEngine.Setup;
@@ -10,7 +10,7 @@ namespace GuiWpf.ViewModels
 {
     public class MainGameViewModel : Conductor<IMainViewModel>, IHandle<SetupGameMessage>, IHandle<StartGameplayMessage>, IHandle<NewGameMessage>
     {
-        private readonly IGameInitializationViewModelFactory _gameInitializationViewModelFactory;
+        private readonly IGamePreparationViewModelFactory _gamePreparationViewModelFactory;
         private readonly IGameboardViewModelFactory _gameboardViewModelFactory;
         private readonly IGameSetupViewModelFactory _gameSetupViewModelFactory;
         private readonly IUserInteractorFactory _userInteractorFactory;
@@ -24,7 +24,7 @@ namespace GuiWpf.ViewModels
             : this(
                 root.PlayerRepository,
                 root.AlternateGameSetupFactory,
-                root.GameInitializationViewModelFactory,
+                root.GamePreparationViewModelFactory,
                 root.GameboardViewModelFactory,
                 root.GameSetupViewModelFactory,
                 root.UserInteractorFactory)
@@ -35,14 +35,14 @@ namespace GuiWpf.ViewModels
         protected MainGameViewModel(
             IPlayerRepository playerRepository,
             IAlternateGameSetupFactory alternateGameSetupFactory,
-            IGameInitializationViewModelFactory gameInitializationViewModelFactory,
+            IGamePreparationViewModelFactory gamePreparationViewModelFactory,
             IGameboardViewModelFactory gameboardViewModelFactory,
             IGameSetupViewModelFactory gameSetupViewModelFactory,
             IUserInteractorFactory userInteractorFactory)
         {
             _playerRepository = playerRepository;
             _alternateGameSetupFactory = alternateGameSetupFactory;
-            _gameInitializationViewModelFactory = gameInitializationViewModelFactory;
+            _gamePreparationViewModelFactory = gamePreparationViewModelFactory;
             _gameboardViewModelFactory = gameboardViewModelFactory;
             _gameSetupViewModelFactory = gameSetupViewModelFactory;
             _userInteractorFactory = userInteractorFactory;
@@ -78,7 +78,7 @@ namespace GuiWpf.ViewModels
 
         private void InitializeNewGame()
         {
-            var gameSettingsViewModel = _gameInitializationViewModelFactory.Create();
+            var gameSettingsViewModel = _gamePreparationViewModelFactory.Create();
             ActivateItem(gameSettingsViewModel);
         }
 

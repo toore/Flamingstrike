@@ -7,7 +7,7 @@ using GuiWpf.ViewModels.Gameplay.Map;
 using RISK.Core;
 using RISK.GameEngine;
 
-namespace GuiWpf.Views
+namespace GuiWpf.Views.Gameplay
 {
     public partial class GameboardView
     {

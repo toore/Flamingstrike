@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace GuiWpf.ViewModels.Settings
+namespace GuiWpf.ViewModels.Preparation
 {
-    public class PlayerSetupViewModel : ViewModelBase
+    public class GamePreparationPlayerViewModel : ViewModelBase
     {
-        public PlayerSetupViewModel(IPlayerTypes playerTypes)
+        public GamePreparationPlayerViewModel(IPlayerTypes playerTypes)
         {
             PlayerTypes = playerTypes.Values;
             SelectedPlayerType = PlayerTypes.First();
@@ -21,10 +21,10 @@ namespace GuiWpf.ViewModels.Settings
             set
             {
                 NotifyOfPropertyChange(value, () => IsEnabled, x =>
-                    {
-                        _isEnabled = x;
-                        OnIsEnabledChanged();
-                    });
+                {
+                    _isEnabled = x;
+                    OnIsEnabledChanged();
+                });
             }
         }
 
@@ -42,6 +42,6 @@ namespace GuiWpf.ViewModels.Settings
             set { NotifyOfPropertyChange(value, () => SelectedPlayerType, type => _selectedPlayerType = type); }
         }
 
-        public IEnumerable<PlayerTypeBase> PlayerTypes { get; private set; }
+        public IEnumerable<PlayerTypeBase> PlayerTypes { get; }
     }
 }

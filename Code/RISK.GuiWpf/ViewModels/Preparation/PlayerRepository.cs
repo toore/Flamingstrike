@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using RISK.GameEngine;
 
-namespace GuiWpf.ViewModels.Settings
+namespace GuiWpf.ViewModels.Preparation
 {
     public interface IPlayerRepository
     {

@@ -2,7 +2,7 @@
 using Caliburn.Micro;
 using FluentAssertions;
 using GuiWpf.ViewModels.Messages;
-using GuiWpf.ViewModels.Settings;
+using GuiWpf.ViewModels.Preparation;
 using NSubstitute;
 using Xunit;
 

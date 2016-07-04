@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace GuiWpf.ViewModels.Settings
+namespace GuiWpf.ViewModels.Preparation
 {
     public interface IPlayerTypes
     {

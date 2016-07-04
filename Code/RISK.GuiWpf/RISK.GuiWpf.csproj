@@ -103,9 +103,9 @@
     <Compile Include="Services\DialogManager.cs" />
     <Compile Include="ViewModels\Messages\NewGameMessage.cs" />
     <Compile Include="ViewModels\Root.cs" />
-    <Compile Include="ViewModels\Settings\GameSettingsViewModelFactory.cs" />
-    <Compile Include="ViewModels\Settings\PlayerRepository.cs" />
-    <Compile Include="Views\GameSetupView.xaml.cs">
+    <Compile Include="ViewModels\Preparation\GamePreparationViewModelFactory.cs" />
+    <Compile Include="ViewModels\Preparation\PlayerRepository.cs" />
+    <Compile Include="Views\Setup\GameSetupView.xaml.cs">
       <DependentUpon>GameSetupView.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\Messages\StartGameplayMessage.cs" />
@@ -117,7 +117,7 @@
     <Compile Include="Views\ConfirmView.xaml.cs">
       <DependentUpon>ConfirmView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\GamePreparationView.xaml.cs">
+    <Compile Include="Views\Preparation\GamePreparationView.xaml.cs">
       <DependentUpon>GamePreparationView.xaml</DependentUpon>
     </Compile>
     <Compile Include="WpfExtensions\GetString.cs" />
@@ -131,25 +131,24 @@
     <Compile Include="ViewModels\Gameplay\GameboardViewModelFactory.cs" />
     <Compile Include="ViewModels\Messages\SetupGameMessage.cs" />
     <Compile Include="ViewModels\Setup\GameSetupViewModelFactory.cs" />
-    <Compile Include="ViewModels\Settings\GameSettingsViewModel.cs" />
-    <Compile Include="ViewModels\Settings\HumanPlayerType.cs" />
-    <Compile Include="ViewModels\Settings\IGameSettingsViewModel.cs" />
+    <Compile Include="ViewModels\Preparation\GamePreparationViewModel.cs" />
+    <Compile Include="ViewModels\Preparation\HumanPlayerType.cs" />
     <Compile Include="ViewModels\MainGameViewModel.cs" />
     <Compile Include="ViewModels\IMainViewModel.cs" />
-    <Compile Include="ViewModels\Settings\IPlayerTypes.cs" />
-    <Compile Include="ViewModels\Settings\NeutralPlayerType.cs" />
-    <Compile Include="ViewModels\Settings\PlayerFactory.cs" />
-    <Compile Include="ViewModels\Settings\PlayerSetupViewModel.cs" />
+    <Compile Include="ViewModels\Preparation\IPlayerTypes.cs" />
+    <Compile Include="ViewModels\Preparation\NeutralPlayerType.cs" />
+    <Compile Include="ViewModels\Preparation\PlayerFactory.cs" />
+    <Compile Include="ViewModels\Preparation\GamePreparationPlayerViewModel.cs" />
     <Compile Include="RegionModels\RegionModelFactory.cs" />
-    <Compile Include="ViewModels\Settings\PlayerTypeBase.cs" />
-    <Compile Include="ViewModels\Settings\PlayerTypes.cs" />
+    <Compile Include="ViewModels\Preparation\PlayerTypeBase.cs" />
+    <Compile Include="ViewModels\Preparation\PlayerTypes.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="ViewModels\Gameplay\GameboardViewModel.cs" />
     <Compile Include="ViewModels\Gameplay\IGameboardViewModel.cs" />
     <Compile Include="Views\GameOverView.xaml.cs">
       <DependentUpon>GameOverView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\GamePreparationInnerView.xaml.cs">
+    <Compile Include="Views\Preparation\GamePreparationInnerView.xaml.cs">
       <DependentUpon>GamePreparationInnerView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Bootstrapper.cs" />
@@ -192,7 +191,7 @@
     <Compile Include="RegionModels\SiberiaModel.cs" />
     <Compile Include="RegionModels\SouthAfricaModel.cs" />
     <Compile Include="RegionModels\SouthernEuropeModel.cs" />
-    <Compile Include="Views\RegionButtonUserControl.xaml.cs">
+    <Compile Include="Views\Gameplay\RegionButtonUserControl.xaml.cs">
       <DependentUpon>RegionButtonUserControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\Gameplay\Map\RegionViewModel.cs" />
@@ -206,7 +205,7 @@
     <Compile Include="RegionModels\WesternEuropeModel.cs" />
     <Compile Include="RegionModels\WesternUnitedStatesModel.cs" />
     <Compile Include="RegionModels\YakutskModel.cs" />
-    <Compile Include="Views\GameboardView.xaml.cs">
+    <Compile Include="Views\Gameplay\GameboardView.xaml.cs">
       <DependentUpon>GameboardView.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\Gameplay\Map\WorldMapViewModel.cs" />
@@ -214,7 +213,7 @@
       <DependentUpon>WorldMapTestUserControl.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Views\GameSetupView.xaml">
+    <Page Include="Views\Setup\GameSetupView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -230,11 +229,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\GamePreparationView.xaml">
+    <Page Include="Views\Preparation\GamePreparationView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\GameboardView.xaml">
+    <Page Include="Views\Gameplay\GameboardView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -242,11 +241,11 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Views\GamePreparationViewResources.xaml">
+    <Page Include="Views\Preparation\GamePreparationViewResources.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\GamePreparationInnerView.xaml">
+    <Page Include="Views\Preparation\GamePreparationInnerView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -254,15 +253,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\RegionButtonUserControl.xaml">
+    <Page Include="Views\Gameplay\RegionButtonUserControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\RegionStyles.xaml">
+    <Page Include="Views\Gameplay\RegionStyles.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\WorldMapResources.xaml">
+    <Page Include="Views\Gameplay\WorldMapResources.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

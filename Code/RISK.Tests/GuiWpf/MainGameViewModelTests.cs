@@ -2,7 +2,7 @@
 using FluentAssertions;
 using GuiWpf.ViewModels.Gameplay;
 using GuiWpf.ViewModels.Messages;
-using GuiWpf.ViewModels.Settings;
+using GuiWpf.ViewModels.Preparation;
 using GuiWpf.ViewModels.Setup;
 using NSubstitute;
 using RISK.GameEngine;
@@ -16,7 +16,7 @@ namespace RISK.Tests.GuiWpf
     {
         private readonly IPlayerRepository _playerRepository;
         private readonly IAlternateGameSetupFactory _alternateGameSetupFactory;
-        private readonly IGameInitializationViewModelFactory _gameInitializationViewModelFactory;
+        private readonly IGamePreparationViewModelFactory _gamePreparationViewModelFactory;
         private readonly IGameboardViewModelFactory _gameboardViewModelFactory;
         private readonly IGameSetupViewModelFactory _gameSetupViewModelFactory;
         private readonly IUserInteractorFactory _userInteractorFactory;
@@ -25,7 +25,7 @@ namespace RISK.Tests.GuiWpf
         {
             _playerRepository = Substitute.For<IPlayerRepository>();
             _alternateGameSetupFactory = Substitute.For<IAlternateGameSetupFactory>();
-            _gameInitializationViewModelFactory = Substitute.For<IGameInitializationViewModelFactory>();
+            _gamePreparationViewModelFactory = Substitute.For<IGamePreparationViewModelFactory>();
             _gameboardViewModelFactory = Substitute.For<IGameboardViewModelFactory>();
             _gameSetupViewModelFactory = Substitute.For<IGameSetupViewModelFactory>();
             _userInteractorFactory = Substitute.For<IUserInteractorFactory>();
@@ -35,7 +35,7 @@ namespace RISK.Tests.GuiWpf
         public void OnInitialize_shows_game_settings_view()
         {
             var gameSettingsViewModel = Substitute.For<IGamePreparationViewModel>();
-            _gameInitializationViewModelFactory.Create().Returns(gameSettingsViewModel);
+            _gamePreparationViewModelFactory.Create().Returns(gameSettingsViewModel);
             var sut = Initialize();
 
             sut.OnInitialize();
@@ -48,7 +48,7 @@ namespace RISK.Tests.GuiWpf
         public void New_game_message_shows_game_settings_view()
         {
             var gameInitializationViewModel = Substitute.For<IGamePreparationViewModel>();
-            _gameInitializationViewModelFactory.Create().Returns(gameInitializationViewModel);
+            _gamePreparationViewModelFactory.Create().Returns(gameInitializationViewModel);
 
             var sut = Initialize();
             sut.Handle(new NewGameMessage());
@@ -90,7 +90,7 @@ namespace RISK.Tests.GuiWpf
             return new MainGameViewModelDecorator(
                 _playerRepository,
                 _alternateGameSetupFactory,
-                _gameInitializationViewModelFactory,
+                _gamePreparationViewModelFactory,
                 _gameboardViewModelFactory,
                 _gameSetupViewModelFactory,
                 _userInteractorFactory);

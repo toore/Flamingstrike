@@ -1,14 +1,14 @@
-﻿<UserControl x:Class="GuiWpf.Views.GameboardView"
+﻿<UserControl x:Class="GuiWpf.Views.Gameplay.GameboardView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
     xmlns:Micro="http://www.caliburnproject.org"
-    xmlns:Views="clr-namespace:GuiWpf.Views"
+    xmlns:Gameplay="clr-namespace:GuiWpf.Views.Gameplay"
     mc:Ignorable="d"
     d:DesignHeight="768" d:DesignWidth="1366"
-    d:DataContext="{d:DesignInstance d:Type=Views:GameboardViewModelDesignerData, IsDesignTimeCreatable=True}">
+    d:DataContext="{d:DesignInstance d:Type=Gameplay:GameboardViewModelDesignerData, IsDesignTimeCreatable=True}">
 
     <UserControl.Resources>
         <ResourceDictionary>

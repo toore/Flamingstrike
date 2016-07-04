@@ -1,20 +1,20 @@
 ﻿using Caliburn.Micro;
 
-namespace GuiWpf.ViewModels.Settings
+namespace GuiWpf.ViewModels.Preparation
 {
-    public interface IGameInitializationViewModelFactory
+    public interface IGamePreparationViewModelFactory
     {
         IGamePreparationViewModel Create();
     }
 
-    public class GameInitializationViewModelFactory : IGameInitializationViewModelFactory
+    public class GamePreparationViewModelFactory : IGamePreparationViewModelFactory
     {
         private readonly IPlayerFactory _playerFactory;
         private readonly IPlayerTypes _playerTypes;
         private readonly IPlayerRepository _playerRepository;
         private readonly IEventAggregator _eventAggregator;
 
-        public GameInitializationViewModelFactory(IPlayerFactory playerFactory, IPlayerTypes playerTypes, IPlayerRepository playerRepository, IEventAggregator eventAggregator)
+        public GamePreparationViewModelFactory(IPlayerFactory playerFactory, IPlayerTypes playerTypes, IPlayerRepository playerRepository, IEventAggregator eventAggregator)
         {
             _playerFactory = playerFactory;
             _playerTypes = playerTypes;

@@ -3,7 +3,7 @@ using System.Linq;
 using FluentAssertions;
 using GuiWpf.ViewModels;
 using GuiWpf.ViewModels.Gameplay;
-using GuiWpf.ViewModels.Settings;
+using GuiWpf.ViewModels.Preparation;
 using GuiWpf.ViewModels.Setup;
 using RISK.Core;
 using RISK.GameEngine.Setup;

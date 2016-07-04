@@ -7,8 +7,14 @@ using GuiWpf.Properties;
 using GuiWpf.ViewModels.Messages;
 using RISK.GameEngine;
 
-namespace GuiWpf.ViewModels.Settings
+namespace GuiWpf.ViewModels.Preparation
 {
+    public interface IGamePreparationViewModel : IMainViewModel
+    {
+        ObservableCollection<GamePreparationPlayerViewModel> Players { get; }
+        void Confirm();
+    }
+
     public class GamePreparationViewModel : ViewModelBase, IGamePreparationViewModel
     {
         private readonly IPlayerFactory _playerFactory;
@@ -25,13 +31,13 @@ namespace GuiWpf.ViewModels.Settings
 
             const int maxNumberOfPlayers = 6;
             Players = Enumerable.Range(0, maxNumberOfPlayers)
-                .Select(CreatePlayerSetupViewModel)
+                .Select(CreateGamePreparationPlayerViewModel)
                 .ToObservableCollection();
         }
 
-        private PlayerSetupViewModel CreatePlayerSetupViewModel(int playerIndex)
+        private GamePreparationPlayerViewModel CreateGamePreparationPlayerViewModel(int playerIndex)
         {
-            return new PlayerSetupViewModel(_playerTypes)
+            return new GamePreparationPlayerViewModel(_playerTypes)
             {
                 Name = string.Format(Resources.PLAYER, playerIndex + 1),
                 OnIsEnabledChanged = () => OnEnabledPlayerChanged()
@@ -43,7 +49,7 @@ namespace GuiWpf.ViewModels.Settings
             NotifyOfPropertyChange(() => CanConfirm);
         }
 
-        public ObservableCollection<PlayerSetupViewModel> Players { get; }
+        public ObservableCollection<GamePreparationPlayerViewModel> Players { get; }
 
         public bool CanConfirm => GetEnabledPlayers().Count() > 1;
 
@@ -66,7 +72,7 @@ namespace GuiWpf.ViewModels.Settings
                 .ToList();
         }
 
-        private IEnumerable<PlayerSetupViewModel> GetEnabledPlayers()
+        private IEnumerable<GamePreparationPlayerViewModel> GetEnabledPlayers()
         {
             return Players
                 .Where(x => x.IsEnabled);
