@@ -34,7 +34,7 @@ namespace RISK.Tests.GuiWpf
         [Fact]
         public void OnInitialize_shows_game_settings_view()
         {
-            var gameSettingsViewModel = Substitute.For<IGameSettingsViewModel>();
+            var gameSettingsViewModel = Substitute.For<IGamePreparationViewModel>();
             _gameInitializationViewModelFactory.Create().Returns(gameSettingsViewModel);
             var sut = Initialize();
 
@@ -47,7 +47,7 @@ namespace RISK.Tests.GuiWpf
         [Fact]
         public void New_game_message_shows_game_settings_view()
         {
-            var gameInitializationViewModel = Substitute.For<IGameSettingsViewModel>();
+            var gameInitializationViewModel = Substitute.For<IGamePreparationViewModel>();
             _gameInitializationViewModelFactory.Create().Returns(gameInitializationViewModel);
 
             var sut = Initialize();

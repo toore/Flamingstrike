@@ -9,14 +9,14 @@ using RISK.GameEngine;
 
 namespace GuiWpf.ViewModels.Settings
 {
-    public class GameSettingsViewModel : ViewModelBase, IGameSettingsViewModel
+    public class GamePreparationViewModel : ViewModelBase, IGamePreparationViewModel
     {
         private readonly IPlayerFactory _playerFactory;
         private readonly IPlayerTypes _playerTypes;
         private readonly IEventAggregator _eventAggregator;
         private readonly IPlayerRepository _playerRepository;
 
-        public GameSettingsViewModel(IPlayerFactory playerFactory, IPlayerTypes playerTypes, IPlayerRepository playerRepository, IEventAggregator eventAggregator)
+        public GamePreparationViewModel(IPlayerFactory playerFactory, IPlayerTypes playerTypes, IPlayerRepository playerRepository, IEventAggregator eventAggregator)
         {
             _playerFactory = playerFactory;
             _playerTypes = playerTypes;

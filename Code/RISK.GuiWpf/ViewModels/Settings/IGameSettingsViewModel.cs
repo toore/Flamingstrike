@@ -2,7 +2,7 @@
 
 namespace GuiWpf.ViewModels.Settings
 {
-    public interface IGameSettingsViewModel : IMainViewModel
+    public interface IGamePreparationViewModel : IMainViewModel
     {
         ObservableCollection<PlayerSetupViewModel> Players { get; }
         void Confirm();

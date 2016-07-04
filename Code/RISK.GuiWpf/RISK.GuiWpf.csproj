@@ -105,7 +105,7 @@
     <Compile Include="ViewModels\Root.cs" />
     <Compile Include="ViewModels\Settings\GameSettingsViewModelFactory.cs" />
     <Compile Include="ViewModels\Settings\PlayerRepository.cs" />
-    <Compile Include="Views\GameSetupViews\GameSetupView.xaml.cs">
+    <Compile Include="Views\GameSetupView.xaml.cs">
       <DependentUpon>GameSetupView.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\Messages\StartGameplayMessage.cs" />
@@ -118,8 +118,8 @@
       <DependentUpon>ConfirmView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ConfirmViewModelTestDataFactory.cs" />
-    <Compile Include="Views\GameSetupViews\GameSettingsView.xaml.cs">
-      <DependentUpon>GameSettingsView.xaml</DependentUpon>
+    <Compile Include="Views\GamePreparationView.xaml.cs">
+      <DependentUpon>GamePreparationView.xaml</DependentUpon>
     </Compile>
     <Compile Include="WpfExtensions\GetString.cs" />
     <Compile Include="Infrastructure\WindowManager.cs" />
@@ -150,7 +150,7 @@
     <Compile Include="Views\GameOverView.xaml.cs">
       <DependentUpon>GameOverView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\GameSetupViews\GamePreparationInnerView.xaml.cs">
+    <Compile Include="Views\GamePreparationInnerView.xaml.cs">
       <DependentUpon>GamePreparationInnerView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Bootstrapper.cs" />
@@ -215,7 +215,7 @@
       <DependentUpon>WorldMapTestUserControl.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Views\GameSetupViews\GameSetupView.xaml">
+    <Page Include="Views\GameSetupView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -231,7 +231,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\GameSetupViews\GameSettingsView.xaml">
+    <Page Include="Views\GamePreparationView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -243,11 +243,11 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Views\GameSetupViews\GameSettingsResources.xaml">
+    <Page Include="Views\GamePreparationViewResources.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\GameSetupViews\GamePreparationInnerView.xaml">
+    <Page Include="Views\GamePreparationInnerView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -3,17 +3,17 @@ using System.Collections.ObjectModel;
 
 namespace GuiWpf.ViewModels.Settings
 {
-    public partial class GameSettingsView
+    public partial class GamePreparationView
     {
-        public GameSettingsView()
+        public GamePreparationView()
         {
             InitializeComponent();
         }
     }
 
-    public class GameSettingsViewDesignerData : IGameSettingsViewModel
+    public class GamePreparationViewDesignerData : IGamePreparationViewModel
     {
-        public GameSettingsViewDesignerData()
+        public GamePreparationViewDesignerData()
         {
             var playerTypes = new PlayerTypes();
 

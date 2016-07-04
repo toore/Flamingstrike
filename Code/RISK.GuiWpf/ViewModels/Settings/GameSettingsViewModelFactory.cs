@@ -4,7 +4,7 @@ namespace GuiWpf.ViewModels.Settings
 {
     public interface IGameInitializationViewModelFactory
     {
-        IGameSettingsViewModel Create();
+        IGamePreparationViewModel Create();
     }
 
     public class GameInitializationViewModelFactory : IGameInitializationViewModelFactory
@@ -22,9 +22,9 @@ namespace GuiWpf.ViewModels.Settings
             _eventAggregator = eventAggregator;
         }
 
-        public IGameSettingsViewModel Create()
+        public IGamePreparationViewModel Create()
         {
-            return new GameSettingsViewModel(_playerFactory, _playerTypes, _playerRepository, _eventAggregator);
+            return new GamePreparationViewModel(_playerFactory, _playerTypes, _playerRepository, _eventAggregator);
         }
     }
 }

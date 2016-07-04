@@ -31,7 +31,7 @@ namespace GuiWpf.Views.WorldMapViews
             var random = new Random();
 
             var territories = regions.GetAll()
-            .Select(region => new Territory(region, new Player("player"), random.Next(99)))
+            .Select(region => new Territory(region, new Player("player"), random.Next(99) + 1))
             .ToList().AsReadOnly();
 
             WorldMapViewModel = worldMapViewModelFactory.Create(territories, x => { }, Enumerable.Empty<IRegion>());
