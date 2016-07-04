@@ -1,22 +1,35 @@
-﻿using System.Collections.ObjectModel;
-using System.Windows;
-using GuiWpf.ViewModels.Settings;
+﻿using System;
+using System.Collections.ObjectModel;
 
-namespace GuiWpf.Views.GameSetupViews
+namespace GuiWpf.ViewModels.Settings
 {
     public partial class GameSettingsView
     {
-        public static readonly DependencyProperty PlayersProperty = DependencyProperty.Register("Players", typeof(ObservableCollection<PlayerSetupViewModel>), typeof(GameSettingsView), new PropertyMetadata(default(ObservableCollection<PlayerSetupViewModel>)));
-
         public GameSettingsView()
         {
             InitializeComponent();
         }
+    }
 
-        public ObservableCollection<PlayerSetupViewModel> Players
+    public class GameSettingsViewDesignerData : IGameSettingsViewModel
+    {
+        public GameSettingsViewDesignerData()
         {
-            get { return (ObservableCollection<PlayerSetupViewModel>)GetValue(PlayersProperty); }
-            set { SetValue(PlayersProperty, value); }
+            var playerTypes = new PlayerTypes();
+
+            Players = new ObservableCollection<PlayerSetupViewModel>(new[]
+            {
+                new PlayerSetupViewModel(playerTypes) { Name = "Player 1" },
+                new PlayerSetupViewModel(playerTypes) { Name = "Player 2" },
+                new PlayerSetupViewModel(playerTypes) { Name = "Player 3" }
+            });
+        }
+
+        public ObservableCollection<PlayerSetupViewModel> Players { get; }
+
+        public void Confirm()
+        {
+            throw new NotImplementedException();
         }
     }
 }

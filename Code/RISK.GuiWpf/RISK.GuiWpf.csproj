@@ -118,7 +118,7 @@
       <DependentUpon>ConfirmView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ConfirmViewModelTestDataFactory.cs" />
-    <Compile Include="ViewModels\Settings\GameSettingsView.xaml.cs">
+    <Compile Include="Views\GameSetupViews\GameSettingsView.xaml.cs">
       <DependentUpon>GameSettingsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="WpfExtensions\GetString.cs" />
@@ -150,8 +150,8 @@
     <Compile Include="Views\GameOverView.xaml.cs">
       <DependentUpon>GameOverView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\GameSetupViews\GameSettingsView.xaml.cs">
-      <DependentUpon>GameSettingsView.xaml</DependentUpon>
+    <Compile Include="Views\GameSetupViews\GamePreparationInnerView.xaml.cs">
+      <DependentUpon>GamePreparationInnerView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Bootstrapper.cs" />
     <Compile Include="RegionModels\AfghanistanModel.cs" />
@@ -231,7 +231,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ViewModels\Settings\GameSettingsView.xaml">
+    <Page Include="Views\GameSetupViews\GameSettingsView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -247,7 +247,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\GameSetupViews\GameSettingsView.xaml">
+    <Page Include="Views\GameSetupViews\GamePreparationInnerView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
