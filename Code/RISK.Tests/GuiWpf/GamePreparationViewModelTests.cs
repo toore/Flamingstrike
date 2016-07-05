@@ -8,12 +8,12 @@ using Xunit;
 
 namespace RISK.Tests.GuiWpf
 {
-    public class GameInitializationViewModelTests
+    public class GamePreparationViewModelTests
     {
         private readonly GamePreparationViewModel _gameInitializationViewModel;
         private readonly IEventAggregator _gameEventAggregator;
 
-        public GameInitializationViewModelTests()
+        public GamePreparationViewModelTests()
         {
             IPlayerFactory playerFactory = Substitute.For<IPlayerFactory>();
             IPlayerTypes playerTypes = Substitute.For<IPlayerTypes>();

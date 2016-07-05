@@ -148,7 +148,7 @@
     <Compile Include="GuiWpf\Specifications\GamePlaySpec.cs" />
     <Compile Include="GuiWpf\Specifications\GameSetupSpec.cs" />
     <Compile Include="GuiWpf\EnumerableExtensionsTests.cs" />
-    <Compile Include="GuiWpf\GameInitializationViewModelTests.cs" />
+    <Compile Include="GuiWpf\GamePreparationViewModelTests.cs" />
     <Compile Include="GuiWpf\GameSetupViewModelTests.cs" />
     <Compile Include="GuiWpf\MainGameViewModelTests.cs" />
     <Compile Include="GuiWpf\ScreenServiceTests.cs" />
