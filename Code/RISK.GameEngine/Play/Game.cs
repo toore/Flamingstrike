@@ -17,6 +17,7 @@ namespace RISK.GameEngine.Play
         void SendArmiesToOccupy(int numberOfArmies);
         bool CanFortify(IRegion sourceRegion, IRegion destinationRegion);
         void Fortify(IRegion sourceRegion, IRegion destinationRegion, int armies);
+        bool CanEndTurn();
         void EndTurn();
         bool IsGameOver();
         bool IsCurrentPlayerOccupyingRegion(IRegion region);
@@ -88,6 +89,11 @@ namespace RISK.GameEngine.Play
         public void Fortify(IRegion sourceRegion, IRegion destinationRegion, int armies)
         {
             _gameStateFsm.Fortify(sourceRegion, destinationRegion, armies);
+        }
+
+        public bool CanEndTurn()
+        {
+            return _gameStateFsm.CanEndTurn();
         }
 
         public void EndTurn()

@@ -196,6 +196,16 @@ namespace RISK.Tests.GameEngine
             _gameStateFsm.Received().Fortify(sourceRegion, destinationRegion, armies);
         }
 
+        [Theory, AutoData]
+        public void Can_end_turn(bool canEndTurn)
+        {
+            _gameStateFsm.CanEndTurn().Returns(canEndTurn);
+
+            var sut = Create(Make.GamePlaySetup.Build());
+
+            sut.CanEndTurn().Should().Be(canEndTurn);
+        }
+
         [Fact]
         public void Ends_turn()
         {

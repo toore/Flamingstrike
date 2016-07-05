@@ -107,7 +107,7 @@ namespace GuiWpf.ViewModels.Gameplay
 
         public bool CanEndTurn()
         {
-            throw new NotImplementedException();
+            return _game.CanEndTurn();
         }
 
         public void EndTurn()

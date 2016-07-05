@@ -26,7 +26,6 @@ namespace RISK.Tests.GuiWpf
         private readonly IGameOverViewModelFactory _gameOverViewModelFactory;
         private readonly IDialogManager _dialogManager;
         private readonly IEventAggregator _eventAggregator;
-        private readonly WorldMapViewModel _worldMapViewModel;
         private readonly GameboardViewModelFactory _gameboardViewModelFactory;
 
         public GameboardViewModelTests()
@@ -42,21 +41,6 @@ namespace RISK.Tests.GuiWpf
             _eventAggregator = Substitute.For<IEventAggregator>();
 
             ResourceManager.Instance = Substitute.For<IResourceManager>();
-
-            var viewModel = Substitute.For<IRegionViewModel>();
-            var layoutViewModel1 = viewModel;
-            var viewModel2 = Substitute.For<IWorldMapItemViewModel>();
-            var textViewModel1 = viewModel2;
-            var viewModel1 = Substitute.For<IRegionViewModel>();
-            var layoutViewModel2 = viewModel1;
-            var viewModel3 = Substitute.For<IWorldMapItemViewModel>();
-            var textViewModel2 = viewModel3;
-
-            _worldMapViewModel = new WorldMapViewModel();
-            _worldMapViewModel.WorldMapViewModels.Add(layoutViewModel1);
-            _worldMapViewModel.WorldMapViewModels.Add(textViewModel1);
-            _worldMapViewModel.WorldMapViewModels.Add(layoutViewModel2);
-            _worldMapViewModel.WorldMapViewModels.Add(textViewModel2);
 
             _gameboardViewModelFactory = new GameboardViewModelFactory(
                 _interactionStateFsm,
@@ -76,6 +60,7 @@ namespace RISK.Tests.GuiWpf
             var anotherRegion = Substitute.For<IRegion>();
             var territory = Substitute.For<ITerritory>();
             var anotherTerritory = Substitute.For<ITerritory>();
+            var worldMapViewModel = new WorldMapViewModel();
             _regions.GetAll().Returns(new[]
             {
                 region,
@@ -88,11 +73,11 @@ namespace RISK.Tests.GuiWpf
                 Argx.IsEquivalentReadOnly(territory, anotherTerritory),
                 sut.OnRegionClick,
                 Arg.Is<IEnumerable<IRegion>>(x => x.IsEmpty()))
-                .Returns(_worldMapViewModel);
+                .Returns(worldMapViewModel);
 
             sut.Activate();
 
-            sut.WorldMapViewModel.Should().Be(_worldMapViewModel);
+            sut.WorldMapViewModel.Should().Be(worldMapViewModel);
         }
 
         [Fact]
@@ -104,6 +89,17 @@ namespace RISK.Tests.GuiWpf
             var sut = Initialize();
 
             sut.PlayerName.Should().Be("player taking turn");
+        }
+
+        [Theory]
+        [InlineData(true), InlineData(false)]
+        public void Can_end_turn(bool canEndTurn)
+        {
+            _game.CanEndTurn().Returns(canEndTurn);
+
+            var sut = Initialize();
+
+            sut.CanEndTurn().Should().Be(canEndTurn);
         }
 
         [Fact]
