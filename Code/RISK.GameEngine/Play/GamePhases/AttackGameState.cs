@@ -130,6 +130,11 @@ namespace RISK.GameEngine.Play.GamePhases
             _gameStateConductor.ContinueWithAttackPhase(gameData, _turnConqueringAchievement);
         }
 
+        public bool CanFreeMove()
+        {
+            return true;
+        }
+
         public bool CanFortify(IRegion sourceRegion, IRegion destinationRegion)
         {
             if (!IsCurrentPlayerOccupyingRegion(sourceRegion))

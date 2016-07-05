@@ -17,6 +17,7 @@ namespace RISK.GameEngine.Play.GamePhases
         bool CanSendAdditionalArmiesToOccupy();
         int GetNumberOfAdditionalArmiesThatCanBeSentToOccupy();
         void SendAdditionalArmiesToOccupy(int numberOfArmies);
+        bool CanFreeMove();
         bool CanFortify(IRegion sourceRegion, IRegion destinationRegion);
         void Fortify(IRegion sourceRegion, IRegion destinationRegion, int armies);
         bool CanEndTurn();

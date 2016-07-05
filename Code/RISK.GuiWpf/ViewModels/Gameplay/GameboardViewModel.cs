@@ -94,12 +94,12 @@ namespace GuiWpf.ViewModels.Gameplay
             return territories;
         }
 
-        public bool CanFortify()
+        public bool CanActivateFreeMove()
         {
-            throw new NotImplementedException();
+            return _game.CanFreeMove();
         }
 
-        public void Fortify()
+        public void ActivateFreeMove()
         {
             var fortifySelectState = _interactionStateFactory.CreateFortifySelectInteractionState(_game);
             _interactionStateFsm.Set(fortifySelectState);

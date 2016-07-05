@@ -92,7 +92,8 @@ namespace RISK.Tests.GuiWpf
         }
 
         [Theory]
-        [InlineData(true), InlineData(false)]
+        [InlineData(true)]
+        [InlineData(false)]
         public void Can_end_turn(bool canEndTurn)
         {
             _game.CanEndTurn().Returns(canEndTurn);
@@ -176,6 +177,18 @@ namespace RISK.Tests.GuiWpf
             _interactionStateFsm.Received().OnClick(region);
         }
 
+        [Theory]
+        [InlineData(true)]
+        [InlineData(false)]
+        public void Can_activate_free_move(bool canFreeMove)
+        {
+            _game.CanFreeMove().Returns(canFreeMove);
+
+            var sut = Initialize();
+
+            sut.CanActivateFreeMove().Should().Be(canFreeMove);
+        }
+
         [Fact]
         public void Fortifies_armies()
         {
@@ -183,7 +196,7 @@ namespace RISK.Tests.GuiWpf
             _interactionStateFactory.CreateFortifySelectInteractionState(_game).Returns(fortifyState);
             var sut = Initialize();
 
-            sut.Fortify();
+            sut.ActivateFreeMove();
 
             _interactionStateFsm.Received().Set(fortifyState);
         }

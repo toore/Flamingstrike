@@ -6,6 +6,7 @@
     xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
     xmlns:Micro="http://www.caliburnproject.org"
     xmlns:Gameplay="clr-namespace:GuiWpf.Views.Gameplay"
+    xmlns:WpfExtensions="clr-namespace:GuiWpf.WpfExtensions"
     mc:Ignorable="d"
     d:DesignHeight="768" d:DesignWidth="1366"
     d:DataContext="{d:DesignInstance d:Type=Gameplay:GameboardViewModelDesignerData, IsDesignTimeCreatable=True}">
@@ -71,7 +72,7 @@
                 Orientation="Horizontal"
                 DockPanel.Dock="Left">
 
-                <CheckBox Content="Fortify">
+                <CheckBox Content="{Binding Source={WpfExtensions:GetString FORTIFY}}">
                     <CheckBox.Template>
                         <ControlTemplate>
                             <Button
@@ -80,7 +81,7 @@
                     </CheckBox.Template>
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="Click">
-                            <Micro:ActionMessage MethodName="Fortify" />
+                            <Micro:ActionMessage MethodName="ActivateFreeMove" />
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
                 </CheckBox>

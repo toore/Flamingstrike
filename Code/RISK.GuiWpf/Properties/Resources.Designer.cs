@@ -205,6 +205,15 @@ namespace GuiWpf.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Fortify.
+        /// </summary>
+        internal static string FORTIFY {
+            get {
+                return ResourceManager.GetString("FORTIFY", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Game Over.
         /// </summary>
         internal static string GAME_OVER {

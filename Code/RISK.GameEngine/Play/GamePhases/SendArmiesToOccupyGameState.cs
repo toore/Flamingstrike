@@ -53,6 +53,11 @@ namespace RISK.GameEngine.Play.GamePhases
             _gameStateConductor.ContinueWithAttackPhase(gameData, TurnConqueringAchievement.SuccessfullyConqueredAtLeastOneTerritory);
         }
 
+        public bool CanFreeMove()
+        {
+            return false;
+        }
+
         public bool CanPlaceDraftArmies(IRegion region)
         {
             return false;

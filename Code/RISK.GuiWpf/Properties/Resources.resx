@@ -165,6 +165,9 @@
   <data name="END_GAME" xml:space="preserve">
     <value>End Game</value>
   </data>
+  <data name="FORTIFY" xml:space="preserve">
+    <value>Fortify</value>
+  </data>
   <data name="GAME_OVER" xml:space="preserve">
     <value>Game Over</value>
   </data>

@@ -58,6 +58,11 @@ namespace RISK.GameEngine.Play.GamePhases
             throw new InvalidOperationException();
         }
 
+        public bool CanFreeMove()
+        {
+            throw new NotImplementedException();
+        }
+
         public bool CanFortify(IRegion sourceRegion, IRegion destinationRegion)
         {
             return false;

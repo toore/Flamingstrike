@@ -10,7 +10,6 @@ namespace RISK.GameEngine.Play.GamePhases
         private readonly GameData _gameData;
 
         public FortifyGameState(IGameStateConductor gameStateConductor, GameData gameData)
-
         {
             _gameStateConductor = gameStateConductor;
             _gameData = gameData;
@@ -59,6 +58,11 @@ namespace RISK.GameEngine.Play.GamePhases
         public void SendAdditionalArmiesToOccupy(int numberOfArmies)
         {
             throw new InvalidOperationException();
+        }
+
+        public bool CanFreeMove()
+        {
+            throw new NotImplementedException();
         }
 
         public bool CanFortify(IRegion sourceRegion, IRegion destinationRegion)

@@ -173,6 +173,16 @@ namespace RISK.Tests.GameEngine
         }
 
         [Theory, AutoData]
+        public void Can_free_move(bool canFreeMove)
+        {
+            _gameStateFsm.CanFreeMove().Returns(canFreeMove);
+
+            var sut = Create(Make.GamePlaySetup.Build());
+
+            sut.CanFreeMove().Should().Be(canFreeMove);
+        }
+
+        [Theory, AutoData]
         public void Can_fortify(bool canFortify)
         {
             var sourceRegion = Substitute.For<IRegion>();

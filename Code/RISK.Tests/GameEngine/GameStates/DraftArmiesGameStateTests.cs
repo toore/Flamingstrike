@@ -176,6 +176,14 @@ namespace RISK.Tests.GameEngine.GameStates
         }
 
         [Fact]
+        public void Can_not_free_move()
+        {
+            var sut = Create(_gameData);
+
+            sut.CanFreeMove().Should().BeFalse();
+        }
+
+        [Fact]
         public void Can_not_fortify()
         {
             var sut = Create(_gameData);
