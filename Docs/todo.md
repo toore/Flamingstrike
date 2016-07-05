@@ -13,6 +13,9 @@ SendArmiesToOccupyGameState
 - should not be initiated if all available armies, were already moved into the territory
 - should allow to end turn, if no desire to move into territory
 
+AlternateGameSetup:
+- Dependency inject TerritoryResponder
+
 
 ##Not/partially tested
 - GameStateFactory (CreateNextTurnGameState, etc)
