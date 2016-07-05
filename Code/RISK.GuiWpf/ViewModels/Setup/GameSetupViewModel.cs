@@ -110,12 +110,12 @@ namespace GuiWpf.ViewModels.Setup
             InformationText = string.Format(ResourceManager.Instance.GetString("PLACE_ARMY"), armiesLeftToPlace);
         }
 
-        public bool CanActivateFreeMove()
+        public bool CanActivateFortify()
         {
             return false;
         }
 
-        public void ActivateFreeMove() {}
+        public void ActivateFortify() {}
 
         public bool CanEndTurn()
         {

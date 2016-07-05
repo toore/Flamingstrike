@@ -41,12 +41,12 @@ namespace GuiWpf.Views.Gameplay
 
         public string PlayerName => "Player name is shown here";
 
-        public bool CanActivateFreeMove()
+        public bool CanActivateFortify()
         {
             return true;
         }
 
-        public void ActivateFreeMove() {}
+        public void ActivateFortify() {}
 
         public bool CanEndTurn()
         {

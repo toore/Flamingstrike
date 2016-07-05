@@ -204,7 +204,7 @@ namespace RISK.Tests.GuiWpf.Specifications
 
         private GamePlaySpec player_sets_fortify_mode()
         {
-            _gameboardViewModel.ActivateFreeMove();
+            _gameboardViewModel.ActivateFortify();
             return this;
         }
 

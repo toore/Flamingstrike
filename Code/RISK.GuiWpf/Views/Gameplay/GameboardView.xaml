@@ -81,7 +81,7 @@
                     </CheckBox.Template>
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="Click">
-                            <Micro:ActionMessage MethodName="ActivateFreeMove" />
+                            <Micro:ActionMessage MethodName="ActivateFortify" />
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
                 </CheckBox>

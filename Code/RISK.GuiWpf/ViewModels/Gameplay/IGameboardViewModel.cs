@@ -5,8 +5,8 @@
         WorldMapViewModel WorldMapViewModel { get; }
         string InformationText { get; }
         string PlayerName { get; }
-        bool CanActivateFreeMove();
-        void ActivateFreeMove();
+        bool CanActivateFortify();
+        void ActivateFortify();
         bool CanEndTurn();
         void EndTurn();
         void EndGame();

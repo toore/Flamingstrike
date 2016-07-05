@@ -180,23 +180,23 @@ namespace RISK.Tests.GuiWpf
         [Theory]
         [InlineData(true)]
         [InlineData(false)]
-        public void Can_activate_free_move(bool canFreeMove)
+        public void Can_activate_fortify(bool canFreeMove)
         {
             _game.CanFreeMove().Returns(canFreeMove);
 
             var sut = Initialize();
 
-            sut.CanActivateFreeMove().Should().Be(canFreeMove);
+            sut.CanActivateFortify().Should().Be(canFreeMove);
         }
 
         [Fact]
-        public void Fortifies_armies()
+        public void Activates_fortify()
         {
             var fortifyState = Substitute.For<IInteractionState>();
             _interactionStateFactory.CreateFortifySelectInteractionState(_game).Returns(fortifyState);
             var sut = Initialize();
 
-            sut.ActivateFreeMove();
+            sut.ActivateFortify();
 
             _interactionStateFsm.Received().Set(fortifyState);
         }

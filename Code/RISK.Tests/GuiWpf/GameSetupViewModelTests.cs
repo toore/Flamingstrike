@@ -128,7 +128,7 @@ namespace RISK.Tests.GuiWpf
         {
             var gameSetupViewModel = Initialize();
 
-            gameSetupViewModel.CanActivateFreeMove().Should().BeFalse();
+            gameSetupViewModel.CanActivateFortify().Should().BeFalse();
         }
 
         [Fact]
