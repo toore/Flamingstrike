@@ -16,7 +16,7 @@ namespace GuiWpf.ViewModels.Setup
         void UpdateView(IReadOnlyList<ITerritory> territories, Action<IRegion> selectTerritoryAction, IEnumerable<IRegion> enabledTerritories, string playerName, int armiesLeftToPlace);
     }
 
-    public class GameSetupViewModel : Screen, IGameSetupViewModel
+    public class GameSetupViewModel : Screen, IGameSetupViewModel, IGameboardViewModel
     {
         private readonly IWorldMapViewModelFactory _worldMapViewModelFactory;
         private readonly IGameFactory _gameFactory;
@@ -110,12 +110,12 @@ namespace GuiWpf.ViewModels.Setup
             InformationText = string.Format(ResourceManager.Instance.GetString("PLACE_ARMY"), armiesLeftToPlace);
         }
 
-        public bool CanFortify()
+        public bool CanActivateFreeMove()
         {
             return false;
         }
 
-        public void Fortify() {}
+        public void ActivateFreeMove() {}
 
         public bool CanEndTurn()
         {

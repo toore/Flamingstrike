@@ -205,6 +205,15 @@ namespace GuiWpf.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to End Turn.
+        /// </summary>
+        internal static string END_TURN {
+            get {
+                return ResourceManager.GetString("END_TURN", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Fortify.
         /// </summary>
         internal static string FORTIFY {

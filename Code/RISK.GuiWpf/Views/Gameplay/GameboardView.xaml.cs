@@ -30,16 +30,31 @@ namespace GuiWpf.Views.Gameplay
             var random = new Random();
 
             var territories = regions.GetAll()
-            .Select(region => new Territory(region, new Player("player"), random.Next(99) + 1))
-            .ToList().AsReadOnly();
+                .Select(region => new Territory(region, new Player("player"), random.Next(99) + 1))
+                .ToList().AsReadOnly();
 
             WorldMapViewModel = worldMapViewModelFactory.Create(territories, x => { }, Enumerable.Empty<IRegion>());
         }
 
         public WorldMapViewModel WorldMapViewModel { get; }
+        public string InformationText => "Information text is shown here";
 
         public string PlayerName => "Player name is shown here";
 
-        public string InformationText => "Information text is shown here";
+        public bool CanActivateFreeMove()
+        {
+            return true;
+        }
+
+        public void ActivateFreeMove() {}
+
+        public bool CanEndTurn()
+        {
+            return true;
+        }
+
+        public void EndTurn() {}
+
+        public void EndGame() {}
     }
 }

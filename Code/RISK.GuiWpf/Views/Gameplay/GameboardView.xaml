@@ -85,7 +85,7 @@
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
                 </CheckBox>
-                <Button Content="End Turn">
+                <Button Content="{Binding Source={WpfExtensions:GetString END_TURN}}">
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="Click">
                             <Micro:ActionMessage MethodName="EndTurn" />
@@ -97,7 +97,7 @@
             <StackPanel
                 Orientation="Horizontal"
                 DockPanel.Dock="Right">
-                <Button Content="End game...">
+                <Button Content="{Binding Source={WpfExtensions:GetString END_GAME}}">
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="Click">
                             <Micro:ActionMessage MethodName="EndGame" />
