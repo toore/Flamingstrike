@@ -124,7 +124,7 @@ namespace RISK.Tests.GuiWpf
         }
 
         [Fact]
-        public void Can_activate_free_move()
+        public void Can_not_activate_fortify()
         {
             var gameSetupViewModel = Initialize();
 
