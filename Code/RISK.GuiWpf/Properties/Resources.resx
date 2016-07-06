@@ -235,12 +235,15 @@
     <value>Peru</value>
   </data>
   <data name="PLACE_ARMY" xml:space="preserve">
-    <value>Place army (left: {0})</value>
+    <value>Place army (armies left: {0})</value>
     <comment>ARG0 specifies armies left</comment>
   </data>
   <data name="PLAYER" xml:space="preserve">
+    <value>Player:</value>
+  </data>
+  <data name="PLAYER_NUMBER" xml:space="preserve">
     <value>Player {0}</value>
-    <comment>ARG0 specifies player number during setup</comment>
+    <comment>ARG0 specifies player number during game preparation</comment>
   </data>
   <data name="QUEBEC" xml:space="preserve">
     <value>Quebec</value>

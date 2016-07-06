@@ -39,7 +39,7 @@ namespace GuiWpf.ViewModels.Preparation
         {
             return new GamePreparationPlayerViewModel(_playerTypes)
             {
-                Name = string.Format(Resources.PLAYER, playerIndex + 1),
+                Name = string.Format(Resources.PLAYER_NUMBER, playerIndex + 1),
                 OnIsEnabledChanged = () => OnEnabledPlayerChanged()
             };
         }

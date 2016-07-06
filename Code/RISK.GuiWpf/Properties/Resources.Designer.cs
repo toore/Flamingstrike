@@ -412,7 +412,7 @@ namespace GuiWpf.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Place army (left: {0}).
+        ///   Looks up a localized string similar to Place army (armies left: {0}).
         /// </summary>
         internal static string PLACE_ARMY {
             get {
@@ -421,11 +421,20 @@ namespace GuiWpf.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Player {0}.
+        ///   Looks up a localized string similar to Player:.
         /// </summary>
         internal static string PLAYER {
             get {
                 return ResourceManager.GetString("PLAYER", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Player {0}.
+        /// </summary>
+        internal static string PLAYER_NUMBER {
+            get {
+                return ResourceManager.GetString("PLAYER_NUMBER", resourceCulture);
             }
         }
         
