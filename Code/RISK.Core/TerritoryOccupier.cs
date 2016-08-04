@@ -21,8 +21,8 @@ namespace RISK.Core
             var updatedOccupiedTerritory = new Territory(occupiedRegion, occupiedTerritory.Player, updatedOccupiedArmies);
 
             var updatedTerritories = territories
-                .Replace(attackingTerritory, updatedAttackingTerritory)
-                .Replace(occupiedTerritory, updatedOccupiedTerritory)
+                .ReplaceItem(attackingTerritory, updatedAttackingTerritory)
+                .ReplaceItem(occupiedTerritory, updatedOccupiedTerritory)
                 .ToList();
 
             return updatedTerritories;

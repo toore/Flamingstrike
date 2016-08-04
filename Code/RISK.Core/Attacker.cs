@@ -62,8 +62,8 @@ namespace RISK.Core
             var battleResult = _battle.Attack(attackingTerritory, defendingTerritory);
 
             var updatedTerritories = territories
-                .Replace(attackingTerritory, battleResult.UpdatedAttackingTerritory)
-                .Replace(defendingTerritory, battleResult.UpdatedDefendingTerritory)
+                .ReplaceItem(attackingTerritory, battleResult.UpdatedAttackingTerritory)
+                .ReplaceItem(defendingTerritory, battleResult.UpdatedDefendingTerritory)
                 .ToList();
 
             var attackOutcome = battleResult.IsDefenderDefeated() ? DefendingArmy.IsEliminated

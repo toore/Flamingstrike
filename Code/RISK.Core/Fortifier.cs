@@ -39,7 +39,18 @@ namespace RISK.Core
                 throw new InvalidOperationException("Can't fortify");
             }
 
-            throw new NotImplementedException();
+            var sourceTerritory = territories.Single(territory => territory.Region == sourceRegion);
+            var destinationTerritory = territories.Single(territory => territory.Region == destinationRegion);
+
+            var updatedSourceTerritory = new Territory(sourceRegion, sourceTerritory.Player, sourceTerritory.Armies - armies);
+            var updatedDestinationTerritory = new Territory(destinationRegion, destinationTerritory.Player, destinationTerritory.Armies + armies);
+
+            var updatedTerritories = territories
+                .ReplaceItem(sourceTerritory, updatedSourceTerritory)
+                .ReplaceItem(destinationTerritory, updatedDestinationTerritory)
+                .ToList();
+
+            return updatedTerritories;
         }
     }
 }

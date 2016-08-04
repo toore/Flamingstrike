@@ -17,7 +17,7 @@ namespace RISK.Core
             var updatedTerritory = new Territory(regionToReinforce, territoryToReinforce.Player, currentArmies + numberOfArmiesToPlace);
 
             var updatedTerritories = territories
-                .Replace(territoryToReinforce, updatedTerritory)
+                .ReplaceItem(territoryToReinforce, updatedTerritory)
                 .ToList();
 
             return updatedTerritories;
