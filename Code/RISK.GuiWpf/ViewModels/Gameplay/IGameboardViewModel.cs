@@ -6,7 +6,7 @@
         string InformationText { get; }
         string PlayerName { get; }
         bool CanActivateFortify();
-        void ActivateFortify();
+        void EnterFortifyMode();
         bool CanEndTurn();
         void EndTurn();
         void EndGame();

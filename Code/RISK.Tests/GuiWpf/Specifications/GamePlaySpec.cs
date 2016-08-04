@@ -166,7 +166,7 @@ namespace RISK.Tests.GuiWpf.Specifications
                 .player_drafts_thirtytwo_armies_in_iceland();
 
             When
-                .player_sets_fortify_mode()
+                .player_enters_fortify_mode()
                 .player_selects_north_africa()
                 .player_moves_one_army_to_east_africa();
 
@@ -202,9 +202,9 @@ namespace RISK.Tests.GuiWpf.Specifications
             _player1.Cards.Should().BeEmpty();
         }
 
-        private GamePlaySpec player_sets_fortify_mode()
+        private GamePlaySpec player_enters_fortify_mode()
         {
-            _gameboardViewModel.ActivateFortify();
+            _gameboardViewModel.EnterFortifyMode();
             return this;
         }
 

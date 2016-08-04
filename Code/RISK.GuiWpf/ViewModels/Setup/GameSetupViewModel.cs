@@ -115,7 +115,7 @@ namespace GuiWpf.ViewModels.Setup
             return false;
         }
 
-        public void ActivateFortify() {}
+        public void EnterFortifyMode() {}
 
         public bool CanEndTurn()
         {

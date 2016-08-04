@@ -46,7 +46,7 @@ namespace GuiWpf.Views.Gameplay
             return true;
         }
 
-        public void ActivateFortify() {}
+        public void EnterFortifyMode() {}
 
         public bool CanEndTurn()
         {

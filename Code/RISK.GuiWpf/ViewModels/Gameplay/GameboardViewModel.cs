@@ -99,7 +99,7 @@ namespace GuiWpf.ViewModels.Gameplay
             return _game.CanFreeMove();
         }
 
-        public void ActivateFortify()
+        public void EnterFortifyMode()
         {
             var fortifySelectState = _interactionStateFactory.CreateFortifySelectInteractionState(_game);
             _interactionStateFsm.Set(fortifySelectState);

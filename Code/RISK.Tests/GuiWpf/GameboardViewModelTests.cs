@@ -196,7 +196,7 @@ namespace RISK.Tests.GuiWpf
             _interactionStateFactory.CreateFortifySelectInteractionState(_game).Returns(fortifyState);
             var sut = Initialize();
 
-            sut.ActivateFortify();
+            sut.EnterFortifyMode();
 
             _interactionStateFsm.Received().Set(fortifyState);
         }
