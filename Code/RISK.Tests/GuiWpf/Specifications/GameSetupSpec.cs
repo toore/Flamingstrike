@@ -75,7 +75,7 @@ namespace RISK.Tests.GuiWpf.Specifications
             const int numberOfPlayers = 2;
             const int numberOfArmiesToPlace = (numberOfArmiesForEachPlayerToDeployInTwoPlayerMode - nonOptionalArmyDeploymentPerPlayer) * numberOfPlayers;
 
-            _autoRespondingUserInteraction.NumberOfCallsToWaitForTerritoryToBeSelected.Should().Be(numberOfArmiesToPlace);
+            _autoRespondingUserInteraction.WaitForTerritoryToBeSelectedInvokedNumberOfTimes.Should().Be(numberOfArmiesToPlace);
 
             return this;
         }
@@ -103,11 +103,11 @@ namespace RISK.Tests.GuiWpf.Specifications
 
     internal class AutoRespondingUserInteraction : IUserInteraction
     {
-        public int NumberOfCallsToWaitForTerritoryToBeSelected { get; private set; }
+        public int WaitForTerritoryToBeSelectedInvokedNumberOfTimes { get; private set; }
 
         public IRegion WaitForTerritoryToBeSelected(ITerritoryRequestParameter territoryRequestParameter)
         {
-            NumberOfCallsToWaitForTerritoryToBeSelected++;
+            WaitForTerritoryToBeSelectedInvokedNumberOfTimes++;
             return territoryRequestParameter.EnabledTerritories.First();
         }
 
