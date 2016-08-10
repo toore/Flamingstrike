@@ -110,10 +110,10 @@
     </Compile>
     <Compile Include="ViewModels\Messages\StartGameplayMessage.cs" />
     <Compile Include="Services\TaskEx.cs" />
-    <Compile Include="ViewModels\Setup\UserInteractionFactory.cs" />
-    <Compile Include="ViewModels\Setup\UserInteractor.cs" />
-    <Compile Include="ViewModels\Setup\UserInteraction.cs" />
-    <Compile Include="ViewModels\Setup\UserInteractorFactory.cs" />
+    <Compile Include="ViewModels\AlternateSetup\UserInteractionFactory.cs" />
+    <Compile Include="ViewModels\AlternateSetup\UserInteractor.cs" />
+    <Compile Include="ViewModels\AlternateSetup\UserInteraction.cs" />
+    <Compile Include="ViewModels\AlternateSetup\UserInteractorFactory.cs" />
     <Compile Include="Views\ConfirmView.xaml.cs">
       <DependentUpon>ConfirmView.xaml</DependentUpon>
     </Compile>
@@ -127,10 +127,10 @@
     <Compile Include="Services\RegionColorSettingsFactory.cs" />
     <Compile Include="ViewModels\GameOverViewModel.cs" />
     <Compile Include="ViewModels\GameOverViewModelFactory.cs" />
-    <Compile Include="ViewModels\Setup\GameSetupViewModel.cs" />
+    <Compile Include="ViewModels\AlternateSetup\AlternateGameSetupViewModel.cs" />
     <Compile Include="ViewModels\Gameplay\GameboardViewModelFactory.cs" />
     <Compile Include="ViewModels\Messages\StartGameSetupMessage.cs" />
-    <Compile Include="ViewModels\Setup\GameSetupViewModelFactory.cs" />
+    <Compile Include="ViewModels\AlternateSetup\AlternateGameSetupViewModelFactory.cs" />
     <Compile Include="ViewModels\Preparation\GamePreparationViewModel.cs" />
     <Compile Include="ViewModels\Preparation\HumanPlayerType.cs" />
     <Compile Include="ViewModels\MainGameViewModel.cs" />

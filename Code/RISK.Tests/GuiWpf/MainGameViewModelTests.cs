@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using FluentAssertions;
+using GuiWpf.ViewModels.AlternateSetup;
 using GuiWpf.ViewModels.Gameplay;
 using GuiWpf.ViewModels.Messages;
 using GuiWpf.ViewModels.Preparation;
-using GuiWpf.ViewModels.Setup;
 using NSubstitute;
 using RISK.GameEngine;
 using RISK.GameEngine.Play;
@@ -18,7 +18,7 @@ namespace RISK.Tests.GuiWpf
         private readonly IAlternateGameSetupFactory _alternateGameSetupFactory;
         private readonly IGamePreparationViewModelFactory _gamePreparationViewModelFactory;
         private readonly IGameboardViewModelFactory _gameboardViewModelFactory;
-        private readonly IGameSetupViewModelFactory _gameSetupViewModelFactory;
+        private readonly IAlternateGameSetupViewModelFactory _alternateGameSetupViewModelFactory;
         private readonly IUserInteractorFactory _userInteractorFactory;
 
         public MainGameViewModelTests()
@@ -27,7 +27,7 @@ namespace RISK.Tests.GuiWpf
             _alternateGameSetupFactory = Substitute.For<IAlternateGameSetupFactory>();
             _gamePreparationViewModelFactory = Substitute.For<IGamePreparationViewModelFactory>();
             _gameboardViewModelFactory = Substitute.For<IGameboardViewModelFactory>();
-            _gameSetupViewModelFactory = Substitute.For<IGameSetupViewModelFactory>();
+            _alternateGameSetupViewModelFactory = Substitute.For<IAlternateGameSetupViewModelFactory>();
             _userInteractorFactory = Substitute.For<IUserInteractorFactory>();
         }
 
@@ -59,12 +59,12 @@ namespace RISK.Tests.GuiWpf
         [Fact]
         public void Setup_game_message_shows_game_setup_view()
         {
-            var gameSetupViewModel = Substitute.For<IGameSetupViewModel>();
+            var gameSetupViewModel = Substitute.For<IAlternateGameSetupViewModel>();
             var alternateGameSetup = Substitute.For<IAlternateGameSetup>();
             var players = new List<IPlayer>();
             _playerRepository.GetAll().Returns(players);
             _alternateGameSetupFactory.Create(players).Returns(alternateGameSetup);
-            _gameSetupViewModelFactory.Create(alternateGameSetup).Returns(gameSetupViewModel);
+            _alternateGameSetupViewModelFactory.Create(alternateGameSetup).Returns(gameSetupViewModel);
 
             var sut = Initialize();
             sut.Handle(new StartGameSetupMessage());
@@ -92,7 +92,7 @@ namespace RISK.Tests.GuiWpf
                 _alternateGameSetupFactory,
                 _gamePreparationViewModelFactory,
                 _gameboardViewModelFactory,
-                _gameSetupViewModelFactory,
+                _alternateGameSetupViewModelFactory,
                 _userInteractorFactory);
         }
     }

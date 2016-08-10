@@ -1,10 +1,10 @@
 using GuiWpf.Services;
 
-namespace GuiWpf.ViewModels.Setup
+namespace GuiWpf.ViewModels.AlternateSetup
 {
     public interface IUserInteractorFactory
     {
-        IUserInteractor Create(IGameSetupViewModel gameSetupViewModel);
+        IUserInteractor Create(IAlternateGameSetupViewModel alternateGameSetupViewModel);
     }
 
     public class UserInteractorFactory : IUserInteractorFactory
@@ -18,9 +18,9 @@ namespace GuiWpf.ViewModels.Setup
             _guiThreadDispatcher = guiThreadDispatcher;
         }
 
-        public IUserInteractor Create(IGameSetupViewModel gameSetupViewModel)
+        public IUserInteractor Create(IAlternateGameSetupViewModel alternateGameSetupViewModel)
         {
-            return new UserInteractor(_userInteractionFactory, _guiThreadDispatcher, gameSetupViewModel);
+            return new UserInteractor(_userInteractionFactory, _guiThreadDispatcher, alternateGameSetupViewModel);
         }
     }
 }

@@ -9,14 +9,14 @@ using RISK.Core;
 using RISK.GameEngine.Play;
 using RISK.GameEngine.Setup;
 
-namespace GuiWpf.ViewModels.Setup
+namespace GuiWpf.ViewModels.AlternateSetup
 {
-    public interface IGameSetupViewModel : IMainViewModel
+    public interface IAlternateGameSetupViewModel : IMainViewModel
     {
         void UpdateView(IReadOnlyList<ITerritory> territories, Action<IRegion> selectTerritoryAction, IEnumerable<IRegion> enabledTerritories, string playerName, int armiesLeftToPlace);
     }
 
-    public class GameSetupViewModel : Screen, IGameSetupViewModel, IGameboardViewModel
+    public class AlternateGameSetupViewModel : Screen, IAlternateGameSetupViewModel, IGameboardViewModel
     {
         private readonly IWorldMapViewModelFactory _worldMapViewModelFactory;
         private readonly IGameFactory _gameFactory;
@@ -25,7 +25,7 @@ namespace GuiWpf.ViewModels.Setup
         private readonly IAlternateGameSetup _alternateGameSetup;
         private readonly ITaskEx _taskEx;
 
-        public GameSetupViewModel(
+        public AlternateGameSetupViewModel(
             IGameFactory gameFactory,
             IWorldMapViewModelFactory worldMapViewModelFactory,
             IDialogManager dialogManager,
@@ -61,6 +61,8 @@ namespace GuiWpf.ViewModels.Setup
             get { return _playerName; }
             private set { this.NotifyOfPropertyChange(value, () => PlayerName, x => _playerName = x); }
         }
+
+        public bool CanEnterFortifyMode => false;
 
         public void Activate()
         {
@@ -108,11 +110,6 @@ namespace GuiWpf.ViewModels.Setup
             PlayerName = playerName;
 
             InformationText = string.Format(ResourceManager.Instance.GetString("PLACE_ARMY"), armiesLeftToPlace);
-        }
-
-        public bool CanActivateFortify()
-        {
-            return false;
         }
 
         public void EnterFortifyMode() {}

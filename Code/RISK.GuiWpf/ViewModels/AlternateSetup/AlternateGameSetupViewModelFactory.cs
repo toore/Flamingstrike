@@ -4,14 +4,14 @@ using GuiWpf.ViewModels.Gameplay;
 using RISK.GameEngine.Play;
 using RISK.GameEngine.Setup;
 
-namespace GuiWpf.ViewModels.Setup
+namespace GuiWpf.ViewModels.AlternateSetup
 {
-    public interface IGameSetupViewModelFactory
+    public interface IAlternateGameSetupViewModelFactory
     {
-        IGameSetupViewModel Create(IAlternateGameSetup alternateGameSetup);
+        IAlternateGameSetupViewModel Create(IAlternateGameSetup alternateGameSetup);
     }
 
-    public class GameSetupViewModelFactory : IGameSetupViewModelFactory
+    public class AlternateGameSetupViewModelFactory : IAlternateGameSetupViewModelFactory
     {
         private readonly IGameFactory _gameFactory;
         private readonly IWorldMapViewModelFactory _worldMapViewModelFactory;
@@ -19,7 +19,7 @@ namespace GuiWpf.ViewModels.Setup
         private readonly IEventAggregator _eventAggregator;
         private readonly ITaskEx _taskEx;
 
-        public GameSetupViewModelFactory(
+        public AlternateGameSetupViewModelFactory(
             IGameFactory gameFactory,
             IWorldMapViewModelFactory worldMapViewModelFactory,
             IDialogManager dialogManager,
@@ -33,9 +33,9 @@ namespace GuiWpf.ViewModels.Setup
             _taskEx = taskEx;
         }
 
-        public IGameSetupViewModel Create(IAlternateGameSetup alternateGameSetup)
+        public IAlternateGameSetupViewModel Create(IAlternateGameSetup alternateGameSetup)
         {
-            return new GameSetupViewModel(
+            return new AlternateGameSetupViewModel(
                 _gameFactory,
                 _worldMapViewModelFactory,
                 _dialogManager,

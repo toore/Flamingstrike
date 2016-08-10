@@ -2,7 +2,7 @@
 using RISK.Core;
 using RISK.GameEngine.Setup;
 
-namespace GuiWpf.ViewModels.Setup
+namespace GuiWpf.ViewModels.AlternateSetup
 {
     public interface IUserInteraction
     {

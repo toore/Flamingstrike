@@ -22,7 +22,7 @@ namespace RISK.Tests.GuiWpf
         private readonly IDialogManager _dialogManager;
         private readonly IEventAggregator _eventAggregator;
         private readonly SynchronousTaskEx _taskScheduler;
-        private readonly GameSetupViewModelFactory _gameSetupViewModelFactory;
+        private readonly AlternateGameSetupViewModelFactory _alternateGameSetupViewModelFactory;
         private readonly IAlternateGameSetup _alternateGameSetup;
 
         public GameSetupViewModelTests()
@@ -33,7 +33,7 @@ namespace RISK.Tests.GuiWpf
             _eventAggregator = Substitute.For<IEventAggregator>();
             _taskScheduler = new SynchronousTaskEx();
 
-            _gameSetupViewModelFactory = new GameSetupViewModelFactory(
+            _alternateGameSetupViewModelFactory = new AlternateGameSetupViewModelFactory(
                 _gameFactory,
                 _worldMapViewModelFactory,
                 _dialogManager,
@@ -163,9 +163,9 @@ namespace RISK.Tests.GuiWpf
             _eventAggregator.DidNotReceive().PublishOnUIThread(Arg.Any<NewGameMessage>());
         }
 
-        private GameSetupViewModel Initialize(bool activate = true)
+        private AlternateGameSetupViewModel Initialize(bool activate = true)
         {
-            var gameSetupViewModel = (GameSetupViewModel)_gameSetupViewModelFactory.Create(_alternateGameSetup);
+            var gameSetupViewModel = (AlternateGameSetupViewModel)_alternateGameSetupViewModelFactory.Create(_alternateGameSetup);
             if (activate)
             {
                 gameSetupViewModel.Activate();

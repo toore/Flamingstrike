@@ -1,4 +1,4 @@
-namespace GuiWpf.ViewModels.Setup
+namespace GuiWpf.ViewModels.AlternateSetup
 {
     public interface IUserInteractionFactory
     {

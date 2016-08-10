@@ -1,7 +1,7 @@
 using GuiWpf.ViewModels;
+using GuiWpf.ViewModels.AlternateSetup;
 using GuiWpf.ViewModels.Gameplay;
 using GuiWpf.ViewModels.Preparation;
-using GuiWpf.ViewModels.Setup;
 using RISK.GameEngine.Setup;
 
 namespace RISK.Tests.GuiWpf
@@ -16,14 +16,14 @@ namespace RISK.Tests.GuiWpf
             IAlternateGameSetupFactory alternateGameSetupFactory,
             IGamePreparationViewModelFactory gamePreparationViewModelFactory,
             IGameboardViewModelFactory gameboardViewModelFactory,
-            IGameSetupViewModelFactory gameSetupViewModelFactory,
+            IAlternateGameSetupViewModelFactory alternateGameSetupViewModelFactory,
             IUserInteractorFactory userInteractorFactory)
             : base(
                   playerRepository,
                   alternateGameSetupFactory, 
                   gamePreparationViewModelFactory, 
                   gameboardViewModelFactory, 
-                  gameSetupViewModelFactory,
+                  alternateGameSetupViewModelFactory,
                   userInteractorFactory) {}
 
         public new void OnInitialize()

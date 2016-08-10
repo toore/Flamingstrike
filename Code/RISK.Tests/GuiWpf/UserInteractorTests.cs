@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using FluentAssertions;
-using GuiWpf.ViewModels.Setup;
+using GuiWpf.ViewModels.AlternateSetup;
 using NSubstitute;
 using RISK.Core;
 using RISK.GameEngine;
@@ -32,7 +32,7 @@ namespace RISK.Tests.GuiWpf
         {
             var territoryRequestParameter = Substitute.For<ITerritoryRequestParameter>();
             var expectedTerritory = Make.Region.Build();
-            var gameSetupViewModel = Substitute.For<IGameSetupViewModel>();
+            var gameSetupViewModel = Substitute.For<IAlternateGameSetupViewModel>();
 
             _userInteraction.WaitForTerritoryToBeSelected(territoryRequestParameter).Returns(expectedTerritory);
 
@@ -46,7 +46,7 @@ namespace RISK.Tests.GuiWpf
         public void A_territory_request_updates_view()
         {
             var territoryRequestParameter = Substitute.For<ITerritoryRequestParameter>();
-            var gameSetupViewModel = Substitute.For<IGameSetupViewModel>();
+            var gameSetupViewModel = Substitute.For<IAlternateGameSetupViewModel>();
             var territories = new List<
                 ITerritory>();
             Action<IRegion> selectTerritoryAction = _userInteraction.SelectTerritory;

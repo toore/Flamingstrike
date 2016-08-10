@@ -2,9 +2,9 @@
 using System.Linq;
 using FluentAssertions;
 using GuiWpf.ViewModels;
+using GuiWpf.ViewModels.AlternateSetup;
 using GuiWpf.ViewModels.Gameplay;
 using GuiWpf.ViewModels.Preparation;
-using GuiWpf.ViewModels.Setup;
 using RISK.Core;
 using RISK.GameEngine.Setup;
 using Xunit;
@@ -14,7 +14,7 @@ namespace RISK.Tests.GuiWpf.Specifications
     public class GameSetupSpec : SpecBase<GameSetupSpec>
     {
         private MainGameViewModelDecorator _mainGameViewModel;
-        private GameSetupViewModel _setupViewModel;
+        private AlternateGameSetupViewModel _setupViewModel;
         private AutoRespondingUserInteraction _autoRespondingUserInteraction;
         private UserInteractionFactoryReturningSameInstance _userInteractionFactoryReturningSameInstance;
 
@@ -62,7 +62,7 @@ namespace RISK.Tests.GuiWpf.Specifications
 
             gameSettingsViewModel.Confirm();
 
-            _setupViewModel = (GameSetupViewModel)_mainGameViewModel.ActiveItem;
+            _setupViewModel = (AlternateGameSetupViewModel)_mainGameViewModel.ActiveItem;
             _setupViewModel.Activate();
 
             return this;

@@ -2,7 +2,7 @@ using GuiWpf.Services;
 using RISK.Core;
 using RISK.GameEngine.Setup;
 
-namespace GuiWpf.ViewModels.Setup
+namespace GuiWpf.ViewModels.AlternateSetup
 {
     public interface IUserInteractor : ITerritoryResponder {}
 
@@ -10,13 +10,13 @@ namespace GuiWpf.ViewModels.Setup
     {
         private readonly IUserInteractionFactory _userInteractionFactory;
         private readonly IGuiThreadDispatcher _guiThreadDispatcher;
-        private readonly IGameSetupViewModel _gameSetupViewModel;
+        private readonly IAlternateGameSetupViewModel _alternateGameSetupViewModel;
 
-        public UserInteractor(IUserInteractionFactory userInteractionFactory, IGuiThreadDispatcher guiThreadDispatcher, IGameSetupViewModel gameSetupViewModel)
+        public UserInteractor(IUserInteractionFactory userInteractionFactory, IGuiThreadDispatcher guiThreadDispatcher, IAlternateGameSetupViewModel alternateGameSetupViewModel)
         {
             _userInteractionFactory = userInteractionFactory;
             _guiThreadDispatcher = guiThreadDispatcher;
-            _gameSetupViewModel = gameSetupViewModel;
+            _alternateGameSetupViewModel = alternateGameSetupViewModel;
         }
 
         public IRegion ProcessRequest(ITerritoryRequestParameter territoryRequestParameter)
@@ -30,7 +30,7 @@ namespace GuiWpf.ViewModels.Setup
 
         private void UpdateView(ITerritoryRequestParameter territoryRequestParameter, IUserInteraction userInteraction)
         {
-            _gameSetupViewModel.UpdateView(
+            _alternateGameSetupViewModel.UpdateView(
                 territoryRequestParameter.Territories,
                 userInteraction.SelectTerritory,
                 territoryRequestParameter.EnabledTerritories,

@@ -1,10 +1,10 @@
 ﻿using Caliburn.Micro;
 using GuiWpf.RegionModels;
 using GuiWpf.Services;
+using GuiWpf.ViewModels.AlternateSetup;
 using GuiWpf.ViewModels.Gameplay;
 using GuiWpf.ViewModels.Gameplay.Interaction;
 using GuiWpf.ViewModels.Preparation;
-using GuiWpf.ViewModels.Setup;
 using RISK.Core;
 using RISK.GameEngine;
 using RISK.GameEngine.Play;
@@ -21,7 +21,7 @@ namespace GuiWpf.ViewModels
         public IAlternateGameSetupFactory AlternateGameSetupFactory { get; private set; }
         public IGamePreparationViewModelFactory GamePreparationViewModelFactory { get; private set; }
         public IGameboardViewModelFactory GameboardViewModelFactory { get; private set; }
-        public IGameSetupViewModelFactory GameSetupViewModelFactory { get; private set; }
+        public IAlternateGameSetupViewModelFactory AlternateGameSetupViewModelFactory { get; private set; }
         public IUserInteractorFactory UserInteractorFactory { get; set; }
 
         public Root() : this(
@@ -85,7 +85,7 @@ namespace GuiWpf.ViewModels
             var gameStateConductor = new GameStateConductor(gameStateFactory, armyDraftCalculator, gameDataFactory, gameStateFsm);
             var gameFactory = new GameFactory(gameDataFactory, gameStateConductor, deckFactory, gameStateFsm, gameRules);
 
-            GameSetupViewModelFactory = new GameSetupViewModelFactory(
+            AlternateGameSetupViewModelFactory = new AlternateGameSetupViewModelFactory(
                 gameFactory,
                 worldMapViewModelFactory,
                 dialogManager,
