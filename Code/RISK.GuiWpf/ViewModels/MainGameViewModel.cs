@@ -78,8 +78,8 @@ namespace GuiWpf.ViewModels
 
         private void InitializeNewGame()
         {
-            var gameSettingsViewModel = _gamePreparationViewModelFactory.Create();
-            ActivateItem(gameSettingsViewModel);
+            var gamePreparationViewModel = _gamePreparationViewModelFactory.Create();
+            ActivateItem(gamePreparationViewModel);
         }
 
         private void StartGameSetup()
@@ -88,8 +88,8 @@ namespace GuiWpf.ViewModels
             var alternateGameSetup = _alternateGameSetupFactory.Create(players);
             var gameSetupViewModel = _gameSetupViewModelFactory.Create(alternateGameSetup);
 
-            var userInteractory = _userInteractorFactory.Create(gameSetupViewModel);
-            alternateGameSetup.TerritoryResponder = userInteractory;
+            var userInteractor = _userInteractorFactory.Create(gameSetupViewModel);
+            alternateGameSetup.TerritoryResponder = userInteractor;
 
             ActivateItem(gameSetupViewModel);
         }
