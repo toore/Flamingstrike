@@ -100,7 +100,7 @@ namespace RISK.Tests.GuiWpf
 
             var sut = Initialize();
 
-            sut.CanEndTurn().Should().Be(canEndTurn);
+            sut.CanEndTurn.Should().Be(canEndTurn);
         }
 
         [Fact]
@@ -186,7 +186,7 @@ namespace RISK.Tests.GuiWpf
 
             var sut = Initialize();
 
-            sut.CanActivateFortify().Should().Be(canFreeMove);
+            sut.CanEnterFortifyMode.Should().Be(canFreeMove);
         }
 
         [Fact]

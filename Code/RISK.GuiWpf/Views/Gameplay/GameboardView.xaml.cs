@@ -41,17 +41,10 @@ namespace GuiWpf.Views.Gameplay
 
         public string PlayerName => "Player name is shown here";
 
-        public bool CanActivateFortify()
-        {
-            return true;
-        }
+        public bool CanEnterFortifyMode => false;
 
         public void EnterFortifyMode() {}
-
-        public bool CanEndTurn()
-        {
-            return true;
-        }
+        public bool CanEndTurn => true;
 
         public void EndTurn() {}
 

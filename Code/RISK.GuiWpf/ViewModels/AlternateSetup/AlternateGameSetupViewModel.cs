@@ -113,11 +113,7 @@ namespace GuiWpf.ViewModels.AlternateSetup
         }
 
         public void EnterFortifyMode() {}
-
-        public bool CanEndTurn()
-        {
-            return false;
-        }
+        public bool CanEndTurn => false;
 
         public void EndTurn() {}
 

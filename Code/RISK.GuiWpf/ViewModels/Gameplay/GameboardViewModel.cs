@@ -23,6 +23,8 @@ namespace GuiWpf.ViewModels.Gameplay
         private readonly IDialogManager _dialogManager;
         private readonly IEventAggregator _eventAggregator;
         private string _playerName;
+        private bool _canEnterFortifyMode;
+        private bool _canEndTurn;
 
         public GameboardViewModel(
             IGame game,
@@ -58,6 +60,18 @@ namespace GuiWpf.ViewModels.Gameplay
 
         public string InformationText { get; }
 
+        public bool CanEnterFortifyMode
+        {
+            get { return _canEnterFortifyMode; }
+            private set { NotifyOfPropertyChange(value, () => CanEnterFortifyMode, x => _canEnterFortifyMode = x); }
+        }
+
+        public bool CanEndTurn
+        {
+            get { return _canEndTurn; }
+            private set { NotifyOfPropertyChange(value, () => CanEndTurn, x => _canEndTurn = x); }
+        }
+
         public void Activate()
         {
             InitializeWorld();
@@ -82,7 +96,7 @@ namespace GuiWpf.ViewModels.Gameplay
             var draftArmiesState = _interactionStateFactory.CreateDraftArmiesInteractionState(_game);
             _interactionStateFsm.Set(draftArmiesState);
 
-            UpdateGame();
+            UpdateGameboard();
         }
 
         private ReadOnlyCollection<ITerritory> GetAllTerritories()
@@ -94,20 +108,10 @@ namespace GuiWpf.ViewModels.Gameplay
             return territories;
         }
 
-        public bool CanActivateFortify()
-        {
-            return _game.CanFreeMove();
-        }
-
         public void EnterFortifyMode()
         {
             var fortifySelectState = _interactionStateFactory.CreateFortifySelectInteractionState(_game);
             _interactionStateFsm.Set(fortifySelectState);
-        }
-
-        public bool CanEndTurn()
-        {
-            return _game.CanEndTurn();
         }
 
         public void EndTurn()
@@ -117,7 +121,7 @@ namespace GuiWpf.ViewModels.Gameplay
             var draftArmiesInteractionState = _interactionStateFactory.CreateDraftArmiesInteractionState(_game);
             _interactionStateFsm.Set(draftArmiesInteractionState);
 
-            UpdateGame();
+            UpdateGameboard();
         }
 
         public void EndGame()
@@ -134,7 +138,7 @@ namespace GuiWpf.ViewModels.Gameplay
         {
             _interactionStateFsm.OnClick(region);
 
-            UpdateGame();
+            UpdateGameboard();
 
             if (_game.IsGameOver())
             {
@@ -148,9 +152,12 @@ namespace GuiWpf.ViewModels.Gameplay
             _windowManager.ShowDialog(gameOverViewModel);
         }
 
-        private void UpdateGame()
+        private void UpdateGameboard()
         {
             PlayerName = _game.CurrentPlayer.Name;
+
+            CanEnterFortifyMode = _game.CanFreeMove();
+            CanEndTurn = _game.CanEndTurn();
 
             UpdateWorldMap();
         }

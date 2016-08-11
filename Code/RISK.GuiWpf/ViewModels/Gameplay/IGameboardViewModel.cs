@@ -5,9 +5,9 @@
         WorldMapViewModel WorldMapViewModel { get; }
         string InformationText { get; }
         string PlayerName { get; }
-        bool CanActivateFortify();
+        bool CanEnterFortifyMode { get; }
         void EnterFortifyMode();
-        bool CanEndTurn();
+        bool CanEndTurn { get; }
         void EndTurn();
         void EndGame();
     }

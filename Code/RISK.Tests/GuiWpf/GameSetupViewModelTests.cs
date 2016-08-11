@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using Caliburn.Micro;
 using FluentAssertions;
 using GuiWpf.Services;
+using GuiWpf.ViewModels.AlternateSetup;
 using GuiWpf.ViewModels.Gameplay;
 using GuiWpf.ViewModels.Messages;
-using GuiWpf.ViewModels.Setup;
 using NSubstitute;
 using RISK.Core;
 using RISK.GameEngine.Play;
@@ -128,7 +128,7 @@ namespace RISK.Tests.GuiWpf
         {
             var gameSetupViewModel = Initialize();
 
-            gameSetupViewModel.CanActivateFortify().Should().BeFalse();
+            gameSetupViewModel.CanEnterFortifyMode.Should().BeFalse();
         }
 
         [Fact]
@@ -136,7 +136,7 @@ namespace RISK.Tests.GuiWpf
         {
             var gameSetupViewModel = Initialize();
 
-            gameSetupViewModel.CanEndTurn().Should().BeFalse();
+            gameSetupViewModel.CanEndTurn.Should().BeFalse();
         }
 
         [Fact]
