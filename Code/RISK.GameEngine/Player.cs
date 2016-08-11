@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using RISK.Core;
 
@@ -58,6 +59,10 @@ namespace RISK.GameEngine
 
         public void SetArmiesToPlace(int armiesToPlace)
         {
+            if (armiesToPlace < 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(armiesToPlace), armiesToPlace, "value must be greater than or equal to zero");
+            }
             _armiesToPlace = armiesToPlace;
         }
     }
