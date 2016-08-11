@@ -105,8 +105,8 @@
     <Compile Include="ViewModels\Root.cs" />
     <Compile Include="ViewModels\Preparation\GamePreparationViewModelFactory.cs" />
     <Compile Include="ViewModels\Preparation\PlayerRepository.cs" />
-    <Compile Include="Views\Setup\GameSetupView.xaml.cs">
-      <DependentUpon>GameSetupView.xaml</DependentUpon>
+    <Compile Include="Views\AlternateSetup\AlternateGameSetupView.xaml.cs">
+      <DependentUpon>AlternateGameSetupView.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\Messages\StartGameplayMessage.cs" />
     <Compile Include="Services\TaskEx.cs" />
@@ -209,7 +209,7 @@
       <DependentUpon>GameboardView.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\Gameplay\WorldMapViewModel.cs" />
-    <Page Include="Views\Setup\GameSetupView.xaml">
+    <Page Include="Views\AlternateSetup\AlternateGameSetupView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
