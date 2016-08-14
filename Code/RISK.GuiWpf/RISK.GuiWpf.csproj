@@ -92,7 +92,6 @@
     <Compile Include="ViewModels\Gameplay\Interaction\IInteractionState.cs" />
     <Compile Include="ViewModels\Gameplay\Interaction\InteractionStateFactory.cs" />
     <Compile Include="ViewModels\Gameplay\Interaction\SelectInteractionState.cs" />
-    <Compile Include="ViewModels\Gameplay\Interaction\SelectInteractionStateBase.cs" />
     <Compile Include="ViewModels\Gameplay\Interaction\InteractionStateFsm.cs" />
     <Compile Include="ViewModels\Gameplay\Interaction\EndTurnInteractionState.cs" />
     <Compile Include="ViewModels\Gameplay\IWorldMapItemViewModelVisitor.cs" />

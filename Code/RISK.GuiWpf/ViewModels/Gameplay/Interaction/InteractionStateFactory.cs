@@ -8,6 +8,7 @@ namespace GuiWpf.ViewModels.Gameplay.Interaction
         IInteractionState CreateDraftArmiesInteractionState(IGame game);
         IInteractionState CreateSelectInteractionState(IGame game);
         IInteractionState CreateAttackInteractionState(IGame game, IRegion selectedRegion);
+        IInteractionState CreateSendArmiesToOccupyInteractionState(IGame _game);
         IInteractionState CreateFortifySelectInteractionState(IGame game);
         IInteractionState CreateFortifyMoveInteractionState(IGame game, IRegion selectedRegion);
         IInteractionState CreateEndTurnInteractionState();
@@ -35,6 +36,11 @@ namespace GuiWpf.ViewModels.Gameplay.Interaction
         public IInteractionState CreateAttackInteractionState(IGame game, IRegion selectedRegion)
         {
             return new AttackInteractionState(_interactionStateFsm, this, game, selectedRegion);
+        }
+
+        public IInteractionState CreateSendArmiesToOccupyInteractionState(IGame _game)
+        {
+            throw new System.NotImplementedException();
         }
 
         public IInteractionState CreateFortifySelectInteractionState(IGame game)

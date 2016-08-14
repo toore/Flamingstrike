@@ -38,9 +38,14 @@ namespace GuiWpf.ViewModels.Gameplay.Interaction
 
             if (!_game.HasArmiesToDraft())
             {
-                var selectInteractionState = _interactionStateFactory.CreateSelectInteractionState(_game);
-                _interactionStateFsm.Set(selectInteractionState);
+                EnterSelectState();
             }
+        }
+
+        private void EnterSelectState()
+        {
+            var selectInteractionState = _interactionStateFactory.CreateSelectInteractionState(_game);
+            _interactionStateFsm.Set(selectInteractionState);
         }
     }
 }

@@ -50,6 +50,11 @@ namespace GuiWpf.ViewModels.Gameplay.Interaction
 
         private void Deselect()
         {
+            EnterFortifySelectState();
+        }
+
+        private void EnterFortifySelectState()
+        {
             var fortifySelectState = _interactionStateFactory.CreateFortifySelectInteractionState(_game);
             _interactionStateFsm.Set(fortifySelectState);
         }
@@ -64,6 +69,11 @@ namespace GuiWpf.ViewModels.Gameplay.Interaction
         {
             _game.Fortify(SelectedRegion, regionToFortify, 1);
 
+            EnterEndTurnState();
+        }
+
+        private void EnterEndTurnState()
+        {
             var endTurnState = _interactionStateFactory.CreateEndTurnInteractionState();
             _interactionStateFsm.Set(endTurnState);
         }

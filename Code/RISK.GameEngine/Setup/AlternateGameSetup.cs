@@ -82,7 +82,8 @@ namespace RISK.GameEngine.Setup
 
         private void InitializeInfantryToPlace(IList<IPlayer> players, IList<Territory> territories)
         {
-            var numberOfStartingInfantry = _startingInfantryCalculator.Get(players.ToList().Count);
+            //var numberOfStartingInfantry = _startingInfantryCalculator.Get(players.ToList().Count);
+            var numberOfStartingInfantry = 21;
 
             foreach (var player in players)
             {

@@ -50,6 +50,11 @@ namespace GuiWpf.ViewModels.Gameplay.Interaction
 
         private void Deselect()
         {
+            EnterSelectState();
+        }
+
+        private void EnterSelectState()
+        {
             var selectState = _interactionStateFactory.CreateSelectInteractionState(_game);
             _interactionStateFsm.Set(selectState);
         }
@@ -64,6 +69,17 @@ namespace GuiWpf.ViewModels.Gameplay.Interaction
         private void Attack(IRegion attackedRegion)
         {
             _game.Attack(SelectedRegion, attackedRegion);
+
+            if (_game.CanSendArmiesToOccupy())
+            {
+                EnterSendArmiesToOccupyState();
+            }
+        }
+
+        private void EnterSendArmiesToOccupyState()
+        {
+            var sendArmiesToOccupyInteractionState = _interactionStateFactory.CreateSendArmiesToOccupyInteractionState(_game);
+            _interactionStateFsm.Set(sendArmiesToOccupyInteractionState);
         }
     }
 }

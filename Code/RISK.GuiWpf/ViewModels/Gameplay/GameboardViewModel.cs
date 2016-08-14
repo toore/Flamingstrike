@@ -93,10 +93,15 @@ namespace GuiWpf.ViewModels.Gameplay
             var allTerritories = GetAllTerritories();
             WorldMapViewModel = _worldMapViewModelFactory.Create(allTerritories, OnRegionClick, Enumerable.Empty<IRegion>());
 
-            var draftArmiesState = _interactionStateFactory.CreateDraftArmiesInteractionState(_game);
-            _interactionStateFsm.Set(draftArmiesState);
+            EnterDraftArmiesInteractionState();
 
             UpdateGameboard();
+        }
+
+        private void EnterDraftArmiesInteractionState()
+        {
+            var draftArmiesState = _interactionStateFactory.CreateDraftArmiesInteractionState(_game);
+            _interactionStateFsm.Set(draftArmiesState);
         }
 
         private ReadOnlyCollection<ITerritory> GetAllTerritories()
@@ -110,6 +115,11 @@ namespace GuiWpf.ViewModels.Gameplay
 
         public void EnterFortifyMode()
         {
+            EnterFortifyInteractionState();
+        }
+
+        private void EnterFortifyInteractionState()
+        {
             var fortifySelectState = _interactionStateFactory.CreateFortifySelectInteractionState(_game);
             _interactionStateFsm.Set(fortifySelectState);
         }
@@ -118,8 +128,7 @@ namespace GuiWpf.ViewModels.Gameplay
         {
             _game.EndTurn();
 
-            var draftArmiesInteractionState = _interactionStateFactory.CreateDraftArmiesInteractionState(_game);
-            _interactionStateFsm.Set(draftArmiesInteractionState);
+            EnterDraftArmiesInteractionState();
 
             UpdateGameboard();
         }
