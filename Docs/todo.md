@@ -15,6 +15,7 @@ SendArmiesToOccupyGameState
 
 AlternateGameSetup:
 - Dependency inject TerritoryResponder
+- InitializeInfantryToPlace: Fix commented code
 
 Player name formatting service "Player: abc"?
 
