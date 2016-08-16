@@ -15,20 +15,20 @@ namespace RISK.GameEngine.Play
         private readonly IGameDataFactory _gameDataFactory;
         private readonly IGameStateConductor _gameStateConductor;
         private readonly IDeckFactory _deckFactory;
-        private readonly IGameStateFsm _gameStateFsm;
+        private readonly IGameContext _gameContext;
         private readonly IGameRules _gameRules;
 
         public GameFactory(
             IGameDataFactory gameDataFactory,
             IGameStateConductor gameStateConductor,
             IDeckFactory deckFactory,
-            IGameStateFsm gameStateFsm,
+            IGameContext gameContext,
             IGameRules gameRules)
         {
             _gameDataFactory = gameDataFactory;
             _gameStateConductor = gameStateConductor;
             _deckFactory = deckFactory;
-            _gameStateFsm = gameStateFsm;
+            _gameContext = gameContext;
             _gameRules = gameRules;
         }
 
@@ -44,7 +44,7 @@ namespace RISK.GameEngine.Play
 
             _gameStateConductor.CurrentPlayerStartsNewTurn(gameData);
 
-            return new Game(_gameStateFsm, _gameRules);
+            return new Game(_gameContext, _gameRules);
         }
     }
 }

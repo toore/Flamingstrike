@@ -6,13 +6,13 @@ namespace GuiWpf.ViewModels.Gameplay.Interaction
 {
     public class AttackInteractionState : IInteractionState
     {
-        private readonly IInteractionStateFsm _interactionStateFsm;
+        private readonly IInteractionContext _interactionContext;
         private readonly IInteractionStateFactory _interactionStateFactory;
         private readonly IGame _game;
 
-        public AttackInteractionState(IInteractionStateFsm interactionStateFsm, IInteractionStateFactory interactionStateFactory, IGame game, IRegion selectedRegion)
+        public AttackInteractionState(IInteractionContext interactionContext, IInteractionStateFactory interactionStateFactory, IGame game, IRegion selectedRegion)
         {
-            _interactionStateFsm = interactionStateFsm;
+            _interactionContext = interactionContext;
             _interactionStateFactory = interactionStateFactory;
             _game = game;
             SelectedRegion = selectedRegion;
@@ -56,7 +56,7 @@ namespace GuiWpf.ViewModels.Gameplay.Interaction
         private void EnterSelectState()
         {
             var selectState = _interactionStateFactory.CreateSelectInteractionState(_game);
-            _interactionStateFsm.Set(selectState);
+            _interactionContext.Set(selectState);
         }
 
         private bool CanAttack(IRegion attackeeRegion)
@@ -79,7 +79,7 @@ namespace GuiWpf.ViewModels.Gameplay.Interaction
         private void EnterSendArmiesToOccupyState()
         {
             var sendArmiesToOccupyInteractionState = _interactionStateFactory.CreateSendArmiesToOccupyInteractionState(_game);
-            _interactionStateFsm.Set(sendArmiesToOccupyInteractionState);
+            _interactionContext.Set(sendArmiesToOccupyInteractionState);
         }
     }
 }

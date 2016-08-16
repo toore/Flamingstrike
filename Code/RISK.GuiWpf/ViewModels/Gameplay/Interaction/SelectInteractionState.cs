@@ -7,12 +7,12 @@ namespace GuiWpf.ViewModels.Gameplay.Interaction
     public class SelectInteractionState : IInteractionState
     {
         private readonly IInteractionStateFactory _interactionStateFactory;
-        private readonly IInteractionStateFsm _interactionStateFsm;
+        private readonly IInteractionContext _interactionContext;
         private readonly IGame _game;
 
-        public SelectInteractionState(IInteractionStateFsm interactionStateFsm, IInteractionStateFactory interactionStateFactory, IGame game)
+        public SelectInteractionState(IInteractionContext interactionContext, IInteractionStateFactory interactionStateFactory, IGame game)
         {
-            _interactionStateFsm = interactionStateFsm;
+            _interactionContext = interactionContext;
             _interactionStateFactory = interactionStateFactory;
             _game = game;
         }
@@ -37,7 +37,7 @@ namespace GuiWpf.ViewModels.Gameplay.Interaction
         private void EnterAttackInteractionState(IGame game, IRegion selectedRegion)
         {
             var attackInteractionState = _interactionStateFactory.CreateAttackInteractionState(game, selectedRegion);
-            _interactionStateFsm.Set(attackInteractionState);
+            _interactionContext.Set(attackInteractionState);
         }
     }
 }

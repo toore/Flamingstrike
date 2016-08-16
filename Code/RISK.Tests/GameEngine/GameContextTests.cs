@@ -9,14 +9,14 @@ using IPlayer = RISK.GameEngine.IPlayer;
 
 namespace RISK.Tests.GameEngine
 {
-    public class GameStateFsmTests
+    public class GameContextTests
     {
-        private readonly GameStateFsm _sut;
+        private readonly GameContext _sut;
         private readonly IGameState _gameState;
 
-        public GameStateFsmTests()
+        public GameContextTests()
         {
-            _sut = new GameStateFsm();
+            _sut = new GameContext();
 
             _gameState = Substitute.For<IGameState>();
             _sut.Set(_gameState);

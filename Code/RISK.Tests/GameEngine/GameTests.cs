@@ -18,7 +18,7 @@ namespace RISK.Tests.GameEngine
         private readonly IGameDataFactory _gameDataFactory;
         private readonly IGameStateConductor _gameStateConductor;
         private readonly IDeckFactory _deckFactory;
-        private readonly IGameStateFsm _gameStateFsm;
+        private readonly IGameContext _gameContext;
         private readonly IGameRules _gameRules;
 
         public GameTests()
@@ -26,10 +26,10 @@ namespace RISK.Tests.GameEngine
             _gameDataFactory = Substitute.For<IGameDataFactory>();
             _gameStateConductor = Substitute.For<IGameStateConductor>();
             _deckFactory = Substitute.For<IDeckFactory>();
-            _gameStateFsm = Substitute.For<IGameStateFsm>();
+            _gameContext = Substitute.For<IGameContext>();
             _gameRules = Substitute.For<IGameRules>();
 
-            _factory = new GameFactory(_gameDataFactory, _gameStateConductor, _deckFactory, _gameStateFsm, _gameRules);
+            _factory = new GameFactory(_gameDataFactory, _gameStateConductor, _deckFactory, _gameContext, _gameRules);
         }
 
         [Theory, AutoData]
@@ -68,7 +68,7 @@ namespace RISK.Tests.GameEngine
         public void Gets_player_status()
         {
             var player = Substitute.For<IPlayer>();
-            _gameStateFsm.CurrentPlayer.Returns(player);
+            _gameContext.CurrentPlayer.Returns(player);
 
             var sut = Create(Make.GamePlaySetup.Build());
 
@@ -80,7 +80,7 @@ namespace RISK.Tests.GameEngine
         {
             var region = Substitute.For<IRegion>();
             var territory = Substitute.For<ITerritory>();
-            _gameStateFsm.GetTerritory(region).Returns(territory);
+            _gameContext.GetTerritory(region).Returns(territory);
 
             var sut = Create(Make.GamePlaySetup.Build());
 
@@ -91,7 +91,7 @@ namespace RISK.Tests.GameEngine
         public void Can_place_draft_armies(bool canPlaceArmies)
         {
             var region = Substitute.For<IRegion>();
-            _gameStateFsm.CanPlaceDraftArmies(region).Returns(canPlaceArmies);
+            _gameContext.CanPlaceDraftArmies(region).Returns(canPlaceArmies);
 
             var sut = Create(Make.GamePlaySetup.Build());
 
@@ -101,7 +101,7 @@ namespace RISK.Tests.GameEngine
         [Theory, AutoData]
         public void Gets_number_of_armies_to_draft(int numberOfArmies)
         {
-            _gameStateFsm.GetNumberOfArmiesToDraft().Returns(numberOfArmies);
+            _gameContext.GetNumberOfArmiesToDraft().Returns(numberOfArmies);
 
             var sut = Create(Make.GamePlaySetup.Build());
 
@@ -116,7 +116,7 @@ namespace RISK.Tests.GameEngine
             var sut = Create(Make.GamePlaySetup.Build());
             sut.PlaceDraftArmies(region, numberOfArmies);
 
-            _gameStateFsm.Received().PlaceDraftArmies(region, numberOfArmies);
+            _gameContext.Received().PlaceDraftArmies(region, numberOfArmies);
         }
 
         [Theory, AutoData]
@@ -124,7 +124,7 @@ namespace RISK.Tests.GameEngine
         {
             var attackingRegion = Substitute.For<IRegion>();
             var defendingRegion = Substitute.For<IRegion>();
-            _gameStateFsm.CanAttack(attackingRegion, defendingRegion).Returns(canAttack);
+            _gameContext.CanAttack(attackingRegion, defendingRegion).Returns(canAttack);
 
             var sut = Create(Make.GamePlaySetup.Build());
 
@@ -140,13 +140,13 @@ namespace RISK.Tests.GameEngine
             var sut = Create(Make.GamePlaySetup.Build());
             sut.Attack(attackingRegion, defendingRegion);
 
-            _gameStateFsm.Received().Attack(attackingRegion, defendingRegion);
+            _gameContext.Received().Attack(attackingRegion, defendingRegion);
         }
 
         [Theory, AutoData]
         public void Gets_number_of_armies_that_can_be_sent_to_occupy(int numberOfArmies)
         {
-            _gameStateFsm.GetNumberOfAdditionalArmiesThatCanBeSentToOccupy().Returns(numberOfArmies);
+            _gameContext.GetNumberOfAdditionalArmiesThatCanBeSentToOccupy().Returns(numberOfArmies);
 
             var sut = Create(Make.GamePlaySetup.Build());
 
@@ -156,7 +156,7 @@ namespace RISK.Tests.GameEngine
         [Theory, AutoData]
         public void Can_send_additional_armies_to_occupy(bool canSendInArmiesToOccupy)
         {
-            _gameStateFsm.CanSendAdditionalArmiesToOccupy().Returns(canSendInArmiesToOccupy);
+            _gameContext.CanSendAdditionalArmiesToOccupy().Returns(canSendInArmiesToOccupy);
 
             var sut = Create(Make.GamePlaySetup.Build());
 
@@ -169,13 +169,13 @@ namespace RISK.Tests.GameEngine
             var sut = Create(Make.GamePlaySetup.Build());
             sut.SendArmiesToOccupy(numberOfArmies);
 
-            _gameStateFsm.Received().SendAdditionalArmiesToOccupy(numberOfArmies);
+            _gameContext.Received().SendAdditionalArmiesToOccupy(numberOfArmies);
         }
 
         [Theory, AutoData]
         public void Can_free_move(bool canFreeMove)
         {
-            _gameStateFsm.CanFreeMove().Returns(canFreeMove);
+            _gameContext.CanFreeMove().Returns(canFreeMove);
 
             var sut = Create(Make.GamePlaySetup.Build());
 
@@ -187,7 +187,7 @@ namespace RISK.Tests.GameEngine
         {
             var sourceRegion = Substitute.For<IRegion>();
             var destinationRegion = Substitute.For<IRegion>();
-            _gameStateFsm.CanFortify(sourceRegion, destinationRegion).Returns(canFortify);
+            _gameContext.CanFortify(sourceRegion, destinationRegion).Returns(canFortify);
 
             var sut = Create(Make.GamePlaySetup.Build());
 
@@ -203,13 +203,13 @@ namespace RISK.Tests.GameEngine
             var sut = Create(Make.GamePlaySetup.Build());
             sut.Fortify(sourceRegion, destinationRegion, armies);
 
-            _gameStateFsm.Received().Fortify(sourceRegion, destinationRegion, armies);
+            _gameContext.Received().Fortify(sourceRegion, destinationRegion, armies);
         }
 
         [Theory, AutoData]
         public void Can_end_turn(bool canEndTurn)
         {
-            _gameStateFsm.CanEndTurn().Returns(canEndTurn);
+            _gameContext.CanEndTurn().Returns(canEndTurn);
 
             var sut = Create(Make.GamePlaySetup.Build());
 
@@ -222,7 +222,7 @@ namespace RISK.Tests.GameEngine
             var sut = Create(Make.GamePlaySetup.Build());
             sut.EndTurn();
 
-            _gameStateFsm.Received().EndTurn();
+            _gameContext.Received().EndTurn();
         }
 
         [Fact]
@@ -238,7 +238,7 @@ namespace RISK.Tests.GameEngine
         public void Game_is_over()
         {
             var territories = new List<ITerritory>();
-            _gameStateFsm.Territories.Returns(territories);
+            _gameContext.Territories.Returns(territories);
             _gameRules.IsGameOver(territories).Returns(true);
 
             var sut = Create(Make.GamePlaySetup.Build());

@@ -13,7 +13,7 @@ namespace GuiWpf.ViewModels.Gameplay
 
     public class GameboardViewModelFactory : IGameboardViewModelFactory
     {
-        private readonly IInteractionStateFsm _interactionStateFsm;
+        private readonly IInteractionContext _interactionContext;
         private readonly IRegions _regions;
         private readonly IWorldMapViewModelFactory _worldMapViewModelFactory;
         private readonly IWindowManager _windowManager;
@@ -23,7 +23,7 @@ namespace GuiWpf.ViewModels.Gameplay
         private readonly IInteractionStateFactory _interactionStateFactory;
 
         public GameboardViewModelFactory(
-            IInteractionStateFsm interactionStateFsm,
+            IInteractionContext interactionContext,
             IInteractionStateFactory interactionStateFactory,
             IRegions regions,
             IWorldMapViewModelFactory worldMapViewModelFactory,
@@ -32,7 +32,7 @@ namespace GuiWpf.ViewModels.Gameplay
             IDialogManager dialogManager,
             IEventAggregator eventAggregator)
         {
-            _interactionStateFsm = interactionStateFsm;
+            _interactionContext = interactionContext;
             _interactionStateFactory = interactionStateFactory;
             _regions = regions;
             _worldMapViewModelFactory = worldMapViewModelFactory;
@@ -46,7 +46,7 @@ namespace GuiWpf.ViewModels.Gameplay
         {
             return new GameboardViewModel(
                 game,
-                _interactionStateFsm,
+                _interactionContext,
                 _interactionStateFactory,
                 _regions,
                 _worldMapViewModelFactory,

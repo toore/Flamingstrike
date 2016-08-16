@@ -4,7 +4,7 @@ using RISK.GameEngine.Extensions;
 
 namespace RISK.GameEngine.Play.GamePhases
 {
-    public interface IGameStateFsm
+    public interface IGameContext
     {
         void Set(IGameState gameState);
         IPlayer CurrentPlayer { get; }
@@ -25,7 +25,7 @@ namespace RISK.GameEngine.Play.GamePhases
         void EndTurn();
     }
 
-    public class GameStateFsm : IGameStateFsm
+    public class GameContext : IGameContext
     {
         private IGameState _currentState;
 

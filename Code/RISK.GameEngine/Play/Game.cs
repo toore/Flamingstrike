@@ -26,97 +26,97 @@ namespace RISK.GameEngine.Play
 
     public class Game : IGame
     {
-        private readonly IGameStateFsm _gameStateFsm;
+        private readonly IGameContext _gameContext;
         private readonly IGameRules _gameRules;
 
-        public Game(IGameStateFsm gameStateFsm, IGameRules gameRules)
+        public Game(IGameContext gameContext, IGameRules gameRules)
         {
-            _gameStateFsm = gameStateFsm;
+            _gameContext = gameContext;
             _gameRules = gameRules;
         }
 
-        public IPlayer CurrentPlayer => _gameStateFsm.CurrentPlayer;
+        public IPlayer CurrentPlayer => _gameContext.CurrentPlayer;
 
         public ITerritory GetTerritory(IRegion region)
         {
-            return _gameStateFsm.GetTerritory(region);
+            return _gameContext.GetTerritory(region);
         }
 
         public bool CanPlaceDraftArmies(IRegion region)
         {
-            return _gameStateFsm.CanPlaceDraftArmies(region);
+            return _gameContext.CanPlaceDraftArmies(region);
         }
 
         public int GetNumberOfArmiesToDraft()
         {
-            return _gameStateFsm.GetNumberOfArmiesToDraft();
+            return _gameContext.GetNumberOfArmiesToDraft();
         }
 
         public void PlaceDraftArmies(IRegion region, int numberOfArmies)
         {
-            _gameStateFsm.PlaceDraftArmies(region, numberOfArmies);
+            _gameContext.PlaceDraftArmies(region, numberOfArmies);
         }
 
         public bool CanAttack(IRegion attackingRegion, IRegion defendingRegion)
         {
-            return _gameStateFsm.CanAttack(attackingRegion, defendingRegion);
+            return _gameContext.CanAttack(attackingRegion, defendingRegion);
         }
 
         public void Attack(IRegion attackingRegion, IRegion defendingRegion)
         {
-            _gameStateFsm.Attack(attackingRegion, defendingRegion);
+            _gameContext.Attack(attackingRegion, defendingRegion);
         }
 
         public bool CanSendArmiesToOccupy()
         {
-            return _gameStateFsm.CanSendAdditionalArmiesToOccupy();
+            return _gameContext.CanSendAdditionalArmiesToOccupy();
         }
 
         public int GetNumberOfArmiesThatCanBeSentToOccupy()
         {
-            return _gameStateFsm.GetNumberOfAdditionalArmiesThatCanBeSentToOccupy();
+            return _gameContext.GetNumberOfAdditionalArmiesThatCanBeSentToOccupy();
         }
 
         public void SendArmiesToOccupy(int numberOfArmies)
         {
-            _gameStateFsm.SendAdditionalArmiesToOccupy(numberOfArmies);
+            _gameContext.SendAdditionalArmiesToOccupy(numberOfArmies);
         }
 
         public bool CanFreeMove()
         {
-            return _gameStateFsm.CanFreeMove();
+            return _gameContext.CanFreeMove();
         }
 
         public bool CanFortify(IRegion sourceRegion, IRegion destinationRegion)
         {
-            return _gameStateFsm.CanFortify(sourceRegion, destinationRegion);
+            return _gameContext.CanFortify(sourceRegion, destinationRegion);
         }
 
         public void Fortify(IRegion sourceRegion, IRegion destinationRegion, int armies)
         {
-            _gameStateFsm.Fortify(sourceRegion, destinationRegion, armies);
+            _gameContext.Fortify(sourceRegion, destinationRegion, armies);
         }
 
         public bool CanEndTurn()
         {
-            return _gameStateFsm.CanEndTurn();
+            return _gameContext.CanEndTurn();
         }
 
         public void EndTurn()
         {
-            _gameStateFsm.EndTurn();
+            _gameContext.EndTurn();
         }
 
         public bool IsGameOver()
         {
-            return _gameRules.IsGameOver(_gameStateFsm.Territories);
+            return _gameRules.IsGameOver(_gameContext.Territories);
         }
 
         public bool IsCurrentPlayerOccupyingRegion(IRegion region)
         {
             var territory = GetTerritory(region);
 
-            var isCurrentPlayerOccupyingTerritory = territory.Player == _gameStateFsm.CurrentPlayer;
+            var isCurrentPlayerOccupyingTerritory = territory.Player == _gameContext.CurrentPlayer;
 
             return isCurrentPlayerOccupyingTerritory;
         }

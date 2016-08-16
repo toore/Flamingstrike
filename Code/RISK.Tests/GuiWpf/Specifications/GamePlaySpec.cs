@@ -237,16 +237,16 @@ namespace RISK.Tests.GuiWpf.Specifications
             var attacker = new Attacker(battle);
             var gameRules = new GameRules();
             var gameStateFactory = new GameStateFactory(gameDataFactory, armyDrafter, territoryOccupier, attacker, fortifier, gameRules);
-            var gameStateFsm = new GameStateFsm();
-            var gameStateConductor = new GameStateConductor(gameStateFactory, armyDraftCalculator, gameDataFactory, gameStateFsm);
+            var gameContext = new GameContext();
+            var gameStateConductor = new GameStateConductor(gameStateFactory, armyDraftCalculator, gameDataFactory, gameContext);
             var deckFactory = new DeckFactory(_regions, new FisherYatesShuffle(new RandomWrapper()));
-            var gameFactory = new GameFactory(gameDataFactory, gameStateConductor, deckFactory, gameStateFsm, gameRules);
+            var gameFactory = new GameFactory(gameDataFactory, gameStateConductor, deckFactory, gameContext, gameRules);
 
             _players = new Sequence<IPlayer>(_player1, _player2);
             var gamePlaySetup = new GamePlaySetup(_players, _territories);
             _game = gameFactory.Create(gamePlaySetup);
-            var interactionStateFsm = new InteractionStateFsm();
-            _interactionStateFactory = new InteractionStateFactory(interactionStateFsm);
+            var interactionContext = new InteractionContext();
+            _interactionStateFactory = new InteractionStateFactory(interactionContext);
 
             var regionModelFactory = new RegionModelFactory(_regions);
             var colorService = new ColorService();
@@ -265,7 +265,7 @@ namespace RISK.Tests.GuiWpf.Specifications
 
             _gameboardViewModel = new GameboardViewModel(
                 _game,
-                interactionStateFsm,
+                interactionContext,
                 _interactionStateFactory,
                 _regions,
                 worldMapViewModelFactory,

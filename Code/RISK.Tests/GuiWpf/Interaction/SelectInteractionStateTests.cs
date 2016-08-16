@@ -8,18 +8,18 @@ namespace RISK.Tests.GuiWpf.Interaction
 {
     public class SelectInteractionStateTests
     {
-        private readonly IInteractionStateFsm _interactionStateFsm;
+        private readonly IInteractionContext _interactionContext;
         private readonly IInteractionStateFactory _interactionStateFactory;
         private readonly IGame _game;
         private readonly SelectInteractionState _sut;
 
         public SelectInteractionStateTests()
         {
-            _interactionStateFsm = Substitute.For<IInteractionStateFsm>();
+            _interactionContext = Substitute.For<IInteractionContext>();
             _interactionStateFactory = Substitute.For<IInteractionStateFactory>();
             _game = Substitute.For<IGame>();
 
-            _sut = new SelectInteractionState(_interactionStateFsm, _interactionStateFactory, _game);
+            _sut = new SelectInteractionState(_interactionContext, _interactionStateFactory, _game);
         }
 
         [Fact]
@@ -32,7 +32,7 @@ namespace RISK.Tests.GuiWpf.Interaction
 
             _sut.OnClick(selectedRegion);
 
-            _interactionStateFsm.Received().Set(attackState);
+            _interactionContext.Received().Set(attackState);
         }
 
         [Fact]

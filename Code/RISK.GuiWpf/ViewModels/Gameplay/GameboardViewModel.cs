@@ -15,7 +15,7 @@ namespace GuiWpf.ViewModels.Gameplay
     {
         private readonly IRegions _regions;
         private readonly IGame _game;
-        private readonly IInteractionStateFsm _interactionStateFsm;
+        private readonly IInteractionContext _interactionContext;
         private readonly IInteractionStateFactory _interactionStateFactory;
         private readonly IWorldMapViewModelFactory _worldMapViewModelFactory;
         private readonly IWindowManager _windowManager;
@@ -28,7 +28,7 @@ namespace GuiWpf.ViewModels.Gameplay
 
         public GameboardViewModel(
             IGame game,
-            IInteractionStateFsm interactionStateFsm,
+            IInteractionContext interactionContext,
             IInteractionStateFactory interactionStateFactory,
             IRegions regions,
             IWorldMapViewModelFactory worldMapViewModelFactory,
@@ -39,7 +39,7 @@ namespace GuiWpf.ViewModels.Gameplay
         {
             _regions = regions;
             _game = game;
-            _interactionStateFsm = interactionStateFsm;
+            _interactionContext = interactionContext;
             _interactionStateFactory = interactionStateFactory;
             _worldMapViewModelFactory = worldMapViewModelFactory;
             _windowManager = windowManager;
@@ -101,7 +101,7 @@ namespace GuiWpf.ViewModels.Gameplay
         private void EnterDraftArmiesInteractionState()
         {
             var draftArmiesState = _interactionStateFactory.CreateDraftArmiesInteractionState(_game);
-            _interactionStateFsm.Set(draftArmiesState);
+            _interactionContext.Set(draftArmiesState);
         }
 
         private ReadOnlyCollection<ITerritory> GetAllTerritories()
@@ -121,7 +121,7 @@ namespace GuiWpf.ViewModels.Gameplay
         private void EnterFortifyInteractionState()
         {
             var fortifySelectState = _interactionStateFactory.CreateFortifySelectInteractionState(_game);
-            _interactionStateFsm.Set(fortifySelectState);
+            _interactionContext.Set(fortifySelectState);
         }
 
         public void EndTurn()
@@ -145,7 +145,7 @@ namespace GuiWpf.ViewModels.Gameplay
 
         public void OnRegionClick(IRegion region)
         {
-            _interactionStateFsm.OnClick(region);
+            _interactionContext.OnClick(region);
 
             UpdateGameboard();
 
@@ -175,10 +175,10 @@ namespace GuiWpf.ViewModels.Gameplay
         {
             var allTerritories = GetAllTerritories();
             var enabledTerritories = _regions.GetAll()
-                .Where(x => _interactionStateFsm.CanClick(x))
+                .Where(x => _interactionContext.CanClick(x))
                 .ToList();
 
-            var selectedRegion = _interactionStateFsm.SelectedRegion;
+            var selectedRegion = _interactionContext.SelectedRegion;
 
             _worldMapViewModelFactory.Update(WorldMapViewModel, allTerritories, selectedRegion, enabledTerritories);
         }

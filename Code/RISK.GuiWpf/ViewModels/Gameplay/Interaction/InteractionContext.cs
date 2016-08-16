@@ -2,7 +2,7 @@ using RISK.Core;
 
 namespace GuiWpf.ViewModels.Gameplay.Interaction
 {
-    public interface IInteractionStateFsm
+    public interface IInteractionContext
     {
         IRegion SelectedRegion { get; }
         void Set(IInteractionState interactionState);
@@ -10,7 +10,7 @@ namespace GuiWpf.ViewModels.Gameplay.Interaction
         void OnClick(IRegion region);
     }
 
-    public class InteractionStateFsm : IInteractionStateFsm
+    public class InteractionContext : IInteractionContext
     {
         private IInteractionState _interactionState;
 

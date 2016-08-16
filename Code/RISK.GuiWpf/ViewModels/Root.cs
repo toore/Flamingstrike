@@ -40,8 +40,8 @@ namespace GuiWpf.ViewModels
                 PlayerRepository,
                 EventAggregator);
 
-            var interactionStateFsm = new InteractionStateFsm();
-            var interactionStateFactory = new InteractionStateFactory(interactionStateFsm);
+            var interactionContext = new InteractionContext();
+            var interactionStateFactory = new InteractionStateFactory(interactionContext);
             var colorService = new ColorService();
             var continents = new Continents();
             var regions = new Regions(continents);
@@ -57,7 +57,7 @@ namespace GuiWpf.ViewModels
             var dialogManager = new DialogManager(userNotifier);
 
             GameboardViewModelFactory = new GameboardViewModelFactory(
-                interactionStateFsm,
+                interactionContext,
                 interactionStateFactory,
                 regions,
                 worldMapViewModelFactory,
@@ -81,9 +81,9 @@ namespace GuiWpf.ViewModels
             var gameRules = new GameRules();
             var gameStateFactory = new GameStateFactory(gameDataFactory, armyDrafter, territoryOccupier, attacker, fortifier, gameRules);
             var armyDraftCalculator = new ArmyDraftCalculator(continents);
-            var gameStateFsm = new GameStateFsm();
-            var gameStateConductor = new GameStateConductor(gameStateFactory, armyDraftCalculator, gameDataFactory, gameStateFsm);
-            var gameFactory = new GameFactory(gameDataFactory, gameStateConductor, deckFactory, gameStateFsm, gameRules);
+            var gameContext = new GameContext();
+            var gameStateConductor = new GameStateConductor(gameStateFactory, armyDraftCalculator, gameDataFactory, gameContext);
+            var gameFactory = new GameFactory(gameDataFactory, gameStateConductor, deckFactory, gameContext, gameRules);
 
             AlternateGameSetupViewModelFactory = new AlternateGameSetupViewModelFactory(
                 gameFactory,

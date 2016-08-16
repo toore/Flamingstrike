@@ -16,26 +16,26 @@ namespace GuiWpf.ViewModels.Gameplay.Interaction
 
     public class InteractionStateFactory : IInteractionStateFactory
     {
-        private readonly IInteractionStateFsm _interactionStateFsm;
+        private readonly IInteractionContext _interactionContext;
 
-        public InteractionStateFactory(IInteractionStateFsm interactionStateFsm)
+        public InteractionStateFactory(IInteractionContext interactionContext)
         {
-            _interactionStateFsm = interactionStateFsm;
+            _interactionContext = interactionContext;
         }
 
         public IInteractionState CreateDraftArmiesInteractionState(IGame game)
         {
-            return new DraftArmiesInteractionState(_interactionStateFsm, this, game);
+            return new DraftArmiesInteractionState(_interactionContext, this, game);
         }
 
         public IInteractionState CreateSelectInteractionState(IGame game)
         {
-            return new SelectInteractionState(_interactionStateFsm, this, game);
+            return new SelectInteractionState(_interactionContext, this, game);
         }
 
         public IInteractionState CreateAttackInteractionState(IGame game, IRegion selectedRegion)
         {
-            return new AttackInteractionState(_interactionStateFsm, this, game, selectedRegion);
+            return new AttackInteractionState(_interactionContext, this, game, selectedRegion);
         }
 
         public IInteractionState CreateSendArmiesToOccupyInteractionState(IGame _game)
@@ -45,12 +45,12 @@ namespace GuiWpf.ViewModels.Gameplay.Interaction
 
         public IInteractionState CreateFortifySelectInteractionState(IGame game)
         {
-            return new FortifySelectInteractionState(_interactionStateFsm, this, game);
+            return new FortifySelectInteractionState(_interactionContext, this, game);
         }
 
         public IInteractionState CreateFortifyMoveInteractionState(IGame game, IRegion selectedRegion)
         {
-            return new FortifyMoveInteractionState(_interactionStateFsm, this, game, selectedRegion);
+            return new FortifyMoveInteractionState(_interactionContext, this, game, selectedRegion);
         }
 
         public IInteractionState CreateEndTurnInteractionState()

@@ -6,13 +6,13 @@ namespace GuiWpf.ViewModels.Gameplay.Interaction
 {
     public class DraftArmiesInteractionState : IInteractionState
     {
-        private readonly IInteractionStateFsm _interactionStateFsm;
+        private readonly IInteractionContext _interactionContext;
         private readonly IInteractionStateFactory _interactionStateFactory;
         private readonly IGame _game;
 
-        public DraftArmiesInteractionState(IInteractionStateFsm interactionStateFsm, IInteractionStateFactory interactionStateFactory, IGame game)
+        public DraftArmiesInteractionState(IInteractionContext interactionContext, IInteractionStateFactory interactionStateFactory, IGame game)
         {
-            _interactionStateFsm = interactionStateFsm;
+            _interactionContext = interactionContext;
             _interactionStateFactory = interactionStateFactory;
             _game = game;
         }
@@ -45,7 +45,7 @@ namespace GuiWpf.ViewModels.Gameplay.Interaction
         private void EnterSelectState()
         {
             var selectInteractionState = _interactionStateFactory.CreateSelectInteractionState(_game);
-            _interactionStateFsm.Set(selectInteractionState);
+            _interactionContext.Set(selectInteractionState);
         }
     }
 }

@@ -116,7 +116,7 @@
     <Compile Include="Core\DiceTests.cs" />
     <Compile Include="Core\DicesRollerTests.cs" />
     <Compile Include="Core\ArmiesLostCalculatorTests.cs" />
-    <Compile Include="GameEngine\GameStateFsmTests.cs" />
+    <Compile Include="GameEngine\GameContextTests.cs" />
     <Compile Include="GameEngine\GameStates\GameOverGameStateTests.cs" />
     <Compile Include="GameEngine\GameTests.cs" />
     <Compile Include="Builders\ArmiesLostBuilder.cs" />
@@ -131,7 +131,7 @@
     <Compile Include="GuiWpf\Interaction\EndTurnInteractionStateTests.cs" />
     <Compile Include="GuiWpf\Interaction\FortifyMoveInteractionStateTests.cs" />
     <Compile Include="GuiWpf\Interaction\FortifySelectInteractionStateTests.cs" />
-    <Compile Include="GuiWpf\Interaction\InteractionStateFsmTests.cs" />
+    <Compile Include="GuiWpf\Interaction\InteractionStateContextTests.cs" />
     <Compile Include="GuiWpf\Interaction\InteractionStateExtensions.cs" />
     <Compile Include="GameEngine\StartingInfantryCalculatorTests.cs" />
     <Compile Include="Builders\GamePlaySetupBuilder.cs" />

@@ -5,13 +5,13 @@ using Xunit;
 
 namespace RISK.Tests.GuiWpf.Interaction
 {
-    public class InteractionStateFsmTests
+    public class InteractionStateContextTests
     {
-        private readonly InteractionStateFsm _sut;
+        private readonly InteractionContext _sut;
 
-        public InteractionStateFsmTests()
+        public InteractionStateContextTests()
         {
-            _sut = new InteractionStateFsm();
+            _sut = new InteractionContext();
         }
 
         [Fact]

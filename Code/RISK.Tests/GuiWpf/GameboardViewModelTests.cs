@@ -18,7 +18,7 @@ namespace RISK.Tests.GuiWpf
     public class GameboardViewModelTests
     {
         private readonly IGame _game;
-        private readonly IInteractionStateFsm _interactionStateFsm;
+        private readonly IInteractionContext _interactionContext;
         private readonly IInteractionStateFactory _interactionStateFactory;
         private readonly IRegions _regions;
         private readonly IWorldMapViewModelFactory _worldMapViewModelFactory;
@@ -31,7 +31,7 @@ namespace RISK.Tests.GuiWpf
         public GameboardViewModelTests()
         {
             _game = Substitute.For<IGame>();
-            _interactionStateFsm = Substitute.For<IInteractionStateFsm>();
+            _interactionContext = Substitute.For<IInteractionContext>();
             _interactionStateFactory = Substitute.For<IInteractionStateFactory>();
             _regions = Substitute.For<IRegions>();
             _worldMapViewModelFactory = Substitute.For<IWorldMapViewModelFactory>();
@@ -43,7 +43,7 @@ namespace RISK.Tests.GuiWpf
             ResourceManager.Instance = Substitute.For<IResourceManager>();
 
             _gameboardViewModelFactory = new GameboardViewModelFactory(
-                _interactionStateFsm,
+                _interactionContext,
                 _interactionStateFactory,
                 _regions,
                 _worldMapViewModelFactory,
@@ -128,7 +128,7 @@ namespace RISK.Tests.GuiWpf
 
             sut.EndTurn();
 
-            _interactionStateFsm.Received().Set(draftArmiesInteractionStateForNextPlayer);
+            _interactionContext.Received().Set(draftArmiesInteractionStateForNextPlayer);
         }
 
         [Fact]
@@ -167,14 +167,14 @@ namespace RISK.Tests.GuiWpf
         }
 
         [Fact]
-        public void Clicked_territory_is_routed_to_state_fsm()
+        public void Clicked_territory_is_routed_to_interaction_context()
         {
             var region = Substitute.For<IRegion>();
             var sut = Initialize();
 
             sut.OnRegionClick(region);
 
-            _interactionStateFsm.Received().OnClick(region);
+            _interactionContext.Received().OnClick(region);
         }
 
         [Theory]
@@ -198,7 +198,7 @@ namespace RISK.Tests.GuiWpf
 
             sut.EnterFortifyMode();
 
-            _interactionStateFsm.Received().Set(fortifyState);
+            _interactionContext.Received().Set(fortifyState);
         }
 
         private GameboardViewModel Initialize(bool activate = true)

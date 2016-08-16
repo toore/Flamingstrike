@@ -6,13 +6,13 @@ namespace GuiWpf.ViewModels.Gameplay.Interaction
 {
     public class FortifyMoveInteractionState : IInteractionState
     {
-        private readonly IInteractionStateFsm _interactionStateFsm;
+        private readonly IInteractionContext _interactionContext;
         private readonly IInteractionStateFactory _interactionStateFactory;
         private readonly IGame _game;
 
-        public FortifyMoveInteractionState(IInteractionStateFsm interactionStateFsm, IInteractionStateFactory interactionStateFactory, IGame game, IRegion selectedRegion)
+        public FortifyMoveInteractionState(IInteractionContext interactionContext, IInteractionStateFactory interactionStateFactory, IGame game, IRegion selectedRegion)
         {
-            _interactionStateFsm = interactionStateFsm;
+            _interactionContext = interactionContext;
             _interactionStateFactory = interactionStateFactory;
             _game = game;
             SelectedRegion = selectedRegion;
@@ -56,7 +56,7 @@ namespace GuiWpf.ViewModels.Gameplay.Interaction
         private void EnterFortifySelectState()
         {
             var fortifySelectState = _interactionStateFactory.CreateFortifySelectInteractionState(_game);
-            _interactionStateFsm.Set(fortifySelectState);
+            _interactionContext.Set(fortifySelectState);
         }
 
         private bool CanFortify(IRegion regionToFortify)
@@ -75,7 +75,7 @@ namespace GuiWpf.ViewModels.Gameplay.Interaction
         private void EnterEndTurnState()
         {
             var endTurnState = _interactionStateFactory.CreateEndTurnInteractionState();
-            _interactionStateFsm.Set(endTurnState);
+            _interactionContext.Set(endTurnState);
         }
     }
 }

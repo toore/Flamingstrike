@@ -51,7 +51,7 @@
     <Compile Include="Play\GamePhases\GameOverGameState.cs" />
     <Compile Include="Play\GamePhases\GameStateConductor.cs" />
     <Compile Include="Play\GamePhases\GameStateFactory.cs" />
-    <Compile Include="Play\GamePhases\GameStateFsm.cs" />
+    <Compile Include="Play\GamePhases\GameContext.cs" />
     <Compile Include="Play\GamePhases\IGameState.cs" />
     <Compile Include="Play\GamePhases\SendArmiesToOccupyGameState.cs" />
     <Compile Include="Player.cs" />
