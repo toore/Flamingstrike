@@ -17,10 +17,10 @@ namespace RISK.GameEngine.Play.GamePhases
         private TurnConqueringAchievement _turnConqueringAchievement;
 
         public AttackGameState(
-            IGameStateConductor gameStateConductor, 
-            IGameDataFactory gameDataFactory, 
-            IAttacker attacker, 
-            IFortifier fortifier, 
+            IGameStateConductor gameStateConductor,
+            IGameDataFactory gameDataFactory,
+            IAttacker attacker,
+            IFortifier fortifier,
             IGameRules gameRules,
             GameData gameData,
             TurnConqueringAchievement turnConqueringAchievement)
@@ -88,7 +88,7 @@ namespace RISK.GameEngine.Play.GamePhases
             }
             else
             {
-                SendArmiesToOccupy(updatedTerritories, attackingRegion, defeatedRegion);
+                ContinueWithAttackOrOccupation(updatedTerritories, attackingRegion, defeatedRegion);
             }
         }
 
@@ -104,7 +104,7 @@ namespace RISK.GameEngine.Play.GamePhases
             var eliminatedPlayer = _gameData.Players.Single(player => player == defeatedPlayer);
 
             AquireAllCardsFromEliminatedPlayer(eliminatedPlayer);
-            SendArmiesToOccupy(updatedTerritories, attackingRegion, defeatedRegion);
+            ContinueWithAttackOrOccupation(updatedTerritories, attackingRegion, defeatedRegion);
         }
 
         private void AquireAllCardsFromEliminatedPlayer(IPlayer eliminatedPlayer)
@@ -113,6 +113,21 @@ namespace RISK.GameEngine.Play.GamePhases
             foreach (var aquiredCard in aquiredCards)
             {
                 _gameData.CurrentPlayer.AddCard(aquiredCard);
+            }
+        }
+
+        private void ContinueWithAttackOrOccupation(IReadOnlyList<ITerritory> territories, IRegion sourceRegion, IRegion destinationRegion)
+        {
+            var numberOfArmiesThatCanBeSentToOccupy = territories.GetTerritory(sourceRegion).GetNumberOfArmiesThatCanBeSentToOccupy();
+
+            var canSendArmiesToOccupy = numberOfArmiesThatCanBeSentToOccupy > 0;
+            if (canSendArmiesToOccupy)
+            {
+                SendArmiesToOccupy(territories, sourceRegion, destinationRegion);
+            }
+            else
+            {
+                MoveOnToAttackPhase(territories);
             }
         }
 

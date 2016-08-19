@@ -72,13 +72,13 @@ namespace GuiWpf.ViewModels.Gameplay.Interaction
 
             if (_game.CanSendArmiesToOccupy())
             {
-                EnterSendArmiesToOccupyState();
+                EnterSendArmiesToOccupyState(SelectedRegion, attackedRegion);
             }
         }
 
-        private void EnterSendArmiesToOccupyState()
+        private void EnterSendArmiesToOccupyState(IRegion selectedRegion, IRegion attackedRegion)
         {
-            var sendArmiesToOccupyInteractionState = _interactionStateFactory.CreateSendArmiesToOccupyInteractionState(_game);
+            var sendArmiesToOccupyInteractionState = _interactionStateFactory.CreateSendArmiesToOccupyInteractionState(_game, selectedRegion, attackedRegion);
             _interactionContext.Set(sendArmiesToOccupyInteractionState);
         }
     }

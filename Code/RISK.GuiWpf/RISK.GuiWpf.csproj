@@ -94,6 +94,7 @@
     <Compile Include="ViewModels\Gameplay\Interaction\SelectInteractionState.cs" />
     <Compile Include="ViewModels\Gameplay\Interaction\InteractionContext.cs" />
     <Compile Include="ViewModels\Gameplay\Interaction\EndTurnInteractionState.cs" />
+    <Compile Include="ViewModels\Gameplay\Interaction\SendArmiesToOccupyInteractionState.cs" />
     <Compile Include="ViewModels\Gameplay\IWorldMapItemViewModelVisitor.cs" />
     <Compile Include="ViewModels\Gameplay\WorldMapItemUpdater.cs" />
     <Compile Include="ViewModels\IConfirmViewModelFactory.cs" />
