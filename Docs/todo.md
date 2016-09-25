@@ -1,23 +1,30 @@
 ##TODO
-Game states:
+Game states/phases:
 - TradeInSetsHoldingAtLeastThreeCards
 + DraftArmies
 + Attack
 + SendArmiesToOccupy
 - TradeInSetsHoldingFiveOrMoreCards
-- Fortify
-- GameOver
++ Fortify
++ GameOver
 
 
-SendArmiesToOccupyGameState
-- should not be initiated if all the available armies were already moved into the territory
-- should allow to end turn, if no desire to move into territory
+Issues:
+Fortify can not deselect Territory
+Crash when ending turn in fortify mode
 
 AlternateGameSetup:
-- Dependency inject TerritoryResponder
+- Dependency inject TerritoryResponder (Hollywood-principle)
 - InitializeInfantryToPlace: Fix commented code
 
+Sequence.cs - should be CQRS compliant?
+
+IPlayer.cs - Should NOT contain game setup specific public(?) code!
+
 Player name formatting service "Player: abc"?
+
+What about a common starting point for setup and the game engine?
+
 
 
 ##Not/partially tested
