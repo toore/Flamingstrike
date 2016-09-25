@@ -30,26 +30,21 @@ namespace RISK.Core
         {
             var numberOfOccupiedTerritories = territories.Count(territory => territory.Player == currentPlayer);
 
-            var armiesDraftedBasedOnTerritoriesOccupied = Math.Max(numberOfOccupiedTerritories / 3, 3);
-            return armiesDraftedBasedOnTerritoriesOccupied;
+            return Math.Max(numberOfOccupiedTerritories / 3, 3);
         }
 
         private int CalculateArmiesDraftedBasedOnContinentsOccupied(IPlayer currentPlayer, IEnumerable<ITerritory> territories)
         {
-            var armiesDraftedBasedOnContinentsOccupied = _continents.GetAll()
+            return _continents.GetAll()
                 .Where(continent => IsContinentOccupiedByPlayer(continent, currentPlayer, territories))
                 .Sum(continent => continent.Bonus);
-
-            return armiesDraftedBasedOnContinentsOccupied;
         }
 
         private static bool IsContinentOccupiedByPlayer(IContinent continent, IPlayer player, IEnumerable<ITerritory> territories)
         {
-            var isContinentOccupiedByPlayer = territories
+            return territories
                 .Where(x => x.Region.Continent == continent)
                 .All(x => x.Player == player);
-
-            return isContinentOccupiedByPlayer;
         }
     }
 }

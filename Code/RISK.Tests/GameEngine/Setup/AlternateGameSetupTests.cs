@@ -10,7 +10,7 @@ using Toore.Shuffling;
 using Xunit;
 using IPlayer = RISK.GameEngine.IPlayer;
 
-namespace RISK.Tests.GameEngine
+namespace RISK.Tests.GameEngine.Setup
 {
     public class AlternateGameSetupTests
     {

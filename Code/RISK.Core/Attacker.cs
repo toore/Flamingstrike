@@ -46,7 +46,7 @@ namespace RISK.Core
 
         private static bool HasAttackerEnoughArmiesToPerformAttack(ITerritory attackingTerritory)
         {
-            return attackingTerritory.GetNumberOfArmiesAvailableForAttack() > 0;
+            return attackingTerritory.GetNumberOfArmiesThatCanBeUsedInAnAttack() > 0;
         }
 
         public AttackOutcome Attack(IReadOnlyList<ITerritory> territories, IRegion attackingRegion, IRegion defendingRegion)
@@ -62,32 +62,32 @@ namespace RISK.Core
             var battleResult = _battle.Attack(attackingTerritory, defendingTerritory);
 
             var updatedTerritories = territories
-                .ReplaceItem(attackingTerritory, battleResult.UpdatedAttackingTerritory)
-                .ReplaceItem(defendingTerritory, battleResult.UpdatedDefendingTerritory)
+                .Except(new [] {attackingTerritory, defendingTerritory})
+                .Union(new[]{battleResult.UpdatedAttackingTerritory, battleResult.UpdatedDefendingTerritory})
                 .ToList();
 
-            var attackOutcome = battleResult.IsDefenderDefeated() ? DefendingArmy.IsEliminated
-                : DefendingArmy.IsNotEliminated;
+            var defendingArmyAvailability = battleResult.IsDefenderDefeated() ? DefendingArmyAvailability.IsEliminated
+                : DefendingArmyAvailability.Exists;
 
-            return new AttackOutcome(updatedTerritories, attackOutcome);
+            return new AttackOutcome(updatedTerritories, defendingArmyAvailability);
         }
     }
 
-    public enum DefendingArmy
+    public enum DefendingArmyAvailability
     {
-        IsNotEliminated,
+        Exists,
         IsEliminated
     }
 
     public class AttackOutcome
     {
         public IReadOnlyList<ITerritory> Territories { get; }
-        public DefendingArmy DefendingArmy { get; }
+        public DefendingArmyAvailability DefendingArmyAvailability { get; }
 
-        public AttackOutcome(IReadOnlyList<ITerritory> territories, DefendingArmy defendingArmy)
+        public AttackOutcome(IReadOnlyList<ITerritory> territories, DefendingArmyAvailability defendingArmyAvailability)
         {
             Territories = territories;
-            DefendingArmy = defendingArmy;
+            DefendingArmyAvailability = defendingArmyAvailability;
         }
     }
 }

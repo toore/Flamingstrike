@@ -14,13 +14,12 @@ namespace RISK.Core
         {
             var territoryToReinforce = territories.Single(x => x.Region == regionToReinforce);
             var currentArmies = territoryToReinforce.Armies;
-            var updatedTerritory = new Territory(regionToReinforce, territoryToReinforce.Player, currentArmies + numberOfArmiesToPlace);
+            var reinforcedTerritory = new Territory(regionToReinforce, territoryToReinforce.Player, currentArmies + numberOfArmiesToPlace);
 
-            var updatedTerritories = territories
-                .ReplaceItem(territoryToReinforce, updatedTerritory)
+            return territories
+                .Except(new[] { territoryToReinforce })
+                .Union(new[] { reinforcedTerritory })
                 .ToList();
-
-            return updatedTerritories;
         }
     }
 }

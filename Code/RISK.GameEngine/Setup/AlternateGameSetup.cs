@@ -48,18 +48,16 @@ namespace RISK.GameEngine.Setup
             InitializeInfantryToPlace(playersInOrderOfTakingTurn, territories);
             PlaceArmies(TerritoryResponder, playersInOrderOfTakingTurn, territories);
 
-            var gamePlaySetup = new GamePlaySetup(playersInOrderOfTakingTurn.ToSequence(), territories);
+            var gamePlaySetup = new GamePlaySetup(playersInOrderOfTakingTurn, territories);
 
             return gamePlaySetup;
         }
 
         private List<IPlayer> ShufflePlayers()
         {
-            var shuffledPlayers = _players
+            return _players
                 .Shuffle(_shuffle)
                 .ToList();
-
-            return shuffledPlayers;
         }
 
         private List<Territory> AssignPlayersToTerritories(Sequence<IPlayer> players)

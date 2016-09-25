@@ -1,4 +1,4 @@
-namespace RISK.GameEngine.Play.GamePhases
+namespace RISK.GameEngine.Play.GameStates
 {
     public enum TurnConqueringAchievement
     {

@@ -8,8 +8,9 @@ namespace RISK.Core
         IPlayer Player { get; }
         int Armies { get; }
 
-        int GetNumberOfArmiesAvailableForAttack();
-        int GetNumberOfArmiesUsedForDefence();
+        int GetNumberOfArmiesThatCanBeUsedInAnAttack();
+        int GetNumberOfArmiesUsedAsDefence();
+        int GetNumberOfArmiesThatCanFortifyAnotherTerritory();
         int GetNumberOfArmiesThatCanBeSentToOccupy();
     }
 
@@ -31,14 +32,19 @@ namespace RISK.Core
         public IPlayer Player { get; }
         public int Armies { get; set; }
 
-        public int GetNumberOfArmiesAvailableForAttack()
+        public int GetNumberOfArmiesThatCanBeUsedInAnAttack()
         {
             return Math.Max(Armies - 1, 0);
         }
 
-        public int GetNumberOfArmiesUsedForDefence()
+        public int GetNumberOfArmiesUsedAsDefence()
         {
             return Armies;
+        }
+
+        public int GetNumberOfArmiesThatCanFortifyAnotherTerritory()
+        {
+            return Math.Max(Armies - 1, 0);
         }
 
         public int GetNumberOfArmiesThatCanBeSentToOccupy()

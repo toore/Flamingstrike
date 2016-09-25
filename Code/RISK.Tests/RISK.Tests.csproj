@@ -108,32 +108,28 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="GameEngine\Argx.cs" />
-    <Compile Include="GameEngine\GameStates\AttackGameStateTests.cs" />
-    <Compile Include="GameEngine\GameStates\DraftArmiesGameStateTests.cs" />
-    <Compile Include="GameEngine\GameStates\SendArmiesToOccupyGameStateTests.cs" />
+    <Compile Include="GameEngine\Play\GameStates\AttackPhaseStateGameStateTests.cs" />
+    <Compile Include="GameEngine\Play\GameStates\DraftArmiesPhaseGameState.cs" />
     <Compile Include="Core\BattleTests.cs" />
     <Compile Include="Core\DiceTests.cs" />
     <Compile Include="Core\DicesRollerTests.cs" />
     <Compile Include="Core\ArmiesLostCalculatorTests.cs" />
-    <Compile Include="GameEngine\GameContextTests.cs" />
-    <Compile Include="GameEngine\GameStates\GameOverGameStateTests.cs" />
-    <Compile Include="GameEngine\GameTests.cs" />
+    <Compile Include="GameEngine\Play\GameStates\SendArmiesToOccupyGameState.cs" />
+    <Compile Include="GameEngine\Play\GameTests.cs" />
     <Compile Include="Builders\ArmiesLostBuilder.cs" />
     <Compile Include="Builders\ContinentBuilder.cs" />
     <Compile Include="Builders\DicesBuilder.cs" />
-    <Compile Include="Builders\GameDataBuilder.cs" />
     <Compile Include="Builders\PlayerBuilder.cs" />
     <Compile Include="Builders\TerritoryBuilder.cs" />
-    <Compile Include="Extensions\EnumerableExtensions.cs" />
-    <Compile Include="Extensions\EnumerableExtensionsTests.cs" />
+    <Compile Include="GameEngine\Play\TerritoriesContextTests.cs" />
+    <Compile Include="GameEngine\Specifications\GameObserverSpec.cs" />
     <Compile Include="GuiWpf\Interaction\AttackInteractionStateTests.cs" />
     <Compile Include="GuiWpf\Interaction\EndTurnInteractionStateTests.cs" />
     <Compile Include="GuiWpf\Interaction\FortifyMoveInteractionStateTests.cs" />
     <Compile Include="GuiWpf\Interaction\FortifySelectInteractionStateTests.cs" />
     <Compile Include="GuiWpf\Interaction\InteractionStateContextTests.cs" />
     <Compile Include="GuiWpf\Interaction\InteractionStateExtensions.cs" />
-    <Compile Include="GameEngine\StartingInfantryCalculatorTests.cs" />
+    <Compile Include="GameEngine\Setup\StartingInfantryCalculatorTests.cs" />
     <Compile Include="Builders\GamePlaySetupBuilder.cs" />
     <Compile Include="GuiWpf\CurrentThreadDispatcher.cs" />
     <Compile Include="GuiWpf\Interaction\DraftArmiesInteractionStateTests.cs" />
@@ -165,7 +161,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="GameEngine\AlternateGameSetupTests.cs" />
+    <Compile Include="GameEngine\Setup\AlternateGameSetupTests.cs" />
     <Compile Include="GuiWpf\ColorServiceTests.cs" />
     <Compile Include="GuiWpf\GameboardViewModelTests.cs" />
     <Compile Include="GameEngine\RegionsTests.cs" />

@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using RISK.Core;
 using RISK.GameEngine;
-using RISK.GameEngine.Extensions;
 using RISK.GameEngine.Setup;
 using IPlayer = RISK.GameEngine.IPlayer;
 
@@ -15,7 +14,7 @@ namespace RISK.Tests.Builders
 
         public IGamePlaySetup Build()
         {
-            return new GamePlaySetup(_players.ToSequence(), _territories);
+            return new GamePlaySetup(_players, _territories);
         }
 
         public GamePlaySetupBuilder WithPlayer(IPlayer player)

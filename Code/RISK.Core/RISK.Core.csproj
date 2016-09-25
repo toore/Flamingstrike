@@ -40,7 +40,6 @@
   <ItemGroup>
     <Compile Include="ArmiesLostCalculator.cs" />
     <Compile Include="ArmyDraftCalculator.cs" />
-    <Compile Include="EnumerableExtensions.cs" />
     <Compile Include="ArmyDrafter.cs" />
     <Compile Include="Battle.cs" />
     <Compile Include="BattleOutcome.cs" />

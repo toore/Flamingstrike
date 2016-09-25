@@ -20,7 +20,6 @@ namespace RISK.GameEngine
     public class Player : IPlayer
     {
         private readonly IList<ICard> _cards = new List<ICard>();
-        private int _armiesToPlace;
 
         public Player(string name)
         {
@@ -31,7 +30,7 @@ namespace RISK.GameEngine
 
         public IEnumerable<ICard> Cards => _cards;
 
-        public int ArmiesToPlace => _armiesToPlace;
+        public int ArmiesToPlace { get; private set; }
 
         public bool HasArmiesLeftToPlace()
         {
@@ -54,7 +53,7 @@ namespace RISK.GameEngine
         public void PlaceArmy(Territory territory)
         {
             territory.Armies++;
-            _armiesToPlace--;
+            ArmiesToPlace--;
         }
 
         public void SetArmiesToPlace(int armiesToPlace)
@@ -63,7 +62,7 @@ namespace RISK.GameEngine
             {
                 throw new ArgumentOutOfRangeException(nameof(armiesToPlace), armiesToPlace, "value must be greater than or equal to zero");
             }
-            _armiesToPlace = armiesToPlace;
+            ArmiesToPlace = armiesToPlace;
         }
     }
 }

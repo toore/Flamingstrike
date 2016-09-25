@@ -6,26 +6,22 @@ namespace RISK.Core
     public interface IGameRules
     {
         bool IsPlayerEliminated(IEnumerable<ITerritory> territories, IPlayer player);
-        bool IsGameOver(IEnumerable<ITerritory> territories);
+        bool IsOnlyOnePlayerLeftInTheGame(IEnumerable<ITerritory> territories);
     }
 
     public class GameRules : IGameRules
     {
         public bool IsPlayerEliminated(IEnumerable<ITerritory> territories, IPlayer player)
         {
-            var playerOccupiesTerritories = territories.Any(x => x.Player == player);
-
-            return !playerOccupiesTerritories;
+            return territories.All(x => x.Player != player);
         }
 
-        public bool IsGameOver(IEnumerable<ITerritory> territories)
+        public bool IsOnlyOnePlayerLeftInTheGame(IEnumerable<ITerritory> territories)
         {
-            var allTerritoriesAreOccupiedBySamePlayer = territories
+            return territories
                 .Select(x => x.Player)
                 .Distinct()
                 .Count() == 1;
-
-            return allTerritoriesAreOccupiedBySamePlayer;
         }
     }
 }

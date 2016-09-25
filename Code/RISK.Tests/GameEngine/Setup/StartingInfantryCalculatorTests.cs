@@ -2,7 +2,7 @@
 using RISK.GameEngine.Setup;
 using Xunit;
 
-namespace RISK.Tests.GameEngine
+namespace RISK.Tests.GameEngine.Setup
 {
     public class StartingInfantryCalculatorTests
     {

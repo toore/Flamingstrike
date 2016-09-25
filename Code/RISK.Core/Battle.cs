@@ -20,8 +20,8 @@ namespace RISK.Core
 
         public IBattleOutcome Attack(ITerritory attackingTerritory, ITerritory defendingTerritory)
         {
-            var attackingArmies = Math.Min(attackingTerritory.GetNumberOfArmiesAvailableForAttack(), 3);
-            var defendingArmies = Math.Min(defendingTerritory.GetNumberOfArmiesUsedForDefence(), 2);
+            var attackingArmies = Math.Min(attackingTerritory.GetNumberOfArmiesThatCanBeUsedInAnAttack(), 3);
+            var defendingArmies = Math.Min(defendingTerritory.GetNumberOfArmiesUsedAsDefence(), 2);
 
             var dices = _dicesRoller.Roll(attackingArmies, defendingArmies);
             var battleOutcome = _armiesLostCalculator.Calculate(dices.AttackValues, dices.DefenceValues);

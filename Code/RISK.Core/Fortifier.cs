@@ -18,11 +18,14 @@ namespace RISK.Core
             var destinationTerritory = territories.Single(x => x.Region == destinationRegion);
             var playerOccupiesBothTerritories = sourceTerritory.Player == destinationTerritory.Player;
             var hasBorder = IsTerritoriesAdjacent(sourceRegion, destinationRegion);
+            var hasAtLeastOneArmyThatCanFortifyAnotherTerritory = sourceTerritory.GetNumberOfArmiesThatCanFortifyAnotherTerritory() > 0;
 
             var canFortify =
                 playerOccupiesBothTerritories
                 &&
-                hasBorder;
+                hasBorder
+                &&
+                hasAtLeastOneArmyThatCanFortifyAnotherTerritory;
 
             return canFortify;
         }
@@ -45,12 +48,10 @@ namespace RISK.Core
             var updatedSourceTerritory = new Territory(sourceRegion, sourceTerritory.Player, sourceTerritory.Armies - armies);
             var updatedDestinationTerritory = new Territory(destinationRegion, destinationTerritory.Player, destinationTerritory.Armies + armies);
 
-            var updatedTerritories = territories
-                .ReplaceItem(sourceTerritory, updatedSourceTerritory)
-                .ReplaceItem(destinationTerritory, updatedDestinationTerritory)
+            return territories
+                .Except(new[] { sourceTerritory, destinationTerritory })
+                .Union(new[] { updatedSourceTerritory, updatedDestinationTerritory })
                 .ToList();
-
-            return updatedTerritories;
         }
     }
 }

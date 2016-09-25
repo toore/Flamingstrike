@@ -1,50 +1,39 @@
-using System.Linq;
 using RISK.Core;
-using RISK.GameEngine.Play.GamePhases;
+using RISK.GameEngine.Play.GameStates;
 using RISK.GameEngine.Setup;
 
 namespace RISK.GameEngine.Play
 {
     public interface IGameFactory
     {
-        IGame Create(IGamePlaySetup gamePlaySetup);
+        IGame Create(IGameObserver gameObserver, IGamePlaySetup gamePlaySetup);
     }
 
     public class GameFactory : IGameFactory
     {
-        private readonly IGameDataFactory _gameDataFactory;
-        private readonly IGameStateConductor _gameStateConductor;
+        private readonly IGameStateFactory _gameStateFactory;
+        private readonly IArmyDraftCalculator _armyDraftCalculator;
         private readonly IDeckFactory _deckFactory;
-        private readonly IGameContext _gameContext;
-        private readonly IGameRules _gameRules;
 
         public GameFactory(
-            IGameDataFactory gameDataFactory,
-            IGameStateConductor gameStateConductor,
-            IDeckFactory deckFactory,
-            IGameContext gameContext,
-            IGameRules gameRules)
+            IGameStateFactory gameStateFactory, 
+            IArmyDraftCalculator armyDraftCalculator, 
+            IDeckFactory deckFactory)
         {
-            _gameDataFactory = gameDataFactory;
-            _gameStateConductor = gameStateConductor;
+            _gameStateFactory = gameStateFactory;
+            _armyDraftCalculator = armyDraftCalculator;
             _deckFactory = deckFactory;
-            _gameContext = gameContext;
-            _gameRules = gameRules;
         }
 
-        public IGame Create(IGamePlaySetup gamePlaySetup)
+        public IGame Create(IGameObserver gameObserver, IGamePlaySetup gamePlaySetup)
         {
-            var players = gamePlaySetup.Players;
-
-            var gameData = _gameDataFactory.Create(
-                players.Next(),
-                players.ToList(),
-                gamePlaySetup.Territories,
-                _deckFactory.Create());
-
-            _gameStateConductor.CurrentPlayerStartsNewTurn(gameData);
-
-            return new Game(_gameContext, _gameRules);
+            return new Game(
+                gameObserver,
+                _gameStateFactory,
+                _armyDraftCalculator,
+                _deckFactory.Create(),
+                gamePlaySetup.Players,
+                gamePlaySetup.Territories);
         }
     }
 }

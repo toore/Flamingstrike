@@ -5,24 +5,29 @@ namespace RISK.GameEngine
 {
     public class Region : IRegion
     {
-        private readonly List<IRegion> _borderingTerritories;
+        private readonly List<IRegion> _regionsWithBorderToThisRegion;
 
         public Region(IContinent continent)
         {
             Continent = continent;
-            _borderingTerritories = new List<IRegion>();
+            _regionsWithBorderToThisRegion = new List<IRegion>();
         }
 
         public IContinent Continent { get; }
 
         public bool HasBorder(IRegion region)
         {
-            return _borderingTerritories.Contains(region);
+            return _regionsWithBorderToThisRegion.Contains(region);
         }
 
-        public void AddBorders(params IRegion[] territoriesGeography)
+        public IEnumerable<IRegion> GetBorderingRegions()
         {
-            _borderingTerritories.AddRange(territoriesGeography);
+            return _regionsWithBorderToThisRegion;
+        }
+
+        public void AddBordersToRegions(params IRegion[] regions)
+        {
+            _regionsWithBorderToThisRegion.AddRange(regions);
         }
     }
 }
