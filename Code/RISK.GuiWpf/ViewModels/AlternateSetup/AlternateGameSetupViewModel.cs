@@ -109,7 +109,7 @@ namespace GuiWpf.ViewModels.AlternateSetup
 
             PlayerName = playerName;
 
-            InformationText = string.Format(ResourceManager.Instance.GetString("PLACE_ARMY"), armiesLeftToPlace);
+            InformationText = string.Format(Resources.PLACE_ARMY, armiesLeftToPlace);
         }
 
         public void EnterFortifyMode() {}

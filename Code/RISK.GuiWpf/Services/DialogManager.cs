@@ -1,4 +1,6 @@
-﻿namespace GuiWpf.Services
+﻿using GuiWpf.Properties;
+
+namespace GuiWpf.Services
 {
     public interface IDialogManager
     {
@@ -16,10 +18,10 @@
 
         public bool? ConfirmEndGame()
         {
-            var message = ResourceManager.Instance.GetString("ARE_YOU_SURE_YOU_WANT_TO_END_GAME");
-            var displayName = ResourceManager.Instance.GetString("END_GAME");
-            var confirmText = ResourceManager.Instance.GetString("YES");
-            var abortText = ResourceManager.Instance.GetString("NO");
+            var message = Resources.ARE_YOU_SURE_YOU_WANT_TO_END_GAME;
+            var displayName = Resources.END_GAME;
+            var confirmText = Resources.YES;
+            var abortText = Resources.NO;
 
             return _userNotifier.Confirm(message, displayName, confirmText, abortText);
         }

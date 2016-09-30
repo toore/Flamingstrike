@@ -5,7 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
     xmlns:Micro="http://www.caliburnproject.org"
-    xmlns:WpfExtensions="clr-namespace:GuiWpf.WpfExtensions"
+    xmlns:Properties="clr-namespace:GuiWpf.Properties"
     mc:Ignorable="d"
     d:DesignHeight="300" d:DesignWidth="300">
 
@@ -28,7 +28,7 @@
                 HorizontalAlignment="Center"
                 Margin="20">
                 <Button
-                    Content="{Binding Source={WpfExtensions:GetString START_GAME}}"
+                    Content="{x:Static Properties:Resources.START_GAME}"
                     Style="{StaticResource StandardButtonStyle}">
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="Click">

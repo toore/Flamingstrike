@@ -3,10 +3,10 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:WpfExtensions="clr-namespace:GuiWpf.WpfExtensions"
     xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
     xmlns:Micro="http://www.caliburnproject.org"
     xmlns:Views="clr-namespace:GuiWpf.Views"
+    xmlns:Properties="clr-namespace:GuiWpf.Properties"
     mc:Ignorable="d"
     d:DesignHeight="300" d:DesignWidth="300"
     d:DataContext="{d:DesignInstance d:Type=Views:GameOverViewModelDesignerData, IsDesignTimeCreatable=True}">
@@ -32,7 +32,7 @@
 
         <Label
             HorizontalAlignment="Center"
-            Content="{Binding Source={WpfExtensions:GetString GAME_OVER}}" />
+            Content="{x:Static Properties:Resources.GAME_OVER}" />
 
         <Label
             Grid.Row="1"

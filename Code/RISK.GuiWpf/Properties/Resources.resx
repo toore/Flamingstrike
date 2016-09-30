@@ -127,13 +127,17 @@
     <value>Alberta</value>
   </data>
   <data name="ARE_YOU_SURE_YOU_WANT_TO_END_GAME" xml:space="preserve">
-    <value>Are you sure you want to end game?</value>
+    <value>Are you sure you want to end the game?</value>
   </data>
   <data name="ARG0_IS_THE_WINNER" xml:space="preserve">
     <value>{0} is the winner!</value>
+    <comment>ARG0 specifies the player name</comment>
   </data>
   <data name="ARGENTINA" xml:space="preserve">
     <value>Argentina</value>
+  </data>
+  <data name="ATTACK" xml:space="preserve">
+    <value>Attack</value>
   </data>
   <data name="BRAZIL" xml:space="preserve">
     <value>Brazil</value>
@@ -149,6 +153,9 @@
   </data>
   <data name="CONGO" xml:space="preserve">
     <value>Congo</value>
+  </data>
+  <data name="DRAFT_ARMIES" xml:space="preserve">
+    <value>Draft Armies</value>
   </data>
   <data name="EASTERN_AUSTRALIA" xml:space="preserve">
     <value>Eastern Australia</value>
@@ -253,6 +260,9 @@
   </data>
   <data name="SELECT_TERRITORY" xml:space="preserve">
     <value>Select Territory</value>
+  </data>
+  <data name="SEND_ARMIES_TO_OCCUPY" xml:space="preserve">
+    <value>Send Armies To Occupy</value>
   </data>
   <data name="SIAM" xml:space="preserve">
     <value>Siam</value>

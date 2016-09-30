@@ -1,4 +1,5 @@
 ﻿using FluentAssertions;
+using GuiWpf.Properties;
 using GuiWpf.Services;
 using GuiWpf.ViewModels;
 using NSubstitute;
@@ -9,14 +10,10 @@ namespace RISK.Tests.GuiWpf
     public class ConfirmViewModelFactoryTests
     {
         private readonly IScreenConfirmationService _screenConfirmationService;
-        private readonly IResourceManager _resourceManager;
 
         public ConfirmViewModelFactoryTests()
         {
             _screenConfirmationService = Substitute.For<IScreenConfirmationService>();
-            _resourceManager = Substitute.For<IResourceManager>();
-
-            ResourceManager.Instance = _resourceManager;
         }
 
         [Fact]
@@ -28,52 +25,50 @@ namespace RISK.Tests.GuiWpf
         [Fact]
         public void Initialize_default_confirm_and_abort_texts()
         {
-            _resourceManager.GetString("CANCEL").Returns("translated cancel text");
+            var sut = Create(null);
 
-            var confirmViewModel = Create(null);
-
-            confirmViewModel.ConfirmText.Should().Be("OK");
-            confirmViewModel.AbortText.Should().Be("translated cancel text");
+            sut.ConfirmText.Should().Be("OK");
+            sut.AbortText.Should().Be(Resources.CANCEL);
         }
 
         [Fact]
         public void Initialize_confirm_and_abort_texts()
         {
-            var confirmViewModel = Create(null, null,  "yes", "no");
+            var sut = Create(null, null, "yes", "no");
 
-            confirmViewModel.ConfirmText.Should().Be("yes");
-            confirmViewModel.AbortText.Should().Be("no");
+            sut.ConfirmText.Should().Be("yes");
+            sut.AbortText.Should().Be("no");
         }
 
         [Fact]
         public void Confirm_closes()
         {
-            var confirmViewModel = Create("message");
+            var sut = Create("message");
 
-            confirmViewModel.Confirm();
+            sut.Confirm();
 
-            _screenConfirmationService.Received(1).Confirm(confirmViewModel);
+            _screenConfirmationService.Received(1).Confirm(sut);
         }
 
         [Fact]
         public void Cancel_closes()
         {
-            var confirmViewModel = Create("message");
+            var sut = Create("message");
 
-            confirmViewModel.Cancel();
+            sut.Cancel();
 
-            _screenConfirmationService.Received(1).Cancel(confirmViewModel);
+            _screenConfirmationService.Received(1).Cancel(sut);
         }
 
         [Fact]
         public void Sets_display_name()
         {
-            var confirmViewModel = Create(null, "display name");
+            var sut = Create(null, "display name");
 
-            confirmViewModel.DisplayName.Should().Be("display name");
+            sut.DisplayName.Should().Be("display name");
         }
 
-        public ConfirmViewModel Create(string message, string displayName = null, string confirmText = null, string abortText = null)
+        private ConfirmViewModel Create(string message, string displayName = null, string confirmText = null, string abortText = null)
         {
             var factory = new ConfirmViewModelFactory(_screenConfirmationService);
 

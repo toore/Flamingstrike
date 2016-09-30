@@ -1,4 +1,5 @@
-﻿using GuiWpf.Services;
+﻿using GuiWpf.Properties;
+using GuiWpf.Services;
 
 namespace GuiWpf.ViewModels
 {
@@ -20,7 +21,7 @@ namespace GuiWpf.ViewModels
 
             if (abortText == null)
             {
-                abortText = ResourceManager.Instance.GetString("CANCEL");
+                abortText = Resources.CANCEL;
             }
 
             return new ConfirmViewModel(_screenConfirmationService)

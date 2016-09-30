@@ -22,7 +22,7 @@ namespace GuiWpf.Properties {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Resources {
+    public class Resources {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,7 +36,7 @@ namespace GuiWpf.Properties {
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("GuiWpf.Properties.Resources", typeof(Resources).Assembly);
@@ -51,7 +51,7 @@ namespace GuiWpf.Properties {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -63,7 +63,7 @@ namespace GuiWpf.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Afghanistan.
         /// </summary>
-        internal static string AFGHANISTAN {
+        public static string AFGHANISTAN {
             get {
                 return ResourceManager.GetString("AFGHANISTAN", resourceCulture);
             }
@@ -72,7 +72,7 @@ namespace GuiWpf.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Alaska.
         /// </summary>
-        internal static string ALASKA {
+        public static string ALASKA {
             get {
                 return ResourceManager.GetString("ALASKA", resourceCulture);
             }
@@ -81,16 +81,16 @@ namespace GuiWpf.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Alberta.
         /// </summary>
-        internal static string ALBERTA {
+        public static string ALBERTA {
             get {
                 return ResourceManager.GetString("ALBERTA", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Are you sure you want to end game?.
+        ///   Looks up a localized string similar to Are you sure you want to end the game?.
         /// </summary>
-        internal static string ARE_YOU_SURE_YOU_WANT_TO_END_GAME {
+        public static string ARE_YOU_SURE_YOU_WANT_TO_END_GAME {
             get {
                 return ResourceManager.GetString("ARE_YOU_SURE_YOU_WANT_TO_END_GAME", resourceCulture);
             }
@@ -99,7 +99,7 @@ namespace GuiWpf.Properties {
         /// <summary>
         ///   Looks up a localized string similar to {0} is the winner!.
         /// </summary>
-        internal static string ARG0_IS_THE_WINNER {
+        public static string ARG0_IS_THE_WINNER {
             get {
                 return ResourceManager.GetString("ARG0_IS_THE_WINNER", resourceCulture);
             }
@@ -108,16 +108,25 @@ namespace GuiWpf.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Argentina.
         /// </summary>
-        internal static string ARGENTINA {
+        public static string ARGENTINA {
             get {
                 return ResourceManager.GetString("ARGENTINA", resourceCulture);
             }
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Attack.
+        /// </summary>
+        public static string ATTACK {
+            get {
+                return ResourceManager.GetString("ATTACK", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Brazil.
         /// </summary>
-        internal static string BRAZIL {
+        public static string BRAZIL {
             get {
                 return ResourceManager.GetString("BRAZIL", resourceCulture);
             }
@@ -126,7 +135,7 @@ namespace GuiWpf.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Cancel.
         /// </summary>
-        internal static string CANCEL {
+        public static string CANCEL {
             get {
                 return ResourceManager.GetString("CANCEL", resourceCulture);
             }
@@ -135,7 +144,7 @@ namespace GuiWpf.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Central America.
         /// </summary>
-        internal static string CENTRAL_AMERICA {
+        public static string CENTRAL_AMERICA {
             get {
                 return ResourceManager.GetString("CENTRAL_AMERICA", resourceCulture);
             }
@@ -144,7 +153,7 @@ namespace GuiWpf.Properties {
         /// <summary>
         ///   Looks up a localized string similar to China.
         /// </summary>
-        internal static string CHINA {
+        public static string CHINA {
             get {
                 return ResourceManager.GetString("CHINA", resourceCulture);
             }
@@ -153,16 +162,25 @@ namespace GuiWpf.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Congo.
         /// </summary>
-        internal static string CONGO {
+        public static string CONGO {
             get {
                 return ResourceManager.GetString("CONGO", resourceCulture);
             }
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Draft Armies.
+        /// </summary>
+        public static string DRAFT_ARMIES {
+            get {
+                return ResourceManager.GetString("DRAFT_ARMIES", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to East Africa.
         /// </summary>
-        internal static string EAST_AFRICA {
+        public static string EAST_AFRICA {
             get {
                 return ResourceManager.GetString("EAST_AFRICA", resourceCulture);
             }
@@ -171,7 +189,7 @@ namespace GuiWpf.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Eastern Australia.
         /// </summary>
-        internal static string EASTERN_AUSTRALIA {
+        public static string EASTERN_AUSTRALIA {
             get {
                 return ResourceManager.GetString("EASTERN_AUSTRALIA", resourceCulture);
             }
@@ -180,7 +198,7 @@ namespace GuiWpf.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Eastern United States.
         /// </summary>
-        internal static string EASTERN_UNITED_STATES {
+        public static string EASTERN_UNITED_STATES {
             get {
                 return ResourceManager.GetString("EASTERN_UNITED_STATES", resourceCulture);
             }
@@ -189,7 +207,7 @@ namespace GuiWpf.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Egypt.
         /// </summary>
-        internal static string EGYPT {
+        public static string EGYPT {
             get {
                 return ResourceManager.GetString("EGYPT", resourceCulture);
             }
@@ -198,7 +216,7 @@ namespace GuiWpf.Properties {
         /// <summary>
         ///   Looks up a localized string similar to End Game.
         /// </summary>
-        internal static string END_GAME {
+        public static string END_GAME {
             get {
                 return ResourceManager.GetString("END_GAME", resourceCulture);
             }
@@ -207,7 +225,7 @@ namespace GuiWpf.Properties {
         /// <summary>
         ///   Looks up a localized string similar to End Turn.
         /// </summary>
-        internal static string END_TURN {
+        public static string END_TURN {
             get {
                 return ResourceManager.GetString("END_TURN", resourceCulture);
             }
@@ -216,7 +234,7 @@ namespace GuiWpf.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Fortify.
         /// </summary>
-        internal static string FORTIFY {
+        public static string FORTIFY {
             get {
                 return ResourceManager.GetString("FORTIFY", resourceCulture);
             }
@@ -225,7 +243,7 @@ namespace GuiWpf.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Game Over.
         /// </summary>
-        internal static string GAME_OVER {
+        public static string GAME_OVER {
             get {
                 return ResourceManager.GetString("GAME_OVER", resourceCulture);
             }
@@ -234,7 +252,7 @@ namespace GuiWpf.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Great Britain.
         /// </summary>
-        internal static string GREAT_BRITAIN {
+        public static string GREAT_BRITAIN {
             get {
                 return ResourceManager.GetString("GREAT_BRITAIN", resourceCulture);
             }
@@ -243,7 +261,7 @@ namespace GuiWpf.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Greenland.
         /// </summary>
-        internal static string GREENLAND {
+        public static string GREENLAND {
             get {
                 return ResourceManager.GetString("GREENLAND", resourceCulture);
             }
@@ -252,7 +270,7 @@ namespace GuiWpf.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Human.
         /// </summary>
-        internal static string HUMAN {
+        public static string HUMAN {
             get {
                 return ResourceManager.GetString("HUMAN", resourceCulture);
             }
@@ -261,7 +279,7 @@ namespace GuiWpf.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Iceland.
         /// </summary>
-        internal static string ICELAND {
+        public static string ICELAND {
             get {
                 return ResourceManager.GetString("ICELAND", resourceCulture);
             }
@@ -270,7 +288,7 @@ namespace GuiWpf.Properties {
         /// <summary>
         ///   Looks up a localized string similar to India.
         /// </summary>
-        internal static string INDIA {
+        public static string INDIA {
             get {
                 return ResourceManager.GetString("INDIA", resourceCulture);
             }
@@ -279,7 +297,7 @@ namespace GuiWpf.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Indonesia.
         /// </summary>
-        internal static string INDONESIA {
+        public static string INDONESIA {
             get {
                 return ResourceManager.GetString("INDONESIA", resourceCulture);
             }
@@ -288,7 +306,7 @@ namespace GuiWpf.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Irkutsk.
         /// </summary>
-        internal static string IRKUTSK {
+        public static string IRKUTSK {
             get {
                 return ResourceManager.GetString("IRKUTSK", resourceCulture);
             }
@@ -297,7 +315,7 @@ namespace GuiWpf.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Japan.
         /// </summary>
-        internal static string JAPAN {
+        public static string JAPAN {
             get {
                 return ResourceManager.GetString("JAPAN", resourceCulture);
             }
@@ -306,7 +324,7 @@ namespace GuiWpf.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Kamchatka.
         /// </summary>
-        internal static string KAMCHATKA {
+        public static string KAMCHATKA {
             get {
                 return ResourceManager.GetString("KAMCHATKA", resourceCulture);
             }
@@ -315,7 +333,7 @@ namespace GuiWpf.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Madagascar.
         /// </summary>
-        internal static string MADAGASCAR {
+        public static string MADAGASCAR {
             get {
                 return ResourceManager.GetString("MADAGASCAR", resourceCulture);
             }
@@ -324,7 +342,7 @@ namespace GuiWpf.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Middle East.
         /// </summary>
-        internal static string MIDDLE_EAST {
+        public static string MIDDLE_EAST {
             get {
                 return ResourceManager.GetString("MIDDLE_EAST", resourceCulture);
             }
@@ -333,7 +351,7 @@ namespace GuiWpf.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Mongolia.
         /// </summary>
-        internal static string MONGOLIA {
+        public static string MONGOLIA {
             get {
                 return ResourceManager.GetString("MONGOLIA", resourceCulture);
             }
@@ -342,7 +360,7 @@ namespace GuiWpf.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Neutral.
         /// </summary>
-        internal static string NEUTRAL {
+        public static string NEUTRAL {
             get {
                 return ResourceManager.GetString("NEUTRAL", resourceCulture);
             }
@@ -351,7 +369,7 @@ namespace GuiWpf.Properties {
         /// <summary>
         ///   Looks up a localized string similar to New Guinea.
         /// </summary>
-        internal static string NEW_GUINEA {
+        public static string NEW_GUINEA {
             get {
                 return ResourceManager.GetString("NEW_GUINEA", resourceCulture);
             }
@@ -360,7 +378,7 @@ namespace GuiWpf.Properties {
         /// <summary>
         ///   Looks up a localized string similar to No.
         /// </summary>
-        internal static string NO {
+        public static string NO {
             get {
                 return ResourceManager.GetString("NO", resourceCulture);
             }
@@ -369,7 +387,7 @@ namespace GuiWpf.Properties {
         /// <summary>
         ///   Looks up a localized string similar to North Africa.
         /// </summary>
-        internal static string NORTH_AFRICA {
+        public static string NORTH_AFRICA {
             get {
                 return ResourceManager.GetString("NORTH_AFRICA", resourceCulture);
             }
@@ -378,7 +396,7 @@ namespace GuiWpf.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Northern Europe.
         /// </summary>
-        internal static string NORTHERN_EUROPE {
+        public static string NORTHERN_EUROPE {
             get {
                 return ResourceManager.GetString("NORTHERN_EUROPE", resourceCulture);
             }
@@ -387,7 +405,7 @@ namespace GuiWpf.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Northwest Territory.
         /// </summary>
-        internal static string NORTHWEST_TERRITORY {
+        public static string NORTHWEST_TERRITORY {
             get {
                 return ResourceManager.GetString("NORTHWEST_TERRITORY", resourceCulture);
             }
@@ -396,7 +414,7 @@ namespace GuiWpf.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Ontario.
         /// </summary>
-        internal static string ONTARIO {
+        public static string ONTARIO {
             get {
                 return ResourceManager.GetString("ONTARIO", resourceCulture);
             }
@@ -405,7 +423,7 @@ namespace GuiWpf.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Peru.
         /// </summary>
-        internal static string PERU {
+        public static string PERU {
             get {
                 return ResourceManager.GetString("PERU", resourceCulture);
             }
@@ -414,7 +432,7 @@ namespace GuiWpf.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Place army (armies left: {0}).
         /// </summary>
-        internal static string PLACE_ARMY {
+        public static string PLACE_ARMY {
             get {
                 return ResourceManager.GetString("PLACE_ARMY", resourceCulture);
             }
@@ -423,7 +441,7 @@ namespace GuiWpf.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Player:.
         /// </summary>
-        internal static string PLAYER {
+        public static string PLAYER {
             get {
                 return ResourceManager.GetString("PLAYER", resourceCulture);
             }
@@ -432,7 +450,7 @@ namespace GuiWpf.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Player {0}.
         /// </summary>
-        internal static string PLAYER_NUMBER {
+        public static string PLAYER_NUMBER {
             get {
                 return ResourceManager.GetString("PLAYER_NUMBER", resourceCulture);
             }
@@ -441,7 +459,7 @@ namespace GuiWpf.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Quebec.
         /// </summary>
-        internal static string QUEBEC {
+        public static string QUEBEC {
             get {
                 return ResourceManager.GetString("QUEBEC", resourceCulture);
             }
@@ -450,7 +468,7 @@ namespace GuiWpf.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Scandinavia.
         /// </summary>
-        internal static string SCANDINAVIA {
+        public static string SCANDINAVIA {
             get {
                 return ResourceManager.GetString("SCANDINAVIA", resourceCulture);
             }
@@ -459,16 +477,25 @@ namespace GuiWpf.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Select Territory.
         /// </summary>
-        internal static string SELECT_TERRITORY {
+        public static string SELECT_TERRITORY {
             get {
                 return ResourceManager.GetString("SELECT_TERRITORY", resourceCulture);
             }
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Send Armies To Occupy.
+        /// </summary>
+        public static string SEND_ARMIES_TO_OCCUPY {
+            get {
+                return ResourceManager.GetString("SEND_ARMIES_TO_OCCUPY", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Siam.
         /// </summary>
-        internal static string SIAM {
+        public static string SIAM {
             get {
                 return ResourceManager.GetString("SIAM", resourceCulture);
             }
@@ -477,7 +504,7 @@ namespace GuiWpf.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Siberia.
         /// </summary>
-        internal static string SIBERIA {
+        public static string SIBERIA {
             get {
                 return ResourceManager.GetString("SIBERIA", resourceCulture);
             }
@@ -486,7 +513,7 @@ namespace GuiWpf.Properties {
         /// <summary>
         ///   Looks up a localized string similar to South Africa.
         /// </summary>
-        internal static string SOUTH_AFRICA {
+        public static string SOUTH_AFRICA {
             get {
                 return ResourceManager.GetString("SOUTH_AFRICA", resourceCulture);
             }
@@ -495,7 +522,7 @@ namespace GuiWpf.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Southern Europe.
         /// </summary>
-        internal static string SOUTHERN_EUROPE {
+        public static string SOUTHERN_EUROPE {
             get {
                 return ResourceManager.GetString("SOUTHERN_EUROPE", resourceCulture);
             }
@@ -504,7 +531,7 @@ namespace GuiWpf.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Start Game.
         /// </summary>
-        internal static string START_GAME {
+        public static string START_GAME {
             get {
                 return ResourceManager.GetString("START_GAME", resourceCulture);
             }
@@ -513,7 +540,7 @@ namespace GuiWpf.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Ukraine.
         /// </summary>
-        internal static string UKRAINE {
+        public static string UKRAINE {
             get {
                 return ResourceManager.GetString("UKRAINE", resourceCulture);
             }
@@ -522,7 +549,7 @@ namespace GuiWpf.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Ural.
         /// </summary>
-        internal static string URAL {
+        public static string URAL {
             get {
                 return ResourceManager.GetString("URAL", resourceCulture);
             }
@@ -531,7 +558,7 @@ namespace GuiWpf.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Venezuela.
         /// </summary>
-        internal static string VENEZUELA {
+        public static string VENEZUELA {
             get {
                 return ResourceManager.GetString("VENEZUELA", resourceCulture);
             }
@@ -540,7 +567,7 @@ namespace GuiWpf.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Western Australia.
         /// </summary>
-        internal static string WESTERN_AUSTRALIA {
+        public static string WESTERN_AUSTRALIA {
             get {
                 return ResourceManager.GetString("WESTERN_AUSTRALIA", resourceCulture);
             }
@@ -549,7 +576,7 @@ namespace GuiWpf.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Western Europe.
         /// </summary>
-        internal static string WESTERN_EUROPE {
+        public static string WESTERN_EUROPE {
             get {
                 return ResourceManager.GetString("WESTERN_EUROPE", resourceCulture);
             }
@@ -558,7 +585,7 @@ namespace GuiWpf.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Western United States.
         /// </summary>
-        internal static string WESTERN_UNITED_STATES {
+        public static string WESTERN_UNITED_STATES {
             get {
                 return ResourceManager.GetString("WESTERN_UNITED_STATES", resourceCulture);
             }
@@ -567,7 +594,7 @@ namespace GuiWpf.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Yakutsk.
         /// </summary>
-        internal static string YAKUTSK {
+        public static string YAKUTSK {
             get {
                 return ResourceManager.GetString("YAKUTSK", resourceCulture);
             }
@@ -576,7 +603,7 @@ namespace GuiWpf.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Yes.
         /// </summary>
-        internal static string YES {
+        public static string YES {
             get {
                 return ResourceManager.GetString("YES", resourceCulture);
             }
