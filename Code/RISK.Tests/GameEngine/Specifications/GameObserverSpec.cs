@@ -376,7 +376,7 @@ namespace RISK.Tests.GameEngine.Specifications
         public IAttackPhase AttackPhase { get; private set; }
         public ISendArmiesToOccupyPhase SendArmiesToOccupyPhase { get; private set; }
         public IEndTurnPhase EndTurnPhase { get; private set; }
-        public IGameIsOver GameIsOver { get; set; }
+        public IGameIsOver GameIsOver { get; private set; }
 
         public void NewGame(IGame game)
         {

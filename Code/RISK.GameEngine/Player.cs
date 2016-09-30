@@ -52,6 +52,10 @@ namespace RISK.GameEngine
 
         public void PlaceArmy(Territory territory)
         {
+            if (!HasArmiesLeftToPlace())
+            {
+                throw new InvalidOperationException("No armies left to place");
+            }
             territory.Armies++;
             ArmiesToPlace--;
         }

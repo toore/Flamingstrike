@@ -37,15 +37,13 @@ namespace RISK.GameEngine.Play
             return deck;
         }
 
-        private static Sequence<CardSymbol> GetCardSymbols()
+        private static CircularBuffer<CardSymbol> GetCardSymbols()
         {
             var cardSymbols = Enum.GetValues(typeof(CardSymbol))
                 .Cast<CardSymbol>()
                 .ToArray();
 
-            var sequence = new Sequence<CardSymbol>(cardSymbols);
-
-            return sequence;
+            return new CircularBuffer<CardSymbol>(cardSymbols);
         }
     }
 }

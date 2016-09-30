@@ -12,7 +12,7 @@ namespace Toore.Shuffling
             _random = random;
         }
 
-        public IEnumerable<T> Shuffle<T>(IEnumerable<T> elements)
+        public IList<T> Shuffle<T>(IEnumerable<T> elements)
         {
             var a = elements.ToList();
             var n = a.Count;

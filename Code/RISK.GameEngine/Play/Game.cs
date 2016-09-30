@@ -127,7 +127,7 @@ namespace RISK.GameEngine.Play
 
         private static IPlayer GetNextPlayer(IEnumerable<IPlayer> players, IPlayer currentPlayer)
         {
-            var sequence = players.ToSequence();
+            var sequence = players.ToCircularBuffer();
             while (sequence.Next() != currentPlayer) {}
 
             return sequence.Next();
