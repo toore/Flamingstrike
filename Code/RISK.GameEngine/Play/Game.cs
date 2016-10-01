@@ -96,7 +96,7 @@ namespace RISK.GameEngine.Play
                 .Where(x => IsCurrentPlayerOccupyingRegion(x.Region))
                 .Select(x => x.Region).ToList();
 
-            _gameObserver.Attack(new AttackPhase(attackPhaseGameState, CurrentPlayer, _territoriesContext.Territories, regionsThatCanBeSourceForAttackOrFortification));
+            _gameObserver.Attack(new AttackPhase(attackPhaseGameState, regionsThatCanBeSourceForAttackOrFortification));
         }
 
         private bool IsCurrentPlayerOccupyingRegion(IRegion region)

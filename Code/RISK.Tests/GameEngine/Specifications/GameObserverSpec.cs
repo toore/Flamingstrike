@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Caliburn.Micro;
@@ -27,7 +26,7 @@ namespace RISK.Tests.GameEngine.Specifications
         private readonly GameObserverSpy _gameObserverSpy = new GameObserverSpy();
 
         [Fact]
-        public void First_players_draft_armies()
+        public void First_player_draft_armies()
         {
             Given
                 .a_game_with_two_human_players()
@@ -83,7 +82,7 @@ namespace RISK.Tests.GameEngine.Specifications
         }
 
         [Fact]
-        public void First_player_occupies_brazil_after_win()
+        public void First_player_occupies_brazil_after_successfull_attack()
         {
             Given
                 .a_game_with_two_human_players()

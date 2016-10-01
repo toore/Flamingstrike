@@ -14,18 +14,18 @@ namespace RISK.Tests.GameEngine.Setup
 {
     public class AlternateGameSetupTests
     {
-        private readonly GameSetupObserverSpyDecorator _gameSetupObserver;
+        private readonly AlternateGameSetupObserverSpyDecorator _alternateGameSetupObserver;
         private readonly IRegions _regions;
         private readonly List<IPlayer> _players;
         private readonly IStartingInfantryCalculator _startingInfantryCalculator;
         private readonly IShuffle _shuffler;
         private readonly IPlayer _player1;
         private readonly IPlayer _player2;
-        private List<IRegion> _regionElements;
+        private readonly List<IRegion> _regionElements;
 
         public AlternateGameSetupTests()
         {
-            _gameSetupObserver = new GameSetupObserverSpyDecorator(new AutoRespondingGameObserver());
+            _alternateGameSetupObserver = new AlternateGameSetupObserverSpyDecorator(new AutoRespondingAlternateGameSetupObserver());
             _regions = Substitute.For<IRegions>();
             _players = new List<IPlayer> { null };
             _startingInfantryCalculator = Substitute.For<IStartingInfantryCalculator>();
@@ -33,13 +33,11 @@ namespace RISK.Tests.GameEngine.Setup
 
             _player1 = Make.Player.Name("player 1").Build();
             _player2 = Make.Player.Name("player 2").Build();
-            
+
             _shuffler.Shuffle(_players).Returns(new[] { _player1, _player2 });
 
             _regionElements = new List<IRegion> { null };
             _regions.GetAll().Returns(_regionElements);
-
-            
         }
 
         [Fact]
@@ -52,7 +50,7 @@ namespace RISK.Tests.GameEngine.Setup
 
             Create();
 
-            _gameSetupObserver.GamePlaySetup.Players.Should().ContainInOrder(_player1, _player2);
+            _alternateGameSetupObserver.GamePlaySetup.Players.Should().ContainInOrder(_player1, _player2);
         }
 
         [Fact]
@@ -66,7 +64,7 @@ namespace RISK.Tests.GameEngine.Setup
 
             Create();
 
-            _gameSetupObserver.GamePlaySetup.Territories.ShouldAllBeEquivalentTo(new[]
+            _alternateGameSetupObserver.GamePlaySetup.Territories.ShouldAllBeEquivalentTo(new[]
                 {
                     new Territory(region1, _player1, 2),
                     new Territory(region2, _player2, 3),
@@ -76,41 +74,41 @@ namespace RISK.Tests.GameEngine.Setup
 
         private AlternateGameSetup Create()
         {
-            return new AlternateGameSetup(_gameSetupObserver, _regions, _players, _startingInfantryCalculator, _shuffler);
+            return new AlternateGameSetup(_alternateGameSetupObserver, _regions, _players, _startingInfantryCalculator, _shuffler);
         }
     }
 
-    public class AutoRespondingGameObserver : IGameSetupObserver
+    public class AutoRespondingAlternateGameSetupObserver : IAlternateGameSetupObserver
     {
-        public void SelectRegion(IRegionSelector regionSelector)
+        public void SelectRegion(IPlaceArmyRegionSelector placeArmyRegionSelector)
         {
-            var selectedRegion = regionSelector.SelectableRegions.First();
-            regionSelector.SelectRegion(selectedRegion);
+            var selectedRegion = placeArmyRegionSelector.SelectableRegions.First();
+            placeArmyRegionSelector.PlaceArmyInRegion(selectedRegion);
         }
 
         public void NewGamePlaySetup(IGamePlaySetup gamePlaySetup) {}
     }
 
-    public class GameSetupObserverSpyDecorator : IGameSetupObserver
+    public class AlternateGameSetupObserverSpyDecorator : IAlternateGameSetupObserver
     {
-        private readonly IGameSetupObserver _gameSetupObserverToBeDecorated;
+        private readonly IAlternateGameSetupObserver _alternateGameSetupObserverToBeDecorated;
 
-        public GameSetupObserverSpyDecorator(IGameSetupObserver gameSetupObserverToBeDecorated)
+        public AlternateGameSetupObserverSpyDecorator(IAlternateGameSetupObserver alternateGameSetupObserverToBeDecorated)
         {
-            _gameSetupObserverToBeDecorated = gameSetupObserverToBeDecorated;
+            _alternateGameSetupObserverToBeDecorated = alternateGameSetupObserverToBeDecorated;
         }
 
         public IGamePlaySetup GamePlaySetup { get; private set; }
 
-        public void SelectRegion(IRegionSelector regionSelector)
+        public void SelectRegion(IPlaceArmyRegionSelector placeArmyRegionSelector)
         {
-            _gameSetupObserverToBeDecorated.SelectRegion(regionSelector);
+            _alternateGameSetupObserverToBeDecorated.SelectRegion(placeArmyRegionSelector);
         }
 
         public void NewGamePlaySetup(IGamePlaySetup gamePlaySetup)
         {
             GamePlaySetup = gamePlaySetup;
-            _gameSetupObserverToBeDecorated.NewGamePlaySetup(gamePlaySetup);
+            _alternateGameSetupObserverToBeDecorated.NewGamePlaySetup(gamePlaySetup);
         }
     }
 }

@@ -6,12 +6,6 @@ using Toore.Shuffling;
 
 namespace RISK.GameEngine.Setup
 {
-    public interface IGameSetupObserver
-    {
-        void SelectRegion(IRegionSelector regionSelector);
-        void NewGamePlaySetup(IGamePlaySetup gamePlaySetup);
-    }
-
     /* Alternate
      * An alternate and quicker method of setup from the original French rules is to deal out the entire deck of Risk cards (minus the wild cards), 
      * assigning players to the territories on their cards.[1] As in a standard game, players still count out the same number of starting infantry 
@@ -19,14 +13,22 @@ namespace RISK.GameEngine.Setup
      * assigning players to the territories on their cards. One and only one army is placed on each territory before the game commences.
      */
 
-    public interface IAlternateGameSetup
+    public interface IAlternateGameSetupObserver
     {
-        void PlaceArmy(IRegion selectedRegion);
+        void SelectRegion(IPlaceArmyRegionSelector placeArmyRegionSelector);
+        void NewGamePlaySetup(IGamePlaySetup gamePlaySetup);
     }
 
-    public class AlternateGameSetup : IAlternateGameSetup
+    public interface IAlternateGameSetup {}
+
+    public interface IArmyPlacer
     {
-        private readonly IGameSetupObserver _gameSetupObserver;
+        void PlaceArmyInRegion(IRegion selectedRegion);
+    }
+
+    public class AlternateGameSetup : IAlternateGameSetup, IArmyPlacer
+    {
+        private readonly IAlternateGameSetupObserver _alternateGameSetupObserver;
         private readonly IEnumerable<IPlayer> _players;
         private readonly IRegions _regions;
         private readonly IShuffle _shuffle;
@@ -36,13 +38,13 @@ namespace RISK.GameEngine.Setup
         private IPlayer _currentPlayer;
 
         public AlternateGameSetup(
-            IGameSetupObserver gameSetupObserver,
+            IAlternateGameSetupObserver alternateGameSetupObserver,
             IRegions regions,
             IEnumerable<IPlayer> players,
             IStartingInfantryCalculator startingInfantryCalculator,
             IShuffle shuffle)
         {
-            _gameSetupObserver = gameSetupObserver;
+            _alternateGameSetupObserver = alternateGameSetupObserver;
             _players = players;
             _regions = regions;
             _shuffle = shuffle;
@@ -124,10 +126,10 @@ namespace RISK.GameEngine.Setup
         {
             var gamePlaySetup = new GamePlaySetup(_circularBufferOfPlayers.ToList(), _territories);
 
-            _gameSetupObserver.NewGamePlaySetup(gamePlaySetup);
+            _alternateGameSetupObserver.NewGamePlaySetup(gamePlaySetup);
         }
 
-        public void PlaceArmy(IRegion selectedRegion)
+        public void PlaceArmyInRegion(IRegion selectedRegion)
         {
             var selectedTerritory = _territories
                 .Where(territory => territory.Player == _currentPlayer)
@@ -145,9 +147,9 @@ namespace RISK.GameEngine.Setup
                 .Select(x => x.Region)
                 .ToList();
 
-            var regionSelector = new RegionSelector(this, territories, selectableRegions, player);
+            var regionSelector = new PlaceArmyRegionSelector(this, territories, selectableRegions, player);
 
-            _gameSetupObserver.SelectRegion(regionSelector);
+            _alternateGameSetupObserver.SelectRegion(regionSelector);
         }
     }
 }

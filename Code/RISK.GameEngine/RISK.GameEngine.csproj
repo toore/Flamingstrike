@@ -65,7 +65,7 @@
     <Compile Include="Setup\AlternateGameSetup.cs" />
     <Compile Include="Setup\AlternateGameSetupFactory.cs" />
     <Compile Include="Setup\GamePlaySetup.cs" />
-    <Compile Include="Setup\RegionSelector.cs" />
+    <Compile Include="Setup\PlaceArmyRegionSelector.cs" />
     <Compile Include="Setup\StartingInfantryCalculator.cs" />
     <Compile Include="StandardCard.cs" />
     <Compile Include="WildCard.cs" />

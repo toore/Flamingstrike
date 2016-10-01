@@ -123,6 +123,7 @@
     <Compile Include="Builders\TerritoryBuilder.cs" />
     <Compile Include="GameEngine\Play\TerritoriesContextTests.cs" />
     <Compile Include="GameEngine\Specifications\GameObserverSpec.cs" />
+    <Compile Include="GameEngine\Specifications\AlternateGameSetupObserverSpec.cs" />
     <Compile Include="GuiWpf\Interaction\AttackInteractionStateTests.cs" />
     <Compile Include="GuiWpf\Interaction\EndTurnInteractionStateTests.cs" />
     <Compile Include="GuiWpf\Interaction\FortifyMoveInteractionStateTests.cs" />
