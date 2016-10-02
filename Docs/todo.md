@@ -13,11 +13,6 @@ Issues:
 Fortify can not deselect Territory
 Crash when ending turn in fortify mode
 
-AlternateGameSetup:
-- Dependency inject TerritoryResponder (Hollywood-principle)
-- InitializeInfantryToPlace: Fix commented code
-
-Sequence.cs - should be CQRS compliant?
 
 IPlayer.cs - Should NOT contain game setup specific public(?) code!
 
@@ -25,6 +20,7 @@ Player name formatting service "Player: abc"?
 
 What about a common starting point for setup and the game engine?
 
+WorldMapViewModelFactory::Update should have type Maybe for selectedRegion
 
 
 ##Not/partially tested
