@@ -1,0 +1,306 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{3B937F0E-E727-442D-B1DA-E5ED6EF939D5}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>RISK.UI.WPF</RootNamespace>
+    <AssemblyName>RISK.UI.WPF</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>
+    </StartupObject>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Caliburn.Micro, Version=3.0.1.0, Culture=neutral, PublicKeyToken=8e5891231f2ed21f, processorArchitecture=MSIL">
+      <HintPath>..\packages\Caliburn.Micro.Core.3.0.1\lib\net45\Caliburn.Micro.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Caliburn.Micro.Platform, Version=3.0.1.0, Culture=neutral, PublicKeyToken=8e5891231f2ed21f, processorArchitecture=MSIL">
+      <HintPath>..\packages\Caliburn.Micro.3.0.1\lib\net45\Caliburn.Micro.Platform.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Caliburn.Micro.Platform.Core, Version=3.0.1.0, Culture=neutral, PublicKeyToken=8e5891231f2ed21f, processorArchitecture=MSIL">
+      <HintPath>..\packages\Caliburn.Micro.3.0.1\lib\net45\Caliburn.Micro.Platform.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Build.Framework" />
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Caliburn.Micro.3.0.1\lib\net45\System.Windows.Interactivity.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="Views\App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Compile Include="ContentClickButton.cs" />
+    <Compile Include="Extensions\EnumerableExtensions.cs" />
+    <Compile Include="RegionModels\RegionModelBase.cs" />
+    <Compile Include="ViewModels\ConfirmViewModel.cs" />
+    <Compile Include="ViewModels\ConfirmViewModelFactory.cs" />
+    <Compile Include="ViewModels\Gameplay\Interaction\AttackInteractionState.cs" />
+    <Compile Include="ViewModels\Gameplay\Interaction\DraftArmiesInteractionState.cs" />
+    <Compile Include="ViewModels\Gameplay\Interaction\FortifyInteractionState.cs" />
+    <Compile Include="ViewModels\Gameplay\Interaction\SelectSourceRegionForFortificationInteractionState.cs" />
+    <Compile Include="ViewModels\Gameplay\Interaction\IInteractionState.cs" />
+    <Compile Include="ViewModels\Gameplay\Interaction\InteractionStateFactory.cs" />
+    <Compile Include="ViewModels\Gameplay\Interaction\SelectAttackingRegionInteractionState.cs" />
+    <Compile Include="ViewModels\Gameplay\Interaction\SendArmiesToOccupyInteractionState.cs" />
+    <Compile Include="ViewModels\Gameplay\IWorldMapItemViewModelVisitor.cs" />
+    <Compile Include="ViewModels\Gameplay\WorldMapItemUpdater.cs" />
+    <Compile Include="ViewModels\IConfirmViewModelFactory.cs" />
+    <Compile Include="Services\UserNotifier.cs" />
+    <Compile Include="Services\ScreenConfirmationService.cs" />
+    <Compile Include="Services\DialogManager.cs" />
+    <Compile Include="ViewModels\Messages\NewGameMessage.cs" />
+    <Compile Include="ViewModels\Root.cs" />
+    <Compile Include="ViewModels\Preparation\GamePreparationViewModelFactory.cs" />
+    <Compile Include="ViewModels\Preparation\PlayerRepository.cs" />
+    <Compile Include="Views\AlternateSetup\AlternateGameSetupView.xaml.cs">
+      <DependentUpon>AlternateGameSetupView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewModels\Messages\StartGameplayMessage.cs" />
+    <Compile Include="Views\ConfirmView.xaml.cs">
+      <DependentUpon>ConfirmView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Preparation\GamePreparationView.xaml.cs">
+      <DependentUpon>GamePreparationView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Infrastructure\WindowManager.cs" />
+    <Compile Include="Services\ColorService.cs" />
+    <Compile Include="Services\RegionColorSettings.cs" />
+    <Compile Include="Services\RegionColorSettingsFactory.cs" />
+    <Compile Include="ViewModels\GameOverViewModel.cs" />
+    <Compile Include="ViewModels\GameOverViewModelFactory.cs" />
+    <Compile Include="ViewModels\AlternateSetup\AlternateGameSetupViewModel.cs" />
+    <Compile Include="ViewModels\Gameplay\GameplayViewModelFactory.cs" />
+    <Compile Include="ViewModels\Messages\StartGameSetupMessage.cs" />
+    <Compile Include="ViewModels\AlternateSetup\AlternateGameSetupViewModelFactory.cs" />
+    <Compile Include="ViewModels\Preparation\GamePreparationViewModel.cs" />
+    <Compile Include="ViewModels\Preparation\HumanPlayerType.cs" />
+    <Compile Include="ViewModels\MainGameViewModel.cs" />
+    <Compile Include="ViewModels\IMainViewModel.cs" />
+    <Compile Include="ViewModels\Preparation\IPlayerTypes.cs" />
+    <Compile Include="ViewModels\Preparation\NeutralPlayerType.cs" />
+    <Compile Include="ViewModels\Preparation\PlayerFactory.cs" />
+    <Compile Include="ViewModels\Preparation\GamePreparationPlayerViewModel.cs" />
+    <Compile Include="RegionModels\RegionModelFactory.cs" />
+    <Compile Include="ViewModels\Preparation\PlayerTypeBase.cs" />
+    <Compile Include="ViewModels\Preparation\PlayerTypes.cs" />
+    <Compile Include="ViewModels\ViewModelBase.cs" />
+    <Compile Include="ViewModels\Gameplay\GameplayViewModel.cs" />
+    <Compile Include="Views\GameOverView.xaml.cs">
+      <DependentUpon>GameOverView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Preparation\GamePreparationInnerView.xaml.cs">
+      <DependentUpon>GamePreparationInnerView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Bootstrapper.cs" />
+    <Compile Include="RegionModels\AfghanistanModel.cs" />
+    <Compile Include="RegionModels\AlbertaModel.cs" />
+    <Compile Include="RegionModels\ArgentinaModel.cs" />
+    <Compile Include="RegionModels\BrazilModel.cs" />
+    <Compile Include="RegionModels\ChinaModel.cs" />
+    <Compile Include="RegionModels\CongoModel.cs" />
+    <Compile Include="RegionModels\EastAfricaModel.cs" />
+    <Compile Include="RegionModels\EasternAustraliaModel.cs" />
+    <Compile Include="RegionModels\EasternUnitedStatesModel.cs" />
+    <Compile Include="RegionModels\EgyptModel.cs" />
+    <Compile Include="RegionModels\GreatBritainModel.cs" />
+    <Compile Include="RegionModels\GreenlandModel.cs" />
+    <Compile Include="RegionModels\IcelandModel.cs" />
+    <Compile Include="RegionModels\IndiaModel.cs" />
+    <Compile Include="RegionModels\IndonesiaModel.cs" />
+    <Compile Include="RegionModels\IrkutskModel.cs" />
+    <Compile Include="Views\MainGameView.xaml.cs">
+      <DependentUpon>MainGameView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewModels\Gameplay\IWorldMapItemViewModel.cs" />
+    <Compile Include="RegionModels\JapanModel.cs" />
+    <Compile Include="RegionModels\KamchatkaModel.cs" />
+    <Compile Include="RegionModels\MadagascarModel.cs" />
+    <Compile Include="RegionModels\MiddleEastModel.cs" />
+    <Compile Include="RegionModels\MongoliaModel.cs" />
+    <Compile Include="RegionModels\NewGuineaModel.cs" />
+    <Compile Include="RegionModels\NorthAfricaModel.cs" />
+    <Compile Include="RegionModels\NorthernEuropeModel.cs" />
+    <Compile Include="RegionModels\NorthwestRegionModel.cs" />
+    <Compile Include="RegionModels\OntarioModel.cs" />
+    <Compile Include="RegionModels\PeruModel.cs" />
+    <Compile Include="RegionModels\QuebecModel.cs" />
+    <Compile Include="RegionModels\AlaskaModel.cs" />
+    <Compile Include="RegionModels\CentralAmericaModel.cs" />
+    <Compile Include="RegionModels\ScandinaviaModel.cs" />
+    <Compile Include="RegionModels\SiamModel.cs" />
+    <Compile Include="RegionModels\SiberiaModel.cs" />
+    <Compile Include="RegionModels\SouthAfricaModel.cs" />
+    <Compile Include="RegionModels\SouthernEuropeModel.cs" />
+    <Compile Include="Views\Gameplay\RegionButtonUserControl.xaml.cs">
+      <DependentUpon>RegionButtonUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewModels\Gameplay\RegionViewModel.cs" />
+    <Compile Include="RegionModels\IRegionModel.cs" />
+    <Compile Include="ViewModels\Gameplay\WorldMapViewModelFactory.cs" />
+    <Compile Include="ViewModels\Gameplay\RegionNameViewModel.cs" />
+    <Compile Include="RegionModels\UkraineModel.cs" />
+    <Compile Include="RegionModels\UralModel.cs" />
+    <Compile Include="RegionModels\VenezuelaModel.cs" />
+    <Compile Include="RegionModels\WesternAustraliaModel.cs" />
+    <Compile Include="RegionModels\WesternEuropeModel.cs" />
+    <Compile Include="RegionModels\WesternUnitedStatesModel.cs" />
+    <Compile Include="RegionModels\YakutskModel.cs" />
+    <Compile Include="Views\Gameplay\GameplayView.xaml.cs">
+      <DependentUpon>GameplayView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewModels\Gameplay\WorldMapViewModel.cs" />
+    <Page Include="Views\AlternateSetup\AlternateGameSetupView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\ConfirmView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\GameOverView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\GameResources.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Preparation\GamePreparationView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Gameplay\GameplayView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Compile Include="Views\App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Page Include="Views\Preparation\GamePreparationViewResources.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Preparation\GamePreparationInnerView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\MainGameView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Gameplay\RegionButtonUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Gameplay\RegionStyles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Gameplay\WorldMapResources.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <None Include="app.config" />
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Views\App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\RISK.Core\RISK.Core.csproj">
+      <Project>{8F24E4E6-125C-4ED4-A6C0-767B0675A8CD}</Project>
+      <Name>RISK.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\RISK.GameEngine\RISK.GameEngine.csproj">
+      <Project>{EAB6640B-F975-48B2-886B-83380FA7CACE}</Project>
+      <Name>RISK.GameEngine</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

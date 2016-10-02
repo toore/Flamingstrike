@@ -1,0 +1,44 @@
+﻿<UserControl x:Class="RISK.UI.WPF.Views.Preparation.GamePreparationInnerView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+    xmlns:Micro="http://www.caliburnproject.org"
+    xmlns:Properties="clr-namespace:RISK.UI.WPF.Properties"
+    mc:Ignorable="d"
+    d:DesignHeight="300" d:DesignWidth="300">
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="GamePreparationViewResources.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <Grid>
+        <StackPanel>
+            <ItemsControl
+                HorizontalAlignment="Center"
+                ItemsSource="{Binding Players, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
+                ItemTemplate="{StaticResource GamePreparationPlayerViewModelTemplate}" />
+
+            <Grid
+                HorizontalAlignment="Center"
+                Margin="20">
+                <Button
+                    Content="{x:Static Properties:Resources.START_GAME}"
+                    Style="{StaticResource StandardButtonStyle}">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="Click">
+                            <Micro:ActionMessage MethodName="Confirm" />
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </Button>
+            </Grid>
+
+        </StackPanel>
+
+    </Grid>
+</UserControl>
