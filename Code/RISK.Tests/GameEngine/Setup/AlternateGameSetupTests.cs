@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using FluentAssertions;
 using NSubstitute;
 using RISK.Core;
@@ -75,40 +74,6 @@ namespace RISK.Tests.GameEngine.Setup
         private AlternateGameSetup Create()
         {
             return new AlternateGameSetup(_alternateGameSetupObserver, _regions, _players, _startingInfantryCalculator, _shuffler);
-        }
-    }
-
-    public class AutoRespondingAlternateGameSetupObserver : IAlternateGameSetupObserver
-    {
-        public void SelectRegion(IPlaceArmyRegionSelector placeArmyRegionSelector)
-        {
-            var selectedRegion = placeArmyRegionSelector.SelectableRegions.First();
-            placeArmyRegionSelector.PlaceArmyInRegion(selectedRegion);
-        }
-
-        public void NewGamePlaySetup(IGamePlaySetup gamePlaySetup) {}
-    }
-
-    public class AlternateGameSetupObserverSpyDecorator : IAlternateGameSetupObserver
-    {
-        private readonly IAlternateGameSetupObserver _alternateGameSetupObserverToBeDecorated;
-
-        public AlternateGameSetupObserverSpyDecorator(IAlternateGameSetupObserver alternateGameSetupObserverToBeDecorated)
-        {
-            _alternateGameSetupObserverToBeDecorated = alternateGameSetupObserverToBeDecorated;
-        }
-
-        public IGamePlaySetup GamePlaySetup { get; private set; }
-
-        public void SelectRegion(IPlaceArmyRegionSelector placeArmyRegionSelector)
-        {
-            _alternateGameSetupObserverToBeDecorated.SelectRegion(placeArmyRegionSelector);
-        }
-
-        public void NewGamePlaySetup(IGamePlaySetup gamePlaySetup)
-        {
-            GamePlaySetup = gamePlaySetup;
-            _alternateGameSetupObserverToBeDecorated.NewGamePlaySetup(gamePlaySetup);
         }
     }
 }

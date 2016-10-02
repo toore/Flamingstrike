@@ -122,8 +122,11 @@
     <Compile Include="Builders\PlayerBuilder.cs" />
     <Compile Include="Builders\TerritoryBuilder.cs" />
     <Compile Include="GameEngine\Play\TerritoriesContextTests.cs" />
+    <Compile Include="GameEngine\Setup\AlternateGameSetupObserverSpyDecorator.cs" />
+    <Compile Include="GameEngine\Setup\AutoRespondingAlternateGameSetupObserver.cs" />
     <Compile Include="GameEngine\Specifications\GameObserverSpec.cs" />
     <Compile Include="GameEngine\Specifications\AlternateGameSetupObserverSpec.cs" />
+    <Compile Include="GameEngine\Setup\NullAlternateGameSetupObserver.cs" />
     <Compile Include="GuiWpf\Interaction\AttackInteractionStateTests.cs" />
     <Compile Include="GuiWpf\Interaction\EndTurnInteractionStateTests.cs" />
     <Compile Include="GuiWpf\Interaction\FortifyMoveInteractionStateTests.cs" />
