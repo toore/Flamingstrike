@@ -8,17 +8,17 @@ using RISK.GameEngine;
 
 namespace GuiWpf.Views.Gameplay
 {
-    public partial class GameboardView
+    public partial class GameplayView
     {
-        public GameboardView()
+        public GameplayView()
         {
             InitializeComponent();
         }
     }
 
-    public class GameboardViewModelDesignerData : IGameboardViewModel
+    public class GameplayViewModelDesignerData
     {
-        public GameboardViewModelDesignerData()
+        public GameplayViewModelDesignerData()
         {
             var continents = new Continents();
             var regions = new Regions(continents);
@@ -31,23 +31,22 @@ namespace GuiWpf.Views.Gameplay
 
             var territories = regions.GetAll()
                 .Select(region => new Territory(region, new Player("player"), random.Next(99) + 1))
-                .ToList().AsReadOnly();
+                .ToList();
 
-            WorldMapViewModel = worldMapViewModelFactory.Create(territories, x => { }, Enumerable.Empty<IRegion>());
+            WorldMapViewModel = worldMapViewModelFactory.Create(x => { });
+            worldMapViewModelFactory.Update(WorldMapViewModel, territories, Enumerable.Empty<IRegion>().ToList(), null);
         }
 
         public WorldMapViewModel WorldMapViewModel { get; }
+
         public string InformationText => "Information text is shown here";
 
         public string PlayerName => "Player name is shown here";
 
         public bool CanEnterFortifyMode => false;
 
-        public void EnterFortifyMode() {}
+        public bool CanEnterAttackMode => true;
+
         public bool CanEndTurn => true;
-
-        public void EndTurn() {}
-
-        public void EndGame() {}
     }
 }

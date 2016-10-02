@@ -5,57 +5,44 @@ namespace GuiWpf.ViewModels.Gameplay.Interaction
 {
     public interface IInteractionStateFactory
     {
-        IInteractionState CreateDraftArmiesInteractionState(IGame game);
-        IInteractionState CreateSelectInteractionState(IGame game);
-        IInteractionState CreateAttackInteractionState(IGame game, IRegion selectedRegion);
-        IInteractionState CreateSendArmiesToOccupyInteractionState(IGame game, IRegion selectedRegion, IRegion conqueredRegion);
-        IInteractionState CreateFortifySelectInteractionState(IGame game);
-        IInteractionState CreateFortifyMoveInteractionState(IGame game, IRegion selectedRegion);
-        IInteractionState CreateEndTurnInteractionState();
+        IInteractionState CreateDraftArmiesInteractionState(IDraftArmiesPhase draftArmiesPhase);
+        IInteractionState CreateSelectAttackingRegionInteractionState(ISelectAttackingRegionObserver selectAttackingRegionObserver);
+        IInteractionState CreateAttackInteractionState(IAttackPhase attackPhase, IRegion selectedRegion, IDeselectAttackingRegionObserver deselectAttackingRegionObserver);
+        IInteractionState CreateSendArmiesToOccupyInteractionState(ISendArmiesToOccupyPhase sendArmiesToOccupyPhase);
+        IInteractionState CreateSelectSourceRegionForFortificationInteractionState(ISelectSourceRegionForFortificationObserver selectSourceRegionForFortificationObserver);
+        IInteractionState CreateFortifyInteractionState(IAttackPhase attackPhase, IRegion selectedRegion, IDeselectRegionToFortifyFromObserver deselectRegionToFortifyFromObserver);
     }
 
     public class InteractionStateFactory : IInteractionStateFactory
     {
-        private readonly IInteractionContext _interactionContext;
-
-        public InteractionStateFactory(IInteractionContext interactionContext)
+        public IInteractionState CreateDraftArmiesInteractionState(IDraftArmiesPhase draftArmiesPhase)
         {
-            _interactionContext = interactionContext;
+            return new DraftArmiesInteractionState(draftArmiesPhase);
         }
 
-        public IInteractionState CreateDraftArmiesInteractionState(IGame game)
+        public IInteractionState CreateSelectAttackingRegionInteractionState(ISelectAttackingRegionObserver selectAttackingRegionObserver)
         {
-            return new DraftArmiesInteractionState(_interactionContext, this, game);
+            return new SelectAttackingRegionInteractionState(selectAttackingRegionObserver);
         }
 
-        public IInteractionState CreateSelectInteractionState(IGame game)
+        public IInteractionState CreateAttackInteractionState(IAttackPhase attackPhase, IRegion selectedRegion, IDeselectAttackingRegionObserver deselectAttackingRegionObserver)
         {
-            return new SelectInteractionState(_interactionContext, this, game);
+            return new AttackInteractionState(attackPhase, selectedRegion, deselectAttackingRegionObserver);
         }
 
-        public IInteractionState CreateAttackInteractionState(IGame game, IRegion selectedRegion)
+        public IInteractionState CreateSendArmiesToOccupyInteractionState(ISendArmiesToOccupyPhase sendArmiesToOccupyPhase)
         {
-            return new AttackInteractionState(_interactionContext, this, game, selectedRegion);
+            return new SendArmiesToOccupyInteractionState(sendArmiesToOccupyPhase);
         }
 
-        public IInteractionState CreateSendArmiesToOccupyInteractionState(IGame game, IRegion selectedRegion, IRegion conqueredRegion)
+        public IInteractionState CreateSelectSourceRegionForFortificationInteractionState(ISelectSourceRegionForFortificationObserver selectSourceRegionForFortificationObserver)
         {
-            return new SendArmiesToOccupyInteractionState(_interactionContext, this, game, selectedRegion, conqueredRegion);
+            return new SelectSourceRegionForFortificationInteractionState(selectSourceRegionForFortificationObserver);
         }
 
-        public IInteractionState CreateFortifySelectInteractionState(IGame game)
+        public IInteractionState CreateFortifyInteractionState(IAttackPhase attackPhase, IRegion selectedRegion, IDeselectRegionToFortifyFromObserver deselectRegionToFortifyFromObserver)
         {
-            return new FortifySelectInteractionState(_interactionContext, this, game);
-        }
-
-        public IInteractionState CreateFortifyMoveInteractionState(IGame game, IRegion selectedRegion)
-        {
-            return new FortifyMoveInteractionState(_interactionContext, this, game, selectedRegion);
-        }
-
-        public IInteractionState CreateEndTurnInteractionState()
-        {
-            return new EndTurnInteractionState();
+            return new FortifyInteractionState(attackPhase, selectedRegion, deselectRegionToFortifyFromObserver);
         }
     }
 }

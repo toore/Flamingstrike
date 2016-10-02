@@ -2,19 +2,16 @@
 using GuiWpf.Services;
 using GuiWpf.ViewModels.Gameplay.Interaction;
 using RISK.GameEngine;
-using RISK.GameEngine.Play;
 
 namespace GuiWpf.ViewModels.Gameplay
 {
-    public interface IGameboardViewModelFactory
+    public interface IGameplayViewModelFactory
     {
-        IGameboardViewModel Create(IGame game);
+        IGameplayViewModel Create();
     }
 
-    public class GameboardViewModelFactory : IGameboardViewModelFactory
+    public class GameplayViewModelFactory : IGameplayViewModelFactory
     {
-        private readonly IInteractionContext _interactionContext;
-        private readonly IRegions _regions;
         private readonly IWorldMapViewModelFactory _worldMapViewModelFactory;
         private readonly IWindowManager _windowManager;
         private readonly IGameOverViewModelFactory _gameOverViewModelFactory;
@@ -22,19 +19,15 @@ namespace GuiWpf.ViewModels.Gameplay
         private readonly IEventAggregator _eventAggregator;
         private readonly IInteractionStateFactory _interactionStateFactory;
 
-        public GameboardViewModelFactory(
-            IInteractionContext interactionContext,
+        public GameplayViewModelFactory(
             IInteractionStateFactory interactionStateFactory,
-            IRegions regions,
             IWorldMapViewModelFactory worldMapViewModelFactory,
             IWindowManager windowManager,
             IGameOverViewModelFactory gameOverViewModelFactory,
             IDialogManager dialogManager,
             IEventAggregator eventAggregator)
         {
-            _interactionContext = interactionContext;
             _interactionStateFactory = interactionStateFactory;
-            _regions = regions;
             _worldMapViewModelFactory = worldMapViewModelFactory;
             _windowManager = windowManager;
             _gameOverViewModelFactory = gameOverViewModelFactory;
@@ -42,13 +35,10 @@ namespace GuiWpf.ViewModels.Gameplay
             _eventAggregator = eventAggregator;
         }
 
-        public IGameboardViewModel Create(IGame game)
+        public IGameplayViewModel Create()
         {
-            return new GameboardViewModel(
-                game,
-                _interactionContext,
+            return new GameplayViewModel(
                 _interactionStateFactory,
-                _regions,
                 _worldMapViewModelFactory,
                 _windowManager,
                 _gameOverViewModelFactory,

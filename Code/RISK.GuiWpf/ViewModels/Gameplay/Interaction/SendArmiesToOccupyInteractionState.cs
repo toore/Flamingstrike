@@ -5,38 +5,16 @@ namespace GuiWpf.ViewModels.Gameplay.Interaction
 {
     public class SendArmiesToOccupyInteractionState : IInteractionState
     {
-        private readonly IInteractionContext _interactionContext;
-        private readonly IInteractionStateFactory _interactionStateFactory;
-        private readonly IGame _game;
-        private readonly IRegion _conqueredRegion;
+        private readonly ISendArmiesToOccupyPhase _sendArmiesToOccupyPhase;
 
-        public SendArmiesToOccupyInteractionState(IInteractionContext interactionContext, IInteractionStateFactory interactionStateFactory, IGame game, IRegion selectedRegion, IRegion conqueredRegion)
+        public SendArmiesToOccupyInteractionState(ISendArmiesToOccupyPhase sendArmiesToOccupyPhase)
         {
-            SelectedRegion = selectedRegion;
-            _interactionContext = interactionContext;
-            _interactionStateFactory = interactionStateFactory;
-            _game = game;
-            _conqueredRegion = conqueredRegion;
-        }
-
-        public IRegion SelectedRegion { get; }
-
-        public bool CanClick(IRegion region)
-        {
-            return region == _conqueredRegion;
+            _sendArmiesToOccupyPhase = sendArmiesToOccupyPhase;
         }
 
         public void OnClick(IRegion region)
         {
-            _game.SendArmiesToOccupy(1);
-
-            EnterAttackState();
-        }
-
-        private void EnterAttackState()
-        {
-            var attackInteractionState = _interactionStateFactory.CreateAttackInteractionState(_game, _conqueredRegion);
-            _interactionContext.Set(attackInteractionState);
+            _sendArmiesToOccupyPhase.SendAdditionalArmiesToOccupy(1);
         }
     }
 }

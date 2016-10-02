@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using Caliburn.Micro;
 using FluentAssertions;
+using GuiWpf.Properties;
 using GuiWpf.Services;
 using GuiWpf.ViewModels.AlternateSetup;
 using GuiWpf.ViewModels.Gameplay;
 using GuiWpf.ViewModels.Messages;
 using NSubstitute;
 using RISK.Core;
-using RISK.GameEngine.Play;
 using RISK.GameEngine.Setup;
 using RISK.Tests.Builders;
 using Xunit;
@@ -17,30 +17,21 @@ namespace RISK.Tests.GuiWpf
 {
     public class GameSetupViewModelTests
     {
-        private readonly IGameFactory _gameFactory;
         private readonly IWorldMapViewModelFactory _worldMapViewModelFactory;
         private readonly IDialogManager _dialogManager;
         private readonly IEventAggregator _eventAggregator;
-        private readonly SynchronousTaskEx _taskScheduler;
-        private readonly AlternateGameSetupViewModelFactory _alternateGameSetupViewModelFactory;
-        private readonly IAlternateGameSetup _alternateGameSetup;
+        private readonly AlternateGameSetupViewModelFactory factory;
 
         public GameSetupViewModelTests()
         {
-            _gameFactory = Substitute.For<IGameFactory>();
             _worldMapViewModelFactory = Substitute.For<IWorldMapViewModelFactory>();
             _dialogManager = Substitute.For<IDialogManager>();
             _eventAggregator = Substitute.For<IEventAggregator>();
-            _taskScheduler = new SynchronousTaskEx();
 
-            _alternateGameSetupViewModelFactory = new AlternateGameSetupViewModelFactory(
-                _gameFactory,
+            factory = new AlternateGameSetupViewModelFactory(
                 _worldMapViewModelFactory,
                 _dialogManager,
-                _eventAggregator,
-                _taskScheduler);
-
-            _alternateGameSetup = Substitute.For<IAlternateGameSetup>();
+                _eventAggregator);
         }
 
         [Fact]
@@ -49,94 +40,88 @@ namespace RISK.Tests.GuiWpf
             var expectedWorldMapViewModel = new WorldMapViewModel();
             var territories = new List<ITerritory>();
             Action<IRegion> onClickAction = x => { };
-            var enabledTerritories = new List<IRegion> { Make.Region.Build() };
-            _worldMapViewModelFactory.Create(territories, onClickAction, enabledTerritories)
+            var enabledRegions = new List<IRegion> { Make.Region.Build() };
+            _worldMapViewModelFactory.Create(onClickAction)
                 .Returns(expectedWorldMapViewModel);
-            var gameSetupViewModel = Initialize();
-            gameSetupViewModel.MonitorEvents();
+            _worldMapViewModelFactory.Update(expectedWorldMapViewModel, territories, enabledRegions, selectedRegion: null);
+            var sut = Create();
+            sut.MonitorEvents();
 
-            gameSetupViewModel.UpdateView(
-                territories: territories,
-                selectTerritoryAction: onClickAction,
-                enabledTerritories: enabledTerritories,
-                playerName: null,
-                armiesLeftToPlace: 0);
+            //sut.UpdateView(
+            //    territories: territories,
+            //    selectAction: onClickAction,
+            //    enabledRegions: enabledRegions,
+            //    playerName: null,
+            //    armiesLeftToPlace: 0);
+            sut.SelectRegion(null);
 
-            gameSetupViewModel.WorldMapViewModel.Should().Be(expectedWorldMapViewModel);
-            gameSetupViewModel.ShouldRaisePropertyChangeFor(x => x.WorldMapViewModel);
+            sut.WorldMapViewModel.Should().Be(expectedWorldMapViewModel);
+            sut.ShouldRaisePropertyChangeFor(x => x.WorldMapViewModel);
         }
 
         [Fact]
         public void UpdateView_updates_information_text()
         {
-            var resourceManager = Substitute.For<IResourceManager>();
-            ResourceManager.Instance = resourceManager;
-            const string expectedInformationText = "information text shows armies left: 1";
-            resourceManager.GetString("PLACE_ARMY").Returns("information text shows armies left: {0}");
+            var sut = Create();
+            sut.MonitorEvents();
 
-            var gameSetupViewModel = Initialize();
-            gameSetupViewModel.MonitorEvents();
+            //sut.UpdateView(
+            //    territories: null,
+            //    selectAction: null,
+            //    enabledRegions: null,
+            //    playerName: null,
+            //    armiesLeftToPlace: 1);
+            sut.SelectRegion(null);
 
-            gameSetupViewModel.UpdateView(
-                territories: null,
-                selectTerritoryAction: null,
-                enabledTerritories: null,
-                playerName: null,
-                armiesLeftToPlace: 1);
-
-            gameSetupViewModel.InformationText.Should().Be(expectedInformationText);
-            gameSetupViewModel.ShouldRaisePropertyChangeFor(x => x.InformationText);
+            sut.InformationText.Should().Be(string.Format(Resources.PLACE_ARMY, 1));
+            sut.ShouldRaisePropertyChangeFor(x => x.InformationText);
         }
 
         [Fact]
         public void UpdateView_updates_player_name()
         {
             const string expectedPlayerName = "any player name";
-            var gameSetupViewModel = Initialize();
-            gameSetupViewModel.MonitorEvents();
+            var sut = Create();
+            sut.MonitorEvents();
 
-            gameSetupViewModel.UpdateView(
-                territories: null,
-                selectTerritoryAction: null,
-                enabledTerritories: null,
-                playerName: expectedPlayerName,
-                armiesLeftToPlace: 0);
+            //sut.UpdateView(
+            //    territories: null,
+            //    selectAction: null,
+            //    enabledRegions: null,
+            //    playerName: expectedPlayerName,
+            //    armiesLeftToPlace: 0);
+            sut.SelectRegion(null);
 
-            gameSetupViewModel.PlayerName.Should().Be(expectedPlayerName);
-            gameSetupViewModel.ShouldRaisePropertyChangeFor(x => x.PlayerName);
+            sut.PlayerName.Should().Be(expectedPlayerName);
+            sut.ShouldRaisePropertyChangeFor(x => x.PlayerName);
         }
 
         [Fact]
-        public void When_finished_game_conductor_is_notified()
+        public void When_finished_setup_game_conductor_is_notified()
         {
-            var sut = Initialize(activate: false);
-            var expectedGame = Substitute.For<IGame>();
-            IGame actualGame = null;
+            var sut = Create();
+            IGamePlaySetup expectedGamePlaySetup = null;
             var gamePlaySetup = Substitute.For<IGamePlaySetup>();
-            _alternateGameSetup.Initialize().Returns(gamePlaySetup);
-            _gameFactory.Create(gamePlaySetup).Returns(expectedGame);
-            _eventAggregator.WhenForAnyArgs(x => x.PublishOnUIThread(null)).Do(ci => actualGame = ci.Arg<StartGameplayMessage>().Game);
-
-            sut.Activate();
+            _eventAggregator.WhenForAnyArgs(x => x.PublishOnUIThread(null)).Do(ci => expectedGamePlaySetup = ci.Arg<StartGameplayMessage>().GamePlaySetup);
 
             _eventAggregator.ReceivedWithAnyArgs().PublishOnUIThread(null);
-            actualGame.Should().Be(expectedGame);
+            expectedGamePlaySetup.Should().Be(gamePlaySetup);
         }
 
         [Fact]
         public void Can_not_activate_fortify()
         {
-            var gameSetupViewModel = Initialize();
+            var sut = Create();
 
-            gameSetupViewModel.CanEnterFortifyMode.Should().BeFalse();
+            sut.CanEnterFortifyMode.Should().BeFalse();
         }
 
         [Fact]
         public void Can_not_end_turn()
         {
-            var gameSetupViewModel = Initialize();
+            var sut = Create();
 
-            gameSetupViewModel.CanEndTurn.Should().BeFalse();
+            sut.CanEndTurn.Should().BeFalse();
         }
 
         [Fact]
@@ -144,9 +129,8 @@ namespace RISK.Tests.GuiWpf
         {
             _dialogManager.ConfirmEndGame().Returns(true);
 
-            var gameSetupViewModel = Initialize();
-
-            gameSetupViewModel.EndGame();
+            var sut = Create();
+            sut.EndGame();
 
             _eventAggregator.Received().PublishOnUIThread(Arg.Any<NewGameMessage>());
         }
@@ -156,22 +140,15 @@ namespace RISK.Tests.GuiWpf
         {
             _dialogManager.ConfirmEndGame().Returns(false);
 
-            var gameSetupViewModel = Initialize();
-
-            gameSetupViewModel.EndGame();
+            var sut = Create();
+            sut.EndGame();
 
             _eventAggregator.DidNotReceive().PublishOnUIThread(Arg.Any<NewGameMessage>());
         }
 
-        private AlternateGameSetupViewModel Initialize(bool activate = true)
+        private AlternateGameSetupViewModel Create()
         {
-            var gameSetupViewModel = (AlternateGameSetupViewModel)_alternateGameSetupViewModelFactory.Create(_alternateGameSetup);
-            if (activate)
-            {
-                gameSetupViewModel.Activate();
-            }
-
-            return gameSetupViewModel;
+            return (AlternateGameSetupViewModel)factory.Create();
         }
     }
 }

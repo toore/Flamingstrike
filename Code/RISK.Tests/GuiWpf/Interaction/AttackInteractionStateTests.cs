@@ -1,5 +1,4 @@
-﻿using FluentAssertions;
-using GuiWpf.ViewModels.Gameplay.Interaction;
+﻿using GuiWpf.ViewModels.Gameplay.Interaction;
 using NSubstitute;
 using RISK.Core;
 using RISK.GameEngine.Play;
@@ -9,70 +8,37 @@ namespace RISK.Tests.GuiWpf.Interaction
 {
     public class AttackInteractionStateTests
     {
-        private readonly IInteractionContext _interactionContext;
-        private readonly IInteractionStateFactory _interactionStateFactory;
-        private readonly IGame _game;
-        private readonly IRegion _selectedRegion;
         private readonly AttackInteractionState _sut;
+        private readonly IAttackPhase _attackPhase;
+        private readonly IRegion _selectedRegion;
         private readonly IRegion _attackedRegion;
+        private readonly IDeselectAttackingRegionObserver _deselectAttackingRegionObserver;
 
         public AttackInteractionStateTests()
         {
-            _interactionContext = Substitute.For<IInteractionContext>();
-            _interactionStateFactory = Substitute.For<IInteractionStateFactory>();
-            _game = Substitute.For<IGame>();
+            _attackPhase = Substitute.For<IAttackPhase>();
             _selectedRegion = Substitute.For<IRegion>();
+            _deselectAttackingRegionObserver = Substitute.For<IDeselectAttackingRegionObserver>();
 
-            _sut = new AttackInteractionState(_interactionContext, _interactionStateFactory, _game, _selectedRegion);
+            _sut = new AttackInteractionState(_attackPhase, _selectedRegion, _deselectAttackingRegionObserver);
 
             _attackedRegion = Substitute.For<IRegion>();
         }
 
         [Fact]
-        public void Selected_region_is_defined()
-        {
-            _sut.SelectedRegion.Should().Be(_selectedRegion);
-        }
-
-        [Fact]
-        public void Can_click_territory_that_can_be_attacked()
-        {
-            _game.CanAttack(_selectedRegion, _attackedRegion).Returns(true);
-
-            _sut.AssertCanClickAndOnClickCanBeInvoked(_attackedRegion);
-        }
-
-        [Fact]
         public void OnClick_attacks()
         {
-            _game.CanAttack(_selectedRegion, _attackedRegion).Returns(true);
-
             _sut.OnClick(_attackedRegion);
 
-            _game.Received().Attack(_selectedRegion, _attackedRegion);
+            _attackPhase.Received().Attack(_selectedRegion, _attackedRegion);
         }
 
         [Fact]
-        public void Can_not_click_on_remote_region()
+        public void OnClick_deselects()
         {
-            _sut.AssertCanNotClickAndOnClickThrowsInvalidOperationException(_attackedRegion);
-        }
-
-        [Fact]
-        public void Can_click_on_selected_region()
-        {
-            _sut.AssertCanClickAndOnClickCanBeInvoked(_selectedRegion);
-        }
-
-        [Fact]
-        public void OnClick_on_selected_territory_enters_select_state()
-        {
-            var selectState = Substitute.For<IInteractionState>();
-            _interactionStateFactory.CreateSelectInteractionState(_game).Returns(selectState);
-
             _sut.OnClick(_selectedRegion);
 
-            _interactionContext.Received().Set(selectState);
+            _deselectAttackingRegionObserver.Received().DeselectRegion();
         }
     }
 }

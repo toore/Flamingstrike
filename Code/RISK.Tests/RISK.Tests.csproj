@@ -128,25 +128,19 @@
     <Compile Include="GameEngine\Specifications\AlternateGameSetupObserverSpec.cs" />
     <Compile Include="GameEngine\Setup\NullAlternateGameSetupObserver.cs" />
     <Compile Include="GuiWpf\Interaction\AttackInteractionStateTests.cs" />
-    <Compile Include="GuiWpf\Interaction\EndTurnInteractionStateTests.cs" />
-    <Compile Include="GuiWpf\Interaction\FortifyMoveInteractionStateTests.cs" />
-    <Compile Include="GuiWpf\Interaction\FortifySelectInteractionStateTests.cs" />
-    <Compile Include="GuiWpf\Interaction\InteractionStateContextTests.cs" />
+    <Compile Include="GuiWpf\Interaction\FortifyInteractionStateTests.cs" />
     <Compile Include="GuiWpf\Interaction\InteractionStateExtensions.cs" />
+    <Compile Include="GuiWpf\Interaction\SelectSourceRegionForFortificationInteractionStateTests.cs" />
     <Compile Include="GameEngine\Setup\StartingInfantryCalculatorTests.cs" />
     <Compile Include="Builders\GamePlaySetupBuilder.cs" />
-    <Compile Include="GuiWpf\CurrentThreadDispatcher.cs" />
     <Compile Include="GuiWpf\Interaction\DraftArmiesInteractionStateTests.cs" />
     <Compile Include="GuiWpf\MainGameViewModelDecorator.cs" />
-    <Compile Include="GuiWpf\SynchronousTaskEx.cs" />
-    <Compile Include="GuiWpf\UserInteractorTests.cs" />
     <Compile Include="GuiWpf\RegionModelFactoryTests.cs" />
     <Compile Include="Builders\RegionBuilder.cs" />
     <Compile Include="Builders\Make.cs" />
-    <Compile Include="GuiWpf\Interaction\SelectInteractionStateTests.cs" />
+    <Compile Include="GuiWpf\Interaction\SelectAttackInteractionStateTests.cs" />
     <Compile Include="SpecBase.cs" />
-    <Compile Include="GuiWpf\Specifications\GamePlaySpec.cs" />
-    <Compile Include="GuiWpf\Specifications\GameSetupSpec.cs" />
+    <Compile Include="GuiWpf\Specifications\GameplaySpec.cs" />
     <Compile Include="GuiWpf\EnumerableExtensionsTests.cs" />
     <Compile Include="GuiWpf\GamePreparationViewModelTests.cs" />
     <Compile Include="GuiWpf\GameSetupViewModelTests.cs" />
@@ -167,7 +161,6 @@
     </Compile>
     <Compile Include="GameEngine\Setup\AlternateGameSetupTests.cs" />
     <Compile Include="GuiWpf\ColorServiceTests.cs" />
-    <Compile Include="GuiWpf\GameboardViewModelTests.cs" />
     <Compile Include="GameEngine\RegionsTests.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>

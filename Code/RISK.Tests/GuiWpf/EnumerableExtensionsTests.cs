@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using FluentAssertions;
 using GuiWpf.Extensions;
 using Xunit;

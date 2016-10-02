@@ -1,24 +1,24 @@
-using RISK.Core;
+﻿using RISK.Core;
 using RISK.GameEngine.Play;
 
 namespace GuiWpf.ViewModels.Gameplay.Interaction
 {
-    public interface IDeselectAttackingRegionObserver
+    public interface IDeselectRegionToFortifyFromObserver
     {
         void DeselectRegion();
     }
 
-    public class AttackInteractionState : IInteractionState
+    public class FortifyInteractionState : IInteractionState
     {
         private readonly IAttackPhase _attackPhase;
         private readonly IRegion _selectedRegion;
-        private readonly IDeselectAttackingRegionObserver _deselectAttackingRegionObserver;
+        private readonly IDeselectRegionToFortifyFromObserver _deselectRegionToFortifyFromObserver;
 
-        public AttackInteractionState(IAttackPhase attackPhase, IRegion selectedRegion, IDeselectAttackingRegionObserver deselectAttackingRegionObserver)
+        public FortifyInteractionState(IAttackPhase attackPhase, IRegion selectedRegion, IDeselectRegionToFortifyFromObserver deselectRegionToFortifyFromObserver)
         {
             _attackPhase = attackPhase;
             _selectedRegion = selectedRegion;
-            _deselectAttackingRegionObserver = deselectAttackingRegionObserver;
+            _deselectRegionToFortifyFromObserver = deselectRegionToFortifyFromObserver;
         }
 
         public void OnClick(IRegion region)
@@ -29,7 +29,7 @@ namespace GuiWpf.ViewModels.Gameplay.Interaction
             }
             else
             {
-                Attack(region);
+                Fortify(region);
             }
         }
 
@@ -40,12 +40,12 @@ namespace GuiWpf.ViewModels.Gameplay.Interaction
 
         private void Deselect()
         {
-            _deselectAttackingRegionObserver.DeselectRegion();
+            _deselectRegionToFortifyFromObserver.DeselectRegion();
         }
 
-        private void Attack(IRegion attackedRegion)
+        private void Fortify(IRegion regionToFortify)
         {
-            _attackPhase.Attack(_selectedRegion, attackedRegion);
+            _attackPhase.Fortify(_selectedRegion, regionToFortify, 1);
         }
     }
 }

@@ -9,6 +9,6 @@
     d:DesignHeight="300" d:DesignWidth="300"
     d:DataContext="{d:DesignInstance Setup:AlternateGameSetupViewModel}">
 
-    <Gameplay:GameboardView />
+    <Gameplay:GameplayView />
 
 </UserControl>

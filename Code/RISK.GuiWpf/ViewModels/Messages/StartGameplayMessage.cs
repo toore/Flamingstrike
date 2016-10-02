@@ -1,14 +1,15 @@
 ﻿using RISK.GameEngine.Play;
+using RISK.GameEngine.Setup;
 
 namespace GuiWpf.ViewModels.Messages
 {
     public class StartGameplayMessage
     {
-        public IGame Game { get; private set; }
+        public IGamePlaySetup GamePlaySetup { get; private set; }
 
-        public StartGameplayMessage(IGame game)
+        public StartGameplayMessage(IGamePlaySetup gamePlaySetup)
         {
-            Game = game;
+            GamePlaySetup = gamePlaySetup;
         }
     }
 }

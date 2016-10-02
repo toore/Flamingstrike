@@ -21,7 +21,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -80,20 +80,16 @@
     </ApplicationDefinition>
     <Compile Include="ContentClickButton.cs" />
     <Compile Include="Extensions\EnumerableExtensions.cs" />
-    <Compile Include="Services\GuiThreadDispatcher.cs" />
-    <Compile Include="Services\ResourceManager.cs" />
     <Compile Include="RegionModels\RegionModelBase.cs" />
     <Compile Include="ViewModels\ConfirmViewModel.cs" />
     <Compile Include="ViewModels\ConfirmViewModelFactory.cs" />
     <Compile Include="ViewModels\Gameplay\Interaction\AttackInteractionState.cs" />
     <Compile Include="ViewModels\Gameplay\Interaction\DraftArmiesInteractionState.cs" />
-    <Compile Include="ViewModels\Gameplay\Interaction\FortifyMoveInteractionState.cs" />
-    <Compile Include="ViewModels\Gameplay\Interaction\FortifySelectInteractionState.cs" />
+    <Compile Include="ViewModels\Gameplay\Interaction\FortifyInteractionState.cs" />
+    <Compile Include="ViewModels\Gameplay\Interaction\SelectSourceRegionForFortificationInteractionState.cs" />
     <Compile Include="ViewModels\Gameplay\Interaction\IInteractionState.cs" />
     <Compile Include="ViewModels\Gameplay\Interaction\InteractionStateFactory.cs" />
-    <Compile Include="ViewModels\Gameplay\Interaction\SelectInteractionState.cs" />
-    <Compile Include="ViewModels\Gameplay\Interaction\InteractionContext.cs" />
-    <Compile Include="ViewModels\Gameplay\Interaction\EndTurnInteractionState.cs" />
+    <Compile Include="ViewModels\Gameplay\Interaction\SelectAttackingRegionInteractionState.cs" />
     <Compile Include="ViewModels\Gameplay\Interaction\SendArmiesToOccupyInteractionState.cs" />
     <Compile Include="ViewModels\Gameplay\IWorldMapItemViewModelVisitor.cs" />
     <Compile Include="ViewModels\Gameplay\WorldMapItemUpdater.cs" />
@@ -109,18 +105,12 @@
       <DependentUpon>AlternateGameSetupView.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\Messages\StartGameplayMessage.cs" />
-    <Compile Include="Services\TaskEx.cs" />
-    <Compile Include="ViewModels\AlternateSetup\UserInteractionFactory.cs" />
-    <Compile Include="ViewModels\AlternateSetup\UserInteractor.cs" />
-    <Compile Include="ViewModels\AlternateSetup\UserInteraction.cs" />
-    <Compile Include="ViewModels\AlternateSetup\UserInteractorFactory.cs" />
     <Compile Include="Views\ConfirmView.xaml.cs">
       <DependentUpon>ConfirmView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Preparation\GamePreparationView.xaml.cs">
       <DependentUpon>GamePreparationView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="WpfExtensions\GetString.cs" />
     <Compile Include="Infrastructure\WindowManager.cs" />
     <Compile Include="Services\ColorService.cs" />
     <Compile Include="Services\RegionColorSettings.cs" />
@@ -128,7 +118,7 @@
     <Compile Include="ViewModels\GameOverViewModel.cs" />
     <Compile Include="ViewModels\GameOverViewModelFactory.cs" />
     <Compile Include="ViewModels\AlternateSetup\AlternateGameSetupViewModel.cs" />
-    <Compile Include="ViewModels\Gameplay\GameboardViewModelFactory.cs" />
+    <Compile Include="ViewModels\Gameplay\GameplayViewModelFactory.cs" />
     <Compile Include="ViewModels\Messages\StartGameSetupMessage.cs" />
     <Compile Include="ViewModels\AlternateSetup\AlternateGameSetupViewModelFactory.cs" />
     <Compile Include="ViewModels\Preparation\GamePreparationViewModel.cs" />
@@ -143,8 +133,7 @@
     <Compile Include="ViewModels\Preparation\PlayerTypeBase.cs" />
     <Compile Include="ViewModels\Preparation\PlayerTypes.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
-    <Compile Include="ViewModels\Gameplay\GameboardViewModel.cs" />
-    <Compile Include="ViewModels\Gameplay\IGameboardViewModel.cs" />
+    <Compile Include="ViewModels\Gameplay\GameplayViewModel.cs" />
     <Compile Include="Views\GameOverView.xaml.cs">
       <DependentUpon>GameOverView.xaml</DependentUpon>
     </Compile>
@@ -205,8 +194,8 @@
     <Compile Include="RegionModels\WesternEuropeModel.cs" />
     <Compile Include="RegionModels\WesternUnitedStatesModel.cs" />
     <Compile Include="RegionModels\YakutskModel.cs" />
-    <Compile Include="Views\Gameplay\GameboardView.xaml.cs">
-      <DependentUpon>GameboardView.xaml</DependentUpon>
+    <Compile Include="Views\Gameplay\GameplayView.xaml.cs">
+      <DependentUpon>GameplayView.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\Gameplay\WorldMapViewModel.cs" />
     <Page Include="Views\AlternateSetup\AlternateGameSetupView.xaml">
@@ -229,7 +218,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\Gameplay\GameboardView.xaml">
+    <Page Include="Views\Gameplay\GameplayView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -277,7 +266,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
+      <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>

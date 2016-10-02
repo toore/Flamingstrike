@@ -11,9 +11,9 @@ namespace GuiWpf.ViewModels
     public class MainGameViewModel : Conductor<IMainViewModel>, IHandle<StartGameSetupMessage>, IHandle<StartGameplayMessage>, IHandle<NewGameMessage>
     {
         private readonly IGamePreparationViewModelFactory _gamePreparationViewModelFactory;
-        private readonly IGameboardViewModelFactory _gameboardViewModelFactory;
+        private readonly IGameplayViewModelFactory _gameplayViewModelFactory;
         private readonly IAlternateGameSetupViewModelFactory _alternateGameSetupViewModelFactory;
-        private readonly IUserInteractorFactory _userInteractorFactory;
+        private readonly IGameFactory _gameFactory;
         private readonly IAlternateGameSetupFactory _alternateGameSetupFactory;
         private readonly IPlayerRepository _playerRepository;
 
@@ -25,9 +25,9 @@ namespace GuiWpf.ViewModels
                 root.PlayerRepository,
                 root.AlternateGameSetupFactory,
                 root.GamePreparationViewModelFactory,
-                root.GameboardViewModelFactory,
+                root.GameplayViewModelFactory,
                 root.AlternateGameSetupViewModelFactory,
-                root.UserInteractorFactory)
+                root.GameFactory)
         {
             root.EventAggregator.Subscribe(this);
         }
@@ -36,16 +36,16 @@ namespace GuiWpf.ViewModels
             IPlayerRepository playerRepository,
             IAlternateGameSetupFactory alternateGameSetupFactory,
             IGamePreparationViewModelFactory gamePreparationViewModelFactory,
-            IGameboardViewModelFactory gameboardViewModelFactory,
+            IGameplayViewModelFactory gameplayViewModelFactory,
             IAlternateGameSetupViewModelFactory alternateGameSetupViewModelFactory,
-            IUserInteractorFactory userInteractorFactory)
+            IGameFactory gameFactory)
         {
             _playerRepository = playerRepository;
             _alternateGameSetupFactory = alternateGameSetupFactory;
             _gamePreparationViewModelFactory = gamePreparationViewModelFactory;
-            _gameboardViewModelFactory = gameboardViewModelFactory;
+            _gameplayViewModelFactory = gameplayViewModelFactory;
             _alternateGameSetupViewModelFactory = alternateGameSetupViewModelFactory;
-            _userInteractorFactory = userInteractorFactory;
+            _gameFactory = gameFactory;
         }
 
         protected override void OnInitialize()
@@ -73,7 +73,7 @@ namespace GuiWpf.ViewModels
 
         public void Handle(StartGameplayMessage startGameplayMessage)
         {
-            StartGamePlay(startGameplayMessage.Game);
+            StartGamePlay(startGameplayMessage.GamePlaySetup);
         }
 
         private void InitializeNewGame()
@@ -86,20 +86,18 @@ namespace GuiWpf.ViewModels
         private void StartGameSetup()
         {
             var players = _playerRepository.GetAll();
-            var alternateGameSetup = _alternateGameSetupFactory.Create(players);
-            var gameSetupViewModel = _alternateGameSetupViewModelFactory.Create(alternateGameSetup);
-
-            var userInteractor = _userInteractorFactory.Create(gameSetupViewModel);
-            alternateGameSetup.TerritoryResponder = userInteractor;
+            var gameSetupViewModel = _alternateGameSetupViewModelFactory.Create();
+            var alternateGameSetup = _alternateGameSetupFactory.Create(gameSetupViewModel, players);
 
             ActivateItem(gameSetupViewModel);
         }
 
-        private void StartGamePlay(IGame game)
+        private void StartGamePlay(IGamePlaySetup gamePlaySetup)
         {
-            var gameboardViewModel = _gameboardViewModelFactory.Create(game);
-
-            ActivateItem(gameboardViewModel);
+            var gameplayViewModel = _gameplayViewModelFactory.Create();
+            var game = _gameFactory.Create(gameplayViewModel, gamePlaySetup);
+            
+            ActivateItem(gameplayViewModel);
         }
     }
 }

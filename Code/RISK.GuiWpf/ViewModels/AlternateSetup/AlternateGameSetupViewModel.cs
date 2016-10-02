@@ -1,61 +1,48 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using Caliburn.Micro;
+using GuiWpf.Properties;
 using GuiWpf.Services;
 using GuiWpf.ViewModels.Gameplay;
 using GuiWpf.ViewModels.Messages;
 using RISK.Core;
-using RISK.GameEngine.Play;
 using RISK.GameEngine.Setup;
 
 namespace GuiWpf.ViewModels.AlternateSetup
 {
-    public interface IAlternateGameSetupViewModel : IMainViewModel
-    {
-        void UpdateView(IReadOnlyList<ITerritory> territories, Action<IRegion> selectTerritoryAction, IEnumerable<IRegion> enabledTerritories, string playerName, int armiesLeftToPlace);
-    }
+    public interface IAlternateGameSetupViewModel : IMainViewModel, IAlternateGameSetupObserver {}
 
-    public class AlternateGameSetupViewModel : Screen, IAlternateGameSetupViewModel, IGameboardViewModel
+    public class AlternateGameSetupViewModel : Screen, IAlternateGameSetupViewModel
     {
         private readonly IWorldMapViewModelFactory _worldMapViewModelFactory;
-        private readonly IGameFactory _gameFactory;
         private readonly IDialogManager _dialogManager;
         private readonly IEventAggregator _eventAggregator;
-        private readonly IAlternateGameSetup _alternateGameSetup;
-        private readonly ITaskEx _taskEx;
+        private WorldMapViewModel _worldMapViewModel;
+        private string _informationText;
+        private string _playerName;
 
         public AlternateGameSetupViewModel(
-            IGameFactory gameFactory,
             IWorldMapViewModelFactory worldMapViewModelFactory,
             IDialogManager dialogManager,
-            IEventAggregator eventAggregator,
-            IAlternateGameSetup alternateGameSetup,
-            ITaskEx taskEx)
+            IEventAggregator eventAggregator)
         {
             _worldMapViewModelFactory = worldMapViewModelFactory;
-            _gameFactory = gameFactory;
             _dialogManager = dialogManager;
             _eventAggregator = eventAggregator;
-            _alternateGameSetup = alternateGameSetup;
-            _taskEx = taskEx;
         }
 
-        private WorldMapViewModel _worldMapViewModel;
         public WorldMapViewModel WorldMapViewModel
         {
             get { return _worldMapViewModel; }
             private set { this.NotifyOfPropertyChange(value, () => WorldMapViewModel, x => _worldMapViewModel = x); }
         }
 
-        private string _informationText;
         public string InformationText
         {
             get { return _informationText; }
             private set { this.NotifyOfPropertyChange(value, () => InformationText, x => _informationText = x); }
         }
 
-        private string _playerName;
         public string PlayerName
         {
             get { return _playerName; }
@@ -64,46 +51,25 @@ namespace GuiWpf.ViewModels.AlternateSetup
 
         public bool CanEnterFortifyMode => false;
 
-        public void Activate()
+        public void SelectRegion(IPlaceArmyRegionSelector placeArmyRegionSelector)
         {
-            OnActivate();
+            UpdateView(
+                placeArmyRegionSelector.Territories,
+                placeArmyRegionSelector.PlaceArmyInRegion,
+                placeArmyRegionSelector.SelectableRegions,
+                placeArmyRegionSelector.PlayerName,
+                placeArmyRegionSelector.GetArmiesLeftToPlace());
         }
 
-        protected override async void OnActivate()
+        public void NewGamePlaySetup(IGamePlaySetup gamePlaySetup)
         {
-            var gamePlaySetup = await SetupGame();
-
-            var game = _gameFactory.Create(gamePlaySetup);
-            StartGameplay(game);
+            _eventAggregator.PublishOnUIThread(new StartGameplayMessage(gamePlaySetup));
         }
 
-        private async Task<IGamePlaySetup> SetupGame()
+        private void UpdateView(IReadOnlyList<ITerritory> territories, Action<IRegion> selectAction, IReadOnlyList<IRegion> enabledRegions, string playerName, int armiesLeftToPlace)
         {
-            var setupOfGameAsync = SetupOfGameAsync();
-            var gamePlaySetup = await setupOfGameAsync;
-
-            return gamePlaySetup;
-        }
-
-        private async Task<IGamePlaySetup> SetupOfGameAsync()
-        {
-            IGamePlaySetup gameSetup = null;
-            await _taskEx.Run(() => { gameSetup = _alternateGameSetup.Initialize(); });
-
-            return gameSetup;
-        }
-
-        private void StartGameplay(IGame game)
-        {
-            _eventAggregator.PublishOnUIThread(new StartGameplayMessage(game));
-        }
-
-        public void UpdateView(IReadOnlyList<ITerritory> territories, Action<IRegion> selectTerritoryAction, IEnumerable<IRegion> enabledTerritories, string playerName, int armiesLeftToPlace)
-        {
-            var worldMapViewModel = _worldMapViewModelFactory.Create(
-                territories,
-                selectTerritoryAction,
-                enabledTerritories);
+            var worldMapViewModel = _worldMapViewModelFactory.Create(selectAction);
+            _worldMapViewModelFactory.Update(worldMapViewModel, territories, enabledRegions, null);
 
             WorldMapViewModel = worldMapViewModel;
 
@@ -113,6 +79,7 @@ namespace GuiWpf.ViewModels.AlternateSetup
         }
 
         public void EnterFortifyMode() {}
+
         public bool CanEndTurn => false;
 
         public void EndTurn() {}

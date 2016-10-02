@@ -8,7 +8,7 @@ using GuiWpf.ViewModels.Preparation;
 using RISK.Core;
 using RISK.GameEngine;
 using RISK.GameEngine.Play;
-using RISK.GameEngine.Play.GamePhases;
+using RISK.GameEngine.Play.GameStates;
 using RISK.GameEngine.Setup;
 using Toore.Shuffling;
 
@@ -18,16 +18,13 @@ namespace GuiWpf.ViewModels
     {
         public PlayerRepository PlayerRepository { get; }
         public IEventAggregator EventAggregator { get; }
-        public IAlternateGameSetupFactory AlternateGameSetupFactory { get; private set; }
-        public IGamePreparationViewModelFactory GamePreparationViewModelFactory { get; private set; }
-        public IGameboardViewModelFactory GameboardViewModelFactory { get; private set; }
-        public IAlternateGameSetupViewModelFactory AlternateGameSetupViewModelFactory { get; private set; }
-        public IUserInteractorFactory UserInteractorFactory { get; set; }
+        public IAlternateGameSetupFactory AlternateGameSetupFactory { get; }
+        public IGamePreparationViewModelFactory GamePreparationViewModelFactory { get; }
+        public IGameplayViewModelFactory GameplayViewModelFactory { get; private set; }
+        public IAlternateGameSetupViewModelFactory AlternateGameSetupViewModelFactory { get; }
+        public IGameFactory GameFactory { get; }
 
-        public Root() : this(
-            taskEx: new TaskEx()) {}
-
-        public Root(ITaskEx taskEx)
+        public Root()
         {
             var playerFactory = new PlayerFactory();
             var playerTypes = new PlayerTypes();
@@ -40,26 +37,22 @@ namespace GuiWpf.ViewModels
                 PlayerRepository,
                 EventAggregator);
 
-            var interactionContext = new InteractionContext();
-            var interactionStateFactory = new InteractionStateFactory(interactionContext);
             var colorService = new ColorService();
             var continents = new Continents();
             var regions = new Regions(continents);
             var regionColorSettingsFactory = new RegionColorSettingsFactory(colorService, regions);
             var regionModelFactory = new RegionModelFactory(regions);
-            var worldMapViewModelFactory = new WorldMapViewModelFactory(
-                regionModelFactory, regionColorSettingsFactory, colorService);
+            var worldMapViewModelFactory = new WorldMapViewModelFactory(regionModelFactory, regionColorSettingsFactory, colorService);
             var windowManager = new WindowManager();
             var gameOverViewModelFactory = new GameOverViewModelFactory();
             var screenConfirmationService = new ScreenConfirmationService();
             var confirmViewModelFactory = new ConfirmViewModelFactory(screenConfirmationService);
             var userNotifier = new UserNotifier(windowManager, confirmViewModelFactory);
             var dialogManager = new DialogManager(userNotifier);
+            var interactionStateFactory = new InteractionStateFactory();
 
-            GameboardViewModelFactory = new GameboardViewModelFactory(
-                interactionContext,
+            GameplayViewModelFactory = new GameplayViewModelFactory(
                 interactionStateFactory,
-                regions,
                 worldMapViewModelFactory,
                 windowManager,
                 gameOverViewModelFactory,
@@ -73,33 +66,36 @@ namespace GuiWpf.ViewModels
             var dice = new Dice(randomWrapper);
             var diceRoller = new DicesRoller(dice);
             var battle = new Battle(diceRoller, battleCalculator);
-            var gameDataFactory = new GameDataFactory();
             var armyDrafter = new ArmyDrafter();
             var territoryOccupier = new TerritoryOccupier();
             var fortifier = new Fortifier();
             var attacker = new Attacker(battle);
             var gameRules = new GameRules();
-            var gameStateFactory = new GameStateFactory(gameDataFactory, armyDrafter, territoryOccupier, attacker, fortifier, gameRules);
+            var gameStateFactory = new GameStateFactory(gameRules, armyDrafter, attacker, territoryOccupier, fortifier);
             var armyDraftCalculator = new ArmyDraftCalculator(continents);
-            var gameContext = new GameContext();
-            var gameStateConductor = new GameStateConductor(gameStateFactory, armyDraftCalculator, gameDataFactory, gameContext);
-            var gameFactory = new GameFactory(gameDataFactory, gameStateConductor, deckFactory, gameContext, gameRules);
 
             AlternateGameSetupViewModelFactory = new AlternateGameSetupViewModelFactory(
-                gameFactory,
                 worldMapViewModelFactory,
                 dialogManager,
-                EventAggregator,
-                taskEx);
+                EventAggregator);
 
+#if QUICK_SETUP
+            var startingInfantryCalculator = new StartingInfantryCalculatorReturning21Armies();
+#else
             var startingInfantryCalculator = new StartingInfantryCalculator();
+#endif
 
-            AlternateGameSetupFactory = new AlternateGameSetupFactory(
-                regions, shuffle, startingInfantryCalculator);
+            AlternateGameSetupFactory = new AlternateGameSetupFactory(regions, shuffle, startingInfantryCalculator);
 
-            var userInteractionFactory = new UserInteractionFactory();
-            var guiThreadDispatcher = new GuiThreadDispatcher();
-            UserInteractorFactory = new UserInteractorFactory(userInteractionFactory, guiThreadDispatcher);
+            GameFactory = new GameFactory(gameStateFactory, armyDraftCalculator, deckFactory);
+        }
+    }
+
+    public class StartingInfantryCalculatorReturning21Armies : IStartingInfantryCalculator
+    {
+        public int Get(int numberOfPlayers)
+        {
+            return 22;
         }
     }
 }

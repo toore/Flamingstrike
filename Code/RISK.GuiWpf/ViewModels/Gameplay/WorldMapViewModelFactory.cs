@@ -10,8 +10,9 @@ namespace GuiWpf.ViewModels.Gameplay
 {
     public interface IWorldMapViewModelFactory
     {
-        WorldMapViewModel Create(IReadOnlyList<ITerritory> territories, Action<IRegion> onClick, IEnumerable<IRegion> enabledTerritories);
-        void Update(WorldMapViewModel worldMapViewModel, IReadOnlyList<ITerritory> territories, IRegion selectedRegion, IEnumerable<IRegion> enabledTerritories);
+        WorldMapViewModel Create(Action<IRegion> onClick);
+
+        void Update(WorldMapViewModel worldMapViewModel, IReadOnlyList<ITerritory> territories, IReadOnlyList<IRegion> enabledRegions, IRegion selectedRegion);
     }
 
     public class WorldMapViewModelFactory : IWorldMapViewModelFactory
@@ -27,15 +28,22 @@ namespace GuiWpf.ViewModels.Gameplay
             _colorService = colorService;
         }
 
-        public WorldMapViewModel Create(IReadOnlyList<ITerritory> territories, Action<IRegion> onClick, IEnumerable<IRegion> enabledTerritories)
+        public WorldMapViewModel Create(Action<IRegion> onClick)
         {
             var worldMapViewModel = new WorldMapViewModel();
             var worldMapViewModels = CreateWorldMapItemViewModels(onClick);
             worldMapViewModel.WorldMapViewModels.Add(worldMapViewModels);
 
-            Update(worldMapViewModel, territories, null, enabledTerritories);
-
             return worldMapViewModel;
+        }
+
+        public void Update(WorldMapViewModel worldMapViewModel, IReadOnlyList<ITerritory> territories, IReadOnlyList<IRegion> enabledRegions, IRegion selectedRegion)
+        {
+            var worldMapItemUpdater = new WorldMapItemUpdater(territories, enabledRegions, selectedRegion, _regionColorSettingsFactory, _colorService);
+            foreach (var worldMapItemViewModel in worldMapViewModel.WorldMapViewModels)
+            {
+                worldMapItemViewModel.Accept(worldMapItemUpdater);
+            }
         }
 
         private IEnumerable<IWorldMapItemViewModel> CreateWorldMapItemViewModels(Action<IRegion> onClick)
@@ -49,15 +57,6 @@ namespace GuiWpf.ViewModels.Gameplay
                 .ToList();
 
             return worldMapViewModels;
-        }
-
-        public void Update(WorldMapViewModel worldMapViewModel, IReadOnlyList<ITerritory> territories, IRegion selectedRegion, IEnumerable<IRegion> enabledTerritories)
-        {
-            var worldMapItemUpdater = new WorldMapItemUpdater(territories, enabledTerritories, selectedRegion, _regionColorSettingsFactory, _colorService);
-            foreach (var worldMapItemViewModel in worldMapViewModel.WorldMapViewModels)
-            {
-                worldMapItemViewModel.Accept(worldMapItemUpdater);
-            }
         }
     }
 }
