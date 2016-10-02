@@ -4,7 +4,7 @@
     xmlns:Setup="clr-namespace:RISK.UI.WPF.ViewModels.Preparation">
     
     <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="/GuiWpf;component/Views/GameResources.xaml" />
+        <ResourceDictionary Source="/RISK.UI.WPF;component/Views/GameResources.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
     <Style x:Key="PlayerNameLabelStyle" TargetType="{x:Type Label}">
