@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Caliburn.Micro;
 using FluentAssertions;
 using NSubstitute;
@@ -35,62 +34,50 @@ namespace Tests.RISK.UI.WPF
         }
 
         [Fact]
-        public void UpdateView_updates_world_map_view_model()
+        public void SelectRegion_updates_world_map_view_model()
         {
             var expectedWorldMapViewModel = new WorldMapViewModel();
             var territories = new List<ITerritory>();
-            Action<IRegion> onClickAction = x => { };
             var enabledRegions = new List<IRegion> { Make.Region.Build() };
-            _worldMapViewModelFactory.Create(onClickAction)
-                .Returns(expectedWorldMapViewModel);
+            _worldMapViewModelFactory.Create(null)
+                .ReturnsForAnyArgs(expectedWorldMapViewModel);
             _worldMapViewModelFactory.Update(expectedWorldMapViewModel, territories, enabledRegions, selectedRegion: null);
+            var placeArmyRegionSelector = Substitute.For<IPlaceArmyRegionSelector>();
+            placeArmyRegionSelector.Territories.Returns(territories);
+            placeArmyRegionSelector.SelectableRegions.Returns(enabledRegions);
+
             var sut = Create();
             sut.MonitorEvents();
-
-            //sut.UpdateView(
-            //    territories: territories,
-            //    selectAction: onClickAction,
-            //    enabledRegions: enabledRegions,
-            //    playerName: null,
-            //    armiesLeftToPlace: 0);
-            sut.SelectRegion(null);
+            sut.SelectRegion(placeArmyRegionSelector);
 
             sut.WorldMapViewModel.Should().Be(expectedWorldMapViewModel);
             sut.ShouldRaisePropertyChangeFor(x => x.WorldMapViewModel);
         }
 
         [Fact]
-        public void UpdateView_updates_information_text()
+        public void SelectRegion_updates_information_text()
         {
+            var placeArmyRegionSelector = Substitute.For<IPlaceArmyRegionSelector>();
+            placeArmyRegionSelector.GetArmiesLeftToPlace().Returns(1);
+
             var sut = Create();
             sut.MonitorEvents();
-
-            //sut.UpdateView(
-            //    territories: null,
-            //    selectAction: null,
-            //    enabledRegions: null,
-            //    playerName: null,
-            //    armiesLeftToPlace: 1);
-            sut.SelectRegion(null);
+            sut.SelectRegion(placeArmyRegionSelector);
 
             sut.InformationText.Should().Be(string.Format(Resources.PLACE_ARMY, 1));
             sut.ShouldRaisePropertyChangeFor(x => x.InformationText);
         }
 
         [Fact]
-        public void UpdateView_updates_player_name()
+        public void SelectRegion_updates_player_name()
         {
-            const string expectedPlayerName = "any player name";
+            const string expectedPlayerName = "player name";
+            var placeArmyRegionSelector = Substitute.For<IPlaceArmyRegionSelector>();
+            placeArmyRegionSelector.PlayerName.Returns(expectedPlayerName);
+
             var sut = Create();
             sut.MonitorEvents();
-
-            //sut.UpdateView(
-            //    territories: null,
-            //    selectAction: null,
-            //    enabledRegions: null,
-            //    playerName: expectedPlayerName,
-            //    armiesLeftToPlace: 0);
-            sut.SelectRegion(null);
+            sut.SelectRegion(placeArmyRegionSelector);
 
             sut.PlayerName.Should().Be(expectedPlayerName);
             sut.ShouldRaisePropertyChangeFor(x => x.PlayerName);
@@ -99,10 +86,12 @@ namespace Tests.RISK.UI.WPF
         [Fact]
         public void When_finished_setup_game_conductor_is_notified()
         {
-            var sut = Create();
             IGamePlaySetup expectedGamePlaySetup = null;
             var gamePlaySetup = Substitute.For<IGamePlaySetup>();
             _eventAggregator.WhenForAnyArgs(x => x.PublishOnUIThread(null)).Do(ci => expectedGamePlaySetup = ci.Arg<StartGameplayMessage>().GamePlaySetup);
+
+            var sut = Create();
+            sut.NewGamePlaySetup(gamePlaySetup);
 
             _eventAggregator.ReceivedWithAnyArgs().PublishOnUIThread(null);
             expectedGamePlaySetup.Should().Be(gamePlaySetup);
