@@ -51,7 +51,6 @@
     <Compile Include="ICard.cs" />
     <Compile Include="IContinent.cs" />
     <Compile Include="IContinents.cs" />
-    <Compile Include="Core\IPlayer.cs" />
     <Compile Include="IRegion.cs" />
     <Compile Include="Shuffling\FisherYatesShuffle.cs" />
     <Compile Include="Shuffling\IShuffle.cs" />
@@ -96,6 +95,7 @@
   <ItemGroup>
     <None Include="project.json" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace RISK.GameEngine
 {
-    public interface IPlayer : Core.IPlayer
+    public interface IPlayer
     {
         string Name { get; }
         IEnumerable<ICard> Cards { get; }

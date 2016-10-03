@@ -5,13 +5,13 @@ namespace RISK.GameEngine.Attacking
 {
     public interface IPlayerEliminationRules
     {
-        bool IsPlayerEliminated(IEnumerable<ITerritory> territories, Core.IPlayer player);
+        bool IsPlayerEliminated(IEnumerable<ITerritory> territories, IPlayer player);
         bool IsOnlyOnePlayerLeftInTheGame(IEnumerable<ITerritory> territories);
     }
 
     public class PlayerEliminationRules : IPlayerEliminationRules
     {
-        public bool IsPlayerEliminated(IEnumerable<ITerritory> territories, Core.IPlayer player)
+        public bool IsPlayerEliminated(IEnumerable<ITerritory> territories, IPlayer player)
         {
             return territories.All(x => x.Player != player);
         }

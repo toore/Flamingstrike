@@ -5,7 +5,7 @@ namespace RISK.GameEngine
     public interface ITerritory
     {
         IRegion Region { get; }
-        Core.IPlayer Player { get; }
+        IPlayer Player { get; }
         int Armies { get; }
 
         int GetNumberOfArmiesThatCanBeUsedInAnAttack();
@@ -16,7 +16,7 @@ namespace RISK.GameEngine
 
     public class Territory : ITerritory
     {
-        public Territory(IRegion region, Core.IPlayer player, int armies)
+        public Territory(IRegion region, IPlayer player, int armies)
         {
             if (armies <= 0)
             {
@@ -29,7 +29,7 @@ namespace RISK.GameEngine
         }
 
         public IRegion Region { get; }
-        public Core.IPlayer Player { get; }
+        public IPlayer Player { get; }
         public int Armies { get; set; }
 
         public int GetNumberOfArmiesThatCanBeUsedInAnAttack()

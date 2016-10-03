@@ -1,6 +1,6 @@
 using NSubstitute;
 using RISK.GameEngine;
-using IPlayer = RISK.GameEngine.Core.IPlayer;
+using IPlayer = RISK.GameEngine.IPlayer;
 
 namespace Tests.RISK.GameEngine.Builders
 {

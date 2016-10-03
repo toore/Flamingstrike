@@ -1,5 +1,5 @@
 using System.Windows.Media;
-using RISK.GameEngine.Core;
+using IPlayer = RISK.GameEngine.IPlayer;
 
 namespace RISK.UI.WPF.Services
 {
@@ -12,7 +12,7 @@ namespace RISK.UI.WPF.Services
         IRegionColorSettings AsiaColors { get; }
         IRegionColorSettings AustraliaColors { get; }
 
-        IRegionColorSettings GetPlayerTerritoryColors(IPlayer player);
+        IRegionColorSettings GetPlayerTerritoryColors(GameEngine.IPlayer player);
 
         Color SelectedTerritoryColor { get; }
     }

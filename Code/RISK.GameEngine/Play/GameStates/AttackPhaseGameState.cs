@@ -86,12 +86,12 @@ namespace RISK.GameEngine.Play.GameStates
             }
         }
 
-        private Core.IPlayer GetPlayer(IRegion region)
+        private IPlayer GetPlayer(IRegion region)
         {
             return _territoriesContext.Territories.Single(x => x.Region == region).Player;
         }
 
-        private void DefendingArmyIsEliminated(Core.IPlayer defeatedPlayer, IRegion attackingRegion, IRegion defeatedRegion)
+        private void DefendingArmyIsEliminated(IPlayer defeatedPlayer, IRegion attackingRegion, IRegion defeatedRegion)
         {
             _turnConqueringAchievement = TurnConqueringAchievement.SuccessfullyConqueredAtLeastOneTerritory;
 
@@ -114,7 +114,7 @@ namespace RISK.GameEngine.Play.GameStates
             _gamePhaseConductor.PlayerIsTheWinner(_currentPlayer);
         }
 
-        private void AquireAllCardsFromPlayerAndSendArmiesToOccupy(Core.IPlayer defeatedPlayer, IRegion attackingRegion, IRegion defeatedRegion)
+        private void AquireAllCardsFromPlayerAndSendArmiesToOccupy(IPlayer defeatedPlayer, IRegion attackingRegion, IRegion defeatedRegion)
         {
             var eliminatedPlayer = _players.Single(player => player == defeatedPlayer);
 
