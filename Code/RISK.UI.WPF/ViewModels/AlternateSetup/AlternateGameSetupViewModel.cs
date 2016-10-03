@@ -49,8 +49,6 @@ namespace RISK.UI.WPF.ViewModels.AlternateSetup
             private set { this.NotifyOfPropertyChange(value, () => PlayerName, x => _playerName = x); }
         }
 
-        public bool CanEnterFortifyMode => false;
-
         public void SelectRegion(IPlaceArmyRegionSelector placeArmyRegionSelector)
         {
             UpdateView(
@@ -78,11 +76,11 @@ namespace RISK.UI.WPF.ViewModels.AlternateSetup
             InformationText = string.Format(Resources.PLACE_ARMY, armiesLeftToPlace);
         }
 
-        public void EnterFortifyMode() {}
+        public bool CanEnterFortifyMode => false;
+
+        public bool CanEnterAttackMode => false;
 
         public bool CanEndTurn => false;
-
-        public void EndTurn() {}
 
         public void EndGame()
         {

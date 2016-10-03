@@ -98,11 +98,19 @@ namespace Tests.RISK.UI.WPF
         }
 
         [Fact]
-        public void Can_not_activate_fortify()
+        public void Can_not_enter_fortify_mode()
         {
             var sut = Create();
 
             sut.CanEnterFortifyMode.Should().BeFalse();
+        }
+
+        [Fact]
+        public void Can_not_enter_attack_mode()
+        {
+            var sut = Create();
+
+            sut.CanEnterAttackMode.Should().BeFalse();
         }
 
         [Fact]

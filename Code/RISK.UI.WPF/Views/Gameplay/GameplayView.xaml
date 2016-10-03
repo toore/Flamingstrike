@@ -77,14 +77,32 @@
                     </ControlTemplate>
                 </StackPanel.Resources>
 
-                <RadioButton Name="EnterFortifyMode"
+                <RadioButton
                     Content="{x:Static Properties:Resources.FORTIFY}"
-                    GroupName="AttackMode" Template="{StaticResource AttackModeRadioButtonTemplate}" />
-                <RadioButton Name="EnterAttackMode"
+                    GroupName="AttackMode" Template="{StaticResource AttackModeRadioButtonTemplate}">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="Click">
+                            <Micro:ActionMessage MethodName="EnterFortifyMode" />
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </RadioButton>
+                <RadioButton
                     Content="{x:Static Properties:Resources.ATTACK}"
-                    GroupName="AttackMode" Template="{StaticResource AttackModeRadioButtonTemplate}" />
-                <Button Name="EndTurn"
-                    Content="{x:Static Properties:Resources.END_TURN}" />
+                    GroupName="AttackMode" Template="{StaticResource AttackModeRadioButtonTemplate}">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="Click">
+                            <Micro:ActionMessage MethodName="EnterAttackMode" />
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </RadioButton>
+                <Button
+                    Content="{x:Static Properties:Resources.END_TURN}">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="Click">
+                            <Micro:ActionMessage MethodName="EndTurn" />
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </Button>
             </StackPanel>
 
             <StackPanel
