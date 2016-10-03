@@ -219,7 +219,7 @@ namespace Tests.RISK.GameEngine.Specifications
             var territoryOccupier = new TerritoryOccupier();
             var fortifier = new Fortifier();
             var attacker = new Attacker(battle);
-            var gameRules = new GameRules();
+            var gameRules = new PlayerEliminationRules();
             var gameStateFactory = new GameStateFactory(gameRules, armyDrafter, attacker, territoryOccupier, fortifier);
             var fisherYatesShuffle = new FisherYatesShuffle(new RandomWrapper());
             var deckFactory = new DeckFactory(_regions, fisherYatesShuffle);

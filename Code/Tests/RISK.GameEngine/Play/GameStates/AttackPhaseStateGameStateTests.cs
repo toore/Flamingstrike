@@ -20,7 +20,7 @@ namespace Tests.RISK.GameEngine.Play.GameStates
         private readonly IGamePhaseConductor _gamePhaseConductor;
         private readonly IAttacker _attacker;
         private readonly IFortifier _fortifier;
-        private readonly IGameRules _gameRules;
+        private readonly IPlayerEliminationRules _playerEliminationRules;
         private TurnConqueringAchievement _turnConqueringAchievement = TurnConqueringAchievement.NoTerritoryHasBeenConquered;
         private readonly ITerritory _territory;
         private readonly ITerritory _anotherTerritory;
@@ -37,7 +37,7 @@ namespace Tests.RISK.GameEngine.Play.GameStates
             _gamePhaseConductor = Substitute.For<IGamePhaseConductor>();
             _attacker = Substitute.For<IAttacker>();
             _fortifier = Substitute.For<IFortifier>();
-            _gameRules = Substitute.For<IGameRules>();
+            _playerEliminationRules = Substitute.For<IPlayerEliminationRules>();
 
             _anotherPlayer = Make.Player.Build();
 
@@ -65,7 +65,7 @@ namespace Tests.RISK.GameEngine.Play.GameStates
             _gamePhaseConductor,
             _attacker,
             _fortifier,
-            _gameRules,
+            _playerEliminationRules,
             _turnConqueringAchievement);
 
         [Fact]
@@ -252,7 +252,7 @@ namespace Tests.RISK.GameEngine.Play.GameStates
                 _territories,
                 _region,
                 _anotherRegion).Returns(attackOutcome);
-            _gameRules.IsPlayerEliminated(
+            _playerEliminationRules.IsPlayerEliminated(
                 updatedTerritories,
                 _anotherPlayer).Returns(true);
 
@@ -271,7 +271,7 @@ namespace Tests.RISK.GameEngine.Play.GameStates
                 _territories,
                 _region,
                 _anotherRegion).Returns(attackOutcome);
-            _gameRules.IsOnlyOnePlayerLeftInTheGame(updatedTerritories).Returns(true);
+            _playerEliminationRules.IsOnlyOnePlayerLeftInTheGame(updatedTerritories).Returns(true);
 
             Sut.Attack(_region, _anotherRegion);
 

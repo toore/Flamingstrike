@@ -3,13 +3,13 @@ using System.Linq;
 
 namespace RISK.Core
 {
-    public interface IGameRules
+    public interface IPlayerEliminationRules
     {
         bool IsPlayerEliminated(IEnumerable<ITerritory> territories, IPlayer player);
         bool IsOnlyOnePlayerLeftInTheGame(IEnumerable<ITerritory> territories);
     }
 
-    public class GameRules : IGameRules
+    public class PlayerEliminationRules : IPlayerEliminationRules
     {
         public bool IsPlayerEliminated(IEnumerable<ITerritory> territories, IPlayer player)
         {

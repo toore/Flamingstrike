@@ -36,7 +36,29 @@
   <ItemGroup>
     <Compile Include="Continent.cs" />
     <Compile Include="Continents.cs" />
-    <Compile Include="Extensions\EnumerableExtensions.cs" />
+    <Compile Include="Attacking\ArmiesLostCalculator.cs" />
+    <Compile Include="Play\ArmyDraftCalculator.cs" />
+    <Compile Include="ArmyDrafter.cs" />
+    <Compile Include="Attacking\Attacker.cs" />
+    <Compile Include="Attacking\Battle.cs" />
+    <Compile Include="Attacking\BattleOutcome.cs" />
+    <Compile Include="Attacking\Dice.cs" />
+    <Compile Include="Attacking\Dices.cs" />
+    <Compile Include="Attacking\DicesRoller.cs" />
+    <Compile Include="Fortifier.cs" />
+    <Compile Include="Attacking\PlayerEliminationRules.cs" />
+    <Compile Include="ICard.cs" />
+    <Compile Include="IContinent.cs" />
+    <Compile Include="IContinents.cs" />
+    <Compile Include="Core\IPlayer.cs" />
+    <Compile Include="IRegion.cs" />
+    <Compile Include="Shuffling\FisherYatesShuffle.cs" />
+    <Compile Include="Shuffling\IShuffle.cs" />
+    <Compile Include="Shuffling\RandomWrapper.cs" />
+    <Compile Include="Shuffling\ShuffleExtensions.cs" />
+    <Compile Include="Territory.cs" />
+    <Compile Include="TerritoryOccupier.cs" />
+    <Compile Include="EnumerableExtensions.cs" />
     <Compile Include="PlayerType.cs" />
     <Compile Include="Play\Deck.cs" />
     <Compile Include="Play\DeckFactory.cs" />
@@ -70,12 +92,7 @@
     <Compile Include="StandardCard.cs" />
     <Compile Include="WildCard.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\RISK.Core\RISK.Core.csproj">
-      <Project>{8F24E4E6-125C-4ED4-A6C0-767B0675A8CD}</Project>
-      <Name>RISK.Core</Name>
-    </ProjectReference>
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

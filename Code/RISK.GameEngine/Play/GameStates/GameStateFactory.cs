@@ -14,20 +14,20 @@ namespace RISK.GameEngine.Play.GameStates
 
     public class GameStateFactory : IGameStateFactory
     {
-        private readonly IGameRules _gameRules;
+        private readonly IPlayerEliminationRules _playerEliminationRules;
         private readonly IArmyDrafter _armyDrafter;
         private readonly ITerritoryOccupier _territoryOccupier;
         private readonly IAttacker _attacker;
         private readonly IFortifier _fortifier;
 
         public GameStateFactory(
-            IGameRules gameRules,
+            IPlayerEliminationRules playerEliminationRules,
             IArmyDrafter armyDrafter,
             IAttacker attacker,
             ITerritoryOccupier territoryOccupier,
             IFortifier fortifier)
         {
-            _gameRules = gameRules;
+            _playerEliminationRules = playerEliminationRules;
             _armyDrafter = armyDrafter;
             _attacker = attacker;
             _territoryOccupier = territoryOccupier;
@@ -41,7 +41,7 @@ namespace RISK.GameEngine.Play.GameStates
 
         public IAttackPhaseGameState CreateAttackPhaseGameState(IPlayer currentPlayer, IReadOnlyList<IPlayer> players, IDeck deck, ITerritoriesContext territoriesContext, IGamePhaseConductor gamePhaseConductor, TurnConqueringAchievement turnConqueringAchievement)
         {
-            return new AttackPhaseStateGameState(currentPlayer, players, territoriesContext, deck, gamePhaseConductor, _attacker, _fortifier, _gameRules, turnConqueringAchievement);
+            return new AttackPhaseStateGameState(currentPlayer, players, territoriesContext, deck, gamePhaseConductor, _attacker, _fortifier, _playerEliminationRules, turnConqueringAchievement);
         }
 
         public ISendArmiesToOccupyGameState CreateSendArmiesToOccupyGameState(ITerritoriesContext territoriesContext, IGamePhaseConductor gamePhaseConductor, IRegion attackingRegion, IRegion occupiedRegion)

@@ -23,7 +23,7 @@ namespace RISK.GameEngine.Play.GameStates
         private readonly IGamePhaseConductor _gamePhaseConductor;
         private readonly IAttacker _attacker;
         private readonly IFortifier _fortifier;
-        private readonly IGameRules _gameRules;
+        private readonly IPlayerEliminationRules _playerEliminationRules;
         private TurnConqueringAchievement _turnConqueringAchievement;
         private bool _cardHasBeenAwardedThisTurn;
 
@@ -35,7 +35,7 @@ namespace RISK.GameEngine.Play.GameStates
             IGamePhaseConductor gamePhaseConductor,
             IAttacker attacker,
             IFortifier fortifier,
-            IGameRules gameRules,
+            IPlayerEliminationRules playerEliminationRules,
             TurnConqueringAchievement turnConqueringAchievement)
         {
             _currentPlayer = currentPlayer;
@@ -45,7 +45,7 @@ namespace RISK.GameEngine.Play.GameStates
             _gamePhaseConductor = gamePhaseConductor;
             _attacker = attacker;
             _fortifier = fortifier;
-            _gameRules = gameRules;
+            _playerEliminationRules = playerEliminationRules;
             _turnConqueringAchievement = turnConqueringAchievement;
         }
 
@@ -95,11 +95,11 @@ namespace RISK.GameEngine.Play.GameStates
         {
             _turnConqueringAchievement = TurnConqueringAchievement.SuccessfullyConqueredAtLeastOneTerritory;
 
-            if (_gameRules.IsOnlyOnePlayerLeftInTheGame(_territoriesContext.Territories))
+            if (_playerEliminationRules.IsOnlyOnePlayerLeftInTheGame(_territoriesContext.Territories))
             {
                 GameIsOver();
             }
-            else if (_gameRules.IsPlayerEliminated(_territoriesContext.Territories, defeatedPlayer))
+            else if (_playerEliminationRules.IsPlayerEliminated(_territoriesContext.Territories, defeatedPlayer))
             {
                 AquireAllCardsFromPlayerAndSendArmiesToOccupy(defeatedPlayer, attackingRegion, defeatedRegion);
             }

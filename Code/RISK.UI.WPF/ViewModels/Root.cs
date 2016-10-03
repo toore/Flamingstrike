@@ -70,7 +70,7 @@ namespace RISK.UI.WPF.ViewModels
             var territoryOccupier = new TerritoryOccupier();
             var fortifier = new Fortifier();
             var attacker = new Attacker(battle);
-            var gameRules = new GameRules();
+            var gameRules = new PlayerEliminationRules();
             var gameStateFactory = new GameStateFactory(gameRules, armyDrafter, attacker, territoryOccupier, fortifier);
             var armyDraftCalculator = new ArmyDraftCalculator(continents);
 
