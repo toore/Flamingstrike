@@ -1,7 +1,7 @@
 using System.Collections.Generic;
-using RISK.Core;
+using RISK.GameEngine.Attacking;
 
-namespace Tests.Builders
+namespace Tests.RISK.GameEngine.Builders
 {
     public class DicesBuilder
     {

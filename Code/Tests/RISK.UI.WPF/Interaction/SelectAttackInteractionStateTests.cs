@@ -1,9 +1,9 @@
 ﻿using System;
 using NSubstitute;
-using RISK.Core;
+using RISK.GameEngine;
 using RISK.GameEngine.Play;
 using RISK.UI.WPF.ViewModels.Gameplay.Interaction;
-using Tests.Builders;
+using Tests.RISK.GameEngine.Builders;
 using Xunit;
 
 namespace Tests.RISK.UI.WPF.Interaction

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Toore.Shuffling
+namespace RISK.GameEngine.Shuffling
 {
     public static class ShuffleExtensions
     {

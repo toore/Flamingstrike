@@ -1,7 +1,6 @@
 ﻿using System.Linq;
 using FluentAssertions;
 using NSubstitute;
-using RISK.Core;
 using RISK.GameEngine;
 using RISK.UI.WPF.RegionModels;
 using Xunit;

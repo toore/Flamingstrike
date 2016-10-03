@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace RISK.Core
+namespace RISK.GameEngine
 {
     public interface IContinents
     {

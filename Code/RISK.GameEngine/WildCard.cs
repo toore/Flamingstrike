@@ -1,6 +1,4 @@
-﻿using RISK.Core;
-
-namespace RISK.GameEngine
+﻿namespace RISK.GameEngine
 {
     public class WildCard : ICard
     {

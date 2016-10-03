@@ -1,6 +1,6 @@
 using System;
 using FluentAssertions;
-using RISK.Core;
+using RISK.GameEngine;
 using RISK.UI.WPF.ViewModels.Gameplay.Interaction;
 
 namespace Tests.RISK.UI.WPF.Interaction

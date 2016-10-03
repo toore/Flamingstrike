@@ -1,5 +1,5 @@
 ﻿using System.Windows;
-using RISK.Core;
+using RISK.GameEngine;
 using RISK.UI.WPF.Properties;
 
 namespace RISK.UI.WPF.RegionModels

@@ -110,10 +110,10 @@
     </ApplicationDefinition>
     <Compile Include="RISK.GameEngine\Play\GameStates\AttackPhaseStateGameStateTests.cs" />
     <Compile Include="RISK.GameEngine\Play\GameStates\DraftArmiesPhaseGameState.cs" />
-    <Compile Include="RISK.GameEngine\Core\BattleTests.cs" />
-    <Compile Include="RISK.GameEngine\Core\DiceTests.cs" />
-    <Compile Include="RISK.GameEngine\Core\DicesRollerTests.cs" />
-    <Compile Include="RISK.GameEngine\Core\ArmiesLostCalculatorTests.cs" />
+    <Compile Include="RISK.GameEngine\Attacking\BattleTests.cs" />
+    <Compile Include="RISK.GameEngine\Attacking\DiceTests.cs" />
+    <Compile Include="RISK.GameEngine\Attacking\DicesRollerTests.cs" />
+    <Compile Include="RISK.GameEngine\Attacking\ArmiesLostCalculatorTests.cs" />
     <Compile Include="RISK.GameEngine\Play\GameStates\SendArmiesToOccupyGameState.cs" />
     <Compile Include="RISK.GameEngine\Play\GameTests.cs" />
     <Compile Include="RISK.GameEngine\Builders\ArmiesLostBuilder.cs" />

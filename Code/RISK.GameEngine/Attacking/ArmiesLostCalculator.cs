@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace RISK.Core
+namespace RISK.GameEngine.Attacking
 {
     public interface IArmiesLostCalculator
     {

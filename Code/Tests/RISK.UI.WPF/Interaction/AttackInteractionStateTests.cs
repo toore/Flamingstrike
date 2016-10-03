@@ -1,5 +1,5 @@
 ﻿using NSubstitute;
-using RISK.Core;
+using RISK.GameEngine;
 using RISK.GameEngine.Play;
 using RISK.UI.WPF.ViewModels.Gameplay.Interaction;
 using Xunit;

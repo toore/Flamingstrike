@@ -1,4 +1,4 @@
-﻿namespace RISK.Core
+﻿namespace RISK.GameEngine.Attacking
 {
     public interface IBattleOutcome
     {

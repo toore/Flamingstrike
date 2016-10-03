@@ -1,7 +1,6 @@
 using System;
 using System.Linq;
-using RISK.Core;
-using Toore.Shuffling;
+using RISK.GameEngine.Shuffling;
 
 namespace RISK.GameEngine.Play
 {

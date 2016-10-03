@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using FluentAssertions;
-using RISK.Core;
+using RISK.GameEngine.Attacking;
 using Xunit;
 
-namespace Tests.RISK.Core
+namespace Tests.RISK.GameEngine.Attacking
 {
     public class ArmiesLostCalculatorTests
     {

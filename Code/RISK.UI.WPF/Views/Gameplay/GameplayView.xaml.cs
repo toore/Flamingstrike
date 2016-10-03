@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using RISK.Core;
 using RISK.GameEngine;
 using RISK.UI.WPF.RegionModels;
 using RISK.UI.WPF.Services;

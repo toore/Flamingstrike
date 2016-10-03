@@ -1,8 +1,8 @@
 using NSubstitute;
-using RISK.Core;
+using RISK.GameEngine;
 using RISK.GameEngine.Play;
 using RISK.GameEngine.Play.GameStates;
-using Tests.Builders;
+using Tests.RISK.GameEngine.Builders;
 using Xunit;
 using IPlayer = RISK.GameEngine.IPlayer;
 

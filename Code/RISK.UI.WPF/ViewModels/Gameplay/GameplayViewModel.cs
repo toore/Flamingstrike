@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Caliburn.Micro;
-using RISK.Core;
+using RISK.GameEngine;
 using RISK.GameEngine.Play;
 using RISK.UI.WPF.Properties;
 using RISK.UI.WPF.Services;

@@ -8,7 +8,7 @@ using RISK.UI.WPF.ViewModels.AlternateSetup;
 using RISK.UI.WPF.ViewModels.Gameplay;
 using RISK.UI.WPF.ViewModels.Messages;
 using RISK.UI.WPF.ViewModels.Preparation;
-using Tests.Builders;
+using Tests.RISK.GameEngine.Builders;
 using Xunit;
 
 namespace Tests.RISK.UI.WPF

@@ -2,12 +2,12 @@
 using System.Reflection;
 using FluentAssertions;
 using NSubstitute;
-using RISK.Core;
-using Tests.Builders;
+using RISK.GameEngine.Attacking;
+using Tests.RISK.GameEngine.Builders;
 using Xunit;
 using Xunit.Sdk;
 
-namespace Tests.RISK.Core
+namespace Tests.RISK.GameEngine.Attacking
 {
     public abstract class BattleTests
     {

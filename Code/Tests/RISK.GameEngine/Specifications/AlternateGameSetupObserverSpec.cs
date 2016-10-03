@@ -2,12 +2,11 @@
 using System.Linq;
 using FluentAssertions;
 using NSubstitute;
-using RISK.Core;
 using RISK.GameEngine;
 using RISK.GameEngine.Setup;
-using Tests.Builders;
+using RISK.GameEngine.Shuffling;
+using Tests.RISK.GameEngine.Builders;
 using Tests.RISK.GameEngine.Setup;
-using Toore.Shuffling;
 using Xunit;
 using IPlayer = RISK.GameEngine.IPlayer;
 

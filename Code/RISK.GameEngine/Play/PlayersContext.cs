@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace RISK.GameEngine.Play.GameStates
+namespace RISK.GameEngine.Play
 {
     public interface IPlayersContext
     {

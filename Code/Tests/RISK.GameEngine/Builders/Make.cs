@@ -1,4 +1,4 @@
-namespace Tests.Builders
+namespace Tests.RISK.GameEngine.Builders
 {
     public static class Make
     {

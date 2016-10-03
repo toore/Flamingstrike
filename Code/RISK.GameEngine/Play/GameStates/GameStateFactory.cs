@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using RISK.Core;
+using RISK.GameEngine.Attacking;
 
 namespace RISK.GameEngine.Play.GameStates
 {

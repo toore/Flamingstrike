@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Toore.Shuffling
+namespace RISK.GameEngine.Shuffling
 {
     public interface IRandomWrapper
     {

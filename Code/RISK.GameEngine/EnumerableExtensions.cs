@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace RISK.GameEngine.Extensions
+namespace RISK.GameEngine
 {
     public static class EnumerableExtensions
     {

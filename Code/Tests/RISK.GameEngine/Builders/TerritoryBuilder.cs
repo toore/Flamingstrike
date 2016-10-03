@@ -1,7 +1,8 @@
 using NSubstitute;
-using RISK.Core;
+using RISK.GameEngine;
+using IPlayer = RISK.GameEngine.Core.IPlayer;
 
-namespace Tests.Builders
+namespace Tests.RISK.GameEngine.Builders
 {
     public class TerritoryBuilder
     {

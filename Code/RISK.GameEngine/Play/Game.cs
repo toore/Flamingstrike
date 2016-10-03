@@ -1,7 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using RISK.Core;
-using RISK.GameEngine.Extensions;
 using RISK.GameEngine.Play.GameStates;
 
 namespace RISK.GameEngine.Play

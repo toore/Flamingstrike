@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using FluentAssertions;
-using RISK.Core;
 using RISK.GameEngine;
 using Xunit;
 

@@ -3,12 +3,12 @@ using System.Linq;
 using Caliburn.Micro;
 using FluentAssertions;
 using NSubstitute;
-using RISK.Core;
 using RISK.GameEngine;
+using RISK.GameEngine.Attacking;
 using RISK.GameEngine.Play;
 using RISK.GameEngine.Play.GameStates;
 using RISK.GameEngine.Setup;
-using Toore.Shuffling;
+using RISK.GameEngine.Shuffling;
 using Xunit;
 using IPlayer = RISK.GameEngine.IPlayer;
 

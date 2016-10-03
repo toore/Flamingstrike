@@ -1,7 +1,5 @@
 using System;
 using System.Linq;
-using RISK.Core;
-using RISK.GameEngine.Extensions;
 
 namespace RISK.GameEngine.Play.GameStates
 {

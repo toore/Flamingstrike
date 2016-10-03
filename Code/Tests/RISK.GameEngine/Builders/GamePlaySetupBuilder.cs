@@ -1,10 +1,9 @@
 using System.Collections.Generic;
-using RISK.Core;
 using RISK.GameEngine;
 using RISK.GameEngine.Setup;
 using IPlayer = RISK.GameEngine.IPlayer;
 
-namespace Tests.Builders
+namespace Tests.RISK.GameEngine.Builders
 {
     public class GamePlaySetupBuilder
     {

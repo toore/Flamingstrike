@@ -2,14 +2,14 @@
 using Caliburn.Micro;
 using FluentAssertions;
 using NSubstitute;
-using RISK.Core;
+using RISK.GameEngine;
 using RISK.GameEngine.Setup;
 using RISK.UI.WPF.Properties;
 using RISK.UI.WPF.Services;
 using RISK.UI.WPF.ViewModels.AlternateSetup;
 using RISK.UI.WPF.ViewModels.Gameplay;
 using RISK.UI.WPF.ViewModels.Messages;
-using Tests.Builders;
+using Tests.RISK.GameEngine.Builders;
 using Xunit;
 
 namespace Tests.RISK.UI.WPF

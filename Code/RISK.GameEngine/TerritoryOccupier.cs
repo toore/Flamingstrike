@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace RISK.Core
+namespace RISK.GameEngine
 {
     public interface ITerritoryOccupier
     {

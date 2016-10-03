@@ -1,4 +1,4 @@
-﻿namespace RISK.Core
+﻿namespace RISK.GameEngine
 {
     public interface IContinent
     {

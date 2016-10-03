@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Caliburn.Micro;
-using RISK.Core;
+using RISK.GameEngine;
 using RISK.GameEngine.Setup;
 using RISK.UI.WPF.Properties;
 using RISK.UI.WPF.Services;

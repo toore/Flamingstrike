@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using RISK.Core;
+using RISK.GameEngine;
 using RISK.UI.WPF.Extensions;
 using RISK.UI.WPF.RegionModels;
 using RISK.UI.WPF.Services;

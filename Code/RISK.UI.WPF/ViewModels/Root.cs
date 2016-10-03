@@ -1,16 +1,16 @@
 ﻿using Caliburn.Micro;
-using RISK.Core;
 using RISK.GameEngine;
+using RISK.GameEngine.Attacking;
 using RISK.GameEngine.Play;
 using RISK.GameEngine.Play.GameStates;
 using RISK.GameEngine.Setup;
+using RISK.GameEngine.Shuffling;
 using RISK.UI.WPF.RegionModels;
 using RISK.UI.WPF.Services;
 using RISK.UI.WPF.ViewModels.AlternateSetup;
 using RISK.UI.WPF.ViewModels.Gameplay;
 using RISK.UI.WPF.ViewModels.Gameplay.Interaction;
 using RISK.UI.WPF.ViewModels.Preparation;
-using Toore.Shuffling;
 
 namespace RISK.UI.WPF.ViewModels
 {

@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using RISK.Core;
-using RISK.GameEngine.Extensions;
-using Toore.Shuffling;
+using RISK.GameEngine.Shuffling;
 
 namespace RISK.GameEngine.Setup
 {

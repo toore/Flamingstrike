@@ -1,6 +1,6 @@
 using RISK.GameEngine;
 
-namespace Tests.Builders
+namespace Tests.RISK.GameEngine.Builders
 {
     public class PlayerBuilder
     {

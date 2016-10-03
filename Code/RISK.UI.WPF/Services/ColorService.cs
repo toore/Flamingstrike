@@ -1,5 +1,5 @@
 using System.Windows.Media;
-using RISK.Core;
+using RISK.GameEngine.Core;
 
 namespace RISK.UI.WPF.Services
 {

@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using FluentAssertions;
-using RISK.Core;
+using RISK.GameEngine;
 using RISK.GameEngine.Play;
-using Tests.Builders;
+using Tests.RISK.GameEngine.Builders;
 using Xunit;
 
 namespace Tests.RISK.GameEngine.Play

@@ -1,5 +1,3 @@
-using RISK.Core;
-
 namespace RISK.GameEngine.Play.GameStates
 {
     public interface ISendArmiesToOccupyGameState

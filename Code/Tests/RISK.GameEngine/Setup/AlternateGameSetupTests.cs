@@ -1,11 +1,10 @@
 ﻿using System.Collections.Generic;
 using FluentAssertions;
 using NSubstitute;
-using RISK.Core;
 using RISK.GameEngine;
 using RISK.GameEngine.Setup;
-using Tests.Builders;
-using Toore.Shuffling;
+using RISK.GameEngine.Shuffling;
+using Tests.RISK.GameEngine.Builders;
 using Xunit;
 using IPlayer = RISK.GameEngine.IPlayer;
 

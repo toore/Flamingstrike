@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
-using RISK.Core;
+using RISK.GameEngine;
 using RISK.UI.WPF.Services;
 
 namespace RISK.UI.WPF.ViewModels.Gameplay
