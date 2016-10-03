@@ -137,8 +137,8 @@
     <Compile Include="Views\GameOverView.xaml.cs">
       <DependentUpon>GameOverView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Preparation\GamePreparationInnerView.xaml.cs">
-      <DependentUpon>GamePreparationInnerView.xaml</DependentUpon>
+    <Compile Include="Views\Preparation\GamePreparationControl.xaml.cs">
+      <DependentUpon>GamePreparationControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Bootstrapper.cs" />
     <Compile Include="RegionModels\AfghanistanModel.cs" />
@@ -230,7 +230,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Preparation\GamePreparationInnerView.xaml">
+    <Page Include="Views\Preparation\GamePreparationControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

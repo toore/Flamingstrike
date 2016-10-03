@@ -4,11 +4,11 @@ using RISK.UI.WPF.ViewModels.Preparation;
 
 namespace RISK.UI.WPF.Views.Preparation
 {
-    public partial class GamePreparationInnerView
+    public partial class GamePreparationControl
     {
-        public static readonly DependencyProperty PlayersProperty = DependencyProperty.Register("Players", typeof(ObservableCollection<GamePreparationPlayerViewModel>), typeof(GamePreparationInnerView), new PropertyMetadata(default(ObservableCollection<GamePreparationPlayerViewModel>)));
+        public static readonly DependencyProperty PlayersProperty = DependencyProperty.Register("Players", typeof(ObservableCollection<GamePreparationPlayerViewModel>), typeof(GamePreparationControl), new PropertyMetadata(default(ObservableCollection<GamePreparationPlayerViewModel>)));
 
-        public GamePreparationInnerView()
+        public GamePreparationControl()
         {
             InitializeComponent();
         }
