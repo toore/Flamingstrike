@@ -38,10 +38,10 @@ namespace RISK.UI.WPF.ViewModels.Preparation
         private GamePreparationPlayerViewModel CreateGamePreparationPlayerViewModel(int playerIndex)
         {
             return new GamePreparationPlayerViewModel(_playerTypes)
-            {
-                Name = string.Format(Resources.PLAYER_NUMBER, playerIndex + 1),
-                OnIsEnabledChanged = () => OnEnabledPlayerChanged()
-            };
+                {
+                    Name = string.Format(Resources.PLAYER_NUMBER, playerIndex + 1),
+                    OnIsEnabledChanged = () => OnEnabledPlayerChanged()
+                };
         }
 
         private void OnEnabledPlayerChanged()
@@ -68,8 +68,7 @@ namespace RISK.UI.WPF.ViewModels.Preparation
         private IEnumerable<IPlayer> CreatePlayers()
         {
             return GetEnabledPlayers()
-                .Select(_playerFactory.Create)
-                .ToList();
+                .Select(vm => _playerFactory.Create(vm.Name));
         }
 
         private IEnumerable<GamePreparationPlayerViewModel> GetEnabledPlayers()

@@ -4,14 +4,14 @@ namespace RISK.UI.WPF.ViewModels.Preparation
 {
     public interface IPlayerFactory
     {
-        IPlayer Create(GamePreparationPlayerViewModel gamePreparationPlayerViewModel);
+        IPlayer Create(string name);
     }
 
     public class PlayerFactory : IPlayerFactory
     {
-        public IPlayer Create(GamePreparationPlayerViewModel gamePreparationPlayerViewModel)
+        public IPlayer Create(string name)
         {
-            return new Player(gamePreparationPlayerViewModel.Name);
+            return new Player(name);
         }
     }
 }
