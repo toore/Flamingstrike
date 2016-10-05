@@ -52,6 +52,7 @@
     <Compile Include="IContinent.cs" />
     <Compile Include="IContinents.cs" />
     <Compile Include="IRegion.cs" />
+    <Compile Include="Setup\SetupPlayer.cs" />
     <Compile Include="Shuffling\FisherYatesShuffle.cs" />
     <Compile Include="Shuffling\IShuffle.cs" />
     <Compile Include="Shuffling\RandomWrapper.cs" />

@@ -27,13 +27,12 @@ namespace RISK.GameEngine.Setup
     public class AlternateGameSetup : IAlternateGameSetup, IArmyPlacer
     {
         private readonly IAlternateGameSetupObserver _alternateGameSetupObserver;
-        private readonly IEnumerable<IPlayer> _players;
         private readonly IRegions _regions;
         private readonly IShuffle _shuffle;
         private readonly IStartingInfantryCalculator _startingInfantryCalculator;
-        private CircularBuffer<IPlayer> _circularBufferOfPlayers;
+        private CircularBuffer<PlayerDoingGameSetup> _playerDoingGameSetups;
         private IReadOnlyList<Territory> _territories;
-        private IPlayer _currentPlayer;
+        private PlayerDoingGameSetup _currentPlayerDoingGameSetup;
 
         public AlternateGameSetup(
             IAlternateGameSetupObserver alternateGameSetupObserver,
@@ -43,43 +42,43 @@ namespace RISK.GameEngine.Setup
             IShuffle shuffle)
         {
             _alternateGameSetupObserver = alternateGameSetupObserver;
-            _players = players;
             _regions = regions;
             _shuffle = shuffle;
             _startingInfantryCalculator = startingInfantryCalculator;
 
-            Initialize();
+            Initialize(players);
         }
 
-        private void Initialize()
+        private void Initialize(IEnumerable<IPlayer> players)
         {
-            var playersInOrderOfTakingTurn = ShufflePlayers();
-            InitializeArmiesToPlace(playersInOrderOfTakingTurn);
+            _playerDoingGameSetups = Shuffle(players);
 
-            var sequenceOfPlayers = playersInOrderOfTakingTurn.ToCircularBuffer();
+            InitializeArmiesToPlaceInSetup();
 
-            var territories = AssignPlayersToTerritories(sequenceOfPlayers);
+            var territories = AssignPlayersToTerritories();
 
-            PlaceArmies(sequenceOfPlayers, territories);
+            PlaceArmies(territories);
         }
 
-        private IList<IPlayer> ShufflePlayers()
+        private CircularBuffer<PlayerDoingGameSetup> Shuffle(IEnumerable<IPlayer> players)
         {
-            return _players
-                .Shuffle(_shuffle);
+            return players
+                .Shuffle(_shuffle)
+                .Select(player => new PlayerDoingGameSetup(player))
+                .ToCircularBuffer();
         }
 
-        private void InitializeArmiesToPlace(ICollection<IPlayer> players)
+        private void InitializeArmiesToPlaceInSetup()
         {
-            var numberOfStartingInfantry = _startingInfantryCalculator.Get(players.Count);
+            var numberOfStartingInfantry = _startingInfantryCalculator.Get(_playerDoingGameSetups.Count());
 
-            foreach (var player in players)
+            foreach (var playerDoingGameSetup in _playerDoingGameSetups)
             {
-                player.SetArmiesToPlace(numberOfStartingInfantry);
+                playerDoingGameSetup.SetArmiesToPlace(numberOfStartingInfantry);
             }
         }
 
-        private List<Territory> AssignPlayersToTerritories(CircularBuffer<IPlayer> players)
+        private List<Territory> AssignPlayersToTerritories()
         {
             var territories = new List<Territory>();
 
@@ -89,18 +88,17 @@ namespace RISK.GameEngine.Setup
 
             foreach (var region in regions)
             {
-                var player = players.Next();
-                player.SetArmiesToPlace(player.ArmiesToPlace - 1);
-                var territory = new Territory(region, player, 1);
+                var setupPlayer = _playerDoingGameSetups.Next();
+                setupPlayer.SetArmiesToPlace(setupPlayer.ArmiesToPlace - 1);
+                var territory = new Territory(region, setupPlayer.Player, 1);
                 territories.Add(territory);
             }
 
             return territories;
         }
 
-        private void PlaceArmies(CircularBuffer<IPlayer> players, IReadOnlyList<Territory> territories)
+        private void PlaceArmies(IReadOnlyList<Territory> territories)
         {
-            _circularBufferOfPlayers = players;
             _territories = territories;
 
             ContinueToPlaceArmy();
@@ -108,11 +106,11 @@ namespace RISK.GameEngine.Setup
 
         private void ContinueToPlaceArmy()
         {
-            _currentPlayer = _circularBufferOfPlayers.Next();
+            _currentPlayerDoingGameSetup = _playerDoingGameSetups.Next();
 
-            if (_currentPlayer.HasArmiesLeftToPlace())
+            if (_currentPlayerDoingGameSetup.HasArmiesLeftToPlace())
             {
-                SelectRegionToPlaceArmy(_currentPlayer, _territories);
+                SelectRegionToPlaceArmy(_currentPlayerDoingGameSetup, _territories);
             }
             else
             {
@@ -122,7 +120,9 @@ namespace RISK.GameEngine.Setup
 
         private void SetupHasEnded()
         {
-            var gamePlaySetup = new GamePlaySetup(_circularBufferOfPlayers.ToList(), _territories);
+            var players = _playerDoingGameSetups.Select(x => x.Player).ToList();
+
+            var gamePlaySetup = new GamePlaySetup(players, _territories);
 
             _alternateGameSetupObserver.NewGamePlaySetup(gamePlaySetup);
         }
@@ -130,22 +130,22 @@ namespace RISK.GameEngine.Setup
         public void PlaceArmyInRegion(IRegion selectedRegion)
         {
             var selectedTerritory = _territories
-                .Where(territory => territory.Player == _currentPlayer)
+                .Where(territory => territory.Player == _currentPlayerDoingGameSetup.Player)
                 .Single(x => x.Region == selectedRegion);
 
-            _currentPlayer.PlaceArmy(selectedTerritory);
+            _currentPlayerDoingGameSetup.PlaceArmy(selectedTerritory);
 
             ContinueToPlaceArmy();
         }
 
-        private void SelectRegionToPlaceArmy(IPlayer player, IReadOnlyList<Territory> territories)
+        private void SelectRegionToPlaceArmy(PlayerDoingGameSetup playerDoingGameSetup, IReadOnlyList<Territory> territories)
         {
             var selectableRegions = territories
-                .Where(territory => territory.Player == player)
+                .Where(territory => territory.Player == playerDoingGameSetup.Player)
                 .Select(x => x.Region)
                 .ToList();
 
-            var regionSelector = new PlaceArmyRegionSelector(this, territories, selectableRegions, player);
+            var regionSelector = new PlaceArmyRegionSelector(this, territories, selectableRegions, playerDoingGameSetup);
 
             _alternateGameSetupObserver.SelectRegion(regionSelector);
         }
