@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 
 namespace RISK.GameEngine
 {
@@ -7,8 +6,6 @@ namespace RISK.GameEngine
     {
         string Name { get; }
         IEnumerable<ICard> Cards { get; }
-        void AddCard(ICard card);
-        IEnumerable<ICard> AquireAllCards();
     }
 
     public class Player : IPlayer
@@ -23,18 +20,5 @@ namespace RISK.GameEngine
         public string Name { get; }
 
         public IEnumerable<ICard> Cards => _cards;
-
-        public void AddCard(ICard card)
-        {
-            _cards.Add(card);
-        }
-
-        public IEnumerable<ICard> AquireAllCards()
-        {
-            var cardsToReturn = _cards.ToList();
-            _cards.Clear();
-
-            return cardsToReturn;
-        }
     }
 }

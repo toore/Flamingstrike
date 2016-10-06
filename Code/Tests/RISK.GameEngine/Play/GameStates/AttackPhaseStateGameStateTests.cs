@@ -14,8 +14,8 @@ namespace Tests.RISK.GameEngine.Play.GameStates
 {
     public class AttackPhaseStateGameStateTests
     {
-        private readonly IPlayer _currentPlayer;
-        private readonly IReadOnlyList<IPlayer> _players;
+        private readonly PlayerInPlay _currentPlayer;
+        private readonly IReadOnlyList<PlayerInPlay> _players;
         private readonly ITerritoriesContext _territoriesContext;
         private readonly IDeck _deck;
         private readonly IGamePhaseConductor _gamePhaseConductor;
@@ -42,7 +42,7 @@ namespace Tests.RISK.GameEngine.Play.GameStates
 
             _anotherPlayer = Make.Player.Build();
 
-            _players = new List<IPlayer> { _currentPlayer, _anotherPlayer };
+            _players = new List<PlayerInPlay> { _currentPlayer, _anotherPlayer };
 
             _region = Substitute.For<IRegion>();
             _anotherRegion = Substitute.For<IRegion>();

@@ -16,8 +16,8 @@ namespace RISK.GameEngine.Play.GameStates
 
     public class AttackPhaseStateGameState : IAttackPhaseGameState
     {
-        private readonly IPlayer _currentPlayer;
-        private readonly IReadOnlyList<IPlayer> _players;
+        private readonly PlayerInPlay _currentPlayer;
+        private readonly IReadOnlyList<PlayerInPlay> _players;
         private readonly ITerritoriesContext _territoriesContext;
         private readonly IDeck _deck;
         private readonly IGamePhaseConductor _gamePhaseConductor;
@@ -28,8 +28,8 @@ namespace RISK.GameEngine.Play.GameStates
         private bool _cardHasBeenAwardedThisTurn;
 
         public AttackPhaseStateGameState(
-            IPlayer currentPlayer,
-            IReadOnlyList<IPlayer> players,
+            PlayerInPlay currentPlayer,
+            IReadOnlyList<PlayerInPlay> players,
             ITerritoriesContext territoriesContext,
             IDeck deck,
             IGamePhaseConductor gamePhaseConductor,
@@ -60,7 +60,7 @@ namespace RISK.GameEngine.Play.GameStates
         {
             return _territoriesContext.Territories
                 .Single(x => x.Region == region)
-                .Player == _currentPlayer;
+                .Player == _currentPlayer.Player;
         }
 
         public void Attack(IRegion attackingRegion, IRegion defendingRegion)
@@ -111,18 +111,18 @@ namespace RISK.GameEngine.Play.GameStates
 
         private void GameIsOver()
         {
-            _gamePhaseConductor.PlayerIsTheWinner(_currentPlayer);
+            _gamePhaseConductor.PlayerIsTheWinner(_currentPlayer.Player);
         }
 
         private void AquireAllCardsFromPlayerAndSendArmiesToOccupy(IPlayer defeatedPlayer, IRegion attackingRegion, IRegion defeatedRegion)
         {
-            var eliminatedPlayer = _players.Single(player => player == defeatedPlayer);
+            var eliminatedPlayer = _players.Single(player => player.Player == defeatedPlayer);
 
             AquireAllCardsFromEliminatedPlayer(eliminatedPlayer);
             ContinueWithAttackOrOccupation(attackingRegion, defeatedRegion);
         }
 
-        private void AquireAllCardsFromEliminatedPlayer(IPlayer eliminatedPlayer)
+        private void AquireAllCardsFromEliminatedPlayer(PlayerInPlay eliminatedPlayer)
         {
             var aquiredCards = eliminatedPlayer.AquireAllCards();
             foreach (var aquiredCard in aquiredCards)

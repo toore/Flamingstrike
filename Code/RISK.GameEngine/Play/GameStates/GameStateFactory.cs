@@ -6,7 +6,7 @@ namespace RISK.GameEngine.Play.GameStates
     public interface IGameStateFactory
     {
         IDraftArmiesPhaseGameState CreateDraftArmiesGameState(IPlayer currentPlayer, ITerritoriesContext territoriesContext, IGamePhaseConductor gamePhaseConductor, int numberOfArmiesToDraft);
-        IAttackPhaseGameState CreateAttackPhaseGameState(IPlayer currentPlayer, IReadOnlyList<IPlayer> players, IDeck deck, ITerritoriesContext territoriesContext, IGamePhaseConductor gamePhaseConductor, TurnConqueringAchievement turnConqueringAchievement);
+        IAttackPhaseGameState CreateAttackPhaseGameState(PlayerInPlay currentPlayer, IReadOnlyList<PlayerInPlay> players, IDeck deck, ITerritoriesContext territoriesContext, IGamePhaseConductor gamePhaseConductor, TurnConqueringAchievement turnConqueringAchievement);
         ISendArmiesToOccupyGameState CreateSendArmiesToOccupyGameState(ITerritoriesContext territoriesContext, IGamePhaseConductor gamePhaseConductor, IRegion attackingRegion, IRegion occupiedRegion);
         IEndTurnGameState CreateEndTurnGameState(IGamePhaseConductor gamePhaseConductor);
         IGameOverGameState CreateGameOverGameState(IPlayer winner);
@@ -39,7 +39,7 @@ namespace RISK.GameEngine.Play.GameStates
             return new DraftArmiesPhaseGameState(currentPlayer, territoriesContext, gamePhaseConductor, _armyDrafter, numberOfArmiesToDraft);
         }
 
-        public IAttackPhaseGameState CreateAttackPhaseGameState(IPlayer currentPlayer, IReadOnlyList<IPlayer> players, IDeck deck, ITerritoriesContext territoriesContext, IGamePhaseConductor gamePhaseConductor, TurnConqueringAchievement turnConqueringAchievement)
+        public IAttackPhaseGameState CreateAttackPhaseGameState(PlayerInPlay currentPlayer, IReadOnlyList<PlayerInPlay> players, IDeck deck, ITerritoriesContext territoriesContext, IGamePhaseConductor gamePhaseConductor, TurnConqueringAchievement turnConqueringAchievement)
         {
             return new AttackPhaseStateGameState(currentPlayer, players, territoriesContext, deck, gamePhaseConductor, _attacker, _fortifier, _playerEliminationRules, turnConqueringAchievement);
         }
