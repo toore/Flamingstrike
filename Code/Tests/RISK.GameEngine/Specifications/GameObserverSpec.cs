@@ -10,7 +10,6 @@ using RISK.GameEngine.Play.GameStates;
 using RISK.GameEngine.Setup;
 using RISK.GameEngine.Shuffling;
 using Xunit;
-using IPlayer = RISK.GameEngine.IPlayer;
 
 namespace Tests.RISK.GameEngine.Specifications
 {
@@ -185,12 +184,16 @@ namespace Tests.RISK.GameEngine.Specifications
 
         private void player_1_should_have_a_card()
         {
-            _player1.Cards.Count().Should().Be(1);
+            _gameObserverSpy.Game
+                .ShouldContainSinglePlayerGameData(_player1)
+                .Cards.Count().Should().Be(1);
         }
 
         private void player_1_should_not_have_any_card()
         {
-            _player1.Cards.Should().BeEmpty();
+            _gameObserverSpy.Game
+                .ShouldContainSinglePlayerGameData(_player1)
+                .Cards.Should().BeEmpty();
         }
 
         private void player_moves_one_army_from_north_africa_to_east_africa()
@@ -327,34 +330,38 @@ namespace Tests.RISK.GameEngine.Specifications
 
         private void player_1_should_occupy_north_africa_with_six_armies()
         {
-            AssertTerritory(_regions.NorthAfrica, _player1, 6);
-        }
-
-        private void AssertTerritory(IRegion region, IPlayer player, int armies)
-        {
-            _gameObserverSpy.Game.Territories.Single(x => x.Region == region).Player.Should().Be(player);
-            _gameObserverSpy.Game.Territories.Single(x => x.Region == region).Armies.Should().Be(armies);
+            _gameObserverSpy.Game.ShouldContainSingleTerritory(_regions.NorthAfrica)
+                .PlayerShouldBe(_player1)
+                .ArmiesShouldBe(6);
         }
 
         private void player_2_should_occupy_brazil_with_4_armies()
         {
-            AssertTerritory(_regions.Brazil, _player2, 4);
+            _gameObserverSpy.Game.ShouldContainSingleTerritory(_regions.Brazil)
+                .PlayerShouldBe(_player2)
+                .ArmiesShouldBe(4);
         }
 
         private GameObserverSpec player_1_should_occupy_brazil_with_five_armies()
         {
-            AssertTerritory(_regions.Brazil, _player1, 5);
+            _gameObserverSpy.Game.ShouldContainSingleTerritory(_regions.Brazil)
+                .PlayerShouldBe(_player1)
+                .ArmiesShouldBe(5);
             return this;
         }
 
         private void player_1_should_occupy_north_africa_with_three_armies()
         {
-            AssertTerritory(_regions.NorthAfrica, _player1, 3);
+            _gameObserverSpy.Game.ShouldContainSingleTerritory(_regions.NorthAfrica)
+                .PlayerShouldBe(_player1)
+                .ArmiesShouldBe(3);
         }
 
         private void east_africa_should_have_two_armies()
         {
-            AssertTerritory(_regions.EastAfrica, _player1, 2);
+            _gameObserverSpy.Game.ShouldContainSingleTerritory(_regions.EastAfrica)
+                .PlayerShouldBe(_player1)
+                .ArmiesShouldBe(2);
         }
 
         private void player_1_is_the_winner()
@@ -364,7 +371,7 @@ namespace Tests.RISK.GameEngine.Specifications
 
         private void player_1_should_take_turn()
         {
-            _gameObserverSpy.Game.CurrentPlayer.Should().Be(_player1);
+            _gameObserverSpy.Game.CurrentPlayerGameData.Player.Should().Be(_player1);
         }
     }
 
@@ -405,6 +412,65 @@ namespace Tests.RISK.GameEngine.Specifications
         public void GameOver(IGameIsOver gameIsOver)
         {
             GameIsOver = gameIsOver;
+        }
+    }
+
+    internal class GameAssertion
+    {
+        private readonly IGame _game;
+
+        public GameAssertion(IGame game)
+        {
+            _game = game;
+        }
+
+        public IPlayerGameData ShouldContainSinglePlayerGameData(IPlayer player)
+        {
+            _game.PlayerGameDatas.Should().ContainSingle(x => x.Player == player);
+            return _game.PlayerGameDatas.Single(x => x.Player == player);
+        }
+
+        public TerritoryAssertion ShouldContainSingleTerritory(IRegion region)
+        {
+            _game.Territories.Should().ContainSingle(x => x.Region == region);
+            return new TerritoryAssertion(_game.Territories.Single(x => x.Region == region));
+        }
+    }
+
+    internal class TerritoryAssertion
+    {
+        private readonly ITerritory _territory;
+
+        public TerritoryAssertion(ITerritory territory)
+        {
+            _territory = territory;
+        }
+
+        public TerritoryAssertion PlayerShouldBe(IPlayer player)
+        {
+            _territory.Player.Should().Be(player);
+            return this;
+        }
+
+        public TerritoryAssertion ArmiesShouldBe(int armies)
+        {
+            _territory.Armies.Should().Be(armies);
+            return this;
+        }
+    }
+
+    internal static class GameExtensions
+    {
+        public static IPlayerGameData ShouldContainSinglePlayerGameData(this IGame game, IPlayer player)
+        {
+            return new GameAssertion(game)
+                .ShouldContainSinglePlayerGameData(player);
+        }
+
+        public static TerritoryAssertion ShouldContainSingleTerritory(this IGame game, IRegion region)
+        {
+            return new GameAssertion(game)
+                .ShouldContainSingleTerritory(region);
         }
     }
 }

@@ -2,9 +2,9 @@
 
 namespace RISK.GameEngine.Setup
 {
-    public class PlayerDoingGameSetup
+    public class PlayerSetupData
     {
-        public PlayerDoingGameSetup(IPlayer player)
+        public PlayerSetupData(IPlayer player)
         {
             Player = player;
         }

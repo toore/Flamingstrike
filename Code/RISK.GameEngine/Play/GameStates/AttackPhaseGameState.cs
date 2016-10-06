@@ -16,8 +16,8 @@ namespace RISK.GameEngine.Play.GameStates
 
     public class AttackPhaseStateGameState : IAttackPhaseGameState
     {
-        private readonly PlayerInPlay _currentPlayer;
-        private readonly IReadOnlyList<PlayerInPlay> _players;
+        private readonly PlayerGameData _currentPlayerGameData;
+        private readonly IReadOnlyList<PlayerGameData> _players;
         private readonly ITerritoriesContext _territoriesContext;
         private readonly IDeck _deck;
         private readonly IGamePhaseConductor _gamePhaseConductor;
@@ -28,8 +28,8 @@ namespace RISK.GameEngine.Play.GameStates
         private bool _cardHasBeenAwardedThisTurn;
 
         public AttackPhaseStateGameState(
-            PlayerInPlay currentPlayer,
-            IReadOnlyList<PlayerInPlay> players,
+            PlayerGameData currentPlayerGameData,
+            IReadOnlyList<PlayerGameData> players,
             ITerritoriesContext territoriesContext,
             IDeck deck,
             IGamePhaseConductor gamePhaseConductor,
@@ -38,7 +38,7 @@ namespace RISK.GameEngine.Play.GameStates
             IPlayerEliminationRules playerEliminationRules,
             TurnConqueringAchievement turnConqueringAchievement)
         {
-            _currentPlayer = currentPlayer;
+            _currentPlayerGameData = currentPlayerGameData;
             _players = players;
             _territoriesContext = territoriesContext;
             _deck = deck;
@@ -60,7 +60,7 @@ namespace RISK.GameEngine.Play.GameStates
         {
             return _territoriesContext.Territories
                 .Single(x => x.Region == region)
-                .Player == _currentPlayer.Player;
+                .Player == _currentPlayerGameData.Player;
         }
 
         public void Attack(IRegion attackingRegion, IRegion defendingRegion)
@@ -111,7 +111,7 @@ namespace RISK.GameEngine.Play.GameStates
 
         private void GameIsOver()
         {
-            _gamePhaseConductor.PlayerIsTheWinner(_currentPlayer.Player);
+            _gamePhaseConductor.PlayerIsTheWinner(_currentPlayerGameData.Player);
         }
 
         private void AquireAllCardsFromPlayerAndSendArmiesToOccupy(IPlayer defeatedPlayer, IRegion attackingRegion, IRegion defeatedRegion)
@@ -122,12 +122,12 @@ namespace RISK.GameEngine.Play.GameStates
             ContinueWithAttackOrOccupation(attackingRegion, defeatedRegion);
         }
 
-        private void AquireAllCardsFromEliminatedPlayer(PlayerInPlay eliminatedPlayer)
+        private void AquireAllCardsFromEliminatedPlayer(PlayerGameData eliminatedPlayerGameData)
         {
-            var aquiredCards = eliminatedPlayer.AquireAllCards();
+            var aquiredCards = eliminatedPlayerGameData.AquireAllCards();
             foreach (var aquiredCard in aquiredCards)
             {
-                _currentPlayer.AddCard(aquiredCard);
+                _currentPlayerGameData.AddCard(aquiredCard);
             }
         }
 
@@ -207,7 +207,7 @@ namespace RISK.GameEngine.Play.GameStates
         private void AddTopDeckCardToCurrentPlayersCards()
         {
             var card = _deck.Draw();
-            _currentPlayer.AddCard(card);
+            _currentPlayerGameData.AddCard(card);
         }
     }
 }

@@ -52,8 +52,8 @@
     <Compile Include="IContinent.cs" />
     <Compile Include="IContinents.cs" />
     <Compile Include="IRegion.cs" />
-    <Compile Include="Play\GameStates\PlayerInPlay.cs" />
-    <Compile Include="Setup\SetupPlayer.cs" />
+    <Compile Include="Play\PlayerGameData.cs" />
+    <Compile Include="Setup\PlayerSetupData.cs" />
     <Compile Include="Shuffling\FisherYatesShuffle.cs" />
     <Compile Include="Shuffling\IShuffle.cs" />
     <Compile Include="Shuffling\RandomWrapper.cs" />
@@ -77,7 +77,6 @@
     <Compile Include="Play\GameStates\ConqueringAchievement.cs" />
     <Compile Include="Play\GameStates\DraftArmiesPhaseGameState.cs" />
     <Compile Include="Play\GameStates\GameStateFactory.cs" />
-    <Compile Include="Play\PlayersContext.cs" />
     <Compile Include="Play\GameStates\SendArmiesToOccupyGameState.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Play\SendArmiesToOccupyPhase.cs" />

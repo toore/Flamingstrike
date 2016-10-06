@@ -1,18 +1,25 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace RISK.GameEngine.Play.GameStates
+namespace RISK.GameEngine.Play
 {
-    public class PlayerInPlay
+    public interface IPlayerGameData
+    {
+        IPlayer Player { get; }
+        IEnumerable<ICard> Cards { get; }
+    }
+
+    public class PlayerGameData : IPlayerGameData
     {
         private readonly IList<ICard> _cards = new List<ICard>();
 
-        public PlayerInPlay(IPlayer player)
+        public PlayerGameData(IPlayer player)
         {
             Player = player;
         }
 
-        public IPlayer Player { get; private set; }
+        public IPlayer Player { get; }
+        public IEnumerable<ICard> Cards => _cards;
 
         public void AddCard(ICard card)
         {

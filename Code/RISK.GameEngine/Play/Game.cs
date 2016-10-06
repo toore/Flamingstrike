@@ -6,7 +6,8 @@ namespace RISK.GameEngine.Play
 {
     public interface IGame
     {
-        IPlayer CurrentPlayer { get; }
+        IPlayerGameData CurrentPlayerGameData { get; }
+        IEnumerable<IPlayerGameData> PlayerGameDatas { get; }
         IReadOnlyList<ITerritory> Territories { get; }
     }
 
@@ -26,9 +27,10 @@ namespace RISK.GameEngine.Play
         private readonly IGameStateFactory _gameStateFactory;
         private readonly IArmyDraftCalculator _armyDraftCalculator;
         private readonly IDeck _deck;
-        private readonly CircularBuffer<PlayerInPlay> _players;
+        private readonly IReadOnlyList<PlayerGameData> _playerGameDatas;
         private readonly ITerritoriesContext _territoriesContext = new TerritoriesContext();
-        private PlayerInPlay _currentPlayerInPlay;
+        private PlayerGameData _currentPlayerGameData;
+        private readonly CircularBuffer<PlayerGameData> _playerGameDatasCircularBuffer;
 
         public Game(
             IGameObserver gameObserver,
@@ -42,13 +44,14 @@ namespace RISK.GameEngine.Play
             _gameStateFactory = gameStateFactory;
             _armyDraftCalculator = armyDraftCalculator;
             _deck = deck;
-            _players = players.Select(player => new PlayerInPlay(player)).ToCircularBuffer();
+            _playerGameDatas = players.Select(player => new PlayerGameData(player)).ToList();
+            _playerGameDatasCircularBuffer = _playerGameDatas.ToCircularBuffer();
 
             InitializeNewGame(territories);
         }
 
-        public IPlayer CurrentPlayer => _currentPlayerInPlay.Player;
-        
+        public IPlayerGameData CurrentPlayerGameData => _currentPlayerGameData;
+        public IEnumerable<IPlayerGameData> PlayerGameDatas => _playerGameDatas;
 
         public IReadOnlyList<ITerritory> Territories => _territoriesContext.Territories;
 
@@ -56,11 +59,11 @@ namespace RISK.GameEngine.Play
         {
             _territoriesContext.Set(territories);
 
-            _currentPlayerInPlay = _players.First();
+            _currentPlayerGameData = _playerGameDatasCircularBuffer.Next();
 
             NewGame(this);
 
-            PlayerStartsNewTurn(_currentPlayerInPlay);
+            PlayerStartsNewTurn(_currentPlayerGameData);
         }
 
         private void NewGame(IGame game)
@@ -68,29 +71,29 @@ namespace RISK.GameEngine.Play
             _gameObserver.NewGame(game);
         }
 
-        private void PlayerStartsNewTurn(PlayerInPlay playerInPlay)
+        private void PlayerStartsNewTurn(PlayerGameData playerGameData)
         {
-            _currentPlayerInPlay = playerInPlay;
-            var numberOfArmiesToDraft = _armyDraftCalculator.Calculate(CurrentPlayer, _territoriesContext.Territories);
+            _currentPlayerGameData = playerGameData;
+            var numberOfArmiesToDraft = _armyDraftCalculator.Calculate(_currentPlayerGameData.Player, _territoriesContext.Territories);
 
             ContinueToDraftArmies(numberOfArmiesToDraft);
         }
 
         public void ContinueToDraftArmies(int numberOfArmiesToDraft)
         {
-            var draftArmiesGamePhase = _gameStateFactory.CreateDraftArmiesGameState(CurrentPlayer, _territoriesContext, this, numberOfArmiesToDraft);
+            var draftArmiesGamePhase = _gameStateFactory.CreateDraftArmiesGameState(_currentPlayerGameData.Player, _territoriesContext, this, numberOfArmiesToDraft);
 
             var regionsAllowedToDraftArmies = _territoriesContext.Territories
                 .Where(x => draftArmiesGamePhase.CanPlaceDraftArmies(x.Region))
                 .Select(x => x.Region).ToList();
 
-            var draftArmiesPhase = new DraftArmiesPhase(draftArmiesGamePhase, CurrentPlayer, _territoriesContext.Territories, numberOfArmiesToDraft, regionsAllowedToDraftArmies);
+            var draftArmiesPhase = new DraftArmiesPhase(draftArmiesGamePhase, _currentPlayerGameData.Player, _territoriesContext.Territories, numberOfArmiesToDraft, regionsAllowedToDraftArmies);
             _gameObserver.DraftArmies(draftArmiesPhase);
         }
 
         public void ContinueWithAttackPhase(TurnConqueringAchievement turnConqueringAchievement)
         {
-            var attackPhaseGameState = _gameStateFactory.CreateAttackPhaseGameState(_currentPlayerInPlay, _players.ToList(), _deck, _territoriesContext, this, turnConqueringAchievement);
+            var attackPhaseGameState = _gameStateFactory.CreateAttackPhaseGameState(_currentPlayerGameData, _playerGameDatas.ToList(), _deck, _territoriesContext, this, turnConqueringAchievement);
 
             var regionsThatCanBeSourceForAttackOrFortification = _territoriesContext.Territories
                 .Where(x => IsCurrentPlayerOccupyingRegion(x.Region))
@@ -101,7 +104,7 @@ namespace RISK.GameEngine.Play
 
         private bool IsCurrentPlayerOccupyingRegion(IRegion region)
         {
-            return CurrentPlayer == _territoriesContext.Territories.Single(x => x.Region == region).Player;
+            return _currentPlayerGameData.Player == _territoriesContext.Territories.Single(x => x.Region == region).Player;
         }
 
         public void WaitForTurnToEnd()
@@ -120,11 +123,10 @@ namespace RISK.GameEngine.Play
 
         public void PassTurnToNextPlayer()
         {
-            var nextPlayer = _players.Next();
+            var nextPlayer = _playerGameDatasCircularBuffer.Next();
 
             PlayerStartsNewTurn(nextPlayer);
         }
-        
 
         public void PlayerIsTheWinner(IPlayer winner)
         {

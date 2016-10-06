@@ -6,7 +6,7 @@ namespace RISK.GameEngine.Play.GameStates
     public interface IGameStateFactory
     {
         IDraftArmiesPhaseGameState CreateDraftArmiesGameState(IPlayer currentPlayer, ITerritoriesContext territoriesContext, IGamePhaseConductor gamePhaseConductor, int numberOfArmiesToDraft);
-        IAttackPhaseGameState CreateAttackPhaseGameState(PlayerInPlay currentPlayer, IReadOnlyList<PlayerInPlay> players, IDeck deck, ITerritoriesContext territoriesContext, IGamePhaseConductor gamePhaseConductor, TurnConqueringAchievement turnConqueringAchievement);
+        IAttackPhaseGameState CreateAttackPhaseGameState(PlayerGameData currentPlayerGameData, IReadOnlyList<PlayerGameData> players, IDeck deck, ITerritoriesContext territoriesContext, IGamePhaseConductor gamePhaseConductor, TurnConqueringAchievement turnConqueringAchievement);
         ISendArmiesToOccupyGameState CreateSendArmiesToOccupyGameState(ITerritoriesContext territoriesContext, IGamePhaseConductor gamePhaseConductor, IRegion attackingRegion, IRegion occupiedRegion);
         IEndTurnGameState CreateEndTurnGameState(IGamePhaseConductor gamePhaseConductor);
         IGameOverGameState CreateGameOverGameState(IPlayer winner);
@@ -39,9 +39,9 @@ namespace RISK.GameEngine.Play.GameStates
             return new DraftArmiesPhaseGameState(currentPlayer, territoriesContext, gamePhaseConductor, _armyDrafter, numberOfArmiesToDraft);
         }
 
-        public IAttackPhaseGameState CreateAttackPhaseGameState(PlayerInPlay currentPlayer, IReadOnlyList<PlayerInPlay> players, IDeck deck, ITerritoriesContext territoriesContext, IGamePhaseConductor gamePhaseConductor, TurnConqueringAchievement turnConqueringAchievement)
+        public IAttackPhaseGameState CreateAttackPhaseGameState(PlayerGameData currentPlayerGameData, IReadOnlyList<PlayerGameData> players, IDeck deck, ITerritoriesContext territoriesContext, IGamePhaseConductor gamePhaseConductor, TurnConqueringAchievement turnConqueringAchievement)
         {
-            return new AttackPhaseStateGameState(currentPlayer, players, territoriesContext, deck, gamePhaseConductor, _attacker, _fortifier, _playerEliminationRules, turnConqueringAchievement);
+            return new AttackPhaseStateGameState(currentPlayerGameData, players, territoriesContext, deck, gamePhaseConductor, _attacker, _fortifier, _playerEliminationRules, turnConqueringAchievement);
         }
 
         public ISendArmiesToOccupyGameState CreateSendArmiesToOccupyGameState(ITerritoriesContext territoriesContext, IGamePhaseConductor gamePhaseConductor, IRegion attackingRegion, IRegion occupiedRegion)

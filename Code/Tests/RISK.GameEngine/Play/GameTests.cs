@@ -30,16 +30,16 @@ namespace Tests.RISK.GameEngine.Play
         }
 
         [Fact]
-        public void Gets_current_player()
+        public void Current_game_player_data_belongs_to_first_player()
         {
-            var currentPlayer = Substitute.For<IPlayer>();
+            var firstPlayer = Substitute.For<IPlayer>();
             var gamePlaySetup = Make.GamePlaySetup
-                .WithPlayer(currentPlayer)
+                .WithPlayer(firstPlayer)
                 .WithPlayer(Substitute.For<IPlayer>()).Build();
 
             var sut = Create(gamePlaySetup);
 
-            sut.CurrentPlayer.Should().Be(currentPlayer);
+            sut.CurrentPlayerGameData.Player.Should().Be(firstPlayer);
         }
 
         [Fact]

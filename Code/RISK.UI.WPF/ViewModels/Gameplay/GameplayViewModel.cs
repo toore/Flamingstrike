@@ -115,7 +115,7 @@ namespace RISK.UI.WPF.ViewModels.Gameplay
         public void DraftArmies(IDraftArmiesPhase draftArmiesPhase)
         {
             InformationText = Resources.DRAFT_ARMIES;
-            PlayerName = _game.CurrentPlayer.Name;
+            PlayerName = _game.CurrentPlayerGameData.Player.Name;
 
             CanEnterFortifyMode = false;
             CanEnterAttackMode = false;
@@ -136,7 +136,7 @@ namespace RISK.UI.WPF.ViewModels.Gameplay
             _attackPhase = attackPhase;
 
             InformationText = Resources.ATTACK;
-            PlayerName = _game.CurrentPlayer.Name;
+            PlayerName = _game.CurrentPlayerGameData.Player.Name;
 
             CanEnterFortifyMode = true;
             CanEnterAttackMode = false;
@@ -151,7 +151,7 @@ namespace RISK.UI.WPF.ViewModels.Gameplay
         public void SendArmiesToOccupy(ISendArmiesToOccupyPhase sendArmiesToOccupyPhase)
         {
             InformationText = Resources.SEND_ARMIES_TO_OCCUPY;
-            PlayerName = _game.CurrentPlayer.Name;
+            PlayerName = _game.CurrentPlayerGameData.Player.Name;
 
             CanEnterFortifyMode = false;
             CanEnterAttackMode = false;
@@ -173,7 +173,7 @@ namespace RISK.UI.WPF.ViewModels.Gameplay
         public void EndTurn(IEndTurnPhase endTurnPhase)
         {
             InformationText = Resources.END_TURN;
-            PlayerName = _game.CurrentPlayer.Name;
+            PlayerName = _game.CurrentPlayerGameData.Player.Name;
 
             CanEnterFortifyMode = true;
             CanEnterAttackMode = false;
@@ -288,7 +288,7 @@ namespace RISK.UI.WPF.ViewModels.Gameplay
 
         private void ShowGameOverMessage()
         {
-            var gameOverViewModel = _gameOverViewModelFactory.Create(_game.CurrentPlayer.Name);
+            var gameOverViewModel = _gameOverViewModelFactory.Create(_game.CurrentPlayerGameData.Player.Name);
             _windowManager.ShowDialog(gameOverViewModel);
         }
     }
