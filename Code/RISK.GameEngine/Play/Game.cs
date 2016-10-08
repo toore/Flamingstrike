@@ -132,7 +132,7 @@ namespace RISK.GameEngine.Play
         {
             var gameOverGameState = _gameStateFactory.CreateGameOverGameState(winner);
 
-            _gameObserver.GameOver(new GameIsOver(gameOverGameState, winner));
+            _gameObserver.GameOver(new GameIsOver(gameOverGameState));
         }
     }
 }

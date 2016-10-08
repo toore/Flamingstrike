@@ -68,7 +68,7 @@
     <Compile Include="Play\Game.cs" />
     <Compile Include="Play\AttackPhase.cs" />
     <Compile Include="Play\DraftArmiesPhase.cs" />
-    <Compile Include="Play\GameOver.cs" />
+    <Compile Include="Play\GameIsOver.cs" />
     <Compile Include="Play\GameStates\EndTurnGameState.cs" />
     <Compile Include="Play\GameStates\GameOverGameState.cs" />
     <Compile Include="Play\IGameObserver.cs" />

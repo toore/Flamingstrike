@@ -11,12 +11,11 @@ namespace RISK.GameEngine.Play
     {
         private readonly IGameOverGameState _gameOverGameState;
 
-        public GameIsOver(IGameOverGameState gameOverGameState, IPlayer winner)
+        public GameIsOver(IGameOverGameState gameOverGameState)
         {
             _gameOverGameState = gameOverGameState;
-            Winner = winner;
         }
 
-        public IPlayer Winner { get; }
+        public IPlayer Winner => _gameOverGameState.Winner;
     }
 }

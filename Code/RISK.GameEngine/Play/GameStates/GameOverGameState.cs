@@ -1,14 +1,17 @@
 namespace RISK.GameEngine.Play.GameStates
 {
-    public interface IGameOverGameState {}
+    public interface IGameOverGameState
+    {
+        IPlayer Winner { get; set; }
+    }
 
     public class GameOverGameState : IGameOverGameState
     {
-        private readonly IPlayer _winner;
+        public IPlayer Winner { get; set; }
 
         public GameOverGameState(IPlayer winner)
         {
-            _winner = winner;
+            Winner = winner;
         }
     }
 }
