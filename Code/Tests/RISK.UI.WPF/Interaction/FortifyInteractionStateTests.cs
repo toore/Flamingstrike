@@ -1,4 +1,3 @@
-using System;
 using NSubstitute;
 using RISK.GameEngine;
 using RISK.GameEngine.Play;
@@ -10,46 +9,37 @@ namespace Tests.RISK.UI.WPF.Interaction
     public class FortifyInteractionStateTests
     {
         private readonly IRegion _selectedRegion;
-        private readonly IRegion _regionToFortify;
-        private readonly IGame _game;
+        private readonly IAttackPhase _attackPhase;
+        private readonly IDeselectRegionToFortifyFromObserver _deselectRegionToFortifyFromObserver;
         private readonly FortifyInteractionState _sut;
 
         public FortifyInteractionStateTests()
         {
-            _sut = new FortifyInteractionState(null, _selectedRegion, null);
+            _attackPhase = Substitute.For<IAttackPhase>();
+            _selectedRegion = Substitute.For<IRegion>();
+            _deselectRegionToFortifyFromObserver = Substitute.For<IDeselectRegionToFortifyFromObserver>();
 
-            _regionToFortify = Substitute.For<IRegion>();
+            _sut = new FortifyInteractionState(_attackPhase, _selectedRegion, _deselectRegionToFortifyFromObserver);
         }
 
         [Fact]
-        public void Can_click_territory_that_can_be_fortified()
+        public void Fortifies_territory()
         {
-            //_game.CanFortify(_selectedRegion, _regionToFortify).Returns(true);
+            var region = Substitute.For<IRegion>();
 
-            _sut.AssertOnClickCanBeInvoked(_regionToFortify);
+            _sut.OnClick(region);
+
+            _attackPhase.Received().Fortify(_selectedRegion, region, 1);
         }
 
         [Fact]
-        public void Can_click_on_selected_territory()
+        public void Deselects_region()
         {
-            _sut.AssertOnClickCanBeInvoked(_selectedRegion);
-        }
+            var region = Substitute.For<IRegion>();
 
-        [Fact]
-        public void Can_not_click_when_fortification_is_not_allowed()
-        {
-            _sut.AssertOnClickThrows<InvalidOperationException>(_regionToFortify);
-        }
+            _sut.OnClick(_selectedRegion);
 
-        [Fact]
-        public void OnClick_fortifies()
-        {
-            //_game.CanFortify(_selectedRegion, _regionToFortify).Returns(true);
-
-            _sut.OnClick(_regionToFortify);
-
-            //_game.Received().Fortify(_selectedRegion, _regionToFortify, 1);
-            throw new NotImplementedException();
+            _deselectRegionToFortifyFromObserver.Received().DeselectRegion();
         }
     }
 }

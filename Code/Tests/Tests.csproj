@@ -130,7 +130,6 @@
     <Compile Include="RISK.GameEngine\Setup\NullAlternateGameSetupObserver.cs" />
     <Compile Include="RISK.UI.WPF\Interaction\AttackInteractionStateTests.cs" />
     <Compile Include="RISK.UI.WPF\Interaction\FortifyInteractionStateTests.cs" />
-    <Compile Include="RISK.UI.WPF\Interaction\InteractionStateExtensions.cs" />
     <Compile Include="RISK.UI.WPF\Interaction\SelectSourceRegionForFortificationInteractionStateTests.cs" />
     <Compile Include="RISK.GameEngine\Setup\StartingInfantryCalculatorTests.cs" />
     <Compile Include="RISK.GameEngine\Builders\GamePlaySetupBuilder.cs" />
