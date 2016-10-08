@@ -10,15 +10,15 @@ Game states/phases:
 
 
 Issues:
-- Fortify can not deselect Territory
-- Crash when ending turn in fortify mode
+- Show player cards!, and enable trade-in of cards
 
-
-IPlayer.cs - Should NOT contain game setup specific public(?) code!
-Player name formatting service "Player: abc"?
-What about a common starting point for setup and the game engine?
-WorldMapViewModelFactory::Update should have type Maybe for selectedRegion
-- After fortification, should not be possible to select attack, nor fortify
+Improvements:
+- Show number of armies to draft
+- Number of armies to move in after attack or when fortifying should be selectable
+- After attacking and winning, auto-select conquered territory
+- Player name formatting service "Player: abc"?
+- What about a common starting point for setup and the game engine?
+- WorldMapViewModelFactory::Update should have type Maybe for selectedRegion?
 
 
 ##Not/partially tested
