@@ -18,6 +18,7 @@ IPlayer.cs - Should NOT contain game setup specific public(?) code!
 Player name formatting service "Player: abc"?
 What about a common starting point for setup and the game engine?
 WorldMapViewModelFactory::Update should have type Maybe for selectedRegion
+- After fortification, should not be possible to select attack, nor fortify
 
 
 ##Not/partially tested

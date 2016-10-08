@@ -175,7 +175,7 @@ namespace RISK.UI.WPF.ViewModels.Gameplay
             InformationText = Resources.END_TURN;
             PlayerName = _game.CurrentPlayerGameData.Player.Name;
 
-            CanEnterFortifyMode = true;
+            CanEnterFortifyMode = false;
             CanEnterAttackMode = false;
             CanEndTurn = true;
             _endTurn = endTurnPhase.EndTurn;
