@@ -10,7 +10,6 @@ Game states/phases:
 
 
 Issues:
-- AlternateGameSetupView does not respect disabled buttons!?
 - Fortify can not deselect Territory
 - Crash when ending turn in fortify mode
 

@@ -78,9 +78,15 @@ namespace RISK.UI.WPF.ViewModels.AlternateSetup
 
         public bool CanEnterFortifyMode => false;
 
+        public void EnterFortifyMode() {}
+
         public bool CanEnterAttackMode => false;
 
+        public void EnterAttackMode() {}
+
         public bool CanEndTurn => false;
+
+        public void EndTurn() {}
 
         public void EndGame()
         {
