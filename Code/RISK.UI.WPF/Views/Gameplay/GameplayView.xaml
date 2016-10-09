@@ -47,12 +47,19 @@
             <Label Content="{Binding PlayerName}" />
         </StackPanel>
 
-        <Label
-            Grid.Row="1"
-            HorizontalAlignment="Stretch"
-            HorizontalContentAlignment="Center"
-            Content="{Binding InformationText}"
-            Style="{StaticResource BlackControlStyle}" />
+        <StackPanel Grid.Row="1"
+            Style="{StaticResource BlackControlStyle}">
+            <StackPanel.Resources>
+                <Style TargetType="{x:Type Label}">
+                    <Setter Property="FontSize" Value="22" />
+                    <Setter Property="Foreground" Value="White" />
+                </Style>
+            </StackPanel.Resources>
+            <Label
+                HorizontalAlignment="Stretch"
+                HorizontalContentAlignment="Center"
+                Content="{Binding InformationText}" />
+        </StackPanel>
 
         <ContentControl
             Content="{Binding WorldMapViewModel}"
