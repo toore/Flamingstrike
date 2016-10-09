@@ -114,7 +114,7 @@ namespace RISK.UI.WPF.ViewModels.Gameplay
 
         public void DraftArmies(IDraftArmiesPhase draftArmiesPhase)
         {
-            InformationText = Resources.DRAFT_ARMIES;
+            InformationText = string.Format(Resources.DRAFT_ARMIES, draftArmiesPhase.NumberOfArmiesToDraft);
             PlayerName = _game.CurrentPlayerGameData.Player.Name;
 
             CanEnterFortifyMode = false;
@@ -124,11 +124,6 @@ namespace RISK.UI.WPF.ViewModels.Gameplay
             _interactionState = _interactionStateFactory.CreateDraftArmiesInteractionState(draftArmiesPhase);
 
             UpdateWorldMap(draftArmiesPhase);
-        }
-
-        private void UpdateWorldMap(IDraftArmiesPhase draftArmiesPhase)
-        {
-            UpdateWorldMap(_game.Territories, draftArmiesPhase.RegionsAllowedToDraftArmies, null);
         }
 
         public void Attack(IAttackPhase attackPhase)
@@ -162,14 +157,6 @@ namespace RISK.UI.WPF.ViewModels.Gameplay
             UpdateWorldMap(sendArmiesToOccupyPhase);
         }
 
-        private void UpdateWorldMap(ISendArmiesToOccupyPhase sendArmiesToOccupyPhase)
-        {
-            UpdateWorldMap(
-                _game.Territories,
-                new[] { sendArmiesToOccupyPhase.OccupiedRegion },
-                sendArmiesToOccupyPhase.AttackingRegion);
-        }
-
         public void EndTurn(IEndTurnPhase endTurnPhase)
         {
             InformationText = Resources.END_TURN;
@@ -183,14 +170,27 @@ namespace RISK.UI.WPF.ViewModels.Gameplay
             UpdateWorldMapInEndOfTurn();
         }
 
-        private void UpdateWorldMapInEndOfTurn()
-        {
-            UpdateWorldMap(_game.Territories, new IRegion[] { }, null);
-        }
-
         public void GameOver(IGameIsOver gameIsOver)
         {
             ShowGameOverMessage();
+        }
+
+        private void UpdateWorldMap(IDraftArmiesPhase draftArmiesPhase)
+        {
+            UpdateWorldMap(_game.Territories, draftArmiesPhase.RegionsAllowedToDraftArmies, null);
+        }
+
+        private void UpdateWorldMap(ISendArmiesToOccupyPhase sendArmiesToOccupyPhase)
+        {
+            UpdateWorldMap(
+                _game.Territories,
+                new[] { sendArmiesToOccupyPhase.OccupiedRegion },
+                sendArmiesToOccupyPhase.AttackingRegion);
+        }
+
+        private void UpdateWorldMapInEndOfTurn()
+        {
+            UpdateWorldMap(_game.Territories, new IRegion[] { }, null);
         }
 
         void ISelectAttackingRegionObserver.SelectRegionToAttackFrom(IRegion region)

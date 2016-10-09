@@ -155,7 +155,8 @@
     <value>Congo</value>
   </data>
   <data name="DRAFT_ARMIES" xml:space="preserve">
-    <value>Draft Armies</value>
+    <value>Draft Armies - Armies To Draft: {0}</value>
+    <comment>ARG0 specifies armies left</comment>
   </data>
   <data name="EASTERN_AUSTRALIA" xml:space="preserve">
     <value>Eastern Australia</value>
@@ -242,7 +243,7 @@
     <value>Peru</value>
   </data>
   <data name="PLACE_ARMY" xml:space="preserve">
-    <value>Place army (armies left: {0})</value>
+    <value>Place Army - Armies To Place: {0}</value>
     <comment>ARG0 specifies armies left</comment>
   </data>
   <data name="PLAYER" xml:space="preserve">

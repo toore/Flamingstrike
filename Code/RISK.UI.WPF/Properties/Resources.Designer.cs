@@ -169,7 +169,7 @@ namespace RISK.UI.WPF.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Draft Armies.
+        ///   Looks up a localized string similar to Draft Armies - Armies To Draft: {0}.
         /// </summary>
         public static string DRAFT_ARMIES {
             get {
@@ -430,7 +430,7 @@ namespace RISK.UI.WPF.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Place army (armies left: {0}).
+        ///   Looks up a localized string similar to Place Army - Armies To Place: {0}.
         /// </summary>
         public static string PLACE_ARMY {
             get {

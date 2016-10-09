@@ -12,7 +12,6 @@ Issues:
 - Show player cards!, and enable trade-in of cards
 
 Improvements:
-- Show number of armies to draft
 - When attacking and not occupying, keep attacking territory selection
 - After attacking and winning, auto-select conquered territory
 - Show "Select territory to start an attack from", ".. fortifying from" 
