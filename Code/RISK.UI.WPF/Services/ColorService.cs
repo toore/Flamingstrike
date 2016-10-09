@@ -12,7 +12,7 @@ namespace RISK.UI.WPF.Services
         IRegionColorSettings AsiaColors { get; }
         IRegionColorSettings AustraliaColors { get; }
 
-        IRegionColorSettings GetPlayerTerritoryColors(GameEngine.IPlayer player);
+        IRegionColorSettings GetPlayerTerritoryColors(IPlayer player);
 
         Color SelectedTerritoryColor { get; }
     }
@@ -74,9 +74,6 @@ namespace RISK.UI.WPF.Services
                 mouseOverFillColor: Color.FromArgb(255, 200, 200, 200));
         }
 
-        public Color SelectedTerritoryColor
-        {
-            get { return Color.FromArgb(0x90, 0xEA, 0xEA, 0x15); }
-        }
+        public Color SelectedTerritoryColor => Color.FromArgb(0x90, 0xEA, 0xEA, 0x15);
     }
 }
