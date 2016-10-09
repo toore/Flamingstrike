@@ -64,7 +64,7 @@ namespace RISK.UI.WPF.ViewModels.AlternateSetup
             _eventAggregator.PublishOnUIThread(new StartGameplayMessage(gamePlaySetup));
         }
 
-        private void UpdateView(IReadOnlyList<ITerritory> territories, Action<IRegion> selectAction, IReadOnlyList<IRegion> enabledRegions, string playerName, int armiesLeftToPlace)
+        private void UpdateView(IReadOnlyList<ITerritory> territories, Action<IRegion> selectAction, IReadOnlyList<IRegion> enabledRegions, string playerName, int armiesToPlace)
         {
             var worldMapViewModel = _worldMapViewModelFactory.Create(selectAction);
             _worldMapViewModelFactory.Update(worldMapViewModel, territories, enabledRegions, null);
@@ -73,7 +73,7 @@ namespace RISK.UI.WPF.ViewModels.AlternateSetup
 
             PlayerName = playerName;
 
-            InformationText = string.Format(Resources.PLACE_ARMY, armiesLeftToPlace);
+            InformationText = string.Format(Resources.PLACE_ARMY, armiesToPlace);
         }
 
         public bool CanEnterFortifyMode => false;
