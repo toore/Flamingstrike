@@ -14,7 +14,9 @@ Issues:
 
 Improvements:
 - Show number of armies to draft
-- Number of armies to move in after attack or when fortifying should be selectable
+- Color regions per player (show color for player next to player name)
+- Continent information on board
+- Select number of armies to move in after attack or when fortifying
 - After attacking and winning, auto-select conquered territory
 - Player name formatting service "Player: abc"?
 - What about a common starting point for setup and the game engine?
