@@ -124,6 +124,24 @@ namespace RISK.UI.WPF.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Attack - Select From Territory.
+        /// </summary>
+        public static string ATTACK_SELECT_FROM_TERRITORY {
+            get {
+                return ResourceManager.GetString("ATTACK_SELECT_FROM_TERRITORY", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Attack - Select Territory to Attack.
+        /// </summary>
+        public static string ATTACK_SELECT_TERRITORY_TO_ATTACK {
+            get {
+                return ResourceManager.GetString("ATTACK_SELECT_TERRITORY_TO_ATTACK", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Brazil.
         /// </summary>
         public static string BRAZIL {
@@ -237,6 +255,24 @@ namespace RISK.UI.WPF.Properties {
         public static string FORTIFY {
             get {
                 return ResourceManager.GetString("FORTIFY", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fortify - Select Territory to Move From.
+        /// </summary>
+        public static string FORTIFY_SELECT_TERRITORY_TO_MOVE_FROM {
+            get {
+                return ResourceManager.GetString("FORTIFY_SELECT_TERRITORY_TO_MOVE_FROM", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fortify - Select Territory to Move To.
+        /// </summary>
+        public static string FORTIFY_SELECT_TERRITORY_TO_MOVE_TO {
+            get {
+                return ResourceManager.GetString("FORTIFY_SELECT_TERRITORY_TO_MOVE_TO", resourceCulture);
             }
         }
         
