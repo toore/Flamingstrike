@@ -79,7 +79,7 @@ namespace RISK.UI.WPF.ViewModels
                 dialogManager,
                 EventAggregator);
 
-#if QUICK_SETUP
+#if QUICKSETUP
             var startingInfantryCalculator = new StartingInfantryCalculatorReturning21Armies();
 #else
             var startingInfantryCalculator = new StartingInfantryCalculator();
