@@ -1,5 +1,5 @@
 using System.Windows.Media;
-using IPlayer = RISK.GameEngine.IPlayer;
+using RISK.GameEngine;
 
 namespace RISK.UI.WPF.Services
 {
@@ -19,12 +19,12 @@ namespace RISK.UI.WPF.Services
 
     public class ColorService : IColorService
     {
-        public IRegionColorSettings NorthAmericaColors { get; private set; }
-        public IRegionColorSettings SouthAmericaColors { get; private set; }
-        public IRegionColorSettings EuropeColors { get; private set; }
-        public IRegionColorSettings AfricaColors { get; private set; }
-        public IRegionColorSettings AsiaColors { get; private set; }
-        public IRegionColorSettings AustraliaColors { get; private set; }
+        public IRegionColorSettings NorthAmericaColors { get; }
+        public IRegionColorSettings SouthAmericaColors { get; }
+        public IRegionColorSettings EuropeColors { get; }
+        public IRegionColorSettings AfricaColors { get; }
+        public IRegionColorSettings AsiaColors { get; }
+        public IRegionColorSettings AustraliaColors { get; }
 
         public ColorService()
         {
