@@ -62,7 +62,7 @@ namespace Tests.RISK.UI.WPF.Specifications
             const int numberOfPlayers = 2;
             const int numberOfArmiesToPlace = (numberOfArmiesForEachPlayer - armiesAssignedToTerritoriesAutomatically) * numberOfPlayers;
 
-            for (int i = 0; i < numberOfArmiesToPlace; i++)
+            for (var i = 0; i < numberOfArmiesToPlace; i++)
             {
                 var regionViewModel = _gameSetupViewModel.WorldMapViewModel.WorldMapViewModels
                     .OfType<RegionViewModel>()

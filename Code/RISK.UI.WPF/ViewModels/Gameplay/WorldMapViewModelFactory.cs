@@ -12,7 +12,7 @@ namespace RISK.UI.WPF.ViewModels.Gameplay
     {
         WorldMapViewModel Create(Action<IRegion> onClick);
 
-        void Update(WorldMapViewModel worldMapViewModel, IReadOnlyList<ITerritory> territories, IReadOnlyList<IRegion> enabledRegions, IRegion selectedRegion);
+        void Update(WorldMapViewModel worldMapViewModel, IReadOnlyList<ITerritory> territories, IReadOnlyList<IRegion> enabledRegions, Maybe<IRegion> selectedRegion);
     }
 
     public class WorldMapViewModelFactory : IWorldMapViewModelFactory
@@ -37,7 +37,7 @@ namespace RISK.UI.WPF.ViewModels.Gameplay
             return worldMapViewModel;
         }
 
-        public void Update(WorldMapViewModel worldMapViewModel, IReadOnlyList<ITerritory> territories, IReadOnlyList<IRegion> enabledRegions, IRegion selectedRegion)
+        public void Update(WorldMapViewModel worldMapViewModel, IReadOnlyList<ITerritory> territories, IReadOnlyList<IRegion> enabledRegions, Maybe<IRegion> selectedRegion)
         {
             var worldMapItemUpdater = new WorldMapItemUpdater(territories, enabledRegions, selectedRegion, _regionColorSettingsFactory, _colorService);
             foreach (var worldMapItemViewModel in worldMapViewModel.WorldMapViewModels)

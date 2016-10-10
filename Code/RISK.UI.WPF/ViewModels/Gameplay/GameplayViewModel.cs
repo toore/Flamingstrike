@@ -165,7 +165,7 @@ namespace RISK.UI.WPF.ViewModels.Gameplay
             UpdateWorldMap(
                 _game.Territories,
                 regionsThatCanBeInteractedWith,
-                region);
+                Maybe<IRegion>.Create(region));
         }
 
         void IDeselectAttackingRegionObserver.DeselectRegion()
@@ -213,7 +213,7 @@ namespace RISK.UI.WPF.ViewModels.Gameplay
             UpdateWorldMap(
                 _game.Territories,
                 regionsThatCanBeInteractedWith,
-                region);
+                Maybe<IRegion>.Create(region));
         }
 
         void IDeselectRegionToFortifyFromObserver.DeselectRegion()
@@ -246,7 +246,7 @@ namespace RISK.UI.WPF.ViewModels.Gameplay
 
         private void UpdateWorldMap(IDraftArmiesPhase draftArmiesPhase)
         {
-            UpdateWorldMap(_game.Territories, draftArmiesPhase.RegionsAllowedToDraftArmies, null);
+            UpdateWorldMap(_game.Territories, draftArmiesPhase.RegionsAllowedToDraftArmies, Maybe<IRegion>.Nothing);
         }
 
         private void UpdateWorldMap(ISendArmiesToOccupyPhase sendArmiesToOccupyPhase)
@@ -254,20 +254,20 @@ namespace RISK.UI.WPF.ViewModels.Gameplay
             UpdateWorldMap(
                 _game.Territories,
                 new[] { sendArmiesToOccupyPhase.OccupiedRegion },
-                sendArmiesToOccupyPhase.AttackingRegion);
+                Maybe<IRegion>.Create(sendArmiesToOccupyPhase.AttackingRegion));
         }
 
         private void UpdateWorldMapInEndOfTurn()
         {
-            UpdateWorldMap(_game.Territories, new IRegion[] { }, null);
+            UpdateWorldMap(_game.Territories, new IRegion[] { }, Maybe<IRegion>.Nothing);
         }
 
         private void UpdateWorldMap(IAttackPhase attackPhase)
         {
-            UpdateWorldMap(_game.Territories, attackPhase.RegionsThatCanBeSourceForAttackOrFortification, selectedRegion: null);
+            UpdateWorldMap(_game.Territories, attackPhase.RegionsThatCanBeSourceForAttackOrFortification, Maybe<IRegion>.Nothing);
         }
 
-        private void UpdateWorldMap(IReadOnlyList<ITerritory> territories, IReadOnlyList<IRegion> enabledRegions, IRegion selectedRegion)
+        private void UpdateWorldMap(IReadOnlyList<ITerritory> territories, IReadOnlyList<IRegion> enabledRegions, Maybe<IRegion> selectedRegion)
         {
             _worldMapViewModelFactory.Update(WorldMapViewModel, territories, enabledRegions, selectedRegion);
         }

@@ -67,7 +67,7 @@ namespace RISK.UI.WPF.ViewModels.AlternateSetup
         private void UpdateView(IReadOnlyList<ITerritory> territories, Action<IRegion> selectAction, IReadOnlyList<IRegion> enabledRegions, string playerName, int armiesToPlace)
         {
             var worldMapViewModel = _worldMapViewModelFactory.Create(selectAction);
-            _worldMapViewModelFactory.Update(worldMapViewModel, territories, enabledRegions, null);
+            _worldMapViewModelFactory.Update(worldMapViewModel, territories, enabledRegions, Maybe<IRegion>.Nothing);
 
             WorldMapViewModel = worldMapViewModel;
 

@@ -8,15 +8,15 @@ namespace RISK.UI.WPF.ViewModels.Gameplay
     public class WorldMapItemUpdater : IWorldMapItemViewModelVisitor
     {
         private readonly IReadOnlyList<ITerritory> _territories;
-        private readonly IReadOnlyList<IRegion> _enabledTerritories;
-        private readonly IRegion _selectedRegion;
+        private readonly IReadOnlyList<IRegion> _enabledRegions;
+        private readonly Maybe<IRegion> _selectedRegion;
         private readonly IRegionColorSettingsFactory _regionColorSettingsFactory;
         private readonly IColorService _colorService;
 
-        public WorldMapItemUpdater(IReadOnlyList<ITerritory> territories, IReadOnlyList<IRegion> enabledTerritories, IRegion selectedRegion, IRegionColorSettingsFactory regionColorSettingsFactory, IColorService colorService)
+        public WorldMapItemUpdater(IReadOnlyList<ITerritory> territories, IReadOnlyList<IRegion> enabledRegions, Maybe<IRegion> selectedRegion, IRegionColorSettingsFactory regionColorSettingsFactory, IColorService colorService)
         {
             _territories = territories;
-            _enabledTerritories = enabledTerritories;
+            _enabledRegions = enabledRegions;
             _selectedRegion = selectedRegion;
             _regionColorSettingsFactory = regionColorSettingsFactory;
             _colorService = colorService;
@@ -24,33 +24,35 @@ namespace RISK.UI.WPF.ViewModels.Gameplay
 
         public void Visit(RegionViewModel regionViewModel)
         {
-            var territoryColors = _regionColorSettingsFactory.Create(regionViewModel.Region);
+            var player = _territories.Single(x => x.Region == regionViewModel.Region).Player;
 
-            var strokeColor = territoryColors.NormalStrokeColor;
-            var fillColor = _selectedRegion == regionViewModel.Region ?
-                _colorService.SelectedTerritoryColor : territoryColors.NormalFillColor;
-            var mouseOverStrokeColor = territoryColors.MouseOverStrokeColor;
-            var mouseOverFillColor = territoryColors.MouseOverFillColor;
+            var regionColorSettings = _regionColorSettingsFactory.Create(regionViewModel.Region);
+
+            var strokeColor = regionColorSettings.NormalStrokeColor;
+            var fillColor = _selectedRegion.Bind(x => x == regionViewModel.Region)
+                .Fold(_ => _colorService.SelectedTerritoryColor, () => regionColorSettings.NormalFillColor);
+            var mouseOverStrokeColor = regionColorSettings.MouseOverStrokeColor;
+            var mouseOverFillColor = regionColorSettings.MouseOverFillColor;
 
             regionViewModel.StrokeColor = strokeColor;
             regionViewModel.FillColor = fillColor;
             regionViewModel.MouseOverStrokeColor = mouseOverStrokeColor;
             regionViewModel.MouseOverFillColor = mouseOverFillColor;
 
-            regionViewModel.IsEnabled = IsTerritoryEnabled(regionViewModel);
+            regionViewModel.IsEnabled = IsRegionEnabled(regionViewModel);
         }
 
-        private bool IsTerritoryEnabled(RegionViewModel regionViewModel)
+        private bool IsRegionEnabled(RegionViewModel regionViewModel)
         {
-            return _enabledTerritories.Contains(regionViewModel.Region);
+            return _enabledRegions.Contains(regionViewModel.Region);
         }
 
         public void Visit(RegionNameViewModel regionNameViewModel)
         {
-            UpdateArmiesForTerritory(regionNameViewModel);
+            UpdateArmiesForViewModel(regionNameViewModel);
         }
 
-        private void UpdateArmiesForTerritory(RegionNameViewModel regionNameViewModel)
+        private void UpdateArmiesForViewModel(RegionNameViewModel regionNameViewModel)
         {
             var territory = _territories
                 .Single(x => x.Region == regionNameViewModel.Region);

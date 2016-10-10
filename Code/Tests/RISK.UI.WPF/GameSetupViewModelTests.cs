@@ -4,6 +4,7 @@ using FluentAssertions;
 using NSubstitute;
 using RISK.GameEngine;
 using RISK.GameEngine.Setup;
+using RISK.UI.WPF;
 using RISK.UI.WPF.Properties;
 using RISK.UI.WPF.Services;
 using RISK.UI.WPF.ViewModels.AlternateSetup;
@@ -41,7 +42,7 @@ namespace Tests.RISK.UI.WPF
             var enabledRegions = new List<IRegion> { Make.Region.Build() };
             _worldMapViewModelFactory.Create(null)
                 .ReturnsForAnyArgs(expectedWorldMapViewModel);
-            _worldMapViewModelFactory.Update(expectedWorldMapViewModel, territories, enabledRegions, selectedRegion: null);
+            _worldMapViewModelFactory.Update(expectedWorldMapViewModel, territories, enabledRegions, Maybe<IRegion>.Nothing);
             var placeArmyRegionSelector = Substitute.For<IPlaceArmyRegionSelector>();
             placeArmyRegionSelector.Territories.Returns(territories);
             placeArmyRegionSelector.SelectableRegions.Returns(enabledRegions);

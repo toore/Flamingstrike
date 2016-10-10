@@ -33,7 +33,7 @@ namespace RISK.UI.WPF.Views.Gameplay
                 .ToList();
 
             WorldMapViewModel = worldMapViewModelFactory.Create(x => { });
-            worldMapViewModelFactory.Update(WorldMapViewModel, territories, Enumerable.Empty<IRegion>().ToList(), null);
+            worldMapViewModelFactory.Update(WorldMapViewModel, territories, Enumerable.Empty<IRegion>().ToList(), Maybe<IRegion>.Nothing);
         }
 
         public WorldMapViewModel WorldMapViewModel { get; }
