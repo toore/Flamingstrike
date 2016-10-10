@@ -6,6 +6,10 @@ namespace RISK.UI.WPF.ViewModels.Preparation
 {
     public class GamePreparationPlayerViewModel : ViewModelBase
     {
+        private bool _isEnabled;
+        private string _name;
+        private PlayerTypeBase _selectedPlayerType;
+
         public GamePreparationPlayerViewModel(IPlayerTypes playerTypes)
         {
             PlayerTypes = playerTypes.Values;
@@ -14,34 +18,31 @@ namespace RISK.UI.WPF.ViewModels.Preparation
 
         public Action OnIsEnabledChanged = () => { };
 
-        private bool _isEnabled;
         public bool IsEnabled
         {
             get { return _isEnabled; }
             set
             {
                 NotifyOfPropertyChange(value, () => IsEnabled, x =>
-                {
-                    _isEnabled = x;
-                    OnIsEnabledChanged();
-                });
+                    {
+                        _isEnabled = x;
+                        OnIsEnabledChanged();
+                    });
             }
         }
 
-        private string _name;
         public string Name
         {
             get { return _name; }
             set { NotifyOfPropertyChange(value, () => Name, s => _name = s); }
         }
 
-        private PlayerTypeBase _selectedPlayerType;
         public PlayerTypeBase SelectedPlayerType
         {
             get { return _selectedPlayerType; }
             set { NotifyOfPropertyChange(value, () => SelectedPlayerType, type => _selectedPlayerType = type); }
         }
 
-        public IEnumerable<PlayerTypeBase> PlayerTypes { get; }
+        public IReadOnlyList<PlayerTypeBase> PlayerTypes { get; }
     }
 }
