@@ -38,6 +38,7 @@
     <Compile Include="Continent.cs" />
     <Compile Include="Continents.cs" />
     <Compile Include="Attacking\ArmiesLostCalculator.cs" />
+    <Compile Include="ListExtensions.cs" />
     <Compile Include="Play\ArmyDraftCalculator.cs" />
     <Compile Include="ArmyDrafter.cs" />
     <Compile Include="Attacking\Attacker.cs" />

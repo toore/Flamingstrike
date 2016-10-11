@@ -20,8 +20,9 @@ Improvements:
 - Player name formatting service "Player: abc"?
 - What about a common starting point for setup and the game engine?
 - WorldMapViewModelFactory::Update should have type Maybe for selectedRegion?
-- What about making changes to the states of Game with invalid game api objects (immutable core?)
 
+- What about making changes to the states of Game with invalid game api objects (immutable core?)
+     - Deck?
 
 ##Not/partially tested
 - GameStateFactory (CreateNextTurnGameState, etc)

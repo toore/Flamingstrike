@@ -9,6 +9,6 @@ namespace Tests.RISK.GameEngine.Builders
         public static DicesBuilder Dices => new DicesBuilder();
         public static ArmiesLostBuilder ArmiesLost => new ArmiesLostBuilder();
         public static PlayerBuilder Player => new PlayerBuilder();
-        public static InGamePlayerBuilder InGamePlayer => new InGamePlayerBuilder();
+        public static PlayerGameDataBuilder PlayerGameData => new PlayerGameDataBuilder();
     }
 }

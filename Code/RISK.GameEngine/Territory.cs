@@ -30,7 +30,7 @@ namespace RISK.GameEngine
 
         public IRegion Region { get; }
         public IPlayer Player { get; }
-        public int Armies { get; set; }
+        public int Armies { get; }
 
         public int GetNumberOfArmiesThatCanBeUsedInAnAttack()
         {

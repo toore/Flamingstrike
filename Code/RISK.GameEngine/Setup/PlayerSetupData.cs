@@ -4,37 +4,23 @@ namespace RISK.GameEngine.Setup
 {
     public class PlayerSetupData
     {
-        public PlayerSetupData(IPlayer player)
-        {
-            Player = player;
-        }
-
-        public IPlayer Player { get; private set; }
-
-        public int ArmiesToPlace { get; private set; }
-
-        public bool HasArmiesLeftToPlace()
-        {
-            return ArmiesToPlace > 0;
-        }
-
-        public void SetArmiesToPlace(int armiesToPlace)
+        public PlayerSetupData(IPlayer player, int armiesToPlace)
         {
             if (armiesToPlace < 0)
             {
                 throw new ArgumentOutOfRangeException(nameof(armiesToPlace), armiesToPlace, "value must be greater than or equal to zero");
             }
+            Player = player;
             ArmiesToPlace = armiesToPlace;
         }
 
-        public void PlaceArmy(Territory territory)
+        public IPlayer Player { get; }
+
+        public int ArmiesToPlace { get; }
+
+        public bool HasArmiesLeftToPlace()
         {
-            if (!HasArmiesLeftToPlace())
-            {
-                throw new InvalidOperationException("No armies left to place");
-            }
-            territory.Armies++;
-            ArmiesToPlace--;
+            return ArmiesToPlace > 0;
         }
     }
 }

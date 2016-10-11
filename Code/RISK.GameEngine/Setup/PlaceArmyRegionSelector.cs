@@ -14,24 +14,24 @@ namespace RISK.GameEngine.Setup
     public class PlaceArmyRegionSelector : IPlaceArmyRegionSelector
     {
         private readonly IArmyPlacer _armyPlacer;
-        private readonly IReadOnlyList<Territory> _territories;
+        private readonly TerritoriesAndPlayers _territoriesAndPlayers;
         private readonly PlayerSetupData _playerSetupData;
 
-        public PlaceArmyRegionSelector(IArmyPlacer armyPlacer, IReadOnlyList<Territory> territories, IReadOnlyList<IRegion> selectableRegions, PlayerSetupData playerSetupData)
+        public PlaceArmyRegionSelector(IArmyPlacer armyPlacer, TerritoriesAndPlayers territoriesAndPlayers, IReadOnlyList<IRegion> selectableRegions, PlayerSetupData playerSetupData)
         {
             _armyPlacer = armyPlacer;
-            _territories = territories;
+            _territoriesAndPlayers = territoriesAndPlayers;
             SelectableRegions = selectableRegions;
             _playerSetupData = playerSetupData;
         }
 
-        public IReadOnlyList<ITerritory> Territories => _territories;
+        public IReadOnlyList<ITerritory> Territories => _territoriesAndPlayers.Territories;
         public IReadOnlyList<IRegion> SelectableRegions { get; }
         public IPlayer Player => _playerSetupData.Player;
 
         public void PlaceArmyInRegion(IRegion region)
         {
-            _armyPlacer.PlaceArmyInRegion(region);
+            _armyPlacer.PlaceArmyInRegion(_playerSetupData.Player, region, _territoriesAndPlayers);
         }
 
         public int GetArmiesLeftToPlace()

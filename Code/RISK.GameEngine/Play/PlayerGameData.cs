@@ -1,37 +1,39 @@
+using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace RISK.GameEngine.Play
 {
     public interface IPlayerGameData
     {
         IPlayer Player { get; }
-        IEnumerable<ICard> Cards { get; }
+        IReadOnlyList<ICard> Cards { get; }
     }
 
     public class PlayerGameData : IPlayerGameData
     {
-        private readonly IList<ICard> _cards = new List<ICard>();
-
-        public PlayerGameData(IPlayer player)
+        public PlayerGameData(IPlayer player, IReadOnlyList<ICard> cards)
         {
             Player = player;
+            Cards = cards;
         }
 
         public IPlayer Player { get; }
-        public IEnumerable<ICard> Cards => _cards;
+        public IReadOnlyList<ICard> Cards { get; }
 
         public void AddCard(ICard card)
         {
-            _cards.Add(card);
+            throw new NotImplementedException();
+
+            //_cards.Add(card);
         }
 
         public IEnumerable<ICard> AquireAllCards()
         {
-            var cardsToReturn = _cards.ToList();
-            _cards.Clear();
+            throw new NotImplementedException();
+            //var cardsToReturn = _cards.ToList();
+            //_cards.Clear();
 
-            return cardsToReturn;
+            //return cardsToReturn;
         }
     }
 }

@@ -30,7 +30,7 @@ namespace Tests.RISK.GameEngine.Play.GameStates
 
         public AttackPhaseStateGameStateTests()
         {
-            _currentPlayerGameData = Make.InGamePlayer.Build();
+            _currentPlayerGameData = Make.PlayerGameData.Build();
             _territoriesContext = new TerritoriesContext();
             _deck = Substitute.For<IDeck>();
             _gamePhaseConductor = Substitute.For<IGamePhaseConductor>();
@@ -38,7 +38,7 @@ namespace Tests.RISK.GameEngine.Play.GameStates
             _fortifier = Substitute.For<IFortifier>();
             _playerEliminationRules = Substitute.For<IPlayerEliminationRules>();
 
-            _anotherPlayerGameData = Make.InGamePlayer.Build();
+            _anotherPlayerGameData = Make.PlayerGameData.Build();
 
             _players = new List<PlayerGameData> { _currentPlayerGameData, _anotherPlayerGameData };
 

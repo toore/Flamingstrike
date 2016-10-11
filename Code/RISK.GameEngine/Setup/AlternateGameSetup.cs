@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using RISK.GameEngine.Shuffling;
 
@@ -6,7 +7,7 @@ namespace RISK.GameEngine.Setup
 {
     /* Alternate
      * An alternate and quicker method of setup from the original French rules is to deal out the entire deck of Risk cards (minus the wild cards), 
-     * assigning players to the territories on their cards.[1] As in a standard game, players still count out the same number of starting infantry 
+     * assigning players to the territories on their cards.[1] As in a standard game, playerSetupDatas still count out the same number of starting infantry 
      * and take turns placing their armies. The original rules from 1959 state that the entire deck of Risk cards (minus the wild cards) is dealt out, 
      * assigning players to the territories on their cards. One and only one army is placed on each territory before the game commences.
      */
@@ -21,23 +22,20 @@ namespace RISK.GameEngine.Setup
 
     public interface IArmyPlacer
     {
-        void PlaceArmyInRegion(IRegion selectedRegion);
+        void PlaceArmyInRegion(IPlayer currentPlayer, IRegion selectedRegion, TerritoriesAndPlayers territoriesAndPlayers);
     }
 
     public class AlternateGameSetup : IAlternateGameSetup, IArmyPlacer
     {
         private readonly IAlternateGameSetupObserver _alternateGameSetupObserver;
         private readonly IRegions _regions;
-        private readonly IShuffle _shuffle;
         private readonly IStartingInfantryCalculator _startingInfantryCalculator;
-        private CircularBuffer<PlayerSetupData> _playerDoingGameSetups;
-        private IReadOnlyList<Territory> _territories;
-        private PlayerSetupData _currentPlayerSetupData;
+        private readonly IShuffle _shuffle;
 
         public AlternateGameSetup(
             IAlternateGameSetupObserver alternateGameSetupObserver,
             IRegions regions,
-            IEnumerable<IPlayer> players,
+            ICollection<IPlayer> players,
             IStartingInfantryCalculator startingInfantryCalculator,
             IShuffle shuffle)
         {
@@ -46,39 +44,23 @@ namespace RISK.GameEngine.Setup
             _shuffle = shuffle;
             _startingInfantryCalculator = startingInfantryCalculator;
 
-            Initialize(players);
+            var playerSetupDatas = Shuffle(players);
+            var territoriesAndPlayers = AssignPlayersToTerritories(playerSetupDatas);
+
+            PlaceArmies(territoriesAndPlayers);
         }
 
-        private void Initialize(IEnumerable<IPlayer> players)
+        private IReadOnlyList<PlayerSetupData> Shuffle(ICollection<IPlayer> players)
         {
-            _playerDoingGameSetups = Shuffle(players);
+            var numberOfStartingInfantry = _startingInfantryCalculator.Get(players.Count);
 
-            InitializeArmiesToPlaceInSetup();
-
-            var territories = AssignPlayersToTerritories();
-
-            PlaceArmies(territories);
-        }
-
-        private CircularBuffer<PlayerSetupData> Shuffle(IEnumerable<IPlayer> players)
-        {
             return players
                 .Shuffle(_shuffle)
-                .Select(player => new PlayerSetupData(player))
-                .ToCircularBuffer();
+                .Select(player => new PlayerSetupData(player, numberOfStartingInfantry))
+                .ToList();
         }
 
-        private void InitializeArmiesToPlaceInSetup()
-        {
-            var numberOfStartingInfantry = _startingInfantryCalculator.Get(_playerDoingGameSetups.Count());
-
-            foreach (var playerDoingGameSetup in _playerDoingGameSetups)
-            {
-                playerDoingGameSetup.SetArmiesToPlace(numberOfStartingInfantry);
-            }
-        }
-
-        private List<Territory> AssignPlayersToTerritories()
+        private TerritoriesAndPlayers AssignPlayersToTerritories(IReadOnlyList<PlayerSetupData> playerSetupDatas)
         {
             var territories = new List<Territory>();
 
@@ -86,68 +68,108 @@ namespace RISK.GameEngine.Setup
                 .Shuffle(_shuffle)
                 .ToList();
 
+            var updatedPlayerSetupDatas = playerSetupDatas.ToList();
+            var players = playerSetupDatas.Select(x => x.Player).ToList();
+            var currentPlayer = players.First();
+
             foreach (var region in regions)
             {
-                var setupPlayer = _playerDoingGameSetups.Next();
-                setupPlayer.SetArmiesToPlace(setupPlayer.ArmiesToPlace - 1);
-                var territory = new Territory(region, setupPlayer.Player, 1);
+                const int armies = 1;
+
+                updatedPlayerSetupDatas = UpdatePlayerArmies(updatedPlayerSetupDatas, currentPlayer, x => x.ArmiesToPlace - armies).ToList();
+
+                var territory = new Territory(region, currentPlayer, armies);
                 territories.Add(territory);
+
+                currentPlayer = players.GetNext(currentPlayer);
             }
 
-            return territories;
+            return new TerritoriesAndPlayers(territories, updatedPlayerSetupDatas, currentPlayer);
         }
 
-        private void PlaceArmies(IReadOnlyList<Territory> territories)
+        private void PlaceArmies(TerritoriesAndPlayers territoriesAndPlayers)
         {
-            _territories = territories;
-
-            ContinueToPlaceArmy();
+            ContinueToPlaceArmy(territoriesAndPlayers);
         }
 
-        private void ContinueToPlaceArmy()
+        private void ContinueToPlaceArmy(TerritoriesAndPlayers territoriesAndPlayers)
         {
-            _currentPlayerSetupData = _playerDoingGameSetups.Next();
-
-            if (_currentPlayerSetupData.HasArmiesLeftToPlace())
+            var playerSetupData = territoriesAndPlayers.PlayerSetupDatas.Single(x => x.Player == territoriesAndPlayers.CurrentPlayer);
+            if (playerSetupData.HasArmiesLeftToPlace())
             {
-                SelectRegionToPlaceArmy(_currentPlayerSetupData, _territories);
+                SelectRegionToPlaceArmy(playerSetupData, territoriesAndPlayers);
             }
             else
             {
-                SetupHasEnded();
+                SetupHasEnded(territoriesAndPlayers);
             }
         }
 
-        private void SetupHasEnded()
+        private void SetupHasEnded(TerritoriesAndPlayers territoriesAndPlayers)
         {
-            var players = _playerDoingGameSetups.Select(x => x.Player).ToList();
-
-            var gamePlaySetup = new GamePlaySetup(players, _territories);
+            var gamePlaySetup = new GamePlaySetup(
+                territoriesAndPlayers.PlayerSetupDatas.Select(x => x.Player).ToList(),
+                territoriesAndPlayers.Territories);
 
             _alternateGameSetupObserver.NewGamePlaySetup(gamePlaySetup);
         }
 
-        public void PlaceArmyInRegion(IRegion selectedRegion)
+        public void PlaceArmyInRegion(IPlayer currentPlayer, IRegion selectedRegion, TerritoriesAndPlayers territoriesAndPlayers)
         {
-            var selectedTerritory = _territories
-                .Where(territory => territory.Player == _currentPlayerSetupData.Player)
-                .Single(x => x.Region == selectedRegion);
+            const int armiesToAdd = 1;
 
-            _currentPlayerSetupData.PlaceArmy(selectedTerritory);
+            var playerSetupDatas = UpdatePlayerArmies(territoriesAndPlayers.PlayerSetupDatas, currentPlayer, x => x.ArmiesToPlace - armiesToAdd).ToList();
+            var territories = UpdateArmiesInTerritory(territoriesAndPlayers.Territories, selectedRegion, x => x.Armies + armiesToAdd);
 
-            ContinueToPlaceArmy();
+            var nextPlayer = territoriesAndPlayers.PlayerSetupDatas.Select(x => x.Player).ToList().GetNext(currentPlayer);
+
+            ContinueToPlaceArmy(new TerritoriesAndPlayers(territories.ToList(), playerSetupDatas.ToList(), nextPlayer));
         }
 
-        private void SelectRegionToPlaceArmy(PlayerSetupData playerSetupData, IReadOnlyList<Territory> territories)
+        private static IEnumerable<PlayerSetupData> UpdatePlayerArmies(IReadOnlyList<PlayerSetupData> playerSetupDatas, IPlayer playerArmiesToUpdate, Func<PlayerSetupData, int> armies)
         {
-            var selectableRegions = territories
+            var playerToUpdate = playerSetupDatas
+                .Single(x => x.Player == playerArmiesToUpdate);
+
+            var updatedPlayer = new PlayerSetupData(playerToUpdate.Player, armies(playerToUpdate));
+
+            return playerSetupDatas.Replace(playerToUpdate, updatedPlayer);
+        }
+
+        private static IEnumerable<Territory> UpdateArmiesInTerritory(IReadOnlyList<Territory> territories, IRegion regionToUpdate, Func<ITerritory, int> armies)
+        {
+            var territoryToUpdate = territories
+                .Single(x => x.Region == regionToUpdate);
+
+            var updatedTerritory = new Territory(regionToUpdate, territoryToUpdate.Player, armies(territoryToUpdate));
+
+            return territories.Replace(territoryToUpdate, updatedTerritory);
+        }
+
+        private void SelectRegionToPlaceArmy(PlayerSetupData playerSetupData, TerritoriesAndPlayers territoriesAndPlayers)
+        {
+            var selectableRegions = territoriesAndPlayers.Territories
                 .Where(territory => territory.Player == playerSetupData.Player)
                 .Select(x => x.Region)
                 .ToList();
 
-            var regionSelector = new PlaceArmyRegionSelector(this, territories, selectableRegions, playerSetupData);
+            var regionSelector = new PlaceArmyRegionSelector(this, territoriesAndPlayers, selectableRegions, playerSetupData);
 
             _alternateGameSetupObserver.SelectRegion(regionSelector);
+        }
+    }
+
+    public class TerritoriesAndPlayers
+    {
+        public IReadOnlyList<Territory> Territories { get; }
+        public IReadOnlyList<PlayerSetupData> PlayerSetupDatas { get; }
+        public IPlayer CurrentPlayer { get; }
+
+        public TerritoriesAndPlayers(IReadOnlyList<Territory> territories, IReadOnlyList<PlayerSetupData> playerSetupDatas, IPlayer currentPlayer)
+        {
+            Territories = territories;
+            PlayerSetupDatas = playerSetupDatas;
+            CurrentPlayer = currentPlayer;
         }
     }
 }

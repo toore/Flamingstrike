@@ -25,7 +25,7 @@ namespace Tests.RISK.GameEngine.Setup
         {
             _alternateGameSetupObserver = new AlternateGameSetupObserverSpyDecorator(new AutoRespondingAlternateGameSetupObserver());
             _regions = Substitute.For<IRegions>();
-            _players = new List<IPlayer> { null };
+            _players = new List<IPlayer> { null, null };
             _startingInfantryCalculator = Substitute.For<IStartingInfantryCalculator>();
             _shuffler = Substitute.For<IShuffle>();
 

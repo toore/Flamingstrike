@@ -44,7 +44,7 @@ namespace RISK.GameEngine.Play
             _gameStateFactory = gameStateFactory;
             _armyDraftCalculator = armyDraftCalculator;
             _deck = deck;
-            _playerGameDatas = players.Select(player => new PlayerGameData(player)).ToList();
+            _playerGameDatas = players.Select(player => new PlayerGameData(player, new List<ICard>())).ToList();
             _playerGameDatasCircularBuffer = _playerGameDatas.ToCircularBuffer();
 
             InitializeNewGame(territories);

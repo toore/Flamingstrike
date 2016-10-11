@@ -15,7 +15,7 @@ namespace Tests.RISK.GameEngine.Specifications
     public class AlternateGameSetupObserverSpec : SpecBase<AlternateGameSetupObserverSpec>
     {
         private IAlternateGameSetupObserverSpy _alternateGameSetupObserverSpy;
-        private IReadOnlyList<IPlayer> _players;
+        private ICollection<IPlayer> _players;
         private AlternateGameSetupFactory _alternateGameSetupFactory;
         private IShuffle _shuffle;
         private IPlayer _player1;

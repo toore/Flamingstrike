@@ -5,7 +5,7 @@ namespace RISK.GameEngine.Setup
 {
     public interface IAlternateGameSetupFactory
     {
-        IAlternateGameSetup Create(IAlternateGameSetupObserver alternateGameSetupObserver, IEnumerable<IPlayer> players);
+        IAlternateGameSetup Create(IAlternateGameSetupObserver alternateGameSetupObserver, ICollection<IPlayer> players);
     }
 
     public class AlternateGameSetupFactory : IAlternateGameSetupFactory
@@ -21,7 +21,7 @@ namespace RISK.GameEngine.Setup
             _startingInfantryCalculator = startingInfantryCalculator;
         }
 
-        public IAlternateGameSetup Create(IAlternateGameSetupObserver alternateGameSetupObserver, IEnumerable<IPlayer> players)
+        public IAlternateGameSetup Create(IAlternateGameSetupObserver alternateGameSetupObserver, ICollection<IPlayer> players)
         {
             return new AlternateGameSetup(alternateGameSetupObserver, _regions, players, _startingInfantryCalculator, _shuffle);
         }
