@@ -6,7 +6,7 @@ namespace RISK.GameEngine.Setup
     {
         IReadOnlyList<ITerritory> Territories { get; }
         IReadOnlyList<IRegion> SelectableRegions { get; }
-        string PlayerName { get; }
+        IPlayer Player { get; }
         void PlaceArmyInRegion(IRegion region);
         int GetArmiesLeftToPlace();
     }
@@ -27,7 +27,7 @@ namespace RISK.GameEngine.Setup
 
         public IReadOnlyList<ITerritory> Territories => _territories;
         public IReadOnlyList<IRegion> SelectableRegions { get; }
-        public string PlayerName => _playerSetupData.Player.Name;
+        public IPlayer Player => _playerSetupData.Player;
 
         public void PlaceArmyInRegion(IRegion region)
         {

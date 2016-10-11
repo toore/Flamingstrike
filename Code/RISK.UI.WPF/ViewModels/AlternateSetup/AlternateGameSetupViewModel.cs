@@ -55,7 +55,7 @@ namespace RISK.UI.WPF.ViewModels.AlternateSetup
                 placeArmyRegionSelector.Territories,
                 placeArmyRegionSelector.PlaceArmyInRegion,
                 placeArmyRegionSelector.SelectableRegions,
-                placeArmyRegionSelector.PlayerName,
+                placeArmyRegionSelector.Player.Name,
                 placeArmyRegionSelector.GetArmiesLeftToPlace());
         }
 

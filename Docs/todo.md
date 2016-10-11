@@ -14,7 +14,6 @@ Issues:
 Improvements:
 - When attacking and not occupying, keep attacking territory selection
 - After attacking and winning, auto-select conquered territory
-- Show "Select territory to start an attack from", ".. fortifying from" 
 - Color regions per player (show color for player next to player name)
 - Select number of armies to move in after attack or when fortifying
 - Continent information on board

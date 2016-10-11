@@ -72,15 +72,16 @@ namespace Tests.RISK.UI.WPF
         [Fact]
         public void SelectRegion_updates_player_name()
         {
-            const string expectedPlayerName = "player name";
             var placeArmyRegionSelector = Substitute.For<IPlaceArmyRegionSelector>();
-            placeArmyRegionSelector.PlayerName.Returns(expectedPlayerName);
+            var expectedPlayer = Substitute.For<IPlayer>();
+            expectedPlayer.Name.Returns("player name");
+            placeArmyRegionSelector.Player.Returns(expectedPlayer);
 
             var sut = Create();
             sut.MonitorEvents();
             sut.SelectRegion(placeArmyRegionSelector);
 
-            sut.PlayerName.Should().Be(expectedPlayerName);
+            sut.PlayerName.Should().Be("player name");
             sut.ShouldRaisePropertyChangeFor(x => x.PlayerName);
         }
 
