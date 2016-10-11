@@ -1,15 +1,15 @@
 ﻿<UserControl x:Class="RISK.UI.WPF.Views.Gameplay.GameplayView"
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
-    xmlns:Micro="http://www.caliburnproject.org"
-    xmlns:Properties="clr-namespace:RISK.UI.WPF.Properties"
-    xmlns:Gameplay="clr-namespace:RISK.UI.WPF.Views.Gameplay"
-    mc:Ignorable="d"
-    d:DesignHeight="768" d:DesignWidth="1366"
-    d:DataContext="{d:DesignInstance d:Type=Gameplay:GameplayViewModelDesignerData, IsDesignTimeCreatable=True}">
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+             xmlns:Micro="http://www.caliburnproject.org"
+             xmlns:Properties="clr-namespace:RISK.UI.WPF.Properties"
+             xmlns:Gameplay="clr-namespace:RISK.UI.WPF.Views.Gameplay"
+             mc:Ignorable="d"
+             d:DesignHeight="768" d:DesignWidth="1366"
+             d:DataContext="{d:DesignInstance d:Type=Gameplay:GameplayViewModelDesignerData, IsDesignTimeCreatable=True}">
 
     <UserControl.Resources>
         <ResourceDictionary>
@@ -36,8 +36,7 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <StackPanel
-            Orientation="Horizontal">
+        <StackPanel Orientation="Horizontal">
             <StackPanel.Resources>
                 <Style TargetType="{x:Type Label}">
                     <Setter Property="FontSize" Value="22" />
@@ -48,62 +47,56 @@
         </StackPanel>
 
         <StackPanel Grid.Row="1"
-            Style="{StaticResource BlackControlStyle}">
+                    Style="{StaticResource BlackControlStyle}">
             <StackPanel.Resources>
                 <Style TargetType="{x:Type Label}">
                     <Setter Property="FontSize" Value="22" />
                     <Setter Property="Foreground" Value="White" />
                 </Style>
             </StackPanel.Resources>
-            <Label
-                HorizontalAlignment="Stretch"
-                HorizontalContentAlignment="Center"
-                Content="{Binding InformationText}" />
+            <Label HorizontalAlignment="Stretch"
+                   HorizontalContentAlignment="Center"
+                   Content="{Binding InformationText}" />
         </StackPanel>
 
-        <ContentControl
-            Content="{Binding WorldMapViewModel}"
-            Margin="0 10 0 10"
-            Grid.Row="2" />
+        <ContentControl Focusable="False"
+                        Content="{Binding WorldMapViewModel}"
+                        Margin="0 10 0 10"
+                        Grid.Row="2" />
 
-        <DockPanel
-            Grid.Row="3"
-            HorizontalAlignment="Stretch"
-            Style="{StaticResource BlackControlStyle}">
+        <DockPanel Grid.Row="3"
+                   HorizontalAlignment="Stretch"
+                   Style="{StaticResource BlackControlStyle}">
             <DockPanel.Resources>
                 <Style TargetType="Button" BasedOn="{StaticResource StandardButtonStyle}">
                     <Setter Property="Margin" Value="5" />
                 </Style>
             </DockPanel.Resources>
-            <StackPanel
-                Orientation="Horizontal"
-                DockPanel.Dock="Left">
+            <StackPanel Orientation="Horizontal"
+                        DockPanel.Dock="Left">
                 <StackPanel.Resources>
                     <ControlTemplate x:Key="AttackModeRadioButtonTemplate">
                         <Button Content="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type RadioButton}}, Path=Content}" />
                     </ControlTemplate>
                 </StackPanel.Resources>
 
-                <RadioButton
-                    Content="{x:Static Properties:Resources.FORTIFY}"
-                    GroupName="AttackMode" Template="{StaticResource AttackModeRadioButtonTemplate}">
+                <RadioButton Content="{x:Static Properties:Resources.FORTIFY}"
+                             GroupName="AttackMode" Template="{StaticResource AttackModeRadioButtonTemplate}">
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="Click">
                             <Micro:ActionMessage MethodName="EnterFortifyMode" />
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
                 </RadioButton>
-                <RadioButton
-                    Content="{x:Static Properties:Resources.ATTACK}"
-                    GroupName="AttackMode" Template="{StaticResource AttackModeRadioButtonTemplate}">
+                <RadioButton Content="{x:Static Properties:Resources.ATTACK}"
+                             GroupName="AttackMode" Template="{StaticResource AttackModeRadioButtonTemplate}">
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="Click">
                             <Micro:ActionMessage MethodName="EnterAttackMode" />
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
                 </RadioButton>
-                <Button
-                    Content="{x:Static Properties:Resources.END_TURN}">
+                <Button Content="{x:Static Properties:Resources.END_TURN}">
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="Click">
                             <Micro:ActionMessage MethodName="EndTurn" />
@@ -112,9 +105,8 @@
                 </Button>
             </StackPanel>
 
-            <StackPanel
-                Orientation="Horizontal"
-                DockPanel.Dock="Right">
+            <StackPanel Orientation="Horizontal"
+                        DockPanel.Dock="Right">
                 <Button Content="{x:Static Properties:Resources.END_GAME}">
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="Click">
