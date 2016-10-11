@@ -1,9 +1,7 @@
 ﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using Caliburn.Micro;
 using RISK.GameEngine;
-using RISK.UI.WPF.Extensions;
 using RISK.UI.WPF.Properties;
 using RISK.UI.WPF.ViewModels.Messages;
 
@@ -11,7 +9,7 @@ namespace RISK.UI.WPF.ViewModels.Preparation
 {
     public interface IGamePreparationViewModel : IMainViewModel
     {
-        ObservableCollection<GamePreparationPlayerViewModel> Players { get; }
+        IList<GamePreparationPlayerViewModel> Players { get; }
         void Confirm();
     }
 
@@ -32,7 +30,7 @@ namespace RISK.UI.WPF.ViewModels.Preparation
             const int maxNumberOfPlayers = 6;
             Players = Enumerable.Range(0, maxNumberOfPlayers)
                 .Select(CreateGamePreparationPlayerViewModel)
-                .ToObservableCollection();
+                .ToList();
         }
 
         private GamePreparationPlayerViewModel CreateGamePreparationPlayerViewModel(int playerIndex)
@@ -49,7 +47,7 @@ namespace RISK.UI.WPF.ViewModels.Preparation
             NotifyOfPropertyChange(() => CanConfirm);
         }
 
-        public ObservableCollection<GamePreparationPlayerViewModel> Players { get; }
+        public IList<GamePreparationPlayerViewModel> Players { get; }
 
         public bool CanConfirm => GetEnabledPlayers().Count() > 1;
 

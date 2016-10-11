@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using RISK.UI.WPF.ViewModels.Preparation;
 
@@ -18,7 +19,7 @@ namespace RISK.UI.WPF.Views.Preparation
         {
             var playerTypes = new PlayerTypes();
 
-            Players = new ObservableCollection<GamePreparationPlayerViewModel>(new[]
+            Players = new List<GamePreparationPlayerViewModel>(new[]
             {
                 new GamePreparationPlayerViewModel(playerTypes) { Name = "Player 1" },
                 new GamePreparationPlayerViewModel(playerTypes) { Name = "Player 2" },
@@ -26,7 +27,7 @@ namespace RISK.UI.WPF.Views.Preparation
             });
         }
 
-        public ObservableCollection<GamePreparationPlayerViewModel> Players { get; }
+        public IList<GamePreparationPlayerViewModel> Players { get; }
 
         public void Confirm()
         {
