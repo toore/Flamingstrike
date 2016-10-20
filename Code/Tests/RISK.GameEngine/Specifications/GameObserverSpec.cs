@@ -184,14 +184,14 @@ namespace Tests.RISK.GameEngine.Specifications
 
         private void player_1_should_have_a_card()
         {
-            _gameObserverSpy.Game
+            _gameObserverSpy.GameStatus
                 .ShouldContainSinglePlayerGameData(_player1)
                 .Cards.Count().Should().Be(1);
         }
 
         private void player_1_should_not_have_any_card()
         {
-            _gameObserverSpy.Game
+            _gameObserverSpy.GameStatus
                 .ShouldContainSinglePlayerGameData(_player1)
                 .Cards.Should().BeEmpty();
         }
@@ -330,21 +330,21 @@ namespace Tests.RISK.GameEngine.Specifications
 
         private void player_1_should_occupy_north_africa_with_six_armies()
         {
-            _gameObserverSpy.Game.ShouldContainSingleTerritory(_regions.NorthAfrica)
+            _gameObserverSpy.GameStatus.ShouldContainSingleTerritory(_regions.NorthAfrica)
                 .PlayerShouldBe(_player1)
                 .ArmiesShouldBe(6);
         }
 
         private void player_2_should_occupy_brazil_with_4_armies()
         {
-            _gameObserverSpy.Game.ShouldContainSingleTerritory(_regions.Brazil)
+            _gameObserverSpy.GameStatus.ShouldContainSingleTerritory(_regions.Brazil)
                 .PlayerShouldBe(_player2)
                 .ArmiesShouldBe(4);
         }
 
         private GameObserverSpec player_1_should_occupy_brazil_with_five_armies()
         {
-            _gameObserverSpy.Game.ShouldContainSingleTerritory(_regions.Brazil)
+            _gameObserverSpy.GameStatus.ShouldContainSingleTerritory(_regions.Brazil)
                 .PlayerShouldBe(_player1)
                 .ArmiesShouldBe(5);
             return this;
@@ -352,14 +352,14 @@ namespace Tests.RISK.GameEngine.Specifications
 
         private void player_1_should_occupy_north_africa_with_three_armies()
         {
-            _gameObserverSpy.Game.ShouldContainSingleTerritory(_regions.NorthAfrica)
+            _gameObserverSpy.GameStatus.ShouldContainSingleTerritory(_regions.NorthAfrica)
                 .PlayerShouldBe(_player1)
                 .ArmiesShouldBe(3);
         }
 
         private void east_africa_should_have_two_armies()
         {
-            _gameObserverSpy.Game.ShouldContainSingleTerritory(_regions.EastAfrica)
+            _gameObserverSpy.GameStatus.ShouldContainSingleTerritory(_regions.EastAfrica)
                 .PlayerShouldBe(_player1)
                 .ArmiesShouldBe(2);
         }
@@ -371,69 +371,66 @@ namespace Tests.RISK.GameEngine.Specifications
 
         private void player_1_should_take_turn()
         {
-            _gameObserverSpy.Game.CurrentPlayerGameData.Player.Should().Be(_player1);
+            _gameObserverSpy.DraftArmiesPhase.Player.Should().Be(_player1);
         }
     }
 
     internal class GameObserverSpy : IGameObserver
     {
-        public IGame Game { get; private set; }
-        public IDraftArmiesPhase DraftArmiesPhase { get; private set; }
-        public IAttackPhase AttackPhase { get; private set; }
-        public ISendArmiesToOccupyPhase SendArmiesToOccupyPhase { get; private set; }
-        public IEndTurnPhase EndTurnPhase { get; private set; }
-        public IGameIsOver GameIsOver { get; private set; }
+        private object _gameApiObject;
 
-        public void NewGame(IGame game)
-        {
-            Game = game;
-        }
+        public IGameStatus GameStatus => (IGameStatus)_gameApiObject;
+        public IDraftArmiesPhase DraftArmiesPhase => (IDraftArmiesPhase)_gameApiObject;
+        public IAttackPhase AttackPhase => (IAttackPhase)_gameApiObject;
+        public ISendArmiesToOccupyPhase SendArmiesToOccupyPhase => (ISendArmiesToOccupyPhase)_gameApiObject;
+        public IEndTurnPhase EndTurnPhase => (IEndTurnPhase)_gameApiObject;
+        public IGameIsOver GameIsOver => (IGameIsOver)_gameApiObject;
 
         public void DraftArmies(IDraftArmiesPhase draftArmiesPhase)
         {
-            DraftArmiesPhase = draftArmiesPhase;
+            _gameApiObject = draftArmiesPhase;
         }
 
         public void Attack(IAttackPhase attackPhase)
         {
-            AttackPhase = attackPhase;
+            _gameApiObject = attackPhase;
         }
 
         public void SendArmiesToOccupy(ISendArmiesToOccupyPhase sendArmiesToOccupyPhase)
         {
-            SendArmiesToOccupyPhase = sendArmiesToOccupyPhase;
+            _gameApiObject = sendArmiesToOccupyPhase;
         }
 
         public void EndTurn(IEndTurnPhase endTurnPhase)
         {
-            EndTurnPhase = endTurnPhase;
+            _gameApiObject = endTurnPhase;
         }
 
         public void GameOver(IGameIsOver gameIsOver)
         {
-            GameIsOver = gameIsOver;
+            _gameApiObject = gameIsOver;
         }
     }
 
-    internal class GameAssertion
+    internal class GameStatusAssertion
     {
-        private readonly IGame _game;
+        private readonly IGameStatus _gameStatus;
 
-        public GameAssertion(IGame game)
+        public GameStatusAssertion(IGameStatus gameStatus)
         {
-            _game = game;
+            _gameStatus = gameStatus;
         }
 
         public IPlayerGameData ShouldContainSinglePlayerGameData(IPlayer player)
         {
-            _game.PlayerGameDatas.Should().ContainSingle(x => x.Player == player);
-            return _game.PlayerGameDatas.Single(x => x.Player == player);
+            _gameStatus.PlayerGameDatas.Should().ContainSingle(x => x.Player == player);
+            return _gameStatus.PlayerGameDatas.Single(x => x.Player == player);
         }
 
         public TerritoryAssertion ShouldContainSingleTerritory(IRegion region)
         {
-            _game.Territories.Should().ContainSingle(x => x.Region == region);
-            return new TerritoryAssertion(_game.Territories.Single(x => x.Region == region));
+            _gameStatus.Territories.Should().ContainSingle(x => x.Region == region);
+            return new TerritoryAssertion(_gameStatus.Territories.Single(x => x.Region == region));
         }
     }
 
@@ -459,17 +456,17 @@ namespace Tests.RISK.GameEngine.Specifications
         }
     }
 
-    internal static class GameExtensions
+    internal static class GameStatusExtensions
     {
-        public static IPlayerGameData ShouldContainSinglePlayerGameData(this IGame game, IPlayer player)
+        public static IPlayerGameData ShouldContainSinglePlayerGameData(this IGameStatus gameStatus, IPlayer player)
         {
-            return new GameAssertion(game)
+            return new GameStatusAssertion(gameStatus)
                 .ShouldContainSinglePlayerGameData(player);
         }
 
-        public static TerritoryAssertion ShouldContainSingleTerritory(this IGame game, IRegion region)
+        public static TerritoryAssertion ShouldContainSingleTerritory(this IGameStatus gameStatus, IRegion region)
         {
-            return new GameAssertion(game)
+            return new GameStatusAssertion(gameStatus)
                 .ShouldContainSingleTerritory(region);
         }
     }

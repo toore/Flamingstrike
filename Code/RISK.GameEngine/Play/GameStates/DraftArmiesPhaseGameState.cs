@@ -1,35 +1,41 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace RISK.GameEngine.Play.GameStates
 {
     public interface IDraftArmiesPhaseGameState
     {
+        IPlayer Player { get; }
+        IReadOnlyList<ITerritory> Territories { get; }
+        int NumberOfArmiesToDraft { get; }
+        IReadOnlyList<IPlayerGameData> Players { get; }
         bool CanPlaceDraftArmies(IRegion region);
         void PlaceDraftArmies(IRegion region, int numberOfArmiesToPlace);
     }
 
     public class DraftArmiesPhaseGameState : IDraftArmiesPhaseGameState
     {
-        private readonly IPlayer _currentPlayer;
-        private readonly ITerritoriesContext _territoriesContext;
+        private readonly GameData _gameData;
         private readonly IGamePhaseConductor _gamePhaseConductor;
         private readonly IArmyDrafter _armyDrafter;
-        private readonly int _numberOfArmiesToDraft;
 
         public DraftArmiesPhaseGameState(
-            IPlayer currentPlayer,
-            ITerritoriesContext territoriesContext,
+            GameData gameData,
             IGamePhaseConductor gamePhaseConductor,
             IArmyDrafter armyDrafter,
             int numberOfArmiesToDraft)
         {
-            _currentPlayer = currentPlayer;
-            _territoriesContext = territoriesContext;
+            NumberOfArmiesToDraft = numberOfArmiesToDraft;
+            _gameData = gameData;
             _gamePhaseConductor = gamePhaseConductor;
-            _numberOfArmiesToDraft = numberOfArmiesToDraft;
             _armyDrafter = armyDrafter;
         }
+
+        public IPlayer Player => _gameData.CurrentPlayer;
+        public IReadOnlyList<ITerritory> Territories => _gameData.Territories;
+        public int NumberOfArmiesToDraft { get; }
+        public IReadOnlyList<IPlayerGameData> Players => _gameData.Players;
 
         public bool CanPlaceDraftArmies(IRegion region)
         {
@@ -38,7 +44,7 @@ namespace RISK.GameEngine.Play.GameStates
 
         private bool IsCurrentPlayerOccupyingRegion(IRegion region)
         {
-            return _currentPlayer == _territoriesContext.Territories.Single(x => x.Region == region).Player;
+            return _gameData.CurrentPlayer == _gameData.Territories.Single(x => x.Region == region).Player;
         }
 
         public void PlaceDraftArmies(IRegion region, int numberOfArmiesToPlace)
@@ -47,28 +53,23 @@ namespace RISK.GameEngine.Play.GameStates
             {
                 throw new InvalidOperationException($"Current player is not occupying {nameof(region)}.");
             }
-            if (numberOfArmiesToPlace > _numberOfArmiesToDraft)
+            if (numberOfArmiesToPlace > NumberOfArmiesToDraft)
             {
                 throw new ArgumentOutOfRangeException(nameof(numberOfArmiesToPlace));
             }
 
-            PlaceDraftArmiesAndUpdateTerritories(region, numberOfArmiesToPlace);
+            var updatedTerritories = _armyDrafter.PlaceDraftArmies(_gameData.Territories, region, numberOfArmiesToPlace);
+            var updatedGameData = new GameData(updatedTerritories, _gameData.Players, _gameData.CurrentPlayer, _gameData.Cards);
 
-            var numberOfArmiesLeftToPlace = _numberOfArmiesToDraft - numberOfArmiesToPlace;
+            var numberOfArmiesLeftToPlace = NumberOfArmiesToDraft - numberOfArmiesToPlace;
             if (numberOfArmiesLeftToPlace > 0)
             {
-                _gamePhaseConductor.ContinueToDraftArmies(numberOfArmiesLeftToPlace);
+                _gamePhaseConductor.ContinueToDraftArmies(numberOfArmiesLeftToPlace, updatedGameData);
             }
             else
             {
-                _gamePhaseConductor.ContinueWithAttackPhase(TurnConqueringAchievement.NoTerritoryHasBeenConquered);
+                _gamePhaseConductor.ContinueWithAttackPhase(TurnConqueringAchievement.NoTerritoryHasBeenConquered, updatedGameData);
             }
-        }
-
-        private void PlaceDraftArmiesAndUpdateTerritories(IRegion region, int numberOfArmiesToPlace)
-        {
-            var updatedTerritories = _armyDrafter.PlaceDraftArmies(_territoriesContext.Territories, region, numberOfArmiesToPlace);
-            _territoriesContext.Set(updatedTerritories);
         }
     }
 }

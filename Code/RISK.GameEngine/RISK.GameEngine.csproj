@@ -53,6 +53,7 @@
     <Compile Include="IContinent.cs" />
     <Compile Include="IContinents.cs" />
     <Compile Include="IRegion.cs" />
+    <Compile Include="Play\IGameStatus.cs" />
     <Compile Include="Play\PlayerGameData.cs" />
     <Compile Include="Setup\PlayerSetupData.cs" />
     <Compile Include="Shuffling\FisherYatesShuffle.cs" />
@@ -81,7 +82,6 @@
     <Compile Include="Play\GameStates\SendArmiesToOccupyGameState.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Play\SendArmiesToOccupyPhase.cs" />
-    <Compile Include="Play\TerritoriesContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Region.cs" />
     <Compile Include="Regions.cs" />

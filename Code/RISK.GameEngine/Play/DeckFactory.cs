@@ -38,11 +38,9 @@ namespace RISK.GameEngine.Play
 
         private static CircularBuffer<CardSymbol> GetCardSymbols()
         {
-            var cardSymbols = Enum.GetValues(typeof(CardSymbol))
+            return Enum.GetValues(typeof(CardSymbol))
                 .Cast<CardSymbol>()
-                .ToArray();
-
-            return new CircularBuffer<CardSymbol>(cardSymbols);
+                .ToCircularBuffer();
         }
     }
 }

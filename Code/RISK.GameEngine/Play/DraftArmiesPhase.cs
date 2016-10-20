@@ -3,7 +3,7 @@ using RISK.GameEngine.Play.GameStates;
 
 namespace RISK.GameEngine.Play
 {
-    public interface IDraftArmiesPhase
+    public interface IDraftArmiesPhase : IGameStatus
     {
         int NumberOfArmiesToDraft { get; }
         IReadOnlyList<IRegion> RegionsAllowedToDraftArmies { get; }
@@ -14,20 +14,18 @@ namespace RISK.GameEngine.Play
     {
         private readonly IDraftArmiesPhaseGameState _draftArmiesPhaseGameState;
 
-        public DraftArmiesPhase(IDraftArmiesPhaseGameState draftArmiesPhaseGameState, IPlayer currentPlayer, IReadOnlyList<ITerritory> territories, int numberOfArmiesToDraft, IReadOnlyList<IRegion> regionsAllowedToDraftArmies)
+        public DraftArmiesPhase(IDraftArmiesPhaseGameState draftArmiesPhaseGameState, IReadOnlyList<IRegion> regionsAllowedToDraftArmies)
         {
             _draftArmiesPhaseGameState = draftArmiesPhaseGameState;
-            CurrentPlayer = currentPlayer;
-            Territories = territories;
-            NumberOfArmiesToDraft = numberOfArmiesToDraft;
             RegionsAllowedToDraftArmies = regionsAllowedToDraftArmies;
         }
 
-        public IPlayer CurrentPlayer { get; }
+        public IPlayer Player => _draftArmiesPhaseGameState.Player;
 
-        public IReadOnlyList<ITerritory> Territories { get; }
+        public IReadOnlyList<ITerritory> Territories => _draftArmiesPhaseGameState.Territories;
+        public IReadOnlyList<IPlayerGameData> PlayerGameDatas => _draftArmiesPhaseGameState.Players;
 
-        public int NumberOfArmiesToDraft { get; }
+        public int NumberOfArmiesToDraft => _draftArmiesPhaseGameState.NumberOfArmiesToDraft;
 
         public IReadOnlyList<IRegion> RegionsAllowedToDraftArmies { get; }
 

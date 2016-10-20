@@ -30,9 +30,9 @@ namespace RISK.GameEngine.Play
                 gameObserver,
                 _gameStateFactory,
                 _armyDraftCalculator,
-                _deckFactory.Create(),
-                gamePlaySetup.Players,
-                gamePlaySetup.Territories);
+                gamePlaySetup.Territories, 
+                gamePlaySetup.Players, 
+                _deckFactory.Create().Cards());
         }
     }
 }

@@ -4,7 +4,7 @@ using RISK.GameEngine.Play.GameStates;
 
 namespace RISK.GameEngine.Play
 {
-    public interface IAttackPhase
+    public interface IAttackPhase : IGameStatus
     {
         IReadOnlyList<IRegion> RegionsThatCanBeSourceForAttackOrFortification { get; }
         void Attack(IRegion attackingRegion, IRegion defendingRegion);
@@ -23,6 +23,11 @@ namespace RISK.GameEngine.Play
             _attackPhaseGameState = attackPhaseGameState;
             RegionsThatCanBeSourceForAttackOrFortification = regionsThatCanBeSourceForAttackOrFortification;
         }
+
+        public IPlayer Player => _attackPhaseGameState.Player;
+
+        public IReadOnlyList<ITerritory> Territories => _attackPhaseGameState.Territories;
+        public IReadOnlyList<IPlayerGameData> PlayerGameDatas => _attackPhaseGameState.Players;
 
         public IReadOnlyList<IRegion> RegionsThatCanBeSourceForAttackOrFortification { get; }
 

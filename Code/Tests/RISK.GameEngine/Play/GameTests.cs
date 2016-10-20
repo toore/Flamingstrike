@@ -1,12 +1,9 @@
-using FluentAssertions;
 using NSubstitute;
-using RISK.GameEngine;
 using RISK.GameEngine.Play;
 using RISK.GameEngine.Play.GameStates;
 using RISK.GameEngine.Setup;
 using Tests.RISK.GameEngine.Builders;
 using Xunit;
-using IPlayer = RISK.GameEngine.IPlayer;
 
 namespace Tests.RISK.GameEngine.Play
 {
@@ -30,32 +27,11 @@ namespace Tests.RISK.GameEngine.Play
         }
 
         [Fact]
-        public void Current_game_player_data_belongs_to_first_player()
+        public void When_game_is_created_draft_armies_phase_starts()
         {
-            var firstPlayer = Substitute.For<IPlayer>();
-            var gamePlaySetup = Make.GamePlaySetup
-                .WithPlayer(firstPlayer)
-                .WithPlayer(Substitute.For<IPlayer>()).Build();
+            var game = Create(Make.GamePlaySetup.Build());
 
-            var sut = Create(gamePlaySetup);
-
-            sut.CurrentPlayerGameData.Player.Should().Be(firstPlayer);
-        }
-
-        [Fact]
-        public void Gets_territories()
-        {
-            var territory = Substitute.For<ITerritory>();
-            var anotherTerritory = Substitute.For<ITerritory>();
-            var aThirdTerritory = Substitute.For<ITerritory>();
-            var gamePlaySetup = Make.GamePlaySetup
-                .WithTerritory(territory)
-                .WithTerritory(anotherTerritory)
-                .WithTerritory(aThirdTerritory).Build();
-
-            var sut = Create(gamePlaySetup);
-
-            sut.Territories.Should().BeEquivalentTo(territory, anotherTerritory, aThirdTerritory);
+            _gameObserver.Received().DraftArmies(Arg.Any<IDraftArmiesPhase>());
         }
 
         private IGame Create(IGamePlaySetup gamePlaySetup)

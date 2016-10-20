@@ -1,14 +1,13 @@
-using System.Collections.Generic;
 using RISK.GameEngine.Attacking;
 
 namespace RISK.GameEngine.Play.GameStates
 {
     public interface IGameStateFactory
     {
-        IDraftArmiesPhaseGameState CreateDraftArmiesGameState(IPlayer currentPlayer, ITerritoriesContext territoriesContext, IGamePhaseConductor gamePhaseConductor, int numberOfArmiesToDraft);
-        IAttackPhaseGameState CreateAttackPhaseGameState(PlayerGameData currentPlayerGameData, IReadOnlyList<PlayerGameData> players, IDeck deck, ITerritoriesContext territoriesContext, IGamePhaseConductor gamePhaseConductor, TurnConqueringAchievement turnConqueringAchievement);
-        ISendArmiesToOccupyGameState CreateSendArmiesToOccupyGameState(ITerritoriesContext territoriesContext, IGamePhaseConductor gamePhaseConductor, IRegion attackingRegion, IRegion occupiedRegion);
-        IEndTurnGameState CreateEndTurnGameState(IGamePhaseConductor gamePhaseConductor);
+        IDraftArmiesPhaseGameState CreateDraftArmiesGameState(GameData gameData, IGamePhaseConductor gamePhaseConductor, int numberOfArmiesToDraft);
+        IAttackPhaseGameState CreateAttackPhaseGameState(GameData gameData, IGamePhaseConductor gamePhaseConductor, TurnConqueringAchievement turnConqueringAchievement);
+        ISendArmiesToOccupyGameState CreateSendArmiesToOccupyGameState(GameData gameData, IGamePhaseConductor gamePhaseConductor, IRegion attackingRegion, IRegion occupiedRegion);
+        IEndTurnGameState CreateEndTurnGameState(GameData gameData, IGamePhaseConductor gamePhaseConductor);
         IGameOverGameState CreateGameOverGameState(IPlayer winner);
     }
 
@@ -34,24 +33,24 @@ namespace RISK.GameEngine.Play.GameStates
             _fortifier = fortifier;
         }
 
-        public IDraftArmiesPhaseGameState CreateDraftArmiesGameState(IPlayer currentPlayer, ITerritoriesContext territoriesContext, IGamePhaseConductor gamePhaseConductor, int numberOfArmiesToDraft)
+        public IDraftArmiesPhaseGameState CreateDraftArmiesGameState(GameData gameData, IGamePhaseConductor gamePhaseConductor, int numberOfArmiesToDraft)
         {
-            return new DraftArmiesPhaseGameState(currentPlayer, territoriesContext, gamePhaseConductor, _armyDrafter, numberOfArmiesToDraft);
+            return new DraftArmiesPhaseGameState(gameData, gamePhaseConductor, _armyDrafter, numberOfArmiesToDraft);
         }
 
-        public IAttackPhaseGameState CreateAttackPhaseGameState(PlayerGameData currentPlayerGameData, IReadOnlyList<PlayerGameData> players, IDeck deck, ITerritoriesContext territoriesContext, IGamePhaseConductor gamePhaseConductor, TurnConqueringAchievement turnConqueringAchievement)
+        public IAttackPhaseGameState CreateAttackPhaseGameState(GameData gameData, IGamePhaseConductor gamePhaseConductor, TurnConqueringAchievement turnConqueringAchievement)
         {
-            return new AttackPhaseStateGameState(currentPlayerGameData, players, territoriesContext, deck, gamePhaseConductor, _attacker, _fortifier, _playerEliminationRules, turnConqueringAchievement);
+            return new AttackPhaseStateGameState(gameData, gamePhaseConductor, _attacker, _fortifier, _playerEliminationRules, turnConqueringAchievement);
         }
 
-        public ISendArmiesToOccupyGameState CreateSendArmiesToOccupyGameState(ITerritoriesContext territoriesContext, IGamePhaseConductor gamePhaseConductor, IRegion attackingRegion, IRegion occupiedRegion)
+        public ISendArmiesToOccupyGameState CreateSendArmiesToOccupyGameState(GameData gameData, IGamePhaseConductor gamePhaseConductor, IRegion attackingRegion, IRegion occupiedRegion)
         {
-            return new SendArmiesToOccupyGameState(territoriesContext, gamePhaseConductor, _territoryOccupier, attackingRegion, occupiedRegion);
+            return new SendArmiesToOccupyGameState(gameData, gamePhaseConductor, _territoryOccupier, attackingRegion, occupiedRegion);
         }
 
-        public IEndTurnGameState CreateEndTurnGameState(IGamePhaseConductor gamePhaseConductor)
+        public IEndTurnGameState CreateEndTurnGameState(GameData gameData, IGamePhaseConductor gamePhaseConductor)
         {
-            return new EndTurnGameState(gamePhaseConductor);
+            return new EndTurnGameState(gameData, gamePhaseConductor);
         }
 
         public IGameOverGameState CreateGameOverGameState(IPlayer winner)

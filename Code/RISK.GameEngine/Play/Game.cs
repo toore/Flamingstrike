@@ -4,20 +4,31 @@ using RISK.GameEngine.Play.GameStates;
 
 namespace RISK.GameEngine.Play
 {
-    public interface IGame
+    public interface IGame {}
+
+    public class GameData
     {
-        IPlayerGameData CurrentPlayerGameData { get; }
-        IEnumerable<IPlayerGameData> PlayerGameDatas { get; }
-        IReadOnlyList<ITerritory> Territories { get; }
+        public IReadOnlyList<ITerritory> Territories { get; }
+        public IReadOnlyList<IPlayerGameData> Players { get; }
+        public IPlayer CurrentPlayer { get; }
+        public IReadOnlyList<ICard> Cards { get; }
+
+        public GameData(IReadOnlyList<ITerritory> territories, IReadOnlyList<IPlayerGameData> players, IPlayer currentPlayer, IReadOnlyList<ICard> cards)
+        {
+            Territories = territories;
+            Players = players;
+            CurrentPlayer = currentPlayer;
+            Cards = cards;
+        }
     }
 
     public interface IGamePhaseConductor
     {
-        void ContinueToDraftArmies(int numberOfArmiesToDraft);
-        void ContinueWithAttackPhase(TurnConqueringAchievement turnConqueringAchievement);
-        void SendArmiesToOccupy(IRegion sourceRegion, IRegion destinationRegion);
-        void WaitForTurnToEnd();
-        void PassTurnToNextPlayer();
+        void ContinueToDraftArmies(int numberOfArmiesToDraft, GameData gameData);
+        void ContinueWithAttackPhase(TurnConqueringAchievement turnConqueringAchievement, GameData gameData);
+        void SendArmiesToOccupy(IRegion sourceRegion, IRegion destinationRegion, GameData gameData);
+        void WaitForTurnToEnd(GameData gameData);
+        void PassTurnToNextPlayer(GameData gameData);
         void PlayerIsTheWinner(IPlayer winner);
     }
 
@@ -26,106 +37,77 @@ namespace RISK.GameEngine.Play
         private readonly IGameObserver _gameObserver;
         private readonly IGameStateFactory _gameStateFactory;
         private readonly IArmyDraftCalculator _armyDraftCalculator;
-        private readonly IDeck _deck;
-        private readonly IReadOnlyList<PlayerGameData> _playerGameDatas;
-        private readonly ITerritoriesContext _territoriesContext = new TerritoriesContext();
-        private PlayerGameData _currentPlayerGameData;
-        private readonly CircularBuffer<PlayerGameData> _playerGameDatasCircularBuffer;
 
         public Game(
             IGameObserver gameObserver,
             IGameStateFactory gameStateFactory,
             IArmyDraftCalculator armyDraftCalculator,
-            IDeck deck,
+            IReadOnlyList<ITerritory> territories,
             IReadOnlyList<IPlayer> players,
-            IReadOnlyList<ITerritory> territories)
+            IReadOnlyList<ICard> cards)
         {
             _gameObserver = gameObserver;
             _gameStateFactory = gameStateFactory;
             _armyDraftCalculator = armyDraftCalculator;
-            _deck = deck;
-            _playerGameDatas = players.Select(player => new PlayerGameData(player, new List<ICard>())).ToList();
-            _playerGameDatasCircularBuffer = _playerGameDatas.ToCircularBuffer();
 
-            InitializeNewGame(territories);
+            var playerGameDatas = players.Select(player => new PlayerGameData(player, new List<ICard>())).ToList();
+            var currentPlayer = players.First();
+            var gameData = new GameData(territories, playerGameDatas, currentPlayer, cards);
+            var numberOfArmiesToDraft = _armyDraftCalculator.Calculate(currentPlayer, territories);
+            ContinueToDraftArmies(numberOfArmiesToDraft, gameData);
         }
 
-        public IPlayerGameData CurrentPlayerGameData => _currentPlayerGameData;
-        public IEnumerable<IPlayerGameData> PlayerGameDatas => _playerGameDatas;
-
-        public IReadOnlyList<ITerritory> Territories => _territoriesContext.Territories;
-
-        private void InitializeNewGame(IReadOnlyList<ITerritory> territories)
+        public void ContinueToDraftArmies(int numberOfArmiesToDraft, GameData gameData)
         {
-            _territoriesContext.Set(territories);
+            var draftArmiesGamePhase = _gameStateFactory.CreateDraftArmiesGameState(gameData, this, numberOfArmiesToDraft);
 
-            _currentPlayerGameData = _playerGameDatasCircularBuffer.Next();
-
-            NewGame(this);
-
-            PlayerStartsNewTurn(_currentPlayerGameData);
-        }
-
-        private void NewGame(IGame game)
-        {
-            _gameObserver.NewGame(game);
-        }
-
-        private void PlayerStartsNewTurn(PlayerGameData playerGameData)
-        {
-            _currentPlayerGameData = playerGameData;
-            var numberOfArmiesToDraft = _armyDraftCalculator.Calculate(_currentPlayerGameData.Player, _territoriesContext.Territories);
-
-            ContinueToDraftArmies(numberOfArmiesToDraft);
-        }
-
-        public void ContinueToDraftArmies(int numberOfArmiesToDraft)
-        {
-            var draftArmiesGamePhase = _gameStateFactory.CreateDraftArmiesGameState(_currentPlayerGameData.Player, _territoriesContext, this, numberOfArmiesToDraft);
-
-            var regionsAllowedToDraftArmies = _territoriesContext.Territories
+            var regionsAllowedToDraftArmies = gameData.Territories
                 .Where(x => draftArmiesGamePhase.CanPlaceDraftArmies(x.Region))
                 .Select(x => x.Region).ToList();
 
-            var draftArmiesPhase = new DraftArmiesPhase(draftArmiesGamePhase, _currentPlayerGameData.Player, _territoriesContext.Territories, numberOfArmiesToDraft, regionsAllowedToDraftArmies);
+            var draftArmiesPhase = new DraftArmiesPhase(draftArmiesGamePhase, regionsAllowedToDraftArmies);
             _gameObserver.DraftArmies(draftArmiesPhase);
         }
 
-        public void ContinueWithAttackPhase(TurnConqueringAchievement turnConqueringAchievement)
+        public void ContinueWithAttackPhase(TurnConqueringAchievement turnConqueringAchievement, GameData gameData)
         {
-            var attackPhaseGameState = _gameStateFactory.CreateAttackPhaseGameState(_currentPlayerGameData, _playerGameDatas.ToList(), _deck, _territoriesContext, this, turnConqueringAchievement);
+            var attackPhaseGameState = _gameStateFactory.CreateAttackPhaseGameState(gameData, this, turnConqueringAchievement);
 
-            var regionsThatCanBeSourceForAttackOrFortification = _territoriesContext.Territories
-                .Where(x => IsCurrentPlayerOccupyingRegion(x.Region))
+            var regionsThatCanBeSourceForAttackOrFortification = gameData.Territories
+                .Where(x => IsCurrentPlayerOccupyingRegion(gameData, x.Region))
                 .Select(x => x.Region).ToList();
 
             _gameObserver.Attack(new AttackPhase(attackPhaseGameState, regionsThatCanBeSourceForAttackOrFortification));
         }
 
-        private bool IsCurrentPlayerOccupyingRegion(IRegion region)
+        private static bool IsCurrentPlayerOccupyingRegion(GameData gameData, IRegion region)
         {
-            return _currentPlayerGameData.Player == _territoriesContext.Territories.Single(x => x.Region == region).Player;
+            return gameData.CurrentPlayer == gameData.Territories.Single(x => x.Region == region).Player;
         }
 
-        public void WaitForTurnToEnd()
+        public void WaitForTurnToEnd(GameData gameData)
         {
-            var endTurnGameState = _gameStateFactory.CreateEndTurnGameState(this);
+            var endTurnGameState = _gameStateFactory.CreateEndTurnGameState(gameData, this);
 
             _gameObserver.EndTurn(new EndTurnPhase(endTurnGameState));
         }
 
-        public void SendArmiesToOccupy(IRegion attackingRegion, IRegion occupiedRegion)
+        public void SendArmiesToOccupy(IRegion attackingRegion, IRegion occupiedRegion, GameData gameData)
         {
-            var sendArmiesToOccupyGameState = _gameStateFactory.CreateSendArmiesToOccupyGameState(_territoriesContext, this, attackingRegion, occupiedRegion);
+            var sendArmiesToOccupyGameState = _gameStateFactory.CreateSendArmiesToOccupyGameState(gameData, this, attackingRegion, occupiedRegion);
 
-            _gameObserver.SendArmiesToOccupy(new SendArmiesToOccupyPhase(sendArmiesToOccupyGameState, attackingRegion, occupiedRegion));
+            _gameObserver.SendArmiesToOccupy(new SendArmiesToOccupyPhase(sendArmiesToOccupyGameState));
         }
 
-        public void PassTurnToNextPlayer()
+        public void PassTurnToNextPlayer(GameData gameData)
         {
-            var nextPlayer = _playerGameDatasCircularBuffer.Next();
+            var nextPlayer = gameData.Players.Select(x => x.Player).ToList()
+                .GetNext(gameData.CurrentPlayer);
 
-            PlayerStartsNewTurn(nextPlayer);
+            var numberOfArmiesToDraft = _armyDraftCalculator.Calculate(nextPlayer, gameData.Territories);
+            var updatedGameData = new GameData(gameData.Territories, gameData.Players, nextPlayer, gameData.Cards);
+
+            ContinueToDraftArmies(numberOfArmiesToDraft, updatedGameData);
         }
 
         public void PlayerIsTheWinner(IPlayer winner)

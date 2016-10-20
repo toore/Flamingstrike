@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using FluentAssertions;
+using FluentAssertions.Common;
 using NSubstitute;
 using RISK.GameEngine;
 using RISK.GameEngine.Attacking;
@@ -13,9 +14,8 @@ namespace Tests.RISK.GameEngine.Play.GameStates
 {
     public class AttackPhaseStateGameStateTests
     {
-        private readonly PlayerGameData _currentPlayerGameData;
-        private readonly IReadOnlyList<PlayerGameData> _players;
-        private readonly ITerritoriesContext _territoriesContext;
+        private readonly GameData _gameData;
+        private readonly IPlayer _currentPlayer;
         private readonly IDeck _deck;
         private readonly IGamePhaseConductor _gamePhaseConductor;
         private readonly IAttacker _attacker;
@@ -26,12 +26,9 @@ namespace Tests.RISK.GameEngine.Play.GameStates
         private readonly IRegion _region;
         private readonly IRegion _anotherRegion;
         private readonly PlayerGameData _anotherPlayerGameData;
-        private readonly IReadOnlyList<ITerritory> _territories;
 
         public AttackPhaseStateGameStateTests()
         {
-            _currentPlayerGameData = Make.PlayerGameData.Build();
-            _territoriesContext = new TerritoriesContext();
             _deck = Substitute.For<IDeck>();
             _gamePhaseConductor = Substitute.For<IGamePhaseConductor>();
             _attacker = Substitute.For<IAttacker>();
@@ -40,27 +37,26 @@ namespace Tests.RISK.GameEngine.Play.GameStates
 
             _anotherPlayerGameData = Make.PlayerGameData.Build();
 
-            _players = new List<PlayerGameData> { _currentPlayerGameData, _anotherPlayerGameData };
-
             _region = Substitute.For<IRegion>();
             _anotherRegion = Substitute.For<IRegion>();
             _territory = Substitute.For<ITerritory>();
             var anotherTerritory = Substitute.For<ITerritory>();
 
+            _currentPlayer = Substitute.For<IPlayer>();
+
             _territory.Region.Returns(_region);
-            _territory.Player.Returns(_currentPlayerGameData.Player);
+            _territory.Player.Returns(_currentPlayer);
             anotherTerritory.Region.Returns(_anotherRegion);
             anotherTerritory.Player.Returns(_anotherPlayerGameData.Player);
 
-            _territories = new List<ITerritory> { _territory, anotherTerritory };
-            _territoriesContext.Set(_territories);
+            _gameData = Make.GameData
+                .CurrentPlayer(_currentPlayer)
+                .Territories(_territory, anotherTerritory)
+                .Build();
         }
 
         private AttackPhaseStateGameState Sut => new AttackPhaseStateGameState(
-            _currentPlayerGameData,
-            _players,
-            _territoriesContext,
-            _deck,
+            _gameData,
             _gamePhaseConductor,
             _attacker,
             _fortifier,
@@ -71,7 +67,7 @@ namespace Tests.RISK.GameEngine.Play.GameStates
         public void Can_attack()
         {
             _attacker.CanAttack(
-                _territories,
+                _gameData.Territories,
                 _region,
                 _anotherRegion).Returns(true);
 
@@ -101,48 +97,43 @@ namespace Tests.RISK.GameEngine.Play.GameStates
         [Fact]
         public void Attacks_but_territory_is_defended()
         {
-            var updatedTerritories = new List<ITerritory>();
-            var attackOutcome = new AttackOutcome(updatedTerritories, DefendingArmyAvailability.Exists);
+            var expectedUpdatedTerritories = new List<ITerritory>();
+            var attackOutcome = new AttackOutcome(expectedUpdatedTerritories, DefendingArmyAvailability.Exists);
             _attacker.Attack(
-                _territories,
+                _gameData.Territories,
                 _region,
                 _anotherRegion).Returns(attackOutcome);
 
             Sut.Attack(_region, _anotherRegion);
 
-            _gamePhaseConductor.Received().ContinueWithAttackPhase(TurnConqueringAchievement.NoTerritoryHasBeenConquered);
+            _gamePhaseConductor.Received().ContinueWithAttackPhase(TurnConqueringAchievement.NoTerritoryHasBeenConquered, Arg.Is<GameData>(x => x.Territories.IsSameOrEqualTo(expectedUpdatedTerritories)));
         }
 
         [Fact]
         public void Attacks_and_defeats_defender()
         {
-            var originalTerritories = new List<ITerritory>
-                {
-                    Make.Territory.Region(_region).Player(_currentPlayerGameData.Player).Build(),
-                    Make.Territory.Region(_anotherRegion).Build()
-                };
-            var updatedTerritories = new List<ITerritory>
+            var expectedUpdatedTerritories = new List<ITerritory>
                 {
                     Make.Territory.Region(_region).Armies(2).Build(),
                     Make.Territory.Region(_anotherRegion).Build()
                 };
-            _territoriesContext.Set(originalTerritories);
-            var attackOutcome = new AttackOutcome(updatedTerritories, DefendingArmyAvailability.IsEliminated);
+
+            var attackOutcome = new AttackOutcome(expectedUpdatedTerritories, DefendingArmyAvailability.IsEliminated);
             _attacker.Attack(
-                originalTerritories,
+                _gameData.Territories,
                 _region,
                 _anotherRegion).Returns(attackOutcome);
 
             Sut.Attack(_region, _anotherRegion);
 
-            _gamePhaseConductor.Received().SendArmiesToOccupy(_region, _anotherRegion);
+            _gamePhaseConductor.Received().SendArmiesToOccupy(_region, _anotherRegion, Arg.Is<GameData>(x => x.Territories.IsSameOrEqualTo(expectedUpdatedTerritories)));
         }
 
         [Fact]
         public void Can_fortify()
         {
             _fortifier.CanFortify(
-                _territories,
+                _gameData.Territories,
                 _region,
                 _anotherRegion).Returns(true);
 
@@ -164,13 +155,12 @@ namespace Tests.RISK.GameEngine.Play.GameStates
         [Fact]
         public void Fortifies()
         {
-            var updatedTerritories = new List<ITerritory>();
-            _fortifier.Fortify(_territories, _region, _anotherRegion, 1).Returns(updatedTerritories);
+            var expectedUpdatedTerritories = new List<ITerritory>();
+            _fortifier.Fortify(_gameData.Territories, _region, _anotherRegion, 1).Returns(expectedUpdatedTerritories);
 
             Sut.Fortify(_region, _anotherRegion, 1);
 
-            _territoriesContext.Territories.Should().BeSameAs(updatedTerritories);
-            _gamePhaseConductor.Received().WaitForTurnToEnd();
+            _gamePhaseConductor.Received().WaitForTurnToEnd(Arg.Is<GameData>(x => x.Territories.IsSameOrEqualTo(expectedUpdatedTerritories)));
         }
 
         [Fact]
@@ -182,7 +172,8 @@ namespace Tests.RISK.GameEngine.Play.GameStates
 
             Sut.Fortify(_region, _anotherRegion, 1);
 
-            _currentPlayerGameData.Cards.Should().BeEquivalentTo(topDeckCard);
+            //_currentPlayer.Cards.Should().BeEquivalentTo(topDeckCard);
+            throw new NotImplementedException();
         }
 
         [Fact]
@@ -190,7 +181,8 @@ namespace Tests.RISK.GameEngine.Play.GameStates
         {
             Sut.Fortify(_region, _anotherRegion, 1);
 
-            _currentPlayerGameData.Cards.Should().BeEmpty();
+            //_currentPlayer.Cards.Should().BeEmpty();
+            throw new NotImplementedException();
         }
 
         [Fact]
@@ -198,7 +190,7 @@ namespace Tests.RISK.GameEngine.Play.GameStates
         {
             Sut.EndTurn();
 
-            _gamePhaseConductor.Received().PassTurnToNextPlayer();
+            _gamePhaseConductor.Received().PassTurnToNextPlayer(_gameData);
         }
 
         [Fact]
@@ -210,7 +202,8 @@ namespace Tests.RISK.GameEngine.Play.GameStates
 
             Sut.EndTurn();
 
-            _currentPlayerGameData.Cards.Should().BeEquivalentTo(topDeckCard);
+            //_currentPlayer.Cards.Should().BeEquivalentTo(topDeckCard);
+            throw new NotImplementedException();
         }
 
         [Fact]
@@ -218,7 +211,8 @@ namespace Tests.RISK.GameEngine.Play.GameStates
         {
             Sut.EndTurn();
 
-            _currentPlayerGameData.Cards.Should().BeEmpty();
+            //_currentPlayer.Cards.Should().BeEmpty();
+            throw new NotImplementedException();
         }
 
         [Fact]
@@ -227,13 +221,14 @@ namespace Tests.RISK.GameEngine.Play.GameStates
             var updatedTerritories = new List<ITerritory> { _territory };
             var attackOutcome = new AttackOutcome(updatedTerritories, DefendingArmyAvailability.IsEliminated);
             _attacker.Attack(
-                _territories,
+                _gameData.Territories,
                 _region,
                 _anotherRegion).Returns(attackOutcome);
 
             Sut.Attack(_region, _anotherRegion);
 
-            _currentPlayerGameData.Cards.Should().BeEmpty();
+            //_currentPlayer.Cards.Should().BeEmpty();
+            throw new NotImplementedException();
         }
 
         [Fact]
@@ -247,7 +242,7 @@ namespace Tests.RISK.GameEngine.Play.GameStates
             var updatedTerritories = new List<ITerritory> { _territory };
             var attackOutcome = new AttackOutcome(updatedTerritories, DefendingArmyAvailability.IsEliminated);
             _attacker.Attack(
-                _territories,
+                _gameData.Territories,
                 _region,
                 _anotherRegion).Returns(attackOutcome);
             _playerEliminationRules.IsPlayerEliminated(
@@ -256,7 +251,8 @@ namespace Tests.RISK.GameEngine.Play.GameStates
 
             Sut.Attack(_region, _anotherRegion);
 
-            _currentPlayerGameData.Cards.ShouldAllBeEquivalentTo(eliminatedPlayersCards, "all cards should be aquired");
+            //_currentPlayer.Cards.ShouldAllBeEquivalentTo(eliminatedPlayersCards, "all cards should be aquired");
+            throw new NotImplementedException();
             _anotherPlayerGameData.Cards.Should().BeEmpty("all cards should be handed over");
         }
 
@@ -266,14 +262,14 @@ namespace Tests.RISK.GameEngine.Play.GameStates
             var updatedTerritories = new List<ITerritory>();
             var attackOutcome = new AttackOutcome(updatedTerritories, DefendingArmyAvailability.IsEliminated);
             _attacker.Attack(
-                _territories,
+                _gameData.Territories,
                 _region,
                 _anotherRegion).Returns(attackOutcome);
             _playerEliminationRules.IsOnlyOnePlayerLeftInTheGame(updatedTerritories).Returns(true);
 
             Sut.Attack(_region, _anotherRegion);
 
-            _gamePhaseConductor.Received().PlayerIsTheWinner(_currentPlayerGameData.Player);
+            _gamePhaseConductor.Received().PlayerIsTheWinner(_currentPlayer);
         }
     }
 }

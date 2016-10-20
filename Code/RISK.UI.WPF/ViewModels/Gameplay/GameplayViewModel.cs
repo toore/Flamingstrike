@@ -35,7 +35,6 @@ namespace RISK.UI.WPF.ViewModels.Gameplay
         private bool _canEndTurn;
         private IInteractionState _interactionState;
         private string _informationText;
-        private IGame _game;
         private IAttackPhase _attackPhase;
         private Action _endTurn;
 
@@ -107,14 +106,9 @@ namespace RISK.UI.WPF.ViewModels.Gameplay
             _interactionState.OnClick(region);
         }
 
-        public void NewGame(IGame game)
-        {
-            _game = game;
-        }
-
         public void DraftArmies(IDraftArmiesPhase draftArmiesPhase)
         {
-            PlayerName = _game.CurrentPlayerGameData.Player.Name;
+            PlayerName = draftArmiesPhase.Player.Name;
 
             InformationText = string.Format(Resources.DRAFT_ARMIES, draftArmiesPhase.NumberOfArmiesToDraft);
             _interactionState = _interactionStateFactory.CreateDraftArmiesInteractionState(draftArmiesPhase);
@@ -128,7 +122,7 @@ namespace RISK.UI.WPF.ViewModels.Gameplay
 
         public void Attack(IAttackPhase attackPhase)
         {
-            PlayerName = _game.CurrentPlayerGameData.Player.Name;
+            PlayerName = attackPhase.Player.Name;
 
             _attackPhase = attackPhase;
             _endTurn = attackPhase.EndTurn;
@@ -163,7 +157,7 @@ namespace RISK.UI.WPF.ViewModels.Gameplay
                 .Concat(new[] { region }).ToList();
 
             UpdateWorldMap(
-                _game.Territories,
+                _attackPhase.Territories,
                 regionsThatCanBeInteractedWith,
                 Maybe<IRegion>.Create(region));
         }
@@ -180,7 +174,7 @@ namespace RISK.UI.WPF.ViewModels.Gameplay
 
         public void SendArmiesToOccupy(ISendArmiesToOccupyPhase sendArmiesToOccupyPhase)
         {
-            PlayerName = _game.CurrentPlayerGameData.Player.Name;
+            PlayerName = sendArmiesToOccupyPhase.Player.Name;
             InformationText = Resources.SEND_ARMIES_TO_OCCUPY;
             _interactionState = _interactionStateFactory.CreateSendArmiesToOccupyInteractionState(sendArmiesToOccupyPhase);
 
@@ -211,7 +205,7 @@ namespace RISK.UI.WPF.ViewModels.Gameplay
                 .Concat(new[] { region }).ToList();
 
             UpdateWorldMap(
-                _game.Territories,
+                _attackPhase.Territories,
                 regionsThatCanBeInteractedWith,
                 Maybe<IRegion>.Create(region));
         }
@@ -228,7 +222,7 @@ namespace RISK.UI.WPF.ViewModels.Gameplay
 
         public void EndTurn(IEndTurnPhase endTurnPhase)
         {
-            PlayerName = _game.CurrentPlayerGameData.Player.Name;
+            PlayerName = endTurnPhase.Player.Name;
             InformationText = Resources.END_TURN;
 
             CanEnterFortifyMode = false;
@@ -236,35 +230,35 @@ namespace RISK.UI.WPF.ViewModels.Gameplay
             CanEndTurn = true;
             _endTurn = endTurnPhase.EndTurn;
 
-            UpdateWorldMapInEndOfTurn();
+            UpdateWorldMapInEndOfTurn(endTurnPhase);
         }
 
         public void GameOver(IGameIsOver gameIsOver)
         {
-            ShowGameOverMessage();
+            ShowGameOverMessage(gameIsOver.Winner);
         }
 
         private void UpdateWorldMap(IDraftArmiesPhase draftArmiesPhase)
         {
-            UpdateWorldMap(_game.Territories, draftArmiesPhase.RegionsAllowedToDraftArmies, Maybe<IRegion>.Nothing);
+            UpdateWorldMap(draftArmiesPhase.Territories, draftArmiesPhase.RegionsAllowedToDraftArmies, Maybe<IRegion>.Nothing);
         }
 
         private void UpdateWorldMap(ISendArmiesToOccupyPhase sendArmiesToOccupyPhase)
         {
             UpdateWorldMap(
-                _game.Territories,
+                sendArmiesToOccupyPhase.Territories,
                 new[] { sendArmiesToOccupyPhase.OccupiedRegion },
                 Maybe<IRegion>.Create(sendArmiesToOccupyPhase.AttackingRegion));
         }
 
-        private void UpdateWorldMapInEndOfTurn()
+        private void UpdateWorldMapInEndOfTurn(IEndTurnPhase endTurnPhase)
         {
-            UpdateWorldMap(_game.Territories, new IRegion[] { }, Maybe<IRegion>.Nothing);
+            UpdateWorldMap(endTurnPhase.Territories, new IRegion[] { }, Maybe<IRegion>.Nothing);
         }
 
         private void UpdateWorldMap(IAttackPhase attackPhase)
         {
-            UpdateWorldMap(_game.Territories, attackPhase.RegionsThatCanBeSourceForAttackOrFortification, Maybe<IRegion>.Nothing);
+            UpdateWorldMap(attackPhase.Territories, attackPhase.RegionsThatCanBeSourceForAttackOrFortification, Maybe<IRegion>.Nothing);
         }
 
         private void UpdateWorldMap(IReadOnlyList<ITerritory> territories, IReadOnlyList<IRegion> enabledRegions, Maybe<IRegion> selectedRegion)
@@ -287,9 +281,9 @@ namespace RISK.UI.WPF.ViewModels.Gameplay
             }
         }
 
-        private void ShowGameOverMessage()
+        private void ShowGameOverMessage(IPlayer winner)
         {
-            var gameOverViewModel = _gameOverViewModelFactory.Create(_game.CurrentPlayerGameData.Player.Name);
+            var gameOverViewModel = _gameOverViewModelFactory.Create(winner.Name);
             _windowManager.ShowDialog(gameOverViewModel);
         }
     }

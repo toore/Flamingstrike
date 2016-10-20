@@ -1,31 +1,32 @@
+using System.Collections.Generic;
 using RISK.GameEngine.Play.GameStates;
 
 namespace RISK.GameEngine.Play
 {
-    public interface ISendArmiesToOccupyPhase
+    public interface ISendArmiesToOccupyPhase : IGameStatus
     {
-        void SendAdditionalArmiesToOccupy(int numberOfArmies);
         IRegion AttackingRegion { get; }
         IRegion OccupiedRegion { get; }
+        void SendAdditionalArmiesToOccupy(int numberOfArmies);
     }
 
     public class SendArmiesToOccupyPhase : ISendArmiesToOccupyPhase
     {
         private readonly ISendArmiesToOccupyGameState _sendArmiesToOccupyGameState;
 
-        public SendArmiesToOccupyPhase(
-            ISendArmiesToOccupyGameState sendArmiesToOccupyGameState,
-            IRegion attackingRegion,
-            IRegion occupiedRegion)
+        public SendArmiesToOccupyPhase(ISendArmiesToOccupyGameState sendArmiesToOccupyGameState)
         {
-            AttackingRegion = attackingRegion;
-            OccupiedRegion = occupiedRegion;
             _sendArmiesToOccupyGameState = sendArmiesToOccupyGameState;
         }
 
-        public IRegion AttackingRegion { get; }
+        public IPlayer Player => _sendArmiesToOccupyGameState.Player;
 
-        public IRegion OccupiedRegion { get; }
+        public IReadOnlyList<ITerritory> Territories => _sendArmiesToOccupyGameState.Territories;
+        public IReadOnlyList<IPlayerGameData> PlayerGameDatas => _sendArmiesToOccupyGameState.Players;
+
+        public IRegion AttackingRegion => _sendArmiesToOccupyGameState.AttackingRegion;
+
+        public IRegion OccupiedRegion => _sendArmiesToOccupyGameState.OccupiedRegion;
 
         public void SendAdditionalArmiesToOccupy(int numberOfArmies)
         {

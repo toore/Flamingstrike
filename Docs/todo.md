@@ -24,6 +24,8 @@ Improvements:
 - What about making changes to the states of Game with invalid game api objects (immutable core?)
      - Deck?
 
+- Eliminated player should not take turn
+
 ##Not/partially tested
 - GameStateFactory (CreateNextTurnGameState, etc)
 - Sequence

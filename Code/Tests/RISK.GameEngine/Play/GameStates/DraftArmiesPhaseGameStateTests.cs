@@ -1,47 +1,49 @@
 using System;
+using System.Collections.Generic;
 using FluentAssertions;
+using FluentAssertions.Common;
 using NSubstitute;
 using RISK.GameEngine;
 using RISK.GameEngine.Play;
 using RISK.GameEngine.Play.GameStates;
+using Tests.RISK.GameEngine.Builders;
 using Xunit;
-using IPlayer = RISK.GameEngine.IPlayer;
 
 namespace Tests.RISK.GameEngine.Play.GameStates
 {
     public class DraftArmiesPhaseGameStateTests
     {
-        private readonly IPlayer _currentPlayer;
+        private readonly GameData _gameData;
         private readonly IGamePhaseConductor _gamePhaseConductor;
         private readonly IArmyDrafter _armyDrafter;
-        private readonly ITerritoriesContext _territoriesContext;
         private readonly IRegion _region;
         private readonly IRegion _anotherRegion;
         private int _numberOfArmiesToDraft;
 
         public DraftArmiesPhaseGameStateTests()
         {
-            _currentPlayer = Substitute.For<IPlayer>();
-            _territoriesContext = Substitute.For<ITerritoriesContext>();
             _gamePhaseConductor = Substitute.For<IGamePhaseConductor>();
             _armyDrafter = Substitute.For<IArmyDrafter>();
 
+            var currentPlayer = Substitute.For<IPlayer>();
             var territory = Substitute.For<ITerritory>();
             var anotherTerritory = Substitute.For<ITerritory>();
             _region = Substitute.For<IRegion>();
             _anotherRegion = Substitute.For<IRegion>();
             territory.Region.Returns(_region);
-            territory.Player.Returns(_currentPlayer);
+            territory.Player.Returns(currentPlayer);
             anotherTerritory.Region.Returns(_anotherRegion);
 
-            _territoriesContext.Territories.Returns(new[] { territory, anotherTerritory });
+            _gameData = Make.GameData
+                .CurrentPlayer(currentPlayer)
+                .Territories(territory, anotherTerritory)
+                .Build();
 
             _numberOfArmiesToDraft = 0;
         }
 
         private DraftArmiesPhaseGameState Sut => new DraftArmiesPhaseGameState(
-            _currentPlayer,
-            _territoriesContext,
+            _gameData,
             _gamePhaseConductor,
             _armyDrafter,
             _numberOfArmiesToDraft);
@@ -69,19 +71,25 @@ namespace Tests.RISK.GameEngine.Play.GameStates
         [Fact]
         public void After_placing_draft_armies_continues_to_draft_armies()
         {
-            _numberOfArmiesToDraft = 2;
+            var expectedUpdatedTerritories = new List<ITerritory>();
+            _armyDrafter.PlaceDraftArmies(_gameData.Territories, _region, 1).Returns(expectedUpdatedTerritories);
+
+            _numberOfArmiesToDraft = 3;
             Sut.PlaceDraftArmies(_region, 1);
 
-            _gamePhaseConductor.Received().ContinueToDraftArmies(1);
+            _gamePhaseConductor.Received().ContinueToDraftArmies(2, Arg.Is<GameData>(x => x.Territories.IsSameOrEqualTo(expectedUpdatedTerritories)));
         }
 
         [Fact]
         public void After_placing_all_draft_armies_continues_with_attack_phase()
         {
+            var expectedUpdatedTerritories = new List<ITerritory>();
+            _armyDrafter.PlaceDraftArmies(_gameData.Territories, _region, 2).Returns(expectedUpdatedTerritories);
+
             _numberOfArmiesToDraft = 2;
             Sut.PlaceDraftArmies(_region, 2);
 
-            _gamePhaseConductor.Received().ContinueWithAttackPhase(TurnConqueringAchievement.NoTerritoryHasBeenConquered);
+            _gamePhaseConductor.Received().ContinueWithAttackPhase(TurnConqueringAchievement.NoTerritoryHasBeenConquered, Arg.Is<GameData>(x => x.Territories.IsSameOrEqualTo(expectedUpdatedTerritories)));
         }
 
         [Fact]

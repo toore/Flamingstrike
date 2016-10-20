@@ -108,26 +108,26 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="RISK.GameEngine\Builders\GameDataBuilder.cs" />
     <Compile Include="RISK.GameEngine\Builders\PlayerGameDataBuilder.cs" />
     <Compile Include="RISK.GameEngine\Play\GameStates\AttackPhaseStateGameStateTests.cs" />
-    <Compile Include="RISK.GameEngine\Play\GameStates\DraftArmiesPhaseGameState.cs" />
+    <Compile Include="RISK.GameEngine\Play\GameStates\DraftArmiesPhaseGameStateTests.cs" />
     <Compile Include="RISK.GameEngine\Attacking\BattleTests.cs" />
     <Compile Include="RISK.GameEngine\Attacking\DiceTests.cs" />
     <Compile Include="RISK.GameEngine\Attacking\DicesRollerTests.cs" />
     <Compile Include="RISK.GameEngine\Attacking\ArmiesLostCalculatorTests.cs" />
-    <Compile Include="RISK.GameEngine\Play\GameStates\SendArmiesToOccupyGameState.cs" />
-    <Compile Include="RISK.GameEngine\Play\GameTests.cs" />
     <Compile Include="RISK.GameEngine\Builders\ArmiesLostBuilder.cs" />
     <Compile Include="RISK.GameEngine\Builders\ContinentBuilder.cs" />
     <Compile Include="RISK.GameEngine\Builders\DicesBuilder.cs" />
     <Compile Include="RISK.GameEngine\Builders\PlayerBuilder.cs" />
     <Compile Include="RISK.GameEngine\Builders\TerritoryBuilder.cs" />
-    <Compile Include="RISK.GameEngine\Play\TerritoriesContextTests.cs" />
+    <Compile Include="RISK.GameEngine\Play\GameStates\SendArmiesToOccupyGameState.cs" />
+    <Compile Include="RISK.GameEngine\Play\GameTests.cs" />
     <Compile Include="RISK.GameEngine\Setup\AlternateGameSetupObserverSpyDecorator.cs" />
     <Compile Include="RISK.GameEngine\Setup\AutoRespondingAlternateGameSetupObserver.cs" />
-    <Compile Include="RISK.GameEngine\Specifications\GameObserverSpec.cs" />
     <Compile Include="RISK.GameEngine\Specifications\AlternateGameSetupObserverSpec.cs" />
     <Compile Include="RISK.GameEngine\Setup\NullAlternateGameSetupObserver.cs" />
+    <Compile Include="RISK.GameEngine\Specifications\GameObserverSpec.cs" />
     <Compile Include="RISK.UI.WPF\Interaction\AttackInteractionStateTests.cs" />
     <Compile Include="RISK.UI.WPF\Interaction\FortifyInteractionStateTests.cs" />
     <Compile Include="RISK.UI.WPF\Interaction\SelectSourceRegionForFortificationInteractionStateTests.cs" />

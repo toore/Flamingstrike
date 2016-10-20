@@ -1,38 +1,51 @@
+using System.Collections.Generic;
+
 namespace RISK.GameEngine.Play.GameStates
 {
     public interface ISendArmiesToOccupyGameState
     {
+        IPlayer Player { get; }
+        IReadOnlyList<ITerritory> Territories { get; }
+        IRegion AttackingRegion { get; }
+        IRegion OccupiedRegion { get; }
+        IReadOnlyList<IPlayerGameData> Players { get; }
         void SendAdditionalArmiesToOccupy(int numberOfArmies);
     }
 
     public class SendArmiesToOccupyGameState : ISendArmiesToOccupyGameState
     {
-        private readonly ITerritoriesContext _territoriesContext;
+        private readonly GameData _gameData;
         private readonly IGamePhaseConductor _gamePhaseConductor;
         private readonly ITerritoryOccupier _territoryOccupier;
-        private readonly IRegion _attackingRegion;
-        private readonly IRegion _occupiedRegion;
 
         public SendArmiesToOccupyGameState(
-            ITerritoriesContext territoriesContext,
+            GameData gameData,
             IGamePhaseConductor gamePhaseConductor,
             ITerritoryOccupier territoryOccupier,
             IRegion attackingRegion,
             IRegion occupiedRegion)
         {
-            _territoriesContext = territoriesContext;
+            AttackingRegion = attackingRegion;
+            OccupiedRegion = occupiedRegion;
+            _gameData = gameData;
             _gamePhaseConductor = gamePhaseConductor;
             _territoryOccupier = territoryOccupier;
-            _attackingRegion = attackingRegion;
-            _occupiedRegion = occupiedRegion;
         }
+
+        public IPlayer Player => _gameData.CurrentPlayer;
+        public IReadOnlyList<ITerritory> Territories => _gameData.Territories;
+        public IRegion AttackingRegion { get; }
+        public IRegion OccupiedRegion { get; }
+        public IReadOnlyList<IPlayerGameData> Players => _gameData.Players;
 
         public void SendAdditionalArmiesToOccupy(int numberOfArmies)
         {
-            var updatedTerritories = _territoryOccupier.SendInAdditionalArmiesToOccupy(_territoriesContext.Territories, _attackingRegion, _occupiedRegion, numberOfArmies);
-            _territoriesContext.Set(updatedTerritories);
+            var updatedTerritories = _territoryOccupier.SendInAdditionalArmiesToOccupy(_gameData.Territories, AttackingRegion, OccupiedRegion, numberOfArmies);
+            var updatedGameData = new GameData(updatedTerritories, _gameData.Players, _gameData.CurrentPlayer, _gameData.Cards);
 
-            _gamePhaseConductor.ContinueWithAttackPhase(TurnConqueringAchievement.SuccessfullyConqueredAtLeastOneTerritory);
+            _gamePhaseConductor.ContinueWithAttackPhase(
+                TurnConqueringAchievement.SuccessfullyConqueredAtLeastOneTerritory,
+                updatedGameData);
         }
     }
 }
