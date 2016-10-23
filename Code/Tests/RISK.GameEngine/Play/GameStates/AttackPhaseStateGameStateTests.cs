@@ -50,8 +50,9 @@ namespace Tests.RISK.GameEngine.Play.GameStates
             anotherTerritory.Player.Returns(_anotherPlayerGameData.Player);
 
             _gameData = Make.GameData
-                .CurrentPlayer(_currentPlayer)
                 .Territories(_territory, anotherTerritory)
+                .AddPlayer(new PlayerGameData(_currentPlayer, new List<ICard>()))
+                .CurrentPlayer(_currentPlayer)
                 .Build();
         }
 
@@ -179,10 +180,12 @@ namespace Tests.RISK.GameEngine.Play.GameStates
         [Fact]
         public void Player_is_not_awarded_card_after_fortification()
         {
+            GameData updatedGameData = null;
+            _gamePhaseConductor.WaitForTurnToEnd(Arg.Do<GameData>(x => updatedGameData = x));
+
             Sut.Fortify(_region, _anotherRegion, 1);
 
-            //_currentPlayer.Cards.Should().BeEmpty();
-            throw new NotImplementedException();
+            updatedGameData.GetCurrentPlayerGameData().Cards.Should().BeEmpty();
         }
 
         [Fact]
@@ -211,13 +214,14 @@ namespace Tests.RISK.GameEngine.Play.GameStates
         {
             Sut.EndTurn();
 
-            //_currentPlayer.Cards.Should().BeEmpty();
-            throw new NotImplementedException();
+            _gameData.GetCurrentPlayerGameData().Cards.Should().BeEmpty();
         }
 
         [Fact]
         public void Player_should_not_receive_card_after_attack()
         {
+            GameData updatedGameData = null;
+            _gamePhaseConductor.ContinueWithAttackPhase(TurnConqueringAchievement.SuccessfullyConqueredAtLeastOneTerritory, Arg.Do<GameData>(x => updatedGameData = x));
             var updatedTerritories = new List<ITerritory> { _territory };
             var attackOutcome = new AttackOutcome(updatedTerritories, DefendingArmyAvailability.IsEliminated);
             _attacker.Attack(
@@ -227,8 +231,7 @@ namespace Tests.RISK.GameEngine.Play.GameStates
 
             Sut.Attack(_region, _anotherRegion);
 
-            //_currentPlayer.Cards.Should().BeEmpty();
-            throw new NotImplementedException();
+            updatedGameData.GetCurrentPlayerGameData().Cards.Should().BeEmpty();
         }
 
         [Fact]
