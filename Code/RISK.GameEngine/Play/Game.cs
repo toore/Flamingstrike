@@ -4,7 +4,7 @@ using RISK.GameEngine.Play.GameStates;
 
 namespace RISK.GameEngine.Play
 {
-    public interface IGame { }
+    public interface IGame {}
 
     public class GameData
     {
@@ -19,14 +19,6 @@ namespace RISK.GameEngine.Play
             Players = players;
             CurrentPlayer = currentPlayer;
             Cards = cards;
-        }
-    }
-
-    public static class GameDataExtensions
-    {
-        public static IPlayerGameData GetCurrentPlayerGameData(this GameData gameData)
-        {
-            return gameData.Players.Single(x => x.Player == gameData.CurrentPlayer);
         }
     }
 

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using FluentAssertions;
 using FluentAssertions.Common;
 using NSubstitute;
@@ -167,14 +168,15 @@ namespace Tests.RISK.GameEngine.Play.GameStates
         [Fact]
         public void Player_is_awarded_card_after_fortification()
         {
+            GameData updatedGameData = null;
+            _gamePhaseConductor.WaitForTurnToEnd(Arg.Do<GameData>(x => updatedGameData = x));
             var topDeckCard = Substitute.For<ICard>();
             _deck.Draw().Returns(topDeckCard);
             _turnConqueringAchievement = TurnConqueringAchievement.SuccessfullyConqueredAtLeastOneTerritory;
 
             Sut.Fortify(_region, _anotherRegion, 1);
 
-            //_currentPlayer.Cards.Should().BeEquivalentTo(topDeckCard);
-            throw new NotImplementedException();
+            updatedGameData.GetCurrentPlayerGameData().Cards.Should().BeEquivalentTo(topDeckCard);
         }
 
         [Fact]
@@ -199,14 +201,15 @@ namespace Tests.RISK.GameEngine.Play.GameStates
         [Fact]
         public void Player_should_receive_card_when_turn_ends()
         {
+            GameData updatedGameData = null;
+            _gamePhaseConductor.PassTurnToNextPlayer(Arg.Do<GameData>(x => updatedGameData = x));
             var topDeckCard = Substitute.For<ICard>();
             _deck.Draw().Returns(topDeckCard);
             _turnConqueringAchievement = TurnConqueringAchievement.SuccessfullyConqueredAtLeastOneTerritory;
 
             Sut.EndTurn();
 
-            //_currentPlayer.Cards.Should().BeEquivalentTo(topDeckCard);
-            throw new NotImplementedException();
+            updatedGameData.GetCurrentPlayerGameData().Cards.Should().BeEquivalentTo(topDeckCard);
         }
 
         [Fact]
@@ -237,6 +240,10 @@ namespace Tests.RISK.GameEngine.Play.GameStates
         [Fact]
         public void Player_should_receive_eliminated_players_cards()
         {
+            GameData updatedGameData = null;
+            _gamePhaseConductor.ContinueWithAttackPhase(
+                TurnConqueringAchievement.SuccessfullyConqueredAtLeastOneTerritory,
+                Arg.Do<GameData>(x => updatedGameData = x));
             var aCard = Substitute.For<ICard>();
             var aSecondCard = Substitute.For<ICard>();
             var eliminatedPlayersCards = new[] { aCard, aSecondCard };
@@ -254,8 +261,7 @@ namespace Tests.RISK.GameEngine.Play.GameStates
 
             Sut.Attack(_region, _anotherRegion);
 
-            //_currentPlayer.Cards.ShouldAllBeEquivalentTo(eliminatedPlayersCards, "all cards should be aquired");
-            throw new NotImplementedException();
+            updatedGameData.GetCurrentPlayerGameData().Cards.ShouldAllBeEquivalentTo(eliminatedPlayersCards, "all cards should be aquired");
             _anotherPlayerGameData.Cards.Should().BeEmpty("all cards should be handed over");
         }
 
@@ -273,6 +279,14 @@ namespace Tests.RISK.GameEngine.Play.GameStates
             Sut.Attack(_region, _anotherRegion);
 
             _gamePhaseConductor.Received().PlayerIsTheWinner(_currentPlayer);
+        }
+    }
+
+    public static class GameDataExtensions
+    {
+        public static IPlayerGameData GetCurrentPlayerGameData(this GameData gameData)
+        {
+            return gameData.Players.Single(x => x.Player == gameData.CurrentPlayer);
         }
     }
 }
