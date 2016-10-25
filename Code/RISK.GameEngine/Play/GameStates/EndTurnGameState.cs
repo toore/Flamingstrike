@@ -23,7 +23,7 @@ namespace RISK.GameEngine.Play.GameStates
 
         public IPlayer Player => _gameData.CurrentPlayer;
         public IReadOnlyList<ITerritory> Territories => _gameData.Territories;
-        public IReadOnlyList<IPlayerGameData> Players => _gameData.Players;
+        public IReadOnlyList<IPlayerGameData> Players => _gameData.PlayerGameDatas;
 
         public void EndTurn()
         {

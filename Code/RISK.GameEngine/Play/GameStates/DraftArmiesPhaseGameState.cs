@@ -35,7 +35,7 @@ namespace RISK.GameEngine.Play.GameStates
         public IPlayer Player => _gameData.CurrentPlayer;
         public IReadOnlyList<ITerritory> Territories => _gameData.Territories;
         public int NumberOfArmiesToDraft { get; }
-        public IReadOnlyList<IPlayerGameData> Players => _gameData.Players;
+        public IReadOnlyList<IPlayerGameData> Players => _gameData.PlayerGameDatas;
 
         public bool CanPlaceDraftArmies(IRegion region)
         {
@@ -59,7 +59,7 @@ namespace RISK.GameEngine.Play.GameStates
             }
 
             var updatedTerritories = _armyDrafter.PlaceDraftArmies(_gameData.Territories, region, numberOfArmiesToPlace);
-            var updatedGameData = new GameData(updatedTerritories, _gameData.Players, _gameData.CurrentPlayer, _gameData.Cards);
+            var updatedGameData = new GameData(updatedTerritories, _gameData.PlayerGameDatas, _gameData.CurrentPlayer, _gameData.Deck);
 
             var numberOfArmiesLeftToPlace = NumberOfArmiesToDraft - numberOfArmiesToPlace;
             if (numberOfArmiesLeftToPlace > 0)

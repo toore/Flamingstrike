@@ -4,21 +4,34 @@ using RISK.GameEngine.Play.GameStates;
 
 namespace RISK.GameEngine.Play
 {
-    public interface IGame {}
+    public interface IGame { }
 
     public class GameData
     {
         public IReadOnlyList<ITerritory> Territories { get; }
-        public IReadOnlyList<IPlayerGameData> Players { get; }
+        public IReadOnlyList<IPlayerGameData> PlayerGameDatas { get; }
         public IPlayer CurrentPlayer { get; }
-        public IReadOnlyList<ICard> Cards { get; }
+        public IDeck Deck { get; }
 
-        public GameData(IReadOnlyList<ITerritory> territories, IReadOnlyList<IPlayerGameData> players, IPlayer currentPlayer, IReadOnlyList<ICard> cards)
+        public GameData(IReadOnlyList<ITerritory> territories, IReadOnlyList<IPlayerGameData> playerGameDatas, IPlayer currentPlayer, IDeck deck)
         {
             Territories = territories;
-            Players = players;
+            PlayerGameDatas = playerGameDatas;
             CurrentPlayer = currentPlayer;
-            Cards = cards;
+            Deck = deck;
+        }
+    }
+
+    public static class GameDataExtensions
+    {
+        public static IPlayerGameData GetCurrentPlayerGameData(this GameData gameData)
+        {
+            return gameData.PlayerGameDatas.Single(x => x.Player == gameData.CurrentPlayer);
+        }
+
+        public static IPlayerGameData GetPlayerGameData(this GameData gameData, IPlayer player)
+        {
+            return gameData.PlayerGameDatas.Single(x => x.Player == player);
         }
     }
 
@@ -42,9 +55,9 @@ namespace RISK.GameEngine.Play
             IGameObserver gameObserver,
             IGameStateFactory gameStateFactory,
             IArmyDraftCalculator armyDraftCalculator,
+            IDeckFactory deckFactory,
             IReadOnlyList<ITerritory> territories,
-            IReadOnlyList<IPlayer> players,
-            IReadOnlyList<ICard> cards)
+            IReadOnlyList<IPlayer> players)
         {
             _gameObserver = gameObserver;
             _gameStateFactory = gameStateFactory;
@@ -52,7 +65,7 @@ namespace RISK.GameEngine.Play
 
             var playerGameDatas = players.Select(player => new PlayerGameData(player, new List<ICard>())).ToList();
             var currentPlayer = players.First();
-            var gameData = new GameData(territories, playerGameDatas, currentPlayer, cards);
+            var gameData = new GameData(territories, playerGameDatas, currentPlayer, deckFactory.Create());
             var numberOfArmiesToDraft = _armyDraftCalculator.Calculate(currentPlayer, territories);
             ContinueToDraftArmies(numberOfArmiesToDraft, gameData);
         }
@@ -101,11 +114,11 @@ namespace RISK.GameEngine.Play
 
         public void PassTurnToNextPlayer(GameData gameData)
         {
-            var nextPlayer = gameData.Players.Select(x => x.Player).ToList()
+            var nextPlayer = gameData.PlayerGameDatas.Select(x => x.Player).ToList()
                 .GetNext(gameData.CurrentPlayer);
 
             var numberOfArmiesToDraft = _armyDraftCalculator.Calculate(nextPlayer, gameData.Territories);
-            var updatedGameData = new GameData(gameData.Territories, gameData.Players, nextPlayer, gameData.Cards);
+            var updatedGameData = new GameData(gameData.Territories, gameData.PlayerGameDatas, nextPlayer, gameData.Deck);
 
             ContinueToDraftArmies(numberOfArmiesToDraft, updatedGameData);
         }

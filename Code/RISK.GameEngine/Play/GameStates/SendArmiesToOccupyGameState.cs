@@ -36,12 +36,12 @@ namespace RISK.GameEngine.Play.GameStates
         public IReadOnlyList<ITerritory> Territories => _gameData.Territories;
         public IRegion AttackingRegion { get; }
         public IRegion OccupiedRegion { get; }
-        public IReadOnlyList<IPlayerGameData> Players => _gameData.Players;
+        public IReadOnlyList<IPlayerGameData> Players => _gameData.PlayerGameDatas;
 
         public void SendAdditionalArmiesToOccupy(int numberOfArmies)
         {
             var updatedTerritories = _territoryOccupier.SendInAdditionalArmiesToOccupy(_gameData.Territories, AttackingRegion, OccupiedRegion, numberOfArmies);
-            var updatedGameData = new GameData(updatedTerritories, _gameData.Players, _gameData.CurrentPlayer, _gameData.Cards);
+            var updatedGameData = new GameData(updatedTerritories, _gameData.PlayerGameDatas, _gameData.CurrentPlayer, _gameData.Deck);
 
             _gamePhaseConductor.ContinueWithAttackPhase(
                 TurnConqueringAchievement.SuccessfullyConqueredAtLeastOneTerritory,

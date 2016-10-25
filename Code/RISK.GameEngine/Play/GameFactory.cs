@@ -15,8 +15,8 @@ namespace RISK.GameEngine.Play
         private readonly IDeckFactory _deckFactory;
 
         public GameFactory(
-            IGameStateFactory gameStateFactory, 
-            IArmyDraftCalculator armyDraftCalculator, 
+            IGameStateFactory gameStateFactory,
+            IArmyDraftCalculator armyDraftCalculator,
             IDeckFactory deckFactory)
         {
             _gameStateFactory = gameStateFactory;
@@ -30,9 +30,9 @@ namespace RISK.GameEngine.Play
                 gameObserver,
                 _gameStateFactory,
                 _armyDraftCalculator,
-                gamePlaySetup.Territories, 
-                gamePlaySetup.Players, 
-                _deckFactory.Create().Cards());
+                _deckFactory,
+                gamePlaySetup.Territories,
+                gamePlaySetup.Players);
         }
     }
 }

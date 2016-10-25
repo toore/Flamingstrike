@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 
 namespace RISK.GameEngine.Play
@@ -19,21 +18,5 @@ namespace RISK.GameEngine.Play
 
         public IPlayer Player { get; }
         public IReadOnlyList<ICard> Cards { get; }
-
-        public void AddCard(ICard card)
-        {
-            throw new NotImplementedException();
-
-            //_cards.Add(card);
-        }
-
-        public IEnumerable<ICard> AquireAllCards()
-        {
-            throw new NotImplementedException();
-            //var cardsToReturn = _cards.ToList();
-            //_cards.Clear();
-
-            //return cardsToReturn;
-        }
     }
 }

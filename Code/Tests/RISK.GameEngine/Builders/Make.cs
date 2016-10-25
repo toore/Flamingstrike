@@ -11,5 +11,6 @@ namespace Tests.RISK.GameEngine.Builders
         public static PlayerBuilder Player => new PlayerBuilder();
         public static PlayerGameDataBuilder PlayerGameData => new PlayerGameDataBuilder();
         public static GameDataBuilder GameData => new GameDataBuilder();
+        public static DeckBuilder Deck => new DeckBuilder();
     }
 }

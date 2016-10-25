@@ -6,11 +6,17 @@ namespace Tests.RISK.GameEngine.Builders
 {
     public class PlayerGameDataBuilder
     {
-        private readonly IPlayer _player = Make.Player.Build();
+        private IPlayer _player = Make.Player.Build();
 
         public PlayerGameData Build()
         {
             return new PlayerGameData(_player, new List<ICard>());
+        }
+
+        public PlayerGameDataBuilder Player(IPlayer player)
+        {
+            _player = player;
+            return this;
         }
     }
 }

@@ -5,28 +5,36 @@ namespace RISK.GameEngine.Play
 {
     public interface IDeck
     {
-        ICard Draw();
-        IReadOnlyList<ICard> Cards();
+        CardDrawnAndRestOfDeck DrawCard();
     }
 
     public class Deck : IDeck
     {
-        private readonly Queue<ICard> _cards;
+        private readonly IReadOnlyList<ICard> _cards;
 
-        public Deck(IEnumerable<ICard> cards)
+        public Deck(IReadOnlyList<ICard> cards)
         {
-            _cards = new Queue<ICard>(cards);
+            _cards = cards;
         }
 
-        public ICard Draw()
+        public CardDrawnAndRestOfDeck DrawCard()
         {
-            var card = _cards.Dequeue();
-            return card;
-        }
+            var topCard = _cards.First();
+            var restOfDeck = new Deck(_cards.Skip(1).ToList());
 
-        public IReadOnlyList<ICard> Cards()
+            return new CardDrawnAndRestOfDeck(topCard, restOfDeck);
+        }
+    }
+
+    public class CardDrawnAndRestOfDeck
+    {
+        public ICard CardDrawn { get; }
+        public IDeck RestOfDeck { get; }
+
+        public CardDrawnAndRestOfDeck(ICard cardDrawn, IDeck restOfDeck)
         {
-            return _cards.ToList();
+            CardDrawn = cardDrawn;
+            RestOfDeck = restOfDeck;
         }
     }
 }

@@ -17,6 +17,7 @@ namespace Tests.RISK.GameEngine.Play.GameStates
     {
         private readonly GameData _gameData;
         private readonly IPlayer _currentPlayer;
+        private readonly IPlayer _anotherPlayer;
         private readonly IDeck _deck;
         private readonly IGamePhaseConductor _gamePhaseConductor;
         private readonly IAttacker _attacker;
@@ -26,7 +27,6 @@ namespace Tests.RISK.GameEngine.Play.GameStates
         private readonly ITerritory _territory;
         private readonly IRegion _region;
         private readonly IRegion _anotherRegion;
-        private readonly PlayerGameData _anotherPlayerGameData;
 
         public AttackPhaseStateGameStateTests()
         {
@@ -36,24 +36,25 @@ namespace Tests.RISK.GameEngine.Play.GameStates
             _fortifier = Substitute.For<IFortifier>();
             _playerEliminationRules = Substitute.For<IPlayerEliminationRules>();
 
-            _anotherPlayerGameData = Make.PlayerGameData.Build();
-
             _region = Substitute.For<IRegion>();
             _anotherRegion = Substitute.For<IRegion>();
             _territory = Substitute.For<ITerritory>();
             var anotherTerritory = Substitute.For<ITerritory>();
 
             _currentPlayer = Substitute.For<IPlayer>();
+            _anotherPlayer = Substitute.For<IPlayer>();
 
             _territory.Region.Returns(_region);
             _territory.Player.Returns(_currentPlayer);
             anotherTerritory.Region.Returns(_anotherRegion);
-            anotherTerritory.Player.Returns(_anotherPlayerGameData.Player);
+            anotherTerritory.Player.Returns(_anotherPlayer);
 
             _gameData = Make.GameData
                 .Territories(_territory, anotherTerritory)
-                .AddPlayer(new PlayerGameData(_currentPlayer, new List<ICard>()))
+                .AddPlayer(Make.PlayerGameData.Player(_currentPlayer).Build())
+                .AddPlayer(Make.PlayerGameData.Player(_anotherPlayer).Build())
                 .CurrentPlayer(_currentPlayer)
+                .Deck(_deck)
                 .Build();
         }
 
@@ -171,7 +172,7 @@ namespace Tests.RISK.GameEngine.Play.GameStates
             GameData updatedGameData = null;
             _gamePhaseConductor.WaitForTurnToEnd(Arg.Do<GameData>(x => updatedGameData = x));
             var topDeckCard = Substitute.For<ICard>();
-            _deck.Draw().Returns(topDeckCard);
+            _deck.DrawCard().Returns(new CardDrawnAndRestOfDeck(topDeckCard, Make.Deck.Build()));
             _turnConqueringAchievement = TurnConqueringAchievement.SuccessfullyConqueredAtLeastOneTerritory;
 
             Sut.Fortify(_region, _anotherRegion, 1);
@@ -193,9 +194,12 @@ namespace Tests.RISK.GameEngine.Play.GameStates
         [Fact]
         public void End_turn_passes_turn_to_next_player()
         {
+            GameData updatedGameData = null;
+            _gamePhaseConductor.PassTurnToNextPlayer(Arg.Do<GameData>(x => updatedGameData = x));
+
             Sut.EndTurn();
 
-            _gamePhaseConductor.Received().PassTurnToNextPlayer(_gameData);
+            _gameData.ShouldBeEquivalentTo(updatedGameData);
         }
 
         [Fact]
@@ -204,7 +208,7 @@ namespace Tests.RISK.GameEngine.Play.GameStates
             GameData updatedGameData = null;
             _gamePhaseConductor.PassTurnToNextPlayer(Arg.Do<GameData>(x => updatedGameData = x));
             var topDeckCard = Substitute.For<ICard>();
-            _deck.Draw().Returns(topDeckCard);
+            _deck.DrawCard().Returns(new CardDrawnAndRestOfDeck(topDeckCard, null));
             _turnConqueringAchievement = TurnConqueringAchievement.SuccessfullyConqueredAtLeastOneTerritory;
 
             Sut.EndTurn();
@@ -215,9 +219,12 @@ namespace Tests.RISK.GameEngine.Play.GameStates
         [Fact]
         public void Player_should_not_receive_card_when_turn_ends()
         {
+            GameData updatedGameData = null;
+            _gamePhaseConductor.PassTurnToNextPlayer(Arg.Do<GameData>(x => updatedGameData = x));
+
             Sut.EndTurn();
 
-            _gameData.GetCurrentPlayerGameData().Cards.Should().BeEmpty();
+            updatedGameData.GetCurrentPlayerGameData().Cards.Should().BeEmpty();
         }
 
         [Fact]
@@ -247,8 +254,8 @@ namespace Tests.RISK.GameEngine.Play.GameStates
             var aCard = Substitute.For<ICard>();
             var aSecondCard = Substitute.For<ICard>();
             var eliminatedPlayersCards = new[] { aCard, aSecondCard };
-            _anotherPlayerGameData.AddCard(aCard);
-            _anotherPlayerGameData.AddCard(aSecondCard);
+            //_anotherPlayerGameData.AddCard(aCard);
+            //_anotherPlayerGameData.AddCard(aSecondCard);
             var updatedTerritories = new List<ITerritory> { _territory };
             var attackOutcome = new AttackOutcome(updatedTerritories, DefendingArmyAvailability.IsEliminated);
             _attacker.Attack(
@@ -257,12 +264,12 @@ namespace Tests.RISK.GameEngine.Play.GameStates
                 _anotherRegion).Returns(attackOutcome);
             _playerEliminationRules.IsPlayerEliminated(
                 updatedTerritories,
-                _anotherPlayerGameData.Player).Returns(true);
+                _anotherPlayer).Returns(true);
 
             Sut.Attack(_region, _anotherRegion);
 
             updatedGameData.GetCurrentPlayerGameData().Cards.ShouldAllBeEquivalentTo(eliminatedPlayersCards, "all cards should be aquired");
-            _anotherPlayerGameData.Cards.Should().BeEmpty("all cards should be handed over");
+            updatedGameData.PlayerGameDatas.Single(x => x.Player == _anotherPlayer).Cards.Should().BeEmpty("all cards should be handed over");
         }
 
         [Fact]
@@ -279,14 +286,6 @@ namespace Tests.RISK.GameEngine.Play.GameStates
             Sut.Attack(_region, _anotherRegion);
 
             _gamePhaseConductor.Received().PlayerIsTheWinner(_currentPlayer);
-        }
-    }
-
-    public static class GameDataExtensions
-    {
-        public static IPlayerGameData GetCurrentPlayerGameData(this GameData gameData)
-        {
-            return gameData.Players.Single(x => x.Player == gameData.CurrentPlayer);
         }
     }
 }

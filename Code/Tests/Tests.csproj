@@ -108,6 +108,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="RISK.GameEngine\Builders\DeckBuilder.cs" />
     <Compile Include="RISK.GameEngine\Builders\GameDataBuilder.cs" />
     <Compile Include="RISK.GameEngine\Builders\PlayerGameDataBuilder.cs" />
     <Compile Include="RISK.GameEngine\Play\GameStates\AttackPhaseStateGameStateTests.cs" />

@@ -25,6 +25,8 @@ Improvements:
      - Deck?
 
 - Eliminated player should not take turn
+- private bool _cardHasBeenAwardedThisTurn;  ...should not be used?
+
 
 ##Not/partially tested
 - GameStateFactory (CreateNextTurnGameState, etc)

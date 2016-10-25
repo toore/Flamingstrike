@@ -2,7 +2,7 @@
 
 // Maybe monad as written by Robert Gustavsson and Chris Jansson
 
-namespace RISK.UI.WPF
+namespace RISK.GameEngine
 {
     public class Maybe<T>
     {

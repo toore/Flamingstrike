@@ -25,7 +25,6 @@ namespace RISK.GameEngine.Play.GameStates
         private readonly IFortifier _fortifier;
         private readonly IPlayerEliminationRules _playerEliminationRules;
         private TurnConqueringAchievement _turnConqueringAchievement;
-        private bool _cardHasBeenAwardedThisTurn;
 
         public AttackPhaseStateGameState(
             GameData gameData,
@@ -45,7 +44,7 @@ namespace RISK.GameEngine.Play.GameStates
 
         public IPlayer Player => _gameData.CurrentPlayer;
         public IReadOnlyList<ITerritory> Territories => _gameData.Territories;
-        public IReadOnlyList<IPlayerGameData> Players => _gameData.Players;
+        public IReadOnlyList<IPlayerGameData> Players => _gameData.PlayerGameDatas;
 
         public bool CanAttack(IRegion attackingRegion, IRegion defendingRegion)
         {
@@ -71,7 +70,7 @@ namespace RISK.GameEngine.Play.GameStates
             var defendingPlayerBeforeTerritoriesAreUpdated = GetPlayer(defendingRegion);
 
             var attackOutcome = _attacker.Attack(_gameData.Territories, attackingRegion, defendingRegion);
-            var updatedGameData = new GameData(attackOutcome.Territories, _gameData.Players, _gameData.CurrentPlayer, _gameData.Cards);
+            var updatedGameData = new GameData(attackOutcome.Territories, _gameData.PlayerGameDatas, _gameData.CurrentPlayer, _gameData.Deck);
 
             if (attackOutcome.DefendingArmyAvailability == DefendingArmyAvailability.IsEliminated)
             {
@@ -114,7 +113,7 @@ namespace RISK.GameEngine.Play.GameStates
 
         private void AquireAllCardsFromPlayerAndSendArmiesToOccupy(IPlayer defeatedPlayer, IRegion attackingRegion, IRegion defeatedRegion, GameData gameData)
         {
-            var eliminatedPlayer = _gameData.Players.Single(player => player.Player == defeatedPlayer);
+            var eliminatedPlayer = _gameData.PlayerGameDatas.Single(x => x.Player == defeatedPlayer);
 
             AquireAllCardsFromEliminatedPlayer(eliminatedPlayer);
             ContinueWithAttackOrOccupation(attackingRegion, defeatedRegion, gameData);
@@ -172,42 +171,51 @@ namespace RISK.GameEngine.Play.GameStates
                 throw new InvalidOperationException($"Current player is not occupying {nameof(sourceRegion)}.");
             }
 
-            MaybeCardIsAwarded();
-
             var updatedTerritories = _fortifier.Fortify(_gameData.Territories, sourceRegion, destinationRegion, armies);
-            var updatedGameData = new GameData(updatedTerritories, _gameData.Players, _gameData.CurrentPlayer, _gameData.Cards);
+            var updatedPlayerGameDatas = MaybeDrawCardAndUpdatePlayerGameDatas();
+            var updatedDeck = MaybeDrawCard()
+                .Fold(x => x.RestOfDeck, () => _gameData.Deck);
+            var updatedGameData = new GameData(updatedTerritories, updatedPlayerGameDatas, _gameData.CurrentPlayer, updatedDeck);
 
             _gamePhaseConductor.WaitForTurnToEnd(updatedGameData);
         }
 
         public void EndTurn()
         {
-            MaybeCardIsAwarded();
+            var updatedPlayerGameDatas = MaybeDrawCardAndUpdatePlayerGameDatas();
+            var updatedDeck = MaybeDrawCard()
+                .Fold(x => x.RestOfDeck, () => _gameData.Deck);
 
-            _gamePhaseConductor.PassTurnToNextPlayer(_gameData);
+            var updatedGameData = new GameData(_gameData.Territories, updatedPlayerGameDatas, _gameData.CurrentPlayer, updatedDeck);
+
+            _gamePhaseConductor.PassTurnToNextPlayer(updatedGameData);
         }
 
-        private void MaybeCardIsAwarded()
+        private List<IPlayerGameData> MaybeDrawCardAndUpdatePlayerGameDatas()
+        {
+            var currentPlayerCards = _gameData.GetCurrentPlayerGameData().Cards;
+            var updatedPlayerCards = MaybeDrawCard()
+                .Fold(x => currentPlayerCards.Concat(new[] { x.CardDrawn }).ToList(),
+                    () => _gameData.GetCurrentPlayerGameData().Cards);
+
+            var updatedCurrentPlayer = new PlayerGameData(_gameData.CurrentPlayer, updatedPlayerCards);
+
+            return _gameData.PlayerGameDatas.Replace(_gameData.GetCurrentPlayerGameData(), updatedCurrentPlayer).ToList();
+        }
+
+        private Maybe<CardDrawnAndRestOfDeck> MaybeDrawCard()
         {
             if (ShouldCardBeAwarded())
             {
-                AddTopDeckCardToCurrentPlayersCards();
-                _cardHasBeenAwardedThisTurn = true;
+                return Maybe<CardDrawnAndRestOfDeck>.Create(_gameData.Deck.DrawCard());
             }
+
+            return Maybe<CardDrawnAndRestOfDeck>.Nothing;
         }
 
         private bool ShouldCardBeAwarded()
         {
-            return _turnConqueringAchievement == TurnConqueringAchievement.SuccessfullyConqueredAtLeastOneTerritory
-                &&
-                !_cardHasBeenAwardedThisTurn;
-        }
-
-        private void AddTopDeckCardToCurrentPlayersCards()
-        {
-            throw new NotImplementedException();
-            //var card = _deck.Draw();
-            //_currentPlayerGameData.AddCard(card);
+            return _turnConqueringAchievement == TurnConqueringAchievement.SuccessfullyConqueredAtLeastOneTerritory;
         }
     }
 }
