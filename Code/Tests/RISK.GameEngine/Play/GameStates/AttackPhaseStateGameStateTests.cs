@@ -18,6 +18,7 @@ namespace Tests.RISK.GameEngine.Play.GameStates
         private readonly GameData _gameData;
         private readonly IPlayer _currentPlayer;
         private readonly IPlayer _anotherPlayer;
+        private readonly IPlayerGameData _anotherPlayerGameData;
         private readonly IDeck _deck;
         private readonly IGamePhaseConductor _gamePhaseConductor;
         private readonly IAttacker _attacker;
@@ -43,6 +44,7 @@ namespace Tests.RISK.GameEngine.Play.GameStates
 
             _currentPlayer = Substitute.For<IPlayer>();
             _anotherPlayer = Substitute.For<IPlayer>();
+            _anotherPlayerGameData = Substitute.For<IPlayerGameData>();
 
             _territory.Region.Returns(_region);
             _territory.Player.Returns(_currentPlayer);
@@ -52,7 +54,7 @@ namespace Tests.RISK.GameEngine.Play.GameStates
             _gameData = Make.GameData
                 .Territories(_territory, anotherTerritory)
                 .AddPlayer(Make.PlayerGameData.Player(_currentPlayer).Build())
-                .AddPlayer(Make.PlayerGameData.Player(_anotherPlayer).Build())
+                .AddPlayer(_anotherPlayerGameData)
                 .CurrentPlayer(_currentPlayer)
                 .Deck(_deck)
                 .Build();
@@ -253,9 +255,8 @@ namespace Tests.RISK.GameEngine.Play.GameStates
                 Arg.Do<GameData>(x => updatedGameData = x));
             var aCard = Substitute.For<ICard>();
             var aSecondCard = Substitute.For<ICard>();
-            var eliminatedPlayersCards = new[] { aCard, aSecondCard };
-            //_anotherPlayerGameData.AddCard(aCard);
-            //_anotherPlayerGameData.AddCard(aSecondCard);
+            _anotherPlayerGameData.Player.Returns(_anotherPlayer);
+            _anotherPlayerGameData.Cards.Returns(new[] { aCard, aSecondCard });
             var updatedTerritories = new List<ITerritory> { _territory };
             var attackOutcome = new AttackOutcome(updatedTerritories, DefendingArmyAvailability.IsEliminated);
             _attacker.Attack(
@@ -268,7 +269,7 @@ namespace Tests.RISK.GameEngine.Play.GameStates
 
             Sut.Attack(_region, _anotherRegion);
 
-            updatedGameData.GetCurrentPlayerGameData().Cards.ShouldAllBeEquivalentTo(eliminatedPlayersCards, "all cards should be aquired");
+            updatedGameData.GetCurrentPlayerGameData().Cards.ShouldAllBeEquivalentTo(new[] { aCard, aSecondCard }, "all cards should be aquired from eliminated player");
             updatedGameData.PlayerGameDatas.Single(x => x.Player == _anotherPlayer).Cards.Should().BeEmpty("all cards should be handed over");
         }
 

@@ -70,16 +70,15 @@ namespace RISK.GameEngine.Play.GameStates
             var defendingPlayerBeforeTerritoriesAreUpdated = GetPlayer(defendingRegion);
 
             var attackOutcome = _attacker.Attack(_gameData.Territories, attackingRegion, defendingRegion);
-            var updatedGameData = new GameData(attackOutcome.Territories, _gameData.PlayerGameDatas, _gameData.CurrentPlayer, _gameData.Deck);
 
             if (attackOutcome.DefendingArmyAvailability == DefendingArmyAvailability.IsEliminated)
             {
                 var defeatedPlayer = defendingPlayerBeforeTerritoriesAreUpdated;
-                DefendingArmyIsEliminated(defeatedPlayer, attackingRegion, defendingRegion, updatedGameData);
+                DefendingArmyIsEliminated(defeatedPlayer, attackingRegion, defendingRegion, attackOutcome.Territories);
             }
             else
             {
-                MoveOnToAttackPhase(updatedGameData);
+                MoveOnToAttackPhase(attackOutcome.Territories, _gameData.PlayerGameDatas);
             }
         }
 
@@ -88,21 +87,21 @@ namespace RISK.GameEngine.Play.GameStates
             return _gameData.Territories.Single(x => x.Region == region).Player;
         }
 
-        private void DefendingArmyIsEliminated(IPlayer defeatedPlayer, IRegion attackingRegion, IRegion defeatedRegion, GameData gameData)
+        private void DefendingArmyIsEliminated(IPlayer defeatedPlayer, IRegion attackingRegion, IRegion defeatedRegion, IReadOnlyList<ITerritory> updatedTerritories)
         {
             _turnConqueringAchievement = TurnConqueringAchievement.SuccessfullyConqueredAtLeastOneTerritory;
 
-            if (_playerEliminationRules.IsOnlyOnePlayerLeftInTheGame(gameData.Territories))
+            if (_playerEliminationRules.IsOnlyOnePlayerLeftInTheGame(updatedTerritories))
             {
                 GameIsOver();
             }
-            else if (_playerEliminationRules.IsPlayerEliminated(gameData.Territories, defeatedPlayer))
+            else if (_playerEliminationRules.IsPlayerEliminated(updatedTerritories, defeatedPlayer))
             {
-                AquireAllCardsFromPlayerAndSendArmiesToOccupy(defeatedPlayer, attackingRegion, defeatedRegion, gameData);
+                AquireAllCardsFromPlayerAndSendArmiesToOccupy(defeatedPlayer, attackingRegion, defeatedRegion, updatedTerritories);
             }
             else
             {
-                ContinueWithAttackOrOccupation(attackingRegion, defeatedRegion, gameData);
+                ContinueWithAttackOrOccupation(attackingRegion, defeatedRegion, updatedTerritories, _gameData.PlayerGameDatas);
             }
         }
 
@@ -111,47 +110,60 @@ namespace RISK.GameEngine.Play.GameStates
             _gamePhaseConductor.PlayerIsTheWinner(_gameData.CurrentPlayer);
         }
 
-        private void AquireAllCardsFromPlayerAndSendArmiesToOccupy(IPlayer defeatedPlayer, IRegion attackingRegion, IRegion defeatedRegion, GameData gameData)
+        private void AquireAllCardsFromPlayerAndSendArmiesToOccupy(IPlayer defeatedPlayer, IRegion attackingRegion, IRegion defeatedRegion, IReadOnlyList<ITerritory> updatedTerritories)
         {
-            var eliminatedPlayer = _gameData.PlayerGameDatas.Single(x => x.Player == defeatedPlayer);
+            var eliminatedPlayerGameData = _gameData.PlayerGameDatas.Single(x => x.Player == defeatedPlayer);
 
-            AquireAllCardsFromEliminatedPlayer(eliminatedPlayer);
-            ContinueWithAttackOrOccupation(attackingRegion, defeatedRegion, gameData);
+            var updatedCurrentPlayer = LetCurrentPlayerAquireAllCardsFromEliminatedPlayer(eliminatedPlayerGameData);
+            var updatedEliminatedPlayer = RemoveAllCardsForPlayer(eliminatedPlayerGameData);
+
+            var updatedPlayerGameDatas = _gameData.PlayerGameDatas
+                .Replace(_gameData.GetCurrentPlayerGameData(), updatedCurrentPlayer)
+                .Replace(eliminatedPlayerGameData, updatedEliminatedPlayer)
+                .ToList();
+
+            ContinueWithAttackOrOccupation(attackingRegion, defeatedRegion, updatedTerritories, updatedPlayerGameDatas);
         }
 
-        private void AquireAllCardsFromEliminatedPlayer(IPlayerGameData eliminatedPlayerGameData)
+        private PlayerGameData LetCurrentPlayerAquireAllCardsFromEliminatedPlayer(IPlayerGameData eliminatedPlayerGameData)
         {
-            throw new NotImplementedException();
-            //var aquiredCards = eliminatedPlayerGameData.AquireAllCards();
-            //foreach (var aquiredCard in aquiredCards)
-            //{
-            //    _currentPlayerGameData.AddCard(aquiredCard);
-            //}
+            return new PlayerGameData(
+                _gameData.CurrentPlayer,
+                _gameData.GetCurrentPlayerGameData().Cards.Concat(eliminatedPlayerGameData.Cards).ToList());
         }
 
-        private void ContinueWithAttackOrOccupation(IRegion sourceRegion, IRegion destinationRegion, GameData gameData)
+        private static PlayerGameData RemoveAllCardsForPlayer(IPlayerGameData eliminatedPlayerGameData)
         {
-            var numberOfArmiesThatCanBeSentToOccupy = gameData.Territories
+            return new PlayerGameData(eliminatedPlayerGameData.Player, new List<ICard>());
+        }
+
+        private void ContinueWithAttackOrOccupation(IRegion sourceRegion, IRegion destinationRegion, IReadOnlyList<ITerritory> updatedTerritories, IReadOnlyList<IPlayerGameData> updatedPlayerGameDatas)
+        {
+            var numberOfArmiesThatCanBeSentToOccupy = updatedTerritories
                 .Single(x => x.Region == sourceRegion).GetNumberOfArmiesThatCanBeSentToOccupy();
 
             if (numberOfArmiesThatCanBeSentToOccupy > 0)
             {
-                SendArmiesToOccupy(sourceRegion, destinationRegion, gameData);
+                SendArmiesToOccupy(sourceRegion, destinationRegion, updatedTerritories, updatedPlayerGameDatas);
             }
             else
             {
-                MoveOnToAttackPhase(gameData);
+                MoveOnToAttackPhase(updatedTerritories, updatedPlayerGameDatas);
             }
         }
 
-        private void SendArmiesToOccupy(IRegion sourceRegion, IRegion destinationRegion, GameData gameData)
+        private void SendArmiesToOccupy(IRegion sourceRegion, IRegion destinationRegion, IReadOnlyList<ITerritory> updatedTerritories, IReadOnlyList<IPlayerGameData> updatedPlayerGameDatas)
         {
-            _gamePhaseConductor.SendArmiesToOccupy(sourceRegion, destinationRegion, gameData);
+            var updatedGameData = new GameData(updatedTerritories, updatedPlayerGameDatas, _gameData.CurrentPlayer, _gameData.Deck);
+
+            _gamePhaseConductor.SendArmiesToOccupy(sourceRegion, destinationRegion, updatedGameData);
         }
 
-        private void MoveOnToAttackPhase(GameData gameData)
+        private void MoveOnToAttackPhase(IReadOnlyList<ITerritory> updatedTerritories, IReadOnlyList<IPlayerGameData> updatedPlayerGameDatas)
         {
-            _gamePhaseConductor.ContinueWithAttackPhase(_turnConqueringAchievement, gameData);
+            var updatedGameData = new GameData(updatedTerritories, updatedPlayerGameDatas, _gameData.CurrentPlayer, _gameData.Deck);
+
+            _gamePhaseConductor.ContinueWithAttackPhase(_turnConqueringAchievement, updatedGameData);
         }
 
         public bool CanFortify(IRegion sourceRegion, IRegion destinationRegion)

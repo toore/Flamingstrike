@@ -62,8 +62,8 @@ namespace RISK.GameEngine.Attacking
             var battleResult = _battle.Attack(attackingTerritory, defendingTerritory);
 
             var updatedTerritories = territories
-                .Except(new [] {attackingTerritory, defendingTerritory})
-                .Union(new[]{battleResult.UpdatedAttackingTerritory, battleResult.UpdatedDefendingTerritory})
+                .Except(new[] { attackingTerritory, defendingTerritory })
+                .Union(new[] { battleResult.UpdatedAttackingTerritory, battleResult.UpdatedDefendingTerritory })
                 .ToList();
 
             var defendingArmyAvailability = battleResult.IsDefenderDefeated() ? DefendingArmyAvailability.IsEliminated

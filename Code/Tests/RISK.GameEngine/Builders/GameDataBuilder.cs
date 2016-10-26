@@ -22,7 +22,7 @@ namespace Tests.RISK.GameEngine.Builders
             return this;
         }
 
-        public GameDataBuilder AddPlayer(PlayerGameData playerGameData)
+        public GameDataBuilder AddPlayer(IPlayerGameData playerGameData)
         {
             _playerGameDatas.Add(playerGameData);
             return this;
