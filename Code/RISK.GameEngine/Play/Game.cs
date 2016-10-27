@@ -28,11 +28,6 @@ namespace RISK.GameEngine.Play
         {
             return gameData.PlayerGameDatas.Single(x => x.Player == gameData.CurrentPlayer);
         }
-
-        public static IPlayerGameData GetPlayerGameData(this GameData gameData, IPlayer player)
-        {
-            return gameData.PlayerGameDatas.Single(x => x.Player == player);
-        }
     }
 
     public interface IGamePhaseConductor
