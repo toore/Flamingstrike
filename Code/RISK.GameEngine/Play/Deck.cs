@@ -5,7 +5,7 @@ namespace RISK.GameEngine.Play
 {
     public interface IDeck
     {
-        CardDrawnAndRestOfDeck DrawCard();
+        DrawCard DrawCard();
     }
 
     public class Deck : IDeck
@@ -17,24 +17,24 @@ namespace RISK.GameEngine.Play
             _cards = cards;
         }
 
-        public CardDrawnAndRestOfDeck DrawCard()
+        public DrawCard DrawCard()
         {
             var topCard = _cards.First();
             var restOfDeck = new Deck(_cards.Skip(1).ToList());
 
-            return new CardDrawnAndRestOfDeck(topCard, restOfDeck);
+            return new DrawCard(topCard, restOfDeck);
         }
     }
 
-    public class CardDrawnAndRestOfDeck
+    public class DrawCard
     {
-        public ICard CardDrawn { get; }
-        public IDeck RestOfDeck { get; }
+        public ICard TopCard { get; }
+        public IDeck RestOfTheDeck { get; }
 
-        public CardDrawnAndRestOfDeck(ICard cardDrawn, IDeck restOfDeck)
+        public DrawCard(ICard topCard, IDeck restOfTheDeck)
         {
-            CardDrawn = cardDrawn;
-            RestOfDeck = restOfDeck;
+            TopCard = topCard;
+            RestOfTheDeck = restOfTheDeck;
         }
     }
 }

@@ -174,7 +174,7 @@ namespace Tests.RISK.GameEngine.Play.GameStates
             GameData updatedGameData = null;
             _gamePhaseConductor.WaitForTurnToEnd(Arg.Do<GameData>(x => updatedGameData = x));
             var topDeckCard = Substitute.For<ICard>();
-            _deck.DrawCard().Returns(new CardDrawnAndRestOfDeck(topDeckCard, Make.Deck.Build()));
+            _deck.DrawCard().Returns(new DrawCard(topDeckCard, Make.Deck.Build()));
             _turnConqueringAchievement = TurnConqueringAchievement.SuccessfullyConqueredAtLeastOneTerritory;
 
             Sut.Fortify(_region, _anotherRegion, 1);
@@ -210,7 +210,7 @@ namespace Tests.RISK.GameEngine.Play.GameStates
             GameData updatedGameData = null;
             _gamePhaseConductor.PassTurnToNextPlayer(Arg.Do<GameData>(x => updatedGameData = x));
             var topDeckCard = Substitute.For<ICard>();
-            _deck.DrawCard().Returns(new CardDrawnAndRestOfDeck(topDeckCard, null));
+            _deck.DrawCard().Returns(new DrawCard(topDeckCard, null));
             _turnConqueringAchievement = TurnConqueringAchievement.SuccessfullyConqueredAtLeastOneTerritory;
 
             Sut.EndTurn();

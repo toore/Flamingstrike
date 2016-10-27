@@ -184,50 +184,66 @@ namespace RISK.GameEngine.Play.GameStates
             }
 
             var updatedTerritories = _fortifier.Fortify(_gameData.Territories, sourceRegion, destinationRegion, armies);
-            var updatedPlayerGameDatas = MaybeDrawCardAndUpdatePlayerGameDatas();
-            var updatedDeck = AwardCard()
-                .Fold(x => x.RestOfDeck, () => _gameData.Deck);
-            var updatedGameData = new GameData(updatedTerritories, updatedPlayerGameDatas, _gameData.CurrentPlayer, updatedDeck);
+            var playersAndDeck = UpdatePlayerGameDatasAndDeck();
+            var updatedGameData = new GameData(updatedTerritories, playersAndDeck.PlayerGameDatas, _gameData.CurrentPlayer, playersAndDeck.Deck);
 
             _gamePhaseConductor.WaitForTurnToEnd(updatedGameData);
         }
 
         public void EndTurn()
         {
-            var updatedPlayerGameDatas = MaybeDrawCardAndUpdatePlayerGameDatas();
-            var updatedDeck = AwardCard()
-                .Fold(x => x.RestOfDeck, () => _gameData.Deck);
+            var playersAndDeck = UpdatePlayerGameDatasAndDeck();
 
-            var updatedGameData = new GameData(_gameData.Territories, updatedPlayerGameDatas, _gameData.CurrentPlayer, updatedDeck);
+            var updatedGameData = new GameData(_gameData.Territories, playersAndDeck.PlayerGameDatas, _gameData.CurrentPlayer, playersAndDeck.Deck);
 
             _gamePhaseConductor.PassTurnToNextPlayer(updatedGameData);
         }
 
-        private List<IPlayerGameData> MaybeDrawCardAndUpdatePlayerGameDatas()
+        private PlayerGameDatasAndDeck UpdatePlayerGameDatasAndDeck()
         {
-            var currentPlayerCards = _gameData.GetCurrentPlayerGameData().Cards;
-            var updatedPlayerCards = AwardCard()
-                .Fold(x => currentPlayerCards.Concat(new[] { x.CardDrawn }).ToList(),
-                    () => _gameData.GetCurrentPlayerGameData().Cards);
+            var updatedPlayerGameDatas = AwardCard()
+                .Bind(x => AddCardToPlayer(_gameData.GetCurrentPlayerGameData(), x.TopCard))
+                .Fold(x => _gameData.PlayerGameDatas.Replace(_gameData.GetCurrentPlayerGameData(), x).ToList(),
+                    () => _gameData.PlayerGameDatas);
 
-            var updatedCurrentPlayer = new PlayerGameData(_gameData.CurrentPlayer, updatedPlayerCards);
+            var updatedDeck = AwardCard()
+                .Fold(x => x.RestOfTheDeck, () => _gameData.Deck);
 
-            return _gameData.PlayerGameDatas.Replace(_gameData.GetCurrentPlayerGameData(), updatedCurrentPlayer).ToList();
+            return new PlayerGameDatasAndDeck(updatedPlayerGameDatas, updatedDeck);
         }
 
-        private Maybe<CardDrawnAndRestOfDeck> AwardCard()
+        private Maybe<DrawCard> AwardCard()
         {
             if (ShouldCardBeAwarded())
             {
-                return Maybe<CardDrawnAndRestOfDeck>.Create(_gameData.Deck.DrawCard());
+                return Maybe<DrawCard>.Create(_gameData.Deck.DrawCard());
             }
 
-            return Maybe<CardDrawnAndRestOfDeck>.Nothing;
+            return Maybe<DrawCard>.Nothing;
         }
 
         private bool ShouldCardBeAwarded()
         {
             return _turnConqueringAchievement == TurnConqueringAchievement.SuccessfullyConqueredAtLeastOneTerritory;
+        }
+
+        private PlayerGameData AddCardToPlayer(IPlayerGameData playerGameData, ICard card)
+        {
+            var playerCards = playerGameData.Cards.Concat(new[] { card }).ToList();
+
+            return new PlayerGameData(_gameData.CurrentPlayer, playerCards);
+        }
+
+        private class PlayerGameDatasAndDeck
+        {
+            public IReadOnlyList<IPlayerGameData> PlayerGameDatas { get; }
+            public IDeck Deck { get; }
+
+            public PlayerGameDatasAndDeck(IReadOnlyList<IPlayerGameData> playerGameDatas, IDeck deck)
+            {
+                PlayerGameDatas = playerGameDatas;
+                Deck = deck;
+            }
         }
     }
 }
