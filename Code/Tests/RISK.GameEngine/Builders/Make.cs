@@ -1,3 +1,5 @@
+using RISK.UI.WPF.ViewModels.Preparation;
+
 namespace Tests.RISK.GameEngine.Builders
 {
     public static class Make
@@ -12,5 +14,6 @@ namespace Tests.RISK.GameEngine.Builders
         public static PlayerGameDataBuilder PlayerGameData => new PlayerGameDataBuilder();
         public static GameDataBuilder GameData => new GameDataBuilder();
         public static DeckBuilder Deck => new DeckBuilder();
+        public static PlayerUiDataBuilder PlayerUiData => new PlayerUiDataBuilder();
     }
 }

@@ -20,9 +20,9 @@ namespace RISK.UI.WPF.Services
             NormalStrokeColor = normalStrokeColor;
         }
 
-        public Color NormalStrokeColor { get; private set; }
-        public Color NormalFillColor { get; private set; }
-        public Color MouseOverStrokeColor { get; private set; }
-        public Color MouseOverFillColor { get; private set; }
+        public Color NormalStrokeColor { get; }
+        public Color NormalFillColor { get; }
+        public Color MouseOverStrokeColor { get; }
+        public Color MouseOverFillColor { get; }
     }
 }

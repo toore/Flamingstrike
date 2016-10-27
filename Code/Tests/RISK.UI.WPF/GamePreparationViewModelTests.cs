@@ -17,7 +17,7 @@ namespace Tests.RISK.UI.WPF
         {
             var playerFactory = Substitute.For<IPlayerFactory>();
             var playerTypes = Substitute.For<IPlayerTypes>();
-            var playerRepository = Substitute.For<IPlayerRepository>();
+            var playerRepository = Substitute.For<IPlayerUiDataRepository>();
             _gameEventAggregator = Substitute.For<IEventAggregator>();
 
             var playerType = Substitute.For<PlayerTypeBase>();

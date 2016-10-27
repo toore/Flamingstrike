@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
+using System.Windows.Media;
 using RISK.UI.WPF.ViewModels.Preparation;
 
 namespace RISK.UI.WPF.Views.Preparation
@@ -20,11 +20,11 @@ namespace RISK.UI.WPF.Views.Preparation
             var playerTypes = new PlayerTypes();
 
             Players = new List<GamePreparationPlayerViewModel>(new[]
-            {
-                new GamePreparationPlayerViewModel(playerTypes) { Name = "Player 1" },
-                new GamePreparationPlayerViewModel(playerTypes) { Name = "Player 2" },
-                new GamePreparationPlayerViewModel(playerTypes) { Name = "Player 3" }
-            });
+                {
+                    new GamePreparationPlayerViewModel(playerTypes, new PlayerColor(Colors.Black)) { Name = "Player 1" },
+                    new GamePreparationPlayerViewModel(playerTypes, new PlayerColor(Colors.Red)) { Name = "Player 2" },
+                    new GamePreparationPlayerViewModel(playerTypes, new PlayerColor(Colors.CadetBlue)) { Name = "Player 3" }
+                });
         }
 
         public IList<GamePreparationPlayerViewModel> Players { get; }

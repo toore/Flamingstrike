@@ -1,7 +1,5 @@
-﻿using System.Collections.Generic;
-using FluentAssertions;
+﻿using FluentAssertions;
 using NSubstitute;
-using RISK.GameEngine;
 using RISK.GameEngine.Play;
 using RISK.GameEngine.Setup;
 using RISK.UI.WPF.ViewModels.AlternateSetup;
@@ -15,7 +13,7 @@ namespace Tests.RISK.UI.WPF
 {
     public class MainGameViewModelTests
     {
-        private readonly IPlayerRepository _playerRepository;
+        private readonly IPlayerUiDataRepository _playerUiDataRepository;
         private readonly IAlternateGameSetupFactory _alternateGameSetupFactory;
         private readonly IGamePreparationViewModelFactory _gamePreparationViewModelFactory;
         private readonly IGameplayViewModelFactory _gameplayViewModelFactory;
@@ -24,7 +22,7 @@ namespace Tests.RISK.UI.WPF
 
         public MainGameViewModelTests()
         {
-            _playerRepository = Substitute.For<IPlayerRepository>();
+            _playerUiDataRepository = Substitute.For<IPlayerUiDataRepository>();
             _alternateGameSetupFactory = Substitute.For<IAlternateGameSetupFactory>();
             _gamePreparationViewModelFactory = Substitute.For<IGamePreparationViewModelFactory>();
             _gameplayViewModelFactory = Substitute.For<IGameplayViewModelFactory>();
@@ -61,10 +59,6 @@ namespace Tests.RISK.UI.WPF
         public void Setup_game_message_shows_game_setup_view()
         {
             var gameSetupViewModel = Substitute.For<IAlternateGameSetupViewModel>();
-            var alternateGameSetup = Substitute.For<IAlternateGameSetup>();
-            var players = new List<IPlayer>();
-            _playerRepository.GetAll().Returns(players);
-            _alternateGameSetupFactory.Create(gameSetupViewModel, players).Returns(alternateGameSetup);
             _alternateGameSetupViewModelFactory.Create().Returns(gameSetupViewModel);
 
             var sut = Initialize();
@@ -88,7 +82,7 @@ namespace Tests.RISK.UI.WPF
         private MainGameViewModelDecorator Initialize()
         {
             return new MainGameViewModelDecorator(
-                _playerRepository,
+                _playerUiDataRepository,
                 _alternateGameSetupFactory,
                 _gamePreparationViewModelFactory,
                 _gameplayViewModelFactory,

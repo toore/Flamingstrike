@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows.Media;
 
 namespace RISK.UI.WPF.ViewModels.Preparation
 {
@@ -10,10 +11,14 @@ namespace RISK.UI.WPF.ViewModels.Preparation
         private string _name;
         private PlayerTypeBase _selectedPlayerType;
 
-        public GamePreparationPlayerViewModel(IPlayerTypes playerTypes)
+        public GamePreparationPlayerViewModel(IPlayerTypes playerTypes, PlayerColor playerColor)
         {
             PlayerTypes = playerTypes.Values;
             SelectedPlayerType = PlayerTypes.First();
+            PlayerColor = playerColor;
+
+            Fill = new SolidColorBrush(playerColor.FillColor);
+            Fill.Freeze();
         }
 
         public Action OnIsEnabledChanged = () => { };
@@ -44,5 +49,8 @@ namespace RISK.UI.WPF.ViewModels.Preparation
         }
 
         public IReadOnlyList<PlayerTypeBase> PlayerTypes { get; }
+        public PlayerColor PlayerColor { get; }
+
+        public Brush Fill { get; }
     }
 }

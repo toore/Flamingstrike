@@ -11,20 +11,20 @@ namespace RISK.UI.WPF.ViewModels.Preparation
     {
         private readonly IPlayerFactory _playerFactory;
         private readonly IPlayerTypes _playerTypes;
-        private readonly IPlayerRepository _playerRepository;
+        private readonly IPlayerUiDataRepository _playerUiDataRepository;
         private readonly IEventAggregator _eventAggregator;
 
-        public GamePreparationViewModelFactory(IPlayerFactory playerFactory, IPlayerTypes playerTypes, IPlayerRepository playerRepository, IEventAggregator eventAggregator)
+        public GamePreparationViewModelFactory(IPlayerFactory playerFactory, IPlayerTypes playerTypes, IPlayerUiDataRepository playerUiDataRepository, IEventAggregator eventAggregator)
         {
             _playerFactory = playerFactory;
             _playerTypes = playerTypes;
-            _playerRepository = playerRepository;
+            _playerUiDataRepository = playerUiDataRepository;
             _eventAggregator = eventAggregator;
         }
 
         public IGamePreparationViewModel Create()
         {
-            return new GamePreparationViewModel(_playerFactory, _playerTypes, _playerRepository, _eventAggregator);
+            return new GamePreparationViewModel(_playerFactory, _playerTypes, _playerUiDataRepository, _eventAggregator);
         }
     }
 }

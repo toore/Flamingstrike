@@ -16,7 +16,7 @@ namespace RISK.UI.WPF.ViewModels
 {
     public class Root
     {
-        public PlayerRepository PlayerRepository { get; }
+        public PlayerUiDataRepository PlayerUiDataRepository { get; }
         public IEventAggregator EventAggregator { get; }
         public IAlternateGameSetupFactory AlternateGameSetupFactory { get; }
         public IGamePreparationViewModelFactory GamePreparationViewModelFactory { get; }
@@ -28,13 +28,13 @@ namespace RISK.UI.WPF.ViewModels
         {
             var playerFactory = new PlayerFactory();
             var playerTypes = new PlayerTypes();
-            PlayerRepository = new PlayerRepository();
+            PlayerUiDataRepository = new PlayerUiDataRepository();
             EventAggregator = new EventAggregator();
 
             GamePreparationViewModelFactory = new GamePreparationViewModelFactory(
                 playerFactory,
                 playerTypes,
-                PlayerRepository,
+                PlayerUiDataRepository,
                 EventAggregator);
 
             var colorService = new ColorService();

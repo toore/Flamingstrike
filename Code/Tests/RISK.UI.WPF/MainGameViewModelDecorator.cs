@@ -13,14 +13,14 @@ namespace Tests.RISK.UI.WPF
             : base(root) {}
 
         public MainGameViewModelDecorator(
-            IPlayerRepository playerRepository,
+            IPlayerUiDataRepository playerUiDataRepository,
             IAlternateGameSetupFactory alternateGameSetupFactory,
             IGamePreparationViewModelFactory gamePreparationViewModelFactory,
             IGameplayViewModelFactory gameplayViewModelFactory,
             IAlternateGameSetupViewModelFactory alternateGameSetupViewModelFactory,
             IGameFactory gameFactory)
             : base(
-                playerRepository,
+                playerUiDataRepository,
                 alternateGameSetupFactory,
                 gamePreparationViewModelFactory,
                 gameplayViewModelFactory,

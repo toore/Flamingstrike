@@ -27,6 +27,7 @@
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="100" />
                 <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
             <CheckBox x:Name="isEnabledCheckBox"
@@ -50,6 +51,12 @@
                       ItemTemplate="{StaticResource PlayerTypeTemplate}"
                       ItemsSource="{Binding PlayerTypes}"
                       IsEnabled="{Binding IsChecked, ElementName=isEnabledCheckBox}" />
+            
+            <Rectangle Grid.Column="3" 
+                       Margin="5"
+                       Width="20" 
+                       Height="20" 
+                       Fill="{Binding Fill}" />
         </Grid>
     </DataTemplate>
 

@@ -111,6 +111,7 @@
     <Compile Include="RISK.GameEngine\Builders\DeckBuilder.cs" />
     <Compile Include="RISK.GameEngine\Builders\GameDataBuilder.cs" />
     <Compile Include="RISK.GameEngine\Builders\PlayerGameDataBuilder.cs" />
+    <Compile Include="RISK.GameEngine\Builders\PlayerUiDataBuilder.cs" />
     <Compile Include="RISK.GameEngine\Play\GameStates\AttackPhaseStateGameStateTests.cs" />
     <Compile Include="RISK.GameEngine\Play\GameStates\DraftArmiesPhaseGameStateTests.cs" />
     <Compile Include="RISK.GameEngine\Attacking\BattleTests.cs" />

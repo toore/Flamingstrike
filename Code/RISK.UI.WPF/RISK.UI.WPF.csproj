@@ -110,7 +110,7 @@
     <Compile Include="ViewModels\Messages\NewGameMessage.cs" />
     <Compile Include="ViewModels\Root.cs" />
     <Compile Include="ViewModels\Preparation\GamePreparationViewModelFactory.cs" />
-    <Compile Include="ViewModels\Preparation\PlayerRepository.cs" />
+    <Compile Include="ViewModels\Preparation\PlayerUiDataRepository.cs" />
     <Compile Include="Views\AlternateSetup\AlternateGameSetupView.xaml.cs">
       <DependentUpon>AlternateGameSetupView.xaml</DependentUpon>
     </Compile>

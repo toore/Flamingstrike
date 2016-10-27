@@ -1,4 +1,5 @@
-﻿using Caliburn.Micro;
+﻿using System.Linq;
+using Caliburn.Micro;
 using RISK.GameEngine.Play;
 using RISK.GameEngine.Setup;
 using RISK.UI.WPF.ViewModels.AlternateSetup;
@@ -15,14 +16,14 @@ namespace RISK.UI.WPF.ViewModels
         private readonly IAlternateGameSetupViewModelFactory _alternateGameSetupViewModelFactory;
         private readonly IGameFactory _gameFactory;
         private readonly IAlternateGameSetupFactory _alternateGameSetupFactory;
-        private readonly IPlayerRepository _playerRepository;
+        private readonly IPlayerUiDataRepository _playerUiDataRepository;
 
         public MainGameViewModel()
-            : this(new Root()) {}
+            : this(new Root()) { }
 
         protected MainGameViewModel(Root root)
             : this(
-                root.PlayerRepository,
+                root.PlayerUiDataRepository,
                 root.AlternateGameSetupFactory,
                 root.GamePreparationViewModelFactory,
                 root.GameplayViewModelFactory,
@@ -33,14 +34,14 @@ namespace RISK.UI.WPF.ViewModels
         }
 
         protected MainGameViewModel(
-            IPlayerRepository playerRepository,
+            IPlayerUiDataRepository playerUiDataRepository,
             IAlternateGameSetupFactory alternateGameSetupFactory,
             IGamePreparationViewModelFactory gamePreparationViewModelFactory,
             IGameplayViewModelFactory gameplayViewModelFactory,
             IAlternateGameSetupViewModelFactory alternateGameSetupViewModelFactory,
             IGameFactory gameFactory)
         {
-            _playerRepository = playerRepository;
+            _playerUiDataRepository = playerUiDataRepository;
             _alternateGameSetupFactory = alternateGameSetupFactory;
             _gamePreparationViewModelFactory = gamePreparationViewModelFactory;
             _gameplayViewModelFactory = gameplayViewModelFactory;
@@ -85,7 +86,7 @@ namespace RISK.UI.WPF.ViewModels
 
         private void StartGameSetup()
         {
-            var players = _playerRepository.GetAll();
+            var players = _playerUiDataRepository.GetAll().Select(x => x.Player).ToList();
             var gameSetupViewModel = _alternateGameSetupViewModelFactory.Create();
             var alternateGameSetup = _alternateGameSetupFactory.Create(gameSetupViewModel, players);
 
@@ -96,7 +97,7 @@ namespace RISK.UI.WPF.ViewModels
         {
             var gameplayViewModel = _gameplayViewModelFactory.Create();
             var game = _gameFactory.Create(gameplayViewModel, gamePlaySetup);
-            
+
             ActivateItem(gameplayViewModel);
         }
     }
