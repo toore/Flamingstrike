@@ -1,15 +1,15 @@
 ﻿<UserControl x:Class="Tests.RISK.UI.WPF.WorldMapTestUserControl"
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    mc:Ignorable="d"
-    d:DesignHeight="300" d:DesignWidth="300">
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d"
+             d:DesignHeight="300" d:DesignWidth="300">
 
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/GuiWpf;component/Views/Gameplay/RegionStyles.xaml" />
+                <ResourceDictionary Source="/RISK.UI.WPF;component/Views/Gameplay/RegionStyles.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
             <Style x:Key="ContinentPathBaseStyle" TargetType="Path">
@@ -154,7 +154,7 @@
             <Path Name="path3072">
                 <Path.Data>
                     <PathGeometry Figures="m 666.70068 240.70037 -3.53553 66.16499 64.14468 29.29443 -5.05076 48.9924 -58.08377 48.48732 -123.23861 -53.03301 34.34518 -123.74369 z"
-                        FillRule="NonZero" />
+                                  FillRule="NonZero" />
                 </Path.Data>
             </Path>
             <Path Name="path3074">
@@ -165,7 +165,7 @@
             <Path Name="path3076">
                 <Path.Data>
                     <PathGeometry Figures="m 727.30983 337.16994 53.53809 -19.69798 40.91118 69.19545 32.32488 -6.56599 -51.01271 124.24877 -46.46701 -13.63706 -33.33504 -104.55079 z"
-                        FillRule="NonZero" />
+                                  FillRule="NonZero" />
                 </Path.Data>
             </Path>
             <Path Name="path3078">
@@ -176,7 +176,7 @@
             <Path Name="path3080">
                 <Path.Data>
                     <PathGeometry Figures="m 673.77175 479.09637 26.76904 154.55334 32.82996 2.02031 47.47717 -65.15484 23.73858 -66.67007 -48.48732 -13.13198 -33.33503 15.15228 z"
-                        FillRule="NonZero" />
+                                  FillRule="NonZero" />
                 </Path.Data>
             </Path>
             <Path Name="path3082">
@@ -220,7 +220,7 @@
             <Path Name="path3095">
                 <Path.Data>
                     <PathGeometry Figures="m 636.3961 164.93893 -29.7995 14.14214 7.07107 26.76904 -24.74874 0 -8.08122 36.36549 33.84011 -2.02031 37.37565 -35.35533 0.50507 -22.22336 z"
-                        FillRule="NonZero" />
+                                  FillRule="NonZero" />
                 </Path.Data>
             </Path>
             <Path Name="path3097">
@@ -282,7 +282,7 @@
             <Path Name="path3132">
                 <Path.Data>
                     <PathGeometry Figures="m 887.92409 59.377989 60.60915 -25.253814 34.34519 18.687823 36.87057 71.720832 -40.40611 51.0127 -8.58629 2.52538 -3.53554 -48.48732 z"
-                        FillRule="NonZero" />
+                                  FillRule="NonZero" />
                 </Path.Data>
             </Path>
             <Path Name="path3134">
