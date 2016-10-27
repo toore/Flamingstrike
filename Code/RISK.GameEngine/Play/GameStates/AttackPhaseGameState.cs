@@ -185,7 +185,7 @@ namespace RISK.GameEngine.Play.GameStates
 
             var updatedTerritories = _fortifier.Fortify(_gameData.Territories, sourceRegion, destinationRegion, armies);
             var updatedPlayerGameDatas = MaybeDrawCardAndUpdatePlayerGameDatas();
-            var updatedDeck = MaybeDrawCard()
+            var updatedDeck = AwardCard()
                 .Fold(x => x.RestOfDeck, () => _gameData.Deck);
             var updatedGameData = new GameData(updatedTerritories, updatedPlayerGameDatas, _gameData.CurrentPlayer, updatedDeck);
 
@@ -195,7 +195,7 @@ namespace RISK.GameEngine.Play.GameStates
         public void EndTurn()
         {
             var updatedPlayerGameDatas = MaybeDrawCardAndUpdatePlayerGameDatas();
-            var updatedDeck = MaybeDrawCard()
+            var updatedDeck = AwardCard()
                 .Fold(x => x.RestOfDeck, () => _gameData.Deck);
 
             var updatedGameData = new GameData(_gameData.Territories, updatedPlayerGameDatas, _gameData.CurrentPlayer, updatedDeck);
@@ -206,7 +206,7 @@ namespace RISK.GameEngine.Play.GameStates
         private List<IPlayerGameData> MaybeDrawCardAndUpdatePlayerGameDatas()
         {
             var currentPlayerCards = _gameData.GetCurrentPlayerGameData().Cards;
-            var updatedPlayerCards = MaybeDrawCard()
+            var updatedPlayerCards = AwardCard()
                 .Fold(x => currentPlayerCards.Concat(new[] { x.CardDrawn }).ToList(),
                     () => _gameData.GetCurrentPlayerGameData().Cards);
 
@@ -215,7 +215,7 @@ namespace RISK.GameEngine.Play.GameStates
             return _gameData.PlayerGameDatas.Replace(_gameData.GetCurrentPlayerGameData(), updatedCurrentPlayer).ToList();
         }
 
-        private Maybe<CardDrawnAndRestOfDeck> MaybeDrawCard()
+        private Maybe<CardDrawnAndRestOfDeck> AwardCard()
         {
             if (ShouldCardBeAwarded())
             {
