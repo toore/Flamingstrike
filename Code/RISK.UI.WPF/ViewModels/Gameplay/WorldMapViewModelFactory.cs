@@ -37,11 +37,16 @@ namespace RISK.UI.WPF.ViewModels.Gameplay
             return worldMapViewModel;
         }
 
-        public void Update(WorldMapViewModel worldMapViewModel, IReadOnlyList<ITerritory> territories, IReadOnlyList<IRegion> enabledRegions, Maybe<IRegion> selectedRegion)
+        public void Update(
+            WorldMapViewModel worldMapViewModel,
+            IReadOnlyList<ITerritory> territories,
+            IReadOnlyList<IRegion> enabledRegions,
+            Maybe<IRegion> selectedRegion)
         {
             var worldMapItemUpdater = new WorldMapItemUpdater(
                 territories,
                 enabledRegions,
+                selectedRegion,
                 _playerUiDataRepository);
 
             foreach (var worldMapItemViewModel in worldMapViewModel.WorldMapViewModels)

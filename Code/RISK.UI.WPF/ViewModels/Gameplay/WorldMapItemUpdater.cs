@@ -10,43 +10,42 @@ namespace RISK.UI.WPF.ViewModels.Gameplay
     {
         private readonly IReadOnlyList<ITerritory> _territories;
         private readonly IReadOnlyList<IRegion> _enabledRegions;
+        private readonly Maybe<IRegion> _selectedRegion;
         private readonly IPlayerUiDataRepository _playerUiDataRepository;
 
         public WorldMapItemUpdater(
             IReadOnlyList<ITerritory> territories,
             IReadOnlyList<IRegion> enabledRegions,
+            Maybe<IRegion> selectedRegion,
             IPlayerUiDataRepository playerUiDataRepository)
         {
             _territories = territories;
             _enabledRegions = enabledRegions;
+            _selectedRegion = selectedRegion;
             _playerUiDataRepository = playerUiDataRepository;
         }
 
         public void Visit(RegionViewModel regionViewModel)
         {
-            var player = _territories.Single(x => x.Region == regionViewModel.Region).Player;
+            var playerColor = GetPlayerColor(regionViewModel.Region);
+
+            regionViewModel.StrokeColor = playerColor.Darken();
+            regionViewModel.FillColor = playerColor;
+
+            regionViewModel.IsEnabled = IsRegionEnabled(regionViewModel.Region);
+        }
+
+        private Color GetPlayerColor(IRegion region)
+        {
+            var player = _territories.Single(x => x.Region == region).Player;
             var playerUiData = _playerUiDataRepository.Get(player);
 
-            var strokeColor = Darken(playerUiData.Color);
-            var fillColor = playerUiData.Color;
-
-            regionViewModel.StrokeColor = strokeColor;
-            regionViewModel.FillColor = fillColor;
-
-            regionViewModel.IsEnabled = IsRegionEnabled(regionViewModel);
+            return playerUiData.Color;
         }
 
-        private static Color Darken(Color color)
+        private bool IsRegionEnabled(IRegion region)
         {
-            var darkerColor = Color.Multiply(color, 0.5f);
-            darkerColor.A = 0xff;
-
-            return darkerColor;
-        }
-
-        private bool IsRegionEnabled(RegionViewModel regionViewModel)
-        {
-            return _enabledRegions.Contains(regionViewModel.Region);
+            return _enabledRegions.Contains(region);
         }
 
         public void Visit(RegionNameViewModel regionNameViewModel)

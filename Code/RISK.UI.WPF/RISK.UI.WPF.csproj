@@ -89,10 +89,12 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="ContentClickButton.cs" />
+    <Compile Include="Extensions\ColorExtensions.cs" />
     <Compile Include="Extensions\EnumerableExtensions.cs" />
     <Compile Include="RegionModels\RegionModelBase.cs" />
     <Compile Include="ViewModels\ConfirmViewModel.cs" />
     <Compile Include="ViewModels\ConfirmViewModelFactory.cs" />
+    <Compile Include="ViewModels\Gameplay\ColorExtensions.cs" />
     <Compile Include="ViewModels\Gameplay\Interaction\AttackInteractionState.cs" />
     <Compile Include="ViewModels\Gameplay\Interaction\DraftArmiesInteractionState.cs" />
     <Compile Include="ViewModels\Gameplay\Interaction\FortifyInteractionState.cs" />
