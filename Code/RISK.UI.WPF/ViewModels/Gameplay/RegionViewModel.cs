@@ -5,15 +5,7 @@ using RISK.UI.WPF.RegionModels;
 
 namespace RISK.UI.WPF.ViewModels.Gameplay
 {
-    public interface IRegionViewModel : IWorldMapItemViewModel
-    {
-        Color StrokeColor { get; set; }
-        Color FillColor { get; set; }
-        Color MouseOverStrokeColor { get; set; }
-        Color MouseOverFillColor { get; set; }
-
-        void OnClick();
-    }
+    public interface IRegionViewModel : IWorldMapItemViewModel {}
 
     public class RegionViewModel : ViewModelBase, IRegionViewModel
     {
@@ -30,6 +22,7 @@ namespace RISK.UI.WPF.ViewModels.Gameplay
         public IRegion Region => _regionModel.Region;
 
         private Color _strokeColor;
+
         public Color StrokeColor
         {
             get { return _strokeColor; }
@@ -37,27 +30,15 @@ namespace RISK.UI.WPF.ViewModels.Gameplay
         }
 
         private Color _fillColor;
+
         public Color FillColor
         {
             get { return _fillColor; }
             set { NotifyOfPropertyChange(value, () => FillColor, x => _fillColor = x); }
         }
 
-        private Color _mouseOverStrokeColor;
-        public Color MouseOverStrokeColor
-        {
-            get { return _mouseOverStrokeColor; }
-            set { NotifyOfPropertyChange(value, () => MouseOverStrokeColor, x => _mouseOverStrokeColor = x); }
-        }
-
-        private Color _mouseOverFillColor;
-        public Color MouseOverFillColor
-        {
-            get { return _mouseOverFillColor; }
-            set { NotifyOfPropertyChange(value, () => MouseOverFillColor, x => _mouseOverFillColor = x); }
-        }
-
         private bool _isEnabled;
+
         public bool IsEnabled
         {
             get { return _isEnabled; }

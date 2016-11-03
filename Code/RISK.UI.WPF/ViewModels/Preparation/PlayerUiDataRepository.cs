@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Media;
 using RISK.GameEngine;
 
@@ -6,25 +7,27 @@ namespace RISK.UI.WPF.ViewModels.Preparation
 {
     public interface IPlayerUiDataRepository
     {
-        IList<IPlayerUiData> GetAll();
         void Add(IPlayerUiData playerUiData);
+        IPlayerUiData Get(IPlayer player);
+        IList<IPlayerUiData> GetAll();
         void Clear();
     }
 
     public interface IPlayerUiData
     {
         IPlayer Player { get; }
+        Color Color { get; }
     }
 
     public class PlayerUiData : IPlayerUiData
     {
         public IPlayer Player { get; }
-        public Color FillColor { get; }
+        public Color Color { get; }
 
-        public PlayerUiData(IPlayer player, Color fillColor)
+        public PlayerUiData(IPlayer player, Color color)
         {
             Player = player;
-            FillColor = fillColor;
+            Color = color;
         }
     }
 
@@ -32,14 +35,19 @@ namespace RISK.UI.WPF.ViewModels.Preparation
     {
         private readonly List<IPlayerUiData> _players = new List<IPlayerUiData>();
 
-        public IList<IPlayerUiData> GetAll()
-        {
-            return _players;
-        }
-
         public void Add(IPlayerUiData playerUiData)
         {
             _players.Add(playerUiData);
+        }
+
+        public IPlayerUiData Get(IPlayer player)
+        {
+            return _players.Single(x => x.Player == player);
+        }
+
+        public IList<IPlayerUiData> GetAll()
+        {
+            return _players;
         }
 
         public void Clear()

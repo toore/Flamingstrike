@@ -9,12 +9,13 @@ Game states/phases:
 + GameOver
 
 Issues:
+- Flicker when ending turn in game setup
 - Show player cards!, and enable trade-in of cards
 
 Improvements:
 - When attacking and not occupying, do not deselect territory
 - After attacking and winning, auto-select (new) conquered territory
-- Color regions per player (show color for player next to player name)
+- Color regions per player (show color for player next to player name, Fixme: ColorService)
 - Eliminated player should not take turn
 - Select number of armies to move in after attack or when fortifying
 - Continent information on board

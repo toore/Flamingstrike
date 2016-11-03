@@ -45,8 +45,8 @@ namespace Tests.RISK.UI.WPF.Specifications
         {
             var gameSettingsViewModel = (IGamePreparationViewModel)_mainGameViewModel.ActiveItem;
 
-            gameSettingsViewModel.Players.First().IsEnabled = true;
-            gameSettingsViewModel.Players.ElementAt(1).IsEnabled = true;
+            gameSettingsViewModel.PotentialPlayers.First().IsEnabled = true;
+            gameSettingsViewModel.PotentialPlayers.ElementAt(1).IsEnabled = true;
 
             gameSettingsViewModel.Confirm();
 

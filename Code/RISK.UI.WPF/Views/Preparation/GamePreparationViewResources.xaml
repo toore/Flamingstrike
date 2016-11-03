@@ -51,12 +51,15 @@
                       ItemTemplate="{StaticResource PlayerTypeTemplate}"
                       ItemsSource="{Binding PlayerTypes}"
                       IsEnabled="{Binding IsChecked, ElementName=isEnabledCheckBox}" />
-            
-            <Rectangle Grid.Column="3" 
+
+            <Rectangle Grid.Column="3"
                        Margin="5"
-                       Width="20" 
-                       Height="20" 
-                       Fill="{Binding Fill}" />
+                       Width="20"
+                       Height="20">
+                <Rectangle.Fill>
+                    <SolidColorBrush Color="{Binding Color}" />
+                </Rectangle.Fill>
+            </Rectangle>
         </Grid>
     </DataTemplate>
 

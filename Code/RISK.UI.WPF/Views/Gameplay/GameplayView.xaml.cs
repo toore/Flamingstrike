@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Linq;
+using System.Windows.Media;
 using RISK.GameEngine;
 using RISK.UI.WPF.RegionModels;
-using RISK.UI.WPF.Services;
 using RISK.UI.WPF.ViewModels.Gameplay;
+using RISK.UI.WPF.ViewModels.Preparation;
 
 namespace RISK.UI.WPF.Views.Gameplay
 {
@@ -22,14 +23,18 @@ namespace RISK.UI.WPF.Views.Gameplay
             var continents = new Continents();
             var regions = new Regions(continents);
             var regionModelFactory = new RegionModelFactory(regions);
-            var colorService = new ColorService();
-            var regionColorSettingFactory = new RegionColorSettingsFactory(colorService, regions);
-            var worldMapViewModelFactory = new WorldMapViewModelFactory(regionModelFactory, regionColorSettingFactory, colorService);
+            var playerUiDataRepository = new PlayerUiDataRepository();
+            var worldMapViewModelFactory = new WorldMapViewModelFactory(regionModelFactory, playerUiDataRepository);
 
             var random = new Random();
 
+            Player[] players = { new Player("player one"), new Player("player two") };
+            playerUiDataRepository.Add(new PlayerUiData(players[0], Colors.DeepPink));
+            playerUiDataRepository.Add(new PlayerUiData(players[1], Colors.Teal));
+            var playersBuffer = new CircularBuffer<Player>(players);
+
             var territories = regions.GetAll()
-                .Select(region => new Territory(region, new Player("player"), random.Next(99) + 1))
+                .Select(region => new Territory(region, playersBuffer.Next(), random.Next(99) + 1))
                 .ToList();
 
             WorldMapViewModel = worldMapViewModelFactory.Create(x => { });
@@ -47,5 +52,7 @@ namespace RISK.UI.WPF.Views.Gameplay
         public bool CanEnterAttackMode => true;
 
         public bool CanEndTurn => true;
+
+        public Color PlayerColor => Colors.DeepPink;
     }
 }

@@ -1,7 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows.Media;
 using RISK.GameEngine;
-using RISK.UI.WPF.Services;
+using RISK.UI.WPF.ViewModels.Preparation;
 
 namespace RISK.UI.WPF.ViewModels.Gameplay
 {
@@ -9,37 +10,38 @@ namespace RISK.UI.WPF.ViewModels.Gameplay
     {
         private readonly IReadOnlyList<ITerritory> _territories;
         private readonly IReadOnlyList<IRegion> _enabledRegions;
-        private readonly Maybe<IRegion> _selectedRegion;
-        private readonly IRegionColorSettingsFactory _regionColorSettingsFactory;
-        private readonly IColorService _colorService;
+        private readonly IPlayerUiDataRepository _playerUiDataRepository;
 
-        public WorldMapItemUpdater(IReadOnlyList<ITerritory> territories, IReadOnlyList<IRegion> enabledRegions, Maybe<IRegion> selectedRegion, IRegionColorSettingsFactory regionColorSettingsFactory, IColorService colorService)
+        public WorldMapItemUpdater(
+            IReadOnlyList<ITerritory> territories,
+            IReadOnlyList<IRegion> enabledRegions,
+            IPlayerUiDataRepository playerUiDataRepository)
         {
             _territories = territories;
             _enabledRegions = enabledRegions;
-            _selectedRegion = selectedRegion;
-            _regionColorSettingsFactory = regionColorSettingsFactory;
-            _colorService = colorService;
+            _playerUiDataRepository = playerUiDataRepository;
         }
 
         public void Visit(RegionViewModel regionViewModel)
         {
             var player = _territories.Single(x => x.Region == regionViewModel.Region).Player;
+            var playerUiData = _playerUiDataRepository.Get(player);
 
-            var regionColorSettings = _regionColorSettingsFactory.Create(regionViewModel.Region);
-
-            var strokeColor = regionColorSettings.NormalStrokeColor;
-            var fillColor = _selectedRegion.Bind(x => x == regionViewModel.Region)
-                .Fold(_ => _colorService.SelectedTerritoryColor, () => regionColorSettings.NormalFillColor);
-            var mouseOverStrokeColor = regionColorSettings.MouseOverStrokeColor;
-            var mouseOverFillColor = regionColorSettings.MouseOverFillColor;
+            var strokeColor = Darken(playerUiData.Color);
+            var fillColor = playerUiData.Color;
 
             regionViewModel.StrokeColor = strokeColor;
             regionViewModel.FillColor = fillColor;
-            regionViewModel.MouseOverStrokeColor = mouseOverStrokeColor;
-            regionViewModel.MouseOverFillColor = mouseOverFillColor;
 
             regionViewModel.IsEnabled = IsRegionEnabled(regionViewModel);
+        }
+
+        private static Color Darken(Color color)
+        {
+            var darkerColor = Color.Multiply(color, 0.5f);
+            darkerColor.A = 0xff;
+
+            return darkerColor;
         }
 
         private bool IsRegionEnabled(RegionViewModel regionViewModel)
@@ -49,13 +51,7 @@ namespace RISK.UI.WPF.ViewModels.Gameplay
 
         public void Visit(RegionNameViewModel regionNameViewModel)
         {
-            UpdateArmiesForViewModel(regionNameViewModel);
-        }
-
-        private void UpdateArmiesForViewModel(RegionNameViewModel regionNameViewModel)
-        {
-            var territory = _territories
-                .Single(x => x.Region == regionNameViewModel.Region);
+            var territory = _territories.Single(x => x.Region == regionNameViewModel.Region);
 
             regionNameViewModel.Armies = territory.Armies;
         }

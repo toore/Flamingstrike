@@ -1,6 +1,7 @@
 ﻿using Caliburn.Micro;
 using RISK.UI.WPF.Services;
 using RISK.UI.WPF.ViewModels.Gameplay.Interaction;
+using RISK.UI.WPF.ViewModels.Preparation;
 
 namespace RISK.UI.WPF.ViewModels.Gameplay
 {
@@ -12,6 +13,7 @@ namespace RISK.UI.WPF.ViewModels.Gameplay
     public class GameplayViewModelFactory : IGameplayViewModelFactory
     {
         private readonly IWorldMapViewModelFactory _worldMapViewModelFactory;
+        private readonly IPlayerUiDataRepository _playerUiDataRepository;
         private readonly IWindowManager _windowManager;
         private readonly IGameOverViewModelFactory _gameOverViewModelFactory;
         private readonly IDialogManager _dialogManager;
@@ -21,6 +23,7 @@ namespace RISK.UI.WPF.ViewModels.Gameplay
         public GameplayViewModelFactory(
             IInteractionStateFactory interactionStateFactory,
             IWorldMapViewModelFactory worldMapViewModelFactory,
+            IPlayerUiDataRepository playerUiDataRepository,
             IWindowManager windowManager,
             IGameOverViewModelFactory gameOverViewModelFactory,
             IDialogManager dialogManager,
@@ -28,6 +31,7 @@ namespace RISK.UI.WPF.ViewModels.Gameplay
         {
             _interactionStateFactory = interactionStateFactory;
             _worldMapViewModelFactory = worldMapViewModelFactory;
+            _playerUiDataRepository = playerUiDataRepository;
             _windowManager = windowManager;
             _gameOverViewModelFactory = gameOverViewModelFactory;
             _dialogManager = dialogManager;
@@ -39,6 +43,7 @@ namespace RISK.UI.WPF.ViewModels.Gameplay
             return new GameplayViewModel(
                 _interactionStateFactory,
                 _worldMapViewModelFactory,
+                _playerUiDataRepository,
                 _windowManager,
                 _gameOverViewModelFactory,
                 _dialogManager,

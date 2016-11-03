@@ -19,15 +19,15 @@ namespace RISK.UI.WPF.Views.Preparation
         {
             var playerTypes = new PlayerTypes();
 
-            Players = new List<GamePreparationPlayerViewModel>(new[]
+            PotentialPlayers = new List<GamePreparationPlayerViewModel>(new[]
                 {
-                    new GamePreparationPlayerViewModel(playerTypes, new PlayerColor(Colors.Black)) { Name = "Player 1" },
-                    new GamePreparationPlayerViewModel(playerTypes, new PlayerColor(Colors.Red)) { Name = "Player 2" },
-                    new GamePreparationPlayerViewModel(playerTypes, new PlayerColor(Colors.CadetBlue)) { Name = "Player 3" }
+                    new GamePreparationPlayerViewModel(playerTypes) { Name = "Player 1", Color = Colors.DeepPink },
+                    new GamePreparationPlayerViewModel(playerTypes) { Name = "Player 2", Color = Colors.YellowGreen },
+                    new GamePreparationPlayerViewModel(playerTypes) { Name = "Player 3", Color = Colors.Teal }
                 });
         }
 
-        public IList<GamePreparationPlayerViewModel> Players { get; }
+        public IList<GamePreparationPlayerViewModel> PotentialPlayers { get; }
 
         public void Confirm()
         {

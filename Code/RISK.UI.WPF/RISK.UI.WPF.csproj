@@ -122,9 +122,6 @@
       <DependentUpon>GamePreparationView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Infrastructure\WindowManager.cs" />
-    <Compile Include="Services\ColorService.cs" />
-    <Compile Include="Services\RegionColorSettings.cs" />
-    <Compile Include="Services\RegionColorSettingsFactory.cs" />
     <Compile Include="ViewModels\GameOverViewModel.cs" />
     <Compile Include="ViewModels\GameOverViewModelFactory.cs" />
     <Compile Include="ViewModels\AlternateSetup\AlternateGameSetupViewModel.cs" />

@@ -37,12 +37,10 @@ namespace RISK.UI.WPF.ViewModels
                 PlayerUiDataRepository,
                 EventAggregator);
 
-            var colorService = new ColorService();
             var continents = new Continents();
             var regions = new Regions(continents);
-            var regionColorSettingsFactory = new RegionColorSettingsFactory(colorService, regions);
             var regionModelFactory = new RegionModelFactory(regions);
-            var worldMapViewModelFactory = new WorldMapViewModelFactory(regionModelFactory, regionColorSettingsFactory, colorService);
+            var worldMapViewModelFactory = new WorldMapViewModelFactory(regionModelFactory, PlayerUiDataRepository);
             var windowManager = new WindowManager();
             var gameOverViewModelFactory = new GameOverViewModelFactory();
             var screenConfirmationService = new ScreenConfirmationService();
@@ -54,6 +52,7 @@ namespace RISK.UI.WPF.ViewModels
             GameplayViewModelFactory = new GameplayViewModelFactory(
                 interactionStateFactory,
                 worldMapViewModelFactory,
+                PlayerUiDataRepository,
                 windowManager,
                 gameOverViewModelFactory,
                 dialogManager,
@@ -76,6 +75,7 @@ namespace RISK.UI.WPF.ViewModels
 
             AlternateGameSetupViewModelFactory = new AlternateGameSetupViewModelFactory(
                 worldMapViewModelFactory,
+                PlayerUiDataRepository,
                 dialogManager,
                 EventAggregator);
 

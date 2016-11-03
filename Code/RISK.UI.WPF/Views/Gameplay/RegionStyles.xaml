@@ -8,8 +8,6 @@
         <Gameplay:RegionButtonUserControl
             FillColor="{Binding FillColor}"
             StrokeColor="{Binding StrokeColor}"
-            MouseOverFillColor="{Binding MouseOverFillColor}"
-            MouseOverStrokeColor="{Binding MouseOverStrokeColor}"
             IsEnabled="{Binding IsEnabled}">
 
             <Gameplay:RegionButtonUserControl.GeometryChildren>

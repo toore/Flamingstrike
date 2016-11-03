@@ -4,7 +4,7 @@ using System.Linq;
 using RISK.GameEngine;
 using RISK.UI.WPF.Extensions;
 using RISK.UI.WPF.RegionModels;
-using RISK.UI.WPF.Services;
+using RISK.UI.WPF.ViewModels.Preparation;
 
 namespace RISK.UI.WPF.ViewModels.Gameplay
 {
@@ -18,14 +18,14 @@ namespace RISK.UI.WPF.ViewModels.Gameplay
     public class WorldMapViewModelFactory : IWorldMapViewModelFactory
     {
         private readonly IRegionModelFactory _regionModelFactory;
-        private readonly IRegionColorSettingsFactory _regionColorSettingsFactory;
-        private readonly IColorService _colorService;
+        private readonly IPlayerUiDataRepository _playerUiDataRepository;
 
-        public WorldMapViewModelFactory(IRegionModelFactory regionModelFactory, IRegionColorSettingsFactory regionColorSettingsFactory, IColorService colorService)
+        public WorldMapViewModelFactory(
+            IRegionModelFactory regionModelFactory,
+            IPlayerUiDataRepository playerUiDataRepository)
         {
             _regionModelFactory = regionModelFactory;
-            _regionColorSettingsFactory = regionColorSettingsFactory;
-            _colorService = colorService;
+            _playerUiDataRepository = playerUiDataRepository;
         }
 
         public WorldMapViewModel Create(Action<IRegion> onClick)
@@ -39,7 +39,11 @@ namespace RISK.UI.WPF.ViewModels.Gameplay
 
         public void Update(WorldMapViewModel worldMapViewModel, IReadOnlyList<ITerritory> territories, IReadOnlyList<IRegion> enabledRegions, Maybe<IRegion> selectedRegion)
         {
-            var worldMapItemUpdater = new WorldMapItemUpdater(territories, enabledRegions, selectedRegion, _regionColorSettingsFactory, _colorService);
+            var worldMapItemUpdater = new WorldMapItemUpdater(
+                territories,
+                enabledRegions,
+                _playerUiDataRepository);
+
             foreach (var worldMapItemViewModel in worldMapViewModel.WorldMapViewModels)
             {
                 worldMapItemViewModel.Accept(worldMapItemUpdater);

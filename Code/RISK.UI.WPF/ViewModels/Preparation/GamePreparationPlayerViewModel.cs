@@ -11,17 +11,14 @@ namespace RISK.UI.WPF.ViewModels.Preparation
         private string _name;
         private PlayerTypeBase _selectedPlayerType;
 
-        public GamePreparationPlayerViewModel(IPlayerTypes playerTypes, PlayerColor playerColor)
+        public GamePreparationPlayerViewModel(IPlayerTypes playerTypes)
         {
             PlayerTypes = playerTypes.Values;
             SelectedPlayerType = PlayerTypes.First();
-            PlayerColor = playerColor;
-
-            Fill = new SolidColorBrush(playerColor.FillColor);
-            Fill.Freeze();
         }
 
         public Action OnIsEnabledChanged = () => { };
+        private Color _color;
 
         public bool IsEnabled
         {
@@ -49,8 +46,11 @@ namespace RISK.UI.WPF.ViewModels.Preparation
         }
 
         public IReadOnlyList<PlayerTypeBase> PlayerTypes { get; }
-        public PlayerColor PlayerColor { get; }
 
-        public Brush Fill { get; }
+        public Color Color
+        {
+            get { return _color; }
+            set { NotifyOfPropertyChange(value, () => Color, c => _color = c); }
+        }
     }
 }

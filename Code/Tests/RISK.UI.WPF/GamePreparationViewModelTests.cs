@@ -29,7 +29,7 @@ namespace Tests.RISK.UI.WPF
         [Fact]
         public void Has_6_players()
         {
-            _gameInitializationViewModel.Players.Count.Should().Be(6);
+            _gameInitializationViewModel.PotentialPlayers.Count.Should().Be(6);
         }
 
         [Fact]
@@ -41,7 +41,7 @@ namespace Tests.RISK.UI.WPF
         [Fact]
         public void Cant_confirm_when_less_than_two_players_are_selected()
         {
-            _gameInitializationViewModel.Players.First().IsEnabled = true;
+            _gameInitializationViewModel.PotentialPlayers.First().IsEnabled = true;
 
             _gameInitializationViewModel.CanConfirm.Should().BeFalse();
         }
@@ -49,8 +49,8 @@ namespace Tests.RISK.UI.WPF
         [Fact]
         public void Can_confirm_when_at_least_two_players_are_selected()
         {
-            _gameInitializationViewModel.Players.First().IsEnabled = true;
-            _gameInitializationViewModel.Players.ElementAt(1).IsEnabled = true;
+            _gameInitializationViewModel.PotentialPlayers.First().IsEnabled = true;
+            _gameInitializationViewModel.PotentialPlayers.ElementAt(1).IsEnabled = true;
 
             _gameInitializationViewModel.CanConfirm.Should().BeTrue();
         }

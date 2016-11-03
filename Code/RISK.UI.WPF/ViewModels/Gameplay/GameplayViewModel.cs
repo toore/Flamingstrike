@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows.Media;
 using Caliburn.Micro;
 using RISK.GameEngine;
 using RISK.GameEngine.Play;
@@ -8,6 +9,7 @@ using RISK.UI.WPF.Properties;
 using RISK.UI.WPF.Services;
 using RISK.UI.WPF.ViewModels.Gameplay.Interaction;
 using RISK.UI.WPF.ViewModels.Messages;
+using RISK.UI.WPF.ViewModels.Preparation;
 using Action = System.Action;
 
 namespace RISK.UI.WPF.ViewModels.Gameplay
@@ -25,22 +27,25 @@ namespace RISK.UI.WPF.ViewModels.Gameplay
     {
         private readonly IInteractionStateFactory _interactionStateFactory;
         private readonly IWorldMapViewModelFactory _worldMapViewModelFactory;
+        private readonly IPlayerUiDataRepository _playerUiDataRepository;
         private readonly IWindowManager _windowManager;
         private readonly IGameOverViewModelFactory _gameOverViewModelFactory;
         private readonly IDialogManager _dialogManager;
         private readonly IEventAggregator _eventAggregator;
+        private string _informationText;
         private string _playerName;
+        private Color _playerColor;
         private bool _canEnterFortifyMode;
         private bool _canEnterAttackMode;
         private bool _canEndTurn;
         private IInteractionState _interactionState;
-        private string _informationText;
         private IAttackPhase _attackPhase;
         private Action _endTurn;
 
         public GameplayViewModel(
             IInteractionStateFactory interactionStateFactory,
             IWorldMapViewModelFactory worldMapViewModelFactory,
+            IPlayerUiDataRepository playerUiDataRepository,
             IWindowManager windowManager,
             IGameOverViewModelFactory gameOverViewModelFactory,
             IDialogManager dialogManager,
@@ -48,6 +53,7 @@ namespace RISK.UI.WPF.ViewModels.Gameplay
         {
             _interactionStateFactory = interactionStateFactory;
             _worldMapViewModelFactory = worldMapViewModelFactory;
+            _playerUiDataRepository = playerUiDataRepository;
             _windowManager = windowManager;
             _gameOverViewModelFactory = gameOverViewModelFactory;
             _dialogManager = dialogManager;
@@ -58,16 +64,22 @@ namespace RISK.UI.WPF.ViewModels.Gameplay
 
         public WorldMapViewModel WorldMapViewModel { get; }
 
+        public string InformationText
+        {
+            get { return _informationText; }
+            private set { NotifyOfPropertyChange(value, () => InformationText, x => _informationText = x); }
+        }
+
         public string PlayerName
         {
             get { return _playerName; }
             private set { NotifyOfPropertyChange(value, () => PlayerName, x => _playerName = x); }
         }
 
-        public string InformationText
+        public Color PlayerColor
         {
-            get { return _informationText; }
-            private set { NotifyOfPropertyChange(value, () => InformationText, x => _informationText = x); }
+            get { return _playerColor; }
+            private set { NotifyOfPropertyChange(value, () => PlayerColor, x => _playerColor = x); }
         }
 
         public bool CanEnterFortifyMode
@@ -108,7 +120,7 @@ namespace RISK.UI.WPF.ViewModels.Gameplay
 
         public void DraftArmies(IDraftArmiesPhase draftArmiesPhase)
         {
-            PlayerName = draftArmiesPhase.Player.Name;
+            UpdatePlayer(draftArmiesPhase.Player);
 
             InformationText = string.Format(Resources.DRAFT_ARMIES, draftArmiesPhase.NumberOfArmiesToDraft);
             _interactionState = _interactionStateFactory.CreateDraftArmiesInteractionState(draftArmiesPhase);
@@ -122,7 +134,7 @@ namespace RISK.UI.WPF.ViewModels.Gameplay
 
         public void Attack(IAttackPhase attackPhase)
         {
-            PlayerName = attackPhase.Player.Name;
+            UpdatePlayer(attackPhase.Player);
 
             _attackPhase = attackPhase;
             _endTurn = attackPhase.EndTurn;
@@ -174,7 +186,7 @@ namespace RISK.UI.WPF.ViewModels.Gameplay
 
         public void SendArmiesToOccupy(ISendArmiesToOccupyPhase sendArmiesToOccupyPhase)
         {
-            PlayerName = sendArmiesToOccupyPhase.Player.Name;
+            UpdatePlayer(sendArmiesToOccupyPhase.Player);
             InformationText = Resources.SEND_ARMIES_TO_OCCUPY;
             _interactionState = _interactionStateFactory.CreateSendArmiesToOccupyInteractionState(sendArmiesToOccupyPhase);
 
@@ -222,7 +234,7 @@ namespace RISK.UI.WPF.ViewModels.Gameplay
 
         public void EndTurn(IEndTurnPhase endTurnPhase)
         {
-            PlayerName = endTurnPhase.Player.Name;
+            UpdatePlayer(endTurnPhase.Player);
             InformationText = Resources.END_TURN;
 
             CanEnterFortifyMode = false;
@@ -231,6 +243,12 @@ namespace RISK.UI.WPF.ViewModels.Gameplay
             _endTurn = endTurnPhase.EndTurn;
 
             UpdateWorldMapInEndOfTurn(endTurnPhase);
+        }
+
+        private void UpdatePlayer(IPlayer player)
+        {
+            PlayerName = player.Name;
+            PlayerColor = _playerUiDataRepository.Get(player).Color;
         }
 
         public void GameOver(IGameIsOver gameIsOver)

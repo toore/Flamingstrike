@@ -4,12 +4,12 @@ using FluentAssertions;
 using NSubstitute;
 using RISK.GameEngine;
 using RISK.GameEngine.Setup;
-using RISK.UI.WPF;
 using RISK.UI.WPF.Properties;
 using RISK.UI.WPF.Services;
 using RISK.UI.WPF.ViewModels.AlternateSetup;
 using RISK.UI.WPF.ViewModels.Gameplay;
 using RISK.UI.WPF.ViewModels.Messages;
+using RISK.UI.WPF.ViewModels.Preparation;
 using Tests.RISK.GameEngine.Builders;
 using Xunit;
 
@@ -18,18 +18,21 @@ namespace Tests.RISK.UI.WPF
     public class GameSetupViewModelTests
     {
         private readonly IWorldMapViewModelFactory _worldMapViewModelFactory;
+        private readonly IPlayerUiDataRepository _playerUiDataRepository;
         private readonly IDialogManager _dialogManager;
         private readonly IEventAggregator _eventAggregator;
-        private readonly AlternateGameSetupViewModelFactory factory;
+        private readonly AlternateGameSetupViewModelFactory _factory;
 
         public GameSetupViewModelTests()
         {
             _worldMapViewModelFactory = Substitute.For<IWorldMapViewModelFactory>();
+            _playerUiDataRepository = Substitute.For<IPlayerUiDataRepository>();
             _dialogManager = Substitute.For<IDialogManager>();
             _eventAggregator = Substitute.For<IEventAggregator>();
 
-            factory = new AlternateGameSetupViewModelFactory(
+            _factory = new AlternateGameSetupViewModelFactory(
                 _worldMapViewModelFactory,
+                _playerUiDataRepository,
                 _dialogManager,
                 _eventAggregator);
         }
@@ -76,6 +79,7 @@ namespace Tests.RISK.UI.WPF
             var expectedPlayer = Substitute.For<IPlayer>();
             expectedPlayer.Name.Returns("player name");
             placeArmyRegionSelector.Player.Returns(expectedPlayer);
+            _playerUiDataRepository.Get(null).ReturnsForAnyArgs(Make.PlayerUiData.Build());
 
             var sut = Create();
             sut.MonitorEvents();
@@ -147,7 +151,7 @@ namespace Tests.RISK.UI.WPF
 
         private AlternateGameSetupViewModel Create()
         {
-            return (AlternateGameSetupViewModel)factory.Create();
+            return (AlternateGameSetupViewModel)_factory.Create();
         }
     }
 }

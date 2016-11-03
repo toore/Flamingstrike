@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Windows.Media;
 using Caliburn.Micro;
 using RISK.GameEngine;
 using RISK.GameEngine.Setup;
@@ -7,6 +8,7 @@ using RISK.UI.WPF.Properties;
 using RISK.UI.WPF.Services;
 using RISK.UI.WPF.ViewModels.Gameplay;
 using RISK.UI.WPF.ViewModels.Messages;
+using RISK.UI.WPF.ViewModels.Preparation;
 
 namespace RISK.UI.WPF.ViewModels.AlternateSetup
 {
@@ -15,18 +17,22 @@ namespace RISK.UI.WPF.ViewModels.AlternateSetup
     public class AlternateGameSetupViewModel : Screen, IAlternateGameSetupViewModel
     {
         private readonly IWorldMapViewModelFactory _worldMapViewModelFactory;
+        private readonly IPlayerUiDataRepository _playerUiDataRepository;
         private readonly IDialogManager _dialogManager;
         private readonly IEventAggregator _eventAggregator;
         private WorldMapViewModel _worldMapViewModel;
         private string _informationText;
         private string _playerName;
+        private Color _playerColor;
 
         public AlternateGameSetupViewModel(
             IWorldMapViewModelFactory worldMapViewModelFactory,
+            IPlayerUiDataRepository playerUiDataRepository,
             IDialogManager dialogManager,
             IEventAggregator eventAggregator)
         {
             _worldMapViewModelFactory = worldMapViewModelFactory;
+            _playerUiDataRepository = playerUiDataRepository;
             _dialogManager = dialogManager;
             _eventAggregator = eventAggregator;
         }
@@ -49,13 +55,19 @@ namespace RISK.UI.WPF.ViewModels.AlternateSetup
             private set { this.NotifyOfPropertyChange(value, () => PlayerName, x => _playerName = x); }
         }
 
+        public Color PlayerColor
+        {
+            get { return _playerColor; }
+            set { this.NotifyOfPropertyChange(value, () => PlayerColor, x => _playerColor = x); }
+        }
+
         public void SelectRegion(IPlaceArmyRegionSelector placeArmyRegionSelector)
         {
             UpdateView(
                 placeArmyRegionSelector.Territories,
-                placeArmyRegionSelector.PlaceArmyInRegion,
+                region => placeArmyRegionSelector.PlaceArmyInRegion(region),
                 placeArmyRegionSelector.SelectableRegions,
-                placeArmyRegionSelector.Player.Name,
+                placeArmyRegionSelector.Player,
                 placeArmyRegionSelector.GetArmiesLeftToPlace());
         }
 
@@ -64,14 +76,15 @@ namespace RISK.UI.WPF.ViewModels.AlternateSetup
             _eventAggregator.PublishOnUIThread(new StartGameplayMessage(gamePlaySetup));
         }
 
-        private void UpdateView(IReadOnlyList<ITerritory> territories, Action<IRegion> selectAction, IReadOnlyList<IRegion> enabledRegions, string playerName, int armiesToPlace)
+        private void UpdateView(IReadOnlyList<ITerritory> territories, Action<IRegion> selectAction, IReadOnlyList<IRegion> enabledRegions, IPlayer player, int armiesToPlace)
         {
             var worldMapViewModel = _worldMapViewModelFactory.Create(selectAction);
             _worldMapViewModelFactory.Update(worldMapViewModel, territories, enabledRegions, Maybe<IRegion>.Nothing);
 
             WorldMapViewModel = worldMapViewModel;
 
-            PlayerName = playerName;
+            PlayerName = player.Name;
+            PlayerColor = _playerUiDataRepository.Get(player).Color;
 
             InformationText = string.Format(Resources.PLACE_ARMY, armiesToPlace);
         }
