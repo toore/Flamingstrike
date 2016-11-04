@@ -68,7 +68,17 @@
             </StackPanel.Resources>
             <Label HorizontalAlignment="Stretch"
                    HorizontalContentAlignment="Center"
-                   Content="{Binding InformationText}" />
+                   Content="{Binding InformationText}">
+                <Label.Background>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                        <LinearGradientBrush.GradientStops>
+                            <GradientStop Color="{Binding PlayerColor}" Offset="0" />
+                            <GradientStop Color="Black" Offset=".5" />
+                            <GradientStop Color="{Binding PlayerColor}" Offset="1" />
+                        </LinearGradientBrush.GradientStops>
+                    </LinearGradientBrush>
+                </Label.Background>
+            </Label>
         </StackPanel>
 
         <ContentControl Focusable="False"

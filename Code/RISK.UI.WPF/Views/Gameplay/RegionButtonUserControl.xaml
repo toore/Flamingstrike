@@ -47,12 +47,13 @@
 
                 <Canvas>
                     <Canvas ZIndex="110">
-                        <Path x:Name="selectedHint" StrokeThickness="10" >
+                        <Path x:Name="selectedHint">
                             <Path.Fill>
                                 <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
                                     <LinearGradientBrush.GradientStops>
-                                        <GradientStop Color="#FFFFFFFF" Offset="0" />
-                                        <GradientStop Color="Transparent" Offset="1" />
+                                        <GradientStop Color="{Binding PlayerColor}" Offset="0" />
+                                        <GradientStop Color="Black" Offset=".5" />
+                                        <GradientStop Color="{Binding PlayerColor}" Offset="1" />
                                     </LinearGradientBrush.GradientStops>
                                 </LinearGradientBrush>
                             </Path.Fill>
