@@ -8,7 +8,8 @@
         <Gameplay:RegionButtonUserControl
             FillColor="{Binding FillColor}"
             StrokeColor="{Binding StrokeColor}"
-            IsEnabled="{Binding IsEnabled}">
+            IsEnabled="{Binding IsEnabled}"
+            IsSelected="{Binding IsSelected}">
 
             <Gameplay:RegionButtonUserControl.GeometryChildren>
                 <GeometryCollection>

@@ -22,6 +22,9 @@ namespace RISK.UI.WPF.ViewModels.Gameplay
         public IRegion Region => _regionModel.Region;
 
         private Color _strokeColor;
+        private Color _fillColor;
+        private bool _isEnabled;
+        private bool _isSelected;
 
         public Color StrokeColor
         {
@@ -29,20 +32,22 @@ namespace RISK.UI.WPF.ViewModels.Gameplay
             set { NotifyOfPropertyChange(value, () => StrokeColor, x => _strokeColor = x); }
         }
 
-        private Color _fillColor;
-
         public Color FillColor
         {
             get { return _fillColor; }
             set { NotifyOfPropertyChange(value, () => FillColor, x => _fillColor = x); }
         }
 
-        private bool _isEnabled;
-
         public bool IsEnabled
         {
             get { return _isEnabled; }
             set { NotifyOfPropertyChange(value, () => IsEnabled, x => _isEnabled = x); }
+        }
+
+        public bool IsSelected
+        {
+            get { return _isSelected; }
+            set { NotifyOfPropertyChange(value, () => IsSelected, x => _isSelected = x); }
         }
 
         public void OnClick()

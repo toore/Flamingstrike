@@ -73,7 +73,6 @@
 
         <ContentControl Focusable="False"
                         Content="{Binding WorldMapViewModel}"
-                        Margin="-1,9.6,1,10"
                         Grid.Row="2" />
 
         <DockPanel Grid.Row="3"

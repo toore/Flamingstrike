@@ -46,6 +46,21 @@
                 </VisualStateManager.VisualStateGroups>
 
                 <Canvas>
+                    <Canvas ZIndex="110">
+                        <Path x:Name="selectedHint" StrokeThickness="10" >
+                            <Path.Fill>
+                                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                    <LinearGradientBrush.GradientStops>
+                                        <GradientStop Color="#FFFFFFFF" Offset="0" />
+                                        <GradientStop Color="Transparent" Offset="1" />
+                                    </LinearGradientBrush.GradientStops>
+                                </LinearGradientBrush>
+                            </Path.Fill>
+                            <Path.Data>
+                                <GeometryGroup Children="{Binding Path=GeometryChildren, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" />
+                            </Path.Data>
+                        </Path>
+                    </Canvas>
                     <Canvas ZIndex="100" x:Name="disabledCanvas">
                         <Path StrokeThickness="2">
                             <Path.Fill>
@@ -99,6 +114,13 @@
                 <Trigger Property="IsEnabled" Value="True">
                     <Setter TargetName="disabledCanvas" Property="Visibility" Value="Hidden" />
                 </Trigger>
+                <DataTrigger Binding="{Binding Path=IsSelected, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" Value="False">
+                    <Setter TargetName="selectedHint" Property="Visibility" Value="Hidden" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path=IsSelected, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" Value="true">
+                    <Setter TargetName="selectedHint" Property="Visibility" Value="Visible" />
+                </DataTrigger>
+
             </ControlTemplate.Triggers>
         </ControlTemplate>
 

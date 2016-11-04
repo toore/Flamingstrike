@@ -31,8 +31,15 @@ namespace RISK.UI.WPF.ViewModels.Gameplay
 
             regionViewModel.StrokeColor = playerColor.Darken();
             regionViewModel.FillColor = playerColor;
+            regionViewModel.IsSelected = IsSelected(regionViewModel.Region);
 
             regionViewModel.IsEnabled = IsRegionEnabled(regionViewModel.Region);
+        }
+
+        private bool IsSelected(IRegion region)
+        {
+            return _selectedRegion
+                .Fold(x => x == region, () => false);
         }
 
         private Color GetPlayerColor(IRegion region)
