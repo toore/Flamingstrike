@@ -35,7 +35,11 @@ namespace RISK.UI.WPF.ViewModels.AlternateSetup
             _playerUiDataRepository = playerUiDataRepository;
             _dialogManager = dialogManager;
             _eventAggregator = eventAggregator;
+
+            WorldMapViewModel = _worldMapViewModelFactory.Create(x => _onRegionClick(x));
         }
+
+        private Action<IRegion> _onRegionClick;
 
         public WorldMapViewModel WorldMapViewModel
         {
@@ -78,10 +82,9 @@ namespace RISK.UI.WPF.ViewModels.AlternateSetup
 
         private void UpdateView(IReadOnlyList<ITerritory> territories, Action<IRegion> selectAction, IReadOnlyList<IRegion> enabledRegions, IPlayer player, int armiesToPlace)
         {
-            var worldMapViewModel = _worldMapViewModelFactory.Create(selectAction);
-            _worldMapViewModelFactory.Update(worldMapViewModel, territories, enabledRegions, Maybe<IRegion>.Nothing);
+            _onRegionClick = selectAction;
 
-            WorldMapViewModel = worldMapViewModel;
+            _worldMapViewModelFactory.Update(WorldMapViewModel, territories, enabledRegions, Maybe<IRegion>.Nothing);
 
             PlayerName = player.Name;
             PlayerColor = _playerUiDataRepository.Get(player).Color;
