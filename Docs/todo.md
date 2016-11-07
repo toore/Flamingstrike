@@ -14,10 +14,9 @@ Issues:
 Improvements:
 - When attacking and not occupying, do not deselect territory
 - After attacking and winning, auto-select (new) conquered territory
-- Color regions per player (show color for player next to player name, Fixme: ColorService)
 - Eliminated player should not take turn
 - Select number of armies to move in after attack or when fortifying
-- Continent information on board
+- Continent information on board?
 - What about a common starting point for setup and the game engine?
 - Does GameStates really have to call back to Game?
 
