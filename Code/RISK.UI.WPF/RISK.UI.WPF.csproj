@@ -91,6 +91,7 @@
     <Compile Include="ContentClickButton.cs" />
     <Compile Include="Extensions\ColorExtensions.cs" />
     <Compile Include="Extensions\EnumerableExtensions.cs" />
+    <Compile Include="ViewModels\Gameplay\PlayerAndNumberOfCardsViewModel.cs" />
     <Compile Include="RegionModels\RegionModelBase.cs" />
     <Compile Include="ViewModels\ConfirmViewModel.cs" />
     <Compile Include="ViewModels\ConfirmViewModelFactory.cs" />

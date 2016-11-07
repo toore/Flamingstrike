@@ -7,6 +7,7 @@
              xmlns:Micro="http://www.caliburnproject.org"
              xmlns:Properties="clr-namespace:RISK.UI.WPF.Properties"
              xmlns:Gameplay="clr-namespace:RISK.UI.WPF.Views.Gameplay"
+             xmlns:Gameplay1="clr-namespace:RISK.UI.WPF.ViewModels.Gameplay"
              mc:Ignorable="d"
              d:DesignHeight="768" d:DesignWidth="1366"
              d:DataContext="{d:DesignInstance d:Type=Gameplay:GameplayViewModelDesignerData, IsDesignTimeCreatable=True}">
@@ -84,6 +85,50 @@
         <ContentControl Focusable="False"
                         Content="{Binding WorldMapViewModel}"
                         Grid.Row="2" />
+
+        <ItemsControl Grid.Row="2"
+                      HorizontalAlignment="Left"
+                      VerticalAlignment="Bottom"
+                      ItemsSource="{Binding Players}">
+            <ItemsControl.Resources>
+                <Style TargetType="ItemsControl">
+                    <Setter Property="ItemTemplate">
+                        <Setter.Value>
+                            <DataTemplate DataType="Gameplay1:PlayerAndNumberOfCardsViewModel">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <Rectangle Grid.Column="0"
+                                               Margin="5"
+                                               Width="15"
+                                               Height="15">
+                                        <Rectangle.Fill>
+                                            <LinearGradientBrush StartPoint="0,0"
+                                                                 EndPoint="1,1">
+                                                <LinearGradientBrush.GradientStops>
+                                                    <GradientStop Color="Transparent"
+                                                                  Offset="0" />
+                                                    <GradientStop Color="{Binding Path=PlayerColor}"
+                                                                  Offset="1" />
+                                                </LinearGradientBrush.GradientStops>
+                                            </LinearGradientBrush>
+                                        </Rectangle.Fill>
+                                    </Rectangle>
+                                    <Label Grid.Column="1"
+                                           Content="{Binding Path=PlayerName}" />
+                                    <Label Grid.Column="2"
+                                           Content="{Binding Path=NumberOfCards}"
+                                           Width="20" />
+                                </Grid>
+                            </DataTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </ItemsControl.Resources>
+        </ItemsControl>
 
         <DockPanel Grid.Row="3"
                    HorizontalAlignment="Stretch"

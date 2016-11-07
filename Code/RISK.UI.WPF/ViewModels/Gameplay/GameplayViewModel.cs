@@ -41,6 +41,7 @@ namespace RISK.UI.WPF.ViewModels.Gameplay
         private IInteractionState _interactionState;
         private IAttackPhase _attackPhase;
         private Action _endTurn;
+        private IList<PlayerAndNumberOfCardsViewModel> _players;
 
         public GameplayViewModel(
             IInteractionStateFactory interactionStateFactory,
@@ -111,6 +112,12 @@ namespace RISK.UI.WPF.ViewModels.Gameplay
             remove { throw new InvalidOperationException($"{nameof(Activated)} is not used"); }
         }
 
+        public IList<PlayerAndNumberOfCardsViewModel> Players
+        {
+            get { return _players; }
+            private set { NotifyOfPropertyChange(value, () => Players, x => _players = x); }
+        }
+
         public void Activate() {}
 
         private void OnRegionClick(IRegion region)
@@ -120,7 +127,7 @@ namespace RISK.UI.WPF.ViewModels.Gameplay
 
         public void DraftArmies(IDraftArmiesPhase draftArmiesPhase)
         {
-            UpdatePlayer(draftArmiesPhase.Player);
+            UpdatePlayerInformation(draftArmiesPhase);
 
             InformationText = string.Format(Resources.DRAFT_ARMIES, draftArmiesPhase.NumberOfArmiesToDraft);
             _interactionState = _interactionStateFactory.CreateDraftArmiesInteractionState(draftArmiesPhase);
@@ -134,7 +141,7 @@ namespace RISK.UI.WPF.ViewModels.Gameplay
 
         public void Attack(IAttackPhase attackPhase)
         {
-            UpdatePlayer(attackPhase.Player);
+            UpdatePlayerInformation(attackPhase);
 
             _attackPhase = attackPhase;
             _endTurn = attackPhase.EndTurn;
@@ -186,7 +193,8 @@ namespace RISK.UI.WPF.ViewModels.Gameplay
 
         public void SendArmiesToOccupy(ISendArmiesToOccupyPhase sendArmiesToOccupyPhase)
         {
-            UpdatePlayer(sendArmiesToOccupyPhase.Player);
+            UpdatePlayerInformation(sendArmiesToOccupyPhase);
+
             InformationText = Resources.SEND_ARMIES_TO_OCCUPY;
             _interactionState = _interactionStateFactory.CreateSendArmiesToOccupyInteractionState(sendArmiesToOccupyPhase);
 
@@ -234,7 +242,8 @@ namespace RISK.UI.WPF.ViewModels.Gameplay
 
         public void EndTurn(IEndTurnPhase endTurnPhase)
         {
-            UpdatePlayer(endTurnPhase.Player);
+            UpdatePlayerInformation(endTurnPhase);
+
             InformationText = Resources.END_TURN;
 
             CanEnterFortifyMode = false;
@@ -245,15 +254,37 @@ namespace RISK.UI.WPF.ViewModels.Gameplay
             UpdateWorldMapInEndOfTurn(endTurnPhase);
         }
 
-        private void UpdatePlayer(IPlayer player)
+        public void GameOver(IGameIsOver gameIsOver)
+        {
+            ShowGameOverMessage(gameIsOver.Winner);
+        }
+
+        private void UpdatePlayerInformation(IGameStatus gameStatus)
+        {
+            UpdateCurrentPlayerInformation(gameStatus.Player);
+
+            UpdatePlayersInformation(gameStatus.PlayerGameDatas);
+        }
+
+        private void UpdateCurrentPlayerInformation(IPlayer player)
         {
             PlayerName = player.Name;
             PlayerColor = _playerUiDataRepository.Get(player).Color;
         }
 
-        public void GameOver(IGameIsOver gameIsOver)
+        private void UpdatePlayersInformation(IEnumerable<IPlayerGameData> playerGameDatas)
         {
-            ShowGameOverMessage(gameIsOver.Winner);
+            Players = playerGameDatas
+                .Select(CreatePlayerAndNumberOfCardsViewModel)
+                .ToList();
+        }
+
+        private PlayerAndNumberOfCardsViewModel CreatePlayerAndNumberOfCardsViewModel(IPlayerGameData playerGameData)
+        {
+            var player = playerGameData.Player;
+            var playerUiData = _playerUiDataRepository.Get(player);
+
+            return new PlayerAndNumberOfCardsViewModel(player.Name, playerUiData.Color, playerGameData.Cards.Count);
         }
 
         private void UpdateWorldMap(IDraftArmiesPhase draftArmiesPhase)
