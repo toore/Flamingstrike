@@ -49,7 +49,7 @@
                 <Rectangle.Fill>
                     <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
                         <LinearGradientBrush.GradientStops>
-                            <GradientStop Color="Transparent" Offset="0" />
+                            <GradientStop Color="White" Offset="0" />
                             <GradientStop Color="{Binding PlayerColor}" Offset="1" />
                         </LinearGradientBrush.GradientStops>
                     </LinearGradientBrush>
@@ -109,7 +109,7 @@
                                             <LinearGradientBrush StartPoint="0,0"
                                                                  EndPoint="1,1">
                                                 <LinearGradientBrush.GradientStops>
-                                                    <GradientStop Color="Transparent"
+                                                    <GradientStop Color="White"
                                                                   Offset="0" />
                                                     <GradientStop Color="{Binding Path=PlayerColor}"
                                                                   Offset="1" />
@@ -119,9 +119,41 @@
                                     </Rectangle>
                                     <Label Grid.Column="1"
                                            Content="{Binding Path=PlayerName}" />
-                                    <Label Grid.Column="2"
-                                           Content="{Binding Path=NumberOfCards}"
-                                           Width="20" />
+                                    <StackPanel Grid.Column="2"
+                                                Orientation="Horizontal"
+                                                Margin="5 0 0 0">
+                                        <Canvas Width="10"
+                                                Height="12"
+                                                VerticalAlignment="Center">
+                                            <Canvas.Resources>
+                                                <Style TargetType="Rectangle">
+                                                    <Setter Property="Fill">
+                                                        <Setter.Value>
+                                                            <LinearGradientBrush StartPoint="0,0"
+                                                                                 EndPoint="1,1">
+                                                                <GradientStop Color="White" Offset="0" />
+                                                                <GradientStop Color="Black" Offset="1" />
+                                                            </LinearGradientBrush>
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                    <Setter Property="Stroke" Value="#90FFFFFF" />
+                                                    <Setter Property="Width" Value="8" />
+                                                    <Setter Property="Height" Value="10" />
+                                                    <Setter Property="RadiusY" Value="1" />
+                                                    <Setter Property="RadiusX" Value="1" />
+                                                </Style>
+                                            </Canvas.Resources>
+                                            <Rectangle Opacity=".5" />
+                                            <Rectangle Opacity=".75" 
+                                                       Canvas.Left="2" 
+                                                       Canvas.Top="1" />
+                                            <Rectangle Canvas.Left="4" 
+                                                       Canvas.Top="2" />
+                                        </Canvas>
+                                        <Label
+                                            Content="{Binding Path=NumberOfCards}"
+                                            Width="20" />
+                                    </StackPanel>
                                 </Grid>
                             </DataTemplate>
                         </Setter.Value>
