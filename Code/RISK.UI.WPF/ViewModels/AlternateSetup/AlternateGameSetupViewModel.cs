@@ -20,7 +20,6 @@ namespace RISK.UI.WPF.ViewModels.AlternateSetup
         private readonly IPlayerUiDataRepository _playerUiDataRepository;
         private readonly IDialogManager _dialogManager;
         private readonly IEventAggregator _eventAggregator;
-        private WorldMapViewModel _worldMapViewModel;
         private string _informationText;
         private string _playerName;
         private Color _playerColor;
@@ -41,11 +40,7 @@ namespace RISK.UI.WPF.ViewModels.AlternateSetup
 
         private Action<IRegion> _onRegionClick;
 
-        public WorldMapViewModel WorldMapViewModel
-        {
-            get { return _worldMapViewModel; }
-            private set { this.NotifyOfPropertyChange(value, () => WorldMapViewModel, x => _worldMapViewModel = x); }
-        }
+        public WorldMapViewModel WorldMapViewModel { get; }
 
         public string InformationText
         {

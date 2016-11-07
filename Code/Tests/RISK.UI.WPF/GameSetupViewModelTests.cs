@@ -38,24 +38,33 @@ namespace Tests.RISK.UI.WPF
         }
 
         [Fact]
+        public void WorldMapViewModel_is_initialized()
+        {
+            var expectedWorldMapViewModel = new WorldMapViewModel();
+            _worldMapViewModelFactory.Create(null)
+                .ReturnsForAnyArgs(expectedWorldMapViewModel);
+
+            var sut = Create();
+
+            sut.WorldMapViewModel.Should().Be(expectedWorldMapViewModel);
+        }
+
+        [Fact]
         public void SelectRegion_updates_world_map_view_model()
         {
             var expectedWorldMapViewModel = new WorldMapViewModel();
-            var territories = new List<ITerritory>();
-            var enabledRegions = new List<IRegion> { Make.Region.Build() };
             _worldMapViewModelFactory.Create(null)
                 .ReturnsForAnyArgs(expectedWorldMapViewModel);
-            _worldMapViewModelFactory.Update(expectedWorldMapViewModel, territories, enabledRegions, Maybe<IRegion>.Nothing);
+            var territories = new List<ITerritory>();
+            var enabledRegions = new List<IRegion> { Make.Region.Build() };
             var placeArmyRegionSelector = Substitute.For<IPlaceArmyRegionSelector>();
             placeArmyRegionSelector.Territories.Returns(territories);
             placeArmyRegionSelector.SelectableRegions.Returns(enabledRegions);
 
             var sut = Create();
-            sut.MonitorEvents();
             sut.SelectRegion(placeArmyRegionSelector);
 
-            sut.WorldMapViewModel.Should().Be(expectedWorldMapViewModel);
-            sut.ShouldRaisePropertyChangeFor(x => x.WorldMapViewModel);
+            _worldMapViewModelFactory.Received().Update(expectedWorldMapViewModel, territories, enabledRegions, Maybe<IRegion>.Nothing);
         }
 
         [Fact]
