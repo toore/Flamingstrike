@@ -1,25 +1,32 @@
-﻿<UserControl x:Class="RISK.UI.WPF.Views.ConfirmView"
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
-    xmlns:Micro="http://www.caliburnproject.org"
-    xmlns:Views="clr-namespace:RISK.UI.WPF.Views"
-    mc:Ignorable="d"
-    d:DesignHeight="300" d:DesignWidth="300"
-    d:DataContext="{d:DesignInstance Views:ConfirmViewModelDesignerData, IsDesignTimeCreatable=True}">
-    <UserControl.Resources>
+﻿<Window x:Class="RISK.UI.WPF.Views.ConfirmView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+        xmlns:Micro="http://www.caliburnproject.org"
+        xmlns:Views="clr-namespace:RISK.UI.WPF.Views"
+        mc:Ignorable="d"
+        d:DesignHeight="300" d:DesignWidth="400"
+        d:DataContext="{d:DesignInstance Views:ConfirmViewModelDesignerData, IsDesignTimeCreatable=True}"
+        ResizeMode="NoResize"
+        SizeToContent="WidthAndHeight"
+        WindowStartupLocation="CenterOwner">
+    <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/RISK.UI.WPF;component/Views/GameResources.xaml" />
+                <ResourceDictionary Source="/RISK.UI.WPF;component/Views/StandardResources.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
             <Style TargetType="Label">
                 <Setter Property="FontSize" Value="20" />
             </Style>
+            <Style TargetType="Button" BasedOn="{StaticResource StandardButtonStyle}">
+                <Setter Property="MinWidth" Value="100" />
+                <Setter Property="Margin" Value="20" />
+            </Style>
         </ResourceDictionary>
-    </UserControl.Resources>
+    </Window.Resources>
 
     <Grid Background="Transparent">
 
@@ -30,31 +37,26 @@
 
         <Label
             HorizontalAlignment="Center"
-            Content="{Binding Message}" />
+            Content="{Binding Message}"
+            Margin="20 10 20 0" />
 
         <Grid
-            Grid.Row="2"
-            HorizontalAlignment="Stretch">
+            Grid.Row="1"
+            HorizontalAlignment="Center">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
 
-            <Button
-                Style="{StaticResource StandardButtonStyle}"
-                Margin="20"
-                Content="{Binding ConfirmText}">
+            <Button Content="{Binding ConfirmText}">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="Click">
                         <Micro:ActionMessage MethodName="Confirm" />
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
             </Button>
-            <Button
-                Style="{StaticResource StandardButtonStyle}"
-                Grid.Column="1"
-                Margin="20"
-                Content="{Binding AbortText}">
+            <Button Content="{Binding AbortText}"
+                    Grid.Column="1">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="Click">
                         <Micro:ActionMessage MethodName="Cancel" />
@@ -64,4 +66,4 @@
         </Grid>
 
     </Grid>
-</UserControl>
+</Window>

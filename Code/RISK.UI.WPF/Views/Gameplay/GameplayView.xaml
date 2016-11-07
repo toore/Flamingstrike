@@ -15,7 +15,7 @@
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/RISK.UI.WPF;component/Views/GameResources.xaml" />
+                <ResourceDictionary Source="/RISK.UI.WPF;component/Views/StandardResources.xaml" />
                 <ResourceDictionary Source="WorldMapResources.xaml" />
             </ResourceDictionary.MergedDictionaries>
 

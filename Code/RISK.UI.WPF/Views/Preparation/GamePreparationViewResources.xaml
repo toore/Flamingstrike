@@ -5,7 +5,7 @@
     xmlns:Properties="clr-namespace:RISK.UI.WPF.Properties">
 
     <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="/RISK.UI.WPF;component/Views/GameResources.xaml" />
+        <ResourceDictionary Source="/RISK.UI.WPF;component/Views/StandardResources.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
     <Style x:Key="TextBoxStyle" TargetType="{x:Type TextBox}">

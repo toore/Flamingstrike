@@ -13,7 +13,7 @@ namespace RISK.UI.WPF.Views
     public class ConfirmViewModelDesignerData : IConfirmViewModel
     {
         public string Message => "Message displays here";
-        public string ConfirmText => "Confirm text";
-        public string AbortText => "Abort text";
+        public string ConfirmText => "Confirm";
+        public string AbortText => "Abort";
     }
 }
