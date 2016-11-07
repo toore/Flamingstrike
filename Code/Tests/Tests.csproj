@@ -145,7 +145,7 @@
     <Compile Include="RISK.UI.WPF\Specifications\GameplaySpec.cs" />
     <Compile Include="RISK.UI.WPF\EnumerableExtensionsTests.cs" />
     <Compile Include="RISK.UI.WPF\GamePreparationViewModelTests.cs" />
-    <Compile Include="RISK.UI.WPF\GameSetupViewModelTests.cs" />
+    <Compile Include="RISK.UI.WPF\AlternateGameSetupViewModelTests.cs" />
     <Compile Include="RISK.UI.WPF\MainGameViewModelTests.cs" />
     <Compile Include="RISK.UI.WPF\ScreenServiceTests.cs" />
     <Compile Include="RISK.UI.WPF\ConfirmViewModelFactoryTests.cs" />

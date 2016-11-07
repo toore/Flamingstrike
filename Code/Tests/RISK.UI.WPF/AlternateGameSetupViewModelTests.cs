@@ -15,7 +15,7 @@ using Xunit;
 
 namespace Tests.RISK.UI.WPF
 {
-    public class GameSetupViewModelTests
+    public class AlternateGameSetupViewModelTests
     {
         private readonly IWorldMapViewModelFactory _worldMapViewModelFactory;
         private readonly IPlayerUiDataRepository _playerUiDataRepository;
@@ -23,7 +23,7 @@ namespace Tests.RISK.UI.WPF
         private readonly IEventAggregator _eventAggregator;
         private readonly AlternateGameSetupViewModelFactory _factory;
 
-        public GameSetupViewModelTests()
+        public AlternateGameSetupViewModelTests()
         {
             _worldMapViewModelFactory = Substitute.For<IWorldMapViewModelFactory>();
             _playerUiDataRepository = Substitute.For<IPlayerUiDataRepository>();
