@@ -9,7 +9,6 @@ Game states/phases:
 + GameOver
 
 Issues:
-- Flicker when ending turn in game setup
 - Show player cards!, and enable trade-in of cards
 
 Improvements:
