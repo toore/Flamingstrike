@@ -254,9 +254,9 @@ namespace RISK.UI.WPF.ViewModels.Gameplay
             UpdateWorldMapInEndOfTurn(endTurnPhase);
         }
 
-        public void GameOver(IGameIsOver gameIsOver)
+        public void GameOver(IGameOverState gameOverState)
         {
-            ShowGameOverMessage(gameIsOver.Winner);
+            ShowGameOverMessage(gameOverState.Winner);
         }
 
         private void UpdatePlayerInformation(IGameStatus gameStatus)

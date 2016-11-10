@@ -366,7 +366,7 @@ namespace Tests.RISK.GameEngine.Specifications
 
         private void player_1_is_the_winner()
         {
-            _gameObserverSpy.GameIsOver.Winner.Should().Be(_player1);
+            _gameObserverSpy.GameOverState.Winner.Should().Be(_player1);
         }
 
         private void player_1_should_take_turn()
@@ -384,7 +384,7 @@ namespace Tests.RISK.GameEngine.Specifications
         public IAttackPhase AttackPhase => (IAttackPhase)_gameApiObject;
         public ISendArmiesToOccupyPhase SendArmiesToOccupyPhase => (ISendArmiesToOccupyPhase)_gameApiObject;
         public IEndTurnPhase EndTurnPhase => (IEndTurnPhase)_gameApiObject;
-        public IGameIsOver GameIsOver => (IGameIsOver)_gameApiObject;
+        public IGameOverState GameOverState => (IGameOverState)_gameApiObject;
 
         public void DraftArmies(IDraftArmiesPhase draftArmiesPhase)
         {
@@ -406,9 +406,9 @@ namespace Tests.RISK.GameEngine.Specifications
             _gameApiObject = endTurnPhase;
         }
 
-        public void GameOver(IGameIsOver gameIsOver)
+        public void GameOver(IGameOverState gameOverState)
         {
-            _gameApiObject = gameIsOver;
+            _gameApiObject = gameOverState;
         }
     }
 

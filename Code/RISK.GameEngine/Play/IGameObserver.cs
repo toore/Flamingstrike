@@ -6,6 +6,6 @@ namespace RISK.GameEngine.Play
         void Attack(IAttackPhase attackPhase);
         void SendArmiesToOccupy(ISendArmiesToOccupyPhase sendArmiesToOccupyPhase);
         void EndTurn(IEndTurnPhase endTurnPhase);
-        void GameOver(IGameIsOver gameIsOver);
+        void GameOver(IGameOverState gameOverState);
     }
 }
