@@ -2,25 +2,22 @@
 
 namespace RISK.UI.WPF.Views
 {
-    public partial class ConfirmView
+    public partial class NotifyView
     {
-        public ConfirmView()
+        public NotifyView()
         {
             InitializeComponent();
         }
     }
 
-    public class ConfirmViewModelDesignerData : ConfirmViewModel
+    public class NotifyViewModelDesignerData : NotifyViewModel
     {
         //public string Message => "Message displays here";
         //public string ConfirmText => "Confirm";
         //public string AbortText => "Abort";
-        public ConfirmViewModelDesignerData()
-            : base(null)
+        public NotifyViewModelDesignerData()
         {
             Message = "Message displays here";
-            ConfirmText = "Confirm";
-            AbortText = "Abort";
         }
     }
 }

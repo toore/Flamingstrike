@@ -28,8 +28,6 @@ namespace RISK.UI.WPF.ViewModels.Gameplay
         private readonly IInteractionStateFactory _interactionStateFactory;
         private readonly IWorldMapViewModelFactory _worldMapViewModelFactory;
         private readonly IPlayerUiDataRepository _playerUiDataRepository;
-        private readonly IWindowManager _windowManager;
-        private readonly IGameOverViewModelFactory _gameOverViewModelFactory;
         private readonly IDialogManager _dialogManager;
         private readonly IEventAggregator _eventAggregator;
         private string _informationText;
@@ -47,16 +45,12 @@ namespace RISK.UI.WPF.ViewModels.Gameplay
             IInteractionStateFactory interactionStateFactory,
             IWorldMapViewModelFactory worldMapViewModelFactory,
             IPlayerUiDataRepository playerUiDataRepository,
-            IWindowManager windowManager,
-            IGameOverViewModelFactory gameOverViewModelFactory,
             IDialogManager dialogManager,
             IEventAggregator eventAggregator)
         {
             _interactionStateFactory = interactionStateFactory;
             _worldMapViewModelFactory = worldMapViewModelFactory;
             _playerUiDataRepository = playerUiDataRepository;
-            _windowManager = windowManager;
-            _gameOverViewModelFactory = gameOverViewModelFactory;
             _dialogManager = dialogManager;
             _eventAggregator = eventAggregator;
 
@@ -165,20 +159,20 @@ namespace RISK.UI.WPF.ViewModels.Gameplay
             CanEnterAttackMode = false;
         }
 
-        void ISelectAttackingRegionObserver.SelectRegionToAttackFrom(IRegion region)
+        void ISelectAttackingRegionObserver.SelectRegionToAttackFrom(IRegion selectedRegion)
         {
             InformationText = Resources.ATTACK_SELECT_TERRITORY_TO_ATTACK;
-            _interactionState = _interactionStateFactory.CreateAttackInteractionState(_attackPhase, region, this);
+            _interactionState = _interactionStateFactory.CreateAttackInteractionState(_attackPhase, selectedRegion, this);
 
             CanEnterFortifyMode = false;
 
-            var regionsThatCanBeInteractedWith = _attackPhase.GetRegionsThatCanBeAttacked(region)
-                .Concat(new[] { region }).ToList();
+            var regionsThatCanBeInteractedWith = _attackPhase.GetRegionsThatCanBeAttacked(selectedRegion)
+                .Concat(new[] { selectedRegion }).ToList();
 
             UpdateWorldMap(
                 _attackPhase.Territories,
                 regionsThatCanBeInteractedWith,
-                Maybe<IRegion>.Create(region));
+                Maybe<IRegion>.Create(selectedRegion));
         }
 
         void IDeselectAttackingRegionObserver.DeselectRegion()
@@ -332,8 +326,9 @@ namespace RISK.UI.WPF.ViewModels.Gameplay
 
         private void ShowGameOverMessage(IPlayer winner)
         {
-            var gameOverViewModel = _gameOverViewModelFactory.Create(winner.Name);
-            _windowManager.ShowDialog(gameOverViewModel);
+            _dialogManager.ShowGameOverDialog(winner.Name);
+
+            _eventAggregator.PublishOnUIThread(new NewGameMessage());
         }
     }
 }

@@ -4,7 +4,7 @@ namespace RISK.UI.WPF.ViewModels.Gameplay.Interaction
 {
     public interface ISelectAttackingRegionObserver
     {
-        void SelectRegionToAttackFrom(IRegion region);
+        void SelectRegionToAttackFrom(IRegion selectedRegion);
     }
 
     public class SelectAttackingRegionInteractionState : IInteractionState

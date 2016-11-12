@@ -42,7 +42,6 @@ namespace RISK.UI.WPF.ViewModels
             var regionModelFactory = new RegionModelFactory(regions);
             var worldMapViewModelFactory = new WorldMapViewModelFactory(regionModelFactory, PlayerUiDataRepository);
             var windowManager = new WindowManager();
-            var gameOverViewModelFactory = new GameOverViewModelFactory();
             var screenConfirmationService = new ScreenConfirmationService();
             var confirmViewModelFactory = new ConfirmViewModelFactory(screenConfirmationService);
             var userNotifier = new UserNotifier(windowManager, confirmViewModelFactory);
@@ -53,8 +52,6 @@ namespace RISK.UI.WPF.ViewModels
                 interactionStateFactory,
                 worldMapViewModelFactory,
                 PlayerUiDataRepository,
-                windowManager,
-                gameOverViewModelFactory,
                 dialogManager,
                 EventAggregator);
 

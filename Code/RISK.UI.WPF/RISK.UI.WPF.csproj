@@ -111,6 +111,7 @@
     <Compile Include="Services\ScreenConfirmationService.cs" />
     <Compile Include="Services\DialogManager.cs" />
     <Compile Include="ViewModels\Messages\NewGameMessage.cs" />
+    <Compile Include="ViewModels\NotifyViewModel.cs" />
     <Compile Include="ViewModels\Root.cs" />
     <Compile Include="ViewModels\Preparation\GamePreparationViewModelFactory.cs" />
     <Compile Include="ViewModels\Preparation\PlayerUiDataRepository.cs" />
@@ -118,6 +119,9 @@
       <DependentUpon>AlternateGameSetupView.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\Messages\StartGameplayMessage.cs" />
+    <Compile Include="Views\NotifyView.xaml.cs">
+      <DependentUpon>NotifyView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\ConfirmView.xaml.cs">
       <DependentUpon>ConfirmView.xaml</DependentUpon>
     </Compile>
@@ -125,8 +129,6 @@
       <DependentUpon>GamePreparationView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Infrastructure\WindowManager.cs" />
-    <Compile Include="ViewModels\GameOverViewModel.cs" />
-    <Compile Include="ViewModels\GameOverViewModelFactory.cs" />
     <Compile Include="ViewModels\AlternateSetup\AlternateGameSetupViewModel.cs" />
     <Compile Include="ViewModels\Gameplay\GameplayViewModelFactory.cs" />
     <Compile Include="ViewModels\Messages\StartGameSetupMessage.cs" />
@@ -144,9 +146,6 @@
     <Compile Include="ViewModels\Preparation\PlayerTypes.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="ViewModels\Gameplay\GameplayViewModel.cs" />
-    <Compile Include="Views\GameOverView.xaml.cs">
-      <DependentUpon>GameOverView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\Preparation\GamePreparationControl.xaml.cs">
       <DependentUpon>GamePreparationControl.xaml</DependentUpon>
     </Compile>
@@ -212,13 +211,13 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\ConfirmView.xaml">
+    <Page Include="Views\NotifyView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\GameOverView.xaml">
-      <SubType>Designer</SubType>
+    <Page Include="Views\ConfirmView.xaml">
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\StandardResources.xaml">
       <SubType>Designer</SubType>

@@ -3,14 +3,7 @@ using RISK.UI.WPF.Services;
 
 namespace RISK.UI.WPF.ViewModels
 {
-    public interface IConfirmViewModel
-    {
-        string Message { get; }
-        string ConfirmText { get; }
-        string AbortText { get; }
-    }
-
-    public class ConfirmViewModel : Screen, IConfirmViewModel
+    public class ConfirmViewModel : Screen
     {
         private readonly IScreenConfirmationService _screenConfirmationService;
 

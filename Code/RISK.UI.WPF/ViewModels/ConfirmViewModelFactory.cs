@@ -16,7 +16,7 @@ namespace RISK.UI.WPF.ViewModels
         {
             if (confirmText == null)
             {
-                confirmText = "OK";
+                confirmText = Resources.OK;
             }
 
             if (abortText == null)

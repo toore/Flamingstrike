@@ -14,8 +14,6 @@ namespace RISK.UI.WPF.ViewModels.Gameplay
     {
         private readonly IWorldMapViewModelFactory _worldMapViewModelFactory;
         private readonly IPlayerUiDataRepository _playerUiDataRepository;
-        private readonly IWindowManager _windowManager;
-        private readonly IGameOverViewModelFactory _gameOverViewModelFactory;
         private readonly IDialogManager _dialogManager;
         private readonly IEventAggregator _eventAggregator;
         private readonly IInteractionStateFactory _interactionStateFactory;
@@ -24,16 +22,12 @@ namespace RISK.UI.WPF.ViewModels.Gameplay
             IInteractionStateFactory interactionStateFactory,
             IWorldMapViewModelFactory worldMapViewModelFactory,
             IPlayerUiDataRepository playerUiDataRepository,
-            IWindowManager windowManager,
-            IGameOverViewModelFactory gameOverViewModelFactory,
             IDialogManager dialogManager,
             IEventAggregator eventAggregator)
         {
             _interactionStateFactory = interactionStateFactory;
             _worldMapViewModelFactory = worldMapViewModelFactory;
             _playerUiDataRepository = playerUiDataRepository;
-            _windowManager = windowManager;
-            _gameOverViewModelFactory = gameOverViewModelFactory;
             _dialogManager = dialogManager;
             _eventAggregator = eventAggregator;
         }
@@ -44,8 +38,6 @@ namespace RISK.UI.WPF.ViewModels.Gameplay
                 _interactionStateFactory,
                 _worldMapViewModelFactory,
                 _playerUiDataRepository,
-                _windowManager,
-                _gameOverViewModelFactory,
                 _dialogManager,
                 _eventAggregator);
         }

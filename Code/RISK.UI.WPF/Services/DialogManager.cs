@@ -5,6 +5,7 @@ namespace RISK.UI.WPF.Services
     public interface IDialogManager
     {
         bool? ConfirmEndGame();
+        void ShowGameOverDialog(string winnerName);
     }
 
     public class DialogManager : IDialogManager
@@ -24,6 +25,14 @@ namespace RISK.UI.WPF.Services
             var abortText = Resources.NO;
 
             return _userNotifier.Confirm(message, displayName, confirmText, abortText);
+        }
+
+        public void ShowGameOverDialog(string winnerName)
+        {
+            var message = string.Format(Resources.ARG0_IS_THE_WINNER, winnerName);
+            var displayName = Resources.GAME_OVER;
+
+            _userNotifier.Notify(message, displayName);
         }
     }
 }

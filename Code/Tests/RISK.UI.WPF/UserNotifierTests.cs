@@ -35,5 +35,16 @@ namespace Tests.RISK.UI.WPF
             _windowManager.Received(1).ShowDialog(confirmViewModel);
             confirm.Should().Be(expectedConfirmation);
         }
+
+        [Fact]
+        public void Shows_notifying_dialog()
+        {
+            _userNotifier.Notify("message", "display name");
+
+            _windowManager.Received(1).ShowDialog(Arg.Is<NotifyViewModel>(vm =>
+                vm.Message == "message"
+                &&
+                vm.DisplayName == "display name"));
+        }
     }
 }

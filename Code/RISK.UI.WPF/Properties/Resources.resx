@@ -248,6 +248,9 @@
   <data name="NORTH_AFRICA" xml:space="preserve">
     <value>North Africa</value>
   </data>
+  <data name="OK" xml:space="preserve">
+    <value>OK</value>
+  </data>
   <data name="ONTARIO" xml:space="preserve">
     <value>Ontario</value>
   </data>
