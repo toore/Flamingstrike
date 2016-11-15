@@ -115,12 +115,12 @@
     <Compile Include="RISK.GameEngine\Play\GameStates\AttackPhaseStateGameStateTests.cs" />
     <Compile Include="RISK.GameEngine\Play\GameStates\DraftArmiesPhaseGameStateTests.cs" />
     <Compile Include="RISK.GameEngine\Attacking\BattleTests.cs" />
-    <Compile Include="RISK.GameEngine\Attacking\DiceTests.cs" />
-    <Compile Include="RISK.GameEngine\Attacking\DicesRollerTests.cs" />
+    <Compile Include="RISK.GameEngine\Attacking\DieTests.cs" />
+    <Compile Include="RISK.GameEngine\Attacking\DiceRollerTests.cs" />
     <Compile Include="RISK.GameEngine\Attacking\ArmiesLostCalculatorTests.cs" />
     <Compile Include="RISK.GameEngine\Builders\ArmiesLostBuilder.cs" />
     <Compile Include="RISK.GameEngine\Builders\ContinentBuilder.cs" />
-    <Compile Include="RISK.GameEngine\Builders\DicesBuilder.cs" />
+    <Compile Include="RISK.GameEngine\Builders\DiceBuilder.cs" />
     <Compile Include="RISK.GameEngine\Builders\PlayerBuilder.cs" />
     <Compile Include="RISK.GameEngine\Builders\TerritoryBuilder.cs" />
     <Compile Include="RISK.GameEngine\Play\GameStates\SendArmiesToOccupyGameState.cs" />

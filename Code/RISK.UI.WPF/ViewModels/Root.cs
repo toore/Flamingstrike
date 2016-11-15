@@ -59,8 +59,8 @@ namespace RISK.UI.WPF.ViewModels
             var shuffle = new FisherYatesShuffle(randomWrapper);
             var deckFactory = new DeckFactory(regions, shuffle);
             var battleCalculator = new ArmiesLostCalculator();
-            var dice = new Dice(randomWrapper);
-            var diceRoller = new DicesRoller(dice);
+            var dice = new Die(randomWrapper);
+            var diceRoller = new DiceRoller(dice);
             var battle = new Battle(diceRoller, battleCalculator);
             var armyDrafter = new ArmyDrafter();
             var territoryOccupier = new TerritoryOccupier();

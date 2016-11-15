@@ -6,7 +6,7 @@ using Xunit;
 
 namespace Tests.RISK.GameEngine.Attacking
 {
-    public class DiceTests
+    public class DieTests
     {
         [Theory]
         [InlineData(1)]
@@ -15,7 +15,7 @@ namespace Tests.RISK.GameEngine.Attacking
         public void Six_face_dice_is_rolled(int value)
         {
             var randomWrapper = Substitute.For<IRandomWrapper>();
-            var sut = new Dice(randomWrapper);
+            var sut = new Die(randomWrapper);
             randomWrapper.Next(1, 7).Returns(value);
 
             var actual = sut.Roll();

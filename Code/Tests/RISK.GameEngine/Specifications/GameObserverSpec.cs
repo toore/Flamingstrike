@@ -18,7 +18,7 @@ namespace Tests.RISK.GameEngine.Specifications
         private Regions _regions;
         private IPlayer _player1;
         private IPlayer _player2;
-        private IDice _dice;
+        private IDie _die;
         private IReadOnlyList<IPlayer> _players;
         private readonly List<Territory> _territories = new List<Territory>();
         private Continents _continents;
@@ -214,8 +214,8 @@ namespace Tests.RISK.GameEngine.Specifications
 
         private GameObserverSpec game_is_started()
         {
-            _dice = Substitute.For<IDice>();
-            var dicesRoller = new DicesRoller(_dice);
+            _die = Substitute.For<IDie>();
+            var dicesRoller = new DiceRoller(_die);
             var armyDraftCalculator = new ArmyDraftCalculator(_continents);
             var battle = new Battle(dicesRoller, new ArmiesLostCalculator());
             var armyDrafter = new ArmyDrafter();
@@ -311,7 +311,7 @@ namespace Tests.RISK.GameEngine.Specifications
 
         private GameObserverSpec player_attacks_brazil_from_north_africa_and_wins()
         {
-            _dice.Roll().Returns(6, 6, 6, 1);
+            _die.Roll().Returns(6, 6, 6, 1);
             _gameObserverSpy.AttackPhase.Attack(_regions.NorthAfrica, _regions.Brazil);
             return this;
         }

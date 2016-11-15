@@ -1,24 +1,16 @@
-﻿using RISK.GameEngine.Shuffling;
+using System.Collections.Generic;
 
 namespace RISK.GameEngine.Attacking
 {
-    public interface IDice
+    public class Dice
     {
-        int Roll();
-    }
-
-    public class Dice : IDice
-    {
-        private readonly IRandomWrapper _randomWrapper;
-
-        public Dice(IRandomWrapper randomWrapper)
+        public Dice(IList<int> attackValues, IList<int> defenceValues)
         {
-            _randomWrapper = randomWrapper;
+            DefenceValues = defenceValues;
+            AttackValues = attackValues;
         }
 
-        public int Roll()
-        {
-            return _randomWrapper.Next(1, 7);
-        }
+        public IList<int> AttackValues { get; }
+        public IList<int> DefenceValues { get; }
     }
 }

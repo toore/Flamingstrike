@@ -3,32 +3,32 @@ using System.Linq;
 
 namespace RISK.GameEngine.Attacking
 {
-    public interface IDicesRoller
+    public interface IDiceRoller
     {
-        Dices Roll(int numberOfAttackDices, int numberOfDefenceDices);
+        Dice Roll(int numberOfAttackDices, int numberOfDefenceDices);
     }
 
-    public class DicesRoller : IDicesRoller
+    public class DiceRoller : IDiceRoller
     {
-        private readonly IDice _dice;
+        private readonly IDie _die;
 
-        public DicesRoller(IDice dice)
+        public DiceRoller(IDie die)
         {
-            _dice = dice;
+            _die = die;
         }
 
-        public Dices Roll(int numberOfAttackDices, int numberOfDefenceDices)
+        public Dice Roll(int numberOfAttackDices, int numberOfDefenceDices)
         {
             var attackValues = RollDices(numberOfAttackDices);
             var defenceValues = RollDices(numberOfDefenceDices);
 
-            return new Dices(attackValues, defenceValues);
+            return new Dice(attackValues, defenceValues);
         }
 
         private IList<int> RollDices(int numberOfDices)
         {
             return Enumerable.Range(0, numberOfDices)
-                .Select(x => _dice.Roll())
+                .Select(x => _die.Roll())
                 .ToList();
         }
     }
