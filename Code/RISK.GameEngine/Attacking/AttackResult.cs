@@ -1,18 +1,18 @@
 ﻿namespace RISK.GameEngine.Attacking
 {
-    public interface IBattleOutcome
+    public interface IAttackResult
     {
         bool IsDefenderDefeated();
         ITerritory UpdatedAttackingTerritory { get; }
         ITerritory UpdatedDefendingTerritory { get; }
     }
 
-    public class BattleOutcome : IBattleOutcome
+    public class AttackResult : IAttackResult
     {
         public ITerritory UpdatedAttackingTerritory { get; }
         public ITerritory UpdatedDefendingTerritory { get; }
 
-        public BattleOutcome(ITerritory updatedAttackingTerritory, ITerritory updatedDefendingTerritory)
+        public AttackResult(ITerritory updatedAttackingTerritory, ITerritory updatedDefendingTerritory)
         {
             UpdatedAttackingTerritory = updatedAttackingTerritory;
             UpdatedDefendingTerritory = updatedDefendingTerritory;

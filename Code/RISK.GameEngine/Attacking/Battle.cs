@@ -4,7 +4,7 @@ namespace RISK.GameEngine.Attacking
 {
     public interface IBattle
     {
-        IBattleOutcome Attack(ITerritory attackingTerritory, ITerritory defendingTerritory);
+        IAttackResult Attack(ITerritory attackingTerritory, ITerritory defendingTerritory);
     }
 
     public class Battle : IBattle
@@ -18,7 +18,7 @@ namespace RISK.GameEngine.Attacking
             _armiesLostCalculator = armiesLostCalculator;
         }
 
-        public IBattleOutcome Attack(ITerritory attackingTerritory, ITerritory defendingTerritory)
+        public IAttackResult Attack(ITerritory attackingTerritory, ITerritory defendingTerritory)
         {
             var attackingArmies = Math.Min(attackingTerritory.GetNumberOfArmiesThatCanBeUsedInAnAttack(), 3);
             var defendingArmies = Math.Min(defendingTerritory.GetNumberOfArmiesUsedAsDefence(), 2);
@@ -35,7 +35,7 @@ namespace RISK.GameEngine.Attacking
             return UpdateArmies(battleOutcome, attackingTerritory, defendingTerritory);
         }
 
-        private static IBattleOutcome AttackerOccupiesNewTerritory(int attackingArmies, ITerritory attackingTerritory, ITerritory territoryToBeOccupied)
+        private static IAttackResult AttackerOccupiesNewTerritory(int attackingArmies, ITerritory attackingTerritory, ITerritory territoryToBeOccupied)
         {
             var attackingArmiesLeft = attackingTerritory.Armies - attackingArmies;
             var updatedAttackingTerritory = new Territory(attackingTerritory.Region, attackingTerritory.Player, attackingArmiesLeft);
@@ -43,10 +43,10 @@ namespace RISK.GameEngine.Attacking
             var occupyingPlayer = attackingTerritory.Player;
             var occupiedTerritory = new Territory(territoryToBeOccupied.Region, occupyingPlayer, attackingArmies);
 
-            return new BattleOutcome(updatedAttackingTerritory, occupiedTerritory);
+            return new AttackResult(updatedAttackingTerritory, occupiedTerritory);
         }
 
-        private static IBattleOutcome UpdateArmies(ArmiesLost armiesLost, ITerritory attackingTerritory, ITerritory defendingTerritory)
+        private static IAttackResult UpdateArmies(ArmiesLost armiesLost, ITerritory attackingTerritory, ITerritory defendingTerritory)
         {
             var updatedAttackingArmies = attackingTerritory.Armies - armiesLost.AttackingArmiesLost;
             var updatedAttackingTerritory = new Territory(attackingTerritory.Region, attackingTerritory.Player, updatedAttackingArmies);
@@ -54,7 +54,7 @@ namespace RISK.GameEngine.Attacking
             var updatedAttackedArmies = defendingTerritory.Armies - armiesLost.DefendingArmiesLost;
             var updatedAttackedTerritory = new Territory(defendingTerritory.Region, defendingTerritory.Player, updatedAttackedArmies);
 
-            return new BattleOutcome(updatedAttackingTerritory, updatedAttackedTerritory);
+            return new AttackResult(updatedAttackingTerritory, updatedAttackedTerritory);
         }
 
         private static bool IsDefenderDefeated(ITerritory defendingTerritory, ArmiesLost armiesLost)

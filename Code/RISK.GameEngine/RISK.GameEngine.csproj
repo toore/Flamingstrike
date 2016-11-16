@@ -44,7 +44,7 @@
     <Compile Include="ArmyDrafter.cs" />
     <Compile Include="Attacking\Attacker.cs" />
     <Compile Include="Attacking\Battle.cs" />
-    <Compile Include="Attacking\BattleOutcome.cs" />
+    <Compile Include="Attacking\AttackResult.cs" />
     <Compile Include="Attacking\Die.cs" />
     <Compile Include="Attacking\Dice.cs" />
     <Compile Include="Attacking\DiceRoller.cs" />
