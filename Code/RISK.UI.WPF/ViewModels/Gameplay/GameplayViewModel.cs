@@ -38,7 +38,7 @@ namespace RISK.UI.WPF.ViewModels.Gameplay
         private bool _canEndTurn;
         private IInteractionState _interactionState;
         private IAttackPhase _attackPhase;
-        private Action _endTurn;
+        private Action _endTurnAction;
         private IList<PlayerAndNumberOfCardsViewModel> _players;
 
         public GameplayViewModel(
@@ -128,7 +128,7 @@ namespace RISK.UI.WPF.ViewModels.Gameplay
 
             CanEnterFortifyMode = false;
             CanEnterAttackMode = false;
-            CanEndTurn = false;
+            SetEndTurnAction(Maybe<Action>.Nothing);
 
             UpdateWorldMap(draftArmiesPhase);
         }
@@ -138,14 +138,13 @@ namespace RISK.UI.WPF.ViewModels.Gameplay
             UpdatePlayerInformation(attackPhase);
 
             _attackPhase = attackPhase;
-            _endTurn = attackPhase.EndTurn;
-            CanEndTurn = true;
 
             InformationText = Resources.ATTACK_SELECT_FROM_TERRITORY;
             _interactionState = _interactionStateFactory.CreateSelectAttackingRegionInteractionState(this);
 
             CanEnterFortifyMode = true;
             CanEnterAttackMode = false;
+            SetEndTurnAction(Maybe<Action>.Create(attackPhase.EndTurn));
 
             UpdateWorldMap(attackPhase);
         }
@@ -194,7 +193,7 @@ namespace RISK.UI.WPF.ViewModels.Gameplay
 
             CanEnterFortifyMode = false;
             CanEnterAttackMode = false;
-            CanEndTurn = false;
+            SetEndTurnAction(Maybe<Action>.Nothing);
 
             UpdateWorldMap(sendArmiesToOccupyPhase);
         }
@@ -242,10 +241,16 @@ namespace RISK.UI.WPF.ViewModels.Gameplay
 
             CanEnterFortifyMode = false;
             CanEnterAttackMode = false;
-            CanEndTurn = true;
-            _endTurn = endTurnPhase.EndTurn;
+            SetEndTurnAction(Maybe<Action>.Create(endTurnPhase.EndTurn));
 
             UpdateWorldMap(endTurnPhase);
+        }
+
+        private void SetEndTurnAction(Maybe<Action> endTurnAction)
+        {
+            Action nullAction = () => { };
+            _endTurnAction = endTurnAction.Fold(x => x, () => nullAction);
+            CanEndTurn = endTurnAction.Fold(x => true, () => false);
         }
 
         public void GameOver(IGameOverState gameOverState)
@@ -311,7 +316,7 @@ namespace RISK.UI.WPF.ViewModels.Gameplay
 
         public void EndTurn()
         {
-            _endTurn();
+            _endTurnAction();
         }
 
         public void EndGame()
