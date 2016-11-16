@@ -132,7 +132,7 @@
     <Compile Include="RISK.GameEngine\Specifications\GameObserverSpec.cs" />
     <Compile Include="RISK.UI.WPF\Interaction\AttackInteractionStateTests.cs" />
     <Compile Include="RISK.UI.WPF\Interaction\FortifyInteractionStateTests.cs" />
-    <Compile Include="RISK.UI.WPF\Interaction\SelectSourceRegionForFortificationInteractionStateTests.cs" />
+    <Compile Include="RISK.UI.WPF\Interaction\SelectFortificationInteractionStateTests.cs" />
     <Compile Include="RISK.GameEngine\Setup\StartingInfantryCalculatorTests.cs" />
     <Compile Include="RISK.GameEngine\Builders\GamePlaySetupBuilder.cs" />
     <Compile Include="RISK.UI.WPF\Interaction\DraftArmiesInteractionStateTests.cs" />
@@ -140,7 +140,7 @@
     <Compile Include="RISK.UI.WPF\RegionModelFactoryTests.cs" />
     <Compile Include="RISK.GameEngine\Builders\RegionBuilder.cs" />
     <Compile Include="RISK.GameEngine\Builders\Make.cs" />
-    <Compile Include="RISK.UI.WPF\Interaction\SelectAttackInteractionStateTests.cs" />
+    <Compile Include="RISK.UI.WPF\Interaction\SelectAttackingInteractionStateTests.cs" />
     <Compile Include="SpecBase.cs" />
     <Compile Include="RISK.UI.WPF\Specifications\GameplaySpec.cs" />
     <Compile Include="RISK.UI.WPF\EnumerableExtensionsTests.cs" />

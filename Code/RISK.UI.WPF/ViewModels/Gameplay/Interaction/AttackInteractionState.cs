@@ -3,7 +3,7 @@ using RISK.GameEngine.Play;
 
 namespace RISK.UI.WPF.ViewModels.Gameplay.Interaction
 {
-    public interface IDeselectAttackingRegionObserver
+    public interface IAttackInteractionStateObserver
     {
         void DeselectRegion();
     }
@@ -12,13 +12,13 @@ namespace RISK.UI.WPF.ViewModels.Gameplay.Interaction
     {
         private readonly IAttackPhase _attackPhase;
         private readonly IRegion _selectedRegion;
-        private readonly IDeselectAttackingRegionObserver _deselectAttackingRegionObserver;
+        private readonly IAttackInteractionStateObserver _attackInteractionStateObserver;
 
-        public AttackInteractionState(IAttackPhase attackPhase, IRegion selectedRegion, IDeselectAttackingRegionObserver deselectAttackingRegionObserver)
+        public AttackInteractionState(IAttackPhase attackPhase, IRegion selectedRegion, IAttackInteractionStateObserver attackInteractionStateObserver)
         {
             _attackPhase = attackPhase;
             _selectedRegion = selectedRegion;
-            _deselectAttackingRegionObserver = deselectAttackingRegionObserver;
+            _attackInteractionStateObserver = attackInteractionStateObserver;
         }
 
         public void OnClick(IRegion region)
@@ -40,7 +40,7 @@ namespace RISK.UI.WPF.ViewModels.Gameplay.Interaction
 
         private void Deselect()
         {
-            _deselectAttackingRegionObserver.DeselectRegion();
+            _attackInteractionStateObserver.DeselectRegion();
         }
 
         private void Attack(IRegion attackedRegion)

@@ -6,11 +6,11 @@ namespace RISK.UI.WPF.ViewModels.Gameplay.Interaction
     public interface IInteractionStateFactory
     {
         IInteractionState CreateDraftArmiesInteractionState(IDraftArmiesPhase draftArmiesPhase);
-        IInteractionState CreateSelectAttackingRegionInteractionState(ISelectAttackingRegionObserver selectAttackingRegionObserver);
-        IInteractionState CreateAttackInteractionState(IAttackPhase attackPhase, IRegion selectedRegion, IDeselectAttackingRegionObserver deselectAttackingRegionObserver);
+        IInteractionState CreateSelectAttackingRegionInteractionState(ISelectAttackingRegionInteractionStateObserver selectAttackingRegionInteractionStateObserver);
+        IInteractionState CreateAttackInteractionState(IAttackPhase attackPhase, IRegion selectedRegion, IAttackInteractionStateObserver attackInteractionStateObserver);
         IInteractionState CreateSendArmiesToOccupyInteractionState(ISendArmiesToOccupyPhase sendArmiesToOccupyPhase);
-        IInteractionState CreateSelectSourceRegionForFortificationInteractionState(ISelectSourceRegionForFortificationObserver selectSourceRegionForFortificationObserver);
-        IInteractionState CreateFortifyInteractionState(IAttackPhase attackPhase, IRegion selectedRegion, IDeselectRegionToFortifyFromObserver deselectRegionToFortifyFromObserver);
+        IInteractionState CreateSelectSourceRegionForFortificationInteractionState(ISelectFortificationInteractionStateObserver selectFortificationInteractionStateObserver);
+        IInteractionState CreateFortifyInteractionState(IAttackPhase attackPhase, IRegion selectedRegion, IFortifyInteractionStateObserver fortifyInteractionStateObserver);
     }
 
     public class InteractionStateFactory : IInteractionStateFactory
@@ -20,14 +20,14 @@ namespace RISK.UI.WPF.ViewModels.Gameplay.Interaction
             return new DraftArmiesInteractionState(draftArmiesPhase);
         }
 
-        public IInteractionState CreateSelectAttackingRegionInteractionState(ISelectAttackingRegionObserver selectAttackingRegionObserver)
+        public IInteractionState CreateSelectAttackingRegionInteractionState(ISelectAttackingRegionInteractionStateObserver selectAttackingRegionInteractionStateObserver)
         {
-            return new SelectAttackingRegionInteractionState(selectAttackingRegionObserver);
+            return new SelectAttackingRegionInteractionState(selectAttackingRegionInteractionStateObserver);
         }
 
-        public IInteractionState CreateAttackInteractionState(IAttackPhase attackPhase, IRegion selectedRegion, IDeselectAttackingRegionObserver deselectAttackingRegionObserver)
+        public IInteractionState CreateAttackInteractionState(IAttackPhase attackPhase, IRegion selectedRegion, IAttackInteractionStateObserver attackInteractionStateObserver)
         {
-            return new AttackInteractionState(attackPhase, selectedRegion, deselectAttackingRegionObserver);
+            return new AttackInteractionState(attackPhase, selectedRegion, attackInteractionStateObserver);
         }
 
         public IInteractionState CreateSendArmiesToOccupyInteractionState(ISendArmiesToOccupyPhase sendArmiesToOccupyPhase)
@@ -35,14 +35,14 @@ namespace RISK.UI.WPF.ViewModels.Gameplay.Interaction
             return new SendArmiesToOccupyInteractionState(sendArmiesToOccupyPhase);
         }
 
-        public IInteractionState CreateSelectSourceRegionForFortificationInteractionState(ISelectSourceRegionForFortificationObserver selectSourceRegionForFortificationObserver)
+        public IInteractionState CreateSelectSourceRegionForFortificationInteractionState(ISelectFortificationInteractionStateObserver selectFortificationInteractionStateObserver)
         {
-            return new SelectSourceRegionForFortificationInteractionState(selectSourceRegionForFortificationObserver);
+            return new SelectFortificationInteractionState(selectFortificationInteractionStateObserver);
         }
 
-        public IInteractionState CreateFortifyInteractionState(IAttackPhase attackPhase, IRegion selectedRegion, IDeselectRegionToFortifyFromObserver deselectRegionToFortifyFromObserver)
+        public IInteractionState CreateFortifyInteractionState(IAttackPhase attackPhase, IRegion selectedRegion, IFortifyInteractionStateObserver fortifyInteractionStateObserver)
         {
-            return new FortifyInteractionState(attackPhase, selectedRegion, deselectRegionToFortifyFromObserver);
+            return new FortifyInteractionState(attackPhase, selectedRegion, fortifyInteractionStateObserver);
         }
     }
 }

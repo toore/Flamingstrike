@@ -10,16 +10,16 @@ namespace Tests.RISK.UI.WPF.Interaction
     {
         private readonly IRegion _selectedRegion;
         private readonly IAttackPhase _attackPhase;
-        private readonly IDeselectRegionToFortifyFromObserver _deselectRegionToFortifyFromObserver;
+        private readonly IFortifyInteractionStateObserver _fortifyInteractionStateObserver;
         private readonly FortifyInteractionState _sut;
 
         public FortifyInteractionStateTests()
         {
             _attackPhase = Substitute.For<IAttackPhase>();
             _selectedRegion = Substitute.For<IRegion>();
-            _deselectRegionToFortifyFromObserver = Substitute.For<IDeselectRegionToFortifyFromObserver>();
+            _fortifyInteractionStateObserver = Substitute.For<IFortifyInteractionStateObserver>();
 
-            _sut = new FortifyInteractionState(_attackPhase, _selectedRegion, _deselectRegionToFortifyFromObserver);
+            _sut = new FortifyInteractionState(_attackPhase, _selectedRegion, _fortifyInteractionStateObserver);
         }
 
         [Fact]
@@ -39,7 +39,7 @@ namespace Tests.RISK.UI.WPF.Interaction
 
             _sut.OnClick(_selectedRegion);
 
-            _deselectRegionToFortifyFromObserver.Received().DeselectRegion();
+            _fortifyInteractionStateObserver.Received().DeselectRegion();
         }
     }
 }

@@ -3,7 +3,7 @@ using RISK.GameEngine.Play;
 
 namespace RISK.UI.WPF.ViewModels.Gameplay.Interaction
 {
-    public interface IDeselectRegionToFortifyFromObserver
+    public interface IFortifyInteractionStateObserver
     {
         void DeselectRegion();
     }
@@ -12,13 +12,13 @@ namespace RISK.UI.WPF.ViewModels.Gameplay.Interaction
     {
         private readonly IAttackPhase _attackPhase;
         private readonly IRegion _selectedRegion;
-        private readonly IDeselectRegionToFortifyFromObserver _deselectRegionToFortifyFromObserver;
+        private readonly IFortifyInteractionStateObserver _fortifyInteractionStateObserver;
 
-        public FortifyInteractionState(IAttackPhase attackPhase, IRegion selectedRegion, IDeselectRegionToFortifyFromObserver deselectRegionToFortifyFromObserver)
+        public FortifyInteractionState(IAttackPhase attackPhase, IRegion selectedRegion, IFortifyInteractionStateObserver fortifyInteractionStateObserver)
         {
             _attackPhase = attackPhase;
             _selectedRegion = selectedRegion;
-            _deselectRegionToFortifyFromObserver = deselectRegionToFortifyFromObserver;
+            _fortifyInteractionStateObserver = fortifyInteractionStateObserver;
         }
 
         public void OnClick(IRegion region)
@@ -40,7 +40,7 @@ namespace RISK.UI.WPF.ViewModels.Gameplay.Interaction
 
         private void Deselect()
         {
-            _deselectRegionToFortifyFromObserver.DeselectRegion();
+            _fortifyInteractionStateObserver.DeselectRegion();
         }
 
         private void Fortify(IRegion regionToFortify)
