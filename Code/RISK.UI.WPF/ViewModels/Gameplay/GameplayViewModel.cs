@@ -245,7 +245,7 @@ namespace RISK.UI.WPF.ViewModels.Gameplay
             CanEndTurn = true;
             _endTurn = endTurnPhase.EndTurn;
 
-            UpdateWorldMapInEndOfTurn(endTurnPhase);
+            UpdateWorldMap(endTurnPhase);
         }
 
         public void GameOver(IGameOverState gameOverState)
@@ -294,7 +294,7 @@ namespace RISK.UI.WPF.ViewModels.Gameplay
                 Maybe<IRegion>.Create(sendArmiesToOccupyPhase.AttackingRegion));
         }
 
-        private void UpdateWorldMapInEndOfTurn(IEndTurnPhase endTurnPhase)
+        private void UpdateWorldMap(IEndTurnPhase endTurnPhase)
         {
             UpdateWorldMap(endTurnPhase.Territories, new IRegion[] { }, Maybe<IRegion>.Nothing);
         }
