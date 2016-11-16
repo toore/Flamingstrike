@@ -114,11 +114,6 @@ namespace RISK.UI.WPF.ViewModels.Gameplay
 
         public void Activate() {}
 
-        private void OnRegionClick(IRegion region)
-        {
-            _interactionState.OnClick(region);
-        }
-
         public void DraftArmies(IDraftArmiesPhase draftArmiesPhase)
         {
             UpdatePlayerInformation(draftArmiesPhase);
@@ -147,6 +142,38 @@ namespace RISK.UI.WPF.ViewModels.Gameplay
             SetEndTurnAction(Maybe<Action>.Create(attackPhase.EndTurn));
 
             UpdateWorldMap(attackPhase);
+        }
+
+        public void SendArmiesToOccupy(ISendArmiesToOccupyPhase sendArmiesToOccupyPhase)
+        {
+            UpdatePlayerInformation(sendArmiesToOccupyPhase);
+
+            InformationText = Resources.SEND_ARMIES_TO_OCCUPY;
+            _interactionState = _interactionStateFactory.CreateSendArmiesToOccupyInteractionState(sendArmiesToOccupyPhase);
+
+            CanEnterFortifyMode = false;
+            CanEnterAttackMode = false;
+            SetEndTurnAction(Maybe<Action>.Nothing);
+
+            UpdateWorldMap(sendArmiesToOccupyPhase);
+        }
+
+        public void EndTurn(IEndTurnPhase endTurnPhase)
+        {
+            UpdatePlayerInformation(endTurnPhase);
+
+            InformationText = Resources.END_TURN;
+
+            CanEnterFortifyMode = false;
+            CanEnterAttackMode = false;
+            SetEndTurnAction(Maybe<Action>.Create(endTurnPhase.EndTurn));
+
+            UpdateWorldMap(endTurnPhase);
+        }
+
+        public void GameOver(IGameOverState gameOverState)
+        {
+            ShowGameOverMessage(gameOverState.Winner);
         }
 
         public void EnterAttackMode()
@@ -184,20 +211,6 @@ namespace RISK.UI.WPF.ViewModels.Gameplay
             UpdateWorldMap(_attackPhase);
         }
 
-        public void SendArmiesToOccupy(ISendArmiesToOccupyPhase sendArmiesToOccupyPhase)
-        {
-            UpdatePlayerInformation(sendArmiesToOccupyPhase);
-
-            InformationText = Resources.SEND_ARMIES_TO_OCCUPY;
-            _interactionState = _interactionStateFactory.CreateSendArmiesToOccupyInteractionState(sendArmiesToOccupyPhase);
-
-            CanEnterFortifyMode = false;
-            CanEnterAttackMode = false;
-            SetEndTurnAction(Maybe<Action>.Nothing);
-
-            UpdateWorldMap(sendArmiesToOccupyPhase);
-        }
-
         public void EnterFortifyMode()
         {
             InformationText = Resources.FORTIFY_SELECT_TERRITORY_TO_MOVE_FROM;
@@ -233,17 +246,24 @@ namespace RISK.UI.WPF.ViewModels.Gameplay
             UpdateWorldMap(_attackPhase);
         }
 
-        public void EndTurn(IEndTurnPhase endTurnPhase)
+        public void EndTurn()
         {
-            UpdatePlayerInformation(endTurnPhase);
+            _endTurnAction();
+        }
 
-            InformationText = Resources.END_TURN;
+        public void EndGame()
+        {
+            var confirm = _dialogManager.ConfirmEndGame();
 
-            CanEnterFortifyMode = false;
-            CanEnterAttackMode = false;
-            SetEndTurnAction(Maybe<Action>.Create(endTurnPhase.EndTurn));
+            if (confirm.HasValue && confirm.Value)
+            {
+                _eventAggregator.PublishOnUIThread(new NewGameMessage());
+            }
+        }
 
-            UpdateWorldMap(endTurnPhase);
+        private void OnRegionClick(IRegion region)
+        {
+            _interactionState.OnClick(region);
         }
 
         private void SetEndTurnAction(Maybe<Action> endTurnAction)
@@ -251,11 +271,6 @@ namespace RISK.UI.WPF.ViewModels.Gameplay
             Action nullAction = () => { };
             _endTurnAction = endTurnAction.Fold(x => x, () => nullAction);
             CanEndTurn = endTurnAction.Fold(x => true, () => false);
-        }
-
-        public void GameOver(IGameOverState gameOverState)
-        {
-            ShowGameOverMessage(gameOverState.Winner);
         }
 
         private void UpdatePlayerInformation(IGameStatus gameStatus)
@@ -312,21 +327,6 @@ namespace RISK.UI.WPF.ViewModels.Gameplay
         private void UpdateWorldMap(IReadOnlyList<ITerritory> territories, IReadOnlyList<IRegion> enabledRegions, Maybe<IRegion> selectedRegion)
         {
             _worldMapViewModelFactory.Update(WorldMapViewModel, territories, enabledRegions, selectedRegion);
-        }
-
-        public void EndTurn()
-        {
-            _endTurnAction();
-        }
-
-        public void EndGame()
-        {
-            var confirm = _dialogManager.ConfirmEndGame();
-
-            if (confirm.HasValue && confirm.Value)
-            {
-                _eventAggregator.PublishOnUIThread(new NewGameMessage());
-            }
         }
 
         private void ShowGameOverMessage(IPlayer winner)
