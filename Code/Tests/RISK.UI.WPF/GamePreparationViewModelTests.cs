@@ -27,7 +27,7 @@ namespace Tests.RISK.UI.WPF
         }
 
         [Fact]
-        public void Has_6_players()
+        public void Has_6_potential_players()
         {
             _gameInitializationViewModel.PotentialPlayers.Count.Should().Be(6);
         }
