@@ -9,12 +9,12 @@ namespace RISK.GameEngine.Attacking
 
     public class Battle : IBattle
     {
-        private readonly IDiceRoller _diceRoller;
+        private readonly IDice _dice;
         private readonly IArmiesLostCalculator _armiesLostCalculator;
 
-        public Battle(IDiceRoller diceRoller, IArmiesLostCalculator armiesLostCalculator)
+        public Battle(IDice dice, IArmiesLostCalculator armiesLostCalculator)
         {
-            _diceRoller = diceRoller;
+            _dice = dice;
             _armiesLostCalculator = armiesLostCalculator;
         }
 
@@ -23,7 +23,7 @@ namespace RISK.GameEngine.Attacking
             var attackingArmies = Math.Min(attackingTerritory.GetNumberOfArmiesThatCanBeUsedInAnAttack(), 3);
             var defendingArmies = Math.Min(defendingTerritory.GetNumberOfArmiesUsedAsDefence(), 2);
 
-            var dices = _diceRoller.Roll(attackingArmies, defendingArmies);
+            var dices = _dice.Roll(attackingArmies, defendingArmies);
             var battleOutcome = _armiesLostCalculator.Calculate(dices.AttackValues, dices.DefenceValues);
 
             var isDefenderDefeated = IsDefenderDefeated(defendingTerritory, battleOutcome);

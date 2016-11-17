@@ -5,16 +5,16 @@ using Xunit;
 
 namespace Tests.RISK.GameEngine.Attacking
 {
-    public class DiceRollerTests
+    public class DiceTests
     {
-        private readonly DiceRoller _sut;
+        private readonly Dice _sut;
         private readonly IDie _die;
 
-        public DiceRollerTests()
+        public DiceTests()
         {
             _die = Substitute.For<IDie>();
 
-            _sut = new DiceRoller(_die);
+            _sut = new Dice(_die);
         }
 
         [Fact]
@@ -24,7 +24,7 @@ namespace Tests.RISK.GameEngine.Attacking
 
             var dices = _sut.Roll(1, 1);
 
-            dices.ShouldBeEquivalentTo(new Dice(new[] { 1 }, new[] { 2 }));
+            dices.ShouldBeEquivalentTo(new DiceResult(new[] { 1 }, new[] { 2 }));
         }
 
         [Fact]
@@ -34,7 +34,7 @@ namespace Tests.RISK.GameEngine.Attacking
 
             var dices = _sut.Roll(3, 2);
 
-            dices.ShouldBeEquivalentTo(new Dice(new[] { 1, 2, 3 }, new[] { 4, 5 }));
+            dices.ShouldBeEquivalentTo(new DiceResult(new[] { 1, 2, 3 }, new[] { 4, 5 }));
         }
     }
 }

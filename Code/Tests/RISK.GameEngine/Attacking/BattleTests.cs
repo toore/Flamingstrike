@@ -12,22 +12,22 @@ namespace Tests.RISK.GameEngine.Attacking
     public abstract class BattleTests
     {
         private readonly Battle _sut;
-        private readonly IDiceRoller _diceRoller;
+        private readonly IDice _dice;
         private readonly IArmiesLostCalculator _armiesLostCalculator;
 
         protected BattleTests()
         {
-            _diceRoller = Substitute.For<IDiceRoller>();
+            _dice = Substitute.For<IDice>();
             _armiesLostCalculator = Substitute.For<IArmiesLostCalculator>();
 
-            _sut = new Battle(_diceRoller, _armiesLostCalculator);
+            _sut = new Battle(_dice, _armiesLostCalculator);
         }
 
         public class Uses_correct_number_of_dices_with_respect_to_number_of_armies : BattleTests
         {
             public Uses_correct_number_of_dices_with_respect_to_number_of_armies()
             {
-                _diceRoller.Roll(Arg.Any<int>(), Arg.Any<int>()).ReturnsForAnyArgs(Make.Dice.Build());
+                _dice.Roll(Arg.Any<int>(), Arg.Any<int>()).ReturnsForAnyArgs(Make.DiceResult.Build());
                 _armiesLostCalculator.Calculate(null, null).ReturnsForAnyArgs(Make.ArmiesLost.Build());
             }
 
@@ -50,7 +50,7 @@ namespace Tests.RISK.GameEngine.Attacking
 
                 _sut.Attack(attackingTerritory, defendingTerritory);
 
-                _diceRoller.Received().Roll(expectedNumberOfAttackingDices, Arg.Any<int>());
+                _dice.Received().Roll(expectedNumberOfAttackingDices, Arg.Any<int>());
             }
 
             private class NumberOfDefendingDicesCasesAttribute : DataAttribute
@@ -72,7 +72,7 @@ namespace Tests.RISK.GameEngine.Attacking
 
                 _sut.Attack(attackingTerritory, defendingTerritory);
 
-                _diceRoller.Received().Roll(Arg.Any<int>(), expectedNumberOfDefendingDices);
+                _dice.Received().Roll(Arg.Any<int>(), expectedNumberOfDefendingDices);
             }
         }
 
@@ -155,7 +155,7 @@ namespace Tests.RISK.GameEngine.Attacking
                 var attackValues = new List<int>();
                 var defenceValues = new List<int>();
 
-                _diceRoller.Roll(numberOfAttackDices, numberOfDefenceDices).Returns(new Dice(attackValues, defenceValues));
+                _dice.Roll(numberOfAttackDices, numberOfDefenceDices).Returns(new DiceResult(attackValues, defenceValues));
                 _armiesLostCalculator.Calculate(attackValues, defenceValues).Returns(armiesLost);
             }
         }

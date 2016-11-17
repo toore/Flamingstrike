@@ -3,11 +3,11 @@ using RISK.GameEngine.Attacking;
 
 namespace Tests.RISK.GameEngine.Builders
 {
-    public class DiceBuilder
+    public class DiceResultBuilder
     {
-        public Dice Build()
+        public DiceResult Build()
         {
-            return new Dice(new List<int>(), new List<int>());
+            return new DiceResult(new List<int>(), new List<int>());
         }
     }
 }

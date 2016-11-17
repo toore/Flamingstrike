@@ -47,7 +47,6 @@
     <Compile Include="Attacking\AttackResult.cs" />
     <Compile Include="Attacking\Die.cs" />
     <Compile Include="Attacking\Dice.cs" />
-    <Compile Include="Attacking\DiceRoller.cs" />
     <Compile Include="Fortifier.cs" />
     <Compile Include="Attacking\PlayerEliminationRules.cs" />
     <Compile Include="ICard.cs" />

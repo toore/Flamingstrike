@@ -215,7 +215,7 @@ namespace Tests.RISK.GameEngine.Specifications
         private GameObserverSpec game_is_started()
         {
             _die = Substitute.For<IDie>();
-            var dicesRoller = new DiceRoller(_die);
+            var dicesRoller = new Dice(_die);
             var armyDraftCalculator = new ArmyDraftCalculator(_continents);
             var battle = new Battle(dicesRoller, new ArmiesLostCalculator());
             var armyDrafter = new ArmyDrafter();

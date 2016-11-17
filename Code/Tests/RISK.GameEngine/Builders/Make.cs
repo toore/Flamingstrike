@@ -8,7 +8,7 @@ namespace Tests.RISK.GameEngine.Builders
         public static ContinentBuilder Continent => new ContinentBuilder();
         public static GamePlaySetupBuilder GamePlaySetup => new GamePlaySetupBuilder();
         public static TerritoryBuilder Territory => new TerritoryBuilder();
-        public static DiceBuilder Dice => new DiceBuilder();
+        public static DiceResultBuilder DiceResult => new DiceResultBuilder();
         public static ArmiesLostBuilder ArmiesLost => new ArmiesLostBuilder();
         public static PlayerBuilder Player => new PlayerBuilder();
         public static PlayerGameDataBuilder PlayerGameData => new PlayerGameDataBuilder();
