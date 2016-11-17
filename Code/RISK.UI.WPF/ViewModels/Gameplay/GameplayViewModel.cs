@@ -116,57 +116,24 @@ namespace RISK.UI.WPF.ViewModels.Gameplay
 
         public void DraftArmies(IDraftArmiesPhase draftArmiesPhase)
         {
-            _interactionState = _interactionStateFactory.CreateDraftArmiesInteractionState(draftArmiesPhase);
-
-            InformationText = string.Format(Resources.DRAFT_ARMIES, draftArmiesPhase.NumberOfArmiesToDraft);
-            UpdatePlayersInformation(draftArmiesPhase);
-
-            CanEnterFortifyMode = false;
-            CanEnterAttackMode = false;
-            SetEndTurnAction(Maybe<Action>.Nothing);
-
-            UpdateWorldMap(draftArmiesPhase);
+            ShowDraftArmiesView(draftArmiesPhase);
         }
 
         public void Attack(IAttackPhase attackPhase)
         {
             _attackPhase = attackPhase;
-            _interactionState = _interactionStateFactory.CreateSelectAttackingRegionInteractionState(this);
 
-            InformationText = Resources.ATTACK_SELECT_FROM_TERRITORY;
-            UpdatePlayersInformation(attackPhase);
-
-            CanEnterFortifyMode = true;
-            CanEnterAttackMode = false;
-            SetEndTurnAction(Maybe<Action>.Create(attackPhase.EndTurn));
-
-            UpdateWorldMap(attackPhase);
+            ShowAttackPhaseView(attackPhase);
         }
 
         public void SendArmiesToOccupy(ISendArmiesToOccupyPhase sendArmiesToOccupyPhase)
         {
-            _interactionState = _interactionStateFactory.CreateSendArmiesToOccupyInteractionState(sendArmiesToOccupyPhase);
-
-            InformationText = Resources.SEND_ARMIES_TO_OCCUPY;
-            UpdatePlayersInformation(sendArmiesToOccupyPhase);
-
-            CanEnterFortifyMode = false;
-            CanEnterAttackMode = false;
-            SetEndTurnAction(Maybe<Action>.Nothing);
-
-            UpdateWorldMap(sendArmiesToOccupyPhase);
+            ShowSendArmiesToOccupyView(sendArmiesToOccupyPhase);
         }
 
         public void EndTurn(IEndTurnPhase endTurnPhase)
         {
-            InformationText = Resources.END_TURN;
-            UpdatePlayersInformation(endTurnPhase);
-
-            CanEnterFortifyMode = false;
-            CanEnterAttackMode = false;
-            SetEndTurnAction(Maybe<Action>.Create(endTurnPhase.EndTurn));
-
-            UpdateWorldMap(endTurnPhase);
+            ShowEndTurnView(endTurnPhase);
         }
 
         public void GameOver(IGameOverState gameOverState)
@@ -270,6 +237,67 @@ namespace RISK.UI.WPF.ViewModels.Gameplay
             _interactionState.OnClick(region);
         }
 
+        private void ShowDraftArmiesView(IDraftArmiesPhase draftArmiesPhase)
+        {
+            _interactionState = _interactionStateFactory.CreateDraftArmiesInteractionState(draftArmiesPhase);
+
+            InformationText = string.Format(Resources.DRAFT_ARMIES, draftArmiesPhase.NumberOfArmiesToDraft);
+            UpdatePlayersInformation(draftArmiesPhase);
+
+            CanEnterFortifyMode = false;
+            CanEnterAttackMode = false;
+            SetEndTurnAction(Maybe<Action>.Nothing);
+
+            UpdateWorldMap(draftArmiesPhase);
+        }
+
+        private void ShowAttackPhaseView(IAttackPhase attackPhase)
+        {
+            _interactionState = _interactionStateFactory.CreateSelectAttackingRegionInteractionState(this);
+
+            InformationText = Resources.ATTACK_SELECT_FROM_TERRITORY;
+            UpdatePlayersInformation(attackPhase);
+
+            CanEnterFortifyMode = true;
+            CanEnterAttackMode = false;
+            SetEndTurnAction(Maybe<Action>.Create(attackPhase.EndTurn));
+
+            UpdateWorldMap(attackPhase);
+        }
+
+        private void ShowSendArmiesToOccupyView(ISendArmiesToOccupyPhase sendArmiesToOccupyPhase)
+        {
+            _interactionState = _interactionStateFactory.CreateSendArmiesToOccupyInteractionState(sendArmiesToOccupyPhase);
+
+            InformationText = Resources.SEND_ARMIES_TO_OCCUPY;
+            UpdatePlayersInformation(sendArmiesToOccupyPhase);
+
+            CanEnterFortifyMode = false;
+            CanEnterAttackMode = false;
+            SetEndTurnAction(Maybe<Action>.Nothing);
+
+            UpdateWorldMap(sendArmiesToOccupyPhase);
+        }
+
+        private void ShowEndTurnView(IEndTurnPhase endTurnPhase)
+        {
+            InformationText = Resources.END_TURN;
+            UpdatePlayersInformation(endTurnPhase);
+
+            CanEnterFortifyMode = false;
+            CanEnterAttackMode = false;
+            SetEndTurnAction(Maybe<Action>.Create(endTurnPhase.EndTurn));
+
+            UpdateWorldMap(endTurnPhase);
+        }
+
+        private void ShowGameOverMessage(IPlayer winner)
+        {
+            _dialogManager.ShowGameOverDialog(winner.Name);
+
+            _eventAggregator.PublishOnUIThread(new NewGameMessage());
+        }
+
         private void SetEndTurnAction(Maybe<Action> endTurnAction)
         {
             Action noAction = () => { };
@@ -322,13 +350,6 @@ namespace RISK.UI.WPF.ViewModels.Gameplay
         private void UpdateWorldMap(IReadOnlyList<ITerritory> territories, IReadOnlyList<IRegion> enabledRegions, Maybe<IRegion> selectedRegion)
         {
             _worldMapViewModelFactory.Update(WorldMapViewModel, territories, enabledRegions, selectedRegion);
-        }
-
-        private void ShowGameOverMessage(IPlayer winner)
-        {
-            _dialogManager.ShowGameOverDialog(winner.Name);
-
-            _eventAggregator.PublishOnUIThread(new NewGameMessage());
         }
     }
 }
