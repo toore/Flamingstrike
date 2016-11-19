@@ -40,6 +40,7 @@ namespace RISK.UI.WPF.ViewModels.Gameplay
         private IAttackPhase _attackPhase;
         private Action _endTurnAction;
         private IList<PlayerAndNumberOfCardsViewModel> _players;
+        private Maybe<IRegion> _previouslySelectedAttackingRegion;
 
         public GameplayViewModel(
             IInteractionStateFactory interactionStateFactory,
@@ -116,23 +117,35 @@ namespace RISK.UI.WPF.ViewModels.Gameplay
 
         public void DraftArmies(IDraftArmiesPhase draftArmiesPhase)
         {
+            _previouslySelectedAttackingRegion = Maybe<IRegion>.Nothing;
+            UpdatePlayersInformation(draftArmiesPhase);
+
             ShowDraftArmiesView(draftArmiesPhase);
         }
 
         public void Attack(IAttackPhase attackPhase)
         {
             _attackPhase = attackPhase;
+            SetEndTurnAction(Maybe<Action>.Create(attackPhase.EndTurn));
 
-            ShowAttackPhaseView(attackPhase);
+            UpdatePlayersInformation(attackPhase);
+
+            _previouslySelectedAttackingRegion.End(
+                selectedRegion => ShowAttackPhaseView(attackPhase, selectedRegion),
+                () => ShowAttackPhaseView(attackPhase));
         }
 
         public void SendArmiesToOccupy(ISendArmiesToOccupyPhase sendArmiesToOccupyPhase)
         {
+            UpdatePlayersInformation(sendArmiesToOccupyPhase);
+
             ShowSendArmiesToOccupyView(sendArmiesToOccupyPhase);
         }
 
         public void EndTurn(IEndTurnPhase endTurnPhase)
         {
+            UpdatePlayersInformation(endTurnPhase);
+
             ShowEndTurnView(endTurnPhase);
         }
 
@@ -143,78 +156,34 @@ namespace RISK.UI.WPF.ViewModels.Gameplay
 
         public void EnterAttackMode()
         {
-            _interactionState = _interactionStateFactory.CreateSelectAttackingRegionInteractionState(this);
-
-            InformationText = Resources.ATTACK_SELECT_FROM_TERRITORY;
-
-            CanEnterFortifyMode = true;
-            CanEnterAttackMode = false;
+            ShowAttackPhaseView(_attackPhase);
         }
 
-        void ISelectAttackingRegionInteractionStateObserver.Select(IRegion region)
+        void ISelectAttackingRegionInteractionStateObserver.Select(IRegion selectedRegion)
         {
-            _interactionState = _interactionStateFactory.CreateAttackInteractionState(_attackPhase, region, this);
+            _previouslySelectedAttackingRegion = Maybe<IRegion>.Create(selectedRegion);
 
-            InformationText = Resources.ATTACK_SELECT_TERRITORY_TO_ATTACK;
-
-            CanEnterFortifyMode = false;
-
-            var regionsThatCanBeInteractedWith = _attackPhase.GetRegionsThatCanBeAttacked(region)
-                .Concat(new[] { region }).ToList();
-
-            UpdateWorldMap(
-                _attackPhase.Territories,
-                regionsThatCanBeInteractedWith,
-                Maybe<IRegion>.Create(region));
+            ShowAttackPhaseView(_attackPhase, selectedRegion);
         }
 
         void IAttackInteractionStateObserver.DeselectRegion()
         {
-            _interactionState = _interactionStateFactory.CreateSelectAttackingRegionInteractionState(this);
-
-            InformationText = Resources.ATTACK_SELECT_FROM_TERRITORY;
-
-            CanEnterFortifyMode = true;
-
-            UpdateWorldMap(_attackPhase);
+            ShowAttackPhaseView(_attackPhase);
         }
 
         public void EnterFortifyMode()
         {
-            _interactionState = _interactionStateFactory.CreateSelectSourceRegionForFortificationInteractionState(this);
-
-            InformationText = Resources.FORTIFY_SELECT_TERRITORY_TO_MOVE_FROM;
-
-            CanEnterFortifyMode = false;
-            CanEnterAttackMode = true;
+            ShowFortifyView(_attackPhase);
         }
 
-        void ISelectFortificationInteractionStateObserver.Select(IRegion region)
+        void ISelectFortificationInteractionStateObserver.Select(IRegion selectedRegion)
         {
-            _interactionState = _interactionStateFactory.CreateFortifyInteractionState(_attackPhase, region, this);
-
-            InformationText = Resources.FORTIFY_SELECT_TERRITORY_TO_MOVE_TO;
-
-            CanEnterAttackMode = false;
-
-            var regionsThatCanBeInteractedWith = _attackPhase.GetRegionsThatCanBeFortified(region)
-                .Concat(new[] { region }).ToList();
-
-            UpdateWorldMap(
-                _attackPhase.Territories,
-                regionsThatCanBeInteractedWith,
-                Maybe<IRegion>.Create(region));
+            ShowFortifyView(_attackPhase, selectedRegion);
         }
 
         void IFortifyInteractionStateObserver.DeselectRegion()
         {
-            _interactionState = _interactionStateFactory.CreateSelectSourceRegionForFortificationInteractionState(this);
-
-            InformationText = Resources.FORTIFY_SELECT_TERRITORY_TO_MOVE_FROM;
-
-            CanEnterAttackMode = true;
-
-            UpdateWorldMap(_attackPhase);
+            ShowFortifyView(_attackPhase);
         }
 
         public void EndTurn()
@@ -242,7 +211,6 @@ namespace RISK.UI.WPF.ViewModels.Gameplay
             _interactionState = _interactionStateFactory.CreateDraftArmiesInteractionState(draftArmiesPhase);
 
             InformationText = string.Format(Resources.DRAFT_ARMIES, draftArmiesPhase.NumberOfArmiesToDraft);
-            UpdatePlayersInformation(draftArmiesPhase);
 
             CanEnterFortifyMode = false;
             CanEnterAttackMode = false;
@@ -256,13 +224,59 @@ namespace RISK.UI.WPF.ViewModels.Gameplay
             _interactionState = _interactionStateFactory.CreateSelectAttackingRegionInteractionState(this);
 
             InformationText = Resources.ATTACK_SELECT_FROM_TERRITORY;
-            UpdatePlayersInformation(attackPhase);
 
             CanEnterFortifyMode = true;
             CanEnterAttackMode = false;
-            SetEndTurnAction(Maybe<Action>.Create(attackPhase.EndTurn));
 
             UpdateWorldMap(attackPhase);
+        }
+
+        private void ShowAttackPhaseView(IAttackPhase attackPhase, IRegion selectedRegion)
+        {
+            _interactionState = _interactionStateFactory.CreateAttackInteractionState(attackPhase, selectedRegion, this);
+
+            InformationText = Resources.ATTACK_SELECT_TERRITORY_TO_ATTACK;
+
+            CanEnterFortifyMode = false;
+            CanEnterAttackMode = false;
+
+            var regionsThatCanBeInteractedWith = attackPhase.GetRegionsThatCanBeAttacked(selectedRegion)
+                .Concat(new[] { selectedRegion }).ToList();
+
+            UpdateWorldMap(
+                attackPhase.Territories,
+                regionsThatCanBeInteractedWith,
+                Maybe<IRegion>.Create(selectedRegion));
+        }
+
+        private void ShowFortifyView(IAttackPhase attackPhase)
+        {
+            _interactionState = _interactionStateFactory.CreateSelectSourceRegionForFortificationInteractionState(this);
+
+            InformationText = Resources.FORTIFY_SELECT_TERRITORY_TO_MOVE_FROM;
+
+            CanEnterFortifyMode = false;
+            CanEnterAttackMode = true;
+
+            UpdateWorldMap(attackPhase);
+        }
+
+        private void ShowFortifyView(IAttackPhase attackPhase, IRegion selectedRegion)
+        {
+            _interactionState = _interactionStateFactory.CreateFortifyInteractionState(attackPhase, selectedRegion, this);
+
+            InformationText = Resources.FORTIFY_SELECT_TERRITORY_TO_MOVE_TO;
+
+            CanEnterFortifyMode = false;
+            CanEnterAttackMode = false;
+
+            var regionsThatCanBeInteractedWith = attackPhase.GetRegionsThatCanBeFortified(selectedRegion)
+                .Concat(new[] { selectedRegion }).ToList();
+
+            UpdateWorldMap(
+                attackPhase.Territories,
+                regionsThatCanBeInteractedWith,
+                Maybe<IRegion>.Create(selectedRegion));
         }
 
         private void ShowSendArmiesToOccupyView(ISendArmiesToOccupyPhase sendArmiesToOccupyPhase)
@@ -270,7 +284,6 @@ namespace RISK.UI.WPF.ViewModels.Gameplay
             _interactionState = _interactionStateFactory.CreateSendArmiesToOccupyInteractionState(sendArmiesToOccupyPhase);
 
             InformationText = Resources.SEND_ARMIES_TO_OCCUPY;
-            UpdatePlayersInformation(sendArmiesToOccupyPhase);
 
             CanEnterFortifyMode = false;
             CanEnterAttackMode = false;
@@ -282,7 +295,6 @@ namespace RISK.UI.WPF.ViewModels.Gameplay
         private void ShowEndTurnView(IEndTurnPhase endTurnPhase)
         {
             InformationText = Resources.END_TURN;
-            UpdatePlayersInformation(endTurnPhase);
 
             CanEnterFortifyMode = false;
             CanEnterAttackMode = false;
