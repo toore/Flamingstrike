@@ -99,7 +99,7 @@
     <Compile Include="ViewModels\Gameplay\Interaction\AttackInteractionState.cs" />
     <Compile Include="ViewModels\Gameplay\Interaction\DraftArmiesInteractionState.cs" />
     <Compile Include="ViewModels\Gameplay\Interaction\FortifyInteractionState.cs" />
-    <Compile Include="ViewModels\Gameplay\Interaction\SelectFortificationInteractionState.cs" />
+    <Compile Include="ViewModels\Gameplay\Interaction\SelectSourceRegionForFortificationInteractionState.cs" />
     <Compile Include="ViewModels\Gameplay\Interaction\IInteractionState.cs" />
     <Compile Include="ViewModels\Gameplay\Interaction\InteractionStateFactory.cs" />
     <Compile Include="ViewModels\Gameplay\Interaction\SelectAttackingRegionInteractionState.cs" />

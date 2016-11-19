@@ -22,7 +22,7 @@ namespace RISK.UI.WPF.ViewModels.Gameplay
         IActivate,
         ISelectAttackingRegionInteractionStateObserver,
         IAttackInteractionStateObserver,
-        ISelectFortificationInteractionStateObserver,
+        ISelectSourceRegionForFortificationInteractionStateObserver,
         IFortifyInteractionStateObserver
     {
         private readonly IInteractionStateFactory _interactionStateFactory;
@@ -176,7 +176,7 @@ namespace RISK.UI.WPF.ViewModels.Gameplay
             ShowFortifyView(_attackPhase);
         }
 
-        void ISelectFortificationInteractionStateObserver.Select(IRegion selectedRegion)
+        void ISelectSourceRegionForFortificationInteractionStateObserver.Select(IRegion selectedRegion)
         {
             ShowFortifyView(_attackPhase, selectedRegion);
         }

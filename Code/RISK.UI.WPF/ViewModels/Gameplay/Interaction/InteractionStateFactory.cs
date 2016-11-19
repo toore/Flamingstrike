@@ -9,7 +9,7 @@ namespace RISK.UI.WPF.ViewModels.Gameplay.Interaction
         IInteractionState CreateSelectAttackingRegionInteractionState(ISelectAttackingRegionInteractionStateObserver selectAttackingRegionInteractionStateObserver);
         IInteractionState CreateAttackInteractionState(IAttackPhase attackPhase, IRegion selectedRegion, IAttackInteractionStateObserver attackInteractionStateObserver);
         IInteractionState CreateSendArmiesToOccupyInteractionState(ISendArmiesToOccupyPhase sendArmiesToOccupyPhase);
-        IInteractionState CreateSelectSourceRegionForFortificationInteractionState(ISelectFortificationInteractionStateObserver selectFortificationInteractionStateObserver);
+        IInteractionState CreateSelectSourceRegionForFortificationInteractionState(ISelectSourceRegionForFortificationInteractionStateObserver selectSourceRegionForFortificationInteractionStateObserver);
         IInteractionState CreateFortifyInteractionState(IAttackPhase attackPhase, IRegion selectedRegion, IFortifyInteractionStateObserver fortifyInteractionStateObserver);
     }
 
@@ -35,9 +35,9 @@ namespace RISK.UI.WPF.ViewModels.Gameplay.Interaction
             return new SendArmiesToOccupyInteractionState(sendArmiesToOccupyPhase);
         }
 
-        public IInteractionState CreateSelectSourceRegionForFortificationInteractionState(ISelectFortificationInteractionStateObserver selectFortificationInteractionStateObserver)
+        public IInteractionState CreateSelectSourceRegionForFortificationInteractionState(ISelectSourceRegionForFortificationInteractionStateObserver selectSourceRegionForFortificationInteractionStateObserver)
         {
-            return new SelectFortificationInteractionState(selectFortificationInteractionStateObserver);
+            return new SelectSourceRegionForFortificationInteractionState(selectSourceRegionForFortificationInteractionStateObserver);
         }
 
         public IInteractionState CreateFortifyInteractionState(IAttackPhase attackPhase, IRegion selectedRegion, IFortifyInteractionStateObserver fortifyInteractionStateObserver)
