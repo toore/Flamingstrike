@@ -19,6 +19,8 @@ Improvements:
 - Continent information on board?
 - What about a common starting point for setup and the game engine?
 - Does GameStates really have to call back to Game?
+- Show how territories are connected
+- Give user hints or help messages. E.g. A selected territory with only one army can't attack any territory.
 
 
 ##Not/partially tested
