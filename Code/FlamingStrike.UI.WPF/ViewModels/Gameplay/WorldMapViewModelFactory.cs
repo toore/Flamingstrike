@@ -31,8 +31,8 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay
         public WorldMapViewModel Create(Action<IRegion> onClick)
         {
             var worldMapViewModel = new WorldMapViewModel();
-            var worldMapViewModels = CreateWorldMapItemViewModels(onClick);
-            worldMapViewModel.WorldMapViewModels.Add(worldMapViewModels);
+            var worldMapItems = CreateWorldMapItemViewModels(onClick);
+            worldMapViewModel.WorldMapViewModels.Add(worldMapItems);
 
             return worldMapViewModel;
         }
