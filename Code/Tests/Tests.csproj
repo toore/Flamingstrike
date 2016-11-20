@@ -140,7 +140,7 @@
     <Compile Include="FlamingStrike.UI.WPF\RegionModelFactoryTests.cs" />
     <Compile Include="FlamingStrike.GameEngine\Builders\RegionBuilder.cs" />
     <Compile Include="FlamingStrike.GameEngine\Builders\Make.cs" />
-    <Compile Include="FlamingStrike.UI.WPF\Interaction\SelectAttackingInteractionStateTests.cs" />
+    <Compile Include="FlamingStrike.UI.WPF\Interaction\SelectAttackingRegionInteractionStateTests.cs" />
     <Compile Include="SpecBase.cs" />
     <Compile Include="FlamingStrike.UI.WPF\Specifications\GameplaySpec.cs" />
     <Compile Include="FlamingStrike.UI.WPF\EnumerableExtensionsTests.cs" />

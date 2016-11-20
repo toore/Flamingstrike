@@ -5,12 +5,12 @@ using Xunit;
 
 namespace Tests.FlamingStrike.UI.WPF.Interaction
 {
-    public class SelectAttackingInteractionStateTests
+    public class SelectAttackingRegionInteractionStateTests
     {
         private readonly SelectAttackingRegionInteractionState _sut;
         private readonly ISelectAttackingRegionInteractionStateObserver _selectAttackingRegionInteractionStateObserver;
 
-        public SelectAttackingInteractionStateTests()
+        public SelectAttackingRegionInteractionStateTests()
         {
             _selectAttackingRegionInteractionStateObserver = Substitute.For<ISelectAttackingRegionInteractionStateObserver>();
 
