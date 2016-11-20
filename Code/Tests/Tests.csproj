@@ -108,58 +108,58 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="RISK.GameEngine\Builders\DeckBuilder.cs" />
-    <Compile Include="RISK.GameEngine\Builders\GameDataBuilder.cs" />
-    <Compile Include="RISK.GameEngine\Builders\PlayerGameDataBuilder.cs" />
-    <Compile Include="RISK.GameEngine\Builders\PlayerUiDataBuilder.cs" />
-    <Compile Include="RISK.GameEngine\Play\GameStates\AttackPhaseStateGameStateTests.cs" />
-    <Compile Include="RISK.GameEngine\Play\GameStates\DraftArmiesPhaseGameStateTests.cs" />
-    <Compile Include="RISK.GameEngine\Attacking\BattleTests.cs" />
-    <Compile Include="RISK.GameEngine\Attacking\DieTests.cs" />
-    <Compile Include="RISK.GameEngine\Attacking\DiceTests.cs" />
-    <Compile Include="RISK.GameEngine\Attacking\ArmiesLostCalculatorTests.cs" />
-    <Compile Include="RISK.GameEngine\Builders\ArmiesLostBuilder.cs" />
-    <Compile Include="RISK.GameEngine\Builders\ContinentBuilder.cs" />
-    <Compile Include="RISK.GameEngine\Builders\DiceResultBuilder.cs" />
-    <Compile Include="RISK.GameEngine\Builders\PlayerBuilder.cs" />
-    <Compile Include="RISK.GameEngine\Builders\TerritoryBuilder.cs" />
-    <Compile Include="RISK.GameEngine\Play\GameStates\SendArmiesToOccupyGameState.cs" />
-    <Compile Include="RISK.GameEngine\Play\GameTests.cs" />
-    <Compile Include="RISK.GameEngine\Setup\AlternateGameSetupObserverSpyDecorator.cs" />
-    <Compile Include="RISK.GameEngine\Setup\AutoRespondingAlternateGameSetupObserver.cs" />
-    <Compile Include="RISK.GameEngine\Specifications\AlternateGameSetupObserverSpec.cs" />
-    <Compile Include="RISK.GameEngine\Setup\NullAlternateGameSetupObserver.cs" />
-    <Compile Include="RISK.GameEngine\Specifications\GameObserverSpec.cs" />
-    <Compile Include="RISK.UI.WPF\Interaction\AttackInteractionStateTests.cs" />
-    <Compile Include="RISK.UI.WPF\Interaction\FortifyInteractionStateTests.cs" />
-    <Compile Include="RISK.UI.WPF\Interaction\SelectSourceRegionForFortificationInteractionStateTests.cs" />
-    <Compile Include="RISK.GameEngine\Setup\StartingInfantryCalculatorTests.cs" />
-    <Compile Include="RISK.GameEngine\Builders\GamePlaySetupBuilder.cs" />
-    <Compile Include="RISK.UI.WPF\Interaction\DraftArmiesInteractionStateTests.cs" />
-    <Compile Include="RISK.UI.WPF\MainGameViewModelDecorator.cs" />
-    <Compile Include="RISK.UI.WPF\RegionModelFactoryTests.cs" />
-    <Compile Include="RISK.GameEngine\Builders\RegionBuilder.cs" />
-    <Compile Include="RISK.GameEngine\Builders\Make.cs" />
-    <Compile Include="RISK.UI.WPF\Interaction\SelectAttackingInteractionStateTests.cs" />
+    <Compile Include="FlamingStrike.GameEngine\Builders\DeckBuilder.cs" />
+    <Compile Include="FlamingStrike.GameEngine\Builders\GameDataBuilder.cs" />
+    <Compile Include="FlamingStrike.GameEngine\Builders\PlayerGameDataBuilder.cs" />
+    <Compile Include="FlamingStrike.GameEngine\Builders\PlayerUiDataBuilder.cs" />
+    <Compile Include="FlamingStrike.GameEngine\Play\GameStates\AttackPhaseStateGameStateTests.cs" />
+    <Compile Include="FlamingStrike.GameEngine\Play\GameStates\DraftArmiesPhaseGameStateTests.cs" />
+    <Compile Include="FlamingStrike.GameEngine\Attacking\BattleTests.cs" />
+    <Compile Include="FlamingStrike.GameEngine\Attacking\DieTests.cs" />
+    <Compile Include="FlamingStrike.GameEngine\Attacking\DiceTests.cs" />
+    <Compile Include="FlamingStrike.GameEngine\Attacking\ArmiesLostCalculatorTests.cs" />
+    <Compile Include="FlamingStrike.GameEngine\Builders\ArmiesLostBuilder.cs" />
+    <Compile Include="FlamingStrike.GameEngine\Builders\ContinentBuilder.cs" />
+    <Compile Include="FlamingStrike.GameEngine\Builders\DiceResultBuilder.cs" />
+    <Compile Include="FlamingStrike.GameEngine\Builders\PlayerBuilder.cs" />
+    <Compile Include="FlamingStrike.GameEngine\Builders\TerritoryBuilder.cs" />
+    <Compile Include="FlamingStrike.GameEngine\Play\GameStates\SendArmiesToOccupyGameState.cs" />
+    <Compile Include="FlamingStrike.GameEngine\Play\GameTests.cs" />
+    <Compile Include="FlamingStrike.GameEngine\Setup\AlternateGameSetupObserverSpyDecorator.cs" />
+    <Compile Include="FlamingStrike.GameEngine\Setup\AutoRespondingAlternateGameSetupObserver.cs" />
+    <Compile Include="FlamingStrike.GameEngine\Specifications\AlternateGameSetupObserverSpec.cs" />
+    <Compile Include="FlamingStrike.GameEngine\Setup\NullAlternateGameSetupObserver.cs" />
+    <Compile Include="FlamingStrike.GameEngine\Specifications\GameObserverSpec.cs" />
+    <Compile Include="FlamingStrike.UI.WPF\Interaction\AttackInteractionStateTests.cs" />
+    <Compile Include="FlamingStrike.UI.WPF\Interaction\FortifyInteractionStateTests.cs" />
+    <Compile Include="FlamingStrike.UI.WPF\Interaction\SelectSourceRegionForFortificationInteractionStateTests.cs" />
+    <Compile Include="FlamingStrike.GameEngine\Setup\StartingInfantryCalculatorTests.cs" />
+    <Compile Include="FlamingStrike.GameEngine\Builders\GamePlaySetupBuilder.cs" />
+    <Compile Include="FlamingStrike.UI.WPF\Interaction\DraftArmiesInteractionStateTests.cs" />
+    <Compile Include="FlamingStrike.UI.WPF\MainGameViewModelDecorator.cs" />
+    <Compile Include="FlamingStrike.UI.WPF\RegionModelFactoryTests.cs" />
+    <Compile Include="FlamingStrike.GameEngine\Builders\RegionBuilder.cs" />
+    <Compile Include="FlamingStrike.GameEngine\Builders\Make.cs" />
+    <Compile Include="FlamingStrike.UI.WPF\Interaction\SelectAttackingInteractionStateTests.cs" />
     <Compile Include="SpecBase.cs" />
-    <Compile Include="RISK.UI.WPF\Specifications\GameplaySpec.cs" />
-    <Compile Include="RISK.UI.WPF\EnumerableExtensionsTests.cs" />
-    <Compile Include="RISK.UI.WPF\GamePreparationViewModelTests.cs" />
-    <Compile Include="RISK.UI.WPF\AlternateGameSetupViewModelTests.cs" />
-    <Compile Include="RISK.UI.WPF\MainGameViewModelTests.cs" />
-    <Compile Include="RISK.UI.WPF\ScreenServiceTests.cs" />
-    <Compile Include="RISK.UI.WPF\ConfirmViewModelFactoryTests.cs" />
-    <Compile Include="RISK.UI.WPF\UserNotifierTests.cs" />
-    <Compile Include="RISK.UI.WPF\WorldMapTestUserControl.xaml.cs">
+    <Compile Include="FlamingStrike.UI.WPF\Specifications\GameplaySpec.cs" />
+    <Compile Include="FlamingStrike.UI.WPF\EnumerableExtensionsTests.cs" />
+    <Compile Include="FlamingStrike.UI.WPF\GamePreparationViewModelTests.cs" />
+    <Compile Include="FlamingStrike.UI.WPF\AlternateGameSetupViewModelTests.cs" />
+    <Compile Include="FlamingStrike.UI.WPF\MainGameViewModelTests.cs" />
+    <Compile Include="FlamingStrike.UI.WPF\ScreenServiceTests.cs" />
+    <Compile Include="FlamingStrike.UI.WPF\ConfirmViewModelFactoryTests.cs" />
+    <Compile Include="FlamingStrike.UI.WPF\UserNotifierTests.cs" />
+    <Compile Include="FlamingStrike.UI.WPF\WorldMapTestUserControl.xaml.cs">
       <DependentUpon>WorldMapTestUserControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="RISK.GameEngine\Setup\AlternateGameSetupTests.cs" />
-    <Compile Include="RISK.GameEngine\RegionsTests.cs" />
-    <Page Include="RISK.UI.WPF\WorldMapTestUserControl.xaml">
+    <Compile Include="FlamingStrike.GameEngine\Setup\AlternateGameSetupTests.cs" />
+    <Compile Include="FlamingStrike.GameEngine\RegionsTests.cs" />
+    <Page Include="FlamingStrike.UI.WPF\WorldMapTestUserControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -193,16 +193,15 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\RISK.GameEngine\RISK.GameEngine.csproj">
+    <ProjectReference Include="..\FlamingStrike.GameEngine\FlamingStrike.GameEngine.csproj">
       <Project>{eab6640b-f975-48b2-886b-83380fa7cace}</Project>
-      <Name>RISK.GameEngine</Name>
+      <Name>FlamingStrike.GameEngine</Name>
     </ProjectReference>
-    <ProjectReference Include="..\RISK.UI.WPF\RISK.UI.WPF.csproj">
-      <Project>{3B937F0E-E727-442D-B1DA-E5ED6EF939D5}</Project>
-      <Name>RISK.UI.WPF</Name>
+    <ProjectReference Include="..\FlamingStrike.UI.WPF\FlamingStrike.UI.WPF.csproj">
+      <Project>{3b937f0e-e727-442d-b1da-e5ed6ef939d5}</Project>
+      <Name>FlamingStrike.UI.WPF</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

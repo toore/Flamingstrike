@@ -1,0 +1,359 @@
+﻿<UserControl x:Class="Tests.FlamingStrike.UI.WPF.WorldMapTestUserControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d"
+             d:DesignHeight="300" d:DesignWidth="300">
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/FlamingStrike.UI.WPF;component/Views/Gameplay/RegionStyles.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+
+            <Style x:Key="ContinentPathBaseStyle" TargetType="Path">
+                <Setter Property="StrokeThickness" Value="3" />
+                <Setter Property="StrokeLineJoin" Value="Miter" />
+                <Setter Property="StrokeStartLineCap" Value="Flat" />
+                <Setter Property="StrokeEndLineCap" Value="Flat" />
+            </Style>
+
+            <Style x:Key="NorthAmericaPathStyle" TargetType="Path" BasedOn="{StaticResource ContinentPathBaseStyle}">
+                <Setter Property="Stroke" Value="DarkOrange" />
+                <Setter Property="Fill" Value="Yellow" />
+            </Style>
+
+            <Style x:Key="SouthAmericaPathStyle" TargetType="Path" BasedOn="{StaticResource ContinentPathBaseStyle}">
+                <Setter Property="Stroke" Value="DarkRed" />
+                <Setter Property="Fill" Value="Red" />
+            </Style>
+
+            <Style x:Key="AfricaPathStyle" TargetType="Path" BasedOn="{StaticResource ContinentPathBaseStyle}">
+                <Setter Property="Stroke" Value="SaddleBrown" />
+                <Setter Property="Fill" Value="Orange" />
+            </Style>
+
+            <Style x:Key="EuropePathStyle" TargetType="Path" BasedOn="{StaticResource ContinentPathBaseStyle}">
+                <Setter Property="Stroke" Value="Blue" />
+                <Setter Property="Fill" Value="LightBlue" />
+            </Style>
+
+            <Style x:Key="AsiaPathStyle" TargetType="Path" BasedOn="{StaticResource ContinentPathBaseStyle}">
+                <Setter Property="Stroke" Value="DarkGreen" />
+                <Setter Property="Fill" Value="LightGreen" />
+            </Style>
+
+            <Style x:Key="AustraliaPathStyle" TargetType="Path" BasedOn="{StaticResource ContinentPathBaseStyle}">
+                <Setter Property="Stroke" Value="Purple" />
+                <Setter Property="Fill" Value="Pink" />
+            </Style>
+        </ResourceDictionary>
+
+    </UserControl.Resources>
+
+    <Canvas Width="1366" Height="768">
+        <Canvas Name="northAmerica">
+            <Canvas.Resources>
+                <Style TargetType="Path" BasedOn="{StaticResource NorthAmericaPathStyle}" />
+            </Canvas.Resources>
+
+            <Path Name="alaska">
+                <Path.Data>
+                    <PathGeometry
+                        Figures="m 12.121866 139.68511 41.67913 -42.115279 12.86906 -25.564934 50.513114 -8.563276 40.40058 8.563276 -45.57044 44.381753 5.76544 11.7349 -44.064802 -14.83465 z"
+                        FillRule="NonZero" />
+                </Path.Data>
+            </Path>
+            <Path Name="northwestTerritory">
+                <Path.Data>
+                    <PathGeometry Figures="m 157.07872 72.76251 97.22718 7.323606 67.68022 -16.667517 33.58758 11.869292 -80.05459 43.689089 -163.64472 -2.0203 z" FillRule="NonZero" />
+                </Path.Data>
+            </Path>
+            <Path Name="northwestTerritory2">
+                <Path.Data>
+                    <PathGeometry Figures="M 223.74879 59.377989 252.53814 45.993467 291.68155 64.68129 250.01276 75.540429 z" FillRule="NonZero" />
+                </Path.Data>
+            </Path>
+            <Path Name="alberta">
+                <Path.Data>
+                    <PathGeometry Figures="m 125.76399 175.79807 87.12566 0.25254 31.8198 -57.07362 -132.07745 -2.0203 5.70411 11.64002 z" FillRule="NonZero" />
+                </Path.Data>
+            </Path>
+            <Path Name="ontario">
+                <Path.Data>
+                    <PathGeometry Figures="m 244.70945 118.72445 30.55712 0.50508 30.30458 43.43656 5.55583 34.59772 -39.39595 19.1929 -58.3363 -41.16372 z" FillRule="NonZero" />
+                </Path.Data>
+            </Path>
+            <Path Name="quebec">
+                <Path.Data>
+                    <PathGeometry Figures="m 306.5813 163.17116 41.16371 -57.83123 56.56855 50.00255 -92.6815 42.17387 z" FillRule="NonZero" />
+                </Path.Data>
+            </Path>
+            <Path Name="easternUnitesStates">
+                <Path.Data>
+                    <PathGeometry
+                        Figures="m 220.71833 181.10137 51.26524 36.11295 67.68022 -32.32488 4.79823 12.62691 -87.63074 96.72211 -75.76144 6.31345 -32.57742 -30.55712 63.38708 -28.03173 z"
+                        FillRule="NonZero" />
+                </Path.Data>
+            </Path>
+            <Path Name="westernUnitedStates">
+                <Path.Data>
+                    <PathGeometry Figures="m 126.26907 176.05061 86.87312 0.25254 7.57614 4.54568 -8.83883 61.87185 -63.38708 27.77919 -59.851534 -22.47589 z" FillRule="NonZero" />
+                </Path.Data>
+            </Path>
+            <Path Name="centralAmerica">
+                <Path.Data>
+                    <PathGeometry
+                        Figures="m 97.984797 251.81205 39.395953 84.0952 120.46069 67.93276 6.81853 -7.32361 -43.6891 -69.44799 -43.6891 2.77792 4.04061 -29.04188 -33.08249 -30.55712 z"
+                        FillRule="NonZero" />
+                </Path.Data>
+            </Path>
+            <Path Name="centralAmerica2">
+                <Path.Data>
+                    <PathGeometry Figures="m 233.34524 320.24988 19.44543 -6.81853 65.40738 29.54697 -19.1929 12.87944 z" FillRule="NonZero" />
+                </Path.Data>
+            </Path>
+            <Path Name="greenland">
+                <Path.Data>
+                    <PathGeometry Figures="m 418.20315 33.6191 42.42641 82.83251 104.04571 -65.659917 18.18275 -38.385797 z" FillRule="NonZero" />
+                </Path.Data>
+            </Path>
+        </Canvas>
+
+        <Canvas Name="southAmerica">
+            <Canvas.Resources>
+                <Style TargetType="Path" BasedOn="{StaticResource SouthAmericaPathStyle}" />
+            </Canvas.Resources>
+            <Path Name="path3061">
+                <Path.Data>
+                    <PathGeometry Figures="m 250.77037 436.66996 6.56599 -32.82995 30.55712 -29.04189 90.66119 46.21448 -87.12566 37.62818 z" FillRule="NonZero" />
+                </Path.Data>
+            </Path>
+            <Path Name="path3063">
+                <Path.Data>
+                    <PathGeometry Figures="M 251.07143 437.28571 242.14286 478.35714 270 527.28571 357.14286 570.14286 291.42857 458.71429 z" FillRule="NonZero" />
+                </Path.Data>
+            </Path>
+            <Path Name="path3065">
+                <Path.Data>
+                    <PathGeometry Figures="m 291.07143 458 87.5 -37.14286 76.78571 54.28572 L 388.92857 625.5 z" FillRule="NonZero" />
+                </Path.Data>
+            </Path>
+            <Path Name="path3067">
+                <Path.Data>
+                    <PathGeometry Figures="m 270 528 86.42857 41.78571 32.14286 56.07143 -38.92857 111.78572 -37.5 -37.14286 z" FillRule="NonZero" />
+                </Path.Data>
+            </Path>
+        </Canvas>
+
+        <Canvas Name="africa">
+            <Canvas.Resources>
+                <Style TargetType="Path" BasedOn="{StaticResource AfricaPathStyle}" />
+            </Canvas.Resources>
+            <Path Name="path3072">
+                <Path.Data>
+                    <PathGeometry Figures="m 666.70068 240.70037 -3.53553 66.16499 64.14468 29.29443 -5.05076 48.9924 -58.08377 48.48732 -123.23861 -53.03301 34.34518 -123.74369 z"
+                                  FillRule="NonZero" />
+                </Path.Data>
+            </Path>
+            <Path Name="path3074">
+                <Path.Data>
+                    <PathGeometry Figures="m 666.1956 255.85266 105.56095 17.17259 4.54568 14.14214 -7.57614 5.05076 12.6269 24.74874 -53.033 19.69797 -64.64977 -29.7995 z" FillRule="NonZero" />
+                </Path.Data>
+            </Path>
+            <Path Name="path3076">
+                <Path.Data>
+                    <PathGeometry Figures="m 727.30983 337.16994 53.53809 -19.69798 40.91118 69.19545 32.32488 -6.56599 -51.01271 124.24877 -46.46701 -13.63706 -33.33504 -104.55079 z"
+                                  FillRule="NonZero" />
+                </Path.Data>
+            </Path>
+            <Path Name="path3078">
+                <Path.Data>
+                    <PathGeometry Figures="m 664.1753 433.6395 58.58885 -48.48731 33.84011 104.55078 -34.34519 16.16244 -47.98225 -26.76903 z" FillRule="NonZero" />
+                </Path.Data>
+            </Path>
+            <Path Name="path3080">
+                <Path.Data>
+                    <PathGeometry Figures="m 673.77175 479.09637 26.76904 154.55334 32.82996 2.02031 47.47717 -65.15484 23.73858 -66.67007 -48.48732 -13.13198 -33.33503 15.15228 z"
+                                  FillRule="NonZero" />
+                </Path.Data>
+            </Path>
+            <Path Name="path3082">
+                <Path.Data>
+                    <PathGeometry Figures="m 843.47738 514.45171 -23.23351 25.75889 -6.06092 42.93148 24.74874 3.03046 z" FillRule="NonZero" />
+                </Path.Data>
+            </Path>
+        </Canvas>
+
+        <Canvas Name="europe">
+            <Canvas.Resources>
+                <Style TargetType="Path" BasedOn="{StaticResource EuropePathStyle}" />
+            </Canvas.Resources>
+            <Path Name="path3085">
+                <Path.Data>
+                    <PathGeometry Figures="M 546.9976 90.692718 552.55344 107.36023 585.3834 94.733328 575.28187 82.106421 z" FillRule="NonZero" />
+                </Path.Data>
+            </Path>
+            <Path Name="path3087">
+                <Path.Data>
+                    <PathGeometry Figures="m 584.37325 142.2105 -3.53554 21.2132 13.63706 0.50508 9.09138 -17.67767 z" FillRule="NonZero" />
+                </Path.Data>
+            </Path>
+            <Path Name="path3089">
+                <Path.Data>
+                    <PathGeometry Figures="m 609.62706 125.54298 -3.03046 18.68782 -3.03045 25.75889 32.82995 -13.63706 -19.69797 -29.29442 z" FillRule="NonZero" />
+                </Path.Data>
+            </Path>
+            <Path Name="path3091">
+                <Path.Data>
+                    <PathGeometry
+                        Figures="m 645.99255 110.39069 58.58885 -45.456862 27.27412 2.020305 1.51523 49.497477 -26.26397 0 7.07107 -25.758892 -9.59645 -1.515229 -18.18275 52.022861 -17.17259 -1.51523 -3.53553 -15.15229 -14.64721 3.53553 z"
+                        FillRule="NonZero" />
+                </Path.Data>
+            </Path>
+            <Path Name="path3093">
+                <Path.Data>
+                    <PathGeometry Figures="m 635.89103 163.92878 23.73858 -20.70813 48.9924 0 7.07107 43.94164 -62.62946 -3.53553 z" FillRule="NonZero" />
+                </Path.Data>
+            </Path>
+            <Path Name="path3095">
+                <Path.Data>
+                    <PathGeometry Figures="m 636.3961 164.93893 -29.7995 14.14214 7.07107 26.76904 -24.74874 0 -8.08122 36.36549 33.84011 -2.02031 37.37565 -35.35533 0.50507 -22.22336 z"
+                                  FillRule="NonZero" />
+                </Path.Data>
+            </Path>
+            <Path Name="path3097">
+                <Path.Data>
+                    <PathGeometry
+                        Figures="m 653.06362 183.62675 -1.01015 20.70813 38.89088 26.76904 5.05076 -8.58629 -26.26397 -21.71828 12.12182 -6.06091 19.39716 17.65436 17.47342 31.8431 5.05076 -7.57614 -5.05076 -11.61675 21.71828 -20.70813 -23.73859 -17.17259 z"
+                        FillRule="NonZero" />
+                </Path.Data>
+            </Path>
+            <Path Name="path3099">
+                <Path.Data>
+                    <PathGeometry
+                        Figures="m 708.13725 142.21049 24.74873 -26.26396 -1.01015 -48.992395 112.12693 6.565991 20.70811 91.923884 -63.63959 47.98224 -61.6193 -8.58629 -23.23351 -17.17259 z"
+                        FillRule="NonZero" />
+                </Path.Data>
+            </Path>
+        </Canvas>
+
+        <Canvas Name="asia">
+            <Canvas.Resources>
+                <Style TargetType="Path" BasedOn="{StaticResource AsiaPathStyle}" />
+            </Canvas.Resources>
+            <Path Name="path3120">
+                <Path.Data>
+                    <PathGeometry Figures="m 843.47738 74.025201 44.44671 -15.152288 78.7919 70.710677 5.05076 56.06347 -8.5863 4.54568 -97.47972 -25.25381 z" FillRule="NonZero" />
+                </Path.Data>
+            </Path>
+            <Path Name="path3122">
+                <Path.Data>
+                    <PathGeometry
+                        Figures="m 720.74384 223.0227 19.69798 -18.18274 59.599 8.08122 89.90357 35.35534 6.06092 57.57869 -57.5787 -26.76904 -7.07106 8.58629 58.58884 35.86042 -61.6193 49.49747 -52.52794 -86.36804 -5.05076 -14.64721 5.55584 -27.7792 z"
+                        FillRule="NonZero" />
+                </Path.Data>
+            </Path>
+            <Path Name="path3124">
+                <Path.Data>
+                    <PathGeometry Figures="m 802.06112 212.92118 64.14469 -48.48733 96.97464 26.26397 -72.73098 58.08377 z" FillRule="NonZero" />
+                </Path.Data>
+            </Path>
+            <Path Name="path3126">
+                <Path.Data>
+                    <PathGeometry Figures="m 889.94439 249.28667 36.36549 -28.78935 126.26912 73.74114 -81.31732 110.6117 -75.76145 -98.99495 z" FillRule="NonZero" />
+                </Path.Data>
+            </Path>
+            <Path Name="path3128">
+                <Path.Data>
+                    <PathGeometry
+                        Figures="m 1052.0738 293.73338 55.0534 33.33503 l 13.132 56.06347 -17.6777 14.64721 -24.2437 -24.24366 23.2336 63.13453 -19.1929 -11.11167 -50.0026 -102.53049 z"
+                        FillRule="NonZero" />
+                </Path.Data>
+            </Path>
+            <Path Name="path3130">
+                <Path.Data>
+                    <PathGeometry
+                        Figures="m 925.80481 219.99224 180.81729 106.57109 45.4569 -11.11167 8.0812 -40.91118 -47.9822 -60.10408 -63.4951 12.04032 -69.84508 -50.42611 -7.07107 2.52538 0 7.57614 -9.09137 3.53554 z"
+                        FillRule="NonZero" />
+                </Path.Data>
+            </Path>
+            <Path Name="path3132">
+                <Path.Data>
+                    <PathGeometry Figures="m 887.92409 59.377989 60.60915 -25.253814 34.34519 18.687823 36.87057 71.720832 -40.40611 51.0127 -8.58629 2.52538 -3.53554 -48.48732 z"
+                                  FillRule="NonZero" />
+                </Path.Data>
+            </Path>
+            <Path Name="path3134">
+                <Path.Data>
+                    <PathGeometry Figures="m 1110.6627 214.4364 67.6802 41.92134 -5.5558 -75.76145 -184.35283 -16.66751 -9.09138 11.61675 69.70051 51.51778 z" FillRule="NonZero" />
+                </Path.Data>
+            </Path>
+            <Path Name="path3136">
+                <Path.Data>
+                    <PathGeometry Figures="m 1012.1729 108.37039 113.6421 23.73858 27.7792 45.96194 -165.66501 -14.64721 31.81981 -40.4061 z" FillRule="NonZero" />
+                </Path.Data>
+            </Path>
+            <Path Name="path3138">
+                <Path.Data>
+                    <PathGeometry Figures="M 981.86828 51.801845 1175.3125 71.49982 1125.815 131.6039 1011.6678 107.36023 z" FillRule="NonZero" />
+                </Path.Data>
+            </Path>
+            <Path Name="path3140">
+                <Path.Data>
+                    <PathGeometry
+                        Figures="m 1174.8074 71.49982 108.0863 13.131983 -33.335 77.276667 -47.9822 -50.50762 -50.0026 31.31472 60.1041 43.94164 -36.3655 21.71828 -2.5254 -27.7792 -18.6878 -2.0203 -28.2843 -46.97209 z"
+                        FillRule="NonZero" />
+                </Path.Data>
+            </Path>
+            <Path Name="path3142">
+                <Path.Data>
+                    <PathGeometry Figures="m 1208.6475 196.25366 11.1117 41.92133 -28.2843 20.70813 7.0711 16.66751 36.8706 -27.27411 -6.061 -45.96195 z" FillRule="NonZero" />
+                </Path.Data>
+            </Path>
+        </Canvas>
+
+        <Canvas Name="australia">
+            <Canvas.Resources>
+                <Style TargetType="Path" BasedOn="{StaticResource AustraliaPathStyle}" />
+            </Canvas.Resources>
+            <Path Name="path3145">
+                <Path.Data>
+                    <PathGeometry Figures="m 1207.6374 526.06847 -74.7513 40.91117 -10.1015 68.69038 106.571 20.70812 z" FillRule="NonZero" />
+                </Path.Data>
+            </Path>
+            <Path Name="path3147">
+                <Path.Data>
+                    <PathGeometry Figures="m 1206.6272 526.06847 72.2259 -8.08123 29.7995 78.28683 -79.802 61.11423 z" FillRule="NonZero" />
+                </Path.Data>
+            </Path>
+            <Path Name="path3149">
+                <Path.Data>
+                    <PathGeometry Figures="m 1235.4166 444.24611 -14.6472 25.75889 97.4797 47.47717 11.6167 -47.47717 z" FillRule="NonZero" />
+                </Path.Data>
+            </Path>
+            <Path Name="path3153">
+                <Path.Data>
+                    <PathGeometry Figures="m 1156.6247 406.87046 -40.4061 43.43656 l 34.3451 18.68783 22.2234 -50.00255 z" FillRule="NonZero" />
+                </Path.Data>
+            </Path>
+            <Path Name="path3155">
+                <Path.Data>
+                    <PathGeometry Figures="m 1163.6957 344.74608 26.7691 71.72083 20.203 -8.58629 -36.3655 -65.15484 z" FillRule="NonZero" />
+                </Path.Data>
+            </Path>
+            <Path Name="path3157">
+                <Path.Data>
+                    <PathGeometry Figures="m 1052.579 421.0126 40.9111 56.06347 19.698 -10.10153 -45.9619 -51.51778 z" FillRule="NonZero" />
+                </Path.Data>
+            </Path>
+            <Path Name="path3159">
+                <Path.Data>
+                    <PathGeometry Figures="m 1111.1678 477.58114 -10.6066 12.62691 96.9746 16.16244 7.0711 -18.18275 z" FillRule="NonZero" />
+                </Path.Data>
+            </Path>
+        </Canvas>
+    </Canvas>
+
+</UserControl>
