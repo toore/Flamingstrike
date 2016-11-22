@@ -319,9 +319,8 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay
 
         private void UpdatePlayersInformation(IGameStatus gameStatus)
         {
-            var currentPlayer = gameStatus.Player;
-            PlayerName = currentPlayer.Name;
-            PlayerColor = _playerUiDataRepository.Get(currentPlayer).Color;
+            PlayerName = gameStatus.Player.Name;
+            PlayerColor = _playerUiDataRepository.Get(gameStatus.Player).Color;
 
             Players = gameStatus.PlayerGameDatas
                 .Select(CreatePlayerAndNumberOfCardsViewModel)
