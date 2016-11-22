@@ -130,6 +130,7 @@
     <Compile Include="FlamingStrike.GameEngine\Specifications\AlternateGameSetupObserverSpec.cs" />
     <Compile Include="FlamingStrike.GameEngine\Setup\NullAlternateGameSetupObserver.cs" />
     <Compile Include="FlamingStrike.GameEngine\Specifications\GameObserverSpec.cs" />
+    <Compile Include="FlamingStrike.UI.WPF\GameplayViewModelTests.cs" />
     <Compile Include="FlamingStrike.UI.WPF\Interaction\AttackInteractionStateTests.cs" />
     <Compile Include="FlamingStrike.UI.WPF\Interaction\FortifyInteractionStateTests.cs" />
     <Compile Include="FlamingStrike.UI.WPF\Interaction\SelectSourceRegionForFortificationInteractionStateTests.cs" />
