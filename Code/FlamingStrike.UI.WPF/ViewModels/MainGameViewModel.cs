@@ -58,7 +58,7 @@ namespace FlamingStrike.UI.WPF.ViewModels
 
         public override string DisplayName
         {
-            get { return "F L A M I N G   S T R I K E"; }
+            get { return "Flaming Strike"; }
             set { }
         }
 
