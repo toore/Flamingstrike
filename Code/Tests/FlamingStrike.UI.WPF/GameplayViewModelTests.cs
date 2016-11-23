@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Windows.Media;
 using Caliburn.Micro;
 using FlamingStrike.GameEngine;
 using FlamingStrike.GameEngine.Play;
@@ -51,6 +52,10 @@ namespace Tests.FlamingStrike.UI.WPF
         public void Draft_armies_shows_correct_view()
         {
             var draftArmiesPhase = Substitute.For<IDraftArmiesPhase>();
+            var currentPlayer = Make.Player.Name("current player").Build();
+            var currentPlayerColor = Color.FromArgb(1, 2, 3, 4);
+            _playerUiDataRepository.Get(currentPlayer).Returns(Make.PlayerUiData.Color(currentPlayerColor).Build());
+            draftArmiesPhase.Player.Returns(currentPlayer);
             draftArmiesPhase.PlayerGameDatas.Returns(new IPlayerGameData[]
                 {
                     new PlayerGameData(Make.Player.Name("player 1").Build(), new List<ICard>()),
@@ -59,6 +64,8 @@ namespace Tests.FlamingStrike.UI.WPF
 
             _sut.DraftArmies(draftArmiesPhase);
 
+            _sut.PlayerName.Should().Be("current player");
+            _sut.PlayerColor.Should().Be(currentPlayerColor);
             _sut.Players.Should().BeEquivalentTo();
         }
     }

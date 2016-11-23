@@ -5,9 +5,17 @@ namespace Tests.FlamingStrike.GameEngine.Builders
 {
     public class PlayerUiDataBuilder
     {
+        private Color _color;
+
         public IPlayerUiData Build()
         {
-            return new PlayerUiData(Make.Player.Build(), Colors.Black);
+            return new PlayerUiData(Make.Player.Build(), _color);
+        }
+
+        public PlayerUiDataBuilder Color(Color color)
+        {
+            _color = color;
+            return this;
         }
     }
 }
