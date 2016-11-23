@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("RISK.Application")]
+[assembly: AssemblyTitle("FlamingStrike.GameEngine")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("RISK.Application")]
+[assembly: AssemblyProduct("FlamingStrike.GameEngine")]
 [assembly: AssemblyCopyright("Copyright © Andreas Torebring 2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
