@@ -39,7 +39,7 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay
         private IInteractionState _interactionState;
         private IAttackPhase _attackPhase;
         private Action _endTurnAction;
-        private IList<PlayerAndNumberOfCardsViewModel> _players;
+        private IList<PlayerCardStatusViewModel> _players;
         private Maybe<IRegion> _previouslySelectedAttackingRegion;
 
         public GameplayViewModel(
@@ -107,7 +107,7 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay
             remove { throw new InvalidOperationException($"{nameof(Activated)} is not used"); }
         }
 
-        public IList<PlayerAndNumberOfCardsViewModel> Players
+        public IList<PlayerCardStatusViewModel> Players
         {
             get { return _players; }
             private set { NotifyOfPropertyChange(value, () => Players, x => _players = x); }
@@ -327,12 +327,12 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay
                 .ToList();
         }
 
-        private PlayerAndNumberOfCardsViewModel CreatePlayerAndNumberOfCardsViewModel(IPlayerGameData playerGameData)
+        private PlayerCardStatusViewModel CreatePlayerAndNumberOfCardsViewModel(IPlayerGameData playerGameData)
         {
             var player = playerGameData.Player;
             var playerUiData = _playerUiDataRepository.Get(player);
 
-            return new PlayerAndNumberOfCardsViewModel(player.Name, playerUiData.Color, playerGameData.Cards.Count);
+            return new PlayerCardStatusViewModel(player.Name, playerUiData.Color, playerGameData.Cards.Count);
         }
 
         private void UpdateWorldMap(IDraftArmiesPhase draftArmiesPhase)

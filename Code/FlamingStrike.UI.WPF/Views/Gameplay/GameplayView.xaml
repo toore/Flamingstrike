@@ -94,7 +94,7 @@
                 <Style TargetType="ItemsControl">
                     <Setter Property="ItemTemplate">
                         <Setter.Value>
-                            <DataTemplate DataType="Gameplay1:PlayerAndNumberOfCardsViewModel">
+                            <DataTemplate DataType="Gameplay1:PlayerCardStatusViewModel">
                                 <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="Auto" />
