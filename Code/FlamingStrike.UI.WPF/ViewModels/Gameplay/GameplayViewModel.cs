@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows.Media;
 using Caliburn.Micro;
@@ -106,8 +107,8 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay
 
         public event EventHandler<ActivationEventArgs> Activated
         {
-            add { throw new InvalidOperationException($"{nameof(Activated)} is not used"); }
-            remove { throw new InvalidOperationException($"{nameof(Activated)} is not used"); }
+            add { Trace.TraceInformation($"{nameof(Activated)} is not used"); }
+            remove { Trace.TraceInformation($"{nameof(Activated)} is not used"); }
         }
 
         public IList<PlayerStatusViewModel> PlayerStatuses

@@ -3,6 +3,7 @@ using System.Windows.Media;
 using Caliburn.Micro;
 using FlamingStrike.GameEngine;
 using FlamingStrike.GameEngine.Play;
+using FlamingStrike.UI.WPF.Properties;
 using FlamingStrike.UI.WPF.Services;
 using FlamingStrike.UI.WPF.ViewModels.Gameplay;
 using FlamingStrike.UI.WPF.ViewModels.Gameplay.Interaction;
@@ -77,11 +78,16 @@ namespace Tests.FlamingStrike.UI.WPF
             var playerStatusViewModels = new object[] { firstPlayerStatusViewModel, secondPlayerStatusViewModel, thirdPlayerStatusViewModel };
             draftArmiesPhase.PlayerGameDatas.Returns(playerGameDatas);
 
+            _sut.MonitorEvents();
             _sut.DraftArmies(draftArmiesPhase);
 
             _sut.PlayerName.Should().Be("current player");
             _sut.PlayerColor.Should().Be(currentPlayerColor);
             _sut.PlayerStatuses.Should().BeEquivalentTo(playerStatusViewModels);
+            _sut.InformationText.Should().Be(string.Format(Resources.DRAFT_ARMIES, 1));
+            _sut.CanEnterFortifyMode.Should().BeFalse();
+            _sut.CanEnterAttackMode.Should().BeFalse();
+            _sut.CanEndTurn.Should().BeFalse();
         }
     }
 }
