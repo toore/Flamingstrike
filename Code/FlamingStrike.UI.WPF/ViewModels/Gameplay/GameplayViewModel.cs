@@ -30,6 +30,7 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay
         private readonly IPlayerUiDataRepository _playerUiDataRepository;
         private readonly IDialogManager _dialogManager;
         private readonly IEventAggregator _eventAggregator;
+        private readonly IPlayerStatusViewModelFactory _playerStatusViewModelFactory;
         private string _informationText;
         private string _playerName;
         private Color _playerColor;
@@ -39,7 +40,7 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay
         private IInteractionState _interactionState;
         private IAttackPhase _attackPhase;
         private Action _endTurnAction;
-        private IList<PlayerCardStatusViewModel> _players;
+        private IList<PlayerStatusViewModel> _players;
         private Maybe<IRegion> _previouslySelectedAttackingRegion;
 
         public GameplayViewModel(
@@ -47,13 +48,15 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay
             IWorldMapViewModelFactory worldMapViewModelFactory,
             IPlayerUiDataRepository playerUiDataRepository,
             IDialogManager dialogManager,
-            IEventAggregator eventAggregator)
+            IEventAggregator eventAggregator,
+            IPlayerStatusViewModelFactory playerStatusViewModelFactory)
         {
             _interactionStateFactory = interactionStateFactory;
             _worldMapViewModelFactory = worldMapViewModelFactory;
             _playerUiDataRepository = playerUiDataRepository;
             _dialogManager = dialogManager;
             _eventAggregator = eventAggregator;
+            _playerStatusViewModelFactory = playerStatusViewModelFactory;
 
             WorldMapViewModel = _worldMapViewModelFactory.Create(OnRegionClick);
         }
@@ -107,7 +110,7 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay
             remove { throw new InvalidOperationException($"{nameof(Activated)} is not used"); }
         }
 
-        public IList<PlayerCardStatusViewModel> Players
+        public IList<PlayerStatusViewModel> Players
         {
             get { return _players; }
             private set { NotifyOfPropertyChange(value, () => Players, x => _players = x); }
@@ -323,16 +326,8 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay
             PlayerColor = _playerUiDataRepository.Get(gameStatus.Player).Color;
 
             Players = gameStatus.PlayerGameDatas
-                .Select(CreatePlayerAndNumberOfCardsViewModel)
+                .Select(x => _playerStatusViewModelFactory.Create(x))
                 .ToList();
-        }
-
-        private PlayerCardStatusViewModel CreatePlayerAndNumberOfCardsViewModel(IPlayerGameData playerGameData)
-        {
-            var player = playerGameData.Player;
-            var playerUiData = _playerUiDataRepository.Get(player);
-
-            return new PlayerCardStatusViewModel(player.Name, playerUiData.Color, playerGameData.Cards.Count);
         }
 
         private void UpdateWorldMap(IDraftArmiesPhase draftArmiesPhase)

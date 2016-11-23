@@ -2,9 +2,9 @@ using System.Windows.Media;
 
 namespace FlamingStrike.UI.WPF.ViewModels.Gameplay
 {
-    public class PlayerCardStatusViewModel
+    public class PlayerStatusViewModel
     {
-        public PlayerCardStatusViewModel(string playerName, Color playerColor, int numberOfCards)
+        public PlayerStatusViewModel(string playerName, Color playerColor, int numberOfCards)
         {
             PlayerName = playerName;
             PlayerColor = playerColor;

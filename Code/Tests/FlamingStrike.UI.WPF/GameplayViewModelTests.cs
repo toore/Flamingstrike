@@ -16,12 +16,13 @@ namespace Tests.FlamingStrike.UI.WPF
 {
     public class GameplayViewModelTests
     {
-        private GameplayViewModel _sut;
-        private IInteractionStateFactory _interactionStateFactory;
-        private IWorldMapViewModelFactory _worldMapViewModelFactory;
-        private IPlayerUiDataRepository _playerUiDataRepository;
-        private IDialogManager _dialogManager;
-        private IEventAggregator _eventAggregator;
+        private readonly GameplayViewModel _sut;
+        private readonly IInteractionStateFactory _interactionStateFactory;
+        private readonly IWorldMapViewModelFactory _worldMapViewModelFactory;
+        private readonly IPlayerUiDataRepository _playerUiDataRepository;
+        private readonly IDialogManager _dialogManager;
+        private readonly IEventAggregator _eventAggregator;
+        private readonly IPlayerStatusViewModelFactory _playerStatusViewModelFactory;
         private readonly WorldMapViewModel _worldMapViewModel = new WorldMapViewModel();
 
         public GameplayViewModelTests()
@@ -31,6 +32,7 @@ namespace Tests.FlamingStrike.UI.WPF
             _playerUiDataRepository = Substitute.For<IPlayerUiDataRepository>();
             _dialogManager = Substitute.For<IDialogManager>();
             _eventAggregator = Substitute.For<IEventAggregator>();
+            _playerStatusViewModelFactory = Substitute.For<IPlayerStatusViewModelFactory>();
 
             _worldMapViewModelFactory.Create(null).ReturnsForAnyArgs(_worldMapViewModel);
 
@@ -39,7 +41,8 @@ namespace Tests.FlamingStrike.UI.WPF
                 _worldMapViewModelFactory,
                 _playerUiDataRepository,
                 _dialogManager,
-                _eventAggregator);
+                _eventAggregator,
+                _playerStatusViewModelFactory);
         }
 
         [Fact]
@@ -56,17 +59,29 @@ namespace Tests.FlamingStrike.UI.WPF
             var currentPlayerColor = Color.FromArgb(1, 2, 3, 4);
             _playerUiDataRepository.Get(currentPlayer).Returns(Make.PlayerUiData.Color(currentPlayerColor).Build());
             draftArmiesPhase.Player.Returns(currentPlayer);
-            draftArmiesPhase.PlayerGameDatas.Returns(new IPlayerGameData[]
+            var firstPlayerGameData = new PlayerGameData(Make.Player.Name("player 1").Build(), new List<ICard>());
+            var secondPlayerGameData = new PlayerGameData(Make.Player.Name("player 2").Build(), new List<ICard>());
+            var thirdPlayerGameData = new PlayerGameData(Make.Player.Name("player 3").Build(), new List<ICard>());
+            var firstPlayerStatusViewModel = Make.PlayerStatusViewModel.Build();
+            var secondPlayerStatusViewModel = Make.PlayerStatusViewModel.Build();
+            var thirdPlayerStatusViewModel = Make.PlayerStatusViewModel.Build();
+            _playerStatusViewModelFactory.Create(firstPlayerGameData).Returns(firstPlayerStatusViewModel);
+            _playerStatusViewModelFactory.Create(secondPlayerGameData).Returns(secondPlayerStatusViewModel);
+            _playerStatusViewModelFactory.Create(thirdPlayerGameData).Returns(thirdPlayerStatusViewModel);
+            var playerGameDatas = new IPlayerGameData[]
                 {
-                    new PlayerGameData(Make.Player.Name("player 1").Build(), new List<ICard>()),
-                    new PlayerGameData(Make.Player.Name("player 2").Build(), new List<ICard>())
-                });
+                    firstPlayerGameData,
+                    secondPlayerGameData,
+                    thirdPlayerGameData
+                };
+            var playerStatusViewModels = new object[] { firstPlayerStatusViewModel, secondPlayerStatusViewModel, thirdPlayerStatusViewModel };
+            draftArmiesPhase.PlayerGameDatas.Returns(playerGameDatas);
 
             _sut.DraftArmies(draftArmiesPhase);
 
             _sut.PlayerName.Should().Be("current player");
             _sut.PlayerColor.Should().Be(currentPlayerColor);
-            _sut.Players.Should().BeEquivalentTo();
+            _sut.Players.Should().BeEquivalentTo(playerStatusViewModels);
         }
     }
 }

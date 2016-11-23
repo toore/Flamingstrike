@@ -1,3 +1,5 @@
+using FlamingStrike.UI.WPF.ViewModels.Gameplay;
+
 namespace Tests.FlamingStrike.GameEngine.Builders
 {
     public static class Make
@@ -13,5 +15,6 @@ namespace Tests.FlamingStrike.GameEngine.Builders
         public static GameDataBuilder GameData => new GameDataBuilder();
         public static DeckBuilder Deck => new DeckBuilder();
         public static PlayerUiDataBuilder PlayerUiData => new PlayerUiDataBuilder();
+        public static PlayerStatusViewModelBuilder PlayerStatusViewModel=>new PlayerStatusViewModelBuilder();
     }
 }

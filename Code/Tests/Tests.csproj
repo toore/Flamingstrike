@@ -110,6 +110,7 @@
     <Compile Include="FlamingStrike.GameEngine\Builders\DeckBuilder.cs" />
     <Compile Include="FlamingStrike.GameEngine\Builders\GameDataBuilder.cs" />
     <Compile Include="FlamingStrike.GameEngine\Builders\PlayerGameDataBuilder.cs" />
+    <Compile Include="FlamingStrike.GameEngine\Builders\PlayerStatusViewModelBuilder.cs" />
     <Compile Include="FlamingStrike.GameEngine\Builders\PlayerUiDataBuilder.cs" />
     <Compile Include="FlamingStrike.GameEngine\Play\GameStates\AttackPhaseStateGameStateTests.cs" />
     <Compile Include="FlamingStrike.GameEngine\Play\GameStates\DraftArmiesPhaseGameStateTests.cs" />

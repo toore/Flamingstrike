@@ -16,6 +16,7 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay
         private readonly IPlayerUiDataRepository _playerUiDataRepository;
         private readonly IDialogManager _dialogManager;
         private readonly IEventAggregator _eventAggregator;
+        private readonly IPlayerStatusViewModelFactory _playerStatusViewModelFactory;
         private readonly IInteractionStateFactory _interactionStateFactory;
 
         public GameplayViewModelFactory(
@@ -23,13 +24,15 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay
             IWorldMapViewModelFactory worldMapViewModelFactory,
             IPlayerUiDataRepository playerUiDataRepository,
             IDialogManager dialogManager,
-            IEventAggregator eventAggregator)
+            IEventAggregator eventAggregator,
+            IPlayerStatusViewModelFactory playerStatusViewModelFactory)
         {
             _interactionStateFactory = interactionStateFactory;
             _worldMapViewModelFactory = worldMapViewModelFactory;
             _playerUiDataRepository = playerUiDataRepository;
             _dialogManager = dialogManager;
             _eventAggregator = eventAggregator;
+            _playerStatusViewModelFactory = playerStatusViewModelFactory;
         }
 
         public IGameplayViewModel Create()
@@ -39,7 +42,8 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay
                 _worldMapViewModelFactory,
                 _playerUiDataRepository,
                 _dialogManager,
-                _eventAggregator);
+                _eventAggregator,
+                _playerStatusViewModelFactory);
         }
     }
 }

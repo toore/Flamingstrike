@@ -91,7 +91,7 @@
     <Compile Include="ContentClickButton.cs" />
     <Compile Include="Extensions\ColorExtensions.cs" />
     <Compile Include="Extensions\EnumerableExtensions.cs" />
-    <Compile Include="ViewModels\Gameplay\PlayerCardStatusViewModel.cs" />
+    <Compile Include="ViewModels\Gameplay\PlayerStatusViewModel.cs" />
     <Compile Include="RegionModels\RegionModelBase.cs" />
     <Compile Include="ViewModels\ConfirmViewModel.cs" />
     <Compile Include="ViewModels\ConfirmViewModelFactory.cs" />
@@ -105,6 +105,7 @@
     <Compile Include="ViewModels\Gameplay\Interaction\SelectAttackingRegionInteractionState.cs" />
     <Compile Include="ViewModels\Gameplay\Interaction\SendArmiesToOccupyInteractionState.cs" />
     <Compile Include="ViewModels\Gameplay\IWorldMapItemViewModelVisitor.cs" />
+    <Compile Include="ViewModels\Gameplay\PlayerStatusViewModelFactory.cs" />
     <Compile Include="ViewModels\Gameplay\WorldMapItemUpdater.cs" />
     <Compile Include="ViewModels\IConfirmViewModelFactory.cs" />
     <Compile Include="Services\UserNotifier.cs" />

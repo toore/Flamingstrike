@@ -48,13 +48,15 @@ namespace FlamingStrike.UI.WPF
             var userNotifier = new UserNotifier(windowManager, confirmViewModelFactory);
             var dialogManager = new DialogManager(userNotifier);
             var interactionStateFactory = new InteractionStateFactory();
+            var playerStatusViewModelFactory = new PlayerStatusViewModelFactory(PlayerUiDataRepository);
 
             GameplayViewModelFactory = new GameplayViewModelFactory(
                 interactionStateFactory,
                 worldMapViewModelFactory,
                 PlayerUiDataRepository,
                 dialogManager,
-                EventAggregator);
+                EventAggregator,
+                playerStatusViewModelFactory);
 
             var randomWrapper = new RandomWrapper();
             var shuffle = new FisherYatesShuffle(randomWrapper);
