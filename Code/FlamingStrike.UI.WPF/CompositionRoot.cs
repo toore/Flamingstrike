@@ -7,14 +7,15 @@ using FlamingStrike.GameEngine.Setup;
 using FlamingStrike.GameEngine.Shuffling;
 using FlamingStrike.UI.WPF.RegionModels;
 using FlamingStrike.UI.WPF.Services;
+using FlamingStrike.UI.WPF.ViewModels;
 using FlamingStrike.UI.WPF.ViewModels.AlternateSetup;
 using FlamingStrike.UI.WPF.ViewModels.Gameplay;
 using FlamingStrike.UI.WPF.ViewModels.Gameplay.Interaction;
 using FlamingStrike.UI.WPF.ViewModels.Preparation;
 
-namespace FlamingStrike.UI.WPF.ViewModels
+namespace FlamingStrike.UI.WPF
 {
-    public class Root
+    public class CompositionRoot
     {
         public PlayerUiDataRepository PlayerUiDataRepository { get; }
         public IEventAggregator EventAggregator { get; }
@@ -24,7 +25,7 @@ namespace FlamingStrike.UI.WPF.ViewModels
         public IAlternateGameSetupViewModelFactory AlternateGameSetupViewModelFactory { get; }
         public IGameFactory GameFactory { get; }
 
-        public Root()
+        public CompositionRoot()
         {
             var playerFactory = new PlayerFactory();
             var playerTypes = new PlayerTypes();
@@ -77,7 +78,7 @@ namespace FlamingStrike.UI.WPF.ViewModels
                 EventAggregator);
 
 #if QUICKSETUP
-            var startingInfantryCalculator = new StartingInfantryCalculatorReturning21Armies();
+            var startingInfantryCalculator = new StartingInfantryCalculatorReturning22Armies();
 #else
             var startingInfantryCalculator = new StartingInfantryCalculator();
 #endif
@@ -88,7 +89,7 @@ namespace FlamingStrike.UI.WPF.ViewModels
         }
     }
 
-    public class StartingInfantryCalculatorReturning21Armies : IStartingInfantryCalculator
+    public class StartingInfantryCalculatorReturning22Armies : IStartingInfantryCalculator
     {
         public int Get(int numberOfPlayers)
         {

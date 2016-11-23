@@ -112,7 +112,7 @@
     <Compile Include="Services\DialogManager.cs" />
     <Compile Include="ViewModels\Messages\NewGameMessage.cs" />
     <Compile Include="ViewModels\NotifyViewModel.cs" />
-    <Compile Include="ViewModels\Root.cs" />
+    <Compile Include="CompositionRoot.cs" />
     <Compile Include="ViewModels\Preparation\GamePreparationViewModelFactory.cs" />
     <Compile Include="ViewModels\Preparation\PlayerUiDataRepository.cs" />
     <Compile Include="Views\AlternateSetup\AlternateGameSetupView.xaml.cs">

@@ -1,5 +1,5 @@
 ﻿using System.Linq;
-using FlamingStrike.UI.WPF.ViewModels;
+using FlamingStrike.UI.WPF;
 using FlamingStrike.UI.WPF.ViewModels.AlternateSetup;
 using FlamingStrike.UI.WPF.ViewModels.Gameplay;
 using FlamingStrike.UI.WPF.ViewModels.Preparation;
@@ -27,13 +27,11 @@ namespace Tests.FlamingStrike.UI.WPF.Specifications
                 .the_game_is_started();
         }
 
-        private GameplaySpec a_new_game()
+        private void a_new_game()
         {
-            _mainGameViewModel = new MainGameViewModelDecorator(new Root());
+            _mainGameViewModel = new MainGameViewModelDecorator(new CompositionRoot());
 
             OnInitializeIsCalledByCaliburnMicroFramework(_mainGameViewModel);
-
-            return this;
         }
 
         private static void OnInitializeIsCalledByCaliburnMicroFramework(MainGameViewModelDecorator viewModel)
@@ -55,7 +53,7 @@ namespace Tests.FlamingStrike.UI.WPF.Specifications
             return this;
         }
 
-        private GameplaySpec all_armies_are_placed_on_the_map()
+        private void all_armies_are_placed_on_the_map()
         {
             const int numberOfArmiesForEachPlayer = 40;
             const int armiesAssignedToTerritoriesAutomatically = 21;
@@ -69,8 +67,6 @@ namespace Tests.FlamingStrike.UI.WPF.Specifications
                     .First(x => x.IsEnabled);
                 regionViewModel.OnClick();
             }
-
-            return this;
         }
 
         private void the_game_is_started()

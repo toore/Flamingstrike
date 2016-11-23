@@ -19,18 +19,18 @@ namespace FlamingStrike.UI.WPF.ViewModels
         private readonly IPlayerUiDataRepository _playerUiDataRepository;
 
         public MainGameViewModel()
-            : this(new Root()) { }
+            : this(new CompositionRoot()) { }
 
-        protected MainGameViewModel(Root root)
+        protected MainGameViewModel(CompositionRoot compositionRoot)
             : this(
-                root.PlayerUiDataRepository,
-                root.AlternateGameSetupFactory,
-                root.GamePreparationViewModelFactory,
-                root.GameplayViewModelFactory,
-                root.AlternateGameSetupViewModelFactory,
-                root.GameFactory)
+                compositionRoot.PlayerUiDataRepository,
+                compositionRoot.AlternateGameSetupFactory,
+                compositionRoot.GamePreparationViewModelFactory,
+                compositionRoot.GameplayViewModelFactory,
+                compositionRoot.AlternateGameSetupViewModelFactory,
+                compositionRoot.GameFactory)
         {
-            root.EventAggregator.Subscribe(this);
+            compositionRoot.EventAggregator.Subscribe(this);
         }
 
         protected MainGameViewModel(

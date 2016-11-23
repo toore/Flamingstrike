@@ -1,5 +1,6 @@
 using FlamingStrike.GameEngine.Play;
 using FlamingStrike.GameEngine.Setup;
+using FlamingStrike.UI.WPF;
 using FlamingStrike.UI.WPF.ViewModels;
 using FlamingStrike.UI.WPF.ViewModels.AlternateSetup;
 using FlamingStrike.UI.WPF.ViewModels.Gameplay;
@@ -9,8 +10,8 @@ namespace Tests.FlamingStrike.UI.WPF
 {
     internal class MainGameViewModelDecorator : MainGameViewModel
     {
-        public MainGameViewModelDecorator(Root root)
-            : base(root) {}
+        public MainGameViewModelDecorator(CompositionRoot compositionRoot)
+            : base(compositionRoot) {}
 
         public MainGameViewModelDecorator(
             IPlayerUiDataRepository playerUiDataRepository,
