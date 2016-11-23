@@ -56,7 +56,7 @@ namespace FlamingStrike.UI.WPF.Views.Gameplay
 
         public Color PlayerColor => Colors.DeepPink;
 
-        public IList<PlayerStatusViewModel> Players => new List<PlayerStatusViewModel>()
+        public IList<PlayerStatusViewModel> PlayerStatuses => new List<PlayerStatusViewModel>()
             {
                 new PlayerStatusViewModel("Player 1", Colors.Aqua, 5),
                 new PlayerStatusViewModel("Player 2", Colors.Violet, 0),

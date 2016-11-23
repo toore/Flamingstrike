@@ -81,7 +81,7 @@ namespace Tests.FlamingStrike.UI.WPF
 
             _sut.PlayerName.Should().Be("current player");
             _sut.PlayerColor.Should().Be(currentPlayerColor);
-            _sut.Players.Should().BeEquivalentTo(playerStatusViewModels);
+            _sut.PlayerStatuses.Should().BeEquivalentTo(playerStatusViewModels);
         }
     }
 }

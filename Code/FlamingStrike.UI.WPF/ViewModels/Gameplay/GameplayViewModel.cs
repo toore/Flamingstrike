@@ -40,7 +40,7 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay
         private IInteractionState _interactionState;
         private IAttackPhase _attackPhase;
         private Action _endTurnAction;
-        private IList<PlayerStatusViewModel> _players;
+        private IList<PlayerStatusViewModel> _playerStatuses;
         private Maybe<IRegion> _previouslySelectedAttackingRegion;
 
         public GameplayViewModel(
@@ -110,10 +110,10 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay
             remove { throw new InvalidOperationException($"{nameof(Activated)} is not used"); }
         }
 
-        public IList<PlayerStatusViewModel> Players
+        public IList<PlayerStatusViewModel> PlayerStatuses
         {
-            get { return _players; }
-            private set { NotifyOfPropertyChange(value, () => Players, x => _players = x); }
+            get { return _playerStatuses; }
+            private set { NotifyOfPropertyChange(value, () => PlayerStatuses, x => _playerStatuses = x); }
         }
 
         public void Activate() {}
@@ -325,7 +325,7 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay
             PlayerName = gameStatus.Player.Name;
             PlayerColor = _playerUiDataRepository.Get(gameStatus.Player).Color;
 
-            Players = gameStatus.PlayerGameDatas
+            PlayerStatuses = gameStatus.PlayerGameDatas
                 .Select(x => _playerStatusViewModelFactory.Create(x))
                 .ToList();
         }

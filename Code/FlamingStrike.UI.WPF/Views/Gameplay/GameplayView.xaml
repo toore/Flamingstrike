@@ -89,7 +89,7 @@
         <ItemsControl Grid.Row="2"
                       HorizontalAlignment="Left"
                       VerticalAlignment="Bottom"
-                      ItemsSource="{Binding Players}">
+                      ItemsSource="{Binding PlayerStatuses}">
             <ItemsControl.Resources>
                 <Style TargetType="ItemsControl">
                     <Setter Property="ItemTemplate">
