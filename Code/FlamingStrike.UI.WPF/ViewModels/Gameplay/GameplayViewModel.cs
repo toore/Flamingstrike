@@ -20,7 +20,6 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay
     public class GameplayViewModel :
         ViewModelBase,
         IGameplayViewModel,
-        IActivate,
         ISelectAttackingRegionInteractionStateObserver,
         IAttackInteractionStateObserver,
         ISelectSourceRegionForFortificationInteractionStateObserver,
@@ -100,24 +99,11 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay
             private set { NotifyOfPropertyChange(value, () => CanEndTurn, x => _canEndTurn = x); }
         }
 
-        public bool IsActive
-        {
-            get { throw new InvalidOperationException($"{nameof(IsActive)} is not used"); }
-        }
-
-        public event EventHandler<ActivationEventArgs> Activated
-        {
-            add { Trace.TraceInformation($"{nameof(Activated)} is not used"); }
-            remove { Trace.TraceInformation($"{nameof(Activated)} is not used"); }
-        }
-
         public IList<PlayerStatusViewModel> PlayerStatuses
         {
             get { return _playerStatuses; }
             private set { NotifyOfPropertyChange(value, () => PlayerStatuses, x => _playerStatuses = x); }
         }
-
-        public void Activate() {}
 
         public void DraftArmies(IDraftArmiesPhase draftArmiesPhase)
         {
