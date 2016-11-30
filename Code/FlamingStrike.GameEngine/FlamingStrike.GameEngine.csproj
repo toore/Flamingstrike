@@ -53,7 +53,7 @@
     <Compile Include="IContinent.cs" />
     <Compile Include="IContinents.cs" />
     <Compile Include="IRegion.cs" />
-    <Compile Include="Play\IGameStatus.cs" />
+    <Compile Include="Play\GameStatus.cs" />
     <Compile Include="Play\PlayerGameData.cs" />
     <Compile Include="Setup\PlayerSetupData.cs" />
     <Compile Include="Shuffling\FisherYatesShuffle.cs" />

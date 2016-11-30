@@ -31,7 +31,7 @@ namespace Tests.FlamingStrike.GameEngine.Play
         {
             var game = Create(Make.GamePlaySetup.Build());
 
-            _gameObserver.Received().DraftArmies(Arg.Any<IDraftArmiesPhase>());
+            _gameObserver.Received().DraftArmies(Arg.Any<IGameStatus>(), Arg.Any<IDraftArmiesPhase>());
         }
 
         private IGame Create(IGamePlaySetup gamePlaySetup)

@@ -73,8 +73,9 @@ namespace FlamingStrike.GameEngine.Play
                 .Where(x => draftArmiesGamePhase.CanPlaceDraftArmies(x.Region))
                 .Select(x => x.Region).ToList();
 
+            var gameStatus = new GameStatus(draftArmiesGamePhase.Player, draftArmiesGamePhase.Territories, draftArmiesGamePhase.Players);
             var draftArmiesPhase = new DraftArmiesPhase(draftArmiesGamePhase, regionsAllowedToDraftArmies);
-            _gameObserver.DraftArmies(draftArmiesPhase);
+            _gameObserver.DraftArmies(gameStatus, draftArmiesPhase);
         }
 
         public void ContinueWithAttackPhase(TurnConqueringAchievement turnConqueringAchievement, GameData gameData)
@@ -85,7 +86,9 @@ namespace FlamingStrike.GameEngine.Play
                 .Where(x => IsCurrentPlayerOccupyingRegion(gameData, x.Region))
                 .Select(x => x.Region).ToList();
 
-            _gameObserver.Attack(new AttackPhase(attackPhaseGameState, regionsThatCanBeSourceForAttackOrFortification));
+            var gameStatus = new GameStatus(attackPhaseGameState.Player, attackPhaseGameState.Territories, attackPhaseGameState.Players);
+            var attackPhase = new AttackPhase(attackPhaseGameState, regionsThatCanBeSourceForAttackOrFortification);
+            _gameObserver.Attack(gameStatus, attackPhase);
         }
 
         private static bool IsCurrentPlayerOccupyingRegion(GameData gameData, IRegion region)
@@ -97,14 +100,18 @@ namespace FlamingStrike.GameEngine.Play
         {
             var endTurnGameState = _gameStateFactory.CreateEndTurnGameState(gameData, this);
 
-            _gameObserver.EndTurn(new EndTurnPhase(endTurnGameState));
+            var gameStatus = new GameStatus(endTurnGameState.Player, endTurnGameState.Territories, endTurnGameState.Players);
+            var endTurnPhase = new EndTurnPhase(endTurnGameState);
+            _gameObserver.EndTurn(gameStatus, endTurnPhase);
         }
 
         public void SendArmiesToOccupy(IRegion attackingRegion, IRegion occupiedRegion, GameData gameData)
         {
             var sendArmiesToOccupyGameState = _gameStateFactory.CreateSendArmiesToOccupyGameState(gameData, this, attackingRegion, occupiedRegion);
 
-            _gameObserver.SendArmiesToOccupy(new SendArmiesToOccupyPhase(sendArmiesToOccupyGameState));
+            var gameStatus = new GameStatus(sendArmiesToOccupyGameState.Player, sendArmiesToOccupyGameState.Territories, sendArmiesToOccupyGameState.Players);
+            var sendArmiesToOccupyPhase = new SendArmiesToOccupyPhase(sendArmiesToOccupyGameState);
+            _gameObserver.SendArmiesToOccupy(gameStatus, sendArmiesToOccupyPhase);
         }
 
         public void PassTurnToNextPlayer(GameData gameData)

@@ -3,7 +3,7 @@ using FlamingStrike.GameEngine.Play.GameStates;
 
 namespace FlamingStrike.GameEngine.Play
 {
-    public interface IDraftArmiesPhase : IGameStatus
+    public interface IDraftArmiesPhase
     {
         int NumberOfArmiesToDraft { get; }
         IReadOnlyList<IRegion> RegionsAllowedToDraftArmies { get; }
@@ -19,11 +19,6 @@ namespace FlamingStrike.GameEngine.Play
             _draftArmiesPhaseGameState = draftArmiesPhaseGameState;
             RegionsAllowedToDraftArmies = regionsAllowedToDraftArmies;
         }
-
-        public IPlayer Player => _draftArmiesPhaseGameState.Player;
-
-        public IReadOnlyList<ITerritory> Territories => _draftArmiesPhaseGameState.Territories;
-        public IReadOnlyList<IPlayerGameData> PlayerGameDatas => _draftArmiesPhaseGameState.Players;
 
         public int NumberOfArmiesToDraft => _draftArmiesPhaseGameState.NumberOfArmiesToDraft;
 

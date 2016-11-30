@@ -1,9 +1,8 @@
-using System.Collections.Generic;
 using FlamingStrike.GameEngine.Play.GameStates;
 
 namespace FlamingStrike.GameEngine.Play
 {
-    public interface ISendArmiesToOccupyPhase : IGameStatus
+    public interface ISendArmiesToOccupyPhase
     {
         IRegion AttackingRegion { get; }
         IRegion OccupiedRegion { get; }
@@ -18,11 +17,6 @@ namespace FlamingStrike.GameEngine.Play
         {
             _sendArmiesToOccupyGameState = sendArmiesToOccupyGameState;
         }
-
-        public IPlayer Player => _sendArmiesToOccupyGameState.Player;
-
-        public IReadOnlyList<ITerritory> Territories => _sendArmiesToOccupyGameState.Territories;
-        public IReadOnlyList<IPlayerGameData> PlayerGameDatas => _sendArmiesToOccupyGameState.Players;
 
         public IRegion AttackingRegion => _sendArmiesToOccupyGameState.AttackingRegion;
 

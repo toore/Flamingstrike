@@ -371,7 +371,7 @@ namespace Tests.FlamingStrike.GameEngine.Specifications
 
         private void player_1_should_take_turn()
         {
-            _gameObserverSpy.DraftArmiesPhase.Player.Should().Be(_player1);
+            _gameObserverSpy.GameStatus.CurrentPlayer.Should().Be(_player1);
         }
     }
 
@@ -379,35 +379,40 @@ namespace Tests.FlamingStrike.GameEngine.Specifications
     {
         private object _gameApiObject;
 
-        public IGameStatus GameStatus => (IGameStatus)_gameApiObject;
+        public IGameStatus GameStatus { get; private set; }
         public IDraftArmiesPhase DraftArmiesPhase => (IDraftArmiesPhase)_gameApiObject;
         public IAttackPhase AttackPhase => (IAttackPhase)_gameApiObject;
         public ISendArmiesToOccupyPhase SendArmiesToOccupyPhase => (ISendArmiesToOccupyPhase)_gameApiObject;
         public IEndTurnPhase EndTurnPhase => (IEndTurnPhase)_gameApiObject;
         public IGameOverState GameOverState => (IGameOverState)_gameApiObject;
 
-        public void DraftArmies(IDraftArmiesPhase draftArmiesPhase)
+        public void DraftArmies(IGameStatus gameStatus, IDraftArmiesPhase draftArmiesPhase)
         {
+            GameStatus = gameStatus;
             _gameApiObject = draftArmiesPhase;
         }
 
-        public void Attack(IAttackPhase attackPhase)
+        public void Attack(IGameStatus gameStatus, IAttackPhase attackPhase)
         {
+            GameStatus = gameStatus;
             _gameApiObject = attackPhase;
         }
 
-        public void SendArmiesToOccupy(ISendArmiesToOccupyPhase sendArmiesToOccupyPhase)
+        public void SendArmiesToOccupy(IGameStatus gameStatus, ISendArmiesToOccupyPhase sendArmiesToOccupyPhase)
         {
+            GameStatus = gameStatus;
             _gameApiObject = sendArmiesToOccupyPhase;
         }
 
-        public void EndTurn(IEndTurnPhase endTurnPhase)
+        public void EndTurn(IGameStatus gameStatus, IEndTurnPhase endTurnPhase)
         {
+            GameStatus = gameStatus;
             _gameApiObject = endTurnPhase;
         }
 
         public void GameOver(IGameOverState gameOverState)
         {
+            GameStatus = null;
             _gameApiObject = gameOverState;
         }
     }

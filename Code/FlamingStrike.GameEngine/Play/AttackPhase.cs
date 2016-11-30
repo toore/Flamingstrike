@@ -4,7 +4,7 @@ using FlamingStrike.GameEngine.Play.GameStates;
 
 namespace FlamingStrike.GameEngine.Play
 {
-    public interface IAttackPhase : IGameStatus
+    public interface IAttackPhase
     {
         IReadOnlyList<IRegion> RegionsThatCanBeSourceForAttackOrFortification { get; }
         void Attack(IRegion attackingRegion, IRegion defendingRegion);
@@ -23,11 +23,6 @@ namespace FlamingStrike.GameEngine.Play
             _attackPhaseGameState = attackPhaseGameState;
             RegionsThatCanBeSourceForAttackOrFortification = regionsThatCanBeSourceForAttackOrFortification;
         }
-
-        public IPlayer Player => _attackPhaseGameState.Player;
-
-        public IReadOnlyList<ITerritory> Territories => _attackPhaseGameState.Territories;
-        public IReadOnlyList<IPlayerGameData> PlayerGameDatas => _attackPhaseGameState.Players;
 
         public IReadOnlyList<IRegion> RegionsThatCanBeSourceForAttackOrFortification { get; }
 
