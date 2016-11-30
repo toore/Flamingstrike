@@ -318,5 +318,25 @@ namespace Tests.FlamingStrike.UI.WPF
             _dialogManager.Received().ShowGameOverDialog("winner");
             _eventAggregator.Received().PublishOnUIThread(Arg.Any<NewGameMessage>());
         }
+
+        [Fact]
+        public void End_game_displays_confirm_dialog()
+        {
+            _dialogManager.ConfirmEndGame().Returns(false);
+
+            _sut.EndGame();
+
+            _eventAggregator.DidNotReceiveWithAnyArgs().PublishOnUIThread(null);
+        }
+
+        [Fact]
+        public void Game_ends_after_confirmation()
+        {
+            _dialogManager.ConfirmEndGame().Returns(true);
+
+            _sut.EndGame();
+
+            _eventAggregator.Received().PublishOnUIThread(Arg.Any<NewGameMessage>());
+        }
     }
 }
