@@ -219,7 +219,6 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay
             CanEnterAttackMode = false;
 
             UpdateWorldMap(gameStatus.Territories, attackPhase.RegionsThatCanBeSourceForAttackOrFortification, Maybe<IRegion>.Nothing);
-
         }
 
         private void ShowAttackPhaseView(IGameStatus gameStatus, IAttackPhase attackPhase, IRegion selectedRegion)
@@ -250,7 +249,6 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay
             CanEnterAttackMode = true;
 
             UpdateWorldMap(gameStatus.Territories, attackPhase.RegionsThatCanBeSourceForAttackOrFortification, Maybe<IRegion>.Nothing);
-
         }
 
         private void ShowFortifyView(IGameStatus gameStatus, IAttackPhase attackPhase, IRegion selectedRegion)
