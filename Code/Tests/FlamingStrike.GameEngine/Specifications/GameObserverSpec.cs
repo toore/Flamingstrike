@@ -215,15 +215,15 @@ namespace Tests.FlamingStrike.GameEngine.Specifications
         private GameObserverSpec game_is_started()
         {
             _die = Substitute.For<IDie>();
-            var dicesRoller = new Dice(_die);
+            var dice = new Dice(_die);
             var armyDraftCalculator = new ArmyDraftCalculator(_continents);
-            var battle = new Battle(dicesRoller, new ArmiesLostCalculator());
+            var battle = new Battle(dice, new ArmiesLostCalculator());
             var armyDrafter = new ArmyDrafter();
             var territoryOccupier = new TerritoryOccupier();
             var fortifier = new Fortifier();
             var attacker = new Attacker(battle);
-            var gameRules = new PlayerEliminationRules();
-            var gameStateFactory = new GameStateFactory(gameRules, armyDrafter, attacker, territoryOccupier, fortifier);
+            var playerEliminationRules = new PlayerEliminationRules();
+            var gameStateFactory = new GameStateFactory(playerEliminationRules, armyDrafter, attacker, territoryOccupier, fortifier);
             var fisherYatesShuffle = new FisherYatesShuffle(new RandomWrapper());
             var deckFactory = new DeckFactory(_regions, fisherYatesShuffle);
             var gameFactory = new GameFactory(gameStateFactory, armyDraftCalculator, deckFactory);
