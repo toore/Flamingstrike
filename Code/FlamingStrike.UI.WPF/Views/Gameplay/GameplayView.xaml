@@ -23,7 +23,7 @@
                 <Setter Property="Control.Background" Value="Black" />
                 <Setter Property="Control.Foreground" Value="White" />
             </Style>
-            <Gameplay:CardIndexRectangleConverter x:Key="CardIconConverter" />
+            <Gameplay:NumberOfCardsToRectanglesConverter x:Key="CardIconConverter" />
         </ResourceDictionary>
     </UserControl.Resources>
 
