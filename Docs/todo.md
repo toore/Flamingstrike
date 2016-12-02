@@ -21,6 +21,9 @@ Improvements:
 - Does GameStates really have to call back to Game?
 - Show how territories are connected
 - Give user hints or help messages. E.g. A selected territory with only one army can't attack any territory.
+- Create Neutral AI player
+- 
+- Add Nuclear custom rules
 
 
 ##Not/partially tested
