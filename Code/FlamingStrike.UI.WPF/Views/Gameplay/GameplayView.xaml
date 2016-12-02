@@ -95,7 +95,7 @@
                     <Setter Property="ItemTemplate">
                         <Setter.Value>
                             <DataTemplate DataType="Gameplay1:PlayerStatusViewModel">
-                                <Grid>
+                                <Grid Margin="10 0 0 0">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="Auto" />
                                         <ColumnDefinition Width="*" />
