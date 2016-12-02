@@ -1,10 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
 namespace FlamingStrike.GameEngine
 {
-    public class CircularBuffer<T> : IEnumerable<T>
+    public class CircularBuffer<T>
     {
         private readonly List<T> _items;
         private int _index;
@@ -24,29 +23,6 @@ namespace FlamingStrike.GameEngine
             }
 
             return _items[_index];
-        }
-
-        public IEnumerator<T> GetEnumerator()
-        {
-            return GetStartingBuffer()
-                .Concat(GetEndingBuffer())
-                .GetEnumerator();
-        }
-
-        private IEnumerable<T> GetStartingBuffer()
-        {
-            return _items
-                .GetRange(_index, _items.Count - _index);
-        }
-
-        private IEnumerable<T> GetEndingBuffer()
-        {
-            return _items.GetRange(0, _index);
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
         }
     }
 }
