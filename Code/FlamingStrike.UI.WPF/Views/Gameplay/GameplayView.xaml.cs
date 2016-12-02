@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Media;
 using FlamingStrike.GameEngine;
+using FlamingStrike.GameEngine.Play;
 using FlamingStrike.UI.WPF.RegionModels;
 using FlamingStrike.UI.WPF.ViewModels.Gameplay;
 using FlamingStrike.UI.WPF.ViewModels.Preparation;
@@ -17,7 +18,7 @@ namespace FlamingStrike.UI.WPF.Views.Gameplay
         }
     }
 
-    public class GameplayViewModelDesignerData
+    public class GameplayViewModelDesignerData : IGameplayViewModel
     {
         public GameplayViewModelDesignerData()
         {
@@ -65,5 +66,50 @@ namespace FlamingStrike.UI.WPF.Views.Gameplay
                 new PlayerStatusViewModel("Player 5", Colors.LemonChiffon, 1),
                 new PlayerStatusViewModel("Player 6", Colors.RosyBrown, 5),
             };
+
+        public void EnterAttackMode()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void EnterFortifyMode()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void EndTurn()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void EndGame()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void DraftArmies(IGameStatus gameStatus, IDraftArmiesPhase draftArmiesPhase)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Attack(IGameStatus gameStatus, IAttackPhase attackPhase)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SendArmiesToOccupy(IGameStatus gameStatus, ISendArmiesToOccupyPhase sendArmiesToOccupyPhase)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void EndTurn(IGameStatus gameStatus, IEndTurnPhase endTurnPhase)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void GameOver(IGameOverState gameOverState)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

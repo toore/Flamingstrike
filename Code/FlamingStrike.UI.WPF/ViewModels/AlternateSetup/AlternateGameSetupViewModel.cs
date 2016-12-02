@@ -12,7 +12,7 @@ using FlamingStrike.UI.WPF.ViewModels.Preparation;
 
 namespace FlamingStrike.UI.WPF.ViewModels.AlternateSetup
 {
-    public interface IAlternateGameSetupViewModel : IMainViewModel, IAlternateGameSetupObserver {}
+    public interface IAlternateGameSetupViewModel : IGameboardViewModel, IAlternateGameSetupObserver {}
 
     public class AlternateGameSetupViewModel : Screen, IAlternateGameSetupViewModel
     {

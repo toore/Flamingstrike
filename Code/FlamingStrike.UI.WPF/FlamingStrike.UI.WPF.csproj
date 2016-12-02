@@ -88,6 +88,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="ViewModels\IGameboardViewModel.cs" />
     <Compile Include="Views\Gameplay\NumberOfCardsToRectanglesConverter.cs" />
     <Compile Include="ContentClickButton.cs" />
     <Compile Include="Extensions\ColorExtensions.cs" />

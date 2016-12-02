@@ -13,7 +13,10 @@ using Action = System.Action;
 
 namespace FlamingStrike.UI.WPF.ViewModels.Gameplay
 {
-    public interface IGameplayViewModel : IMainViewModel, IGameObserver {}
+    public interface IGameplayViewModel : IGameboardViewModel, IGameObserver
+    {
+        IList<PlayerStatusViewModel> PlayerStatuses { get; }
+    }
 
     public class GameplayViewModel :
         ViewModelBase,
@@ -294,7 +297,6 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay
             SetEndTurnAction(Maybe<Action>.Create(endTurnPhase.EndTurn));
 
             UpdateWorldMap(gameStatus.Territories, new IRegion[] { }, Maybe<IRegion>.Nothing);
-
         }
 
         private void ShowGameOverMessage(IPlayer winner)
