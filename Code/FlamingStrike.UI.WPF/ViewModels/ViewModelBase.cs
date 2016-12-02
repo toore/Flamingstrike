@@ -8,14 +8,7 @@ namespace FlamingStrike.UI.WPF.ViewModels
     {
         protected void NotifyOfPropertyChange<T>(T value, Expression<Func<T>> propertyGetter, Action<T> propertySetter)
         {
-            var currentValue = propertyGetter.Compile().Invoke();
-            if (Equals(value, currentValue))
-            {
-                return;
-            }
-            propertySetter(value);
-
-            NotifyOfPropertyChange(propertyGetter);
+            PropertyChangedBaseExtensions.NotifyOfPropertyChange(this, value, propertyGetter, propertySetter);
         }
     }
 
