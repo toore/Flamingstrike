@@ -1,4 +1,5 @@
-##TODO
+# TODO
+
 Game states/phases:
 - TradeInSetsHoldingAtLeastThreeCards
 + DraftArmies
@@ -26,7 +27,7 @@ Improvements:
 - Add Nuclear custom rules
 
 
-##Not/partially tested
+# Not/partially tested
 - GameStateFactory (CreateNextTurnGameState, etc)
 - Sequence
 - Deck
