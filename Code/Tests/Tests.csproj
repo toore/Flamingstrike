@@ -40,17 +40,14 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Caliburn.Micro, Version=3.0.1.0, Culture=neutral, PublicKeyToken=8e5891231f2ed21f, processorArchitecture=MSIL">
-      <HintPath>..\packages\Caliburn.Micro.Core.3.0.1\lib\net45\Caliburn.Micro.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Caliburn.Micro, Version=3.2.0.0, Culture=neutral, PublicKeyToken=8e5891231f2ed21f, processorArchitecture=MSIL">
+      <HintPath>..\packages\Caliburn.Micro.Core.3.2.0\lib\net45\Caliburn.Micro.dll</HintPath>
     </Reference>
-    <Reference Include="Caliburn.Micro.Platform, Version=3.0.1.0, Culture=neutral, PublicKeyToken=8e5891231f2ed21f, processorArchitecture=MSIL">
-      <HintPath>..\packages\Caliburn.Micro.3.0.1\lib\net45\Caliburn.Micro.Platform.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Caliburn.Micro.Platform, Version=3.2.0.0, Culture=neutral, PublicKeyToken=8e5891231f2ed21f, processorArchitecture=MSIL">
+      <HintPath>..\packages\Caliburn.Micro.3.2.0\lib\net45\Caliburn.Micro.Platform.dll</HintPath>
     </Reference>
-    <Reference Include="Caliburn.Micro.Platform.Core, Version=3.0.1.0, Culture=neutral, PublicKeyToken=8e5891231f2ed21f, processorArchitecture=MSIL">
-      <HintPath>..\packages\Caliburn.Micro.3.0.1\lib\net45\Caliburn.Micro.Platform.Core.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Caliburn.Micro.Platform.Core, Version=3.2.0.0, Culture=neutral, PublicKeyToken=8e5891231f2ed21f, processorArchitecture=MSIL">
+      <HintPath>..\packages\Caliburn.Micro.3.2.0\lib\net45\Caliburn.Micro.Platform.Core.dll</HintPath>
     </Reference>
     <Reference Include="FluentAssertions, Version=4.17.0.0, Culture=neutral, PublicKeyToken=33f2691a05b67b6a, processorArchitecture=MSIL">
       <HintPath>..\packages\FluentAssertions.4.17.0\lib\net45\FluentAssertions.dll</HintPath>
@@ -75,8 +72,7 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Caliburn.Micro.3.0.1\lib\net45\System.Windows.Interactivity.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\Caliburn.Micro.3.2.0\lib\net45\System.Windows.Interactivity.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -179,6 +175,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="app.config" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
