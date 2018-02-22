@@ -294,15 +294,14 @@
     <None Include="Views\App.config" />
   </ItemGroup>
   <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\FlamingStrike.GameEngine\FlamingStrike.GameEngine.csproj">
-      <Project>{EAB6640B-F975-48B2-886B-83380FA7CACE}</Project>
+      <Project>{a35c3bae-9424-4b3f-8413-f01cebac0233}</Project>
       <Name>FlamingStrike.GameEngine</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <WCFMetadata Include="Service References\" />
-  </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
