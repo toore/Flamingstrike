@@ -74,11 +74,11 @@ namespace Tests.FlamingStrike.UI.WPF
             placeArmyRegionSelector.GetArmiesLeftToPlace().Returns(1);
 
             var sut = Create();
-            sut.MonitorEvents();
+            var monitor = sut.Monitor();
             sut.SelectRegion(placeArmyRegionSelector);
 
             sut.InformationText.Should().Be(string.Format(Resources.PLACE_ARMY, 1));
-            sut.ShouldRaisePropertyChangeFor(x => x.InformationText);
+            monitor.Should().RaisePropertyChangeFor(x => x.InformationText);
         }
 
         [Fact]
@@ -91,11 +91,11 @@ namespace Tests.FlamingStrike.UI.WPF
             _playerUiDataRepository.Get(null).ReturnsForAnyArgs(Make.PlayerUiData.Build());
 
             var sut = Create();
-            sut.MonitorEvents();
+            var monitor = sut.Monitor();
             sut.SelectRegion(placeArmyRegionSelector);
 
             sut.PlayerName.Should().Be("player name");
-            sut.ShouldRaisePropertyChangeFor(x => x.PlayerName);
+            monitor.Should().RaisePropertyChangeFor(x => x.PlayerName);
         }
 
         [Fact]

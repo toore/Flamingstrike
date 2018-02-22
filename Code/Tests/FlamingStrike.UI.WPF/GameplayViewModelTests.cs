@@ -106,13 +106,13 @@ namespace Tests.FlamingStrike.UI.WPF
             _playerUiDataRepository.Get(null)
                 .ReturnsForAnyArgs(Make.PlayerUiData.Color(Color.FromArgb(1, 2, 3, 4)).Build());
 
-            _sut.MonitorEvents();
+            var monitor = _sut.Monitor();
             _sut.DraftArmies(Substitute.For<IGameStatus>(), Substitute.For<IDraftArmiesPhase>());
 
-            _sut.ShouldRaisePropertyChangeFor(x => x.PlayerName);
-            _sut.ShouldRaisePropertyChangeFor(x => x.PlayerColor);
-            _sut.ShouldRaisePropertyChangeFor(x => x.PlayerStatuses);
-            _sut.ShouldRaisePropertyChangeFor(x => x.InformationText);
+            monitor.Should().RaisePropertyChangeFor(x => x.PlayerName);
+            monitor.Should().RaisePropertyChangeFor(x => x.PlayerColor);
+            monitor.Should().RaisePropertyChangeFor(x => x.PlayerStatuses);
+            monitor.Should().RaisePropertyChangeFor(x => x.InformationText);
         }
 
         [Fact]
@@ -136,15 +136,15 @@ namespace Tests.FlamingStrike.UI.WPF
         {
             _sut.DraftArmies(Substitute.For<IGameStatus>(), Substitute.For<IDraftArmiesPhase>());
 
-            _sut.MonitorEvents();
+            var monitor = _sut.Monitor();
             _sut.Attack(_currentGameStatus, Substitute.For<IAttackPhase>());
 
-            _sut.ShouldRaisePropertyChangeFor(x => x.PlayerName);
-            _sut.ShouldRaisePropertyChangeFor(x => x.PlayerColor);
-            _sut.ShouldRaisePropertyChangeFor(x => x.PlayerStatuses);
-            _sut.ShouldRaisePropertyChangeFor(x => x.InformationText);
-            _sut.ShouldRaisePropertyChangeFor(x => x.CanEnterFortifyMode);
-            _sut.ShouldRaisePropertyChangeFor(x => x.CanEndTurn);
+            monitor.Should().RaisePropertyChangeFor(x => x.PlayerName);
+            monitor.Should().RaisePropertyChangeFor(x => x.PlayerColor);
+            monitor.Should().RaisePropertyChangeFor(x => x.PlayerStatuses);
+            monitor.Should().RaisePropertyChangeFor(x => x.InformationText);
+            monitor.Should().RaisePropertyChangeFor(x => x.CanEnterFortifyMode);
+            monitor.Should().RaisePropertyChangeFor(x => x.CanEndTurn);
         }
 
         [Fact]
@@ -170,11 +170,11 @@ namespace Tests.FlamingStrike.UI.WPF
             _sut.DraftArmies(Substitute.For<IGameStatus>(), Substitute.For<IDraftArmiesPhase>());
             _sut.Attack(_currentGameStatus, Substitute.For<IAttackPhase>());
 
-            _sut.MonitorEvents();
+            var monitor = _sut.Monitor();
             _sut.EnterFortifyMode();
 
-            _sut.ShouldRaisePropertyChangeFor(x => x.CanEnterFortifyMode);
-            _sut.ShouldRaisePropertyChangeFor(x => x.CanEnterAttackMode);
+            monitor.Should().RaisePropertyChangeFor(x => x.CanEnterFortifyMode);
+            monitor.Should().RaisePropertyChangeFor(x => x.CanEnterAttackMode);
         }
 
         [Fact]
@@ -202,11 +202,11 @@ namespace Tests.FlamingStrike.UI.WPF
             _sut.Attack(_currentGameStatus, Substitute.For<IAttackPhase>());
             _sut.EnterFortifyMode();
 
-            _sut.MonitorEvents();
+            var monitor = _sut.Monitor();
             _sut.EnterAttackMode();
 
-            _sut.ShouldRaisePropertyChangeFor(x => x.CanEnterFortifyMode);
-            _sut.ShouldRaisePropertyChangeFor(x => x.CanEnterAttackMode);
+            monitor.Should().RaisePropertyChangeFor(x => x.CanEnterFortifyMode);
+            monitor.Should().RaisePropertyChangeFor(x => x.CanEnterAttackMode);
         }
 
         [Fact]
@@ -232,15 +232,15 @@ namespace Tests.FlamingStrike.UI.WPF
             _sut.DraftArmies(Substitute.For<IGameStatus>(), Substitute.For<IDraftArmiesPhase>());
             _sut.Attack(Substitute.For<IGameStatus>(), Substitute.For<IAttackPhase>());
 
-            _sut.MonitorEvents();
+            var monitor = _sut.Monitor();
             _sut.SendArmiesToOccupy(_currentGameStatus, Substitute.For<ISendArmiesToOccupyPhase>());
 
-            _sut.ShouldRaisePropertyChangeFor(x => x.PlayerName);
-            _sut.ShouldRaisePropertyChangeFor(x => x.PlayerColor);
-            _sut.ShouldRaisePropertyChangeFor(x => x.PlayerStatuses);
-            _sut.ShouldRaisePropertyChangeFor(x => x.InformationText);
-            _sut.ShouldRaisePropertyChangeFor(x => x.CanEnterFortifyMode);
-            _sut.ShouldRaisePropertyChangeFor(x => x.CanEndTurn);
+            monitor.Should().RaisePropertyChangeFor(x => x.PlayerName);
+            monitor.Should().RaisePropertyChangeFor(x => x.PlayerColor);
+            monitor.Should().RaisePropertyChangeFor(x => x.PlayerStatuses);
+            monitor.Should().RaisePropertyChangeFor(x => x.InformationText);
+            monitor.Should().RaisePropertyChangeFor(x => x.CanEnterFortifyMode);
+            monitor.Should().RaisePropertyChangeFor(x => x.CanEndTurn);
         }
 
         [Fact]
@@ -264,14 +264,14 @@ namespace Tests.FlamingStrike.UI.WPF
         {
             _sut.DraftArmies(Substitute.For<IGameStatus>(), Substitute.For<IDraftArmiesPhase>());
 
-            _sut.MonitorEvents();
+            var monitor = _sut.Monitor();
             _sut.EndTurn(_currentGameStatus, Substitute.For<IEndTurnPhase>());
 
-            _sut.ShouldRaisePropertyChangeFor(x => x.PlayerName);
-            _sut.ShouldRaisePropertyChangeFor(x => x.PlayerColor);
-            _sut.ShouldRaisePropertyChangeFor(x => x.PlayerStatuses);
-            _sut.ShouldRaisePropertyChangeFor(x => x.InformationText);
-            _sut.ShouldRaisePropertyChangeFor(x => x.CanEndTurn);
+            monitor.Should().RaisePropertyChangeFor(x => x.PlayerName);
+            monitor.Should().RaisePropertyChangeFor(x => x.PlayerColor);
+            monitor.Should().RaisePropertyChangeFor(x => x.PlayerStatuses);
+            monitor.Should().RaisePropertyChangeFor(x => x.InformationText);
+            monitor.Should().RaisePropertyChangeFor(x => x.CanEndTurn);
         }
 
         [Fact]
@@ -280,14 +280,14 @@ namespace Tests.FlamingStrike.UI.WPF
             _sut.DraftArmies(Substitute.For<IGameStatus>(), Substitute.For<IDraftArmiesPhase>());
             _sut.Attack(Substitute.For<IGameStatus>(), Substitute.For<IAttackPhase>());
 
-            _sut.MonitorEvents();
+            var monitor = _sut.Monitor();
             _sut.EndTurn(_currentGameStatus, Substitute.For<IEndTurnPhase>());
 
-            _sut.ShouldRaisePropertyChangeFor(x => x.PlayerName);
-            _sut.ShouldRaisePropertyChangeFor(x => x.PlayerColor);
-            _sut.ShouldRaisePropertyChangeFor(x => x.PlayerStatuses);
-            _sut.ShouldRaisePropertyChangeFor(x => x.InformationText);
-            _sut.ShouldRaisePropertyChangeFor(x => x.CanEnterFortifyMode);
+            monitor.Should().RaisePropertyChangeFor(x => x.PlayerName);
+            monitor.Should().RaisePropertyChangeFor(x => x.PlayerColor);
+            monitor.Should().RaisePropertyChangeFor(x => x.PlayerStatuses);
+            monitor.Should().RaisePropertyChangeFor(x => x.InformationText);
+            monitor.Should().RaisePropertyChangeFor(x => x.CanEnterFortifyMode);
         }
 
         [Fact]
@@ -297,14 +297,14 @@ namespace Tests.FlamingStrike.UI.WPF
             _sut.Attack(Substitute.For<IGameStatus>(), Substitute.For<IAttackPhase>());
             _sut.EnterFortifyMode();
 
-            _sut.MonitorEvents();
+            var monitor = _sut.Monitor();
             _sut.EndTurn(_currentGameStatus, Substitute.For<IEndTurnPhase>());
 
-            _sut.ShouldRaisePropertyChangeFor(x => x.PlayerName);
-            _sut.ShouldRaisePropertyChangeFor(x => x.PlayerColor);
-            _sut.ShouldRaisePropertyChangeFor(x => x.PlayerStatuses);
-            _sut.ShouldRaisePropertyChangeFor(x => x.InformationText);
-            _sut.ShouldRaisePropertyChangeFor(x => x.CanEnterAttackMode);
+            monitor.Should().RaisePropertyChangeFor(x => x.PlayerName);
+            monitor.Should().RaisePropertyChangeFor(x => x.PlayerColor);
+            monitor.Should().RaisePropertyChangeFor(x => x.PlayerStatuses);
+            monitor.Should().RaisePropertyChangeFor(x => x.InformationText);
+            monitor.Should().RaisePropertyChangeFor(x => x.CanEnterAttackMode);
         }
 
         [Fact]

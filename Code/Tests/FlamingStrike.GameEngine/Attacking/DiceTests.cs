@@ -24,7 +24,7 @@ namespace Tests.FlamingStrike.GameEngine.Attacking
 
             var dices = _sut.Roll(1, 1);
 
-            dices.ShouldBeEquivalentTo(new DiceResult(new[] { 1 }, new[] { 2 }));
+            dices.Should().BeEquivalentTo(new DiceResult(new[] { 1 }, new[] { 2 }));
         }
 
         [Fact]
@@ -34,7 +34,7 @@ namespace Tests.FlamingStrike.GameEngine.Attacking
 
             var dices = _sut.Roll(3, 2);
 
-            dices.ShouldBeEquivalentTo(new DiceResult(new[] { 1, 2, 3 }, new[] { 4, 5 }));
+            dices.Should().BeEquivalentTo(new DiceResult(new[] { 1, 2, 3 }, new[] { 4, 5 }));
         }
     }
 }

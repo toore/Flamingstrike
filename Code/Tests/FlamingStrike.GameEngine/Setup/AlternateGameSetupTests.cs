@@ -62,7 +62,7 @@ namespace Tests.FlamingStrike.GameEngine.Setup
 
             Create();
 
-            _alternateGameSetupObserver.GamePlaySetup.Territories.ShouldAllBeEquivalentTo(new[]
+            _alternateGameSetupObserver.GamePlaySetup.Territories.Should().AllBeEquivalentTo(new[]
                 {
                     new Territory(region1, _player1, 2),
                     new Territory(region2, _player2, 3),

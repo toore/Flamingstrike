@@ -96,7 +96,7 @@ namespace Tests.FlamingStrike.GameEngine.Play.GameStates
         {
             Action act = () => Sut.Attack(_anotherRegion, _region);
 
-            act.ShouldThrow<InvalidOperationException>();
+            act.Should().Throw<InvalidOperationException>();
         }
 
         [Fact]
@@ -201,7 +201,7 @@ namespace Tests.FlamingStrike.GameEngine.Play.GameStates
 
             Sut.EndTurn();
 
-            _gameData.ShouldBeEquivalentTo(updatedGameData);
+            _gameData.Should().BeEquivalentTo(updatedGameData);
         }
 
         [Fact]
@@ -269,7 +269,7 @@ namespace Tests.FlamingStrike.GameEngine.Play.GameStates
 
             Sut.Attack(_region, _anotherRegion);
 
-            updatedGameData.GetCurrentPlayerGameData().Cards.ShouldAllBeEquivalentTo(new[] { aCard, aSecondCard }, "all cards should be aquired from eliminated player");
+            updatedGameData.GetCurrentPlayerGameData().Cards.Should().AllBeEquivalentTo(new[] { aCard, aSecondCard }, "all cards should be aquired from eliminated player");
             updatedGameData.PlayerGameDatas.Single(x => x.Player == _anotherPlayer).Cards.Should().BeEmpty("all cards should be handed over");
         }
 

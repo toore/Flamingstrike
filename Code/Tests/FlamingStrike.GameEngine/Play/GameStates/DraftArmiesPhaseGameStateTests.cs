@@ -65,7 +65,7 @@ namespace Tests.FlamingStrike.GameEngine.Play.GameStates
         {
             Action act = () => Sut.PlaceDraftArmies(_anotherRegion, 1);
 
-            act.ShouldThrow<InvalidOperationException>();
+            act.Should().Throw<InvalidOperationException>();
         }
 
         [Fact]
@@ -97,7 +97,7 @@ namespace Tests.FlamingStrike.GameEngine.Play.GameStates
         {
             Action act = () => Sut.PlaceDraftArmies(_region, 2);
 
-            act.ShouldThrow<ArgumentOutOfRangeException>();
+            act.Should().Throw<ArgumentOutOfRangeException>();
         }
     }
 }
