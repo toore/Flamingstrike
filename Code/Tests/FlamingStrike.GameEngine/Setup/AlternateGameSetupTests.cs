@@ -6,7 +6,6 @@ using FluentAssertions;
 using NSubstitute;
 using Tests.FlamingStrike.GameEngine.Builders;
 using Xunit;
-using IPlayer = FlamingStrike.GameEngine.IPlayer;
 
 namespace Tests.FlamingStrike.GameEngine.Setup
 {
@@ -62,12 +61,14 @@ namespace Tests.FlamingStrike.GameEngine.Setup
 
             Create();
 
-            _alternateGameSetupObserver.GamePlaySetup.Territories.Should().AllBeEquivalentTo(new[]
-                {
-                    new Territory(region1, _player1, 2),
-                    new Territory(region2, _player2, 3),
-                    new Territory(region3, _player1, 1)
-                });
+            _alternateGameSetupObserver.GamePlaySetup.Territories.Should()
+                .BeEquivalentTo(
+                    new[]
+                        {
+                            new Territory(region1, _player1, 2),
+                            new Territory(region2, _player2, 3),
+                            new Territory(region3, _player1, 1)
+                        }, options => options.WithStrictOrdering());
         }
 
         private AlternateGameSetup Create()

@@ -72,9 +72,10 @@ namespace Tests.FlamingStrike.GameEngine.Play.GameStates
         public void Can_attack()
         {
             _attacker.CanAttack(
-                _gameData.Territories,
-                _region,
-                _anotherRegion).Returns(true);
+                    _gameData.Territories,
+                    _region,
+                    _anotherRegion)
+                .Returns(true);
 
             Sut.CanAttack(_region, _anotherRegion).Should().BeTrue();
         }
@@ -105,9 +106,10 @@ namespace Tests.FlamingStrike.GameEngine.Play.GameStates
             var expectedUpdatedTerritories = new List<ITerritory>();
             var attackOutcome = new AttackOutcome(expectedUpdatedTerritories, DefendingArmyAvailability.Exists);
             _attacker.Attack(
-                _gameData.Territories,
-                _region,
-                _anotherRegion).Returns(attackOutcome);
+                    _gameData.Territories,
+                    _region,
+                    _anotherRegion)
+                .Returns(attackOutcome);
 
             Sut.Attack(_region, _anotherRegion);
 
@@ -125,9 +127,10 @@ namespace Tests.FlamingStrike.GameEngine.Play.GameStates
 
             var attackOutcome = new AttackOutcome(expectedUpdatedTerritories, DefendingArmyAvailability.IsEliminated);
             _attacker.Attack(
-                _gameData.Territories,
-                _region,
-                _anotherRegion).Returns(attackOutcome);
+                    _gameData.Territories,
+                    _region,
+                    _anotherRegion)
+                .Returns(attackOutcome);
 
             Sut.Attack(_region, _anotherRegion);
 
@@ -138,9 +141,10 @@ namespace Tests.FlamingStrike.GameEngine.Play.GameStates
         public void Can_fortify()
         {
             _fortifier.CanFortify(
-                _gameData.Territories,
-                _region,
-                _anotherRegion).Returns(true);
+                    _gameData.Territories,
+                    _region,
+                    _anotherRegion)
+                .Returns(true);
 
             Sut.CanFortify(_region, _anotherRegion).Should().BeTrue();
         }
@@ -237,9 +241,10 @@ namespace Tests.FlamingStrike.GameEngine.Play.GameStates
             var updatedTerritories = new List<ITerritory> { _territory };
             var attackOutcome = new AttackOutcome(updatedTerritories, DefendingArmyAvailability.IsEliminated);
             _attacker.Attack(
-                _gameData.Territories,
-                _region,
-                _anotherRegion).Returns(attackOutcome);
+                    _gameData.Territories,
+                    _region,
+                    _anotherRegion)
+                .Returns(attackOutcome);
 
             Sut.Attack(_region, _anotherRegion);
 
@@ -260,17 +265,21 @@ namespace Tests.FlamingStrike.GameEngine.Play.GameStates
             var updatedTerritories = new List<ITerritory> { _territory };
             var attackOutcome = new AttackOutcome(updatedTerritories, DefendingArmyAvailability.IsEliminated);
             _attacker.Attack(
-                _gameData.Territories,
-                _region,
-                _anotherRegion).Returns(attackOutcome);
+                    _gameData.Territories,
+                    _region,
+                    _anotherRegion)
+                .Returns(attackOutcome);
             _playerEliminationRules.IsPlayerEliminated(
-                updatedTerritories,
-                _anotherPlayer).Returns(true);
+                    updatedTerritories,
+                    _anotherPlayer)
+                .Returns(true);
 
             Sut.Attack(_region, _anotherRegion);
 
-            updatedGameData.GetCurrentPlayerGameData().Cards.Should().AllBeEquivalentTo(new[] { card, anotherCard }, "all cards should be aquired from eliminated player");
-            updatedGameData.PlayerGameDatas.Single(x => x.Player == _anotherPlayer).Cards.Should().BeEmpty("all cards should be handed over");
+            updatedGameData.GetCurrentPlayerGameData().Cards
+                .Should().BeEquivalentTo(new[] { card, anotherCard }, config => config.WithStrictOrdering(), "all cards should be aquired from eliminated player");
+            updatedGameData.PlayerGameDatas.Single(x => x.Player == _anotherPlayer).Cards
+                .Should().BeEmpty("all cards should be handed over");
         }
 
         [Fact]
@@ -279,9 +288,10 @@ namespace Tests.FlamingStrike.GameEngine.Play.GameStates
             var updatedTerritories = new List<ITerritory>();
             var attackOutcome = new AttackOutcome(updatedTerritories, DefendingArmyAvailability.IsEliminated);
             _attacker.Attack(
-                _gameData.Territories,
-                _region,
-                _anotherRegion).Returns(attackOutcome);
+                    _gameData.Territories,
+                    _region,
+                    _anotherRegion)
+                .Returns(attackOutcome);
             _playerEliminationRules.IsOnlyOnePlayerLeftInTheGame(updatedTerritories).Returns(true);
 
             Sut.Attack(_region, _anotherRegion);
