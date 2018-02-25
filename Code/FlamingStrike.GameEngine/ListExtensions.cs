@@ -5,16 +5,17 @@ namespace FlamingStrike.GameEngine
 {
     public static class ListExtensions
     {
-        public static T GetNext<T>(this IList<T> items, T precedingItem)
+        public static T GetNext<T>(this IList<T> items, T item)
         {
-            if (items.Last().Equals(precedingItem))
+            if (items.Last().Equals(item))
             {
                 return items.First();
             }
 
-            return items.SkipWhile(x => !Equals(x, precedingItem))
+            return items.SkipWhile(x => !Equals(x, item))
                 .Skip(1)
-                .Take(1).Single();
+                .Take(1)
+                .Single();
         }
     }
 }

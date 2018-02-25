@@ -253,10 +253,10 @@ namespace Tests.FlamingStrike.GameEngine.Play.GameStates
             _gamePhaseConductor.ContinueWithAttackPhase(
                 TurnConqueringAchievement.SuccessfullyConqueredAtLeastOneTerritory,
                 Arg.Do<GameData>(x => updatedGameData = x));
-            var aCard = Substitute.For<ICard>();
-            var aSecondCard = Substitute.For<ICard>();
+            var card = Substitute.For<ICard>();
+            var anotherCard = Substitute.For<ICard>();
             _anotherPlayerGameData.Player.Returns(_anotherPlayer);
-            _anotherPlayerGameData.Cards.Returns(new[] { aCard, aSecondCard });
+            _anotherPlayerGameData.Cards.Returns(new[] { card, anotherCard });
             var updatedTerritories = new List<ITerritory> { _territory };
             var attackOutcome = new AttackOutcome(updatedTerritories, DefendingArmyAvailability.IsEliminated);
             _attacker.Attack(
@@ -269,7 +269,7 @@ namespace Tests.FlamingStrike.GameEngine.Play.GameStates
 
             Sut.Attack(_region, _anotherRegion);
 
-            updatedGameData.GetCurrentPlayerGameData().Cards.Should().AllBeEquivalentTo(new[] { aCard, aSecondCard }, "all cards should be aquired from eliminated player");
+            updatedGameData.GetCurrentPlayerGameData().Cards.Should().AllBeEquivalentTo(new[] { card, anotherCard }, "all cards should be aquired from eliminated player");
             updatedGameData.PlayerGameDatas.Single(x => x.Player == _anotherPlayer).Cards.Should().BeEmpty("all cards should be handed over");
         }
 
