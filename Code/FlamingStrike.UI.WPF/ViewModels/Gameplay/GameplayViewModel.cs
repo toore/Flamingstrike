@@ -67,43 +67,43 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay
 
         public string InformationText
         {
-            get { return _informationText; }
+            get => _informationText;
             private set { NotifyOfPropertyChange(value, () => InformationText, x => _informationText = x); }
         }
 
         public string PlayerName
         {
-            get { return _playerName; }
+            get => _playerName;
             private set { NotifyOfPropertyChange(value, () => PlayerName, x => _playerName = x); }
         }
 
         public Color PlayerColor
         {
-            get { return _playerColor; }
+            get => _playerColor;
             private set { NotifyOfPropertyChange(value, () => PlayerColor, x => _playerColor = x); }
         }
 
         public bool CanEnterFortifyMode
         {
-            get { return _canEnterFortifyMode; }
+            get => _canEnterFortifyMode;
             private set { NotifyOfPropertyChange(value, () => CanEnterFortifyMode, x => _canEnterFortifyMode = x); }
         }
 
         public bool CanEnterAttackMode
         {
-            get { return _canEnterAttackMode; }
+            get => _canEnterAttackMode;
             private set { NotifyOfPropertyChange(value, () => CanEnterAttackMode, x => _canEnterAttackMode = x); }
         }
 
         public bool CanEndTurn
         {
-            get { return _canEndTurn; }
+            get => _canEndTurn;
             private set { NotifyOfPropertyChange(value, () => CanEndTurn, x => _canEndTurn = x); }
         }
 
         public IList<PlayerStatusViewModel> PlayerStatuses
         {
-            get { return _playerStatuses; }
+            get => _playerStatuses;
             private set { NotifyOfPropertyChange(value, () => PlayerStatuses, x => _playerStatuses = x); }
         }
 
@@ -296,7 +296,7 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay
             CanEnterAttackMode = false;
             SetEndTurnAction(Maybe<Action>.Create(endTurnPhase.EndTurn));
 
-            UpdateWorldMap(gameStatus.Territories, new IRegion[] { }, Maybe<IRegion>.Nothing);
+            UpdateWorldMap(gameStatus.Territories, new IRegion[] {}, Maybe<IRegion>.Nothing);
         }
 
         private void ShowGameOverMessage(IPlayer winner)
@@ -308,8 +308,8 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay
 
         private void SetEndTurnAction(Maybe<Action> endTurnAction)
         {
-            Action noAction = () => { };
-            _endTurnAction = endTurnAction.Fold(x => x, () => noAction);
+            void NoAction() {}
+            _endTurnAction = endTurnAction.Fold(x => x, () => NoAction);
             CanEndTurn = endTurnAction.Fold(x => true, () => false);
         }
 
