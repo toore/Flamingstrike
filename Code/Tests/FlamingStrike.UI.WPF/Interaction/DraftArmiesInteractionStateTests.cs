@@ -23,7 +23,7 @@ namespace Tests.FlamingStrike.UI.WPF.Interaction
         {
             var region = Substitute.For<IRegion>();
 
-            _sut.OnClick(region);
+            _sut.OnRegionClicked(region);
 
             _draftArmiesPhase.Received().PlaceDraftArmies(region, 1);
         }

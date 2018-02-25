@@ -16,7 +16,7 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay.Interaction
             _selectAttackingRegionInteractionStateObserver = selectAttackingRegionInteractionStateObserver;
         }
 
-        public void OnClick(IRegion region)
+        public void OnRegionClicked(IRegion region)
         {
             _selectAttackingRegionInteractionStateObserver.Select(region);
         }

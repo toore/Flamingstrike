@@ -12,7 +12,7 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay.Interaction
             _sendArmiesToOccupyPhase = sendArmiesToOccupyPhase;
         }
 
-        public void OnClick(IRegion region)
+        public void OnRegionClicked(IRegion region)
         {
             _sendArmiesToOccupyPhase.SendAdditionalArmiesToOccupy(1);
         }

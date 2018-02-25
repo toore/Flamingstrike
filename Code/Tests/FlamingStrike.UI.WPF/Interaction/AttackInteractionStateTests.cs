@@ -28,7 +28,7 @@ namespace Tests.FlamingStrike.UI.WPF.Interaction
         [Fact]
         public void OnClick_attacks()
         {
-            _sut.OnClick(_attackedRegion);
+            _sut.OnRegionClicked(_attackedRegion);
 
             _attackPhase.Received().Attack(_selectedRegion, _attackedRegion);
         }
@@ -36,7 +36,7 @@ namespace Tests.FlamingStrike.UI.WPF.Interaction
         [Fact]
         public void OnClick_deselects()
         {
-            _sut.OnClick(_selectedRegion);
+            _sut.OnRegionClicked(_selectedRegion);
 
             _attackInteractionStateObserver.Received().DeselectRegion();
         }

@@ -21,7 +21,7 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay.Interaction
             _attackInteractionStateObserver = attackInteractionStateObserver;
         }
 
-        public void OnClick(IRegion region)
+        public void OnRegionClicked(IRegion region)
         {
             if (CanDeselect(region))
             {

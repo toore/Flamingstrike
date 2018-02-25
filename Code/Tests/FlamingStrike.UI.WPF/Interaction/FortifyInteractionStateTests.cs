@@ -27,7 +27,7 @@ namespace Tests.FlamingStrike.UI.WPF.Interaction
         {
             var region = Substitute.For<IRegion>();
 
-            _sut.OnClick(region);
+            _sut.OnRegionClicked(region);
 
             _attackPhase.Received().Fortify(_selectedRegion, region, 1);
         }
@@ -37,7 +37,7 @@ namespace Tests.FlamingStrike.UI.WPF.Interaction
         {
             var region = Substitute.For<IRegion>();
 
-            _sut.OnClick(_selectedRegion);
+            _sut.OnRegionClicked(_selectedRegion);
 
             _fortifyInteractionStateObserver.Received().DeselectRegion();
         }

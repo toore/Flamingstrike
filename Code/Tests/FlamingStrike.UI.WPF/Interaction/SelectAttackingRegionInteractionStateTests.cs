@@ -22,7 +22,7 @@ namespace Tests.FlamingStrike.UI.WPF.Interaction
         {
             var region = Substitute.For<IRegion>();
 
-            _sut.OnClick(region);
+            _sut.OnRegionClicked(region);
 
             _selectAttackingRegionInteractionStateObserver.Received().Select(region);
         }

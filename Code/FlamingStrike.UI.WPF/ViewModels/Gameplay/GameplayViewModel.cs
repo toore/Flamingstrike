@@ -60,7 +60,7 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay
             _eventAggregator = eventAggregator;
             _playerStatusViewModelFactory = playerStatusViewModelFactory;
 
-            WorldMapViewModel = _worldMapViewModelFactory.Create(OnRegionClick);
+            WorldMapViewModel = _worldMapViewModelFactory.Create(OnRegionClicked);
         }
 
         public WorldMapViewModel WorldMapViewModel { get; }
@@ -194,9 +194,9 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay
             }
         }
 
-        private void OnRegionClick(IRegion region)
+        private void OnRegionClicked(IRegion region)
         {
-            _interactionState.OnClick(region);
+            _interactionState.OnRegionClicked(region);
         }
 
         private void ShowDraftArmiesView(IGameStatus gameStatus, IDraftArmiesPhase draftArmiesPhase)
