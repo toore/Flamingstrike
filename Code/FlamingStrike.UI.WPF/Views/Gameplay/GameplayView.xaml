@@ -23,7 +23,7 @@
                 <Setter Property="Control.Background" Value="Black" />
                 <Setter Property="Control.Foreground" Value="White" />
             </Style>
-            <Gameplay:NumberOfCardsToRectanglesConverter x:Key="CardIconConverter" />
+            <Gameplay:NumberOfCardsToCanvasDrawingConverter x:Key="CardIconConverter" />
         </ResourceDictionary>
     </UserControl.Resources>
 
@@ -45,14 +45,10 @@
             </StackPanel.Resources>
             <Rectangle Margin="5"
                        Width="20"
-                       Height="20">
+                       Height="20"
+                       Stroke="Black">
                 <Rectangle.Fill>
-                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                        <LinearGradientBrush.GradientStops>
-                            <GradientStop Color="White" Offset="0" />
-                            <GradientStop Color="{Binding PlayerColor}" Offset="1" />
-                        </LinearGradientBrush.GradientStops>
-                    </LinearGradientBrush>
+                    <SolidColorBrush Color="{Binding PlayerColor}" />
                 </Rectangle.Fill>
             </Rectangle>
 
@@ -69,17 +65,8 @@
             </StackPanel.Resources>
             <Label HorizontalAlignment="Stretch"
                    HorizontalContentAlignment="Center"
-                   Content="{Binding InformationText}">
-                <Label.Background>
-                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
-                        <LinearGradientBrush.GradientStops>
-                            <GradientStop Color="{Binding PlayerColor}" Offset="0" />
-                            <GradientStop Color="Black" Offset=".5" />
-                            <GradientStop Color="{Binding PlayerColor}" Offset="1" />
-                        </LinearGradientBrush.GradientStops>
-                    </LinearGradientBrush>
-                </Label.Background>
-            </Label>
+                   Content="{Binding InformationText}"
+                   Background="Black" />
         </StackPanel>
 
         <ContentControl Focusable="False"
@@ -104,17 +91,10 @@
                                     </Grid.ColumnDefinitions>
                                     <Rectangle Grid.Column="0"
                                                Width="15"
-                                               Height="15">
+                                               Height="15"
+                                               Stroke="Black">
                                         <Rectangle.Fill>
-                                            <LinearGradientBrush StartPoint="0,0"
-                                                                 EndPoint="1,1">
-                                                <LinearGradientBrush.GradientStops>
-                                                    <GradientStop Color="White"
-                                                                  Offset="0" />
-                                                    <GradientStop Color="{Binding Path=PlayerColor}"
-                                                                  Offset="1" />
-                                                </LinearGradientBrush.GradientStops>
-                                            </LinearGradientBrush>
+                                            <SolidColorBrush Color="{Binding PlayerColor}" />
                                         </Rectangle.Fill>
                                     </Rectangle>
                                     <Label Grid.Column="1"
