@@ -209,7 +209,10 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay
             CanEnterAttackMode = false;
             SetEndTurnAction(Maybe<Action>.Nothing);
 
-            UpdateWorldMap(gameStatus.Territories, draftArmiesPhase.RegionsAllowedToDraftArmies, Maybe<IRegion>.Nothing);
+            UpdateWorldMap(
+                gameStatus.Territories, 
+                draftArmiesPhase.RegionsAllowedToDraftArmies, 
+                Maybe<IRegion>.Nothing);
         }
 
         private void ShowAttackPhaseView(IGameStatus gameStatus, IAttackPhase attackPhase)
@@ -221,7 +224,10 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay
             CanEnterFortifyMode = true;
             CanEnterAttackMode = false;
 
-            UpdateWorldMap(gameStatus.Territories, attackPhase.RegionsThatCanBeSourceForAttackOrFortification, Maybe<IRegion>.Nothing);
+            UpdateWorldMap(
+                gameStatus.Territories, 
+                attackPhase.RegionsThatCanBeSourceForAttackOrFortification, 
+                Maybe<IRegion>.Nothing);
         }
 
         private void ShowAttackPhaseView(IGameStatus gameStatus, IAttackPhase attackPhase, IRegion selectedRegion)
@@ -251,7 +257,10 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay
             CanEnterFortifyMode = false;
             CanEnterAttackMode = true;
 
-            UpdateWorldMap(gameStatus.Territories, attackPhase.RegionsThatCanBeSourceForAttackOrFortification, Maybe<IRegion>.Nothing);
+            UpdateWorldMap(
+                gameStatus.Territories, 
+                attackPhase.RegionsThatCanBeSourceForAttackOrFortification, 
+                Maybe<IRegion>.Nothing);
         }
 
         private void ShowFortifyView(IGameStatus gameStatus, IAttackPhase attackPhase, IRegion selectedRegion)
@@ -296,7 +305,10 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay
             CanEnterAttackMode = false;
             SetEndTurnAction(Maybe<Action>.Create(endTurnPhase.EndTurn));
 
-            UpdateWorldMap(gameStatus.Territories, new IRegion[] {}, Maybe<IRegion>.Nothing);
+            UpdateWorldMap(
+                gameStatus.Territories, 
+                new IRegion[] {}, 
+                Maybe<IRegion>.Nothing);
         }
 
         private void ShowGameOverMessage(IPlayer winner)

@@ -185,6 +185,10 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\FlamingStrike.Core\FlamingStrike.Core.csproj">
+      <Project>{4042274d-44c5-4e8b-be62-5861fe661eaf}</Project>
+      <Name>FlamingStrike.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\FlamingStrike.GameEngine\FlamingStrike.GameEngine.csproj">
       <Project>{a35c3bae-9424-4b3f-8413-f01cebac0233}</Project>
       <Name>FlamingStrike.GameEngine</Name>
