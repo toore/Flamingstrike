@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using FlamingStrike.GameEngine;
 using FlamingStrike.GameEngine.Setup;
-using FlamingStrike.GameEngine.Shuffling;
 using FluentAssertions;
 using NSubstitute;
 using Tests.FlamingStrike.GameEngine.Builders;
+using Toore.Shuffling;
 using Xunit;
 
 namespace Tests.FlamingStrike.GameEngine.Setup
@@ -15,7 +15,7 @@ namespace Tests.FlamingStrike.GameEngine.Setup
         private readonly IRegions _regions;
         private readonly List<IPlayer> _players;
         private readonly IStartingInfantryCalculator _startingInfantryCalculator;
-        private readonly IShuffle _shuffler;
+        private readonly IShuffler _shuffler;
         private readonly IPlayer _player1;
         private readonly IPlayer _player2;
         private readonly List<IRegion> _regionElements;
@@ -26,12 +26,12 @@ namespace Tests.FlamingStrike.GameEngine.Setup
             _regions = Substitute.For<IRegions>();
             _players = new List<IPlayer> { null, null };
             _startingInfantryCalculator = Substitute.For<IStartingInfantryCalculator>();
-            _shuffler = Substitute.For<IShuffle>();
+            _shuffler = Substitute.For<IShuffler>();
 
             _player1 = Make.Player.Name("player 1").Build();
             _player2 = Make.Player.Name("player 2").Build();
 
-            _shuffler.Shuffle(_players).Returns(new[] { _player1, _player2 });
+            _shuffler.Shuffle(_players).Returns(new List<IPlayer> { _player1, _player2 });
 
             _regionElements = new List<IRegion> { null };
             _regions.GetAll().Returns(_regionElements);
@@ -42,7 +42,7 @@ namespace Tests.FlamingStrike.GameEngine.Setup
         {
             var region1 = Substitute.For<IRegion>();
             var region2 = Substitute.For<IRegion>();
-            _shuffler.Shuffle(_regionElements).Returns(new[] { region1, region2 });
+            _shuffler.Shuffle(_regionElements).Returns(new List<IRegion> { region1, region2 });
             _startingInfantryCalculator.Get(2).Returns(1);
 
             Create();
@@ -56,7 +56,7 @@ namespace Tests.FlamingStrike.GameEngine.Setup
             var region1 = Substitute.For<IRegion>();
             var region2 = Substitute.For<IRegion>();
             var region3 = Substitute.For<IRegion>();
-            _shuffler.Shuffle(_regionElements).Returns(new[] { region1, region2, region3 });
+            _shuffler.Shuffle(_regionElements).Returns(new List<IRegion> { region1, region2, region3 });
             _startingInfantryCalculator.Get(2).Returns(3);
 
             Create();

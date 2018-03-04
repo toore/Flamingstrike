@@ -6,9 +6,9 @@ using FlamingStrike.GameEngine.Attacking;
 using FlamingStrike.GameEngine.Play;
 using FlamingStrike.GameEngine.Play.GameStates;
 using FlamingStrike.GameEngine.Setup;
-using FlamingStrike.GameEngine.Shuffling;
 using FluentAssertions;
 using NSubstitute;
+using Toore.Shuffling;
 using Xunit;
 
 namespace Tests.FlamingStrike.GameEngine.Specifications
@@ -170,11 +170,9 @@ namespace Tests.FlamingStrike.GameEngine.Specifications
                 .game_is_started()
                 .player_drafts_thirtyfive_armies_in_north_africa();
 
-            When.
-                player_attacks_brazil_from_north_africa_and_wins();
+            When.player_attacks_brazil_from_north_africa_and_wins();
 
-            Then.
-                player_1_is_the_winner();
+            Then.player_1_is_the_winner();
         }
 
         private void player_drafts_armies_in_north_africa()
@@ -224,7 +222,7 @@ namespace Tests.FlamingStrike.GameEngine.Specifications
             var attacker = new Attacker(battle);
             var playerEliminationRules = new PlayerEliminationRules();
             var gameStateFactory = new GameStateFactory(playerEliminationRules, armyDrafter, attacker, territoryOccupier, fortifier);
-            var fisherYatesShuffle = new FisherYatesShuffle(new RandomWrapper());
+            var fisherYatesShuffle = new FisherYatesShuffler(new RandomWrapper());
             var deckFactory = new DeckFactory(_regions, fisherYatesShuffle);
             var gameFactory = new GameFactory(gameStateFactory, armyDraftCalculator, deckFactory);
             _players = new List<IPlayer> { _player1, _player2 };
@@ -275,10 +273,9 @@ namespace Tests.FlamingStrike.GameEngine.Specifications
         private GameObserverSpec player_1_occupies_every_territory_except_brazil_and_venezuela_and_north_africa_with_one_army_each()
         {
             GetAllRegionsExcept(
-                    _regions.Brazil,
-                    _regions.Venezuela,
-                    _regions.NorthAfrica).
-                Apply(x => AddTerritoryToGame(x, _player1, 1));
+                _regions.Brazil,
+                _regions.Venezuela,
+                _regions.NorthAfrica).Apply(x => AddTerritoryToGame(x, _player1, 1));
 
             return this;
         }
@@ -293,8 +290,7 @@ namespace Tests.FlamingStrike.GameEngine.Specifications
         private GameObserverSpec player_1_occupies_every_territory_except_brazil_with_one_army_each()
         {
             GetAllRegionsExcept(
-                    _regions.Brazil).
-                Apply(x => AddTerritoryToGame(x, _player1, 1));
+                _regions.Brazil).Apply(x => AddTerritoryToGame(x, _player1, 1));
             return this;
         }
 

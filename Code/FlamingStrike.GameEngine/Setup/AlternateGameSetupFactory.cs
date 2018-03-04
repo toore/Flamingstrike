@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using FlamingStrike.GameEngine.Shuffling;
+using Toore.Shuffling;
 
 namespace FlamingStrike.GameEngine.Setup
 {
@@ -11,19 +11,19 @@ namespace FlamingStrike.GameEngine.Setup
     public class AlternateGameSetupFactory : IAlternateGameSetupFactory
     {
         private readonly IRegions _regions;
-        private readonly IShuffle _shuffle;
+        private readonly IShuffler _shuffler;
         private readonly IStartingInfantryCalculator _startingInfantryCalculator;
 
-        public AlternateGameSetupFactory(IRegions regions, IShuffle shuffle, IStartingInfantryCalculator startingInfantryCalculator)
+        public AlternateGameSetupFactory(IRegions regions, IShuffler shuffler, IStartingInfantryCalculator startingInfantryCalculator)
         {
             _regions = regions;
-            _shuffle = shuffle;
+            _shuffler = shuffler;
             _startingInfantryCalculator = startingInfantryCalculator;
         }
 
         public IAlternateGameSetup Create(IAlternateGameSetupObserver alternateGameSetupObserver, ICollection<IPlayer> players)
         {
-            return new AlternateGameSetup(alternateGameSetupObserver, _regions, players, _startingInfantryCalculator, _shuffle);
+            return new AlternateGameSetup(alternateGameSetupObserver, _regions, players, _startingInfantryCalculator, _shuffler);
         }
     }
 }

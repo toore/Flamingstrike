@@ -1,6 +1,6 @@
 using System;
 using System.Linq;
-using FlamingStrike.GameEngine.Shuffling;
+using Toore.Shuffling;
 
 namespace FlamingStrike.GameEngine.Play
 {
@@ -12,9 +12,9 @@ namespace FlamingStrike.GameEngine.Play
     public class DeckFactory : IDeckFactory
     {
         private readonly IRegions _regions;
-        private readonly IShuffle _shuffler;
+        private readonly IShuffler _shuffler;
 
-        public DeckFactory(IRegions regions, IShuffle shuffler)
+        public DeckFactory(IRegions regions, IShuffler shuffler)
         {
             _regions = regions;
             _shuffler = shuffler;

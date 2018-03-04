@@ -1,4 +1,4 @@
-﻿using FlamingStrike.GameEngine.Shuffling;
+﻿using Toore.Shuffling;
 
 namespace FlamingStrike.GameEngine.Attacking
 {

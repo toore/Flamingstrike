@@ -1,7 +1,7 @@
 ﻿using FlamingStrike.GameEngine.Attacking;
-using FlamingStrike.GameEngine.Shuffling;
 using FluentAssertions;
 using NSubstitute;
+using Toore.Shuffling;
 using Xunit;
 
 namespace Tests.FlamingStrike.GameEngine.Attacking

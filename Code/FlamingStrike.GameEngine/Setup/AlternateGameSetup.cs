@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using FlamingStrike.GameEngine.Shuffling;
+using Toore.Shuffling;
 
 namespace FlamingStrike.GameEngine.Setup
 {
@@ -30,18 +30,18 @@ namespace FlamingStrike.GameEngine.Setup
         private readonly IAlternateGameSetupObserver _alternateGameSetupObserver;
         private readonly IRegions _regions;
         private readonly IStartingInfantryCalculator _startingInfantryCalculator;
-        private readonly IShuffle _shuffle;
+        private readonly IShuffler _shuffler;
 
         public AlternateGameSetup(
             IAlternateGameSetupObserver alternateGameSetupObserver,
             IRegions regions,
             ICollection<IPlayer> players,
             IStartingInfantryCalculator startingInfantryCalculator,
-            IShuffle shuffle)
+            IShuffler shuffler)
         {
             _alternateGameSetupObserver = alternateGameSetupObserver;
             _regions = regions;
-            _shuffle = shuffle;
+            _shuffler = shuffler;
             _startingInfantryCalculator = startingInfantryCalculator;
 
             var playerSetupDatas = Shuffle(players);
@@ -55,7 +55,7 @@ namespace FlamingStrike.GameEngine.Setup
             var numberOfStartingInfantry = _startingInfantryCalculator.Get(players.Count);
 
             return players
-                .Shuffle(_shuffle)
+                .Shuffle(_shuffler)
                 .Select(player => new PlayerSetupData(player, numberOfStartingInfantry))
                 .ToList();
         }
@@ -65,7 +65,7 @@ namespace FlamingStrike.GameEngine.Setup
             var territories = new List<Territory>();
 
             var regions = _regions.GetAll()
-                .Shuffle(_shuffle)
+                .Shuffle(_shuffler)
                 .ToList();
 
             var updatedPlayerSetupDatas = playerSetupDatas.ToList();

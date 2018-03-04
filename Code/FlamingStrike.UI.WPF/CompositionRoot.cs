@@ -4,7 +4,6 @@ using FlamingStrike.GameEngine.Attacking;
 using FlamingStrike.GameEngine.Play;
 using FlamingStrike.GameEngine.Play.GameStates;
 using FlamingStrike.GameEngine.Setup;
-using FlamingStrike.GameEngine.Shuffling;
 using FlamingStrike.UI.WPF.RegionModels;
 using FlamingStrike.UI.WPF.Services;
 using FlamingStrike.UI.WPF.ViewModels;
@@ -12,6 +11,7 @@ using FlamingStrike.UI.WPF.ViewModels.AlternateSetup;
 using FlamingStrike.UI.WPF.ViewModels.Gameplay;
 using FlamingStrike.UI.WPF.ViewModels.Gameplay.Interaction;
 using FlamingStrike.UI.WPF.ViewModels.Preparation;
+using Toore.Shuffling;
 
 namespace FlamingStrike.UI.WPF
 {
@@ -59,7 +59,7 @@ namespace FlamingStrike.UI.WPF
                 playerStatusViewModelFactory);
 
             var randomWrapper = new RandomWrapper();
-            var shuffle = new FisherYatesShuffle(randomWrapper);
+            var shuffle = new FisherYatesShuffler(randomWrapper);
             var deckFactory = new DeckFactory(regions, shuffle);
             var battleCalculator = new ArmiesLostCalculator();
             var dice = new Die(randomWrapper);

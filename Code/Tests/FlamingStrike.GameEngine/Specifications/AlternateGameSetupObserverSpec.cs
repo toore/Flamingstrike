@@ -2,13 +2,12 @@
 using System.Linq;
 using FlamingStrike.GameEngine;
 using FlamingStrike.GameEngine.Setup;
-using FlamingStrike.GameEngine.Shuffling;
 using FluentAssertions;
 using NSubstitute;
 using Tests.FlamingStrike.GameEngine.Builders;
 using Tests.FlamingStrike.GameEngine.Setup;
+using Toore.Shuffling;
 using Xunit;
-using IPlayer = FlamingStrike.GameEngine.IPlayer;
 
 namespace Tests.FlamingStrike.GameEngine.Specifications
 {
@@ -17,7 +16,7 @@ namespace Tests.FlamingStrike.GameEngine.Specifications
         private IAlternateGameSetupObserverSpy _alternateGameSetupObserverSpy;
         private ICollection<IPlayer> _players;
         private AlternateGameSetupFactory _alternateGameSetupFactory;
-        private IShuffle _shuffle;
+        private IShuffler _shuffler;
         private IPlayer _player1;
         private IPlayer _player2;
         private IPlayer _player3;
@@ -92,27 +91,27 @@ namespace Tests.FlamingStrike.GameEngine.Specifications
         {
             var continents = new Continents();
             var shuffledRegions = new Regions(continents);
-            _shuffle = Substitute.For<IShuffle>();
+            _shuffler = Substitute.For<IShuffler>();
             var startingInfantryCalculator = new StartingInfantryCalculator();
             var regions = Substitute.For<IRegions>();
             regions.GetAll().Returns(new List<IRegion>());
-            _alternateGameSetupFactory = new AlternateGameSetupFactory(regions, _shuffle, startingInfantryCalculator);
+            _alternateGameSetupFactory = new AlternateGameSetupFactory(regions, _shuffler, startingInfantryCalculator);
 
             _player1 = Make.Player.Name("player 1").Build();
             _player2 = Make.Player.Name("player 2").Build();
             _player3 = Make.Player.Name("player 3").Build();
             _players = new List<IPlayer>();
 
-            _shuffle
+            _shuffler
                 .Shuffle(regions.GetAll())
-                .Returns(shuffledRegions.GetAll());
+                .Returns(shuffledRegions.GetAll().ToList());
 
             return this;
         }
 
         private void player_2_takes_turn_first_then_player_1_and_finally_player_3()
         {
-            _shuffle.Shuffle(_players).Returns(new[] { _player2, _player1, _player3 });
+            _shuffler.Shuffle(_players).Returns(new List<IPlayer> { _player2, _player1, _player3 });
         }
 
         private AlternateGameSetupObserverSpec game_setup_is_initiated()
