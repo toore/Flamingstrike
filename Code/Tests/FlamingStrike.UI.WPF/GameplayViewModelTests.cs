@@ -20,12 +20,10 @@ namespace Tests.FlamingStrike.UI.WPF
     public class GameplayViewModelTests
     {
         private readonly GameplayViewModel _sut;
-        private readonly IInteractionStateFactory _interactionStateFactory;
         private readonly IWorldMapViewModelFactory _worldMapViewModelFactory;
         private readonly IPlayerUiDataRepository _playerUiDataRepository;
         private readonly IDialogManager _dialogManager;
         private readonly IEventAggregator _eventAggregator;
-        private readonly IPlayerStatusViewModelFactory _playerStatusViewModelFactory;
         private readonly WorldMapViewModel _worldMapViewModel = new WorldMapViewModel();
 
         private readonly Color _currentPlayerColor;
@@ -34,22 +32,22 @@ namespace Tests.FlamingStrike.UI.WPF
 
         public GameplayViewModelTests()
         {
-            _interactionStateFactory = Substitute.For<IInteractionStateFactory>();
+            var interactionStateFactory = new InteractionStateFactory();
             _worldMapViewModelFactory = Substitute.For<IWorldMapViewModelFactory>();
             _playerUiDataRepository = Substitute.For<IPlayerUiDataRepository>();
             _dialogManager = Substitute.For<IDialogManager>();
             _eventAggregator = Substitute.For<IEventAggregator>();
-            _playerStatusViewModelFactory = Substitute.For<IPlayerStatusViewModelFactory>();
+            var playerStatusViewModelFactory = Substitute.For<IPlayerStatusViewModelFactory>();
 
             _worldMapViewModelFactory.Create(null).ReturnsForAnyArgs(_worldMapViewModel);
 
             _sut = new GameplayViewModel(
-                _interactionStateFactory,
+                interactionStateFactory,
                 _worldMapViewModelFactory,
                 _playerUiDataRepository,
                 _dialogManager,
                 _eventAggregator,
-                _playerStatusViewModelFactory);
+                playerStatusViewModelFactory);
 
             var currentPlayer = Make.Player.Name("current player").Build();
             _currentPlayerColor = Color.FromArgb(1, 2, 3, 4);
@@ -60,9 +58,9 @@ namespace Tests.FlamingStrike.UI.WPF
             var firstPlayerStatusViewModel = Make.PlayerStatusViewModel.Build();
             var secondPlayerStatusViewModel = Make.PlayerStatusViewModel.Build();
             var thirdPlayerStatusViewModel = Make.PlayerStatusViewModel.Build();
-            _playerStatusViewModelFactory.Create(firstPlayerGameData).Returns(firstPlayerStatusViewModel);
-            _playerStatusViewModelFactory.Create(secondPlayerGameData).Returns(secondPlayerStatusViewModel);
-            _playerStatusViewModelFactory.Create(thirdPlayerGameData).Returns(thirdPlayerStatusViewModel);
+            playerStatusViewModelFactory.Create(firstPlayerGameData).Returns(firstPlayerStatusViewModel);
+            playerStatusViewModelFactory.Create(secondPlayerGameData).Returns(secondPlayerStatusViewModel);
+            playerStatusViewModelFactory.Create(thirdPlayerGameData).Returns(thirdPlayerStatusViewModel);
             var playerGameDatas = new IPlayerGameData[]
                 {
                     firstPlayerGameData,

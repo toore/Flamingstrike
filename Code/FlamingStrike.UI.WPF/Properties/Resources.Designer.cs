@@ -9,6 +9,9 @@
 //------------------------------------------------------------------------------
 
 namespace FlamingStrike.UI.WPF.Properties {
+    using System;
+    
+    
     /// <summary>
     ///   A strongly-typed resource class, for looking up localized strings, etc.
     /// </summary>
@@ -16,7 +19,7 @@ namespace FlamingStrike.UI.WPF.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class Resources {
@@ -229,7 +232,7 @@ namespace FlamingStrike.UI.WPF.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to End Game.
+        ///   Looks up a localized string similar to End Game....
         /// </summary>
         public static string END_GAME {
             get {
@@ -531,6 +534,15 @@ namespace FlamingStrike.UI.WPF.Properties {
         public static string SEND_ARMIES_TO_OCCUPY {
             get {
                 return ResourceManager.GetString("SEND_ARMIES_TO_OCCUPY", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show Cards....
+        /// </summary>
+        public static string SHOW_CARDS {
+            get {
+                return ResourceManager.GetString("SHOW_CARDS", resourceCulture);
             }
         }
         

@@ -102,6 +102,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="ViewModels\Gameplay\Interaction\EndTurnInteractionState.cs" />
     <Compile Include="ViewModels\Gameplay\Interaction\InteractionStateBase.cs" />
     <Compile Include="ViewModels\IGameboardViewModel.cs" />
     <Compile Include="Views\Gameplay\NumberOfCardsToCanvasDrawingConverter.cs" />

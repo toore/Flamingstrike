@@ -1,5 +1,6 @@
 ﻿using FlamingStrike.GameEngine;
 using FlamingStrike.GameEngine.Play;
+using FlamingStrike.UI.WPF.Properties;
 
 namespace FlamingStrike.UI.WPF.ViewModels.Gameplay.Interaction
 {
@@ -8,7 +9,7 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay.Interaction
         void DeselectRegion();
     }
 
-    public class FortifyInteractionState : IInteractionState
+    public class FortifyInteractionState : InteractionStateBase
     {
         private readonly IAttackPhase _attackPhase;
         private readonly IRegion _selectedRegion;
@@ -21,7 +22,11 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay.Interaction
             _fortifyInteractionStateObserver = fortifyInteractionStateObserver;
         }
 
-        public void OnRegionClicked(IRegion region)
+        public override string Title => Resources.FORTIFY_SELECT_TERRITORY_TO_MOVE_TO;
+
+        public override bool CanEndTurn => true;
+
+        public override void OnRegionClicked(IRegion region)
         {
             if (CanDeselect(region))
             {
@@ -31,6 +36,11 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay.Interaction
             {
                 Fortify(region);
             }
+        }
+
+        public override void EndTurn()
+        {
+            _attackPhase.EndTurn();
         }
 
         private bool CanDeselect(IRegion region)
