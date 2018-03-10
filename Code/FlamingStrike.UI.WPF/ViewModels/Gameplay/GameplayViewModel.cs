@@ -43,7 +43,10 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay
         private IAttackPhase _attackPhase;
         private Action _endTurnAction;
         private IList<PlayerStatusViewModel> _playerStatuses;
+        private int _numberOfArmies;
+        private int _maximumUserSelectableArmies;
         private Maybe<IRegion> _previouslySelectedAttackingRegion;
+        private bool _canUserSelectNumberOfArmies;
 
         public GameplayViewModel(
             IInteractionStateFactory interactionStateFactory,
@@ -107,6 +110,23 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay
             private set { NotifyOfPropertyChange(value, () => PlayerStatuses, x => _playerStatuses = x); }
         }
 
+        public int NumberOfUserSelectedArmies
+        {
+            get => _numberOfArmies;
+            set => _numberOfArmies = value;
+        }
+
+        public int MaximumUserSelectableArmies
+        {
+            get => _maximumUserSelectableArmies;
+            private set => NotifyOfPropertyChange(value, () => MaximumUserSelectableArmies, x => _maximumUserSelectableArmies = x);
+        }
+
+        public bool CanUserSelectNumberOfArmies
+        {
+            get => _canUserSelectNumberOfArmies;
+            private set => NotifyOfPropertyChange(value, () => CanUserSelectNumberOfArmies, x => _canUserSelectNumberOfArmies = x);
+        }
         public void DraftArmies(IGameStatus gameStatus, IDraftArmiesPhase draftArmiesPhase)
         {
             _previouslySelectedAttackingRegion = Maybe<IRegion>.Nothing;
@@ -164,6 +184,7 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay
             ShowAttackPhaseView(_gameStatus, _attackPhase);
         }
 
+        public void ShowCards() {}
         public void EnterFortifyMode()
         {
             ShowFortifyView(_gameStatus, _attackPhase);

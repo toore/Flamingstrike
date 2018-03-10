@@ -67,6 +67,15 @@ namespace FlamingStrike.UI.WPF.Views.Gameplay
                 new PlayerStatusViewModel("Player 6", Colors.RosyBrown, 5),
             };
 
+        public int NumberOfUserSelectedArmies
+        {
+            get => 10;
+            set {}
+        }
+        public int MaximumUserSelectableArmies => 9;
+
+        public bool CanUserSelectNumberOfArmies => true;
+
         public void EnterAttackMode()
         {
             throw new NotImplementedException();

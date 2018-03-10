@@ -8,6 +8,7 @@
              xmlns:Properties="clr-namespace:FlamingStrike.UI.WPF.Properties"
              xmlns:Gameplay="clr-namespace:FlamingStrike.UI.WPF.Views.Gameplay"
              xmlns:Gameplay1="clr-namespace:FlamingStrike.UI.WPF.ViewModels.Gameplay"
+             xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
              mc:Ignorable="d"
              d:DesignHeight="768" d:DesignWidth="1366"
              d:DataContext="{d:DesignInstance d:Type=Gameplay:GameplayViewModelDesignerData, IsDesignTimeCreatable=True}">
@@ -24,6 +25,7 @@
                 <Setter Property="Control.Foreground" Value="White" />
             </Style>
             <Gameplay:NumberOfCardsToCanvasDrawingConverter x:Key="CardIconConverter" />
+            <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         </ResourceDictionary>
     </UserControl.Resources>
 
@@ -62,11 +64,23 @@
                     <Setter Property="FontSize" Value="22" />
                     <Setter Property="Foreground" Value="White" />
                 </Style>
+                <Style TargetType="{x:Type xctk:IntegerUpDown}">
+                    <Setter Property="FontSize" Value="22" />
+                    <Setter Property="Foreground" Value="White" />
+                    <Setter Property="Background" Value="Black" />
+                </Style>
             </StackPanel.Resources>
-            <Label HorizontalAlignment="Stretch"
-                   HorizontalContentAlignment="Center"
-                   Content="{Binding InformationText}"
-                   Background="Black" />
+            <StackPanel Orientation="Horizontal"
+                        HorizontalAlignment="Center">
+                <xctk:IntegerUpDown Visibility="{Binding CanUserSelectNumberOfArmies, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                    Minimum="1"
+                                    Maximum="{Binding MaximumUserSelectableArmies}"
+                                    Value="{Binding NumberOfUserSelectedArmies}"
+                                    ClipValueToMinMax="True"
+                                    HorizontalAlignment="Center"
+                                    Margin="0 0 10 0" />
+                <Label Content="{Binding InformationText}" />
+            </StackPanel>
         </StackPanel>
 
         <ContentControl Focusable="False"
@@ -148,6 +162,14 @@
                         <Button Content="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type RadioButton}}, Path=Content}" />
                     </ControlTemplate>
                 </StackPanel.Resources>
+
+                <Button Content="{x:Static Properties:Resources.SHOW_CARDS}">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="Click">
+                            <Micro:ActionMessage MethodName="ShowCards" />
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </Button>
 
                 <RadioButton Content="{x:Static Properties:Resources.FORTIFY}"
                              GroupName="AttackMode" Template="{StaticResource AttackModeRadioButtonTemplate}">

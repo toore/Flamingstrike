@@ -177,7 +177,7 @@
     <value>Egypt</value>
   </data>
   <data name="END_GAME" xml:space="preserve">
-    <value>End Game</value>
+    <value>End Game...</value>
   </data>
   <data name="END_TURN" xml:space="preserve">
     <value>End Turn</value>
@@ -279,6 +279,9 @@
   </data>
   <data name="SEND_ARMIES_TO_OCCUPY" xml:space="preserve">
     <value>Send Armies To Occupy</value>
+  </data>
+  <data name="SHOW_CARDS" xml:space="preserve">
+    <value>Show Cards...</value>
   </data>
   <data name="SIAM" xml:space="preserve">
     <value>Siam</value>
