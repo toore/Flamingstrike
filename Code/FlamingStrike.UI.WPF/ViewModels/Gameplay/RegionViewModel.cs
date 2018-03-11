@@ -28,26 +28,26 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay
 
         public Color StrokeColor
         {
-            get { return _strokeColor; }
-            set { NotifyOfPropertyChange(value, () => StrokeColor, x => _strokeColor = x); }
+            get => _strokeColor;
+            set => NotifyOfPropertyChange(value, () => StrokeColor, x => _strokeColor = x);
         }
 
         public Color FillColor
         {
-            get { return _fillColor; }
-            set { NotifyOfPropertyChange(value, () => FillColor, x => _fillColor = x); }
+            get => _fillColor;
+            set => NotifyOfPropertyChange(value, () => FillColor, x => _fillColor = x);
         }
 
         public bool IsEnabled
         {
-            get { return _isEnabled; }
-            set { NotifyOfPropertyChange(value, () => IsEnabled, x => _isEnabled = x); }
+            get => _isEnabled;
+            set => NotifyOfPropertyChange(value, () => IsEnabled, x => _isEnabled = x);
         }
 
         public bool IsSelected
         {
-            get { return _isSelected; }
-            set { NotifyOfPropertyChange(value, () => IsSelected, x => _isSelected = x); }
+            get => _isSelected;
+            set => NotifyOfPropertyChange(value, () => IsSelected, x => _isSelected = x);
         }
 
         public void OnClick()

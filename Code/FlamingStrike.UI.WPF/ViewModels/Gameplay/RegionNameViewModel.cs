@@ -20,8 +20,8 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay
         private int _armies;
         public int Armies
         {
-            get { return _armies; }
-            set { NotifyOfPropertyChange(value, () => Armies, x => _armies = x); }
+            get => _armies;
+            set => NotifyOfPropertyChange(value, () => Armies, x => _armies = x);
         }
 
         public void Accept(IWorldMapItemViewModelVisitor worldMapItemViewModelVisitor)
