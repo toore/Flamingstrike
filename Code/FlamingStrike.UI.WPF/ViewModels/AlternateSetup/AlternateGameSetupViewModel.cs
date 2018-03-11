@@ -60,6 +60,12 @@ namespace FlamingStrike.UI.WPF.ViewModels.AlternateSetup
             set { this.NotifyOfPropertyChange(value, () => PlayerColor, x => _playerColor = x); }
         }
 
+        public bool CanUserSelectNumberOfArmies => false;
+
+        public bool CanShowCards => false;
+
+        public void ShowCards() {}
+
         public void SelectRegion(IPlaceArmyRegionSelector placeArmyRegionSelector)
         {
             UpdateView(

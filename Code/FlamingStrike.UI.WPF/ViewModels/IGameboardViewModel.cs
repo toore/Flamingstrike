@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Windows.Media;
+﻿using System.Windows.Media;
 using FlamingStrike.UI.WPF.ViewModels.Gameplay;
 
 namespace FlamingStrike.UI.WPF.ViewModels
@@ -10,6 +9,8 @@ namespace FlamingStrike.UI.WPF.ViewModels
         string InformationText { get; }
         string PlayerName { get; }
         Color PlayerColor { get; }
+        bool CanUserSelectNumberOfArmies { get; }
+        bool CanShowCards { get; }
         bool CanEnterFortifyMode { get; }
         bool CanEnterAttackMode { get; }
         bool CanEndTurn { get; }

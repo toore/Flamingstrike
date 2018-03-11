@@ -16,7 +16,6 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay
         IList<PlayerStatusViewModel> PlayerStatuses { get; }
         int NumberOfUserSelectedArmies { get; set; }
         int MaximumUserSelectableArmies { get; }
-        bool CanUserSelectNumberOfArmies { get; }
     }
 
     public class GameplayViewModel :
@@ -127,6 +126,8 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay
             get => _canUserSelectNumberOfArmies;
             private set => NotifyOfPropertyChange(value, () => CanUserSelectNumberOfArmies, x => _canUserSelectNumberOfArmies = x);
         }
+
+        public bool CanShowCards => true;
 
         public void DraftArmies(IGameStatus gameStatus, IDraftArmiesPhase draftArmiesPhase)
         {

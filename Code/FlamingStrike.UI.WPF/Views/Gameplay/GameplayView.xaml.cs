@@ -49,6 +49,7 @@ namespace FlamingStrike.UI.WPF.Views.Gameplay
 
         public string PlayerName => "Player name is shown here";
 
+        public bool CanShowCards { get; }
         public bool CanEnterFortifyMode => false;
 
         public bool CanEnterAttackMode => true;
