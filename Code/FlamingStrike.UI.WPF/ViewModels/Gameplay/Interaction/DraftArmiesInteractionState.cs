@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using FlamingStrike.GameEngine;
 using FlamingStrike.GameEngine.Play;
 using FlamingStrike.UI.WPF.Properties;
@@ -14,6 +15,8 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay.Interaction
         }
 
         public override string Title => string.Format(Resources.DRAFT_ARMIES, _draftArmiesPhase.NumberOfArmiesToDraft);
+
+        public override IReadOnlyList<IRegion> EnabledRegions => _draftArmiesPhase.RegionsAllowedToDraftArmies;
 
         public override void OnRegionClicked(IRegion region)
         {

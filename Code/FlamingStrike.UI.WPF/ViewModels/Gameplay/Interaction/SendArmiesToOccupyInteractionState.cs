@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using FlamingStrike.GameEngine;
 using FlamingStrike.GameEngine.Play;
 using FlamingStrike.UI.WPF.Properties;
@@ -14,6 +15,10 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay.Interaction
         }
 
         public override string Title => Resources.SEND_ARMIES_TO_OCCUPY;
+
+        public override IReadOnlyList<IRegion> EnabledRegions => new[] { _sendArmiesToOccupyPhase.OccupiedRegion };
+
+        public override Maybe<IRegion> SelectedRegion => Maybe<IRegion>.Create(_sendArmiesToOccupyPhase.AttackingRegion);
 
         public override void OnRegionClicked(IRegion region)
         {

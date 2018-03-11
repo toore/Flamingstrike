@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using FlamingStrike.GameEngine;
 using FlamingStrike.GameEngine.Play;
 using FlamingStrike.UI.WPF.Properties;
@@ -20,11 +22,19 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay.Interaction
             _attackPhase = attackPhase;
             _selectedRegion = selectedRegion;
             _attackInteractionStateObserver = attackInteractionStateObserver;
+
+            var regionsThatCanBeInteractedWith = attackPhase.GetRegionsThatCanBeAttacked(selectedRegion)
+                .Concat(new[] { selectedRegion }).ToList();
+
+            EnabledRegions = regionsThatCanBeInteractedWith;
         }
 
         public override string Title => Resources.ATTACK_SELECT_TERRITORY_TO_ATTACK;
 
         public override bool CanEndTurn => true;
+
+        public override IReadOnlyList<IRegion> EnabledRegions { get; }
+        public override Maybe<IRegion> SelectedRegion => Maybe<IRegion>.Create(_selectedRegion);
 
         public override void OnRegionClicked(IRegion region)
         {

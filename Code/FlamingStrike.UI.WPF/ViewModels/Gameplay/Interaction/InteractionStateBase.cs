@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using FlamingStrike.GameEngine;
 
 namespace FlamingStrike.UI.WPF.ViewModels.Gameplay.Interaction
@@ -12,6 +13,10 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay.Interaction
         public virtual bool CanEnterAttackMode => false;
 
         public virtual bool CanEndTurn => false;
+
+        public virtual IReadOnlyList<IRegion> EnabledRegions => new List<IRegion>();
+
+        public virtual Maybe<IRegion> SelectedRegion => Maybe<IRegion>.Nothing;
 
         public virtual void OnRegionClicked(IRegion region)
         {

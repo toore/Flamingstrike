@@ -1,4 +1,5 @@
-﻿using FlamingStrike.GameEngine;
+﻿using System.Collections.Generic;
+using FlamingStrike.GameEngine;
 using FlamingStrike.GameEngine.Play;
 using FlamingStrike.UI.WPF.Properties;
 
@@ -25,6 +26,8 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay.Interaction
         public override bool CanEnterAttackMode => true;
 
         public override bool CanEndTurn => true;
+
+        public override IReadOnlyList<IRegion> EnabledRegions => _attackPhase.RegionsThatCanBeSourceForAttackOrFortification;
 
         public override void OnRegionClicked(IRegion region)
         {

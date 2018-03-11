@@ -225,76 +225,49 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay
         {
             _interactionState = _interactionStateFactory.CreateDraftArmiesInteractionState(draftArmiesPhase);
 
-            UpdateView(
-                gameStatus.Territories,
-                draftArmiesPhase.RegionsAllowedToDraftArmies,
-                Maybe<IRegion>.Nothing);
+            UpdateView(gameStatus.Territories);
         }
 
         private void ShowAttackPhaseView(IGameStatus gameStatus, IAttackPhase attackPhase)
         {
             _interactionState = _interactionStateFactory.CreateSelectAttackingRegionInteractionState(attackPhase, this);
 
-            UpdateView(
-                gameStatus.Territories,
-                attackPhase.RegionsThatCanBeSourceForAttackOrFortification,
-                Maybe<IRegion>.Nothing);
+            UpdateView(gameStatus.Territories);
         }
 
         private void ShowAttackPhaseView(IGameStatus gameStatus, IAttackPhase attackPhase, IRegion selectedRegion)
         {
             _interactionState = _interactionStateFactory.CreateAttackInteractionState(attackPhase, selectedRegion, this);
 
-            var regionsThatCanBeInteractedWith = attackPhase.GetRegionsThatCanBeAttacked(selectedRegion)
-                .Concat(new[] { selectedRegion }).ToList();
-
-            UpdateView(
-                gameStatus.Territories,
-                regionsThatCanBeInteractedWith,
-                Maybe<IRegion>.Create(selectedRegion));
+            UpdateView(gameStatus.Territories);
         }
 
         private void ShowFortifyView(IGameStatus gameStatus, IAttackPhase attackPhase)
         {
             _interactionState = _interactionStateFactory.CreateSelectSourceRegionForFortificationInteractionState(attackPhase, this);
 
-            UpdateView(
-                gameStatus.Territories,
-                attackPhase.RegionsThatCanBeSourceForAttackOrFortification,
-                Maybe<IRegion>.Nothing);
+            UpdateView(gameStatus.Territories);
         }
 
         private void ShowFortifyView(IGameStatus gameStatus, IAttackPhase attackPhase, IRegion selectedRegion)
         {
             _interactionState = _interactionStateFactory.CreateFortifyInteractionState(attackPhase, selectedRegion, this);
 
-            var regionsThatCanBeInteractedWith = attackPhase.GetRegionsThatCanBeFortified(selectedRegion)
-                .Concat(new[] { selectedRegion }).ToList();
-
-            UpdateView(
-                gameStatus.Territories,
-                regionsThatCanBeInteractedWith,
-                Maybe<IRegion>.Create(selectedRegion));
+            UpdateView(gameStatus.Territories);
         }
 
         private void ShowSendArmiesToOccupyView(IGameStatus gameStatus, ISendArmiesToOccupyPhase sendArmiesToOccupyPhase)
         {
             _interactionState = _interactionStateFactory.CreateSendArmiesToOccupyInteractionState(sendArmiesToOccupyPhase);
 
-            UpdateView(
-                gameStatus.Territories,
-                new[] { sendArmiesToOccupyPhase.OccupiedRegion },
-                Maybe<IRegion>.Create(sendArmiesToOccupyPhase.AttackingRegion));
+            UpdateView(gameStatus.Territories);
         }
 
         private void ShowEndTurnView(IGameStatus gameStatus, IEndTurnPhase endTurnPhase)
         {
             _interactionState = _interactionStateFactory.CreateEndTurnInteractionState(endTurnPhase);
 
-            UpdateView(
-                gameStatus.Territories,
-                new IRegion[] {},
-                Maybe<IRegion>.Nothing);
+            UpdateView(gameStatus.Territories);
         }
 
         private void ShowGameOverMessage(IPlayer winner)
@@ -314,14 +287,18 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay
                 .ToList();
         }
 
-        private void UpdateView(IReadOnlyList<ITerritory> territories, IReadOnlyList<IRegion> enabledRegions, Maybe<IRegion> selectedRegion)
+        private void UpdateView(IReadOnlyList<ITerritory> territories)
         {
             InformationText = _interactionState.Title;
             CanEnterFortifyMode = _interactionState.CanEnterFortifyMode;
             CanEnterAttackMode = _interactionState.CanEnterAttackMode;
             CanEndTurn = _interactionState.CanEndTurn;
 
-            _worldMapViewModelFactory.Update(WorldMapViewModel, territories, enabledRegions, selectedRegion);
+            _worldMapViewModelFactory.Update(
+                WorldMapViewModel,
+                territories,
+                _interactionState.EnabledRegions,
+                _interactionState.SelectedRegion);
         }
     }
 }
