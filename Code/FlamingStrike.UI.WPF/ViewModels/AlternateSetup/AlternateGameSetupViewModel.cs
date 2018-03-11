@@ -44,20 +44,20 @@ namespace FlamingStrike.UI.WPF.ViewModels.AlternateSetup
 
         public string InformationText
         {
-            get { return _informationText; }
-            private set { this.NotifyOfPropertyChange(value, () => InformationText, x => _informationText = x); }
+            get => _informationText;
+            private set => this.NotifyOfPropertyChange(value, () => InformationText, x => _informationText = x);
         }
 
         public string PlayerName
         {
-            get { return _playerName; }
-            private set { this.NotifyOfPropertyChange(value, () => PlayerName, x => _playerName = x); }
+            get => _playerName;
+            private set => this.NotifyOfPropertyChange(value, () => PlayerName, x => _playerName = x);
         }
 
         public Color PlayerColor
         {
-            get { return _playerColor; }
-            set { this.NotifyOfPropertyChange(value, () => PlayerColor, x => _playerColor = x); }
+            get => _playerColor;
+            set => this.NotifyOfPropertyChange(value, () => PlayerColor, x => _playerColor = x);
         }
 
         public bool CanUserSelectNumberOfArmies => false;

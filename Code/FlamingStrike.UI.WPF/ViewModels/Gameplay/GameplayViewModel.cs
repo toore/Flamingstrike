@@ -134,7 +134,7 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay
             _previouslySelectedAttackingRegion = Maybe<IRegion>.Nothing;
             UpdatePlayersInformation(gameStatus);
 
-            ShowDraftArmiesView(gameStatus, draftArmiesPhase);
+            ShowDraftArmiesView(draftArmiesPhase, gameStatus.Territories);
         }
 
         public void Attack(IGameStatus gameStatus, IAttackPhase attackPhase)
@@ -145,22 +145,22 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay
             UpdatePlayersInformation(gameStatus);
 
             _previouslySelectedAttackingRegion.End(
-                selectedRegion => ShowAttackPhaseView(gameStatus, attackPhase, selectedRegion),
-                () => ShowAttackPhaseView(gameStatus, attackPhase));
+                selectedRegion => ShowAttackPhaseView(attackPhase, selectedRegion, gameStatus.Territories),
+                () => ShowAttackPhaseView(attackPhase, gameStatus.Territories));
         }
 
         public void SendArmiesToOccupy(IGameStatus gameStatus, ISendArmiesToOccupyPhase sendArmiesToOccupyPhase)
         {
             UpdatePlayersInformation(gameStatus);
 
-            ShowSendArmiesToOccupyView(gameStatus, sendArmiesToOccupyPhase);
+            ShowSendArmiesToOccupyView(sendArmiesToOccupyPhase, gameStatus.Territories);
         }
 
         public void EndTurn(IGameStatus gameStatus, IEndTurnPhase endTurnPhase)
         {
             UpdatePlayersInformation(gameStatus);
 
-            ShowEndTurnView(gameStatus, endTurnPhase);
+            ShowEndTurnView(endTurnPhase, gameStatus.Territories);
         }
 
         public void GameOver(IGameOverState gameOverState)
@@ -170,36 +170,36 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay
 
         public void EnterAttackMode()
         {
-            ShowAttackPhaseView(_gameStatus, _attackPhase);
+            ShowAttackPhaseView(_attackPhase, _gameStatus.Territories);
         }
 
         void ISelectAttackingRegionInteractionStateObserver.Select(IRegion selectedRegion)
         {
             _previouslySelectedAttackingRegion = Maybe<IRegion>.Create(selectedRegion);
 
-            ShowAttackPhaseView(_gameStatus, _attackPhase, selectedRegion);
+            ShowAttackPhaseView(_attackPhase, selectedRegion, _gameStatus.Territories);
         }
 
         void IAttackInteractionStateObserver.DeselectRegion()
         {
-            ShowAttackPhaseView(_gameStatus, _attackPhase);
+            ShowAttackPhaseView(_attackPhase, _gameStatus.Territories);
         }
 
         public void ShowCards() {}
 
         public void EnterFortifyMode()
         {
-            ShowFortifyView(_gameStatus, _attackPhase);
+            ShowFortifyView(_attackPhase, _gameStatus.Territories);
         }
 
         void ISelectSourceRegionForFortificationInteractionStateObserver.Select(IRegion selectedRegion)
         {
-            ShowFortifyView(_gameStatus, _attackPhase, selectedRegion);
+            ShowFortifyView(_attackPhase, selectedRegion, _gameStatus.Territories);
         }
 
         void IFortifyInteractionStateObserver.DeselectRegion()
         {
-            ShowFortifyView(_gameStatus, _attackPhase);
+            ShowFortifyView(_attackPhase, _gameStatus.Territories);
         }
 
         public void EndTurn()
@@ -222,53 +222,53 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay
             _interactionState.OnRegionClicked(region);
         }
 
-        private void ShowDraftArmiesView(IGameStatus gameStatus, IDraftArmiesPhase draftArmiesPhase)
+        private void ShowDraftArmiesView(IDraftArmiesPhase draftArmiesPhase, IReadOnlyList<ITerritory> territories)
         {
             _interactionState = _interactionStateFactory.CreateDraftArmiesInteractionState(draftArmiesPhase);
 
-            UpdateView(gameStatus.Territories);
+            UpdateView(territories);
         }
 
-        private void ShowAttackPhaseView(IGameStatus gameStatus, IAttackPhase attackPhase)
+        private void ShowAttackPhaseView(IAttackPhase attackPhase, IReadOnlyList<ITerritory> territories)
         {
             _interactionState = _interactionStateFactory.CreateSelectAttackingRegionInteractionState(attackPhase, this);
 
-            UpdateView(gameStatus.Territories);
+            UpdateView(territories);
         }
 
-        private void ShowAttackPhaseView(IGameStatus gameStatus, IAttackPhase attackPhase, IRegion selectedRegion)
+        private void ShowAttackPhaseView(IAttackPhase attackPhase, IRegion selectedRegion, IReadOnlyList<ITerritory> territories)
         {
             _interactionState = _interactionStateFactory.CreateAttackInteractionState(attackPhase, selectedRegion, this);
 
-            UpdateView(gameStatus.Territories);
+            UpdateView(territories);
         }
 
-        private void ShowFortifyView(IGameStatus gameStatus, IAttackPhase attackPhase)
+        private void ShowFortifyView(IAttackPhase attackPhase, IReadOnlyList<ITerritory> territories)
         {
             _interactionState = _interactionStateFactory.CreateSelectSourceRegionForFortificationInteractionState(attackPhase, this);
 
-            UpdateView(gameStatus.Territories);
+            UpdateView(territories);
         }
 
-        private void ShowFortifyView(IGameStatus gameStatus, IAttackPhase attackPhase, IRegion selectedRegion)
+        private void ShowFortifyView(IAttackPhase attackPhase, IRegion selectedRegion, IReadOnlyList<ITerritory> territories)
         {
             _interactionState = _interactionStateFactory.CreateFortifyInteractionState(attackPhase, selectedRegion, this);
 
-            UpdateView(gameStatus.Territories);
+            UpdateView(territories);
         }
 
-        private void ShowSendArmiesToOccupyView(IGameStatus gameStatus, ISendArmiesToOccupyPhase sendArmiesToOccupyPhase)
+        private void ShowSendArmiesToOccupyView(ISendArmiesToOccupyPhase sendArmiesToOccupyPhase, IReadOnlyList<ITerritory> territories)
         {
             _interactionState = _interactionStateFactory.CreateSendArmiesToOccupyInteractionState(sendArmiesToOccupyPhase);
 
-            UpdateView(gameStatus.Territories);
+            UpdateView(territories);
         }
 
-        private void ShowEndTurnView(IGameStatus gameStatus, IEndTurnPhase endTurnPhase)
+        private void ShowEndTurnView(IEndTurnPhase endTurnPhase, IReadOnlyList<ITerritory> territories)
         {
             _interactionState = _interactionStateFactory.CreateEndTurnInteractionState(endTurnPhase);
 
-            UpdateView(gameStatus.Territories);
+            UpdateView(territories);
         }
 
         private void ShowGameOverMessage(IPlayer winner)
