@@ -39,7 +39,7 @@ namespace FlamingStrike.UI.WPF.Views.Gameplay
                 .Select(region => new Territory(region, playersBuffer.Next(), random.Next(99) + 1))
                 .ToList();
 
-            WorldMapViewModel = worldMapViewModelFactory.Create(x => { });
+            WorldMapViewModel = worldMapViewModelFactory.Create(x => {});
             worldMapViewModelFactory.Update(WorldMapViewModel, territories, Enumerable.Empty<IRegion>().ToList(), Maybe<IRegion>.Create(regions.Iceland));
         }
 
@@ -73,7 +73,7 @@ namespace FlamingStrike.UI.WPF.Views.Gameplay
             get => 10;
             set {}
         }
-        public int MaximumUserSelectableArmies => 9;
+        public int MaxNumberOfUserSelectableArmies => 9;
 
         public bool CanUserSelectNumberOfArmies => true;
 

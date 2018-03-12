@@ -18,6 +18,12 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay.Interaction
 
         public virtual Maybe<IRegion> SelectedRegion => Maybe<IRegion>.Nothing;
 
+        public virtual bool CanUserSelectNumberOfArmies => false;
+
+        public virtual int DefaultNumberOfUserSelectedArmies => 1;
+
+        public virtual int MaxNumberOfUserSelectableArmies => 1;
+
         public virtual void OnRegionClicked(IRegion region)
         {
             throw new InvalidOperationException();

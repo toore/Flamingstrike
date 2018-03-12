@@ -18,6 +18,8 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay.Interaction
 
         public override IReadOnlyList<IRegion> EnabledRegions => _draftArmiesPhase.RegionsAllowedToDraftArmies;
 
+        public override bool CanUserSelectNumberOfArmies => true;
+
         public override void OnRegionClicked(IRegion region)
         {
             const int numberOfArmies = 1;

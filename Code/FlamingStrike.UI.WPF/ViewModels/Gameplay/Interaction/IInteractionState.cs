@@ -11,6 +11,9 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay.Interaction
         bool CanEndTurn { get; }
         IReadOnlyList<IRegion> EnabledRegions { get; }
         Maybe<IRegion> SelectedRegion { get; }
+        bool CanUserSelectNumberOfArmies { get; }
+        int DefaultNumberOfUserSelectedArmies { get; }
+        int MaxNumberOfUserSelectableArmies { get; }
         void OnRegionClicked(IRegion region);
         void EndTurn();
     }

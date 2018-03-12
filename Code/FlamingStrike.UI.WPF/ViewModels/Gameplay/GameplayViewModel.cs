@@ -15,7 +15,7 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay
     {
         IList<PlayerStatusViewModel> PlayerStatuses { get; }
         int NumberOfUserSelectedArmies { get; set; }
-        int MaximumUserSelectableArmies { get; }
+        int MaxNumberOfUserSelectableArmies { get; }
     }
 
     public class GameplayViewModel :
@@ -43,7 +43,7 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay
         private IAttackPhase _attackPhase;
         private IList<PlayerStatusViewModel> _playerStatuses;
         private int _numberOfArmies;
-        private int _maximumUserSelectableArmies;
+        private int _maxNumberOfUserSelectableArmies;
         private Maybe<IRegion> _previouslySelectedAttackingRegion;
         private bool _canUserSelectNumberOfArmies;
 
@@ -115,10 +115,10 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay
             set => _numberOfArmies = value;
         }
 
-        public int MaximumUserSelectableArmies
+        public int MaxNumberOfUserSelectableArmies
         {
-            get => _maximumUserSelectableArmies;
-            private set => NotifyOfPropertyChange(value, () => MaximumUserSelectableArmies, x => _maximumUserSelectableArmies = x);
+            get => _maxNumberOfUserSelectableArmies;
+            private set => NotifyOfPropertyChange(value, () => MaxNumberOfUserSelectableArmies, x => _maxNumberOfUserSelectableArmies = x);
         }
 
         public bool CanUserSelectNumberOfArmies
@@ -294,6 +294,9 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay
             CanEnterFortifyMode = _interactionState.CanEnterFortifyMode;
             CanEnterAttackMode = _interactionState.CanEnterAttackMode;
             CanEndTurn = _interactionState.CanEndTurn;
+            CanUserSelectNumberOfArmies = _interactionState.CanUserSelectNumberOfArmies;
+            NumberOfUserSelectedArmies = _interactionState.DefaultNumberOfUserSelectedArmies;
+            MaxNumberOfUserSelectableArmies = _interactionState.MaxNumberOfUserSelectableArmies;
 
             _worldMapViewModelFactory.Update(
                 WorldMapViewModel,

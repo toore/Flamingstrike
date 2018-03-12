@@ -20,6 +20,8 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay.Interaction
 
         public override Maybe<IRegion> SelectedRegion => Maybe<IRegion>.Create(_sendArmiesToOccupyPhase.AttackingRegion);
 
+        public override bool CanUserSelectNumberOfArmies => true;
+
         public override void OnRegionClicked(IRegion region)
         {
             _sendArmiesToOccupyPhase.SendAdditionalArmiesToOccupy(1);

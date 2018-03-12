@@ -34,7 +34,10 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay.Interaction
         public override bool CanEndTurn => true;
 
         public override IReadOnlyList<IRegion> EnabledRegions { get; }
+        
         public override Maybe<IRegion> SelectedRegion => Maybe<IRegion>.Create(_selectedRegion);
+
+        public override bool CanUserSelectNumberOfArmies => true;
 
         public override void OnRegionClicked(IRegion region)
         {

@@ -74,7 +74,7 @@
                         HorizontalAlignment="Center">
                 <xctk:IntegerUpDown Visibility="{Binding CanUserSelectNumberOfArmies, Converter={StaticResource BooleanToVisibilityConverter}}"
                                     Minimum="1"
-                                    Maximum="{Binding MaximumUserSelectableArmies}"
+                                    Maximum="{Binding MaxNumberOfUserSelectableArmies}"
                                     Value="{Binding NumberOfUserSelectedArmies}"
                                     ClipValueToMinMax="True"
                                     HorizontalAlignment="Center"
