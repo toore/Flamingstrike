@@ -1,6 +1,6 @@
 ﻿using System;
 
-// Maybe monad as written by Robert Gustavsson and Chris Jansson
+// Maybe monad, by courtesy of Robert Gustavsson and Chris Jansson
 
 namespace FlamingStrike.Core
 {
