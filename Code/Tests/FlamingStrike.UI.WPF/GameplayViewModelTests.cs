@@ -26,9 +26,10 @@ namespace Tests.FlamingStrike.UI.WPF
         private readonly IEventAggregator _eventAggregator;
         private readonly WorldMapViewModel _worldMapViewModel = new WorldMapViewModel();
 
+        private readonly IPlayer _currentPlayer;
         private readonly Color _currentPlayerColor;
         private readonly object[] _expectedCurrentPlayerStatusViewModels;
-        private readonly IGameStatus _currentGameStatus;
+        private IPlayerGameData[] _playerGameDatas;
 
         public GameplayViewModelTests()
         {
@@ -49,9 +50,9 @@ namespace Tests.FlamingStrike.UI.WPF
                 _eventAggregator,
                 playerStatusViewModelFactory);
 
-            var currentPlayer = Make.Player.Name("current player").Build();
+            _currentPlayer = Make.Player.Name("current player").Build();
             _currentPlayerColor = Color.FromArgb(1, 2, 3, 4);
-            _playerUiDataRepository.Get(currentPlayer).Returns(Make.PlayerUiData.Color(_currentPlayerColor).Build());
+            _playerUiDataRepository.Get(_currentPlayer).Returns(Make.PlayerUiData.Color(_currentPlayerColor).Build());
             var firstPlayerGameData = new PlayerGameData(Make.Player.Name("player 1").Build(), new List<ICard>());
             var secondPlayerGameData = new PlayerGameData(Make.Player.Name("player 2").Build(), new List<ICard>());
             var thirdPlayerGameData = new PlayerGameData(Make.Player.Name("player 3").Build(), new List<ICard>());
@@ -61,17 +62,13 @@ namespace Tests.FlamingStrike.UI.WPF
             playerStatusViewModelFactory.Create(firstPlayerGameData).Returns(firstPlayerStatusViewModel);
             playerStatusViewModelFactory.Create(secondPlayerGameData).Returns(secondPlayerStatusViewModel);
             playerStatusViewModelFactory.Create(thirdPlayerGameData).Returns(thirdPlayerStatusViewModel);
-            var playerGameDatas = new IPlayerGameData[]
+            _playerGameDatas = new IPlayerGameData[]
                 {
                     firstPlayerGameData,
                     secondPlayerGameData,
                     thirdPlayerGameData
                 };
             _expectedCurrentPlayerStatusViewModels = new object[] { firstPlayerStatusViewModel, secondPlayerStatusViewModel, thirdPlayerStatusViewModel };
-
-            _currentGameStatus = Substitute.For<IGameStatus>();
-            _currentGameStatus.CurrentPlayer.Returns(currentPlayer);
-            _currentGameStatus.PlayerGameDatas.Returns(playerGameDatas);
         }
 
         [Fact]
@@ -86,8 +83,10 @@ namespace Tests.FlamingStrike.UI.WPF
         {
             var draftArmiesPhase = Substitute.For<IDraftArmiesPhase>();
             draftArmiesPhase.NumberOfArmiesToDraft.Returns(1);
+            draftArmiesPhase.CurrentPlayer.Returns(_currentPlayer);
+            draftArmiesPhase.PlayerGameDatas.Returns(_playerGameDatas);
 
-            _sut.DraftArmies(_currentGameStatus, draftArmiesPhase);
+            _sut.DraftArmies(draftArmiesPhase);
 
             _sut.PlayerName.Should().Be("current player");
             _sut.PlayerColor.Should().Be(_currentPlayerColor);
@@ -105,7 +104,7 @@ namespace Tests.FlamingStrike.UI.WPF
                 .ReturnsForAnyArgs(Make.PlayerUiData.Color(Color.FromArgb(1, 2, 3, 4)).Build());
 
             var monitor = _sut.Monitor();
-            _sut.DraftArmies(Substitute.For<IGameStatus>(), Substitute.For<IDraftArmiesPhase>());
+            _sut.DraftArmies(Substitute.For<IDraftArmiesPhase>());
 
             monitor.Should().RaisePropertyChangeFor(x => x.PlayerName);
             monitor.Should().RaisePropertyChangeFor(x => x.PlayerColor);
@@ -116,9 +115,12 @@ namespace Tests.FlamingStrike.UI.WPF
         [Fact]
         public void Attack_shows_correct_view()
         {
-            _sut.DraftArmies(Substitute.For<IGameStatus>(), Substitute.For<IDraftArmiesPhase>());
+            var attackPhase = Substitute.For<IAttackPhase>();
+            attackPhase.CurrentPlayer.Returns(_currentPlayer);
+            attackPhase.PlayerGameDatas.Returns(_playerGameDatas);
 
-            _sut.Attack(_currentGameStatus, Substitute.For<IAttackPhase>());
+            _sut.DraftArmies(Substitute.For<IDraftArmiesPhase>());
+            _sut.Attack(attackPhase);
 
             _sut.PlayerName.Should().Be("current player");
             _sut.PlayerColor.Should().Be(_currentPlayerColor);
@@ -132,10 +134,14 @@ namespace Tests.FlamingStrike.UI.WPF
         [Fact]
         public void Attack_raises_property_changed()
         {
-            _sut.DraftArmies(Substitute.For<IGameStatus>(), Substitute.For<IDraftArmiesPhase>());
+            var draftArmiesPhase = Substitute.For<IDraftArmiesPhase>();
+            var attackPhase = Substitute.For<IAttackPhase>();
+            attackPhase.CurrentPlayer.Returns(_currentPlayer);
+
+            _sut.DraftArmies(draftArmiesPhase);
 
             var monitor = _sut.Monitor();
-            _sut.Attack(_currentGameStatus, Substitute.For<IAttackPhase>());
+            _sut.Attack(attackPhase);
 
             monitor.Should().RaisePropertyChangeFor(x => x.PlayerName);
             monitor.Should().RaisePropertyChangeFor(x => x.PlayerColor);
@@ -148,9 +154,12 @@ namespace Tests.FlamingStrike.UI.WPF
         [Fact]
         public void Entering_fortify_mode_shows_correct_view()
         {
-            _sut.DraftArmies(Substitute.For<IGameStatus>(), Substitute.For<IDraftArmiesPhase>());
-            _sut.Attack(_currentGameStatus, Substitute.For<IAttackPhase>());
+            var attackPhase = Substitute.For<IAttackPhase>();
+            attackPhase.CurrentPlayer.Returns(_currentPlayer);
+            attackPhase.PlayerGameDatas.Returns(_playerGameDatas);
 
+            _sut.DraftArmies(Substitute.For<IDraftArmiesPhase>());
+            _sut.Attack(attackPhase);
             _sut.EnterFortifyMode();
 
             _sut.PlayerName.Should().Be("current player");
@@ -165,8 +174,8 @@ namespace Tests.FlamingStrike.UI.WPF
         [Fact]
         public void Entering_fortify_mode_raises_property_changed()
         {
-            _sut.DraftArmies(Substitute.For<IGameStatus>(), Substitute.For<IDraftArmiesPhase>());
-            _sut.Attack(_currentGameStatus, Substitute.For<IAttackPhase>());
+            _sut.DraftArmies(Substitute.For<IDraftArmiesPhase>());
+            _sut.Attack(Substitute.For<IAttackPhase>());
 
             var monitor = _sut.Monitor();
             _sut.EnterFortifyMode();
@@ -178,10 +187,13 @@ namespace Tests.FlamingStrike.UI.WPF
         [Fact]
         public void Entering_attack_mode_shows_correct_view()
         {
-            _sut.DraftArmies(Substitute.For<IGameStatus>(), Substitute.For<IDraftArmiesPhase>());
-            _sut.Attack(_currentGameStatus, Substitute.For<IAttackPhase>());
-            _sut.EnterFortifyMode();
+            var attackPhase = Substitute.For<IAttackPhase>();
+            attackPhase.CurrentPlayer.Returns(_currentPlayer);
+            attackPhase.PlayerGameDatas.Returns(_playerGameDatas);
 
+            _sut.DraftArmies(Substitute.For<IDraftArmiesPhase>());
+            _sut.Attack(attackPhase);
+            _sut.EnterFortifyMode();
             _sut.EnterAttackMode();
 
             _sut.PlayerName.Should().Be("current player");
@@ -196,8 +208,8 @@ namespace Tests.FlamingStrike.UI.WPF
         [Fact]
         public void Entering_attack_mode_raises_property_changed()
         {
-            _sut.DraftArmies(Substitute.For<IGameStatus>(), Substitute.For<IDraftArmiesPhase>());
-            _sut.Attack(_currentGameStatus, Substitute.For<IAttackPhase>());
+            _sut.DraftArmies(Substitute.For<IDraftArmiesPhase>());
+            _sut.Attack(Substitute.For<IAttackPhase>());
             _sut.EnterFortifyMode();
 
             var monitor = _sut.Monitor();
@@ -210,10 +222,13 @@ namespace Tests.FlamingStrike.UI.WPF
         [Fact]
         public void Send_armies_to_occupy_shows_correct_view()
         {
-            _sut.DraftArmies(Substitute.For<IGameStatus>(), Substitute.For<IDraftArmiesPhase>());
-            _sut.Attack(Substitute.For<IGameStatus>(), Substitute.For<IAttackPhase>());
+            var sendArmiesToOccupyPhase = Substitute.For<ISendArmiesToOccupyPhase>();
+            sendArmiesToOccupyPhase.CurrentPlayer.Returns(_currentPlayer);
+            sendArmiesToOccupyPhase.PlayerGameDatas.Returns(_playerGameDatas);
 
-            _sut.SendArmiesToOccupy(_currentGameStatus, Substitute.For<ISendArmiesToOccupyPhase>());
+            _sut.DraftArmies(Substitute.For<IDraftArmiesPhase>());
+            _sut.Attack(Substitute.For<IAttackPhase>());
+            _sut.SendArmiesToOccupy(sendArmiesToOccupyPhase);
 
             _sut.PlayerName.Should().Be("current player");
             _sut.PlayerColor.Should().Be(_currentPlayerColor);
@@ -227,11 +242,14 @@ namespace Tests.FlamingStrike.UI.WPF
         [Fact]
         public void Send_armies_to_occupy_raises_property_changed()
         {
-            _sut.DraftArmies(Substitute.For<IGameStatus>(), Substitute.For<IDraftArmiesPhase>());
-            _sut.Attack(Substitute.For<IGameStatus>(), Substitute.For<IAttackPhase>());
+            var sendArmiesToOccupyPhase = Substitute.For<ISendArmiesToOccupyPhase>();
+            sendArmiesToOccupyPhase.CurrentPlayer.Returns(_currentPlayer);
+            sendArmiesToOccupyPhase.PlayerGameDatas.Returns(_playerGameDatas);
 
+            _sut.DraftArmies(Substitute.For<IDraftArmiesPhase>());
+            _sut.Attack(Substitute.For<IAttackPhase>());
             var monitor = _sut.Monitor();
-            _sut.SendArmiesToOccupy(_currentGameStatus, Substitute.For<ISendArmiesToOccupyPhase>());
+            _sut.SendArmiesToOccupy(sendArmiesToOccupyPhase);
 
             monitor.Should().RaisePropertyChangeFor(x => x.PlayerName);
             monitor.Should().RaisePropertyChangeFor(x => x.PlayerColor);
@@ -244,9 +262,12 @@ namespace Tests.FlamingStrike.UI.WPF
         [Fact]
         public void End_turn_shows_correct_view()
         {
-            _sut.DraftArmies(Substitute.For<IGameStatus>(), Substitute.For<IDraftArmiesPhase>());
+            var endTurnPhase = Substitute.For<IEndTurnPhase>();
+            endTurnPhase.CurrentPlayer.Returns(_currentPlayer);
+            endTurnPhase.PlayerGameDatas.Returns(_playerGameDatas);
 
-            _sut.EndTurn(_currentGameStatus, Substitute.For<IEndTurnPhase>());
+            _sut.DraftArmies(Substitute.For<IDraftArmiesPhase>());
+            _sut.EndTurn(endTurnPhase);
 
             _sut.PlayerName.Should().Be("current player");
             _sut.PlayerColor.Should().Be(_currentPlayerColor);
@@ -260,10 +281,12 @@ namespace Tests.FlamingStrike.UI.WPF
         [Fact]
         public void End_turn_raises_property_changed_after_drafting_armies()
         {
-            _sut.DraftArmies(Substitute.For<IGameStatus>(), Substitute.For<IDraftArmiesPhase>());
-
+            var endTurnPhase = Substitute.For<IEndTurnPhase>();
+            endTurnPhase.CurrentPlayer.Returns(_currentPlayer);
+            
+            _sut.DraftArmies(Substitute.For<IDraftArmiesPhase>());
             var monitor = _sut.Monitor();
-            _sut.EndTurn(_currentGameStatus, Substitute.For<IEndTurnPhase>());
+            _sut.EndTurn(endTurnPhase);
 
             monitor.Should().RaisePropertyChangeFor(x => x.PlayerName);
             monitor.Should().RaisePropertyChangeFor(x => x.PlayerColor);
@@ -275,11 +298,13 @@ namespace Tests.FlamingStrike.UI.WPF
         [Fact]
         public void End_turn_raises_property_changed_when_in_attack_mode()
         {
-            _sut.DraftArmies(Substitute.For<IGameStatus>(), Substitute.For<IDraftArmiesPhase>());
-            _sut.Attack(Substitute.For<IGameStatus>(), Substitute.For<IAttackPhase>());
+            var endTurnPhase = Substitute.For<IEndTurnPhase>();
+            endTurnPhase.CurrentPlayer.Returns(_currentPlayer);
 
+            _sut.DraftArmies(Substitute.For<IDraftArmiesPhase>());
+            _sut.Attack(Substitute.For<IAttackPhase>());
             var monitor = _sut.Monitor();
-            _sut.EndTurn(_currentGameStatus, Substitute.For<IEndTurnPhase>());
+            _sut.EndTurn(endTurnPhase);
 
             monitor.Should().RaisePropertyChangeFor(x => x.PlayerName);
             monitor.Should().RaisePropertyChangeFor(x => x.PlayerColor);
@@ -291,12 +316,14 @@ namespace Tests.FlamingStrike.UI.WPF
         [Fact]
         public void End_turn_raises_property_changed_when_in_fortifying_mode()
         {
-            _sut.DraftArmies(Substitute.For<IGameStatus>(), Substitute.For<IDraftArmiesPhase>());
-            _sut.Attack(Substitute.For<IGameStatus>(), Substitute.For<IAttackPhase>());
-            _sut.EnterFortifyMode();
+            var endTurnPhase = Substitute.For<IEndTurnPhase>();
+            endTurnPhase.CurrentPlayer.Returns(_currentPlayer);
 
+            _sut.DraftArmies(Substitute.For<IDraftArmiesPhase>());
+            _sut.Attack(Substitute.For<IAttackPhase>());
+            _sut.EnterFortifyMode();
             var monitor = _sut.Monitor();
-            _sut.EndTurn(_currentGameStatus, Substitute.For<IEndTurnPhase>());
+            _sut.EndTurn(endTurnPhase);
 
             monitor.Should().RaisePropertyChangeFor(x => x.PlayerName);
             monitor.Should().RaisePropertyChangeFor(x => x.PlayerColor);

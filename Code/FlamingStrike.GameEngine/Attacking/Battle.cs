@@ -11,6 +11,8 @@ namespace FlamingStrike.GameEngine.Attacking
     {
         private readonly IDice _dice;
         private readonly IArmiesLostCalculator _armiesLostCalculator;
+        private const int MaxNumberOfAttackingArmies = 3;
+        private const int MaxNumberOfDefendingArmies = 2;
 
         public Battle(IDice dice, IArmiesLostCalculator armiesLostCalculator)
         {
@@ -20,8 +22,8 @@ namespace FlamingStrike.GameEngine.Attacking
 
         public IAttackResult Attack(ITerritory attackingTerritory, ITerritory defendingTerritory)
         {
-            var attackingArmies = Math.Min(attackingTerritory.GetNumberOfArmiesThatCanBeUsedInAnAttack(), 3);
-            var defendingArmies = Math.Min(defendingTerritory.GetNumberOfArmiesUsedAsDefence(), 2);
+            var attackingArmies = Math.Min(attackingTerritory.GetNumberOfArmiesThatCanBeUsedInAnAttack(), MaxNumberOfAttackingArmies);
+            var defendingArmies = Math.Min(defendingTerritory.GetNumberOfArmiesUsedAsDefence(), MaxNumberOfDefendingArmies);
 
             var dices = _dice.Roll(attackingArmies, defendingArmies);
             var battleOutcome = _armiesLostCalculator.Calculate(dices.AttackValues, dices.DefenceValues);

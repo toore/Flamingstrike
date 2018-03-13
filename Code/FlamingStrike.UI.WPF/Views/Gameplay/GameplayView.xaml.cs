@@ -97,22 +97,22 @@ namespace FlamingStrike.UI.WPF.Views.Gameplay
             throw new NotImplementedException();
         }
 
-        public void DraftArmies(IGameStatus gameStatus, IDraftArmiesPhase draftArmiesPhase)
+        public void DraftArmies(IDraftArmiesPhase draftArmiesPhase)
         {
             throw new NotImplementedException();
         }
 
-        public void Attack(IGameStatus gameStatus, IAttackPhase attackPhase)
+        public void Attack(IAttackPhase attackPhase)
         {
             throw new NotImplementedException();
         }
 
-        public void SendArmiesToOccupy(IGameStatus gameStatus, ISendArmiesToOccupyPhase sendArmiesToOccupyPhase)
+        public void SendArmiesToOccupy(ISendArmiesToOccupyPhase sendArmiesToOccupyPhase)
         {
             throw new NotImplementedException();
         }
 
-        public void EndTurn(IGameStatus gameStatus, IEndTurnPhase endTurnPhase)
+        public void EndTurn(IEndTurnPhase endTurnPhase)
         {
             throw new NotImplementedException();
         }

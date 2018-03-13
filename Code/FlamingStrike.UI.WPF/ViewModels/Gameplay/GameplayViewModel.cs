@@ -39,13 +39,13 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay
         private bool _canEnterAttackMode;
         private bool _canEndTurn;
         private IInteractionState _interactionState;
-        private IGameStatus _gameStatus;
         private IAttackPhase _attackPhase;
         private IList<PlayerStatusViewModel> _playerStatuses;
         private int _numberOfArmies;
         private int _maxNumberOfUserSelectableArmies;
         private Maybe<IRegion> _previouslySelectedAttackingRegion;
         private bool _canUserSelectNumberOfArmies;
+        private IReadOnlyList<ITerritory> _territories;
 
         public GameplayViewModel(
             IInteractionStateFactory interactionStateFactory,
@@ -129,38 +129,44 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay
 
         public bool CanShowCards => true;
 
-        public void DraftArmies(IGameStatus gameStatus, IDraftArmiesPhase draftArmiesPhase)
+        public void DraftArmies(IDraftArmiesPhase draftArmiesPhase)
         {
+            _territories = draftArmiesPhase.Territories;
             _previouslySelectedAttackingRegion = Maybe<IRegion>.Nothing;
-            UpdatePlayersInformation(gameStatus);
 
-            ShowDraftArmiesView(draftArmiesPhase, gameStatus.Territories);
+            UpdatePlayersInformation(draftArmiesPhase.CurrentPlayer, draftArmiesPhase.PlayerGameDatas);
+
+            ShowDraftArmiesView(draftArmiesPhase);
         }
 
-        public void Attack(IGameStatus gameStatus, IAttackPhase attackPhase)
+        public void Attack(IAttackPhase attackPhase)
         {
-            _gameStatus = gameStatus;
+            _territories = attackPhase.Territories;
             _attackPhase = attackPhase;
 
-            UpdatePlayersInformation(gameStatus);
+            UpdatePlayersInformation(attackPhase.CurrentPlayer, attackPhase.PlayerGameDatas);
 
             _previouslySelectedAttackingRegion.End(
-                selectedRegion => ShowAttackPhaseView(attackPhase, selectedRegion, gameStatus.Territories),
-                () => ShowAttackPhaseView(attackPhase, gameStatus.Territories));
+                selectedRegion => ShowAttackPhaseView(attackPhase, selectedRegion),
+                () => ShowAttackPhaseView(attackPhase));
         }
 
-        public void SendArmiesToOccupy(IGameStatus gameStatus, ISendArmiesToOccupyPhase sendArmiesToOccupyPhase)
+        public void SendArmiesToOccupy(ISendArmiesToOccupyPhase sendArmiesToOccupyPhase)
         {
-            UpdatePlayersInformation(gameStatus);
+            _territories = sendArmiesToOccupyPhase.Territories;
 
-            ShowSendArmiesToOccupyView(sendArmiesToOccupyPhase, gameStatus.Territories);
+            UpdatePlayersInformation(sendArmiesToOccupyPhase.CurrentPlayer, sendArmiesToOccupyPhase.PlayerGameDatas);
+
+            ShowSendArmiesToOccupyView(sendArmiesToOccupyPhase);
         }
 
-        public void EndTurn(IGameStatus gameStatus, IEndTurnPhase endTurnPhase)
+        public void EndTurn(IEndTurnPhase endTurnPhase)
         {
-            UpdatePlayersInformation(gameStatus);
+            _territories = endTurnPhase.Territories;
 
-            ShowEndTurnView(endTurnPhase, gameStatus.Territories);
+            UpdatePlayersInformation(endTurnPhase.CurrentPlayer, endTurnPhase.PlayerGameDatas);
+
+            ShowEndTurnView(endTurnPhase);
         }
 
         public void GameOver(IGameOverState gameOverState)
@@ -170,36 +176,36 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay
 
         public void EnterAttackMode()
         {
-            ShowAttackPhaseView(_attackPhase, _gameStatus.Territories);
+            ShowAttackPhaseView(_attackPhase);
         }
 
         void ISelectAttackingRegionInteractionStateObserver.Select(IRegion selectedRegion)
         {
             _previouslySelectedAttackingRegion = Maybe<IRegion>.Create(selectedRegion);
 
-            ShowAttackPhaseView(_attackPhase, selectedRegion, _gameStatus.Territories);
+            ShowAttackPhaseView(_attackPhase, selectedRegion);
         }
 
         void IAttackInteractionStateObserver.DeselectRegion()
         {
-            ShowAttackPhaseView(_attackPhase, _gameStatus.Territories);
+            ShowAttackPhaseView(_attackPhase);
         }
 
         public void ShowCards() {}
 
         public void EnterFortifyMode()
         {
-            ShowFortifyView(_attackPhase, _gameStatus.Territories);
+            ShowFortifyView(_attackPhase);
         }
 
         void ISelectSourceRegionForFortificationInteractionStateObserver.Select(IRegion selectedRegion)
         {
-            ShowFortifyView(_attackPhase, selectedRegion, _gameStatus.Territories);
+            ShowFortifyView(_attackPhase, selectedRegion);
         }
 
         void IFortifyInteractionStateObserver.DeselectRegion()
         {
-            ShowFortifyView(_attackPhase, _gameStatus.Territories);
+            ShowFortifyView(_attackPhase);
         }
 
         public void EndTurn()
@@ -222,53 +228,53 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay
             _interactionState.OnRegionClicked(region);
         }
 
-        private void ShowDraftArmiesView(IDraftArmiesPhase draftArmiesPhase, IReadOnlyList<ITerritory> territories)
+        private void ShowDraftArmiesView(IDraftArmiesPhase draftArmiesPhase)
         {
             _interactionState = _interactionStateFactory.CreateDraftArmiesInteractionState(draftArmiesPhase);
 
-            UpdateView(territories);
+            UpdateView();
         }
 
-        private void ShowAttackPhaseView(IAttackPhase attackPhase, IReadOnlyList<ITerritory> territories)
+        private void ShowAttackPhaseView(IAttackPhase attackPhase)
         {
             _interactionState = _interactionStateFactory.CreateSelectAttackingRegionInteractionState(attackPhase, this);
 
-            UpdateView(territories);
+            UpdateView();
         }
 
-        private void ShowAttackPhaseView(IAttackPhase attackPhase, IRegion selectedRegion, IReadOnlyList<ITerritory> territories)
+        private void ShowAttackPhaseView(IAttackPhase attackPhase, IRegion selectedRegion)
         {
             _interactionState = _interactionStateFactory.CreateAttackInteractionState(attackPhase, selectedRegion, this);
 
-            UpdateView(territories);
+            UpdateView();
         }
 
-        private void ShowFortifyView(IAttackPhase attackPhase, IReadOnlyList<ITerritory> territories)
+        private void ShowFortifyView(IAttackPhase attackPhase)
         {
             _interactionState = _interactionStateFactory.CreateSelectSourceRegionForFortificationInteractionState(attackPhase, this);
 
-            UpdateView(territories);
+            UpdateView();
         }
 
-        private void ShowFortifyView(IAttackPhase attackPhase, IRegion selectedRegion, IReadOnlyList<ITerritory> territories)
+        private void ShowFortifyView(IAttackPhase attackPhase, IRegion selectedRegion)
         {
             _interactionState = _interactionStateFactory.CreateFortifyInteractionState(attackPhase, selectedRegion, this);
 
-            UpdateView(territories);
+            UpdateView();
         }
 
-        private void ShowSendArmiesToOccupyView(ISendArmiesToOccupyPhase sendArmiesToOccupyPhase, IReadOnlyList<ITerritory> territories)
+        private void ShowSendArmiesToOccupyView(ISendArmiesToOccupyPhase sendArmiesToOccupyPhase)
         {
             _interactionState = _interactionStateFactory.CreateSendArmiesToOccupyInteractionState(sendArmiesToOccupyPhase);
 
-            UpdateView(territories);
+            UpdateView();
         }
 
-        private void ShowEndTurnView(IEndTurnPhase endTurnPhase, IReadOnlyList<ITerritory> territories)
+        private void ShowEndTurnView(IEndTurnPhase endTurnPhase)
         {
             _interactionState = _interactionStateFactory.CreateEndTurnInteractionState(endTurnPhase);
 
-            UpdateView(territories);
+            UpdateView();
         }
 
         private void ShowGameOverMessage(IPlayer winner)
@@ -278,17 +284,17 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay
             _eventAggregator.PublishOnUIThread(new NewGameMessage());
         }
 
-        private void UpdatePlayersInformation(IGameStatus gameStatus)
+        private void UpdatePlayersInformation(IPlayer currentPlayer, IReadOnlyList<IPlayerGameData> playerGameDatas)
         {
-            PlayerName = gameStatus.CurrentPlayer.Name;
-            PlayerColor = _playerUiDataRepository.Get(gameStatus.CurrentPlayer).Color;
+            PlayerName = currentPlayer.Name;
+            PlayerColor = _playerUiDataRepository.Get(currentPlayer).Color;
 
-            PlayerStatuses = gameStatus.PlayerGameDatas
+            PlayerStatuses = playerGameDatas
                 .Select(x => _playerStatusViewModelFactory.Create(x))
                 .ToList();
         }
 
-        private void UpdateView(IReadOnlyList<ITerritory> territories)
+        private void UpdateView()
         {
             InformationText = _interactionState.Title;
             CanEnterFortifyMode = _interactionState.CanEnterFortifyMode;
@@ -300,7 +306,7 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay
 
             _worldMapViewModelFactory.Update(
                 WorldMapViewModel,
-                territories,
+                _territories,
                 _interactionState.EnabledRegions,
                 _interactionState.SelectedRegion);
         }
