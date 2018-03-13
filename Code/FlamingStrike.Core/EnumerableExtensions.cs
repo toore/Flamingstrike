@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace FlamingStrike.GameEngine
+namespace FlamingStrike.Core
 {
     public static class EnumerableExtensions
     {

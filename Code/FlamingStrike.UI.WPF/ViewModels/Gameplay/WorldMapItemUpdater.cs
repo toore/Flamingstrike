@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Media;
+using FlamingStrike.Core;
 using FlamingStrike.GameEngine;
 using FlamingStrike.UI.WPF.ViewModels.Preparation;
 

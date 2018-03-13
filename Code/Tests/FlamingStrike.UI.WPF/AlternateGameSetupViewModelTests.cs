@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Caliburn.Micro;
+using FlamingStrike.Core;
 using FlamingStrike.GameEngine;
 using FlamingStrike.GameEngine.Setup;
 using FlamingStrike.UI.WPF.Properties;

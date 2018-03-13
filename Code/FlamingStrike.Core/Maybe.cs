@@ -2,7 +2,7 @@
 
 // Maybe monad as written by Robert Gustavsson and Chris Jansson
 
-namespace FlamingStrike.GameEngine
+namespace FlamingStrike.Core
 {
     public class Maybe<T>
     {

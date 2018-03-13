@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using FlamingStrike.Core;
 using FlamingStrike.GameEngine;
 using FlamingStrike.UI.WPF.Extensions;
 using FlamingStrike.UI.WPF.RegionModels;

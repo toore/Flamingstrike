@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace FlamingStrike.GameEngine
+namespace FlamingStrike.Core
 {
     public static class ListExtensions
     {

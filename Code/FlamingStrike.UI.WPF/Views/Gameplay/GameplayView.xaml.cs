@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Media;
+using FlamingStrike.Core;
 using FlamingStrike.GameEngine;
 using FlamingStrike.GameEngine.Play;
 using FlamingStrike.UI.WPF.RegionModels;

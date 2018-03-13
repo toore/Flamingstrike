@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using FlamingStrike.Core;
 using FlamingStrike.GameEngine;
 
 namespace FlamingStrike.UI.WPF.ViewModels.Gameplay.Interaction
