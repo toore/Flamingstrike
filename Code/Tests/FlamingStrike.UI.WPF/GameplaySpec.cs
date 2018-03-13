@@ -6,7 +6,7 @@ using FlamingStrike.UI.WPF.ViewModels.Preparation;
 using FluentAssertions;
 using Xunit;
 
-namespace Tests.FlamingStrike.UI.WPF.Specifications
+namespace Tests.FlamingStrike.UI.WPF
 {
     public class GameplaySpec : SpecBase<GameplaySpec>
     {

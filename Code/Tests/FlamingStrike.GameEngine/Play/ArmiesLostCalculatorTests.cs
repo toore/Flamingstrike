@@ -3,7 +3,7 @@ using FlamingStrike.GameEngine.Play;
 using FluentAssertions;
 using Xunit;
 
-namespace Tests.FlamingStrike.GameEngine.Attacking
+namespace Tests.FlamingStrike.GameEngine.Play
 {
     public class ArmiesLostCalculatorTests
     {

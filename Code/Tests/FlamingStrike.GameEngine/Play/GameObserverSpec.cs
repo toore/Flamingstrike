@@ -10,7 +10,7 @@ using NSubstitute;
 using Toore.Shuffling;
 using Xunit;
 
-namespace Tests.FlamingStrike.GameEngine.Specifications
+namespace Tests.FlamingStrike.GameEngine.Play
 {
     public class GameObserverSpec : SpecBase<GameObserverSpec>
     {

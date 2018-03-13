@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace FlamingStrike.GameEngine.Play
+namespace FlamingStrike.GameEngine
 {
     public interface IArmyDrafter
     {

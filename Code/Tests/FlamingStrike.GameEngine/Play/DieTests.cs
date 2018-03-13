@@ -4,7 +4,7 @@ using NSubstitute;
 using Toore.Shuffling;
 using Xunit;
 
-namespace Tests.FlamingStrike.GameEngine.Attacking
+namespace Tests.FlamingStrike.GameEngine.Play
 {
     public class DieTests
     {

@@ -5,11 +5,10 @@ using FlamingStrike.GameEngine.Setup;
 using FluentAssertions;
 using NSubstitute;
 using Tests.FlamingStrike.GameEngine.Builders;
-using Tests.FlamingStrike.GameEngine.Setup;
 using Toore.Shuffling;
 using Xunit;
 
-namespace Tests.FlamingStrike.GameEngine.Specifications
+namespace Tests.FlamingStrike.GameEngine.Setup
 {
     public class AlternateGameSetupObserverSpec : SpecBase<AlternateGameSetupObserverSpec>
     {

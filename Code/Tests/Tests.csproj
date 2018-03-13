@@ -111,10 +111,10 @@
     <Compile Include="FlamingStrike.GameEngine\Builders\PlayerUiDataBuilder.cs" />
     <Compile Include="FlamingStrike.GameEngine\Play\GameStates\AttackPhaseStateGameStateTests.cs" />
     <Compile Include="FlamingStrike.GameEngine\Play\GameStates\DraftArmiesPhaseGameStateTests.cs" />
-    <Compile Include="FlamingStrike.GameEngine\Attacking\BattleTests.cs" />
-    <Compile Include="FlamingStrike.GameEngine\Attacking\DieTests.cs" />
-    <Compile Include="FlamingStrike.GameEngine\Attacking\DiceTests.cs" />
-    <Compile Include="FlamingStrike.GameEngine\Attacking\ArmiesLostCalculatorTests.cs" />
+    <Compile Include="FlamingStrike.GameEngine\Play\BattleTests.cs" />
+    <Compile Include="FlamingStrike.GameEngine\Play\DieTests.cs" />
+    <Compile Include="FlamingStrike.GameEngine\Play\DiceTests.cs" />
+    <Compile Include="FlamingStrike.GameEngine\Play\ArmiesLostCalculatorTests.cs" />
     <Compile Include="FlamingStrike.GameEngine\Builders\ArmiesLostBuilder.cs" />
     <Compile Include="FlamingStrike.GameEngine\Builders\ContinentBuilder.cs" />
     <Compile Include="FlamingStrike.GameEngine\Builders\DiceResultBuilder.cs" />
@@ -124,9 +124,9 @@
     <Compile Include="FlamingStrike.GameEngine\Play\GameTests.cs" />
     <Compile Include="FlamingStrike.GameEngine\Setup\AlternateGameSetupObserverSpyDecorator.cs" />
     <Compile Include="FlamingStrike.GameEngine\Setup\AutoRespondingAlternateGameSetupObserver.cs" />
-    <Compile Include="FlamingStrike.GameEngine\Specifications\AlternateGameSetupObserverSpec.cs" />
+    <Compile Include="FlamingStrike.GameEngine\Setup\AlternateGameSetupObserverSpec.cs" />
     <Compile Include="FlamingStrike.GameEngine\Setup\NullAlternateGameSetupObserver.cs" />
-    <Compile Include="FlamingStrike.GameEngine\Specifications\GameObserverSpec.cs" />
+    <Compile Include="FlamingStrike.GameEngine\Play\GameObserverSpec.cs" />
     <Compile Include="FlamingStrike.UI.WPF\GameplayViewModelTests.cs" />
     <Compile Include="FlamingStrike.UI.WPF\Interaction\AttackInteractionStateTests.cs" />
     <Compile Include="FlamingStrike.UI.WPF\Interaction\FortifyInteractionStateTests.cs" />
@@ -140,7 +140,7 @@
     <Compile Include="FlamingStrike.GameEngine\Builders\Make.cs" />
     <Compile Include="FlamingStrike.UI.WPF\Interaction\SelectAttackingRegionInteractionStateTests.cs" />
     <Compile Include="SpecBase.cs" />
-    <Compile Include="FlamingStrike.UI.WPF\Specifications\GameplaySpec.cs" />
+    <Compile Include="FlamingStrike.UI.WPF\GameplaySpec.cs" />
     <Compile Include="FlamingStrike.UI.WPF\EnumerableExtensionsTests.cs" />
     <Compile Include="FlamingStrike.UI.WPF\GamePreparationViewModelTests.cs" />
     <Compile Include="FlamingStrike.UI.WPF\AlternateGameSetupViewModelTests.cs" />
@@ -204,6 +204,7 @@
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

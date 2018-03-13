@@ -7,7 +7,7 @@ using Tests.FlamingStrike.GameEngine.Builders;
 using Xunit;
 using Xunit.Sdk;
 
-namespace Tests.FlamingStrike.GameEngine.Attacking
+namespace Tests.FlamingStrike.GameEngine.Play
 {
     public abstract class BattleTests
     {

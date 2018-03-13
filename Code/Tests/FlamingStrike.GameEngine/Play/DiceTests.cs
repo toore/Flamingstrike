@@ -3,7 +3,7 @@ using FluentAssertions;
 using NSubstitute;
 using Xunit;
 
-namespace Tests.FlamingStrike.GameEngine.Attacking
+namespace Tests.FlamingStrike.GameEngine.Play
 {
     public class DiceTests
     {
