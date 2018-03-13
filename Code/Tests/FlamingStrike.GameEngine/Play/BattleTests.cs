@@ -3,7 +3,6 @@ using System.Reflection;
 using FlamingStrike.GameEngine.Play;
 using FluentAssertions;
 using NSubstitute;
-using Tests.FlamingStrike.GameEngine.Builders;
 using Xunit;
 using Xunit.Sdk;
 

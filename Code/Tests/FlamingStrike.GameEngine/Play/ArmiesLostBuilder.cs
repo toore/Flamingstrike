@@ -1,6 +1,6 @@
 using FlamingStrike.GameEngine.Play;
 
-namespace Tests.FlamingStrike.GameEngine.Builders
+namespace Tests.FlamingStrike.GameEngine.Play
 {
     public class ArmiesLostBuilder
     {

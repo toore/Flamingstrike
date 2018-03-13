@@ -4,7 +4,6 @@ using FlamingStrike.GameEngine;
 using FlamingStrike.GameEngine.Setup;
 using FluentAssertions;
 using NSubstitute;
-using Tests.FlamingStrike.GameEngine.Builders;
 using Toore.Shuffling;
 using Xunit;
 

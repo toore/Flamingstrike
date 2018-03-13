@@ -1,7 +1,8 @@
 using System.Windows.Media;
 using FlamingStrike.UI.WPF.ViewModels.Preparation;
+using Tests.FlamingStrike.GameEngine;
 
-namespace Tests.FlamingStrike.GameEngine.Builders
+namespace Tests.FlamingStrike.UI.WPF
 {
     public class PlayerUiDataBuilder
     {

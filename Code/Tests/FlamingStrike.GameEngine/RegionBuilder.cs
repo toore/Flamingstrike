@@ -1,6 +1,6 @@
 using FlamingStrike.GameEngine;
 
-namespace Tests.FlamingStrike.GameEngine.Builders
+namespace Tests.FlamingStrike.GameEngine
 {
     public class RegionBuilder
     {

@@ -2,7 +2,7 @@ using FlamingStrike.GameEngine.Play;
 using FlamingStrike.GameEngine.Play.GameStates;
 using FlamingStrike.GameEngine.Setup;
 using NSubstitute;
-using Tests.FlamingStrike.GameEngine.Builders;
+using Tests.FlamingStrike.GameEngine.Setup;
 using Xunit;
 
 namespace Tests.FlamingStrike.GameEngine.Play

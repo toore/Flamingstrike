@@ -4,7 +4,6 @@ using FlamingStrike.GameEngine.Play;
 using FlamingStrike.GameEngine.Play.GameStates;
 using FluentAssertions.Common;
 using NSubstitute;
-using Tests.FlamingStrike.GameEngine.Builders;
 using Xunit;
 
 namespace Tests.FlamingStrike.GameEngine.Play.GameStates

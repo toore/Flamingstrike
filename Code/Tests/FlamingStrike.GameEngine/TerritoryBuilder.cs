@@ -2,7 +2,7 @@ using FlamingStrike.GameEngine;
 using NSubstitute;
 using IPlayer = FlamingStrike.GameEngine.IPlayer;
 
-namespace Tests.FlamingStrike.GameEngine.Builders
+namespace Tests.FlamingStrike.GameEngine
 {
     public class TerritoryBuilder
     {

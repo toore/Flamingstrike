@@ -6,7 +6,7 @@ using FlamingStrike.UI.WPF.ViewModels.Messages;
 using FlamingStrike.UI.WPF.ViewModels.Preparation;
 using FluentAssertions;
 using NSubstitute;
-using Tests.FlamingStrike.GameEngine.Builders;
+using Tests.FlamingStrike.GameEngine.Setup;
 using Xunit;
 
 namespace Tests.FlamingStrike.UI.WPF

@@ -3,7 +3,7 @@ using FlamingStrike.GameEngine;
 using FlamingStrike.GameEngine.Setup;
 using IPlayer = FlamingStrike.GameEngine.IPlayer;
 
-namespace Tests.FlamingStrike.GameEngine.Builders
+namespace Tests.FlamingStrike.GameEngine.Setup
 {
     public class GamePlaySetupBuilder
     {

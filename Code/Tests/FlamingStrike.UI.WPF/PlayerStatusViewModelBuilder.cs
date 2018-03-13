@@ -1,7 +1,7 @@
 using System.Windows.Media;
 using FlamingStrike.UI.WPF.ViewModels.Gameplay;
 
-namespace Tests.FlamingStrike.GameEngine.Builders
+namespace Tests.FlamingStrike.UI.WPF
 {
     public class PlayerStatusViewModelBuilder
     {

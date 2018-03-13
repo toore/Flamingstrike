@@ -104,22 +104,22 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FlamingStrike.GameEngine\Builders\DeckBuilder.cs" />
-    <Compile Include="FlamingStrike.GameEngine\Builders\GameDataBuilder.cs" />
-    <Compile Include="FlamingStrike.GameEngine\Builders\PlayerGameDataBuilder.cs" />
-    <Compile Include="FlamingStrike.GameEngine\Builders\PlayerStatusViewModelBuilder.cs" />
-    <Compile Include="FlamingStrike.GameEngine\Builders\PlayerUiDataBuilder.cs" />
+    <Compile Include="FlamingStrike.GameEngine\Play\DeckBuilder.cs" />
+    <Compile Include="FlamingStrike.GameEngine\Play\GameDataBuilder.cs" />
+    <Compile Include="FlamingStrike.GameEngine\Play\PlayerGameDataBuilder.cs" />
+    <Compile Include="FlamingStrike.UI.WPF\PlayerStatusViewModelBuilder.cs" />
+    <Compile Include="FlamingStrike.UI.WPF\PlayerUiDataBuilder.cs" />
     <Compile Include="FlamingStrike.GameEngine\Play\GameStates\AttackPhaseStateGameStateTests.cs" />
     <Compile Include="FlamingStrike.GameEngine\Play\GameStates\DraftArmiesPhaseGameStateTests.cs" />
     <Compile Include="FlamingStrike.GameEngine\Play\BattleTests.cs" />
     <Compile Include="FlamingStrike.GameEngine\Play\DieTests.cs" />
     <Compile Include="FlamingStrike.GameEngine\Play\DiceTests.cs" />
     <Compile Include="FlamingStrike.GameEngine\Play\ArmiesLostCalculatorTests.cs" />
-    <Compile Include="FlamingStrike.GameEngine\Builders\ArmiesLostBuilder.cs" />
-    <Compile Include="FlamingStrike.GameEngine\Builders\ContinentBuilder.cs" />
-    <Compile Include="FlamingStrike.GameEngine\Builders\DiceResultBuilder.cs" />
-    <Compile Include="FlamingStrike.GameEngine\Builders\PlayerBuilder.cs" />
-    <Compile Include="FlamingStrike.GameEngine\Builders\TerritoryBuilder.cs" />
+    <Compile Include="FlamingStrike.GameEngine\Play\ArmiesLostBuilder.cs" />
+    <Compile Include="FlamingStrike.GameEngine\ContinentBuilder.cs" />
+    <Compile Include="FlamingStrike.GameEngine\Play\DiceResultBuilder.cs" />
+    <Compile Include="FlamingStrike.GameEngine\PlayerBuilder.cs" />
+    <Compile Include="FlamingStrike.GameEngine\TerritoryBuilder.cs" />
     <Compile Include="FlamingStrike.GameEngine\Play\GameStates\SendArmiesToOccupyGameState.cs" />
     <Compile Include="FlamingStrike.GameEngine\Play\GameTests.cs" />
     <Compile Include="FlamingStrike.GameEngine\Setup\AlternateGameSetupObserverSpyDecorator.cs" />
@@ -132,11 +132,11 @@
     <Compile Include="FlamingStrike.UI.WPF\Interaction\FortifyInteractionStateTests.cs" />
     <Compile Include="FlamingStrike.UI.WPF\Interaction\SelectSourceRegionForFortificationInteractionStateTests.cs" />
     <Compile Include="FlamingStrike.GameEngine\Setup\StartingInfantryCalculatorTests.cs" />
-    <Compile Include="FlamingStrike.GameEngine\Builders\GamePlaySetupBuilder.cs" />
+    <Compile Include="FlamingStrike.GameEngine\Setup\GamePlaySetupBuilder.cs" />
     <Compile Include="FlamingStrike.UI.WPF\Interaction\DraftArmiesInteractionStateTests.cs" />
     <Compile Include="FlamingStrike.UI.WPF\MainGameViewModelDecorator.cs" />
     <Compile Include="FlamingStrike.UI.WPF\RegionModelFactoryTests.cs" />
-    <Compile Include="FlamingStrike.GameEngine\Builders\RegionBuilder.cs" />
+    <Compile Include="FlamingStrike.GameEngine\RegionBuilder.cs" />
     <Compile Include="FlamingStrike.UI.WPF\Interaction\SelectAttackingRegionInteractionStateTests.cs" />
     <Compile Include="SpecBase.cs" />
     <Compile Include="FlamingStrike.UI.WPF\GameplaySpec.cs" />
