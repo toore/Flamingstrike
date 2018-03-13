@@ -62,6 +62,7 @@ namespace FlamingStrike.GameEngine.Play
             var currentPlayer = players.First();
             var gameData = new GameData(territories, playerGameDatas, currentPlayer, deckFactory.Create());
             var numberOfArmiesToDraft = _armyDraftCalculator.Calculate(currentPlayer, territories);
+            
             ContinueToDraftArmies(numberOfArmiesToDraft, gameData);
         }
 

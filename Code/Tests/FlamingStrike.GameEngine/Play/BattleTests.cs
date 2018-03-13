@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Reflection;
-using FlamingStrike.GameEngine.Attacking;
+using FlamingStrike.GameEngine.Play;
 using FluentAssertions;
 using NSubstitute;
 using Tests.FlamingStrike.GameEngine.Builders;

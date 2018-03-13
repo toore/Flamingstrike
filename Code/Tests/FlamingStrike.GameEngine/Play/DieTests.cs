@@ -1,4 +1,4 @@
-﻿using FlamingStrike.GameEngine.Attacking;
+﻿using FlamingStrike.GameEngine.Play;
 using FluentAssertions;
 using NSubstitute;
 using Toore.Shuffling;

@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using FlamingStrike.GameEngine.Attacking;
+using FlamingStrike.GameEngine.Play;
 
 namespace Tests.FlamingStrike.GameEngine.Builders
 {

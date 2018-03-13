@@ -1,4 +1,4 @@
-﻿namespace FlamingStrike.GameEngine.Attacking
+﻿namespace FlamingStrike.GameEngine.Play
 {
     public interface IAttackResult
     {

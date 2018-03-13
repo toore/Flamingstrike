@@ -1,6 +1,5 @@
 ﻿using Caliburn.Micro;
 using FlamingStrike.GameEngine;
-using FlamingStrike.GameEngine.Attacking;
 using FlamingStrike.GameEngine.Play;
 using FlamingStrike.GameEngine.Play.GameStates;
 using FlamingStrike.GameEngine.Setup;

@@ -1,5 +1,3 @@
-using FlamingStrike.GameEngine.Attacking;
-
 namespace FlamingStrike.GameEngine.Play.GameStates
 {
     public interface IGameStateFactory

@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace FlamingStrike.GameEngine
+namespace FlamingStrike.GameEngine.Play
 {
     public interface IFortifier
     {

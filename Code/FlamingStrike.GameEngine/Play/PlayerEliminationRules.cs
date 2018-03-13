@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace FlamingStrike.GameEngine.Attacking
+namespace FlamingStrike.GameEngine.Play
 {
     public interface IPlayerEliminationRules
     {

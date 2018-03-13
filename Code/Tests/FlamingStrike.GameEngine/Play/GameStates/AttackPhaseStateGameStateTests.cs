@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using FlamingStrike.GameEngine;
-using FlamingStrike.GameEngine.Attacking;
 using FlamingStrike.GameEngine.Play;
 using FlamingStrike.GameEngine.Play.GameStates;
 using FluentAssertions;
