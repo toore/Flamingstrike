@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Toore.Shuffling;
 
@@ -13,34 +14,30 @@ namespace FlamingStrike.GameEngine.Play
     {
         private readonly IRegions _regions;
         private readonly IShuffler _shuffler;
+        private readonly List<CardSymbol> _cardSymbols;
 
         public DeckFactory(IRegions regions, IShuffler shuffler)
         {
             _regions = regions;
             _shuffler = shuffler;
+
+            _cardSymbols = Enum.GetValues(typeof(CardSymbol)).Cast<CardSymbol>().ToList();
         }
 
         public IDeck Create()
         {
-            var cardSymbols = GetCardSymbols();
-
             var cards = _regions.GetAll()
-                .Select(region => new StandardCard(region, cardSymbols.Next()))
-                .Cast<ICard>()
+                .Select(GetCard)
                 .Concat(new[] { new WildCard(), new WildCard() })
                 .Shuffle(_shuffler)
                 .ToList();
 
-            var deck = new Deck(cards);
-
-            return deck;
+            return new Deck(cards);
         }
 
-        private static CircularBuffer<CardSymbol> GetCardSymbols()
+        private ICard GetCard(IRegion region, int cardIndex)
         {
-            return Enum.GetValues(typeof(CardSymbol))
-                .Cast<CardSymbol>()
-                .ToCircularBuffer();
+            return new StandardCard(region, _cardSymbols[cardIndex % _cardSymbols.Count]);
         }
     }
 }
