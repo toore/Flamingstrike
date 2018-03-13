@@ -74,7 +74,7 @@ namespace Tests.FlamingStrike.UI.WPF
             _gameplayViewModelFactory.Create().Returns(gameplayViewModel);
 
             var sut = Initialize();
-            sut.Handle(new StartGameplayMessage(Make.GamePlaySetup.Build()));
+            sut.Handle(new StartGameplayMessage(new GamePlaySetupBuilder().Build()));
 
             sut.ActiveItem.Should().Be(gameplayViewModel);
         }

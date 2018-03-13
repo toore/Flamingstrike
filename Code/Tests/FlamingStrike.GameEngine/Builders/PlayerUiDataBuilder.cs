@@ -9,7 +9,7 @@ namespace Tests.FlamingStrike.GameEngine.Builders
 
         public IPlayerUiData Build()
         {
-            return new PlayerUiData(Make.Player.Build(), _color);
+            return new PlayerUiData(new PlayerBuilder().Build(), _color);
         }
 
         public PlayerUiDataBuilder Color(Color color)

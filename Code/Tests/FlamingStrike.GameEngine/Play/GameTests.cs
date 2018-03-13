@@ -29,7 +29,7 @@ namespace Tests.FlamingStrike.GameEngine.Play
         [Fact]
         public void When_game_is_created_draft_armies_phase_starts()
         {
-            var game = Create(Make.GamePlaySetup.Build());
+            var game = Create(new GamePlaySetupBuilder().Build());
 
             _gameObserver.Received().DraftArmies(Arg.Any<IDraftArmiesPhase>());
         }

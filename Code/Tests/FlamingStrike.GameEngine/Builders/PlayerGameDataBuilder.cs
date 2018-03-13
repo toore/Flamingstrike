@@ -6,7 +6,7 @@ namespace Tests.FlamingStrike.GameEngine.Builders
 {
     public class PlayerGameDataBuilder
     {
-        private IPlayer _player = Make.Player.Build();
+        private IPlayer _player = new PlayerBuilder().Build();
 
         public PlayerGameData Build()
         {

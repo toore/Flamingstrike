@@ -4,7 +4,7 @@ namespace Tests.FlamingStrike.GameEngine.Builders
 {
     public class RegionBuilder
     {
-        private readonly Continent _continent = Make.Continent.Build();
+        private readonly Continent _continent = new ContinentBuilder().Build();
 
         public Region Build()
         {

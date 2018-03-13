@@ -50,9 +50,9 @@ namespace Tests.FlamingStrike.GameEngine.Play.GameStates
             anotherTerritory.Region.Returns(_anotherRegion);
             anotherTerritory.Player.Returns(_anotherPlayer);
 
-            _gameData = Make.GameData
+            _gameData = new GameDataBuilder()
                 .Territories(_territory, anotherTerritory)
-                .AddPlayer(Make.PlayerGameData.Player(_currentPlayer).Build())
+                .AddPlayer(new PlayerGameDataBuilder().Player(_currentPlayer).Build())
                 .AddPlayer(_anotherPlayerGameData)
                 .CurrentPlayer(_currentPlayer)
                 .Deck(_deck)
@@ -120,8 +120,8 @@ namespace Tests.FlamingStrike.GameEngine.Play.GameStates
         {
             var expectedUpdatedTerritories = new List<ITerritory>
                 {
-                    Make.Territory.Region(_region).Armies(2).Build(),
-                    Make.Territory.Region(_anotherRegion).Build()
+                    new TerritoryBuilder().Region(_region).Armies(2).Build(),
+                    new TerritoryBuilder().Region(_anotherRegion).Build()
                 };
 
             var attackOutcome = new AttackOutcome(expectedUpdatedTerritories, DefendingArmyAvailability.IsEliminated);
@@ -177,7 +177,7 @@ namespace Tests.FlamingStrike.GameEngine.Play.GameStates
             GameData updatedGameData = null;
             _gamePhaseConductor.WaitForTurnToEnd(Arg.Do<GameData>(x => updatedGameData = x));
             var topDeckCard = Substitute.For<ICard>();
-            _deck.DrawCard().Returns(new DrawCard(topDeckCard, Make.Deck.Build()));
+            _deck.DrawCard().Returns(new DrawCard(topDeckCard, new DeckBuilder().Build()));
             _turnConqueringAchievement = TurnConqueringAchievement.SuccessfullyConqueredAtLeastOneTerritory;
 
             Sut.Fortify(_region, _anotherRegion, 1);

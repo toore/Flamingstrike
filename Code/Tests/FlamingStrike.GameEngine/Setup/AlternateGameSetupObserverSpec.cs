@@ -96,9 +96,9 @@ namespace Tests.FlamingStrike.GameEngine.Setup
             regions.GetAll().Returns(new List<IRegion>());
             _alternateGameSetupFactory = new AlternateGameSetupFactory(regions, _shuffler, startingInfantryCalculator);
 
-            _player1 = Make.Player.Name("player 1").Build();
-            _player2 = Make.Player.Name("player 2").Build();
-            _player3 = Make.Player.Name("player 3").Build();
+            _player1 = new PlayerBuilder().Name("player 1").Build();
+            _player2 = new PlayerBuilder().Name("player 2").Build();
+            _player3 = new PlayerBuilder().Name("player 3").Build();
             _players = new List<IPlayer>();
 
             _shuffler

@@ -27,8 +27,8 @@ namespace Tests.FlamingStrike.GameEngine.Play
         {
             public Uses_correct_number_of_dices_with_respect_to_number_of_armies()
             {
-                _dice.Roll(Arg.Any<int>(), Arg.Any<int>()).ReturnsForAnyArgs(Make.DiceResult.Build());
-                _armiesLostCalculator.Calculate(null, null).ReturnsForAnyArgs(Make.ArmiesLost.Build());
+                _dice.Roll(Arg.Any<int>(), Arg.Any<int>()).ReturnsForAnyArgs(new DiceResultBuilder().Build());
+                _armiesLostCalculator.Calculate(null, null).ReturnsForAnyArgs(new ArmiesLostBuilder().Build());
             }
 
             private class NumberOfAttackingDicesCasesAttribute : DataAttribute
@@ -45,8 +45,8 @@ namespace Tests.FlamingStrike.GameEngine.Play
             [NumberOfAttackingDicesCases]
             public void Attacker_attacks_with_a_maximum_of_three_armies(int armiesInAttackingTerritory, int expectedNumberOfAttackingDices)
             {
-                var attackingTerritory = Make.Territory.Armies(armiesInAttackingTerritory).Build();
-                var defendingTerritory = Make.Territory.Build();
+                var attackingTerritory = new TerritoryBuilder().Armies(armiesInAttackingTerritory).Build();
+                var defendingTerritory = new TerritoryBuilder().Build();
 
                 _sut.Attack(attackingTerritory, defendingTerritory);
 
@@ -67,8 +67,8 @@ namespace Tests.FlamingStrike.GameEngine.Play
             [NumberOfDefendingDicesCases]
             public void Defender_defends_with_a_maximum_of_two_armies(int armiesInDefendingTerritory, int expectedNumberOfDefendingDices)
             {
-                var attackingTerritory = Make.Territory.Build();
-                var defendingTerritory = Make.Territory.Armies(armiesInDefendingTerritory).Build();
+                var attackingTerritory = new TerritoryBuilder().Build();
+                var defendingTerritory = new TerritoryBuilder().Armies(armiesInDefendingTerritory).Build();
 
                 _sut.Attack(attackingTerritory, defendingTerritory);
 
@@ -81,8 +81,8 @@ namespace Tests.FlamingStrike.GameEngine.Play
             [Fact]
             public void Attacker_loses_one()
             {
-                var attackingTerritory = Make.Territory.Armies(3).Build();
-                var defendingTerritory = Make.Territory.Armies(1).Build();
+                var attackingTerritory = new TerritoryBuilder().Armies(3).Build();
+                var defendingTerritory = new TerritoryBuilder().Armies(1).Build();
                 var attackerLosesOne = new ArmiesLost(1, 0);
                 SetArmiesLost(2, 1, attackerLosesOne);
 
@@ -99,8 +99,8 @@ namespace Tests.FlamingStrike.GameEngine.Play
             [Fact]
             public void Defender_loses_one()
             {
-                var attackingTerritory = Make.Territory.Armies(2).Build();
-                var defendingTerritory = Make.Territory.Armies(2).Build();
+                var attackingTerritory = new TerritoryBuilder().Armies(2).Build();
+                var defendingTerritory = new TerritoryBuilder().Armies(2).Build();
                 var defenderLosesOne = new ArmiesLost(0, 1);
                 SetArmiesLost(1, 2, defenderLosesOne);
 
@@ -117,8 +117,8 @@ namespace Tests.FlamingStrike.GameEngine.Play
             [Fact]
             public void Its_a_draw()
             {
-                var attackingTerritory = Make.Territory.Armies(4).Build();
-                var defendingTerritory = Make.Territory.Armies(2).Build();
+                var attackingTerritory = new TerritoryBuilder().Armies(4).Build();
+                var defendingTerritory = new TerritoryBuilder().Armies(2).Build();
                 var draw = new ArmiesLost(1, 1);
                 SetArmiesLost(3, 2, draw);
 
@@ -135,8 +135,8 @@ namespace Tests.FlamingStrike.GameEngine.Play
             [Fact]
             public void Defender_is_defeated_and_occupied()
             {
-                var attackingTerritory = Make.Territory.Armies(2).Build();
-                var defendingTerritory = Make.Territory.Armies(1).Build();
+                var attackingTerritory = new TerritoryBuilder().Armies(2).Build();
+                var defendingTerritory = new TerritoryBuilder().Armies(1).Build();
                 var defenderLosesOne = new ArmiesLost(0, 1);
                 SetArmiesLost(1, 1, defenderLosesOne);
 

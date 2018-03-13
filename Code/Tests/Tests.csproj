@@ -137,7 +137,6 @@
     <Compile Include="FlamingStrike.UI.WPF\MainGameViewModelDecorator.cs" />
     <Compile Include="FlamingStrike.UI.WPF\RegionModelFactoryTests.cs" />
     <Compile Include="FlamingStrike.GameEngine\Builders\RegionBuilder.cs" />
-    <Compile Include="FlamingStrike.GameEngine\Builders\Make.cs" />
     <Compile Include="FlamingStrike.UI.WPF\Interaction\SelectAttackingRegionInteractionStateTests.cs" />
     <Compile Include="SpecBase.cs" />
     <Compile Include="FlamingStrike.UI.WPF\GameplaySpec.cs" />

@@ -34,7 +34,7 @@ namespace Tests.FlamingStrike.GameEngine.Play.GameStates
             territory.Player.Returns(currentPlayer);
             anotherTerritory.Region.Returns(_anotherRegion);
 
-            _gameData = Make.GameData
+            _gameData = new GameDataBuilder()
                 .CurrentPlayer(currentPlayer)
                 .Territories(territory, anotherTerritory)
                 .Build();

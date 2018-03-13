@@ -28,8 +28,8 @@ namespace Tests.FlamingStrike.GameEngine.Setup
             _startingInfantryCalculator = Substitute.For<IStartingInfantryCalculator>();
             _shuffler = Substitute.For<IShuffler>();
 
-            _player1 = Make.Player.Name("player 1").Build();
-            _player2 = Make.Player.Name("player 2").Build();
+            _player1 = new PlayerBuilder().Name("player 1").Build();
+            _player2 = new PlayerBuilder().Name("player 2").Build();
 
             _shuffler.Shuffle(_players).Returns(new List<IPlayer> { _player1, _player2 });
 

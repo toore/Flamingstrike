@@ -25,7 +25,7 @@ namespace Tests.FlamingStrike.GameEngine.Play.GameStates
             _attackingRegion = Substitute.For<IRegion>();
             _occupiedRegion = Substitute.For<IRegion>();
 
-            _gameData = Make.GameData.Build();
+            _gameData = new GameDataBuilder().Build();
         }
 
         private SendArmiesToOccupyGameState Sut => new SendArmiesToOccupyGameState(

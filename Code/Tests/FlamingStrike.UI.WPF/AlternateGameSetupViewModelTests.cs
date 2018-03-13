@@ -56,7 +56,7 @@ namespace Tests.FlamingStrike.UI.WPF
             _worldMapViewModelFactory.Create(null)
                 .ReturnsForAnyArgs(expectedWorldMapViewModel);
             var territories = new List<ITerritory>();
-            var enabledRegions = new List<IRegion> { Make.Region.Build() };
+            var enabledRegions = new List<IRegion> { new RegionBuilder().Build() };
             var placeArmyRegionSelector = Substitute.For<IPlaceArmyRegionSelector>();
             placeArmyRegionSelector.Territories.Returns(territories);
             placeArmyRegionSelector.SelectableRegions.Returns(enabledRegions);
@@ -88,7 +88,7 @@ namespace Tests.FlamingStrike.UI.WPF
             var expectedPlayer = Substitute.For<IPlayer>();
             expectedPlayer.Name.Returns("player name");
             placeArmyRegionSelector.Player.Returns(expectedPlayer);
-            _playerUiDataRepository.Get(null).ReturnsForAnyArgs(Make.PlayerUiData.Build());
+            _playerUiDataRepository.Get(null).ReturnsForAnyArgs(new PlayerUiDataBuilder().Build());
 
             var sut = Create();
             var monitor = sut.Monitor();

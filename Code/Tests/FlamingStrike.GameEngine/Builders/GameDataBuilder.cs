@@ -9,7 +9,7 @@ namespace Tests.FlamingStrike.GameEngine.Builders
         private IReadOnlyList<ITerritory> _territories;
         private readonly List<IPlayerGameData> _playerGameDatas = new List<IPlayerGameData>();
         private IPlayer _currentPlayer;
-        private IDeck _deck = Make.Deck.Build();
+        private IDeck _deck = new DeckBuilder().Build();
 
         public GameData Build()
         {

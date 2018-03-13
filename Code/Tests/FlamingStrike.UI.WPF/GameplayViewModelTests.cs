@@ -50,15 +50,15 @@ namespace Tests.FlamingStrike.UI.WPF
                 _eventAggregator,
                 playerStatusViewModelFactory);
 
-            _currentPlayer = Make.Player.Name("current player").Build();
+            _currentPlayer = new PlayerBuilder().Name("current player").Build();
             _currentPlayerColor = Color.FromArgb(1, 2, 3, 4);
-            _playerUiDataRepository.Get(_currentPlayer).Returns(Make.PlayerUiData.Color(_currentPlayerColor).Build());
-            var firstPlayerGameData = new PlayerGameData(Make.Player.Name("player 1").Build(), new List<ICard>());
-            var secondPlayerGameData = new PlayerGameData(Make.Player.Name("player 2").Build(), new List<ICard>());
-            var thirdPlayerGameData = new PlayerGameData(Make.Player.Name("player 3").Build(), new List<ICard>());
-            var firstPlayerStatusViewModel = Make.PlayerStatusViewModel.Build();
-            var secondPlayerStatusViewModel = Make.PlayerStatusViewModel.Build();
-            var thirdPlayerStatusViewModel = Make.PlayerStatusViewModel.Build();
+            _playerUiDataRepository.Get(_currentPlayer).Returns(new PlayerUiDataBuilder().Color(_currentPlayerColor).Build());
+            var firstPlayerGameData = new PlayerGameData(new PlayerBuilder().Name("player 1").Build(), new List<ICard>());
+            var secondPlayerGameData = new PlayerGameData(new PlayerBuilder().Name("player 2").Build(), new List<ICard>());
+            var thirdPlayerGameData = new PlayerGameData(new PlayerBuilder().Name("player 3").Build(), new List<ICard>());
+            var firstPlayerStatusViewModel = new PlayerStatusViewModelBuilder().Build();
+            var secondPlayerStatusViewModel = new PlayerStatusViewModelBuilder().Build();
+            var thirdPlayerStatusViewModel = new PlayerStatusViewModelBuilder().Build();
             playerStatusViewModelFactory.Create(firstPlayerGameData).Returns(firstPlayerStatusViewModel);
             playerStatusViewModelFactory.Create(secondPlayerGameData).Returns(secondPlayerStatusViewModel);
             playerStatusViewModelFactory.Create(thirdPlayerGameData).Returns(thirdPlayerStatusViewModel);
@@ -101,7 +101,7 @@ namespace Tests.FlamingStrike.UI.WPF
         public void Drafting_armies_first_time_raises_property_changed()
         {
             _playerUiDataRepository.Get(null)
-                .ReturnsForAnyArgs(Make.PlayerUiData.Color(Color.FromArgb(1, 2, 3, 4)).Build());
+                .ReturnsForAnyArgs(new PlayerUiDataBuilder().Color(Color.FromArgb(1, 2, 3, 4)).Build());
 
             var monitor = _sut.Monitor();
             _sut.DraftArmies(Substitute.For<IDraftArmiesPhase>());
@@ -336,7 +336,7 @@ namespace Tests.FlamingStrike.UI.WPF
         public void Game_over_displays_dialog()
         {
             var gameOverState = Substitute.For<IGameOverState>();
-            gameOverState.Winner.Returns(Make.Player.Name("winner").Build());
+            gameOverState.Winner.Returns(new PlayerBuilder().Name("winner").Build());
 
             _sut.GameOver(gameOverState);
 
