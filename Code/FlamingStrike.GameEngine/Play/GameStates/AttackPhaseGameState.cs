@@ -24,7 +24,7 @@ namespace FlamingStrike.GameEngine.Play.GameStates
         private readonly IAttacker _attacker;
         private readonly IFortifier _fortifier;
         private readonly IPlayerEliminationRules _playerEliminationRules;
-        private TurnConqueringAchievement _turnConqueringAchievement;
+        private ConqueringAchievement _conqueringAchievement;
 
         public AttackPhaseStateGameState(
             GameData gameData,
@@ -32,14 +32,14 @@ namespace FlamingStrike.GameEngine.Play.GameStates
             IAttacker attacker,
             IFortifier fortifier,
             IPlayerEliminationRules playerEliminationRules,
-            TurnConqueringAchievement turnConqueringAchievement)
+            ConqueringAchievement conqueringAchievement)
         {
             _gameData = gameData;
             _gamePhaseConductor = gamePhaseConductor;
             _attacker = attacker;
             _fortifier = fortifier;
             _playerEliminationRules = playerEliminationRules;
-            _turnConqueringAchievement = turnConqueringAchievement;
+            _conqueringAchievement = conqueringAchievement;
         }
 
         public IPlayer Player => _gameData.CurrentPlayer;
@@ -89,7 +89,7 @@ namespace FlamingStrike.GameEngine.Play.GameStates
 
         private void DefendingArmyIsEliminated(IPlayer defeatedPlayer, IRegion attackingRegion, IRegion defeatedRegion, IReadOnlyList<ITerritory> updatedTerritories)
         {
-            _turnConqueringAchievement = TurnConqueringAchievement.SuccessfullyConqueredAtLeastOneTerritory;
+            _conqueringAchievement = ConqueringAchievement.SuccessfullyConqueredAtLeastOneTerritory;
 
             if (_playerEliminationRules.IsOnlyOnePlayerLeftInTheGame(updatedTerritories))
             {
@@ -163,7 +163,7 @@ namespace FlamingStrike.GameEngine.Play.GameStates
         {
             var updatedGameData = new GameData(updatedTerritories, updatedPlayerGameDatas, _gameData.CurrentPlayer, _gameData.Deck);
 
-            _gamePhaseConductor.ContinueWithAttackPhase(_turnConqueringAchievement, updatedGameData);
+            _gamePhaseConductor.ContinueWithAttackPhase(_conqueringAchievement, updatedGameData);
         }
 
         public bool CanFortify(IRegion sourceRegion, IRegion destinationRegion)
@@ -224,7 +224,7 @@ namespace FlamingStrike.GameEngine.Play.GameStates
 
         private bool ShouldCardBeAwarded()
         {
-            return _turnConqueringAchievement == TurnConqueringAchievement.SuccessfullyConqueredAtLeastOneTerritory;
+            return _conqueringAchievement == ConqueringAchievement.SuccessfullyConqueredAtLeastOneTerritory;
         }
 
         private PlayerGameData AddCardToPlayer(IPlayerGameData playerGameData, ICard card)

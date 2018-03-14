@@ -22,7 +22,7 @@ namespace Tests.FlamingStrike.GameEngine.Play.GameStates
         private readonly IAttacker _attacker;
         private readonly IFortifier _fortifier;
         private readonly IPlayerEliminationRules _playerEliminationRules;
-        private TurnConqueringAchievement _turnConqueringAchievement = TurnConqueringAchievement.NoTerritoryHasBeenConquered;
+        private ConqueringAchievement _conqueringAchievement = ConqueringAchievement.NoTerritoryHasBeenConquered;
         private readonly ITerritory _territory;
         private readonly IRegion _region;
         private readonly IRegion _anotherRegion;
@@ -64,7 +64,7 @@ namespace Tests.FlamingStrike.GameEngine.Play.GameStates
             _attacker,
             _fortifier,
             _playerEliminationRules,
-            _turnConqueringAchievement);
+            _conqueringAchievement);
 
         [Fact]
         public void Can_attack()
@@ -111,7 +111,7 @@ namespace Tests.FlamingStrike.GameEngine.Play.GameStates
 
             Sut.Attack(_region, _anotherRegion);
 
-            _gamePhaseConductor.Received().ContinueWithAttackPhase(TurnConqueringAchievement.NoTerritoryHasBeenConquered, Arg.Is<GameData>(x => x.Territories.IsSameOrEqualTo(expectedUpdatedTerritories)));
+            _gamePhaseConductor.Received().ContinueWithAttackPhase(ConqueringAchievement.NoTerritoryHasBeenConquered, Arg.Is<GameData>(x => x.Territories.IsSameOrEqualTo(expectedUpdatedTerritories)));
         }
 
         [Fact]
@@ -177,7 +177,7 @@ namespace Tests.FlamingStrike.GameEngine.Play.GameStates
             _gamePhaseConductor.WaitForTurnToEnd(Arg.Do<GameData>(x => updatedGameData = x));
             var topDeckCard = Substitute.For<ICard>();
             _deck.DrawCard().Returns(new DrawCard(topDeckCard, new DeckBuilder().Build()));
-            _turnConqueringAchievement = TurnConqueringAchievement.SuccessfullyConqueredAtLeastOneTerritory;
+            _conqueringAchievement = ConqueringAchievement.SuccessfullyConqueredAtLeastOneTerritory;
 
             Sut.Fortify(_region, _anotherRegion, 1);
 
@@ -213,7 +213,7 @@ namespace Tests.FlamingStrike.GameEngine.Play.GameStates
             _gamePhaseConductor.PassTurnToNextPlayer(Arg.Do<GameData>(x => updatedGameData = x));
             var topDeckCard = Substitute.For<ICard>();
             _deck.DrawCard().Returns(new DrawCard(topDeckCard, null));
-            _turnConqueringAchievement = TurnConqueringAchievement.SuccessfullyConqueredAtLeastOneTerritory;
+            _conqueringAchievement = ConqueringAchievement.SuccessfullyConqueredAtLeastOneTerritory;
 
             Sut.EndTurn();
 
@@ -235,7 +235,7 @@ namespace Tests.FlamingStrike.GameEngine.Play.GameStates
         public void Player_should_not_receive_card_after_attack()
         {
             GameData updatedGameData = null;
-            _gamePhaseConductor.ContinueWithAttackPhase(TurnConqueringAchievement.SuccessfullyConqueredAtLeastOneTerritory, Arg.Do<GameData>(x => updatedGameData = x));
+            _gamePhaseConductor.ContinueWithAttackPhase(ConqueringAchievement.SuccessfullyConqueredAtLeastOneTerritory, Arg.Do<GameData>(x => updatedGameData = x));
             var updatedTerritories = new List<ITerritory> { _territory };
             var attackOutcome = new AttackOutcome(updatedTerritories, DefendingArmyAvailability.IsEliminated);
             _attacker.Attack(
@@ -254,7 +254,7 @@ namespace Tests.FlamingStrike.GameEngine.Play.GameStates
         {
             GameData updatedGameData = null;
             _gamePhaseConductor.ContinueWithAttackPhase(
-                TurnConqueringAchievement.SuccessfullyConqueredAtLeastOneTerritory,
+                ConqueringAchievement.SuccessfullyConqueredAtLeastOneTerritory,
                 Arg.Do<GameData>(x => updatedGameData = x));
             var card = Substitute.For<ICard>();
             var anotherCard = Substitute.For<ICard>();

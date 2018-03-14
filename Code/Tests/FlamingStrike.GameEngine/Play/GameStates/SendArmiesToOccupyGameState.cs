@@ -47,7 +47,7 @@ namespace Tests.FlamingStrike.GameEngine.Play.GameStates
             Sut.SendAdditionalArmiesToOccupy(1);
 
             _gamePhaseConductor.Received().ContinueWithAttackPhase(
-                TurnConqueringAchievement.SuccessfullyConqueredAtLeastOneTerritory,
+                ConqueringAchievement.SuccessfullyConqueredAtLeastOneTerritory,
                 Arg.Is<GameData>(x => x.Territories.IsSameOrEqualTo(expectedUpdatedTerritories)));
         }
     }

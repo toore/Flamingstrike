@@ -34,7 +34,7 @@ namespace FlamingStrike.GameEngine.Play
     public interface IGamePhaseConductor
     {
         void ContinueToDraftArmies(int numberOfArmiesToDraft, GameData gameData);
-        void ContinueWithAttackPhase(TurnConqueringAchievement turnConqueringAchievement, GameData gameData);
+        void ContinueWithAttackPhase(ConqueringAchievement conqueringAchievement, GameData gameData);
         void SendArmiesToOccupy(IRegion sourceRegion, IRegion destinationRegion, GameData gameData);
         void WaitForTurnToEnd(GameData gameData);
         void PassTurnToNextPlayer(GameData gameData);
@@ -84,9 +84,9 @@ namespace FlamingStrike.GameEngine.Play
             _gameObserver.DraftArmies(draftArmiesPhase);
         }
 
-        public void ContinueWithAttackPhase(TurnConqueringAchievement turnConqueringAchievement, GameData gameData)
+        public void ContinueWithAttackPhase(ConqueringAchievement conqueringAchievement, GameData gameData)
         {
-            var attackPhaseGameState = _gameStateFactory.CreateAttackPhaseGameState(gameData, this, turnConqueringAchievement);
+            var attackPhaseGameState = _gameStateFactory.CreateAttackPhaseGameState(gameData, this, conqueringAchievement);
 
             var regionsThatCanBeSourceForAttackOrFortification = gameData.Territories
                 .Where(x => IsCurrentPlayerOccupyingRegion(gameData, x.Region))

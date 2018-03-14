@@ -68,7 +68,7 @@ namespace FlamingStrike.GameEngine.Play.GameStates
             }
             else
             {
-                _gamePhaseConductor.ContinueWithAttackPhase(TurnConqueringAchievement.NoTerritoryHasBeenConquered, updatedGameData);
+                _gamePhaseConductor.ContinueWithAttackPhase(ConqueringAchievement.NoTerritoryHasBeenConquered, updatedGameData);
             }
         }
     }

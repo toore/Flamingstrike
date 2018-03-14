@@ -88,7 +88,7 @@ namespace Tests.FlamingStrike.GameEngine.Play.GameStates
             _numberOfArmiesToDraft = 2;
             Sut.PlaceDraftArmies(_region, 2);
 
-            _gamePhaseConductor.Received().ContinueWithAttackPhase(TurnConqueringAchievement.NoTerritoryHasBeenConquered, Arg.Is<GameData>(x => x.Territories.IsSameOrEqualTo(expectedUpdatedTerritories)));
+            _gamePhaseConductor.Received().ContinueWithAttackPhase(ConqueringAchievement.NoTerritoryHasBeenConquered, Arg.Is<GameData>(x => x.Territories.IsSameOrEqualTo(expectedUpdatedTerritories)));
         }
 
         [Fact]

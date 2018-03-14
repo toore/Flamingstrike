@@ -3,7 +3,7 @@ namespace FlamingStrike.GameEngine.Play.GameStates
     public interface IGameStateFactory
     {
         IDraftArmiesPhaseGameState CreateDraftArmiesGameState(GameData gameData, IGamePhaseConductor gamePhaseConductor, int numberOfArmiesToDraft);
-        IAttackPhaseGameState CreateAttackPhaseGameState(GameData gameData, IGamePhaseConductor gamePhaseConductor, TurnConqueringAchievement turnConqueringAchievement);
+        IAttackPhaseGameState CreateAttackPhaseGameState(GameData gameData, IGamePhaseConductor gamePhaseConductor, ConqueringAchievement conqueringAchievement);
         ISendArmiesToOccupyGameState CreateSendArmiesToOccupyGameState(GameData gameData, IGamePhaseConductor gamePhaseConductor, IRegion attackingRegion, IRegion occupiedRegion);
         IEndTurnGameState CreateEndTurnGameState(GameData gameData, IGamePhaseConductor gamePhaseConductor);
         IGameOverGameState CreateGameOverGameState(IPlayer winner);
@@ -36,9 +36,9 @@ namespace FlamingStrike.GameEngine.Play.GameStates
             return new DraftArmiesPhaseGameState(gameData, gamePhaseConductor, _armyDrafter, numberOfArmiesToDraft);
         }
 
-        public IAttackPhaseGameState CreateAttackPhaseGameState(GameData gameData, IGamePhaseConductor gamePhaseConductor, TurnConqueringAchievement turnConqueringAchievement)
+        public IAttackPhaseGameState CreateAttackPhaseGameState(GameData gameData, IGamePhaseConductor gamePhaseConductor, ConqueringAchievement conqueringAchievement)
         {
-            return new AttackPhaseStateGameState(gameData, gamePhaseConductor, _attacker, _fortifier, _playerEliminationRules, turnConqueringAchievement);
+            return new AttackPhaseStateGameState(gameData, gamePhaseConductor, _attacker, _fortifier, _playerEliminationRules, conqueringAchievement);
         }
 
         public ISendArmiesToOccupyGameState CreateSendArmiesToOccupyGameState(GameData gameData, IGamePhaseConductor gamePhaseConductor, IRegion attackingRegion, IRegion occupiedRegion)

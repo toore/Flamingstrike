@@ -44,7 +44,7 @@ namespace FlamingStrike.GameEngine.Play.GameStates
             var updatedGameData = new GameData(updatedTerritories, _gameData.PlayerGameDatas, _gameData.CurrentPlayer, _gameData.Deck);
 
             _gamePhaseConductor.ContinueWithAttackPhase(
-                TurnConqueringAchievement.SuccessfullyConqueredAtLeastOneTerritory,
+                ConqueringAchievement.SuccessfullyConqueredAtLeastOneTerritory,
                 updatedGameData);
         }
     }

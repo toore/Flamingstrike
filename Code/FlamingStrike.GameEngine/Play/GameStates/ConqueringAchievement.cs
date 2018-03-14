@@ -1,6 +1,6 @@
 namespace FlamingStrike.GameEngine.Play.GameStates
 {
-    public enum TurnConqueringAchievement
+    public enum ConqueringAchievement
     {
         NoTerritoryHasBeenConquered,
         SuccessfullyConqueredAtLeastOneTerritory
