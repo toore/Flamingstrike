@@ -46,7 +46,7 @@ namespace FlamingStrike.GameEngine.Play
 
         private static bool HasAttackerEnoughArmiesToPerformAttack(ITerritory attackingTerritory)
         {
-            return attackingTerritory.GetNumberOfArmiesThatCanBeUsedInAnAttack() > 0;
+            return attackingTerritory.GetNumberOfArmiesThatAreAvailableForAnAttack() > 0;
         }
 
         public AttackOutcome Attack(IReadOnlyList<ITerritory> territories, IRegion attackingRegion, IRegion defendingRegion)

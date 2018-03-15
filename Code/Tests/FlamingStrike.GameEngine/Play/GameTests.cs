@@ -10,6 +10,7 @@ namespace Tests.FlamingStrike.GameEngine.Play
     public class GameTests
     {
         private readonly GameFactory _factory;
+        private readonly IGamePhaseFactory _gamePhaseFactory;
         private readonly IGameStateFactory _gameStateFactory;
         private readonly IArmyDraftCalculator _armyDraftCalculator;
         private readonly IDeckFactory _deckFactory;
@@ -18,12 +19,13 @@ namespace Tests.FlamingStrike.GameEngine.Play
 
         public GameTests()
         {
+            _gamePhaseFactory = Substitute.For<IGamePhaseFactory>();
             _gameStateFactory = Substitute.For<IGameStateFactory>();
             _armyDraftCalculator = Substitute.For<IArmyDraftCalculator>();
             _deckFactory = Substitute.For<IDeckFactory>();
             _armyDrafter = Substitute.For<IArmyDrafter>();
 
-            _factory = new GameFactory(_gameStateFactory, _armyDraftCalculator, _deckFactory, _armyDrafter);
+            _factory = new GameFactory(_gamePhaseFactory, _gameStateFactory, _armyDraftCalculator, _deckFactory);
 
             _gameObserver = Substitute.For<IGameObserver>();
         }

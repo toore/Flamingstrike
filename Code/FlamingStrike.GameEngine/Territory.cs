@@ -8,7 +8,8 @@ namespace FlamingStrike.GameEngine
         IPlayer Player { get; }
         int Armies { get; }
 
-        int GetNumberOfArmiesThatCanBeUsedInAnAttack();
+        int GetNumberOfArmiesThatAreAvailableForAnAttack();
+        int GetNumberOfArmiesUsedInAnAttack();
         int GetNumberOfArmiesUsedAsDefence();
         int GetNumberOfArmiesThatCanFortifyAnotherTerritory();
         int GetNumberOfArmiesThatCanBeSentToOccupy();
@@ -16,6 +17,8 @@ namespace FlamingStrike.GameEngine
 
     public class Territory : ITerritory
     {
+        private const int MaxNumberOfAttackingArmies = 3;
+
         public Territory(IRegion region, IPlayer player, int armies)
         {
             if (armies <= 0)
@@ -32,9 +35,14 @@ namespace FlamingStrike.GameEngine
         public IPlayer Player { get; }
         public int Armies { get; }
 
-        public int GetNumberOfArmiesThatCanBeUsedInAnAttack()
+        public int GetNumberOfArmiesThatAreAvailableForAnAttack()
         {
             return Math.Max(Armies - 1, 0);
+        }
+
+        public int GetNumberOfArmiesUsedInAnAttack()
+        {
+            return Math.Min(MaxNumberOfAttackingArmies, GetNumberOfArmiesThatAreAvailableForAnAttack());
         }
 
         public int GetNumberOfArmiesUsedAsDefence()

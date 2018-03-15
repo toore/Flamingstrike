@@ -45,58 +45,55 @@ namespace FlamingStrike.GameEngine.Play
     {
         private readonly IGameObserver _gameObserver;
         private readonly IGameStateFactory _gameStateFactory;
+        private readonly IGamePhaseFactory _gamePhaseFactory;
         private readonly IArmyDraftCalculator _armyDraftCalculator;
 
         public Game(
             IGameObserver gameObserver,
             IGameStateFactory gameStateFactory,
+            IGamePhaseFactory gamePhaseFactory,
             IArmyDraftCalculator armyDraftCalculator,
             IDeckFactory deckFactory,
             IReadOnlyList<ITerritory> territories,
             IReadOnlyList<IPlayer> players)
-            IArmyDrafter armyDrafter,
         {
             _gameObserver = gameObserver;
             _gameStateFactory = gameStateFactory;
             _armyDraftCalculator = armyDraftCalculator;
+            _gamePhaseFactory = gamePhaseFactory;
 
             var playerGameDatas = players.Select(player => new PlayerGameData(player, new List<ICard>())).ToList();
             var currentPlayer = players.First();
             var gameData = new GameData(territories, playerGameDatas, currentPlayer, deckFactory.Create());
             var numberOfArmiesToDraft = _armyDraftCalculator.Calculate(currentPlayer, territories);
-            
+
             ContinueToDraftArmies(numberOfArmiesToDraft, gameData);
         }
 
         public void ContinueToDraftArmies(int numberOfArmiesToDraft, GameData gameData)
         {
-            var draftArmiesPhase = new DraftArmiesPhase(
+            var draftArmiesPhase = _gamePhaseFactory.CreateDraftArmiesPhase(
                 this,
                 gameData.CurrentPlayer,
                 gameData.Territories,
                 gameData.PlayerGameDatas,
                 gameData.Deck,
-                numberOfArmiesToDraft,
-                _armyDrafter);
+                numberOfArmiesToDraft);
 
             _gameObserver.DraftArmies(draftArmiesPhase);
         }
 
         public void ContinueWithAttackPhase(ConqueringAchievement conqueringAchievement, GameData gameData)
         {
-            var attackPhaseGameState = _gameStateFactory.CreateAttackPhaseGameState(gameData, this, conqueringAchievement);
+            var attackPhase = _gamePhaseFactory.CreateAttackPhase(
+                this,
+                gameData.CurrentPlayer,
+                gameData.Territories,
+                gameData.PlayerGameDatas,
+                gameData.Deck,
+                conqueringAchievement);
 
-            var regionsThatCanBeSourceForAttackOrFortification = gameData.Territories
-                .Where(x => IsCurrentPlayerOccupyingRegion(gameData, x.Region))
-                .Select(x => x.Region).ToList();
-
-            var attackPhase = new AttackPhase(attackPhaseGameState.Player, attackPhaseGameState.Territories, attackPhaseGameState.Players, attackPhaseGameState, regionsThatCanBeSourceForAttackOrFortification);
             _gameObserver.Attack(attackPhase);
-        }
-
-        private static bool IsCurrentPlayerOccupyingRegion(GameData gameData, IRegion region)
-        {
-            return gameData.CurrentPlayer == gameData.Territories.Single(x => x.Region == region).Player;
         }
 
         public void WaitForTurnToEnd(GameData gameData)

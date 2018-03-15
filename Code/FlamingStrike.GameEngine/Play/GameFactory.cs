@@ -10,21 +10,21 @@ namespace FlamingStrike.GameEngine.Play
 
     public class GameFactory : IGameFactory
     {
+        private readonly IGamePhaseFactory _gamePhaseFactory;
         private readonly IGameStateFactory _gameStateFactory;
         private readonly IArmyDraftCalculator _armyDraftCalculator;
         private readonly IDeckFactory _deckFactory;
-        private readonly IArmyDrafter _armyDrafter;
 
         public GameFactory(
+            IGamePhaseFactory gamePhaseFactory,
             IGameStateFactory gameStateFactory,
             IArmyDraftCalculator armyDraftCalculator,
-            IDeckFactory deckFactory,
-            IArmyDrafter armyDrafter)
+            IDeckFactory deckFactory)
         {
             _gameStateFactory = gameStateFactory;
             _armyDraftCalculator = armyDraftCalculator;
             _deckFactory = deckFactory;
-            _armyDrafter = armyDrafter;
+            _gamePhaseFactory = gamePhaseFactory;
         }
 
         public IGame Create(IGameObserver gameObserver, IGamePlaySetup gamePlaySetup)
@@ -32,11 +32,7 @@ namespace FlamingStrike.GameEngine.Play
             return new Game(
                 gameObserver,
                 _gameStateFactory,
-                _armyDraftCalculator,
-                _deckFactory,
-                gamePlaySetup.Territories,
-                gamePlaySetup.Players,
-                _armyDrafter);
+                _gamePhaseFactory, _armyDraftCalculator, _deckFactory, gamePlaySetup.Territories, gamePlaySetup.Players);
         }
     }
 }

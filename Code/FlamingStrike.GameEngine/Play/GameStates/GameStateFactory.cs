@@ -2,7 +2,6 @@ namespace FlamingStrike.GameEngine.Play.GameStates
 {
     public interface IGameStateFactory
     {
-        IAttackPhaseGameState CreateAttackPhaseGameState(GameData gameData, IGamePhaseConductor gamePhaseConductor, ConqueringAchievement conqueringAchievement);
         ISendArmiesToOccupyGameState CreateSendArmiesToOccupyGameState(GameData gameData, IGamePhaseConductor gamePhaseConductor, IRegion attackingRegion, IRegion occupiedRegion);
         IEndTurnGameState CreateEndTurnGameState(GameData gameData, IGamePhaseConductor gamePhaseConductor);
         IGameOverGameState CreateGameOverGameState(IPlayer winner);
@@ -28,11 +27,6 @@ namespace FlamingStrike.GameEngine.Play.GameStates
             _attacker = attacker;
             _territoryOccupier = territoryOccupier;
             _fortifier = fortifier;
-        }
-
-        public IAttackPhaseGameState CreateAttackPhaseGameState(GameData gameData, IGamePhaseConductor gamePhaseConductor, ConqueringAchievement conqueringAchievement)
-        {
-            return new AttackPhaseStateGameState(gameData, gamePhaseConductor, _attacker, _fortifier, _playerEliminationRules, conqueringAchievement);
         }
 
         public ISendArmiesToOccupyGameState CreateSendArmiesToOccupyGameState(GameData gameData, IGamePhaseConductor gamePhaseConductor, IRegion attackingRegion, IRegion occupiedRegion)

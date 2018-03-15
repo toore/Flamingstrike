@@ -42,7 +42,7 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay.Interaction
 
         public override int DefaultNumberOfUserSelectedArmies => MaxNumberOfUserSelectableArmies;
 
-        public override int MaxNumberOfUserSelectableArmies => _attackPhase.GetMaxNumberOfAttackingArmies(_selectedRegion);
+        public override int MaxNumberOfUserSelectableArmies => GetSelectedTerritory().GetNumberOfArmiesUsedInAnAttack();
 
         public override void OnRegionClicked(IRegion region)
         {
@@ -59,6 +59,11 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay.Interaction
         public override void EndTurn()
         {
             _attackPhase.EndTurn();
+        }
+
+        private ITerritory GetSelectedTerritory()
+        {
+            return _attackPhase.Territories.Single(x => x.Region == _selectedRegion);
         }
 
         private bool CanDeselect(IRegion region)

@@ -68,9 +68,10 @@ namespace FlamingStrike.UI.WPF
             var territoryOccupier = new TerritoryOccupier();
             var fortifier = new Fortifier();
             var attacker = new Attacker(battle);
-            var gameRules = new PlayerEliminationRules();
-            var gameStateFactory = new GameStateFactory(gameRules, armyDrafter, attacker, territoryOccupier, fortifier);
+            var playerEliminationRules = new PlayerEliminationRules();
+            var gameStateFactory = new GameStateFactory(playerEliminationRules, armyDrafter, attacker, territoryOccupier, fortifier);
             var armyDraftCalculator = new ArmyDraftCalculator(continents);
+            var gamePhaseFactory = new GamePhaseFactory(armyDrafter, attacker, fortifier, playerEliminationRules);
 
             AlternateGameSetupViewModelFactory = new AlternateGameSetupViewModelFactory(
                 worldMapViewModelFactory,
@@ -86,7 +87,7 @@ namespace FlamingStrike.UI.WPF
 
             AlternateGameSetupFactory = new AlternateGameSetupFactory(regions, shuffle, startingInfantryCalculator);
 
-            GameFactory = new GameFactory(gameStateFactory, armyDraftCalculator, deckFactory, armyDrafter);
+            GameFactory = new GameFactory(gamePhaseFactory, gameStateFactory, armyDraftCalculator, deckFactory);
         }
     }
 

@@ -1,4 +1,4 @@
-namespace FlamingStrike.GameEngine.Play.GameStates
+namespace FlamingStrike.GameEngine.Play
 {
     public enum ConqueringAchievement
     {

@@ -22,7 +22,7 @@ namespace FlamingStrike.GameEngine.Play
 
         public IAttackResult Attack(ITerritory attackingTerritory, ITerritory defendingTerritory)
         {
-            var attackingArmies = Math.Min(attackingTerritory.GetNumberOfArmiesThatCanBeUsedInAnAttack(), MaxNumberOfAttackingArmies);
+            var attackingArmies = Math.Min(attackingTerritory.GetNumberOfArmiesThatAreAvailableForAnAttack(), MaxNumberOfAttackingArmies);
             var defendingArmies = Math.Min(defendingTerritory.GetNumberOfArmiesUsedAsDefence(), MaxNumberOfDefendingArmies);
 
             var dices = _dice.Roll(attackingArmies, defendingArmies);
