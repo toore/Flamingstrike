@@ -109,8 +109,8 @@
     <Compile Include="FlamingStrike.GameEngine\Play\PlayerGameDataBuilder.cs" />
     <Compile Include="FlamingStrike.UI.WPF\PlayerStatusViewModelBuilder.cs" />
     <Compile Include="FlamingStrike.UI.WPF\PlayerUiDataBuilder.cs" />
-    <Compile Include="FlamingStrike.GameEngine\Play\GameStates\AttackPhaseStateGameStateTests.cs" />
-    <Compile Include="FlamingStrike.GameEngine\Play\GameStates\DraftArmiesPhaseGameStateTests.cs" />
+    <Compile Include="FlamingStrike.GameEngine\Play\AttackPhaseStateGameStateTests.cs" />
+    <Compile Include="FlamingStrike.GameEngine\Play\DraftArmiesPhaseGameStateTests.cs" />
     <Compile Include="FlamingStrike.GameEngine\Play\BattleTests.cs" />
     <Compile Include="FlamingStrike.GameEngine\Play\DieTests.cs" />
     <Compile Include="FlamingStrike.GameEngine\Play\DiceTests.cs" />
@@ -120,7 +120,7 @@
     <Compile Include="FlamingStrike.GameEngine\Play\DiceResultBuilder.cs" />
     <Compile Include="FlamingStrike.GameEngine\PlayerBuilder.cs" />
     <Compile Include="FlamingStrike.GameEngine\TerritoryBuilder.cs" />
-    <Compile Include="FlamingStrike.GameEngine\Play\GameStates\SendArmiesToOccupyGameState.cs" />
+    <Compile Include="FlamingStrike.GameEngine\Play\SendArmiesToOccupyGameState.cs" />
     <Compile Include="FlamingStrike.GameEngine\Play\GameTests.cs" />
     <Compile Include="FlamingStrike.GameEngine\Setup\AlternateGameSetupObserverSpyDecorator.cs" />
     <Compile Include="FlamingStrike.GameEngine\Setup\AutoRespondingAlternateGameSetupObserver.cs" />

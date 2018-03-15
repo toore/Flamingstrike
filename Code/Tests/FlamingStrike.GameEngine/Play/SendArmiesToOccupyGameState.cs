@@ -5,7 +5,7 @@ using FluentAssertions.Common;
 using NSubstitute;
 using Xunit;
 
-namespace Tests.FlamingStrike.GameEngine.Play.GameStates
+namespace Tests.FlamingStrike.GameEngine.Play
 {
     public class SendArmiesToOccupyGameStateTests
     {
