@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using FlamingStrike.GameEngine.Play.GameStates;
 
 namespace FlamingStrike.GameEngine.Play
 {

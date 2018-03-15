@@ -1,4 +1,3 @@
-using FlamingStrike.GameEngine.Play.GameStates;
 using FlamingStrike.GameEngine.Setup;
 
 namespace FlamingStrike.GameEngine.Play
@@ -11,17 +10,14 @@ namespace FlamingStrike.GameEngine.Play
     public class GameFactory : IGameFactory
     {
         private readonly IGamePhaseFactory _gamePhaseFactory;
-        private readonly IGameStateFactory _gameStateFactory;
         private readonly IArmyDraftCalculator _armyDraftCalculator;
         private readonly IDeckFactory _deckFactory;
 
         public GameFactory(
             IGamePhaseFactory gamePhaseFactory,
-            IGameStateFactory gameStateFactory,
             IArmyDraftCalculator armyDraftCalculator,
             IDeckFactory deckFactory)
         {
-            _gameStateFactory = gameStateFactory;
             _armyDraftCalculator = armyDraftCalculator;
             _deckFactory = deckFactory;
             _gamePhaseFactory = gamePhaseFactory;
@@ -31,8 +27,11 @@ namespace FlamingStrike.GameEngine.Play
         {
             return new Game(
                 gameObserver,
-                _gameStateFactory,
-                _gamePhaseFactory, _armyDraftCalculator, _deckFactory, gamePlaySetup.Territories, gamePlaySetup.Players);
+                _gamePhaseFactory,
+                _armyDraftCalculator,
+                _deckFactory,
+                gamePlaySetup.Territories,
+                gamePlaySetup.Players);
         }
     }
 }

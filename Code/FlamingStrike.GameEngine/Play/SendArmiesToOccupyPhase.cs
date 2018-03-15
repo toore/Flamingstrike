@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using FlamingStrike.GameEngine.Play.GameStates;
 
 namespace FlamingStrike.GameEngine.Play
 {
@@ -15,26 +14,44 @@ namespace FlamingStrike.GameEngine.Play
 
     public class SendArmiesToOccupyPhase : ISendArmiesToOccupyPhase
     {
-        public IPlayer CurrentPlayer { get; }
-        public IReadOnlyList<ITerritory> Territories { get; }
-        public IReadOnlyList<IPlayerGameData> PlayerGameDatas { get; }
-        private readonly ISendArmiesToOccupyGameState _sendArmiesToOccupyGameState;
+        private readonly IGamePhaseConductor _gamePhaseConductor;
+        private readonly ITerritoryOccupier _territoryOccupier;
 
-        public SendArmiesToOccupyPhase(IPlayer currentPlayer, IReadOnlyList<ITerritory> territories, IReadOnlyList<IPlayerGameData> playerGameDatas, ISendArmiesToOccupyGameState sendArmiesToOccupyGameState)
+        public SendArmiesToOccupyPhase(
+            IGamePhaseConductor gamePhaseConductor,
+            IPlayer currentPlayer,
+            IReadOnlyList<ITerritory> territories,
+            IReadOnlyList<IPlayerGameData> playerGameDatas,
+            IDeck deck,
+            IRegion attackingRegion,
+            IRegion occupiedRegion,
+            ITerritoryOccupier territoryOccupier)
         {
+            _gamePhaseConductor = gamePhaseConductor;
+            _territoryOccupier = territoryOccupier;
             CurrentPlayer = currentPlayer;
             Territories = territories;
             PlayerGameDatas = playerGameDatas;
-            _sendArmiesToOccupyGameState = sendArmiesToOccupyGameState;
+            Deck = deck;
+            AttackingRegion = attackingRegion;
+            OccupiedRegion = occupiedRegion;
         }
 
-        public IRegion AttackingRegion => _sendArmiesToOccupyGameState.AttackingRegion;
-
-        public IRegion OccupiedRegion => _sendArmiesToOccupyGameState.OccupiedRegion;
+        public IPlayer CurrentPlayer { get; }
+        public IReadOnlyList<ITerritory> Territories { get; }
+        public IReadOnlyList<IPlayerGameData> PlayerGameDatas { get; }
+        public IDeck Deck { get; }
+        public IRegion AttackingRegion { get; }
+        public IRegion OccupiedRegion { get; }
 
         public void SendAdditionalArmiesToOccupy(int numberOfArmies)
         {
-            _sendArmiesToOccupyGameState.SendAdditionalArmiesToOccupy(numberOfArmies);
+            var updatedTerritories = _territoryOccupier.SendInAdditionalArmiesToOccupy(Territories, AttackingRegion, OccupiedRegion, numberOfArmies);
+            var updatedGameData = new GameData(updatedTerritories, PlayerGameDatas, CurrentPlayer, Deck);
+
+            _gamePhaseConductor.ContinueWithAttackPhase(
+                ConqueringAchievement.SuccessfullyConqueredAtLeastOneTerritory,
+                updatedGameData);
         }
     }
 }

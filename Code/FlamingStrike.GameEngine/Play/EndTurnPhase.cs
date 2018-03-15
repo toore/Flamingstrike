@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using FlamingStrike.GameEngine.Play.GameStates;
 
 namespace FlamingStrike.GameEngine.Play
 {
@@ -13,26 +12,30 @@ namespace FlamingStrike.GameEngine.Play
 
     public class EndTurnPhase : IEndTurnPhase
     {
-        public IPlayer CurrentPlayer { get; }
-        public IReadOnlyList<ITerritory> Territories { get; }
-        public IReadOnlyList<IPlayerGameData> PlayerGameDatas { get; }
-        private readonly IEndTurnGameState _endTurnGameState;
+        private readonly IGamePhaseConductor _gamePhaseConductor;
 
         public EndTurnPhase(
+            IGamePhaseConductor gamePhaseConductor,
             IPlayer currentPlayer,
             IReadOnlyList<ITerritory> territories,
             IReadOnlyList<IPlayerGameData> playerGameDatas,
-            IEndTurnGameState endTurnGameState)
+            IDeck deck)
         {
+            _gamePhaseConductor = gamePhaseConductor;
             CurrentPlayer = currentPlayer;
             Territories = territories;
             PlayerGameDatas = playerGameDatas;
-            _endTurnGameState = endTurnGameState;
+            Deck = deck;
         }
+
+        public IPlayer CurrentPlayer { get; }
+        public IReadOnlyList<ITerritory> Territories { get; }
+        public IReadOnlyList<IPlayerGameData> PlayerGameDatas { get; }
+        public IDeck Deck { get; }
 
         public void EndTurn()
         {
-            _endTurnGameState.EndTurn();
+            _gamePhaseConductor.PassTurnToNextPlayer(new GameData(Territories, PlayerGameDatas, CurrentPlayer, Deck));
         }
     }
 }

@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using FlamingStrike.Core;
-using FlamingStrike.GameEngine.Play.GameStates;
 
 namespace FlamingStrike.GameEngine.Play
 {
@@ -44,13 +43,11 @@ namespace FlamingStrike.GameEngine.Play
     public class Game : IGame, IGamePhaseConductor
     {
         private readonly IGameObserver _gameObserver;
-        private readonly IGameStateFactory _gameStateFactory;
         private readonly IGamePhaseFactory _gamePhaseFactory;
         private readonly IArmyDraftCalculator _armyDraftCalculator;
 
         public Game(
             IGameObserver gameObserver,
-            IGameStateFactory gameStateFactory,
             IGamePhaseFactory gamePhaseFactory,
             IArmyDraftCalculator armyDraftCalculator,
             IDeckFactory deckFactory,
@@ -58,7 +55,6 @@ namespace FlamingStrike.GameEngine.Play
             IReadOnlyList<IPlayer> players)
         {
             _gameObserver = gameObserver;
-            _gameStateFactory = gameStateFactory;
             _armyDraftCalculator = armyDraftCalculator;
             _gamePhaseFactory = gamePhaseFactory;
 
@@ -98,17 +94,27 @@ namespace FlamingStrike.GameEngine.Play
 
         public void WaitForTurnToEnd(GameData gameData)
         {
-            var endTurnGameState = _gameStateFactory.CreateEndTurnGameState(gameData, this);
+            var endTurnPhase = _gamePhaseFactory.CreateEndTurnPhase(
+                this,
+                gameData.CurrentPlayer,
+                gameData.Territories,
+                gameData.PlayerGameDatas,
+                gameData.Deck);
 
-            var endTurnPhase = new EndTurnPhase(endTurnGameState.Player, endTurnGameState.Territories, endTurnGameState.Players, endTurnGameState);
             _gameObserver.EndTurn(endTurnPhase);
         }
 
         public void SendArmiesToOccupy(IRegion attackingRegion, IRegion occupiedRegion, GameData gameData)
         {
-            var sendArmiesToOccupyGameState = _gameStateFactory.CreateSendArmiesToOccupyGameState(gameData, this, attackingRegion, occupiedRegion);
+            var sendArmiesToOccupyPhase = _gamePhaseFactory.CreateSendArmiesToOccupyPhase(
+                this,
+                gameData.CurrentPlayer,
+                gameData.Territories,
+                gameData.PlayerGameDatas,
+                gameData.Deck,
+                attackingRegion,
+                occupiedRegion);
 
-            var sendArmiesToOccupyPhase = new SendArmiesToOccupyPhase(sendArmiesToOccupyGameState.Player, sendArmiesToOccupyGameState.Territories, sendArmiesToOccupyGameState.Players, sendArmiesToOccupyGameState);
             _gameObserver.SendArmiesToOccupy(sendArmiesToOccupyPhase);
         }
 
@@ -125,9 +131,9 @@ namespace FlamingStrike.GameEngine.Play
 
         public void PlayerIsTheWinner(IPlayer winner)
         {
-            var gameOverGameState = _gameStateFactory.CreateGameOverGameState(winner);
+            var gameOverState = _gamePhaseFactory.CreateGameOverState(winner);
 
-            _gameObserver.GameOver(new GameOverState(gameOverGameState));
+            _gameObserver.GameOver(gameOverState);
         }
     }
 }

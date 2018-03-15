@@ -1,7 +1,6 @@
 ﻿using Caliburn.Micro;
 using FlamingStrike.GameEngine;
 using FlamingStrike.GameEngine.Play;
-using FlamingStrike.GameEngine.Play.GameStates;
 using FlamingStrike.GameEngine.Setup;
 using FlamingStrike.UI.WPF.RegionModels;
 using FlamingStrike.UI.WPF.Services;
@@ -69,9 +68,8 @@ namespace FlamingStrike.UI.WPF
             var fortifier = new Fortifier();
             var attacker = new Attacker(battle);
             var playerEliminationRules = new PlayerEliminationRules();
-            var gameStateFactory = new GameStateFactory(playerEliminationRules, armyDrafter, attacker, territoryOccupier, fortifier);
             var armyDraftCalculator = new ArmyDraftCalculator(continents);
-            var gamePhaseFactory = new GamePhaseFactory(armyDrafter, attacker, fortifier, playerEliminationRules);
+            var gamePhaseFactory = new GamePhaseFactory(armyDrafter, attacker, fortifier, playerEliminationRules, territoryOccupier);
 
             AlternateGameSetupViewModelFactory = new AlternateGameSetupViewModelFactory(
                 worldMapViewModelFactory,
@@ -87,7 +85,7 @@ namespace FlamingStrike.UI.WPF
 
             AlternateGameSetupFactory = new AlternateGameSetupFactory(regions, shuffle, startingInfantryCalculator);
 
-            GameFactory = new GameFactory(gamePhaseFactory, gameStateFactory, armyDraftCalculator, deckFactory);
+            GameFactory = new GameFactory(gamePhaseFactory, armyDraftCalculator, deckFactory);
         }
     }
 

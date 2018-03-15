@@ -1,5 +1,3 @@
-using FlamingStrike.GameEngine.Play.GameStates;
-
 namespace FlamingStrike.GameEngine.Play
 {
     public interface IGameOverState
@@ -9,13 +7,11 @@ namespace FlamingStrike.GameEngine.Play
 
     public class GameOverState : IGameOverState
     {
-        private readonly IGameOverGameState _gameOverGameState;
-
-        public GameOverState(IGameOverGameState gameOverGameState)
+        public GameOverState(IPlayer winner)
         {
-            _gameOverGameState = gameOverGameState;
+            Winner = winner;
         }
 
-        public IPlayer Winner => _gameOverGameState.Winner;
+        public IPlayer Winner { get; }
     }
 }
