@@ -2,7 +2,6 @@ namespace FlamingStrike.GameEngine.Play.GameStates
 {
     public interface IGameStateFactory
     {
-        IDraftArmiesPhaseGameState CreateDraftArmiesGameState(GameData gameData, IGamePhaseConductor gamePhaseConductor, int numberOfArmiesToDraft);
         IAttackPhaseGameState CreateAttackPhaseGameState(GameData gameData, IGamePhaseConductor gamePhaseConductor, ConqueringAchievement conqueringAchievement);
         ISendArmiesToOccupyGameState CreateSendArmiesToOccupyGameState(GameData gameData, IGamePhaseConductor gamePhaseConductor, IRegion attackingRegion, IRegion occupiedRegion);
         IEndTurnGameState CreateEndTurnGameState(GameData gameData, IGamePhaseConductor gamePhaseConductor);
@@ -29,11 +28,6 @@ namespace FlamingStrike.GameEngine.Play.GameStates
             _attacker = attacker;
             _territoryOccupier = territoryOccupier;
             _fortifier = fortifier;
-        }
-
-        public IDraftArmiesPhaseGameState CreateDraftArmiesGameState(GameData gameData, IGamePhaseConductor gamePhaseConductor, int numberOfArmiesToDraft)
-        {
-            return new DraftArmiesPhaseGameState(gameData, gamePhaseConductor, _armyDrafter, numberOfArmiesToDraft);
         }
 
         public IAttackPhaseGameState CreateAttackPhaseGameState(GameData gameData, IGamePhaseConductor gamePhaseConductor, ConqueringAchievement conqueringAchievement)

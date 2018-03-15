@@ -14,14 +14,16 @@ namespace Tests.FlamingStrike.GameEngine.Play
         private readonly IArmyDraftCalculator _armyDraftCalculator;
         private readonly IDeckFactory _deckFactory;
         private readonly IGameObserver _gameObserver;
+        private readonly IArmyDrafter _armyDrafter;
 
         public GameTests()
         {
             _gameStateFactory = Substitute.For<IGameStateFactory>();
             _armyDraftCalculator = Substitute.For<IArmyDraftCalculator>();
             _deckFactory = Substitute.For<IDeckFactory>();
+            _armyDrafter = Substitute.For<IArmyDrafter>();
 
-            _factory = new GameFactory(_gameStateFactory, _armyDraftCalculator, _deckFactory);
+            _factory = new GameFactory(_gameStateFactory, _armyDraftCalculator, _deckFactory, _armyDrafter);
 
             _gameObserver = Substitute.For<IGameObserver>();
         }

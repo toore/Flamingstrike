@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Play\GameStates\DraftArmiesPhaseGameState.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\FlamingStrike.Core\FlamingStrike.Core.csproj" />
   </ItemGroup>
 

@@ -54,6 +54,7 @@ namespace FlamingStrike.GameEngine.Play
             IDeckFactory deckFactory,
             IReadOnlyList<ITerritory> territories,
             IReadOnlyList<IPlayer> players)
+            IArmyDrafter armyDrafter,
         {
             _gameObserver = gameObserver;
             _gameStateFactory = gameStateFactory;
@@ -69,18 +70,15 @@ namespace FlamingStrike.GameEngine.Play
 
         public void ContinueToDraftArmies(int numberOfArmiesToDraft, GameData gameData)
         {
-            var draftArmiesGamePhase = _gameStateFactory.CreateDraftArmiesGameState(gameData, this, numberOfArmiesToDraft);
-
-            var regionsAllowedToDraftArmies = gameData.Territories
-                .Where(x => draftArmiesGamePhase.CanPlaceDraftArmies(x.Region))
-                .Select(x => x.Region).ToList();
-
             var draftArmiesPhase = new DraftArmiesPhase(
-                draftArmiesGamePhase.Player, 
-                draftArmiesGamePhase.Territories, 
-                draftArmiesGamePhase.Players,
-                draftArmiesGamePhase, 
-                regionsAllowedToDraftArmies);
+                this,
+                gameData.CurrentPlayer,
+                gameData.Territories,
+                gameData.PlayerGameDatas,
+                gameData.Deck,
+                numberOfArmiesToDraft,
+                _armyDrafter);
+
             _gameObserver.DraftArmies(draftArmiesPhase);
         }
 

@@ -86,7 +86,7 @@ namespace FlamingStrike.UI.WPF
 
             AlternateGameSetupFactory = new AlternateGameSetupFactory(regions, shuffle, startingInfantryCalculator);
 
-            GameFactory = new GameFactory(gameStateFactory, armyDraftCalculator, deckFactory);
+            GameFactory = new GameFactory(gameStateFactory, armyDraftCalculator, deckFactory, armyDrafter);
         }
     }
 

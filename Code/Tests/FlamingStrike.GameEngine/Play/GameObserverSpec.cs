@@ -223,7 +223,7 @@ namespace Tests.FlamingStrike.GameEngine.Play
             var gameStateFactory = new GameStateFactory(playerEliminationRules, armyDrafter, attacker, territoryOccupier, fortifier);
             var fisherYatesShuffle = new FisherYatesShuffler(new RandomWrapper());
             var deckFactory = new DeckFactory(_regions, fisherYatesShuffle);
-            var gameFactory = new GameFactory(gameStateFactory, armyDraftCalculator, deckFactory);
+            var gameFactory = new GameFactory(gameStateFactory, armyDraftCalculator, deckFactory, armyDrafter);
             _players = new List<IPlayer> { _player1, _player2 };
             var gamePlaySetup = new GamePlaySetup(_players, _territories);
             var game = gameFactory.Create(_gameObserverSpy, gamePlaySetup);

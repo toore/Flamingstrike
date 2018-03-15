@@ -13,15 +13,18 @@ namespace FlamingStrike.GameEngine.Play
         private readonly IGameStateFactory _gameStateFactory;
         private readonly IArmyDraftCalculator _armyDraftCalculator;
         private readonly IDeckFactory _deckFactory;
+        private readonly IArmyDrafter _armyDrafter;
 
         public GameFactory(
             IGameStateFactory gameStateFactory,
             IArmyDraftCalculator armyDraftCalculator,
-            IDeckFactory deckFactory)
+            IDeckFactory deckFactory,
+            IArmyDrafter armyDrafter)
         {
             _gameStateFactory = gameStateFactory;
             _armyDraftCalculator = armyDraftCalculator;
             _deckFactory = deckFactory;
+            _armyDrafter = armyDrafter;
         }
 
         public IGame Create(IGameObserver gameObserver, IGamePlaySetup gamePlaySetup)
@@ -32,7 +35,8 @@ namespace FlamingStrike.GameEngine.Play
                 _armyDraftCalculator,
                 _deckFactory,
                 gamePlaySetup.Territories,
-                gamePlaySetup.Players);
+                gamePlaySetup.Players,
+                _armyDrafter);
         }
     }
 }
