@@ -14,12 +14,12 @@ namespace FlamingStrike.UI.WPF.ViewModels
         private readonly IGamePreparationViewModelFactory _gamePreparationViewModelFactory;
         private readonly IGameplayViewModelFactory _gameplayViewModelFactory;
         private readonly IAlternateGameSetupViewModelFactory _alternateGameSetupViewModelFactory;
-        private readonly IGameFactory _gameFactory;
+        private readonly IGameBootstrapper _gameBootstrapper;
         private readonly IAlternateGameSetupBootstrapper _alternateGameSetupBootstrapper;
         private readonly IPlayerUiDataRepository _playerUiDataRepository;
 
         public MainGameViewModel()
-            : this(new CompositionRoot()) { }
+            : this(new CompositionRoot()) {}
 
         protected MainGameViewModel(CompositionRoot compositionRoot)
             : this(
@@ -28,7 +28,7 @@ namespace FlamingStrike.UI.WPF.ViewModels
                 compositionRoot.GamePreparationViewModelFactory,
                 compositionRoot.GameplayViewModelFactory,
                 compositionRoot.AlternateGameSetupViewModelFactory,
-                compositionRoot.GameFactory)
+                compositionRoot.GameBootstrapper)
         {
             compositionRoot.EventAggregator.Subscribe(this);
         }
@@ -39,14 +39,14 @@ namespace FlamingStrike.UI.WPF.ViewModels
             IGamePreparationViewModelFactory gamePreparationViewModelFactory,
             IGameplayViewModelFactory gameplayViewModelFactory,
             IAlternateGameSetupViewModelFactory alternateGameSetupViewModelFactory,
-            IGameFactory gameFactory)
+            IGameBootstrapper gameBootstrapper)
         {
             _playerUiDataRepository = playerUiDataRepository;
             _alternateGameSetupBootstrapper = alternateGameSetupBootstrapper;
             _gamePreparationViewModelFactory = gamePreparationViewModelFactory;
             _gameplayViewModelFactory = gameplayViewModelFactory;
             _alternateGameSetupViewModelFactory = alternateGameSetupViewModelFactory;
-            _gameFactory = gameFactory;
+            _gameBootstrapper = gameBootstrapper;
         }
 
         protected override void OnInitialize()
@@ -59,7 +59,7 @@ namespace FlamingStrike.UI.WPF.ViewModels
         public override string DisplayName
         {
             get { return "Flaming Strike"; }
-            set { }
+            set {}
         }
 
         public void Handle(NewGameMessage newGameMessage)
@@ -88,7 +88,7 @@ namespace FlamingStrike.UI.WPF.ViewModels
         {
             var players = _playerUiDataRepository.GetAll().Select(x => x.Player).ToList();
             var gameSetupViewModel = _alternateGameSetupViewModelFactory.Create();
-            
+
             _alternateGameSetupBootstrapper.Run(gameSetupViewModel, players);
 
             ActivateItem(gameSetupViewModel);
@@ -97,7 +97,7 @@ namespace FlamingStrike.UI.WPF.ViewModels
         private void StartGamePlay(IGamePlaySetup gamePlaySetup)
         {
             var gameplayViewModel = _gameplayViewModelFactory.Create();
-            var game = _gameFactory.Create(gameplayViewModel, gamePlaySetup);
+            _gameBootstrapper.Run(gameplayViewModel, gamePlaySetup);
 
             ActivateItem(gameplayViewModel);
         }

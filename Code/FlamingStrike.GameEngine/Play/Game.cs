@@ -4,8 +4,6 @@ using FlamingStrike.Core;
 
 namespace FlamingStrike.GameEngine.Play
 {
-    public interface IGame {}
-
     public class GameData
     {
         public IReadOnlyList<ITerritory> Territories { get; }
@@ -40,11 +38,14 @@ namespace FlamingStrike.GameEngine.Play
         void PlayerIsTheWinner(IPlayer winner);
     }
 
-    public class Game : IGame, IGamePhaseConductor
+    public class Game : IGamePhaseConductor
     {
         private readonly IGameObserver _gameObserver;
         private readonly IGamePhaseFactory _gamePhaseFactory;
         private readonly IArmyDraftCalculator _armyDraftCalculator;
+        private readonly IDeckFactory _deckFactory;
+        private readonly IReadOnlyList<ITerritory> _territories;
+        private readonly IReadOnlyList<IPlayer> _players;
 
         public Game(
             IGameObserver gameObserver,
@@ -56,12 +57,19 @@ namespace FlamingStrike.GameEngine.Play
         {
             _gameObserver = gameObserver;
             _armyDraftCalculator = armyDraftCalculator;
+            _deckFactory = deckFactory;
+            _territories = territories;
+            _players = players;
             _gamePhaseFactory = gamePhaseFactory;
+        }
 
-            var playerGameDatas = players.Select(player => new PlayerGameData(player, new List<ICard>())).ToList();
-            var currentPlayer = players.First();
-            var gameData = new GameData(territories, playerGameDatas, currentPlayer, deckFactory.Create());
-            var numberOfArmiesToDraft = _armyDraftCalculator.Calculate(currentPlayer, territories);
+        public void Start()
+        {
+            var playerGameDatas = _players.Select(player => new PlayerGameData(player, new List<ICard>())).ToList();
+            var currentPlayer = _players.First();
+
+            var gameData = new GameData(_territories, playerGameDatas, currentPlayer, _deckFactory.Create());
+            var numberOfArmiesToDraft = _armyDraftCalculator.Calculate(currentPlayer, _territories);
 
             ContinueToDraftArmies(numberOfArmiesToDraft, gameData);
         }

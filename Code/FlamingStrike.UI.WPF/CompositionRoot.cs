@@ -21,7 +21,7 @@ namespace FlamingStrike.UI.WPF
         public IGamePreparationViewModelFactory GamePreparationViewModelFactory { get; }
         public IGameplayViewModelFactory GameplayViewModelFactory { get; }
         public IAlternateGameSetupViewModelFactory AlternateGameSetupViewModelFactory { get; }
-        public IGameFactory GameFactory { get; }
+        public IGameBootstrapper GameBootstrapper { get; }
 
         public CompositionRoot()
         {
@@ -85,7 +85,7 @@ namespace FlamingStrike.UI.WPF
 
             AlternateGameSetupBootstrapper = new AlternateGameSetupBootstrapper(regions, shuffle, startingInfantryCalculator);
 
-            GameFactory = new GameFactory(gamePhaseFactory, armyDraftCalculator, deckFactory);
+            GameBootstrapper = new GameBootstrapper(gamePhaseFactory, armyDraftCalculator, deckFactory);
         }
     }
 

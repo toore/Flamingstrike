@@ -18,7 +18,7 @@ namespace Tests.FlamingStrike.UI.WPF
         private readonly IGamePreparationViewModelFactory _gamePreparationViewModelFactory;
         private readonly IGameplayViewModelFactory _gameplayViewModelFactory;
         private readonly IAlternateGameSetupViewModelFactory _alternateGameSetupViewModelFactory;
-        private readonly IGameFactory _gameFactory;
+        private readonly IGameBootstrapper _gameBootstrapper;
 
         public MainGameViewModelTests()
         {
@@ -27,7 +27,7 @@ namespace Tests.FlamingStrike.UI.WPF
             _gamePreparationViewModelFactory = Substitute.For<IGamePreparationViewModelFactory>();
             _gameplayViewModelFactory = Substitute.For<IGameplayViewModelFactory>();
             _alternateGameSetupViewModelFactory = Substitute.For<IAlternateGameSetupViewModelFactory>();
-            _gameFactory = Substitute.For<IGameFactory>();
+            _gameBootstrapper = Substitute.For<IGameBootstrapper>();
         }
 
         [Fact]
@@ -87,7 +87,7 @@ namespace Tests.FlamingStrike.UI.WPF
                 _gamePreparationViewModelFactory,
                 _gameplayViewModelFactory,
                 _alternateGameSetupViewModelFactory,
-                _gameFactory);
+                _gameBootstrapper);
         }
     }
 }

@@ -19,14 +19,14 @@ namespace Tests.FlamingStrike.UI.WPF
             IGamePreparationViewModelFactory gamePreparationViewModelFactory,
             IGameplayViewModelFactory gameplayViewModelFactory,
             IAlternateGameSetupViewModelFactory alternateGameSetupViewModelFactory,
-            IGameFactory gameFactory)
+            IGameBootstrapper gameBootstrapper)
             : base(
                 playerUiDataRepository,
                 alternateGameSetupBootstrapper,
                 gamePreparationViewModelFactory,
                 gameplayViewModelFactory,
                 alternateGameSetupViewModelFactory,
-                gameFactory) {}
+                gameBootstrapper) {}
 
         public new void OnInitialize()
         {

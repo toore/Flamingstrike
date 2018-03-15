@@ -8,21 +8,19 @@ namespace Tests.FlamingStrike.GameEngine.Play
 {
     public class GameTests
     {
-        private readonly GameFactory _factory;
+        private readonly GameBootstrapper _bootstrapper;
         private readonly IGamePhaseFactory _gamePhaseFactory;
         private readonly IArmyDraftCalculator _armyDraftCalculator;
         private readonly IDeckFactory _deckFactory;
         private readonly IGameObserver _gameObserver;
-        private readonly IArmyDrafter _armyDrafter;
 
         public GameTests()
         {
             _gamePhaseFactory = Substitute.For<IGamePhaseFactory>();
             _armyDraftCalculator = Substitute.For<IArmyDraftCalculator>();
             _deckFactory = Substitute.For<IDeckFactory>();
-            _armyDrafter = Substitute.For<IArmyDrafter>();
 
-            _factory = new GameFactory(_gamePhaseFactory, _armyDraftCalculator, _deckFactory);
+            _bootstrapper = new GameBootstrapper(_gamePhaseFactory, _armyDraftCalculator, _deckFactory);
 
             _gameObserver = Substitute.For<IGameObserver>();
         }
@@ -30,14 +28,14 @@ namespace Tests.FlamingStrike.GameEngine.Play
         [Fact]
         public void When_game_is_created_draft_armies_phase_starts()
         {
-            var game = Create(new GamePlaySetupBuilder().Build());
+            Run(new GamePlaySetupBuilder().Build());
 
             _gameObserver.Received().DraftArmies(Arg.Any<IDraftArmiesPhase>());
         }
 
-        private IGame Create(IGamePlaySetup gamePlaySetup)
+        private void Run(IGamePlaySetup gamePlaySetup)
         {
-            return _factory.Create(_gameObserver, gamePlaySetup);
+            _bootstrapper.Run(_gameObserver, gamePlaySetup);
         }
     }
 }

@@ -44,7 +44,7 @@ namespace Tests.FlamingStrike.GameEngine.Setup
             _shuffler.Shuffle(_regionElements).Returns(new List<IRegion> { region1, region2 });
             _startingInfantryCalculator.Get(2).Returns(1);
 
-            Create();
+            RunSetup();
 
             _alternateGameSetupObserver.GamePlaySetup.Players.Should().ContainInOrder(_player1, _player2);
         }
@@ -58,7 +58,7 @@ namespace Tests.FlamingStrike.GameEngine.Setup
             _shuffler.Shuffle(_regionElements).Returns(new List<IRegion> { region1, region2, region3 });
             _startingInfantryCalculator.Get(2).Returns(3);
 
-            Create();
+            RunSetup();
 
             _alternateGameSetupObserver.GamePlaySetup.Territories.Should()
                 .BeEquivalentTo(
@@ -70,9 +70,12 @@ namespace Tests.FlamingStrike.GameEngine.Setup
                         }, options => options.WithStrictOrdering());
         }
 
-        private AlternateGameSetup Create()
+        private AlternateGameSetup RunSetup()
         {
-            return new AlternateGameSetup(_alternateGameSetupObserver, _regions, _players, _startingInfantryCalculator, _shuffler);
+            var alternateGameSetup = new AlternateGameSetup(_alternateGameSetupObserver, _regions, _players, _startingInfantryCalculator, _shuffler);
+            alternateGameSetup.Run();
+
+            return alternateGameSetup;
         }
     }
 }

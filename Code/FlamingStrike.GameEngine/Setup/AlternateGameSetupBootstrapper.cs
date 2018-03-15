@@ -30,7 +30,7 @@ namespace FlamingStrike.GameEngine.Setup
                 _startingInfantryCalculator,
                 _shuffler);
 
-            alternateGameSetup.Start();
+            alternateGameSetup.Run();
         }
     }
 }

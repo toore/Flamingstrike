@@ -46,7 +46,7 @@ namespace FlamingStrike.GameEngine.Setup
             _startingInfantryCalculator = startingInfantryCalculator;
         }
 
-        public void Start()
+        public void Run()
         {
             var playerSetupDatas = Shuffle(_players);
             var territoriesAndPlayers = AssignPlayersToTerritories(playerSetupDatas);
