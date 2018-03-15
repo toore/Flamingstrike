@@ -14,7 +14,7 @@ namespace Tests.FlamingStrike.UI.WPF
     public class MainGameViewModelTests
     {
         private readonly IPlayerUiDataRepository _playerUiDataRepository;
-        private readonly IAlternateGameSetupFactory _alternateGameSetupFactory;
+        private readonly IAlternateGameSetupBootstrapper _alternateGameSetupBootstrapper;
         private readonly IGamePreparationViewModelFactory _gamePreparationViewModelFactory;
         private readonly IGameplayViewModelFactory _gameplayViewModelFactory;
         private readonly IAlternateGameSetupViewModelFactory _alternateGameSetupViewModelFactory;
@@ -23,7 +23,7 @@ namespace Tests.FlamingStrike.UI.WPF
         public MainGameViewModelTests()
         {
             _playerUiDataRepository = Substitute.For<IPlayerUiDataRepository>();
-            _alternateGameSetupFactory = Substitute.For<IAlternateGameSetupFactory>();
+            _alternateGameSetupBootstrapper = Substitute.For<IAlternateGameSetupBootstrapper>();
             _gamePreparationViewModelFactory = Substitute.For<IGamePreparationViewModelFactory>();
             _gameplayViewModelFactory = Substitute.For<IGameplayViewModelFactory>();
             _alternateGameSetupViewModelFactory = Substitute.For<IAlternateGameSetupViewModelFactory>();
@@ -83,7 +83,7 @@ namespace Tests.FlamingStrike.UI.WPF
         {
             return new MainGameViewModelDecorator(
                 _playerUiDataRepository,
-                _alternateGameSetupFactory,
+                _alternateGameSetupBootstrapper,
                 _gamePreparationViewModelFactory,
                 _gameplayViewModelFactory,
                 _alternateGameSetupViewModelFactory,

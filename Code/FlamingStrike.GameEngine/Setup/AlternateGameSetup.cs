@@ -19,17 +19,16 @@ namespace FlamingStrike.GameEngine.Setup
         void NewGamePlaySetup(IGamePlaySetup gamePlaySetup);
     }
 
-    public interface IAlternateGameSetup {}
-
     public interface IArmyPlacer
     {
         void PlaceArmyInRegion(IPlayer currentPlayer, IRegion selectedRegion, AlternateGameSetupData alternateGameSetupData);
     }
 
-    public class AlternateGameSetup : IAlternateGameSetup, IArmyPlacer
+    public class AlternateGameSetup : IArmyPlacer
     {
         private readonly IAlternateGameSetupObserver _alternateGameSetupObserver;
         private readonly IRegions _regions;
+        private readonly ICollection<IPlayer> _players;
         private readonly IStartingInfantryCalculator _startingInfantryCalculator;
         private readonly IShuffler _shuffler;
 
@@ -42,10 +41,14 @@ namespace FlamingStrike.GameEngine.Setup
         {
             _alternateGameSetupObserver = alternateGameSetupObserver;
             _regions = regions;
+            _players = players;
             _shuffler = shuffler;
             _startingInfantryCalculator = startingInfantryCalculator;
+        }
 
-            var playerSetupDatas = Shuffle(players);
+        public void Start()
+        {
+            var playerSetupDatas = Shuffle(_players);
             var territoriesAndPlayers = AssignPlayersToTerritories(playerSetupDatas);
 
             PlaceArmies(territoriesAndPlayers);

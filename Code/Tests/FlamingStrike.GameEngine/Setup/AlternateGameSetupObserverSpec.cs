@@ -13,7 +13,7 @@ namespace Tests.FlamingStrike.GameEngine.Setup
     {
         private IAlternateGameSetupObserverSpy _alternateGameSetupObserverSpy;
         private ICollection<IPlayer> _players;
-        private AlternateGameSetupFactory _alternateGameSetupFactory;
+        private AlternateGameSetupBootstrapper _alternateGameSetupBootstrapper;
         private IShuffler _shuffler;
         private IPlayer _player1;
         private IPlayer _player2;
@@ -93,7 +93,7 @@ namespace Tests.FlamingStrike.GameEngine.Setup
             var startingInfantryCalculator = new StartingInfantryCalculator();
             var regions = Substitute.For<IRegions>();
             regions.GetAll().Returns(new List<IRegion>());
-            _alternateGameSetupFactory = new AlternateGameSetupFactory(regions, _shuffler, startingInfantryCalculator);
+            _alternateGameSetupBootstrapper = new AlternateGameSetupBootstrapper(regions, _shuffler, startingInfantryCalculator);
 
             _player1 = new PlayerBuilder().Name("player 1").Build();
             _player2 = new PlayerBuilder().Name("player 2").Build();
@@ -115,14 +115,14 @@ namespace Tests.FlamingStrike.GameEngine.Setup
         private AlternateGameSetupObserverSpec game_setup_is_initiated()
         {
             _alternateGameSetupObserverSpy = new AlternateGameSetupObserverSpyDecorator(new NullAlternateGameSetupObserver());
-            var alternateGameSetup = _alternateGameSetupFactory.Create(_alternateGameSetupObserverSpy, _players);
+            _alternateGameSetupBootstrapper.Run(_alternateGameSetupObserverSpy, _players);
             return this;
         }
 
         private void game_setup_is_executed()
         {
             _alternateGameSetupObserverSpy = new AlternateGameSetupObserverSpyDecorator(new AutoRespondingAlternateGameSetupObserver());
-            var alternateGameSetup = _alternateGameSetupFactory.Create(_alternateGameSetupObserverSpy, _players);
+            _alternateGameSetupBootstrapper.Run(_alternateGameSetupObserverSpy, _players);
         }
 
         private AlternateGameSetupObserverSpec player_places_an_army()

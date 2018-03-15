@@ -17,9 +17,9 @@ namespace FlamingStrike.UI.WPF
     {
         public PlayerUiDataRepository PlayerUiDataRepository { get; }
         public IEventAggregator EventAggregator { get; }
-        public IAlternateGameSetupFactory AlternateGameSetupFactory { get; }
+        public AlternateGameSetupBootstrapper AlternateGameSetupBootstrapper { get; }
         public IGamePreparationViewModelFactory GamePreparationViewModelFactory { get; }
-        public IGameplayViewModelFactory GameplayViewModelFactory { get; private set; }
+        public IGameplayViewModelFactory GameplayViewModelFactory { get; }
         public IAlternateGameSetupViewModelFactory AlternateGameSetupViewModelFactory { get; }
         public IGameFactory GameFactory { get; }
 
@@ -83,7 +83,7 @@ namespace FlamingStrike.UI.WPF
             var startingInfantryCalculator = new StartingInfantryCalculator();
 #endif
 
-            AlternateGameSetupFactory = new AlternateGameSetupFactory(regions, shuffle, startingInfantryCalculator);
+            AlternateGameSetupBootstrapper = new AlternateGameSetupBootstrapper(regions, shuffle, startingInfantryCalculator);
 
             GameFactory = new GameFactory(gamePhaseFactory, armyDraftCalculator, deckFactory);
         }

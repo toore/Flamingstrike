@@ -15,7 +15,7 @@ namespace FlamingStrike.UI.WPF.ViewModels
         private readonly IGameplayViewModelFactory _gameplayViewModelFactory;
         private readonly IAlternateGameSetupViewModelFactory _alternateGameSetupViewModelFactory;
         private readonly IGameFactory _gameFactory;
-        private readonly IAlternateGameSetupFactory _alternateGameSetupFactory;
+        private readonly IAlternateGameSetupBootstrapper _alternateGameSetupBootstrapper;
         private readonly IPlayerUiDataRepository _playerUiDataRepository;
 
         public MainGameViewModel()
@@ -24,7 +24,7 @@ namespace FlamingStrike.UI.WPF.ViewModels
         protected MainGameViewModel(CompositionRoot compositionRoot)
             : this(
                 compositionRoot.PlayerUiDataRepository,
-                compositionRoot.AlternateGameSetupFactory,
+                compositionRoot.AlternateGameSetupBootstrapper,
                 compositionRoot.GamePreparationViewModelFactory,
                 compositionRoot.GameplayViewModelFactory,
                 compositionRoot.AlternateGameSetupViewModelFactory,
@@ -35,14 +35,14 @@ namespace FlamingStrike.UI.WPF.ViewModels
 
         protected MainGameViewModel(
             IPlayerUiDataRepository playerUiDataRepository,
-            IAlternateGameSetupFactory alternateGameSetupFactory,
+            IAlternateGameSetupBootstrapper alternateGameSetupBootstrapper,
             IGamePreparationViewModelFactory gamePreparationViewModelFactory,
             IGameplayViewModelFactory gameplayViewModelFactory,
             IAlternateGameSetupViewModelFactory alternateGameSetupViewModelFactory,
             IGameFactory gameFactory)
         {
             _playerUiDataRepository = playerUiDataRepository;
-            _alternateGameSetupFactory = alternateGameSetupFactory;
+            _alternateGameSetupBootstrapper = alternateGameSetupBootstrapper;
             _gamePreparationViewModelFactory = gamePreparationViewModelFactory;
             _gameplayViewModelFactory = gameplayViewModelFactory;
             _alternateGameSetupViewModelFactory = alternateGameSetupViewModelFactory;
@@ -88,7 +88,8 @@ namespace FlamingStrike.UI.WPF.ViewModels
         {
             var players = _playerUiDataRepository.GetAll().Select(x => x.Player).ToList();
             var gameSetupViewModel = _alternateGameSetupViewModelFactory.Create();
-            var alternateGameSetup = _alternateGameSetupFactory.Create(gameSetupViewModel, players);
+            
+            _alternateGameSetupBootstrapper.Run(gameSetupViewModel, players);
 
             ActivateItem(gameSetupViewModel);
         }

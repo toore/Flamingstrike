@@ -15,14 +15,14 @@ namespace Tests.FlamingStrike.UI.WPF
 
         public MainGameViewModelDecorator(
             IPlayerUiDataRepository playerUiDataRepository,
-            IAlternateGameSetupFactory alternateGameSetupFactory,
+            IAlternateGameSetupBootstrapper alternateGameSetupBootstrapper,
             IGamePreparationViewModelFactory gamePreparationViewModelFactory,
             IGameplayViewModelFactory gameplayViewModelFactory,
             IAlternateGameSetupViewModelFactory alternateGameSetupViewModelFactory,
             IGameFactory gameFactory)
             : base(
                 playerUiDataRepository,
-                alternateGameSetupFactory,
+                alternateGameSetupBootstrapper,
                 gamePreparationViewModelFactory,
                 gameplayViewModelFactory,
                 alternateGameSetupViewModelFactory,
