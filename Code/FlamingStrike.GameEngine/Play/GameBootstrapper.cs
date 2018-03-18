@@ -29,11 +29,9 @@ namespace FlamingStrike.GameEngine.Play
                 gameObserver,
                 _gamePhaseFactory,
                 _armyDraftCalculator,
-                _deckFactory,
-                gamePlaySetup.Territories,
-                gamePlaySetup.Players);
+                _deckFactory);
 
-            game.Start();
+            game.Run(gamePlaySetup.Territories, gamePlaySetup.Players);
         }
     }
 }

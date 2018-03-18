@@ -44,33 +44,27 @@ namespace FlamingStrike.GameEngine.Play
         private readonly IGamePhaseFactory _gamePhaseFactory;
         private readonly IArmyDraftCalculator _armyDraftCalculator;
         private readonly IDeckFactory _deckFactory;
-        private readonly IReadOnlyList<ITerritory> _territories;
-        private readonly IReadOnlyList<IPlayer> _players;
 
         public Game(
             IGameObserver gameObserver,
             IGamePhaseFactory gamePhaseFactory,
             IArmyDraftCalculator armyDraftCalculator,
-            IDeckFactory deckFactory,
-            IReadOnlyList<ITerritory> territories,
-            IReadOnlyList<IPlayer> players)
+            IDeckFactory deckFactory)
         {
             _gameObserver = gameObserver;
             _armyDraftCalculator = armyDraftCalculator;
             _deckFactory = deckFactory;
-            _territories = territories;
-            _players = players;
             _gamePhaseFactory = gamePhaseFactory;
         }
 
-        public void Start()
+        public void Run(IReadOnlyList<ITerritory> territories, IReadOnlyList<IPlayer> players)
         {
-            var playerGameDatas = _players.Select(player => new PlayerGameData(player, new List<ICard>())).ToList();
-            var currentPlayer = _players.First();
+            var playerGameDatas = players.Select(player => new PlayerGameData(player, new List<ICard>())).ToList();
+            var currentPlayer = players.First();
 
-            var gameData = new GameData(_territories, playerGameDatas, currentPlayer, _deckFactory.Create());
-            var numberOfArmiesToDraft = _armyDraftCalculator.Calculate(currentPlayer, _territories);
+            var numberOfArmiesToDraft = _armyDraftCalculator.Calculate(currentPlayer, territories);
 
+            var gameData = new GameData(territories, playerGameDatas, currentPlayer, _deckFactory.Create());
             ContinueToDraftArmies(numberOfArmiesToDraft, gameData);
         }
 
