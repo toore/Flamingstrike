@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
+using FlamingStrike.GameEngine.Setup;
 using Toore.Shuffling;
 
-namespace FlamingStrike.GameEngine.Setup
+namespace FlamingStrike.GameEngine.API
 {
     public interface IAlternateGameSetupBootstrapper
     {

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using FlamingStrike.GameEngine;
+using FlamingStrike.GameEngine.API;
 using FlamingStrike.GameEngine.Setup;
 using FluentAssertions;
 using NSubstitute;

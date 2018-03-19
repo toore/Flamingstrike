@@ -1,6 +1,7 @@
+using FlamingStrike.GameEngine.Play;
 using FlamingStrike.GameEngine.Setup;
 
-namespace FlamingStrike.GameEngine.Play
+namespace FlamingStrike.GameEngine.API
 {
     public interface IGameBootstrapper
     {

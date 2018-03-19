@@ -1,5 +1,6 @@
 ﻿using Caliburn.Micro;
 using FlamingStrike.GameEngine;
+using FlamingStrike.GameEngine.API;
 using FlamingStrike.GameEngine.Play;
 using FlamingStrike.GameEngine.Setup;
 using FlamingStrike.UI.WPF.RegionModels;
