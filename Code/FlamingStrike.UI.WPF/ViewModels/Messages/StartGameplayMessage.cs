@@ -1,4 +1,5 @@
 ﻿using FlamingStrike.GameEngine.Setup;
+using FlamingStrike.GameEngine.Setup.Finished;
 
 namespace FlamingStrike.UI.WPF.ViewModels.Messages
 {

@@ -8,14 +8,14 @@ namespace FlamingStrike.GameEngine.Play
     {
         public IReadOnlyList<ITerritory> Territories { get; }
         public IReadOnlyList<IPlayerGameData> PlayerGameDatas { get; }
-        public IPlayer CurrentPlayer { get; }
+        public PlayerName CurrentPlayerName { get; }
         public IDeck Deck { get; }
 
-        public GameData(IReadOnlyList<ITerritory> territories, IReadOnlyList<IPlayerGameData> playerGameDatas, IPlayer currentPlayer, IDeck deck)
+        public GameData(IReadOnlyList<ITerritory> territories, IReadOnlyList<IPlayerGameData> playerGameDatas, PlayerName currentPlayerName, IDeck deck)
         {
             Territories = territories;
             PlayerGameDatas = playerGameDatas;
-            CurrentPlayer = currentPlayer;
+            CurrentPlayerName = currentPlayerName;
             Deck = deck;
         }
     }
@@ -24,7 +24,7 @@ namespace FlamingStrike.GameEngine.Play
     {
         public static IPlayerGameData GetCurrentPlayerGameData(this GameData gameData)
         {
-            return gameData.PlayerGameDatas.Single(x => x.Player == gameData.CurrentPlayer);
+            return gameData.PlayerGameDatas.Single(x => x.PlayerName == gameData.CurrentPlayerName);
         }
     }
 
@@ -35,7 +35,7 @@ namespace FlamingStrike.GameEngine.Play
         void SendArmiesToOccupy(IRegion sourceRegion, IRegion destinationRegion, GameData gameData);
         void WaitForTurnToEnd(GameData gameData);
         void PassTurnToNextPlayer(GameData gameData);
-        void PlayerIsTheWinner(IPlayer winner);
+        void PlayerIsTheWinner(PlayerName winner);
     }
 
     public class Game : IGamePhaseConductor
@@ -57,7 +57,7 @@ namespace FlamingStrike.GameEngine.Play
             _gamePhaseFactory = gamePhaseFactory;
         }
 
-        public void Run(IReadOnlyList<ITerritory> territories, IReadOnlyList<IPlayer> players)
+        public void Run(IReadOnlyList<ITerritory> territories, IReadOnlyList<PlayerName> players)
         {
             var playerGameDatas = players.Select(player => new PlayerGameData(player, new List<ICard>())).ToList();
             var currentPlayer = players.First();
@@ -72,7 +72,7 @@ namespace FlamingStrike.GameEngine.Play
         {
             var draftArmiesPhase = _gamePhaseFactory.CreateDraftArmiesPhase(
                 this,
-                gameData.CurrentPlayer,
+                gameData.CurrentPlayerName,
                 gameData.Territories,
                 gameData.PlayerGameDatas,
                 gameData.Deck,
@@ -85,7 +85,7 @@ namespace FlamingStrike.GameEngine.Play
         {
             var attackPhase = _gamePhaseFactory.CreateAttackPhase(
                 this,
-                gameData.CurrentPlayer,
+                gameData.CurrentPlayerName,
                 gameData.Territories,
                 gameData.PlayerGameDatas,
                 gameData.Deck,
@@ -98,7 +98,7 @@ namespace FlamingStrike.GameEngine.Play
         {
             var endTurnPhase = _gamePhaseFactory.CreateEndTurnPhase(
                 this,
-                gameData.CurrentPlayer,
+                gameData.CurrentPlayerName,
                 gameData.Territories,
                 gameData.PlayerGameDatas,
                 gameData.Deck);
@@ -110,7 +110,7 @@ namespace FlamingStrike.GameEngine.Play
         {
             var sendArmiesToOccupyPhase = _gamePhaseFactory.CreateSendArmiesToOccupyPhase(
                 this,
-                gameData.CurrentPlayer,
+                gameData.CurrentPlayerName,
                 gameData.Territories,
                 gameData.PlayerGameDatas,
                 gameData.Deck,
@@ -122,8 +122,8 @@ namespace FlamingStrike.GameEngine.Play
 
         public void PassTurnToNextPlayer(GameData gameData)
         {
-            var nextPlayer = gameData.PlayerGameDatas.Select(x => x.Player).ToList()
-                .GetNext(gameData.CurrentPlayer);
+            var nextPlayer = gameData.PlayerGameDatas.Select(x => x.PlayerName).ToList()
+                .GetNext(gameData.CurrentPlayerName);
 
             var numberOfArmiesToDraft = _armyDraftCalculator.Calculate(nextPlayer, gameData.Territories);
             var updatedGameData = new GameData(gameData.Territories, gameData.PlayerGameDatas, nextPlayer, gameData.Deck);
@@ -131,7 +131,7 @@ namespace FlamingStrike.GameEngine.Play
             ContinueToDraftArmies(numberOfArmiesToDraft, updatedGameData);
         }
 
-        public void PlayerIsTheWinner(IPlayer winner)
+        public void PlayerIsTheWinner(PlayerName winner)
         {
             var gameOverState = _gamePhaseFactory.CreateGameOverState(winner);
 

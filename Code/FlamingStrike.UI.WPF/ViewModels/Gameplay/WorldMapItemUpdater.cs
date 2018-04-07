@@ -9,19 +9,16 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay
 {
     public class WorldMapItemUpdater : IWorldMapItemViewModelVisitor
     {
-        private readonly IReadOnlyList<ITerritory> _territories;
-        private readonly IReadOnlyList<IRegion> _enabledRegions;
+        private readonly IReadOnlyList<Territory> _territories;
         private readonly Maybe<IRegion> _selectedRegion;
         private readonly IPlayerUiDataRepository _playerUiDataRepository;
 
         public WorldMapItemUpdater(
-            IReadOnlyList<ITerritory> territories,
-            IReadOnlyList<IRegion> enabledRegions,
+            IReadOnlyList<Territory> territories,
             Maybe<IRegion> selectedRegion,
             IPlayerUiDataRepository playerUiDataRepository)
         {
             _territories = territories;
-            _enabledRegions = enabledRegions;
             _selectedRegion = selectedRegion;
             _playerUiDataRepository = playerUiDataRepository;
         }
@@ -34,7 +31,7 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay
             regionViewModel.FillColor = playerColor;
             regionViewModel.IsSelected = IsSelected(regionViewModel.Region);
 
-            regionViewModel.IsEnabled = IsRegionEnabled(regionViewModel.Region);
+            regionViewModel.IsEnabled = IsEnabled(regionViewModel.Region);
         }
 
         private bool IsSelected(IRegion region)
@@ -43,17 +40,17 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay
                 .Fold(x => x == region, () => false);
         }
 
+        private bool IsEnabled(IRegion region)
+        {
+            return _territories.Single(x => x.Region == region).IsEnabled;
+        }
+
         private Color GetPlayerColor(IRegion region)
         {
             var player = _territories.Single(x => x.Region == region).Player;
             var playerUiData = _playerUiDataRepository.Get(player);
 
             return playerUiData.Color;
-        }
-
-        private bool IsRegionEnabled(IRegion region)
-        {
-            return _enabledRegions.Contains(region);
         }
 
         public void Visit(RegionNameViewModel regionNameViewModel)

@@ -6,7 +6,7 @@ namespace FlamingStrike.GameEngine.Play
 {
     public interface IDraftArmiesPhase
     {
-        IPlayer CurrentPlayer { get; }
+        PlayerName CurrentPlayerName { get; }
         IReadOnlyList<ITerritory> Territories { get; }
         IReadOnlyList<IPlayerGameData> PlayerGameDatas { get; }
         int NumberOfArmiesToDraft { get; }
@@ -21,7 +21,7 @@ namespace FlamingStrike.GameEngine.Play
 
         public DraftArmiesPhase(
             IGamePhaseConductor gamePhaseConductor,
-            IPlayer currentPlayer,
+            PlayerName currentPlayerName,
             IReadOnlyList<ITerritory> territories,
             IReadOnlyList<IPlayerGameData> playerGameDatas,
             IDeck deck,
@@ -30,14 +30,14 @@ namespace FlamingStrike.GameEngine.Play
         {
             _gamePhaseConductor = gamePhaseConductor;
             _armyDrafter = armyDrafter;
-            CurrentPlayer = currentPlayer;
+            CurrentPlayerName = currentPlayerName;
             Territories = territories;
             PlayerGameDatas = playerGameDatas;
             Deck = deck;
             NumberOfArmiesToDraft = numberOfArmiesToDraft;
         }
 
-        public IPlayer CurrentPlayer { get; }
+        public PlayerName CurrentPlayerName { get; }
         public IReadOnlyList<ITerritory> Territories { get; }
         public IReadOnlyList<IPlayerGameData> PlayerGameDatas { get; }
         public IDeck Deck { get; }
@@ -68,7 +68,7 @@ namespace FlamingStrike.GameEngine.Play
             }
 
             var updatedTerritories = _armyDrafter.PlaceDraftArmies(Territories, region, numberOfArmies);
-            var updatedGameData = new GameData(updatedTerritories, PlayerGameDatas, CurrentPlayer, Deck);
+            var updatedGameData = new GameData(updatedTerritories, PlayerGameDatas, CurrentPlayerName, Deck);
 
             var numberOfArmiesLeftToPlace = NumberOfArmiesToDraft - numberOfArmies;
             if (numberOfArmiesLeftToPlace > 0)
@@ -88,7 +88,7 @@ namespace FlamingStrike.GameEngine.Play
 
         private bool IsCurrentPlayerOccupyingRegion(IRegion region)
         {
-            return CurrentPlayer == Territories.Single(x => x.Region == region).Player;
+            return CurrentPlayerName == Territories.Single(x => x.Region == region).PlayerName;
         }
     }
 }

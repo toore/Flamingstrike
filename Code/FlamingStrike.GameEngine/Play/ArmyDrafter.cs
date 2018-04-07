@@ -14,7 +14,7 @@ namespace FlamingStrike.GameEngine.Play
         {
             var territoryToReinforce = territories.Single(x => x.Region == regionToReinforce);
             var currentArmies = territoryToReinforce.Armies;
-            var reinforcedTerritory = new Territory(regionToReinforce, territoryToReinforce.Player, currentArmies + numberOfArmiesToPlace);
+            var reinforcedTerritory = new Territory(regionToReinforce, territoryToReinforce.PlayerName, currentArmies + numberOfArmiesToPlace);
 
             return territories
                 .Except(new[] { territoryToReinforce })

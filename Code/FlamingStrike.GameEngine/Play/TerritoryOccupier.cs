@@ -18,8 +18,8 @@ namespace FlamingStrike.GameEngine.Play
             var armiesLeft = attackingTerritory.Armies - numberOfAdditionalArmiesToSendIn;
             var armiesOccupying = occupiedTerritory.Armies + numberOfAdditionalArmiesToSendIn;
 
-            var updatedAttackingTerritory = new Territory(attackingRegion, attackingTerritory.Player, armiesLeft);
-            var updatedOccupiedTerritory = new Territory(occupiedRegion, occupiedTerritory.Player, armiesOccupying);
+            var updatedAttackingTerritory = new Territory(attackingRegion, attackingTerritory.PlayerName, armiesLeft);
+            var updatedOccupiedTerritory = new Territory(occupiedRegion, occupiedTerritory.PlayerName, armiesOccupying);
 
             return territories
                 .Except(new[] { attackingTerritory, occupiedTerritory })

@@ -135,7 +135,7 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay
             _territories = draftArmiesPhase.Territories;
             _previouslySelectedAttackingRegion = Maybe<IRegion>.Nothing;
 
-            UpdatePlayersInformation(draftArmiesPhase.CurrentPlayer, draftArmiesPhase.PlayerGameDatas);
+            UpdatePlayersInformation(draftArmiesPhase.CurrentPlayerName, draftArmiesPhase.PlayerGameDatas);
 
             ShowDraftArmiesView(draftArmiesPhase);
         }
@@ -145,7 +145,7 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay
             _territories = attackPhase.Territories;
             _attackPhase = attackPhase;
 
-            UpdatePlayersInformation(attackPhase.CurrentPlayer, attackPhase.PlayerGameDatas);
+            UpdatePlayersInformation(attackPhase.CurrentPlayerName, attackPhase.PlayerGameDatas);
 
             _previouslySelectedAttackingRegion.End(
                 selectedRegion => ShowAttackPhaseView(attackPhase, selectedRegion),
@@ -156,7 +156,7 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay
         {
             _territories = sendArmiesToOccupyPhase.Territories;
 
-            UpdatePlayersInformation(sendArmiesToOccupyPhase.CurrentPlayer, sendArmiesToOccupyPhase.PlayerGameDatas);
+            UpdatePlayersInformation(sendArmiesToOccupyPhase.CurrentPlayerName, sendArmiesToOccupyPhase.PlayerGameDatas);
 
             ShowSendArmiesToOccupyView(sendArmiesToOccupyPhase);
         }
@@ -165,7 +165,7 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay
         {
             _territories = endTurnPhase.Territories;
 
-            UpdatePlayersInformation(endTurnPhase.CurrentPlayer, endTurnPhase.PlayerGameDatas);
+            UpdatePlayersInformation(endTurnPhase.CurrentPlayerName, endTurnPhase.PlayerGameDatas);
 
             ShowEndTurnView(endTurnPhase);
         }
@@ -278,17 +278,17 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay
             UpdateView();
         }
 
-        private void ShowGameOverMessage(IPlayer winner)
+        private void ShowGameOverMessage(PlayerName winner)
         {
-            _dialogManager.ShowGameOverDialog(winner.Name);
+            _dialogManager.ShowGameOverDialog((string)winner);
 
             _eventAggregator.PublishOnUIThread(new NewGameMessage());
         }
 
-        private void UpdatePlayersInformation(IPlayer currentPlayer, IReadOnlyList<IPlayerGameData> playerGameDatas)
+        private void UpdatePlayersInformation(PlayerName currentPlayerName, IReadOnlyList<IPlayerGameData> playerGameDatas)
         {
-            PlayerName = currentPlayer.Name;
-            PlayerColor = _playerUiDataRepository.Get(currentPlayer).Color;
+            PlayerName = (string)currentPlayerName;
+            PlayerColor = _playerUiDataRepository.Get((string)currentPlayerName).Color;
 
             PlayerStatuses = playerGameDatas
                 .Select(x => _playerStatusViewModelFactory.Create(x))
@@ -307,9 +307,14 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay
 
             _worldMapViewModelFactory.Update(
                 WorldMapViewModel,
-                _territories,
-                _interactionState.EnabledRegions,
+                Convert(_territories),
                 _interactionState.SelectedRegion);
+        }
+
+        private IReadOnlyList<Territory> Convert(IEnumerable<ITerritory> territories)
+        {
+            return territories
+                .Select(x => new Territory(x.Region, _interactionState.EnabledRegions.Contains(x.Region), (string)x.PlayerName, x.Armies)).ToList();
         }
     }
 }

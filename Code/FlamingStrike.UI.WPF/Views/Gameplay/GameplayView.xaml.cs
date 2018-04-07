@@ -8,6 +8,7 @@ using FlamingStrike.GameEngine.Play;
 using FlamingStrike.UI.WPF.RegionModels;
 using FlamingStrike.UI.WPF.ViewModels.Gameplay;
 using FlamingStrike.UI.WPF.ViewModels.Preparation;
+using Territory = FlamingStrike.UI.WPF.ViewModels.Gameplay.Territory;
 
 namespace FlamingStrike.UI.WPF.Views.Gameplay
 {
@@ -31,16 +32,16 @@ namespace FlamingStrike.UI.WPF.Views.Gameplay
 
             var random = new Random();
 
-            Player[] players = { new Player("player one"), new Player("player two") };
+            string[] players = { "player one", "player two" };
             playerUiDataRepository.Add(new PlayerUiData(players[0], Colors.DeepPink));
             playerUiDataRepository.Add(new PlayerUiData(players[1], Colors.Teal));
 
             var territories = regions.GetAll()
-                .Select((region, i) => new Territory(region, players[i % players.Length], random.Next(99) + 1))
+                .Select((region, i) => new Territory(region, true, players[i % players.Length], random.Next(99) + 1))
                 .ToList();
 
             WorldMapViewModel = worldMapViewModelFactory.Create(x => {});
-            worldMapViewModelFactory.Update(WorldMapViewModel, territories, Enumerable.Empty<IRegion>().ToList(), Maybe<IRegion>.Create(regions.Iceland));
+            worldMapViewModelFactory.Update(WorldMapViewModel, territories, Maybe<IRegion>.Create(regions.Iceland));
         }
 
         public WorldMapViewModel WorldMapViewModel { get; }

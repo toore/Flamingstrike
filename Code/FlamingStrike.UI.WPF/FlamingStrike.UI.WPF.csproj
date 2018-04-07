@@ -158,7 +158,6 @@
     <Compile Include="ViewModels\IMainViewModel.cs" />
     <Compile Include="ViewModels\Preparation\IPlayerTypes.cs" />
     <Compile Include="ViewModels\Preparation\NeutralPlayerType.cs" />
-    <Compile Include="ViewModels\Preparation\PlayerFactory.cs" />
     <Compile Include="ViewModels\Preparation\GamePreparationPlayerViewModel.cs" />
     <Compile Include="RegionModels\RegionModelFactory.cs" />
     <Compile Include="ViewModels\Preparation\PlayerTypeBase.cs" />

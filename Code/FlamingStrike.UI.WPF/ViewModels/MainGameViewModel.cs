@@ -1,8 +1,8 @@
 ﻿using System.Linq;
 using Caliburn.Micro;
-using FlamingStrike.GameEngine.API;
 using FlamingStrike.GameEngine.Play;
 using FlamingStrike.GameEngine.Setup;
+using FlamingStrike.GameEngine.Setup.Finished;
 using FlamingStrike.UI.WPF.ViewModels.AlternateSetup;
 using FlamingStrike.UI.WPF.ViewModels.Gameplay;
 using FlamingStrike.UI.WPF.ViewModels.Messages;

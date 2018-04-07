@@ -4,7 +4,7 @@ namespace FlamingStrike.GameEngine.Play
 {
     public interface IEndTurnPhase
     {
-        IPlayer CurrentPlayer { get; }
+        PlayerName CurrentPlayerName { get; }
         IReadOnlyList<ITerritory> Territories { get; }
         IReadOnlyList<IPlayerGameData> PlayerGameDatas { get; }
         void EndTurn();
@@ -16,26 +16,26 @@ namespace FlamingStrike.GameEngine.Play
 
         public EndTurnPhase(
             IGamePhaseConductor gamePhaseConductor,
-            IPlayer currentPlayer,
+            PlayerName currentPlayerName,
             IReadOnlyList<ITerritory> territories,
             IReadOnlyList<IPlayerGameData> playerGameDatas,
             IDeck deck)
         {
             _gamePhaseConductor = gamePhaseConductor;
-            CurrentPlayer = currentPlayer;
+            CurrentPlayerName = currentPlayerName;
             Territories = territories;
             PlayerGameDatas = playerGameDatas;
             Deck = deck;
         }
 
-        public IPlayer CurrentPlayer { get; }
+        public PlayerName CurrentPlayerName { get; }
         public IReadOnlyList<ITerritory> Territories { get; }
         public IReadOnlyList<IPlayerGameData> PlayerGameDatas { get; }
         public IDeck Deck { get; }
 
         public void EndTurn()
         {
-            _gamePhaseConductor.PassTurnToNextPlayer(new GameData(Territories, PlayerGameDatas, CurrentPlayer, Deck));
+            _gamePhaseConductor.PassTurnToNextPlayer(new GameData(Territories, PlayerGameDatas, CurrentPlayerName, Deck));
         }
     }
 }

@@ -2,16 +2,16 @@ namespace FlamingStrike.GameEngine.Play
 {
     public interface IGameOverState
     {
-        IPlayer Winner { get; }
+        PlayerName Winner { get; }
     }
 
     public class GameOverState : IGameOverState
     {
-        public GameOverState(IPlayer winner)
+        public GameOverState(PlayerName winner)
         {
             Winner = winner;
         }
 
-        public IPlayer Winner { get; }
+        public PlayerName Winner { get; }
     }
 }

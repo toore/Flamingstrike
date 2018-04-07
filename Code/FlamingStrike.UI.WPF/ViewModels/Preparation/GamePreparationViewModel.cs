@@ -15,14 +15,12 @@ namespace FlamingStrike.UI.WPF.ViewModels.Preparation
 
     public class GamePreparationViewModel : ViewModelBase, IGamePreparationViewModel
     {
-        private readonly IPlayerFactory _playerFactory;
         private readonly IPlayerTypes _playerTypes;
         private readonly IEventAggregator _eventAggregator;
         private readonly IPlayerUiDataRepository _playerUiDataRepository;
 
-        public GamePreparationViewModel(IPlayerFactory playerFactory, IPlayerTypes playerTypes, IPlayerUiDataRepository playerUiDataRepository, IEventAggregator eventAggregator)
+        public GamePreparationViewModel(IPlayerTypes playerTypes, IPlayerUiDataRepository playerUiDataRepository, IEventAggregator eventAggregator)
         {
-            _playerFactory = playerFactory;
             _playerTypes = playerTypes;
             _eventAggregator = eventAggregator;
             _playerUiDataRepository = playerUiDataRepository;
@@ -53,11 +51,11 @@ namespace FlamingStrike.UI.WPF.ViewModels.Preparation
         private GamePreparationPlayerViewModel CreateGamePreparationPlayerViewModel(int playerIndex, Color color)
         {
             return new GamePreparationPlayerViewModel(_playerTypes)
-            {
-                Name = string.Format(Resources.PLAYER_NUMBER, playerIndex + 1),
-                OnIsEnabledChanged = () => OnEnabledPlayerChanged(),
-                Color = color
-            };
+                {
+                    Name = string.Format(Resources.PLAYER_NUMBER, playerIndex + 1),
+                    OnIsEnabledChanged = () => OnEnabledPlayerChanged(),
+                    Color = color
+                };
         }
 
         private void OnEnabledPlayerChanged()
@@ -75,8 +73,7 @@ namespace FlamingStrike.UI.WPF.ViewModels.Preparation
 
             foreach (var player in GetPlayers())
             {
-                _playerUiDataRepository.Add(
-                    new PlayerUiData(_playerFactory.Create(player.Name), player.Color));
+                _playerUiDataRepository.Add(new PlayerUiData(player.Name, player.Color));
             }
 
             _eventAggregator.PublishOnUIThread(new StartGameSetupMessage());

@@ -9,11 +9,27 @@ using FlamingStrike.UI.WPF.ViewModels.Preparation;
 
 namespace FlamingStrike.UI.WPF.ViewModels.Gameplay
 {
+    public class Territory
+    {
+        public Territory(IRegion region, bool isEnabled, string player, int armies)
+        {
+            Region = region;
+            IsEnabled = isEnabled;
+            Player = player;
+            Armies = armies;
+        }
+
+        public IRegion Region { get; }
+        public bool IsEnabled { get; }
+        public string Player { get; }
+        public int Armies { get; }
+    }
+
     public interface IWorldMapViewModelFactory
     {
         WorldMapViewModel Create(Action<IRegion> onClick);
 
-        void Update(WorldMapViewModel worldMapViewModel, IReadOnlyList<ITerritory> territories, IReadOnlyList<IRegion> enabledRegions, Maybe<IRegion> selectedRegion);
+        void Update(WorldMapViewModel worldMapViewModel, IReadOnlyList<Territory> territories, Maybe<IRegion> selectedRegion);
     }
 
     public class WorldMapViewModelFactory : IWorldMapViewModelFactory
@@ -40,13 +56,11 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay
 
         public void Update(
             WorldMapViewModel worldMapViewModel,
-            IReadOnlyList<ITerritory> territories,
-            IReadOnlyList<IRegion> enabledRegions,
+            IReadOnlyList<Territory> territories,
             Maybe<IRegion> selectedRegion)
         {
             var worldMapItemUpdater = new WorldMapItemUpdater(
                 territories,
-                enabledRegions,
                 selectedRegion,
                 _playerUiDataRepository);
 

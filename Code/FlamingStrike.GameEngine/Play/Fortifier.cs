@@ -16,7 +16,7 @@ namespace FlamingStrike.GameEngine.Play
         {
             var sourceTerritory = territories.Single(x => x.Region == sourceRegion);
             var destinationTerritory = territories.Single(x => x.Region == destinationRegion);
-            var playerOccupiesBothTerritories = sourceTerritory.Player == destinationTerritory.Player;
+            var playerOccupiesBothTerritories = sourceTerritory.PlayerName == destinationTerritory.PlayerName;
             var hasBorder = IsTerritoriesAdjacent(sourceRegion, destinationRegion);
             var hasAtLeastOneArmyThatCanFortifyAnotherTerritory = sourceTerritory.GetNumberOfArmiesThatCanFortifyAnotherTerritory() > 0;
 
@@ -45,8 +45,8 @@ namespace FlamingStrike.GameEngine.Play
             var sourceTerritory = territories.Single(territory => territory.Region == sourceRegion);
             var destinationTerritory = territories.Single(territory => territory.Region == destinationRegion);
 
-            var updatedSourceTerritory = new Territory(sourceRegion, sourceTerritory.Player, sourceTerritory.Armies - armies);
-            var updatedDestinationTerritory = new Territory(destinationRegion, destinationTerritory.Player, destinationTerritory.Armies + armies);
+            var updatedSourceTerritory = new Territory(sourceRegion, sourceTerritory.PlayerName, sourceTerritory.Armies - armies);
+            var updatedDestinationTerritory = new Territory(destinationRegion, destinationTerritory.PlayerName, destinationTerritory.Armies + armies);
 
             return territories
                 .Except(new[] { sourceTerritory, destinationTerritory })

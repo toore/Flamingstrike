@@ -1,6 +1,5 @@
 ﻿using Caliburn.Micro;
 using FlamingStrike.GameEngine;
-using FlamingStrike.GameEngine.API;
 using FlamingStrike.GameEngine.Play;
 using FlamingStrike.GameEngine.Setup;
 using FlamingStrike.UI.WPF.RegionModels;
@@ -26,13 +25,11 @@ namespace FlamingStrike.UI.WPF
 
         public CompositionRoot()
         {
-            var playerFactory = new PlayerFactory();
             var playerTypes = new PlayerTypes();
             PlayerUiDataRepository = new PlayerUiDataRepository();
             EventAggregator = new EventAggregator();
 
             GamePreparationViewModelFactory = new GamePreparationViewModelFactory(
-                playerFactory,
                 playerTypes,
                 PlayerUiDataRepository,
                 EventAggregator);

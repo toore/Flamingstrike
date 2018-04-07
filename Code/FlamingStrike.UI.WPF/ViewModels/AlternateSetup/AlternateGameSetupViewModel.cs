@@ -1,15 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Media;
 using Caliburn.Micro;
 using FlamingStrike.Core;
 using FlamingStrike.GameEngine;
 using FlamingStrike.GameEngine.Setup;
+using FlamingStrike.GameEngine.Setup.Finished;
+using FlamingStrike.GameEngine.Setup.TerritorySelection;
 using FlamingStrike.UI.WPF.Properties;
 using FlamingStrike.UI.WPF.Services;
 using FlamingStrike.UI.WPF.ViewModels.Gameplay;
 using FlamingStrike.UI.WPF.ViewModels.Messages;
 using FlamingStrike.UI.WPF.ViewModels.Preparation;
+using Player = FlamingStrike.GameEngine.Setup.TerritorySelection.Player;
+using Territory = FlamingStrike.GameEngine.Setup.TerritorySelection.Territory;
 
 namespace FlamingStrike.UI.WPF.ViewModels.AlternateSetup
 {
@@ -67,14 +72,13 @@ namespace FlamingStrike.UI.WPF.ViewModels.AlternateSetup
 
         public void ShowCards() {}
 
-        public void SelectRegion(IPlaceArmyRegionSelector placeArmyRegionSelector)
+        public void SelectRegion(ITerritorySelector territorySelector)
         {
             UpdateView(
-                placeArmyRegionSelector.Territories,
-                region => placeArmyRegionSelector.PlaceArmyInRegion(region),
-                placeArmyRegionSelector.SelectableRegions,
-                placeArmyRegionSelector.Player,
-                placeArmyRegionSelector.GetArmiesLeftToPlace());
+                territorySelector.GetTerritories(),
+                territorySelector.PlaceArmyInRegion,
+                territorySelector.GetPlayer(),
+                territorySelector.GetArmiesLeftToPlace());
         }
 
         public void NewGamePlaySetup(IGamePlaySetup gamePlaySetup)
@@ -82,16 +86,25 @@ namespace FlamingStrike.UI.WPF.ViewModels.AlternateSetup
             _eventAggregator.PublishOnUIThread(new StartGameplayMessage(gamePlaySetup));
         }
 
-        private void UpdateView(IReadOnlyList<ITerritory> territories, Action<IRegion> selectAction, IReadOnlyList<IRegion> enabledRegions, IPlayer player, int armiesToPlace)
+        private void UpdateView(
+            IReadOnlyList<Territory> territories,
+            Action<IRegion> selectAction,
+            Player player,
+            int armiesToPlace)
         {
             _onRegionClick = selectAction;
 
-            _worldMapViewModelFactory.Update(WorldMapViewModel, territories, enabledRegions, Maybe<IRegion>.Nothing);
+            _worldMapViewModelFactory.Update(WorldMapViewModel, Convert(territories), Maybe<IRegion>.Nothing);
 
             PlayerName = player.Name;
-            PlayerColor = _playerUiDataRepository.Get(player).Color;
+            PlayerColor = _playerUiDataRepository.Get(player.Name).Color;
 
             InformationText = string.Format(Resources.PLACE_ARMY, armiesToPlace);
+        }
+
+        private static IReadOnlyList<Gameplay.Territory> Convert(IEnumerable<Territory> territories)
+        {
+            return territories.Select(x => new Gameplay.Territory(x.Region, x.IsSelectable, x.Player, x.Armies)).ToList();
         }
 
         public bool CanEnterFortifyMode => false;

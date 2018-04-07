@@ -6,7 +6,7 @@ namespace FlamingStrike.GameEngine.Play
 {
     public interface IArmyDraftCalculator
     {
-        int Calculate(IPlayer currentPlayer, IReadOnlyList<ITerritory> territories);
+        int Calculate(PlayerName currentPlayerName, IReadOnlyList<ITerritory> territories);
     }
 
     public class ArmyDraftCalculator : IArmyDraftCalculator
@@ -18,33 +18,33 @@ namespace FlamingStrike.GameEngine.Play
             _continents = continents;
         }
 
-        public int Calculate(IPlayer currentPlayer, IReadOnlyList<ITerritory> territories)
+        public int Calculate(PlayerName currentPlayerName, IReadOnlyList<ITerritory> territories)
         {
-            var armiesDraftedBasedOnTerritoriesOccupied = CalculateArmiesDraftedBasedOnTerritoriesOccupied(currentPlayer, territories);
-            var armiesDraftedBasedOnContinentsOccupied = CalculateArmiesDraftedBasedOnContinentsOccupied(currentPlayer, territories);
+            var armiesDraftedBasedOnTerritoriesOccupied = CalculateArmiesDraftedBasedOnTerritoriesOccupied(currentPlayerName, territories);
+            var armiesDraftedBasedOnContinentsOccupied = CalculateArmiesDraftedBasedOnContinentsOccupied(currentPlayerName, territories);
 
             return armiesDraftedBasedOnTerritoriesOccupied + armiesDraftedBasedOnContinentsOccupied;
         }
 
-        private static int CalculateArmiesDraftedBasedOnTerritoriesOccupied(IPlayer currentPlayer, IEnumerable<ITerritory> territories)
+        private static int CalculateArmiesDraftedBasedOnTerritoriesOccupied(PlayerName currentPlayerName, IEnumerable<ITerritory> territories)
         {
-            var numberOfOccupiedTerritories = territories.Count(territory => territory.Player == currentPlayer);
+            var numberOfOccupiedTerritories = territories.Count(territory => territory.PlayerName == currentPlayerName);
 
             return Math.Max(numberOfOccupiedTerritories / 3, 3);
         }
 
-        private int CalculateArmiesDraftedBasedOnContinentsOccupied(IPlayer currentPlayer, IEnumerable<ITerritory> territories)
+        private int CalculateArmiesDraftedBasedOnContinentsOccupied(PlayerName currentPlayerName, IEnumerable<ITerritory> territories)
         {
             return _continents.GetAll()
-                .Where(continent => IsContinentOccupiedByPlayer(continent, currentPlayer, territories))
+                .Where(continent => IsContinentOccupiedByPlayer(continent, currentPlayerName, territories))
                 .Sum(continent => continent.Bonus);
         }
 
-        private static bool IsContinentOccupiedByPlayer(IContinent continent, IPlayer player, IEnumerable<ITerritory> territories)
+        private static bool IsContinentOccupiedByPlayer(IContinent continent, PlayerName playerName, IEnumerable<ITerritory> territories)
         {
             return territories
                 .Where(x => x.Region.Continent == continent)
-                .All(x => x.Player == player);
+                .All(x => x.PlayerName == playerName);
         }
     }
 }

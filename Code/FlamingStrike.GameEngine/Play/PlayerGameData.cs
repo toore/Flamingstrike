@@ -4,19 +4,20 @@ namespace FlamingStrike.GameEngine.Play
 {
     public interface IPlayerGameData
     {
-        IPlayer Player { get; }
+        PlayerName PlayerName { get; }
         IReadOnlyList<ICard> Cards { get; }
     }
 
     public class PlayerGameData : IPlayerGameData
     {
-        public PlayerGameData(IPlayer player, IReadOnlyList<ICard> cards)
+        public PlayerGameData(PlayerName playerName, IReadOnlyList<ICard> cards)
         {
-            Player = player;
+            PlayerName = playerName;
             Cards = cards;
         }
 
-        public IPlayer Player { get; }
+        public PlayerName PlayerName { get; }
+
         public IReadOnlyList<ICard> Cards { get; }
     }
 }

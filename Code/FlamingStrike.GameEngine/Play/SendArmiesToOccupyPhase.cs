@@ -4,7 +4,7 @@ namespace FlamingStrike.GameEngine.Play
 {
     public interface ISendArmiesToOccupyPhase
     {
-        IPlayer CurrentPlayer { get; }
+        PlayerName CurrentPlayerName { get; }
         IReadOnlyList<ITerritory> Territories { get; }
         IReadOnlyList<IPlayerGameData> PlayerGameDatas { get; }
         IRegion AttackingRegion { get; }
@@ -19,7 +19,7 @@ namespace FlamingStrike.GameEngine.Play
 
         public SendArmiesToOccupyPhase(
             IGamePhaseConductor gamePhaseConductor,
-            IPlayer currentPlayer,
+            PlayerName currentPlayerName,
             IReadOnlyList<ITerritory> territories,
             IReadOnlyList<IPlayerGameData> playerGameDatas,
             IDeck deck,
@@ -29,7 +29,7 @@ namespace FlamingStrike.GameEngine.Play
         {
             _gamePhaseConductor = gamePhaseConductor;
             _territoryOccupier = territoryOccupier;
-            CurrentPlayer = currentPlayer;
+            CurrentPlayerName = currentPlayerName;
             Territories = territories;
             PlayerGameDatas = playerGameDatas;
             Deck = deck;
@@ -37,7 +37,7 @@ namespace FlamingStrike.GameEngine.Play
             OccupiedRegion = occupiedRegion;
         }
 
-        public IPlayer CurrentPlayer { get; }
+        public PlayerName CurrentPlayerName { get; }
         public IReadOnlyList<ITerritory> Territories { get; }
         public IReadOnlyList<IPlayerGameData> PlayerGameDatas { get; }
         public IDeck Deck { get; }
@@ -47,7 +47,7 @@ namespace FlamingStrike.GameEngine.Play
         public void SendAdditionalArmiesToOccupy(int numberOfArmies)
         {
             var updatedTerritories = _territoryOccupier.SendInAdditionalArmiesToOccupy(Territories, AttackingRegion, OccupiedRegion, numberOfArmies);
-            var updatedGameData = new GameData(updatedTerritories, PlayerGameDatas, CurrentPlayer, Deck);
+            var updatedGameData = new GameData(updatedTerritories, PlayerGameDatas, CurrentPlayerName, Deck);
 
             _gamePhaseConductor.ContinueWithAttackPhase(
                 ConqueringAchievement.SuccessfullyConqueredAtLeastOneTerritory,
