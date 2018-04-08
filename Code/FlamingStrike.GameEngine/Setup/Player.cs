@@ -4,9 +4,9 @@ namespace FlamingStrike.GameEngine.Setup
 {
     public class Player
     {
-        public Player(string name, int armiesToPlace)
+        public Player(PlayerName name, int armiesToPlace)
         {
-            if (string.IsNullOrWhiteSpace(name))
+            if (string.IsNullOrWhiteSpace((string)name))
             {
                 throw new ArgumentException($"{nameof(name)} is null or white space.", nameof(name));
             }
@@ -20,7 +20,7 @@ namespace FlamingStrike.GameEngine.Setup
             ArmiesToPlace = armiesToPlace;
         }
 
-        public string Name { get; }
+        public PlayerName Name { get; }
 
         public int ArmiesToPlace { get; private set; }
 

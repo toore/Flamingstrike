@@ -28,7 +28,7 @@ namespace FlamingStrike.GameEngine.Play
 
         private static int CalculateArmiesDraftedBasedOnTerritoriesOccupied(PlayerName currentPlayerName, IEnumerable<ITerritory> territories)
         {
-            var numberOfOccupiedTerritories = territories.Count(territory => territory.PlayerName == currentPlayerName);
+            var numberOfOccupiedTerritories = territories.Count(territory => territory.Name == currentPlayerName);
 
             return Math.Max(numberOfOccupiedTerritories / 3, 3);
         }
@@ -44,7 +44,7 @@ namespace FlamingStrike.GameEngine.Play
         {
             return territories
                 .Where(x => x.Region.Continent == continent)
-                .All(x => x.PlayerName == playerName);
+                .All(x => x.Name == playerName);
         }
     }
 }

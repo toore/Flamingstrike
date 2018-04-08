@@ -11,7 +11,7 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay
 {
     public class Territory
     {
-        public Territory(IRegion region, bool isEnabled, string player, int armies)
+        public Territory(IRegion region, bool isEnabled, PlayerName player, int armies)
         {
             Region = region;
             IsEnabled = isEnabled;
@@ -21,7 +21,7 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay
 
         public IRegion Region { get; }
         public bool IsEnabled { get; }
-        public string Player { get; }
+        public PlayerName Player { get; }
         public int Armies { get; }
     }
 

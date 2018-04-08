@@ -1,3 +1,4 @@
+using FlamingStrike.GameEngine;
 using FlamingStrike.GameEngine.Play;
 
 namespace Tests.GameEngine

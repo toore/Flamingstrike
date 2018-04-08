@@ -2,16 +2,16 @@
 {
     public class Territory
     {
-        public Territory(IRegion region, string player, int armies, bool isSelectable)
+        public Territory(IRegion region, PlayerName name, int armies, bool isSelectable)
         {
             Region = region;
-            Player = player;
+            Name = name;
             Armies = armies;
             IsSelectable = isSelectable;
         }
 
         public IRegion Region { get; }
-        public string Player { get; }
+        public PlayerName Name { get; }
         public int Armies { get; }
         public bool IsSelectable { get; }
     }

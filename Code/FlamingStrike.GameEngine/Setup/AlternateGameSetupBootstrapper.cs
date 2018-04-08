@@ -5,7 +5,7 @@ namespace FlamingStrike.GameEngine.Setup
 {
     public interface IAlternateGameSetupBootstrapper
     {
-        void Run(IAlternateGameSetupObserver alternateGameSetupObserver, IReadOnlyList<string> players);
+        void Run(IAlternateGameSetupObserver alternateGameSetupObserver, IReadOnlyList<PlayerName> players);
     }
 
     public class AlternateGameSetupBootstrapper : IAlternateGameSetupBootstrapper
@@ -21,7 +21,7 @@ namespace FlamingStrike.GameEngine.Setup
             _startingInfantryCalculator = startingInfantryCalculator;
         }
 
-        public void Run(IAlternateGameSetupObserver alternateGameSetupObserver, IReadOnlyList<string> players)
+        public void Run(IAlternateGameSetupObserver alternateGameSetupObserver, IReadOnlyList<PlayerName> players)
         {
             var alternateGameSetup = new AlternateGameSetup(
                 alternateGameSetupObserver,

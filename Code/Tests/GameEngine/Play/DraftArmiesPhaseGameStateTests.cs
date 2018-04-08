@@ -30,7 +30,7 @@ namespace Tests.GameEngine.Play
             _region = Substitute.For<IRegion>();
             _anotherRegion = Substitute.For<IRegion>();
             territory.Region.Returns(_region);
-            territory.PlayerName.Returns(_currentPlayerName);
+            territory.Name.Returns(_currentPlayerName);
             anotherTerritory.Region.Returns(_anotherRegion);
 
             _gameData = new GameDataBuilder()

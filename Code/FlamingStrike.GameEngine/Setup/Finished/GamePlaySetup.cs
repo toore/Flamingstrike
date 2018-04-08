@@ -4,22 +4,22 @@ namespace FlamingStrike.GameEngine.Setup.Finished
 {
     public interface IGamePlaySetup
     {
-        IReadOnlyList<Player> GetPlayers();
+        IReadOnlyList<PlayerName> GetPlayers();
         IReadOnlyList<Territory> GetTerritories();
     }
 
     public class GamePlaySetup : IGamePlaySetup
     {
-        private readonly IReadOnlyList<Player> _players;
+        private readonly IReadOnlyList<PlayerName> _players;
         private readonly IReadOnlyList<Territory> _territories;
 
-        public GamePlaySetup(IReadOnlyList<Player> players, IReadOnlyList<Territory> territories)
+        public GamePlaySetup(IReadOnlyList<PlayerName> players, IReadOnlyList<Territory> territories)
         {
             _players = players;
             _territories = territories;
         }
 
-        public IReadOnlyList<Player> GetPlayers()
+        public IReadOnlyList<PlayerName> GetPlayers()
         {
             return _players;
         }

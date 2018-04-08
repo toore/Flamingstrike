@@ -41,7 +41,7 @@ namespace FlamingStrike.GameEngine.Play
 
         private static bool IsAttackerAndDefenderDifferentPlayers(ITerritory attackingTerritory, ITerritory defendingTerritory)
         {
-            return attackingTerritory.PlayerName != defendingTerritory.PlayerName;
+            return attackingTerritory.Name != defendingTerritory.Name;
         }
 
         private static bool HasAttackerEnoughArmiesToPerformAttack(ITerritory attackingTerritory)

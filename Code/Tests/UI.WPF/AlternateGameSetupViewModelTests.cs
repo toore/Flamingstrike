@@ -75,7 +75,7 @@ namespace Tests.UI.WPF
         public void SelectRegion_updates_information_text()
         {
             var placeArmyRegionSelector = Substitute.For<ITerritorySelector>();
-            placeArmyRegionSelector.GetPlayer().Returns(new Player("", 1));
+            placeArmyRegionSelector.GetPlayer().Returns(new Player(new PlayerName(""), 1));
             placeArmyRegionSelector.GetArmiesLeftToPlace().Returns(1);
 
             var sut = Create();
@@ -90,7 +90,7 @@ namespace Tests.UI.WPF
         public void SelectRegion_updates_player_name()
         {
             var placeArmyRegionSelector = Substitute.For<ITerritorySelector>();
-            placeArmyRegionSelector.GetPlayer().Returns(new Player("player name", 0));
+            placeArmyRegionSelector.GetPlayer().Returns(new Player(new PlayerName("player name"), 0));
             _playerUiDataRepository.Get(null).ReturnsForAnyArgs(new PlayerUiData("", Colors.Black));
 
             var sut = Create();

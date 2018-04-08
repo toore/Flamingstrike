@@ -13,12 +13,12 @@ namespace Tests.GameEngine.Setup
     public class AlternateGameSetupObserverSpec : SpecBase<AlternateGameSetupObserverSpec>
     {
         private IAlternateGameSetupObserverSpy _alternateGameSetupObserverSpy;
-        private IReadOnlyList<string> _players;
+        private IReadOnlyList<PlayerName> _players;
         private AlternateGameSetupBootstrapper _alternateGameSetupBootstrapper;
         private IShuffler _shuffler;
-        private string _player1;
-        private string _player2;
-        private string _player3;
+        private PlayerName _player1;
+        private PlayerName _player2;
+        private PlayerName _player3;
 
         [Fact]
         public void First_player_places_army_first()
@@ -96,10 +96,10 @@ namespace Tests.GameEngine.Setup
             regions.GetAll().Returns(new List<IRegion>());
             _alternateGameSetupBootstrapper = new AlternateGameSetupBootstrapper(regions, _shuffler, startingInfantryCalculator);
 
-            _player1 = "player 1";
-            _player2 = "player 2";
-            _player3 = "player 3";
-            _players = new List<string>();
+            _player1 = new PlayerName("player 1");
+            _player2 = new PlayerName("player 2");
+            _player3 = new PlayerName("player 3");
+            _players = new List<PlayerName>();
 
             _shuffler
                 .Shuffle(regions.GetAll())
@@ -110,7 +110,7 @@ namespace Tests.GameEngine.Setup
 
         private void player_2_takes_turn_first_then_player_1_and_finally_player_3()
         {
-            _shuffler.Shuffle(_players).Returns(new List<string> { _player2, _player1, _player3 });
+            _shuffler.Shuffle(_players).Returns(new List<PlayerName> { _player2, _player1, _player3 });
         }
 
         private AlternateGameSetupObserverSpec game_setup_is_initiated()

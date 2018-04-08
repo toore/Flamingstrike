@@ -1,5 +1,4 @@
 using System.Linq;
-using FlamingStrike.GameEngine.Setup;
 using FlamingStrike.GameEngine.Setup.Finished;
 
 namespace FlamingStrike.GameEngine.Play
@@ -34,14 +33,10 @@ namespace FlamingStrike.GameEngine.Play
                 _deckFactory);
 
             var territories = gamePlaySetup.GetTerritories()
-                .Select(x => new Territory(x.Region, new PlayerName(x.PlayerName), x.Armies))
+                .Select(x => new Territory(x.Region, x.Name, x.Armies))
                 .ToList();
 
-            var players = gamePlaySetup.GetPlayers()
-                .Select(x => new PlayerName(x.Name))
-                .ToList();
-
-            game.Run(territories, players);
+            game.Run(territories, gamePlaySetup.GetPlayers());
         }
     }
 }

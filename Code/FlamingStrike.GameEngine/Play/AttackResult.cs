@@ -20,7 +20,7 @@
 
         public bool IsDefenderDefeated()
         {
-            return UpdatedAttackingTerritory.PlayerName == UpdatedDefendingTerritory.PlayerName;
+            return UpdatedAttackingTerritory.Name == UpdatedDefendingTerritory.Name;
         }
     }
 }

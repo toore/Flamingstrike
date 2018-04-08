@@ -5,19 +5,6 @@ using FlamingStrike.Core;
 
 namespace FlamingStrike.GameEngine.Play
 {
-    public interface IAttackPhase
-    {
-        PlayerName CurrentPlayerName { get; }
-        IReadOnlyList<ITerritory> Territories { get; }
-        IReadOnlyList<IPlayerGameData> PlayerGameDatas { get; }
-        IReadOnlyList<IRegion> GetRegionsThatCanBeSourceForAttackOrFortification();
-        void Attack(IRegion attackingRegion, IRegion defendingRegion);
-        void Fortify(IRegion sourceRegion, IRegion destinationRegion, int armies);
-        IEnumerable<IRegion> GetRegionsThatCanBeAttacked(IRegion sourceRegion);
-        IEnumerable<IRegion> GetRegionsThatCanBeFortified(IRegion sourceRegion);
-        void EndTurn();
-    }
-
     public class AttackPhase : IAttackPhase
     {
         private readonly IGamePhaseConductor _gamePhaseConductor;
@@ -120,12 +107,12 @@ namespace FlamingStrike.GameEngine.Play
 
         private bool IsCurrentPlayerOccupyingRegion(IRegion region)
         {
-            return Territories.Single(x => x.Region == region).PlayerName == CurrentPlayerName;
+            return Territories.Single(x => x.Region == region).Name == CurrentPlayerName;
         }
 
         private PlayerName GetPlayer(IRegion region)
         {
-            return Territories.Single(x => x.Region == region).PlayerName;
+            return Territories.Single(x => x.Region == region).Name;
         }
 
         private void DefendingArmyIsEliminated(PlayerName defeatedPlayerName, IRegion attackingRegion, IRegion defeatedRegion, IReadOnlyList<ITerritory> updatedTerritories)

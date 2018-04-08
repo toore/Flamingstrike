@@ -45,9 +45,9 @@ namespace Tests.GameEngine.Play
             _anotherPlayerGameData.PlayerName.Returns(_anotherPlayerName);
 
             _territory.Region.Returns(_region);
-            _territory.PlayerName.Returns(_currentPlayerName);
+            _territory.Name.Returns(_currentPlayerName);
             anotherTerritory.Region.Returns(_anotherRegion);
-            anotherTerritory.PlayerName.Returns(_anotherPlayerName);
+            anotherTerritory.Name.Returns(_anotherPlayerName);
 
             _gameData = new GameDataBuilder()
                 .Territories(_territory, anotherTerritory)

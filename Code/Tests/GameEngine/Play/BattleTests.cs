@@ -88,10 +88,10 @@ namespace Tests.GameEngine.Play
                 var battleResult = _sut.Attack(attackingTerritory, defendingTerritory);
 
                 battleResult.UpdatedAttackingTerritory.Region.Should().Be(attackingTerritory.Region);
-                battleResult.UpdatedAttackingTerritory.PlayerName.Should().Be(attackingTerritory.PlayerName);
+                battleResult.UpdatedAttackingTerritory.Name.Should().Be(attackingTerritory.Name);
                 battleResult.UpdatedAttackingTerritory.Armies.Should().Be(2);
                 battleResult.UpdatedDefendingTerritory.Region.Should().Be(defendingTerritory.Region);
-                battleResult.UpdatedDefendingTerritory.PlayerName.Should().Be(defendingTerritory.PlayerName);
+                battleResult.UpdatedDefendingTerritory.Name.Should().Be(defendingTerritory.Name);
                 battleResult.UpdatedDefendingTerritory.Armies.Should().Be(1);
             }
 
@@ -106,10 +106,10 @@ namespace Tests.GameEngine.Play
                 var battleResult = _sut.Attack(attackingTerritory, defendingTerritory);
 
                 battleResult.UpdatedAttackingTerritory.Region.Should().Be(attackingTerritory.Region);
-                battleResult.UpdatedAttackingTerritory.PlayerName.Should().Be(attackingTerritory.PlayerName);
+                battleResult.UpdatedAttackingTerritory.Name.Should().Be(attackingTerritory.Name);
                 battleResult.UpdatedAttackingTerritory.Armies.Should().Be(2);
                 battleResult.UpdatedDefendingTerritory.Region.Should().Be(defendingTerritory.Region);
-                battleResult.UpdatedDefendingTerritory.PlayerName.Should().Be(defendingTerritory.PlayerName);
+                battleResult.UpdatedDefendingTerritory.Name.Should().Be(defendingTerritory.Name);
                 battleResult.UpdatedDefendingTerritory.Armies.Should().Be(1);
             }
 
@@ -124,10 +124,10 @@ namespace Tests.GameEngine.Play
                 var battleResult = _sut.Attack(attackingTerritory, defendingTerritory);
 
                 battleResult.UpdatedAttackingTerritory.Region.Should().Be(attackingTerritory.Region);
-                battleResult.UpdatedAttackingTerritory.PlayerName.Should().Be(attackingTerritory.PlayerName);
+                battleResult.UpdatedAttackingTerritory.Name.Should().Be(attackingTerritory.Name);
                 battleResult.UpdatedAttackingTerritory.Armies.Should().Be(3);
                 battleResult.UpdatedDefendingTerritory.Region.Should().Be(defendingTerritory.Region);
-                battleResult.UpdatedDefendingTerritory.PlayerName.Should().Be(defendingTerritory.PlayerName);
+                battleResult.UpdatedDefendingTerritory.Name.Should().Be(defendingTerritory.Name);
                 battleResult.UpdatedDefendingTerritory.Armies.Should().Be(1);
             }
 
@@ -142,10 +142,10 @@ namespace Tests.GameEngine.Play
                 var battleResult = _sut.Attack(attackingTerritory, defendingTerritory);
 
                 battleResult.UpdatedAttackingTerritory.Region.Should().Be(attackingTerritory.Region);
-                battleResult.UpdatedAttackingTerritory.PlayerName.Should().Be(attackingTerritory.PlayerName);
+                battleResult.UpdatedAttackingTerritory.Name.Should().Be(attackingTerritory.Name);
                 battleResult.UpdatedAttackingTerritory.Armies.Should().Be(1);
                 battleResult.UpdatedDefendingTerritory.Region.Should().Be(defendingTerritory.Region);
-                battleResult.UpdatedDefendingTerritory.PlayerName.Should().Be(attackingTerritory.PlayerName);
+                battleResult.UpdatedDefendingTerritory.Name.Should().Be(attackingTerritory.Name);
                 battleResult.UpdatedDefendingTerritory.Armies.Should().Be(1);
             }
 

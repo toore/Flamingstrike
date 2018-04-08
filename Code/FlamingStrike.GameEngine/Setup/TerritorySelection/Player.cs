@@ -2,10 +2,10 @@
 {
     public class Player
     {
-        public string Name { get; }
+        public PlayerName Name { get; }
         public int ArmiesToPlace { get; }
 
-        public Player(string name, int armiesToPlace)
+        public Player(PlayerName name, int armiesToPlace)
         {
             Name = name;
             ArmiesToPlace = armiesToPlace;

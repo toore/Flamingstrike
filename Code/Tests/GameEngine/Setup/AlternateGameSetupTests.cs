@@ -14,25 +14,25 @@ namespace Tests.GameEngine.Setup
     {
         private readonly AlternateGameSetupObserverSpyDecorator _alternateGameSetupObserver;
         private readonly IRegions _regions;
-        private readonly List<string> _players;
+        private readonly List<PlayerName> _players;
         private readonly IStartingInfantryCalculator _startingInfantryCalculator;
         private readonly IShuffler _shuffler;
-        private readonly string _player1;
-        private readonly string _player2;
+        private readonly PlayerName _player1;
+        private readonly PlayerName _player2;
         private readonly List<IRegion> _regionElements;
 
         public AlternateGameSetupTests()
         {
             _alternateGameSetupObserver = new AlternateGameSetupObserverSpyDecorator(new AutoRespondingAlternateGameSetupObserver());
             _regions = Substitute.For<IRegions>();
-            _players = new List<string> { null, null };
+            _players = new List<PlayerName> { null, null };
             _startingInfantryCalculator = Substitute.For<IStartingInfantryCalculator>();
             _shuffler = Substitute.For<IShuffler>();
 
-            _player1 = "player 1";
-            _player2 = "player 2";
+            _player1 = new PlayerName("player 1");
+            _player2 = new PlayerName("player 2");
 
-            _shuffler.Shuffle(_players).Returns(new List<string> { _player1, _player2 });
+            _shuffler.Shuffle(_players).Returns(new List<PlayerName> { _player1, _player2 });
 
             _regionElements = new List<IRegion> { null };
             _regions.GetAll().Returns(_regionElements);
@@ -48,7 +48,7 @@ namespace Tests.GameEngine.Setup
 
             RunSetup();
 
-            _alternateGameSetupObserver.GamePlaySetup.GetPlayers().Select(x=>x.Name).Should().ContainInOrder(_player1, _player2);
+            _alternateGameSetupObserver.GamePlaySetup.GetPlayers().Should().ContainInOrder(_player1, _player2);
         }
 
         [Fact]

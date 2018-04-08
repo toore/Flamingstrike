@@ -5,21 +5,21 @@ namespace FlamingStrike.GameEngine.Play
 {
     public interface IPlayerEliminationRules
     {
-        bool IsPlayerEliminated(IEnumerable<ITerritory> territories, PlayerName playerName);
+        bool IsPlayerEliminated(IEnumerable<ITerritory> territories, PlayerName player);
         bool IsOnlyOnePlayerLeftInTheGame(IEnumerable<ITerritory> territories);
     }
 
     public class PlayerEliminationRules : IPlayerEliminationRules
     {
-        public bool IsPlayerEliminated(IEnumerable<ITerritory> territories, PlayerName playerName)
+        public bool IsPlayerEliminated(IEnumerable<ITerritory> territories, PlayerName player)
         {
-            return territories.All(x => x.PlayerName != playerName);
+            return territories.All(x => x.Name != player);
         }
 
         public bool IsOnlyOnePlayerLeftInTheGame(IEnumerable<ITerritory> territories)
         {
             return territories
-                .Select(x => x.PlayerName)
+                .Select(x => x.Name)
                 .Distinct()
                 .Count() == 1;
         }

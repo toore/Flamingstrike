@@ -5,7 +5,7 @@ namespace FlamingStrike.GameEngine.Play
     public interface ITerritory
     {
         IRegion Region { get; }
-        PlayerName PlayerName { get; }
+        PlayerName Name { get; }
         int Armies { get; }
         int GetNumberOfArmiesThatAreAvailableForAnAttack();
         int GetNumberOfArmiesUsedInAnAttack();
@@ -26,12 +26,12 @@ namespace FlamingStrike.GameEngine.Play
             }
 
             Region = region;
-            PlayerName = playerName;
+            Name = playerName;
             Armies = armies;
         }
 
         public IRegion Region { get; }
-        public PlayerName PlayerName { get; }
+        public PlayerName Name { get; }
         public int Armies { get; }
 
         public int GetNumberOfArmiesThatAreAvailableForAnAttack()

@@ -314,7 +314,7 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay
         private IReadOnlyList<Territory> Convert(IEnumerable<ITerritory> territories)
         {
             return territories
-                .Select(x => new Territory(x.Region, _interactionState.EnabledRegions.Contains(x.Region), (string)x.PlayerName, x.Armies)).ToList();
+                .Select(x => new Territory(x.Region, _interactionState.EnabledRegions.Contains(x.Region), x.Name, x.Armies)).ToList();
         }
     }
 }

@@ -8,6 +8,7 @@ using FluentAssertions;
 using NSubstitute;
 using Toore.Shuffling;
 using Xunit;
+using Territory = FlamingStrike.GameEngine.Setup.Finished.Territory;
 
 namespace Tests.GameEngine.Play
 {
@@ -17,7 +18,7 @@ namespace Tests.GameEngine.Play
         private PlayerName _player1;
         private PlayerName _player2;
         private IDie _die;
-        private readonly List<FlamingStrike.GameEngine.Setup.Finished.Territory> _territories = new List<FlamingStrike.GameEngine.Setup.Finished.Territory>();
+        private readonly List<Territory> _territories = new List<Territory>();
         private Continents _continents;
         private readonly GameObserverSpy _gameObserverSpy = new GameObserverSpy();
 
@@ -223,10 +224,10 @@ namespace Tests.GameEngine.Play
             var deckFactory = new DeckFactory(_regions, fisherYatesShuffle);
             var gameFactory = new GameBootstrapper(gamePhaseFactory, armyDraftCalculator, deckFactory);
 
-            IReadOnlyList<FlamingStrike.GameEngine.Setup.Finished.Player> players = new List<FlamingStrike.GameEngine.Setup.Finished.Player>
+            IReadOnlyList<PlayerName> players = new List<PlayerName>
                 {
-                    new FlamingStrike.GameEngine.Setup.Finished.Player("player 1"),
-                    new FlamingStrike.GameEngine.Setup.Finished.Player("player 2")
+                    new PlayerName("player 1"),
+                    new PlayerName("player 2")
                 };
             var gamePlaySetup = new GamePlaySetup(players, _territories);
 
@@ -270,7 +271,7 @@ namespace Tests.GameEngine.Play
 
         private void AddTerritoryToGame(IRegion region, PlayerName playerName, int armies)
         {
-            _territories.Add(new FlamingStrike.GameEngine.Setup.Finished.Territory(region, (string)playerName, armies));
+            _territories.Add(new Territory(region, playerName, armies));
         }
 
         private GameObserverSpec player_1_occupies_every_territory_except_brazil_and_venezuela_and_north_africa_with_one_army_each()
@@ -440,7 +441,7 @@ namespace Tests.GameEngine.Play
 
         public TerritoryAssertion PlayerShouldBe(PlayerName playerName)
         {
-            _territory.PlayerName.Should().Be(playerName);
+            _territory.Name.Should().Be(playerName);
             return this;
         }
 

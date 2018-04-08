@@ -96,15 +96,15 @@ namespace FlamingStrike.UI.WPF.ViewModels.AlternateSetup
 
             _worldMapViewModelFactory.Update(WorldMapViewModel, Convert(territories), Maybe<IRegion>.Nothing);
 
-            PlayerName = player.Name;
-            PlayerColor = _playerUiDataRepository.Get(player.Name).Color;
+            PlayerName = (string)player.Name;
+            PlayerColor = _playerUiDataRepository.Get((string)player.Name).Color;
 
             InformationText = string.Format(Resources.PLACE_ARMY, armiesToPlace);
         }
 
         private static IReadOnlyList<Gameplay.Territory> Convert(IEnumerable<Territory> territories)
         {
-            return territories.Select(x => new Gameplay.Territory(x.Region, x.IsSelectable, x.Player, x.Armies)).ToList();
+            return territories.Select(x => new Gameplay.Territory(x.Region, x.IsSelectable, x.Name, x.Armies)).ToList();
         }
 
         public bool CanEnterFortifyMode => false;

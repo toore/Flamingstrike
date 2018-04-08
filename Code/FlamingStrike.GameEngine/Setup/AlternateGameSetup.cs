@@ -32,7 +32,7 @@ namespace FlamingStrike.GameEngine.Setup
             _startingInfantryCalculator = startingInfantryCalculator;
         }
 
-        public void Run(IReadOnlyList<string> playerNames)
+        public void Run(IReadOnlyList<PlayerName> playerNames)
         {
             var players = Shuffle(playerNames);
             var territoriesAndPlayers = AssignPlayersToTerritories(players);
@@ -40,7 +40,7 @@ namespace FlamingStrike.GameEngine.Setup
             PlaceArmies(territoriesAndPlayers);
         }
 
-        private List<Player> Shuffle(IReadOnlyCollection<string> players)
+        private List<Player> Shuffle(IReadOnlyCollection<PlayerName> players)
         {
             var numberOfStartingInfantry = _startingInfantryCalculator.Get(players.Count);
 
@@ -86,7 +86,7 @@ namespace FlamingStrike.GameEngine.Setup
         private void SetupHasEnded(AlternateGameSetupData alternateGameSetupData)
         {
             var gamePlaySetup = new GamePlaySetup(
-                alternateGameSetupData.Players.Select(x => new Finished.Player(x.Name)).ToList(),
+                alternateGameSetupData.Players.Select(x => x.Name).ToList(),
                 alternateGameSetupData.Territories.Select(x => new Finished.Territory(x.Region, x.Player.Name, x.Armies)).ToList());
 
             _alternateGameSetupObserver.NewGamePlaySetup(gamePlaySetup);

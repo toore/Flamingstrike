@@ -32,9 +32,9 @@ namespace FlamingStrike.UI.WPF.Views.Gameplay
 
             var random = new Random();
 
-            string[] players = { "player one", "player two" };
-            playerUiDataRepository.Add(new PlayerUiData(players[0], Colors.DeepPink));
-            playerUiDataRepository.Add(new PlayerUiData(players[1], Colors.Teal));
+            PlayerName[] players = { new PlayerName("player one"), new PlayerName("player two") };
+            playerUiDataRepository.Add(new PlayerUiData((string)players[0], Colors.DeepPink));
+            playerUiDataRepository.Add(new PlayerUiData((string)players[1], Colors.Teal));
 
             var territories = regions.GetAll()
                 .Select((region, i) => new Territory(region, true, players[i % players.Length], random.Next(99) + 1))

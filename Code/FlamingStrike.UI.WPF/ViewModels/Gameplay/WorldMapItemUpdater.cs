@@ -48,7 +48,7 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay
         private Color GetPlayerColor(IRegion region)
         {
             var player = _territories.Single(x => x.Region == region).Player;
-            var playerUiData = _playerUiDataRepository.Get(player);
+            var playerUiData = _playerUiDataRepository.Get((string)player);
 
             return playerUiData.Color;
         }

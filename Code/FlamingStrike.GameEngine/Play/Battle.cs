@@ -40,9 +40,9 @@ namespace FlamingStrike.GameEngine.Play
         private static IAttackResult AttackerOccupiesNewTerritory(int attackingArmies, ITerritory attackingTerritory, ITerritory territoryToBeOccupied)
         {
             var attackingArmiesLeft = attackingTerritory.Armies - attackingArmies;
-            var updatedAttackingTerritory = new Territory(attackingTerritory.Region, attackingTerritory.PlayerName, attackingArmiesLeft);
+            var updatedAttackingTerritory = new Territory(attackingTerritory.Region, attackingTerritory.Name, attackingArmiesLeft);
 
-            var occupyingPlayer = attackingTerritory.PlayerName;
+            var occupyingPlayer = attackingTerritory.Name;
             var occupiedTerritory = new Territory(territoryToBeOccupied.Region, occupyingPlayer, attackingArmies);
 
             return new AttackResult(updatedAttackingTerritory, occupiedTerritory);
@@ -51,10 +51,10 @@ namespace FlamingStrike.GameEngine.Play
         private static IAttackResult UpdateArmies(ArmiesLost armiesLost, ITerritory attackingTerritory, ITerritory defendingTerritory)
         {
             var updatedAttackingArmies = attackingTerritory.Armies - armiesLost.AttackingArmiesLost;
-            var updatedAttackingTerritory = new Territory(attackingTerritory.Region, attackingTerritory.PlayerName, updatedAttackingArmies);
+            var updatedAttackingTerritory = new Territory(attackingTerritory.Region, attackingTerritory.Name, updatedAttackingArmies);
 
             var updatedAttackedArmies = defendingTerritory.Armies - armiesLost.DefendingArmiesLost;
-            var updatedAttackedTerritory = new Territory(defendingTerritory.Region, defendingTerritory.PlayerName, updatedAttackedArmies);
+            var updatedAttackedTerritory = new Territory(defendingTerritory.Region, defendingTerritory.Name, updatedAttackedArmies);
 
             return new AttackResult(updatedAttackingTerritory, updatedAttackedTerritory);
         }

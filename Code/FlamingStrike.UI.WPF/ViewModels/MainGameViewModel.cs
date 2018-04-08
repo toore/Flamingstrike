@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using Caliburn.Micro;
+using FlamingStrike.GameEngine;
 using FlamingStrike.GameEngine.Play;
 using FlamingStrike.GameEngine.Setup;
 using FlamingStrike.GameEngine.Setup.Finished;
@@ -87,7 +88,7 @@ namespace FlamingStrike.UI.WPF.ViewModels
 
         private void StartGameSetup()
         {
-            var players = _playerUiDataRepository.GetAll().Select(x => x.Player).ToList();
+            var players = _playerUiDataRepository.GetAll().Select(x => new PlayerName(x.Player)).ToList();
             var gameSetupViewModel = _alternateGameSetupViewModelFactory.Create();
 
             _alternateGameSetupBootstrapper.Run(gameSetupViewModel, players);

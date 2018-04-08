@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace FlamingStrike.GameEngine.Play
+namespace FlamingStrike.GameEngine
 {
     public class PlayerName : IEquatable<PlayerName>
     {

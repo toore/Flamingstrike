@@ -4,16 +4,6 @@ using System.Linq;
 
 namespace FlamingStrike.GameEngine.Play
 {
-    public interface IDraftArmiesPhase
-    {
-        PlayerName CurrentPlayerName { get; }
-        IReadOnlyList<ITerritory> Territories { get; }
-        IReadOnlyList<IPlayerGameData> PlayerGameDatas { get; }
-        int NumberOfArmiesToDraft { get; }
-        IReadOnlyList<IRegion> RegionsAllowedToDraftArmies { get; }
-        void PlaceDraftArmies(IRegion region, int numberOfArmies);
-    }
-
     public class DraftArmiesPhase : IDraftArmiesPhase
     {
         private readonly IGamePhaseConductor _gamePhaseConductor;
@@ -88,7 +78,7 @@ namespace FlamingStrike.GameEngine.Play
 
         private bool IsCurrentPlayerOccupyingRegion(IRegion region)
         {
-            return CurrentPlayerName == Territories.Single(x => x.Region == region).PlayerName;
+            return CurrentPlayerName == Territories.Single(x => x.Region == region).Name;
         }
     }
 }
