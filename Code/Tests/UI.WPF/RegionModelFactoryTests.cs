@@ -2,7 +2,6 @@
 using FlamingStrike.GameEngine;
 using FlamingStrike.UI.WPF.RegionModels;
 using FluentAssertions;
-using NSubstitute;
 using Xunit;
 
 namespace Tests.UI.WPF
@@ -14,8 +13,7 @@ namespace Tests.UI.WPF
 
         public RegionModelFactoryTests()
         {
-            var continents = Substitute.For<IContinents>();
-            var regions = new Regions(continents);
+            var regions = new Regions();
 
             _sut = new RegionModelFactory(regions);
         }

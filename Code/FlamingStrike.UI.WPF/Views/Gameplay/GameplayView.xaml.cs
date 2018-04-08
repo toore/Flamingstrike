@@ -24,8 +24,7 @@ namespace FlamingStrike.UI.WPF.Views.Gameplay
     {
         public GameplayViewModelDesignerData()
         {
-            var continents = new Continents();
-            var regions = new Regions(continents);
+            var regions = new Regions();
             var regionModelFactory = new RegionModelFactory(regions);
             var playerUiDataRepository = new PlayerUiDataRepository();
             var worldMapViewModelFactory = new WorldMapViewModelFactory(regionModelFactory, playerUiDataRepository);

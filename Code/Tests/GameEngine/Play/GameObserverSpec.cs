@@ -19,7 +19,6 @@ namespace Tests.GameEngine.Play
         private PlayerName _player2;
         private IDie _die;
         private readonly List<Territory> _territories = new List<Territory>();
-        private Continents _continents;
         private readonly GameObserverSpy _gameObserverSpy = new GameObserverSpy();
 
         [Fact]
@@ -199,8 +198,7 @@ namespace Tests.GameEngine.Play
 
         private GameObserverSpec a_game_with_two_human_players()
         {
-            _continents = new Continents();
-            _regions = new Regions(_continents);
+            _regions = new Regions();
 
             _player1 = new PlayerName("player 1");
             _player2 = new PlayerName("player 2");
@@ -212,7 +210,7 @@ namespace Tests.GameEngine.Play
         {
             _die = Substitute.For<IDie>();
             var dice = new Dice(_die);
-            var armyDraftCalculator = new ArmyDraftCalculator(_continents);
+            var armyDraftCalculator = new ArmyDraftCalculator(new[] { Continent.Asia, Continent.NorthAmerica, Continent.Europe, Continent.Africa, Continent.Australia, Continent.SouthAmerica });
             var battle = new Battle(dice, new ArmiesLostCalculator());
             var armyDrafter = new ArmyDrafter();
             var territoryOccupier = new TerritoryOccupier();

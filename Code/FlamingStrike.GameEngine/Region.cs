@@ -6,13 +6,13 @@ namespace FlamingStrike.GameEngine
     {
         private readonly List<IRegion> _regionsWithBorderToThisRegion;
 
-        public Region(IContinent continent)
+        public Region(Continent continent)
         {
             Continent = continent;
             _regionsWithBorderToThisRegion = new List<IRegion>();
         }
 
-        public IContinent Continent { get; }
+        public Continent Continent { get; }
 
         public bool HasBorder(IRegion region)
         {

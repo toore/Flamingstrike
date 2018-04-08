@@ -9,13 +9,10 @@ namespace Tests.GameEngine
     public class RegionsTests
     {
         private readonly Regions _sut;
-        private readonly Continents _continents;
 
         public RegionsTests()
         {
-            _continents = new Continents();
-
-            _sut = new Regions(_continents);
+            _sut = new Regions();
         }
 
         [Fact]
@@ -34,7 +31,7 @@ namespace Tests.GameEngine
         [Fact]
         public void Alaska_is_in_north_america()
         {
-            Alaska.Continent.Should().Be(_continents.NorthAmerica);
+            Alaska.Continent.Should().Be(Continent.NorthAmerica);
         }
 
         [Fact]
@@ -46,7 +43,7 @@ namespace Tests.GameEngine
         [Fact]
         public void Alberta_is_in_north_america_has_border_to_alaska_and_northwest_territory_and_ontario_and_western_united_states()
         {
-            Alberta.Continent.Should().Be(_continents.NorthAmerica);
+            Alberta.Continent.Should().Be(Continent.NorthAmerica);
             AssertTerritoryBorders(Alberta, Alaska, Northwest, Ontario, WesternUnitedStates);
         }
 
@@ -105,87 +102,87 @@ namespace Tests.GameEngine
         [Fact]
         public void North_america_has_9()
         {
-            AssertTerritoriesInContinent(_continents.NorthAmerica, Alaska, Alberta, CentralAmerica, EasternUnitedStates, Greenland, Northwest, Ontario, Quebec, WesternUnitedStates);
+            AssertTerritoriesInContinent(Continent.NorthAmerica, Alaska, Alberta, CentralAmerica, EasternUnitedStates, Greenland, Northwest, Ontario, Quebec, WesternUnitedStates);
         }
 
         [Fact]
         public void South_america_has_4()
         {
-            AssertTerritoriesInContinent(_continents.SouthAmerica, Argentina, Brazil, Peru, Venezuela);
+            AssertTerritoriesInContinent(Continent.SouthAmerica, Argentina, Brazil, Peru, Venezuela);
         }
 
         [Fact]
         public void Europe_has_7()
         {
-            AssertTerritoriesInContinent(_continents.Europe, GreatBritain, Iceland, NorthernEurope, Scandinavia, SouthernEurope, Ukraine, WesternEurope);
+            AssertTerritoriesInContinent(Continent.Europe, GreatBritain, Iceland, NorthernEurope, Scandinavia, SouthernEurope, Ukraine, WesternEurope);
         }
 
         [Fact]
         public void Africa_has_6()
         {
-            AssertTerritoriesInContinent(_continents.Africa, Congo, EastAfrica, Egypt, Madagascar, NorthAfrica, SouthAfrica);
+            AssertTerritoriesInContinent(Continent.Africa, Congo, EastAfrica, Egypt, Madagascar, NorthAfrica, SouthAfrica);
         }
 
         [Fact]
         public void Asia_has_12()
         {
-            AssertTerritoriesInContinent(_continents.Asia, Afghanistan, China, India, Irkutsk, Japan, Kamchatka, MiddleEast, Mongolia, Siam, Siberia, Ural, Yakutsk);
+            AssertTerritoriesInContinent(Continent.Asia, Afghanistan, China, India, Irkutsk, Japan, Kamchatka, MiddleEast, Mongolia, Siam, Siberia, Ural, Yakutsk);
         }
 
         [Fact]
         public void Australia_has_4()
         {
-            AssertTerritoriesInContinent(_continents.Australia, EasternAustralia, Indonesia, NewGuinea, WesternAustralia);
+            AssertTerritoriesInContinent(Continent.Australia, EasternAustralia, Indonesia, NewGuinea, WesternAustralia);
         }
 
         [Fact]
         public void GetAll_contains_all()
         {
             IEnumerable<IRegion> expected = new[]
-            {
-                Alaska,
-                Alberta,
-                CentralAmerica,
-                EasternUnitedStates,
-                Greenland,
-                Northwest,
-                Ontario,
-                Quebec,
-                WesternUnitedStates,
-                Argentina,
-                Brazil,
-                Peru,
-                Venezuela,
-                GreatBritain,
-                Iceland,
-                NorthernEurope,
-                Scandinavia,
-                SouthernEurope,
-                Ukraine,
-                WesternEurope,
-                Congo,
-                EastAfrica,
-                Egypt,
-                Madagascar,
-                NorthAfrica,
-                SouthAfrica,
-                Afghanistan,
-                China,
-                India,
-                Irkutsk,
-                Japan,
-                Kamchatka,
-                MiddleEast,
-                Mongolia,
-                Siam,
-                Siberia,
-                Ural,
-                Yakutsk,
-                EasternAustralia,
-                Indonesia,
-                NewGuinea,
-                WesternAustralia
-            };
+                {
+                    Alaska,
+                    Alberta,
+                    CentralAmerica,
+                    EasternUnitedStates,
+                    Greenland,
+                    Northwest,
+                    Ontario,
+                    Quebec,
+                    WesternUnitedStates,
+                    Argentina,
+                    Brazil,
+                    Peru,
+                    Venezuela,
+                    GreatBritain,
+                    Iceland,
+                    NorthernEurope,
+                    Scandinavia,
+                    SouthernEurope,
+                    Ukraine,
+                    WesternEurope,
+                    Congo,
+                    EastAfrica,
+                    Egypt,
+                    Madagascar,
+                    NorthAfrica,
+                    SouthAfrica,
+                    Afghanistan,
+                    China,
+                    India,
+                    Irkutsk,
+                    Japan,
+                    Kamchatka,
+                    MiddleEast,
+                    Mongolia,
+                    Siam,
+                    Siberia,
+                    Ural,
+                    Yakutsk,
+                    EasternAustralia,
+                    Indonesia,
+                    NewGuinea,
+                    WesternAustralia
+                };
 
             GetAll().Should().BeEquivalentTo(expected);
         }
@@ -199,7 +196,7 @@ namespace Tests.GameEngine
             }
         }
 
-        private void AssertTerritoriesInContinent(IContinent continent, params IRegion[] expected)
+        private void AssertTerritoriesInContinent(Continent continent, params IRegion[] expected)
         {
             var actual = GetAll()
                 .Where(x => x.Continent == continent)

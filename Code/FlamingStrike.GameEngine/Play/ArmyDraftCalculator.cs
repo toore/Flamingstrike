@@ -11,9 +11,9 @@ namespace FlamingStrike.GameEngine.Play
 
     public class ArmyDraftCalculator : IArmyDraftCalculator
     {
-        private readonly IContinents _continents;
+        private readonly IReadOnlyList<Continent> _continents;
 
-        public ArmyDraftCalculator(IContinents continents)
+        public ArmyDraftCalculator(IReadOnlyList<Continent> continents)
         {
             _continents = continents;
         }
@@ -35,12 +35,12 @@ namespace FlamingStrike.GameEngine.Play
 
         private int CalculateArmiesDraftedBasedOnContinentsOccupied(PlayerName currentPlayerName, IEnumerable<ITerritory> territories)
         {
-            return _continents.GetAll()
+            return _continents
                 .Where(continent => IsContinentOccupiedByPlayer(continent, currentPlayerName, territories))
                 .Sum(continent => continent.Bonus);
         }
 
-        private static bool IsContinentOccupiedByPlayer(IContinent continent, PlayerName playerName, IEnumerable<ITerritory> territories)
+        private static bool IsContinentOccupiedByPlayer(Continent continent, PlayerName playerName, IEnumerable<ITerritory> territories)
         {
             return territories
                 .Where(x => x.Region.Continent == continent)

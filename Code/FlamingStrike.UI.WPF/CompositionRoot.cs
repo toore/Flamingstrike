@@ -34,8 +34,7 @@ namespace FlamingStrike.UI.WPF
                 PlayerUiDataRepository,
                 EventAggregator);
 
-            var continents = new Continents();
-            var regions = new Regions(continents);
+            var regions = new Regions();
             var regionModelFactory = new RegionModelFactory(regions);
             var worldMapViewModelFactory = new WorldMapViewModelFactory(regionModelFactory, PlayerUiDataRepository);
             var windowManager = new WindowManager();
@@ -66,7 +65,7 @@ namespace FlamingStrike.UI.WPF
             var fortifier = new Fortifier();
             var attacker = new Attacker(battle);
             var playerEliminationRules = new PlayerEliminationRules();
-            var armyDraftCalculator = new ArmyDraftCalculator(continents);
+            var armyDraftCalculator = new ArmyDraftCalculator(new[] { Continent.Asia, Continent.NorthAmerica, Continent.Europe, Continent.Africa, Continent.Australia, Continent.SouthAmerica });
             var gamePhaseFactory = new GamePhaseFactory(armyDrafter, attacker, fortifier, playerEliminationRules, territoryOccupier);
 
             AlternateGameSetupViewModelFactory = new AlternateGameSetupViewModelFactory(

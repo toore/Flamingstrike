@@ -88,8 +88,7 @@ namespace Tests.GameEngine.Setup
 
         private AlternateGameSetupObserverSpec a_new_game_with_three_players()
         {
-            var continents = new Continents();
-            var shuffledRegions = new Regions(continents);
+            var shuffledRegions = new Regions();
             _shuffler = Substitute.For<IShuffler>();
             var startingInfantryCalculator = new StartingInfantryCalculator();
             var regions = Substitute.For<IRegions>();
