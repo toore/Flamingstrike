@@ -115,7 +115,6 @@
     <Compile Include="GameEngine\Play\DiceTests.cs" />
     <Compile Include="GameEngine\Play\ArmiesLostCalculatorTests.cs" />
     <Compile Include="GameEngine\Play\ArmiesLostBuilder.cs" />
-    <Compile Include="GameEngine\ContinentBuilder.cs" />
     <Compile Include="GameEngine\Play\DiceResultBuilder.cs" />
     <Compile Include="GameEngine\PlayerBuilder.cs" />
     <Compile Include="GameEngine\TerritoryBuilder.cs" />
@@ -135,7 +134,6 @@
     <Compile Include="UI.WPF\Interaction\DraftArmiesInteractionStateTests.cs" />
     <Compile Include="UI.WPF\MainGameViewModelDecorator.cs" />
     <Compile Include="UI.WPF\RegionModelFactoryTests.cs" />
-    <Compile Include="GameEngine\RegionBuilder.cs" />
     <Compile Include="UI.WPF\Interaction\SelectAttackingRegionInteractionStateTests.cs" />
     <Compile Include="SpecBase.cs" />
     <Compile Include="UI.WPF\GameplaySpec.cs" />

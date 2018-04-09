@@ -9,7 +9,7 @@ namespace FlamingStrike.GameEngine
         public static readonly Continent Australia = new Continent(2);
         public static readonly Continent SouthAmerica = new Continent(2);
 
-        public Continent(int bonus)
+        private Continent(int bonus)
         {
             Bonus = bonus;
         }
