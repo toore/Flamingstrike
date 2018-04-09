@@ -8,7 +8,7 @@ namespace FlamingStrike.GameEngine
             CardSymbol = cardSymbol;
         }
 
-        public IRegion Region { get; private set; }
-        public CardSymbol CardSymbol { get; private set; }
+        public IRegion Region { get; }
+        public CardSymbol CardSymbol { get; }
     }
 }

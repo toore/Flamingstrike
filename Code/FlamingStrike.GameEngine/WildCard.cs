@@ -1,7 +1,4 @@
 ﻿namespace FlamingStrike.GameEngine
 {
-    public class WildCard : ICard
-    {
-        
-    }
+    public class WildCard : ICard {}
 }
