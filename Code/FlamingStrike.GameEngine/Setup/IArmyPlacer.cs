@@ -2,6 +2,6 @@
 {
     public interface IArmyPlacer
     {
-        void PlaceArmyInRegion(Player currentPlayer, IRegion selectedRegion, AlternateGameSetupData alternateGameSetupData);
+        void PlaceArmyInRegion(Player currentPlayer, Region selectedRegion, AlternateGameSetupData alternateGameSetupData);
     }
 }

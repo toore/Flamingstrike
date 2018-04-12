@@ -6,13 +6,20 @@ namespace FlamingStrike.GameEngine.Play
 {
     public interface IFortifier
     {
-        bool CanFortify(IReadOnlyList<ITerritory> territories, IRegion sourceRegion, IRegion destinationRegion);
-        IReadOnlyList<ITerritory> Fortify(IReadOnlyList<ITerritory> territories, IRegion sourceRegion, IRegion destinationRegion, int armies);
+        bool CanFortify(IReadOnlyList<ITerritory> territories, Region sourceRegion, Region destinationRegion);
+        IReadOnlyList<ITerritory> Fortify(IReadOnlyList<ITerritory> territories, Region sourceRegion, Region destinationRegion, int armies);
     }
 
     public class Fortifier : IFortifier
     {
-        public bool CanFortify(IReadOnlyList<ITerritory> territories, IRegion sourceRegion, IRegion destinationRegion)
+        private readonly IWorldMap _worldMap;
+
+        public Fortifier(IWorldMap worldMap)
+        {
+            _worldMap = worldMap;
+        }
+
+        public bool CanFortify(IReadOnlyList<ITerritory> territories, Region sourceRegion, Region destinationRegion)
         {
             var sourceTerritory = territories.Single(x => x.Region == sourceRegion);
             var destinationTerritory = territories.Single(x => x.Region == destinationRegion);
@@ -30,12 +37,12 @@ namespace FlamingStrike.GameEngine.Play
             return canFortify;
         }
 
-        private static bool IsTerritoriesAdjacent(IRegion sourceRegion, IRegion destinationRegion)
+        private bool IsTerritoriesAdjacent(Region sourceRegion, Region destinationRegion)
         {
-            return sourceRegion.HasBorder(destinationRegion);
+            return _worldMap.HasBorder(sourceRegion, destinationRegion);
         }
 
-        public IReadOnlyList<ITerritory> Fortify(IReadOnlyList<ITerritory> territories, IRegion sourceRegion, IRegion destinationRegion, int armies)
+        public IReadOnlyList<ITerritory> Fortify(IReadOnlyList<ITerritory> territories, Region sourceRegion, Region destinationRegion, int armies)
         {
             if (!CanFortify(territories, sourceRegion, destinationRegion))
             {

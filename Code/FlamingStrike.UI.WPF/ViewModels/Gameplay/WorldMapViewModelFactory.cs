@@ -11,7 +11,7 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay
 {
     public class Territory
     {
-        public Territory(IRegion region, bool isEnabled, PlayerName player, int armies)
+        public Territory(Region region, bool isEnabled, PlayerName player, int armies)
         {
             Region = region;
             IsEnabled = isEnabled;
@@ -19,7 +19,7 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay
             Armies = armies;
         }
 
-        public IRegion Region { get; }
+        public Region Region { get; }
         public bool IsEnabled { get; }
         public PlayerName Player { get; }
         public int Armies { get; }
@@ -27,25 +27,25 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay
 
     public interface IWorldMapViewModelFactory
     {
-        WorldMapViewModel Create(Action<IRegion> onClick);
+        WorldMapViewModel Create(Action<Region> onClick);
 
-        void Update(WorldMapViewModel worldMapViewModel, IReadOnlyList<Territory> territories, Maybe<IRegion> selectedRegion);
+        void Update(WorldMapViewModel worldMapViewModel, IReadOnlyList<Territory> territories, Maybe<Region> selectedRegion);
     }
 
     public class WorldMapViewModelFactory : IWorldMapViewModelFactory
     {
-        private readonly IRegionModelFactory _regionModelFactory;
+        private readonly RegionModelFactory _regionModelFactory;
         private readonly IPlayerUiDataRepository _playerUiDataRepository;
 
         public WorldMapViewModelFactory(
-            IRegionModelFactory regionModelFactory,
+            RegionModelFactory regionModelFactory,
             IPlayerUiDataRepository playerUiDataRepository)
         {
             _regionModelFactory = regionModelFactory;
             _playerUiDataRepository = playerUiDataRepository;
         }
 
-        public WorldMapViewModel Create(Action<IRegion> onClick)
+        public WorldMapViewModel Create(Action<Region> onClick)
         {
             var worldMapViewModel = new WorldMapViewModel();
             var worldMapItems = CreateWorldMapItemViewModels(onClick);
@@ -57,7 +57,7 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay
         public void Update(
             WorldMapViewModel worldMapViewModel,
             IReadOnlyList<Territory> territories,
-            Maybe<IRegion> selectedRegion)
+            Maybe<Region> selectedRegion)
         {
             var worldMapItemUpdater = new WorldMapItemUpdater(
                 territories,
@@ -70,7 +70,7 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay
             }
         }
 
-        private IEnumerable<IWorldMapItemViewModel> CreateWorldMapItemViewModels(Action<IRegion> onClick)
+        private IEnumerable<IWorldMapItemViewModel> CreateWorldMapItemViewModels(Action<Region> onClick)
         {
             var regionModels = _regionModelFactory.Create().ToList();
             IEnumerable<IWorldMapItemViewModel> regionViewModels = regionModels.Select(regionModel => new RegionViewModel(regionModel, onClick));

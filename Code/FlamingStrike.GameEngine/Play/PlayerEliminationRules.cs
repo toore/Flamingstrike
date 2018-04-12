@@ -6,7 +6,7 @@ namespace FlamingStrike.GameEngine.Play
     public interface IPlayerEliminationRules
     {
         bool IsPlayerEliminated(IEnumerable<ITerritory> territories, PlayerName player);
-        bool IsOnlyOnePlayerLeftInTheGame(IEnumerable<ITerritory> territories);
+        bool IsOnePlayerLeftInTheGame(IEnumerable<ITerritory> territories);
     }
 
     public class PlayerEliminationRules : IPlayerEliminationRules
@@ -16,7 +16,7 @@ namespace FlamingStrike.GameEngine.Play
             return territories.All(x => x.Name != player);
         }
 
-        public bool IsOnlyOnePlayerLeftInTheGame(IEnumerable<ITerritory> territories)
+        public bool IsOnePlayerLeftInTheGame(IEnumerable<ITerritory> territories)
         {
             return territories
                 .Select(x => x.Name)

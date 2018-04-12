@@ -7,7 +7,7 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay.Interaction
 {
     public interface ISelectSourceRegionForFortificationInteractionStateObserver
     {
-        void Select(IRegion region);
+        void Select(Region region);
     }
 
     public class SelectSourceRegionForFortificationInteractionState : InteractionStateBase
@@ -27,9 +27,9 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay.Interaction
 
         public override bool CanEndTurn => true;
 
-        public override IReadOnlyList<IRegion> EnabledRegions => _attackPhase.GetRegionsThatCanBeSourceForAttackOrFortification();
+        public override IReadOnlyList<Region> EnabledRegions => _attackPhase.GetRegionsThatCanBeSourceForAttackOrFortification();
 
-        public override void OnRegionClicked(IRegion region)
+        public override void OnRegionClicked(Region region)
         {
             _selectSourceRegionForFortificationInteractionStateObserver.Select(region);
         }

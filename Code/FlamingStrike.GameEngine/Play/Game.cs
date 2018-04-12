@@ -32,7 +32,7 @@ namespace FlamingStrike.GameEngine.Play
     {
         void ContinueToDraftArmies(int numberOfArmiesToDraft, GameData gameData);
         void ContinueWithAttackPhase(ConqueringAchievement conqueringAchievement, GameData gameData);
-        void SendArmiesToOccupy(IRegion sourceRegion, IRegion destinationRegion, GameData gameData);
+        void SendArmiesToOccupy(Region sourceRegion, Region destinationRegion, GameData gameData);
         void WaitForTurnToEnd(GameData gameData);
         void PassTurnToNextPlayer(GameData gameData);
         void PlayerIsTheWinner(PlayerName winner);
@@ -106,7 +106,7 @@ namespace FlamingStrike.GameEngine.Play
             _gameObserver.EndTurn(endTurnPhase);
         }
 
-        public void SendArmiesToOccupy(IRegion attackingRegion, IRegion occupiedRegion, GameData gameData)
+        public void SendArmiesToOccupy(Region attackingRegion, Region occupiedRegion, GameData gameData)
         {
             var sendArmiesToOccupyPhase = _gamePhaseFactory.CreateSendArmiesToOccupyPhase(
                 this,

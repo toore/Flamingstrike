@@ -7,7 +7,7 @@ namespace FlamingStrike.GameEngine.Play
         IDraftArmiesPhase CreateDraftArmiesPhase(IGamePhaseConductor gamePhaseConductor, PlayerName currentPlayerName, IReadOnlyList<ITerritory> territories, IReadOnlyList<IPlayerGameData> playerGameDatas, IDeck deck, int numberOfArmiesToDraft);
         IAttackPhase CreateAttackPhase(IGamePhaseConductor gamePhaseConductor, PlayerName currentPlayerName, IReadOnlyList<ITerritory> territories, IReadOnlyList<IPlayerGameData> playerGameDatas, IDeck deck, ConqueringAchievement conqueringAchievement);
         IEndTurnPhase CreateEndTurnPhase(IGamePhaseConductor gamePhaseConductor, PlayerName currentPlayerName, IReadOnlyList<ITerritory> territories, IReadOnlyList<IPlayerGameData> playerGameDatas, IDeck deck);
-        ISendArmiesToOccupyPhase CreateSendArmiesToOccupyPhase(IGamePhaseConductor gamePhaseConductor, PlayerName currentPlayerName, IReadOnlyList<ITerritory> territories, IReadOnlyList<IPlayerGameData> playerGameDatas, IDeck deck, IRegion attackingRegion, IRegion occupiedRegion);
+        ISendArmiesToOccupyPhase CreateSendArmiesToOccupyPhase(IGamePhaseConductor gamePhaseConductor, PlayerName currentPlayerName, IReadOnlyList<ITerritory> territories, IReadOnlyList<IPlayerGameData> playerGameDatas, IDeck deck, Region attackingRegion, Region occupiedRegion);
         IGameOverState CreateGameOverState(PlayerName winner);
     }
 
@@ -18,19 +18,22 @@ namespace FlamingStrike.GameEngine.Play
         private readonly IFortifier _fortifier;
         private readonly IPlayerEliminationRules _playerEliminationRules;
         private readonly ITerritoryOccupier _territoryOccupier;
+        private readonly IWorldMap _worldMap;
 
         public GamePhaseFactory(
             IArmyDrafter armyDrafter,
             IAttacker attacker,
             IFortifier fortifier,
             IPlayerEliminationRules playerEliminationRules,
-            ITerritoryOccupier territoryOccupier)
+            ITerritoryOccupier territoryOccupier,
+            IWorldMap worldMap)
         {
             _armyDrafter = armyDrafter;
             _attacker = attacker;
             _fortifier = fortifier;
             _playerEliminationRules = playerEliminationRules;
             _territoryOccupier = territoryOccupier;
+            _worldMap = worldMap;
         }
 
         public IDraftArmiesPhase CreateDraftArmiesPhase(IGamePhaseConductor gamePhaseConductor, PlayerName currentPlayerName, IReadOnlyList<ITerritory> territories, IReadOnlyList<IPlayerGameData> playerGameDatas, IDeck deck, int numberOfArmiesToDraft)
@@ -56,7 +59,8 @@ namespace FlamingStrike.GameEngine.Play
                 conqueringAchievement,
                 _attacker,
                 _fortifier,
-                _playerEliminationRules);
+                _playerEliminationRules,
+                _worldMap);
         }
 
         public IEndTurnPhase CreateEndTurnPhase(IGamePhaseConductor gamePhaseConductor, PlayerName currentPlayerName, IReadOnlyList<ITerritory> territories, IReadOnlyList<IPlayerGameData> playerGameDatas, IDeck deck)
@@ -69,7 +73,7 @@ namespace FlamingStrike.GameEngine.Play
                 deck);
         }
 
-        public ISendArmiesToOccupyPhase CreateSendArmiesToOccupyPhase(IGamePhaseConductor gamePhaseConductor, PlayerName currentPlayerName, IReadOnlyList<ITerritory> territories, IReadOnlyList<IPlayerGameData> playerGameDatas, IDeck deck, IRegion attackingRegion, IRegion occupiedRegion)
+        public ISendArmiesToOccupyPhase CreateSendArmiesToOccupyPhase(IGamePhaseConductor gamePhaseConductor, PlayerName currentPlayerName, IReadOnlyList<ITerritory> territories, IReadOnlyList<IPlayerGameData> playerGameDatas, IDeck deck, Region attackingRegion, Region occupiedRegion)
         {
             return new SendArmiesToOccupyPhase(
                 gamePhaseConductor,

@@ -24,8 +24,7 @@ namespace FlamingStrike.UI.WPF.Views.Gameplay
     {
         public GameplayViewModelDesignerData()
         {
-            var regions = new Regions();
-            var regionModelFactory = new RegionModelFactory(regions);
+            var regionModelFactory = new RegionModelFactory();
             var playerUiDataRepository = new PlayerUiDataRepository();
             var worldMapViewModelFactory = new WorldMapViewModelFactory(regionModelFactory, playerUiDataRepository);
 
@@ -35,12 +34,14 @@ namespace FlamingStrike.UI.WPF.Views.Gameplay
             playerUiDataRepository.Add(new PlayerUiData((string)players[0], Colors.DeepPink));
             playerUiDataRepository.Add(new PlayerUiData((string)players[1], Colors.Teal));
 
-            var territories = regions.GetAll()
+            var regions = new WorldMapFactory().Create().GetAll();
+
+            var territories = regions
                 .Select((region, i) => new Territory(region, true, players[i % players.Length], random.Next(99) + 1))
                 .ToList();
 
             WorldMapViewModel = worldMapViewModelFactory.Create(x => {});
-            worldMapViewModelFactory.Update(WorldMapViewModel, territories, Maybe<IRegion>.Create(regions.Iceland));
+            worldMapViewModelFactory.Update(WorldMapViewModel, territories, Maybe<Region>.Create(Region.Iceland));
         }
 
         public WorldMapViewModel WorldMapViewModel { get; }

@@ -10,11 +10,11 @@ namespace FlamingStrike.GameEngine.Setup
 
     public class AlternateGameSetupBootstrapper : IAlternateGameSetupBootstrapper
     {
-        private readonly IRegions _regions;
+        private readonly IReadOnlyList<Region> _regions;
         private readonly IShuffler _shuffler;
         private readonly IStartingInfantryCalculator _startingInfantryCalculator;
 
-        public AlternateGameSetupBootstrapper(IRegions regions, IShuffler shuffler, IStartingInfantryCalculator startingInfantryCalculator)
+        public AlternateGameSetupBootstrapper(IReadOnlyList<Region> regions, IShuffler shuffler, IStartingInfantryCalculator startingInfantryCalculator)
         {
             _regions = regions;
             _shuffler = shuffler;

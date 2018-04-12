@@ -7,10 +7,10 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay.Interaction
     {
         IInteractionState CreateDraftArmiesInteractionState(IDraftArmiesPhase draftArmiesPhase);
         IInteractionState CreateSelectAttackingRegionInteractionState(IAttackPhase attackPhase, ISelectAttackingRegionInteractionStateObserver selectAttackingRegionInteractionStateObserver);
-        IInteractionState CreateAttackInteractionState(IAttackPhase attackPhase, IRegion selectedRegion, IAttackInteractionStateObserver attackInteractionStateObserver);
+        IInteractionState CreateAttackInteractionState(IAttackPhase attackPhase, Region selectedRegion, IAttackInteractionStateObserver attackInteractionStateObserver);
         IInteractionState CreateSendArmiesToOccupyInteractionState(ISendArmiesToOccupyPhase sendArmiesToOccupyPhase);
         IInteractionState CreateSelectSourceRegionForFortificationInteractionState(IAttackPhase attackPhase, ISelectSourceRegionForFortificationInteractionStateObserver selectSourceRegionForFortificationInteractionStateObserver);
-        IInteractionState CreateFortifyInteractionState(IAttackPhase attackPhase, IRegion selectedRegion, IFortifyInteractionStateObserver fortifyInteractionStateObserver);
+        IInteractionState CreateFortifyInteractionState(IAttackPhase attackPhase, Region selectedRegion, IFortifyInteractionStateObserver fortifyInteractionStateObserver);
         IInteractionState CreateEndTurnInteractionState(IEndTurnPhase endTurnPhase);
     }
 
@@ -26,7 +26,7 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay.Interaction
             return new SelectAttackingRegionInteractionState(attackPhase, selectAttackingRegionInteractionStateObserver);
         }
 
-        public IInteractionState CreateAttackInteractionState(IAttackPhase attackPhase, IRegion selectedRegion, IAttackInteractionStateObserver attackInteractionStateObserver)
+        public IInteractionState CreateAttackInteractionState(IAttackPhase attackPhase, Region selectedRegion, IAttackInteractionStateObserver attackInteractionStateObserver)
         {
             return new AttackInteractionState(attackPhase, selectedRegion, attackInteractionStateObserver);
         }
@@ -41,7 +41,7 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay.Interaction
             return new SelectSourceRegionForFortificationInteractionState(attackPhase, selectSourceRegionForFortificationInteractionStateObserver);
         }
 
-        public IInteractionState CreateFortifyInteractionState(IAttackPhase attackPhase, IRegion selectedRegion, IFortifyInteractionStateObserver fortifyInteractionStateObserver)
+        public IInteractionState CreateFortifyInteractionState(IAttackPhase attackPhase, Region selectedRegion, IFortifyInteractionStateObserver fortifyInteractionStateObserver)
         {
             return new FortifyInteractionState(attackPhase, selectedRegion, fortifyInteractionStateObserver);
         }

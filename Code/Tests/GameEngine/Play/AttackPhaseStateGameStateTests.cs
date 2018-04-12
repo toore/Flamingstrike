@@ -23,8 +23,9 @@ namespace Tests.GameEngine.Play
         private readonly IPlayerEliminationRules _playerEliminationRules;
         private ConqueringAchievement _conqueringAchievement = ConqueringAchievement.NoTerritoryHasBeenConquered;
         private readonly ITerritory _territory;
-        private readonly IRegion _region;
-        private readonly IRegion _anotherRegion;
+        private readonly Region _region;
+        private readonly Region _anotherRegion;
+        private readonly IWorldMap _worldMap;
 
         public AttackPhaseStateGameStateTests()
         {
@@ -34,8 +35,9 @@ namespace Tests.GameEngine.Play
             _fortifier = Substitute.For<IFortifier>();
             _playerEliminationRules = Substitute.For<IPlayerEliminationRules>();
 
-            _region = Substitute.For<IRegion>();
-            _anotherRegion = Substitute.For<IRegion>();
+            _worldMap = new WorldMapFactory().Create();
+            _region = Region.Alaska;
+            _anotherRegion = Region.Brazil;
             _territory = Substitute.For<ITerritory>();
             var anotherTerritory = Substitute.For<ITerritory>();
 
@@ -67,14 +69,8 @@ namespace Tests.GameEngine.Play
             _conqueringAchievement,
             _attacker,
             _fortifier,
-            _playerEliminationRules);
-        //new AttackPhaseStateGameState(
-        //    _gameData,
-        //    _gamePhaseConductor,
-        //    _attacker,
-        //    _fortifier,
-        //    _playerEliminationRules,
-        //    _conqueringAchievement);
+            _playerEliminationRules,
+            _worldMap);
 
         [Fact]
         public void Can_attack()
@@ -300,7 +296,7 @@ namespace Tests.GameEngine.Play
                     _region,
                     _anotherRegion)
                 .Returns(attackOutcome);
-            _playerEliminationRules.IsOnlyOnePlayerLeftInTheGame(updatedTerritories).Returns(true);
+            _playerEliminationRules.IsOnePlayerLeftInTheGame(updatedTerritories).Returns(true);
 
             Sut.Attack(_region, _anotherRegion);
 

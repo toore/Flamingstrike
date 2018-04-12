@@ -31,6 +31,10 @@ namespace FlamingStrike.GameEngine.Setup
 
         public void ArmyPlaced()
         {
+            if (ArmiesToPlace == 0)
+            {
+                throw new InvalidOperationException("Player can't place more armies than player has left");
+            }
             ArmiesToPlace--;
         }
     }

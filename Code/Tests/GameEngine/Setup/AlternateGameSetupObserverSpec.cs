@@ -88,11 +88,9 @@ namespace Tests.GameEngine.Setup
 
         private AlternateGameSetupObserverSpec a_new_game_with_three_players()
         {
-            var shuffledRegions = new Regions();
             _shuffler = Substitute.For<IShuffler>();
             var startingInfantryCalculator = new StartingInfantryCalculator();
-            var regions = Substitute.For<IRegions>();
-            regions.GetAll().Returns(new List<IRegion>());
+            var regions = new List<Region>();
             _alternateGameSetupBootstrapper = new AlternateGameSetupBootstrapper(regions, _shuffler, startingInfantryCalculator);
 
             _player1 = new PlayerName("player 1");
@@ -101,8 +99,8 @@ namespace Tests.GameEngine.Setup
             _players = new List<PlayerName>();
 
             _shuffler
-                .Shuffle(regions.GetAll())
-                .Returns(shuffledRegions.GetAll().ToList());
+                .Shuffle(regions)
+                .Returns(new WorldMapFactory().Create().GetAll());
 
             return this;
         }

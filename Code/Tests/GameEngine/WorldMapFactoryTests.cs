@@ -6,13 +6,13 @@ using Xunit;
 
 namespace Tests.GameEngine
 {
-    public class RegionsTests
+    public class WorldMapFactoryTests
     {
-        private readonly Regions _sut;
+        private readonly IWorldMap _sut;
 
-        public RegionsTests()
+        public WorldMapFactoryTests()
         {
-            _sut = new Regions();
+            _sut = new WorldMapFactory().Create();
         }
 
         [Fact]
@@ -138,7 +138,7 @@ namespace Tests.GameEngine
         [Fact]
         public void GetAll_contains_all()
         {
-            IEnumerable<IRegion> expected = new[]
+            IEnumerable<Region> expected = new[]
                 {
                     Alaska,
                     Alberta,
@@ -187,16 +187,16 @@ namespace Tests.GameEngine
             GetAll().Should().BeEquivalentTo(expected);
         }
 
-        private void AssertTerritoryBorders(IRegion actual, params IRegion[] expectedItems)
+        private void AssertTerritoryBorders(Region actual, params Region[] expectedItems)
         {
             foreach (var expected in expectedItems)
             {
-                actual.HasBorder(expected).Should().BeTrue(actual + " should have border to " + expected);
-                expected.HasBorder(actual).Should().BeTrue(expected + " should have border to " + actual);
+                _sut.HasBorder(actual, expected).Should().BeTrue($"{actual} should have border to {expected}");
+                _sut.HasBorder(expected, actual).Should().BeTrue($"{expected} should have border to {actual}");
             }
         }
 
-        private void AssertTerritoriesInContinent(Continent continent, params IRegion[] expected)
+        private void AssertTerritoriesInContinent(Continent continent, params Region[] expected)
         {
             var actual = GetAll()
                 .Where(x => x.Continent == continent)
@@ -205,52 +205,52 @@ namespace Tests.GameEngine
             actual.Should().BeEquivalentTo(expected.AsEnumerable());
         }
 
-        private IEnumerable<IRegion> GetAll()
+        private IEnumerable<Region> GetAll()
         {
             return _sut.GetAll();
         }
 
-        private IRegion Alaska => _sut.Alaska;
-        private IRegion Alberta => _sut.Alberta;
-        private IRegion NewGuinea => _sut.NewGuinea;
-        private IRegion Indonesia => _sut.Indonesia;
-        private IRegion EasternAustralia => _sut.EasternAustralia;
-        private IRegion Yakutsk => _sut.Yakutsk;
-        private IRegion Ural => _sut.Ural;
-        private IRegion Siberia => _sut.Siberia;
-        private IRegion Siam => _sut.Siam;
-        private IRegion Mongolia => _sut.Mongolia;
-        private IRegion MiddleEast => _sut.MiddleEast;
-        private IRegion Kamchatka => _sut.Kamchatka;
-        private IRegion Japan => _sut.Japan;
-        private IRegion Irkutsk => _sut.Irkutsk;
-        private IRegion India => _sut.India;
-        private IRegion China => _sut.China;
-        private IRegion Afghanistan => _sut.Afghanistan;
-        private IRegion SouthAfrica => _sut.SouthAfrica;
-        private IRegion NorthAfrica => _sut.NorthAfrica;
-        private IRegion Madagascar => _sut.Madagascar;
-        private IRegion Egypt => _sut.Egypt;
-        private IRegion EastAfrica => _sut.EastAfrica;
-        private IRegion Congo => _sut.Congo;
-        private IRegion WesternEurope => _sut.WesternEurope;
-        private IRegion Ukraine => _sut.Ukraine;
-        private IRegion SouthernEurope => _sut.SouthernEurope;
-        private IRegion Scandinavia => _sut.Scandinavia;
-        private IRegion NorthernEurope => _sut.NorthernEurope;
-        private IRegion Iceland => _sut.Iceland;
-        private IRegion GreatBritain => _sut.GreatBritain;
-        private IRegion Venezuela => _sut.Venezuela;
-        private IRegion Peru => _sut.Peru;
-        private IRegion Brazil => _sut.Brazil;
-        private IRegion Argentina => _sut.Argentina;
-        private IRegion WesternUnitedStates => _sut.WesternUnitedStates;
-        private IRegion Quebec => _sut.Quebec;
-        private IRegion Ontario => _sut.Ontario;
-        private IRegion Northwest => _sut.NorthwestRegion;
-        private IRegion Greenland => _sut.Greenland;
-        private IRegion EasternUnitedStates => _sut.EasternUnitedStates;
-        private IRegion CentralAmerica => _sut.CentralAmerica;
-        private IRegion WesternAustralia => _sut.WesternAustralia;
+        private Region Alaska => Region.Alaska;
+        private Region Alberta => Region.Alberta;
+        private Region NewGuinea => Region.NewGuinea;
+        private Region Indonesia => Region.Indonesia;
+        private Region EasternAustralia => Region.EasternAustralia;
+        private Region Yakutsk => Region.Yakutsk;
+        private Region Ural => Region.Ural;
+        private Region Siberia => Region.Siberia;
+        private Region Siam => Region.Siam;
+        private Region Mongolia => Region.Mongolia;
+        private Region MiddleEast => Region.MiddleEast;
+        private Region Kamchatka => Region.Kamchatka;
+        private Region Japan => Region.Japan;
+        private Region Irkutsk => Region.Irkutsk;
+        private Region India => Region.India;
+        private Region China => Region.China;
+        private Region Afghanistan => Region.Afghanistan;
+        private Region SouthAfrica => Region.SouthAfrica;
+        private Region NorthAfrica => Region.NorthAfrica;
+        private Region Madagascar => Region.Madagascar;
+        private Region Egypt => Region.Egypt;
+        private Region EastAfrica => Region.EastAfrica;
+        private Region Congo => Region.Congo;
+        private Region WesternEurope => Region.WesternEurope;
+        private Region Ukraine => Region.Ukraine;
+        private Region SouthernEurope => Region.SouthernEurope;
+        private Region Scandinavia => Region.Scandinavia;
+        private Region NorthernEurope => Region.NorthernEurope;
+        private Region Iceland => Region.Iceland;
+        private Region GreatBritain => Region.GreatBritain;
+        private Region Venezuela => Region.Venezuela;
+        private Region Peru => Region.Peru;
+        private Region Brazil => Region.Brazil;
+        private Region Argentina => Region.Argentina;
+        private Region WesternUnitedStates => Region.WesternUnitedStates;
+        private Region Quebec => Region.Quebec;
+        private Region Ontario => Region.Ontario;
+        private Region Northwest => Region.NorthwestTerritory;
+        private Region Greenland => Region.Greenland;
+        private Region EasternUnitedStates => Region.EasternUnitedStates;
+        private Region CentralAmerica => Region.CentralAmerica;
+        private Region WesternAustralia => Region.WesternAustralia;
     }
 }

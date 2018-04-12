@@ -7,8 +7,8 @@ namespace FlamingStrike.GameEngine.Play
         PlayerName CurrentPlayerName { get; }
         IReadOnlyList<ITerritory> Territories { get; }
         IReadOnlyList<IPlayerGameData> PlayerGameDatas { get; }
-        IRegion AttackingRegion { get; }
-        IRegion OccupiedRegion { get; }
+        Region AttackingRegion { get; }
+        Region OccupiedRegion { get; }
         void SendAdditionalArmiesToOccupy(int numberOfArmies);
     }
 }

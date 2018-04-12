@@ -12,11 +12,11 @@ namespace FlamingStrike.GameEngine.Play
 
     public class DeckFactory : IDeckFactory
     {
-        private readonly IRegions _regions;
+        private readonly IReadOnlyList<Region> _regions;
         private readonly IShuffler _shuffler;
         private readonly List<CardSymbol> _cardSymbols;
 
-        public DeckFactory(IRegions regions, IShuffler shuffler)
+        public DeckFactory(IReadOnlyList<Region> regions, IShuffler shuffler)
         {
             _regions = regions;
             _shuffler = shuffler;
@@ -26,7 +26,7 @@ namespace FlamingStrike.GameEngine.Play
 
         public IDeck Create()
         {
-            var cards = _regions.GetAll()
+            var cards = _regions
                 .Select(GetCard)
                 .Concat(new[] { new WildCard(), new WildCard() })
                 .Shuffle(_shuffler)
@@ -35,7 +35,7 @@ namespace FlamingStrike.GameEngine.Play
             return new Deck(cards);
         }
 
-        private ICard GetCard(IRegion region, int cardIndex)
+        private ICard GetCard(Region region, int cardIndex)
         {
             return new StandardCard(region, _cardSymbols[cardIndex % _cardSymbols.Count]);
         }

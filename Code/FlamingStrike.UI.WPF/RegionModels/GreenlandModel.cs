@@ -6,7 +6,7 @@ namespace FlamingStrike.UI.WPF.RegionModels
 {
     public class GreenlandModel : RegionModelBase
     {
-        public GreenlandModel(IRegion region) : base(region) {}
+        public GreenlandModel(Region region) : base(region) {}
 
         public override string Name => Resources.GREENLAND;
 

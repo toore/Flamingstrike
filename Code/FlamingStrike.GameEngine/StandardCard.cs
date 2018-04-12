@@ -2,13 +2,13 @@ namespace FlamingStrike.GameEngine
 {
     public class StandardCard : ICard
     {
-        public StandardCard(IRegion region, CardSymbol cardSymbol)
+        public StandardCard(Region region, CardSymbol cardSymbol)
         {
             Region = region;
             CardSymbol = cardSymbol;
         }
 
-        public IRegion Region { get; }
+        public Region Region { get; }
         public CardSymbol CardSymbol { get; }
     }
 }

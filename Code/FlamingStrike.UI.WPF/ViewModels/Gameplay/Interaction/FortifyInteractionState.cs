@@ -15,10 +15,10 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay.Interaction
     public class FortifyInteractionState : InteractionStateBase
     {
         private readonly IAttackPhase _attackPhase;
-        private readonly IRegion _selectedRegion;
+        private readonly Region _selectedRegion;
         private readonly IFortifyInteractionStateObserver _fortifyInteractionStateObserver;
 
-        public FortifyInteractionState(IAttackPhase attackPhase, IRegion selectedRegion, IFortifyInteractionStateObserver fortifyInteractionStateObserver)
+        public FortifyInteractionState(IAttackPhase attackPhase, Region selectedRegion, IFortifyInteractionStateObserver fortifyInteractionStateObserver)
         {
             _attackPhase = attackPhase;
             _selectedRegion = selectedRegion;
@@ -34,15 +34,15 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay.Interaction
 
         public override bool CanEndTurn => true;
 
-        public override IReadOnlyList<IRegion> EnabledRegions { get; }
+        public override IReadOnlyList<Region> EnabledRegions { get; }
 
-        public override Maybe<IRegion> SelectedRegion => Maybe<IRegion>.Create(_selectedRegion);
+        public override Maybe<Region> SelectedRegion => Maybe<Region>.Create(_selectedRegion);
 
         public override bool CanUserSelectNumberOfArmies => true;
 
         public bool CanShowCards => true;
 
-        public override void OnRegionClicked(IRegion region)
+        public override void OnRegionClicked(Region region)
         {
             if (CanDeselect(region))
             {
@@ -59,7 +59,7 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay.Interaction
             _attackPhase.EndTurn();
         }
 
-        private bool CanDeselect(IRegion region)
+        private bool CanDeselect(Region region)
         {
             return region == _selectedRegion;
         }
@@ -69,7 +69,7 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay.Interaction
             _fortifyInteractionStateObserver.DeselectRegion();
         }
 
-        private void Fortify(IRegion regionToFortify)
+        private void Fortify(Region regionToFortify)
         {
             _attackPhase.Fortify(_selectedRegion, regionToFortify, 1);
         }

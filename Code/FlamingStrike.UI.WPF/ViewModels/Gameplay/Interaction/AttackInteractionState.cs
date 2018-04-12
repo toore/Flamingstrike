@@ -15,10 +15,10 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay.Interaction
     public class AttackInteractionState : InteractionStateBase
     {
         private readonly IAttackPhase _attackPhase;
-        private readonly IRegion _selectedRegion;
+        private readonly Region _selectedRegion;
         private readonly IAttackInteractionStateObserver _attackInteractionStateObserver;
 
-        public AttackInteractionState(IAttackPhase attackPhase, IRegion selectedRegion, IAttackInteractionStateObserver attackInteractionStateObserver)
+        public AttackInteractionState(IAttackPhase attackPhase, Region selectedRegion, IAttackInteractionStateObserver attackInteractionStateObserver)
         {
             _attackPhase = attackPhase;
             _selectedRegion = selectedRegion;
@@ -34,9 +34,9 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay.Interaction
 
         public override bool CanEndTurn => true;
 
-        public override IReadOnlyList<IRegion> EnabledRegions { get; }
+        public override IReadOnlyList<Region> EnabledRegions { get; }
 
-        public override Maybe<IRegion> SelectedRegion => Maybe<IRegion>.Create(_selectedRegion);
+        public override Maybe<Region> SelectedRegion => Maybe<Region>.Create(_selectedRegion);
 
         public override bool CanUserSelectNumberOfArmies => true;
 
@@ -44,7 +44,7 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay.Interaction
 
         public override int MaxNumberOfUserSelectableArmies => GetSelectedTerritory().GetNumberOfArmiesUsedInAnAttack();
 
-        public override void OnRegionClicked(IRegion region)
+        public override void OnRegionClicked(Region region)
         {
             if (CanDeselect(region))
             {
@@ -66,7 +66,7 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay.Interaction
             return _attackPhase.Territories.Single(x => x.Region == _selectedRegion);
         }
 
-        private bool CanDeselect(IRegion region)
+        private bool CanDeselect(Region region)
         {
             return region == _selectedRegion;
         }
@@ -76,7 +76,7 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay.Interaction
             _attackInteractionStateObserver.DeselectRegion();
         }
 
-        private void Attack(IRegion attackedRegion)
+        private void Attack(Region attackedRegion)
         {
             _attackPhase.Attack(_selectedRegion, attackedRegion);
         }

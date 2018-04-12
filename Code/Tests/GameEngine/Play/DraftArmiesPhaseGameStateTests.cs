@@ -14,8 +14,8 @@ namespace Tests.GameEngine.Play
         private readonly GameData _gameData;
         private readonly IGamePhaseConductor _gamePhaseConductor;
         private readonly IArmyDrafter _armyDrafter;
-        private readonly IRegion _region;
-        private readonly IRegion _anotherRegion;
+        private readonly Region _region;
+        private readonly Region _anotherRegion;
         private int _numberOfArmiesToDraft;
         private readonly PlayerName _currentPlayerName;
 
@@ -27,8 +27,8 @@ namespace Tests.GameEngine.Play
             _currentPlayerName = new PlayerName("current player");
             var territory = Substitute.For<ITerritory>();
             var anotherTerritory = Substitute.For<ITerritory>();
-            _region = Substitute.For<IRegion>();
-            _anotherRegion = Substitute.For<IRegion>();
+            _region = Region.Brazil;
+            _anotherRegion = Region.NorthAfrica;
             territory.Region.Returns(_region);
             territory.Name.Returns(_currentPlayerName);
             anotherTerritory.Region.Returns(_anotherRegion);

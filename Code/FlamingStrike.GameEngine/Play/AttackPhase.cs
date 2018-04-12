@@ -11,6 +11,7 @@ namespace FlamingStrike.GameEngine.Play
         private readonly IAttacker _attacker;
         private readonly IFortifier _fortifier;
         private readonly IPlayerEliminationRules _playerEliminationRules;
+        private readonly IWorldMap _worldMap;
         private ConqueringAchievement _conqueringAchievement;
 
         public AttackPhase(
@@ -22,13 +23,15 @@ namespace FlamingStrike.GameEngine.Play
             ConqueringAchievement conqueringAchievement,
             IAttacker attacker,
             IFortifier fortifier,
-            IPlayerEliminationRules playerEliminationRules)
+            IPlayerEliminationRules playerEliminationRules,
+            IWorldMap worldMap)
         {
             _gamePhaseConductor = gamePhaseConductor;
             _conqueringAchievement = conqueringAchievement;
             _attacker = attacker;
             _fortifier = fortifier;
             _playerEliminationRules = playerEliminationRules;
+            _worldMap = worldMap;
             CurrentPlayerName = currentPlayerName;
             Territories = territories;
             PlayerGameDatas = playerGameDatas;
@@ -40,7 +43,7 @@ namespace FlamingStrike.GameEngine.Play
         public IReadOnlyList<IPlayerGameData> PlayerGameDatas { get; }
         public IDeck Deck { get; }
 
-        public IReadOnlyList<IRegion> GetRegionsThatCanBeSourceForAttackOrFortification()
+        public IReadOnlyList<Region> GetRegionsThatCanBeSourceForAttackOrFortification()
         {
             return Territories
                 .Where(x => IsCurrentPlayerOccupyingRegion(x.Region))
@@ -48,7 +51,7 @@ namespace FlamingStrike.GameEngine.Play
                 .ToList();
         }
 
-        public void Attack(IRegion attackingRegion, IRegion defendingRegion)
+        public void Attack(Region attackingRegion, Region defendingRegion)
         {
             if (!IsCurrentPlayerOccupyingRegion(attackingRegion))
             {
@@ -70,7 +73,7 @@ namespace FlamingStrike.GameEngine.Play
             }
         }
 
-        public void Fortify(IRegion sourceRegion, IRegion destinationRegion, int armies)
+        public void Fortify(Region sourceRegion, Region destinationRegion, int armies)
         {
             if (!IsCurrentPlayerOccupyingRegion(sourceRegion))
             {
@@ -84,15 +87,15 @@ namespace FlamingStrike.GameEngine.Play
             _gamePhaseConductor.WaitForTurnToEnd(updatedGameData);
         }
 
-        public IEnumerable<IRegion> GetRegionsThatCanBeAttacked(IRegion sourceRegion)
+        public IEnumerable<Region> GetRegionsThatCanBeAttacked(Region sourceRegion)
         {
-            return sourceRegion.GetBorderingRegions()
+            return _worldMap.GetBorders(sourceRegion)
                 .Where(borderRegion => CanAttack(sourceRegion, borderRegion));
         }
 
-        public IEnumerable<IRegion> GetRegionsThatCanBeFortified(IRegion sourceRegion)
+        public IEnumerable<Region> GetRegionsThatCanBeFortified(Region sourceRegion)
         {
-            return sourceRegion.GetBorderingRegions()
+            return _worldMap.GetBorders(sourceRegion)
                 .Where(borderRegion => CanFortify(sourceRegion, borderRegion));
         }
 
@@ -105,21 +108,21 @@ namespace FlamingStrike.GameEngine.Play
             _gamePhaseConductor.PassTurnToNextPlayer(updatedGameData);
         }
 
-        private bool IsCurrentPlayerOccupyingRegion(IRegion region)
+        private bool IsCurrentPlayerOccupyingRegion(Region region)
         {
             return Territories.Single(x => x.Region == region).Name == CurrentPlayerName;
         }
 
-        private PlayerName GetPlayer(IRegion region)
+        private PlayerName GetPlayer(Region region)
         {
             return Territories.Single(x => x.Region == region).Name;
         }
 
-        private void DefendingArmyIsEliminated(PlayerName defeatedPlayerName, IRegion attackingRegion, IRegion defeatedRegion, IReadOnlyList<ITerritory> updatedTerritories)
+        private void DefendingArmyIsEliminated(PlayerName defeatedPlayerName, Region attackingRegion, Region defeatedRegion, IReadOnlyList<ITerritory> updatedTerritories)
         {
             _conqueringAchievement = ConqueringAchievement.SuccessfullyConqueredAtLeastOneTerritory;
 
-            if (_playerEliminationRules.IsOnlyOnePlayerLeftInTheGame(updatedTerritories))
+            if (_playerEliminationRules.IsOnePlayerLeftInTheGame(updatedTerritories))
             {
                 GameIsOver();
             }
@@ -138,7 +141,7 @@ namespace FlamingStrike.GameEngine.Play
             _gamePhaseConductor.PlayerIsTheWinner(CurrentPlayerName);
         }
 
-        private void AquireAllCardsFromPlayerAndSendArmiesToOccupy(PlayerName defeatedPlayerName, IRegion attackingRegion, IRegion defeatedRegion, IReadOnlyList<ITerritory> updatedTerritories)
+        private void AquireAllCardsFromPlayerAndSendArmiesToOccupy(PlayerName defeatedPlayerName, Region attackingRegion, Region defeatedRegion, IReadOnlyList<ITerritory> updatedTerritories)
         {
             var eliminatedPlayerGameData = PlayerGameDatas.Single(x => x.PlayerName == defeatedPlayerName);
 
@@ -170,7 +173,7 @@ namespace FlamingStrike.GameEngine.Play
             return new PlayerGameData(eliminatedPlayerGameData.PlayerName, new List<ICard>());
         }
 
-        private void ContinueWithAttackOrOccupation(IRegion sourceRegion, IRegion destinationRegion, IReadOnlyList<ITerritory> updatedTerritories, IReadOnlyList<IPlayerGameData> updatedPlayerGameDatas)
+        private void ContinueWithAttackOrOccupation(Region sourceRegion, Region destinationRegion, IReadOnlyList<ITerritory> updatedTerritories, IReadOnlyList<IPlayerGameData> updatedPlayerGameDatas)
         {
             var numberOfArmiesThatCanBeSentToOccupy = updatedTerritories
                 .Single(x => x.Region == sourceRegion).GetNumberOfArmiesThatCanBeSentToOccupy();
@@ -185,7 +188,7 @@ namespace FlamingStrike.GameEngine.Play
             }
         }
 
-        private void SendArmiesToOccupy(IRegion sourceRegion, IRegion destinationRegion, IReadOnlyList<ITerritory> updatedTerritories, IReadOnlyList<IPlayerGameData> updatedPlayerGameDatas)
+        private void SendArmiesToOccupy(Region sourceRegion, Region destinationRegion, IReadOnlyList<ITerritory> updatedTerritories, IReadOnlyList<IPlayerGameData> updatedPlayerGameDatas)
         {
             var updatedGameData = new GameData(updatedTerritories, updatedPlayerGameDatas, CurrentPlayerName, Deck);
 
@@ -199,14 +202,14 @@ namespace FlamingStrike.GameEngine.Play
             _gamePhaseConductor.ContinueWithAttackPhase(_conqueringAchievement, updatedGameData);
         }
 
-        private bool CanAttack(IRegion attackingRegion, IRegion defendingRegion)
+        private bool CanAttack(Region attackingRegion, Region defendingRegion)
         {
             return IsCurrentPlayerOccupyingRegion(attackingRegion)
                    &&
                    _attacker.CanAttack(Territories, attackingRegion, defendingRegion);
         }
 
-        private bool CanFortify(IRegion sourceRegion, IRegion destinationRegion)
+        private bool CanFortify(Region sourceRegion, Region destinationRegion)
         {
             if (!IsCurrentPlayerOccupyingRegion(sourceRegion))
             {

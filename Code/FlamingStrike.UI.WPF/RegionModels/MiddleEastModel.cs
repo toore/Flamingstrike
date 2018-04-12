@@ -6,7 +6,7 @@ namespace FlamingStrike.UI.WPF.RegionModels
 {
     public class MiddleEastModel : RegionModelBase
     {
-        public MiddleEastModel(IRegion region) : base(region) {}
+        public MiddleEastModel(Region region) : base(region) {}
 
         public override string Name => Resources.MIDDLE_EAST;
 

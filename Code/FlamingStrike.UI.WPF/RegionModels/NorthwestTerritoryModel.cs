@@ -4,9 +4,9 @@ using FlamingStrike.UI.WPF.Properties;
 
 namespace FlamingStrike.UI.WPF.RegionModels
 {
-    public class NorthwestRegionModel : RegionModelBase
+    public class NorthwestTerritoryModel : RegionModelBase
     {
-        public NorthwestRegionModel(IRegion region) : base(region) {}
+        public NorthwestTerritoryModel(Region region) : base(region) {}
 
         public override string Name => Resources.NORTHWEST_TERRITORY;
 

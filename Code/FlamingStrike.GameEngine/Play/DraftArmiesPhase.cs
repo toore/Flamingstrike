@@ -33,7 +33,7 @@ namespace FlamingStrike.GameEngine.Play
         public IDeck Deck { get; }
         public int NumberOfArmiesToDraft { get; }
 
-        public IReadOnlyList<IRegion> RegionsAllowedToDraftArmies
+        public IReadOnlyList<Region> RegionsAllowedToDraftArmies
         {
             get
             {
@@ -45,7 +45,7 @@ namespace FlamingStrike.GameEngine.Play
             }
         }
 
-        public void PlaceDraftArmies(IRegion region, int numberOfArmies)
+        public void PlaceDraftArmies(Region region, int numberOfArmies)
         {
             if (!IsCurrentPlayerOccupyingRegion(region))
             {
@@ -71,12 +71,12 @@ namespace FlamingStrike.GameEngine.Play
             }
         }
 
-        private bool CanPlaceDraftArmies(IRegion region)
+        private bool CanPlaceDraftArmies(Region region)
         {
             return IsCurrentPlayerOccupyingRegion(region);
         }
 
-        private bool IsCurrentPlayerOccupyingRegion(IRegion region)
+        private bool IsCurrentPlayerOccupyingRegion(Region region)
         {
             return CurrentPlayerName == Territories.Single(x => x.Region == region).Name;
         }

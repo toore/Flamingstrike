@@ -6,7 +6,7 @@ namespace FlamingStrike.UI.WPF.RegionModels
 {
     public class AfghanistanModel : RegionModelBase
     {
-        public AfghanistanModel(IRegion region) : base(region) {}
+        public AfghanistanModel(Region region) : base(region) {}
 
         public override string Name => Resources.AFGHANISTAN;
         public override Point NamePosition => new Point(830, 170);

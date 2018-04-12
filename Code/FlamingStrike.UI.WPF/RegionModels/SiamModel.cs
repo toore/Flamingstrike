@@ -6,7 +6,7 @@ namespace FlamingStrike.UI.WPF.RegionModels
 {
     public class SiamModel : RegionModelBase
     {
-        public SiamModel(IRegion region) : base(region) {}
+        public SiamModel(Region region) : base(region) {}
 
         public override string Name => Resources.SIAM;
 

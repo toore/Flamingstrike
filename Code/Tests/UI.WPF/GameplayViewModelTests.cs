@@ -29,7 +29,9 @@ namespace Tests.UI.WPF
         private readonly PlayerName _currentPlayerName;
         private readonly Color _currentPlayerColor;
         private readonly object[] _expectedCurrentPlayerStatusViewModels;
-        private IPlayerGameData[] _playerGameDatas;
+        private readonly IPlayerGameData[] _playerGameDatas;
+        private readonly IDraftArmiesPhase _draftArmiesPhase;
+        private readonly IAttackPhase _attackPhase;
 
         public GameplayViewModelTests()
         {
@@ -69,12 +71,18 @@ namespace Tests.UI.WPF
                     thirdPlayerGameData
                 };
             _expectedCurrentPlayerStatusViewModels = new object[] { firstPlayerStatusViewModel, secondPlayerStatusViewModel, thirdPlayerStatusViewModel };
+
+            _draftArmiesPhase = Substitute.For<IDraftArmiesPhase>();
+            _draftArmiesPhase.CurrentPlayerName.Returns(new PlayerName(""));
+
+            _attackPhase = Substitute.For<IAttackPhase>();
+            _attackPhase.CurrentPlayerName.Returns(new PlayerName(""));
         }
 
         [Fact]
         public void World_map_is_created()
         {
-            _worldMapViewModelFactory.Received(1).Create(Arg.Any<Action<IRegion>>());
+            _worldMapViewModelFactory.Received(1).Create(Arg.Any<Action<Region>>());
             _sut.WorldMapViewModel.Should().Be(_worldMapViewModel);
         }
 
@@ -104,7 +112,7 @@ namespace Tests.UI.WPF
                 .ReturnsForAnyArgs(new PlayerUiData("", Colors.Black));
 
             var monitor = _sut.Monitor();
-            _sut.DraftArmies(Substitute.For<IDraftArmiesPhase>());
+            _sut.DraftArmies(_draftArmiesPhase);
 
             monitor.Should().RaisePropertyChangeFor(x => x.PlayerName);
             monitor.Should().RaisePropertyChangeFor(x => x.PlayerColor);
@@ -118,8 +126,8 @@ namespace Tests.UI.WPF
             var attackPhase = Substitute.For<IAttackPhase>();
             attackPhase.CurrentPlayerName.Returns(_currentPlayerName);
             attackPhase.PlayerGameDatas.Returns(_playerGameDatas);
+            _sut.DraftArmies(_draftArmiesPhase);
 
-            _sut.DraftArmies(Substitute.For<IDraftArmiesPhase>());
             _sut.Attack(attackPhase);
 
             _sut.PlayerName.Should().Be("current player");
@@ -134,12 +142,9 @@ namespace Tests.UI.WPF
         [Fact]
         public void Attack_raises_property_changed()
         {
-            var draftArmiesPhase = Substitute.For<IDraftArmiesPhase>();
-            draftArmiesPhase.CurrentPlayerName.Returns(new PlayerName(""));
             var attackPhase = Substitute.For<IAttackPhase>();
             attackPhase.CurrentPlayerName.Returns(_currentPlayerName);
-
-            _sut.DraftArmies(draftArmiesPhase);
+            _sut.DraftArmies(_draftArmiesPhase);
 
             var monitor = _sut.Monitor();
             _sut.Attack(attackPhase);
@@ -158,9 +163,9 @@ namespace Tests.UI.WPF
             var attackPhase = Substitute.For<IAttackPhase>();
             attackPhase.CurrentPlayerName.Returns(_currentPlayerName);
             attackPhase.PlayerGameDatas.Returns(_playerGameDatas);
-
-            _sut.DraftArmies(Substitute.For<IDraftArmiesPhase>());
+            _sut.DraftArmies(_draftArmiesPhase);
             _sut.Attack(attackPhase);
+
             _sut.EnterFortifyMode();
 
             _sut.PlayerName.Should().Be("current player");
@@ -175,8 +180,8 @@ namespace Tests.UI.WPF
         [Fact]
         public void Entering_fortify_mode_raises_property_changed()
         {
-            _sut.DraftArmies(Substitute.For<IDraftArmiesPhase>());
-            _sut.Attack(Substitute.For<IAttackPhase>());
+            _sut.DraftArmies(_draftArmiesPhase);
+            _sut.Attack(_attackPhase);
 
             var monitor = _sut.Monitor();
             _sut.EnterFortifyMode();
@@ -191,10 +196,10 @@ namespace Tests.UI.WPF
             var attackPhase = Substitute.For<IAttackPhase>();
             attackPhase.CurrentPlayerName.Returns(_currentPlayerName);
             attackPhase.PlayerGameDatas.Returns(_playerGameDatas);
-
-            _sut.DraftArmies(Substitute.For<IDraftArmiesPhase>());
+            _sut.DraftArmies(_draftArmiesPhase);
             _sut.Attack(attackPhase);
             _sut.EnterFortifyMode();
+
             _sut.EnterAttackMode();
 
             _sut.PlayerName.Should().Be("current player");
@@ -209,8 +214,8 @@ namespace Tests.UI.WPF
         [Fact]
         public void Entering_attack_mode_raises_property_changed()
         {
-            _sut.DraftArmies(Substitute.For<IDraftArmiesPhase>());
-            _sut.Attack(Substitute.For<IAttackPhase>());
+            _sut.DraftArmies(_draftArmiesPhase);
+            _sut.Attack(_attackPhase);
             _sut.EnterFortifyMode();
 
             var monitor = _sut.Monitor();
@@ -226,9 +231,9 @@ namespace Tests.UI.WPF
             var sendArmiesToOccupyPhase = Substitute.For<ISendArmiesToOccupyPhase>();
             sendArmiesToOccupyPhase.CurrentPlayerName.Returns(_currentPlayerName);
             sendArmiesToOccupyPhase.PlayerGameDatas.Returns(_playerGameDatas);
+            _sut.DraftArmies(_draftArmiesPhase);
+            _sut.Attack(_attackPhase);
 
-            _sut.DraftArmies(Substitute.For<IDraftArmiesPhase>());
-            _sut.Attack(Substitute.For<IAttackPhase>());
             _sut.SendArmiesToOccupy(sendArmiesToOccupyPhase);
 
             _sut.PlayerName.Should().Be("current player");
@@ -246,9 +251,9 @@ namespace Tests.UI.WPF
             var sendArmiesToOccupyPhase = Substitute.For<ISendArmiesToOccupyPhase>();
             sendArmiesToOccupyPhase.CurrentPlayerName.Returns(_currentPlayerName);
             sendArmiesToOccupyPhase.PlayerGameDatas.Returns(_playerGameDatas);
+            _sut.DraftArmies(_draftArmiesPhase);
+            _sut.Attack(_attackPhase);
 
-            _sut.DraftArmies(Substitute.For<IDraftArmiesPhase>());
-            _sut.Attack(Substitute.For<IAttackPhase>());
             var monitor = _sut.Monitor();
             _sut.SendArmiesToOccupy(sendArmiesToOccupyPhase);
 
@@ -266,8 +271,8 @@ namespace Tests.UI.WPF
             var endTurnPhase = Substitute.For<IEndTurnPhase>();
             endTurnPhase.CurrentPlayerName.Returns(_currentPlayerName);
             endTurnPhase.PlayerGameDatas.Returns(_playerGameDatas);
+            _sut.DraftArmies(_draftArmiesPhase);
 
-            _sut.DraftArmies(Substitute.For<IDraftArmiesPhase>());
             _sut.EndTurn(endTurnPhase);
 
             _sut.PlayerName.Should().Be("current player");
@@ -284,8 +289,8 @@ namespace Tests.UI.WPF
         {
             var endTurnPhase = Substitute.For<IEndTurnPhase>();
             endTurnPhase.CurrentPlayerName.Returns(_currentPlayerName);
+            _sut.DraftArmies(_draftArmiesPhase);
 
-            _sut.DraftArmies(Substitute.For<IDraftArmiesPhase>());
             var monitor = _sut.Monitor();
             _sut.EndTurn(endTurnPhase);
 
@@ -301,9 +306,13 @@ namespace Tests.UI.WPF
         {
             var endTurnPhase = Substitute.For<IEndTurnPhase>();
             endTurnPhase.CurrentPlayerName.Returns(_currentPlayerName);
+            var draftArmiesPhase = Substitute.For<IDraftArmiesPhase>();
+            draftArmiesPhase.CurrentPlayerName.Returns(new PlayerName(""));
+            _sut.DraftArmies(draftArmiesPhase);
+            var attackPhase = Substitute.For<IAttackPhase>();
+            attackPhase.CurrentPlayerName.Returns(new PlayerName(""));
+            _sut.Attack(attackPhase);
 
-            _sut.DraftArmies(Substitute.For<IDraftArmiesPhase>());
-            _sut.Attack(Substitute.For<IAttackPhase>());
             var monitor = _sut.Monitor();
             _sut.EndTurn(endTurnPhase);
 
@@ -319,10 +328,10 @@ namespace Tests.UI.WPF
         {
             var endTurnPhase = Substitute.For<IEndTurnPhase>();
             endTurnPhase.CurrentPlayerName.Returns(_currentPlayerName);
-
-            _sut.DraftArmies(Substitute.For<IDraftArmiesPhase>());
-            _sut.Attack(Substitute.For<IAttackPhase>());
+            _sut.DraftArmies(_draftArmiesPhase);
+            _sut.Attack(_attackPhase);
             _sut.EnterFortifyMode();
+
             var monitor = _sut.Monitor();
             _sut.EndTurn(endTurnPhase);
 

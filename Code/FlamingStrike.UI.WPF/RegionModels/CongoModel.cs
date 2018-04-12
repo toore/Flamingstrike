@@ -6,7 +6,7 @@ namespace FlamingStrike.UI.WPF.RegionModels
 {
     public class CongoModel : RegionModelBase
     {
-        public CongoModel(IRegion region) : base(region) {}
+        public CongoModel(Region region) : base(region) {}
 
         public override string Name => Resources.CONGO;
 

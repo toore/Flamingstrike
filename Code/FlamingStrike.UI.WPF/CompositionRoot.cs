@@ -34,8 +34,7 @@ namespace FlamingStrike.UI.WPF
                 PlayerUiDataRepository,
                 EventAggregator);
 
-            var regions = new Regions();
-            var regionModelFactory = new RegionModelFactory(regions);
+            var regionModelFactory = new RegionModelFactory();
             var worldMapViewModelFactory = new WorldMapViewModelFactory(regionModelFactory, PlayerUiDataRepository);
             var windowManager = new WindowManager();
             var screenConfirmationService = new ScreenConfirmationService();
@@ -55,18 +54,20 @@ namespace FlamingStrike.UI.WPF
 
             var randomWrapper = new RandomWrapper();
             var shuffle = new FisherYatesShuffler(randomWrapper);
-            var deckFactory = new DeckFactory(regions, shuffle);
+            var worldMapFactory = new WorldMapFactory();
+            var worldMap = worldMapFactory.Create();
+            var deckFactory = new DeckFactory(worldMap.GetAll(), shuffle);
             var battleCalculator = new ArmiesLostCalculator();
             var dice = new Die(randomWrapper);
             var diceRoller = new Dice(dice);
             var battle = new Battle(diceRoller, battleCalculator);
             var armyDrafter = new ArmyDrafter();
             var territoryOccupier = new TerritoryOccupier();
-            var fortifier = new Fortifier();
-            var attacker = new Attacker(battle);
+            var fortifier = new Fortifier(worldMap);
+            var attacker = new Attacker(battle, worldMap);
             var playerEliminationRules = new PlayerEliminationRules();
             var armyDraftCalculator = new ArmyDraftCalculator(new[] { Continent.Asia, Continent.NorthAmerica, Continent.Europe, Continent.Africa, Continent.Australia, Continent.SouthAmerica });
-            var gamePhaseFactory = new GamePhaseFactory(armyDrafter, attacker, fortifier, playerEliminationRules, territoryOccupier);
+            var gamePhaseFactory = new GamePhaseFactory(armyDrafter, attacker, fortifier, playerEliminationRules, territoryOccupier, worldMap);
 
             AlternateGameSetupViewModelFactory = new AlternateGameSetupViewModelFactory(
                 worldMapViewModelFactory,
@@ -80,7 +81,7 @@ namespace FlamingStrike.UI.WPF
             var startingInfantryCalculator = new StartingInfantryCalculator();
 #endif
 
-            AlternateGameSetupBootstrapper = new AlternateGameSetupBootstrapper(regions, shuffle, startingInfantryCalculator);
+            AlternateGameSetupBootstrapper = new AlternateGameSetupBootstrapper(worldMap.GetAll(), shuffle, startingInfantryCalculator);
 
             GameBootstrapper = new GameBootstrapper(gamePhaseFactory, armyDraftCalculator, deckFactory);
         }

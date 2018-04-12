@@ -13,8 +13,8 @@ namespace FlamingStrike.GameEngine.Play
             IReadOnlyList<ITerritory> territories,
             IReadOnlyList<IPlayerGameData> playerGameDatas,
             IDeck deck,
-            IRegion attackingRegion,
-            IRegion occupiedRegion,
+            Region attackingRegion,
+            Region occupiedRegion,
             ITerritoryOccupier territoryOccupier)
         {
             _gamePhaseConductor = gamePhaseConductor;
@@ -31,8 +31,8 @@ namespace FlamingStrike.GameEngine.Play
         public IReadOnlyList<ITerritory> Territories { get; }
         public IReadOnlyList<IPlayerGameData> PlayerGameDatas { get; }
         public IDeck Deck { get; }
-        public IRegion AttackingRegion { get; }
-        public IRegion OccupiedRegion { get; }
+        public Region AttackingRegion { get; }
+        public Region OccupiedRegion { get; }
 
         public void SendAdditionalArmiesToOccupy(int numberOfArmies)
         {

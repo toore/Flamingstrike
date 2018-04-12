@@ -10,12 +10,12 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay
     public class WorldMapItemUpdater : IWorldMapItemViewModelVisitor
     {
         private readonly IReadOnlyList<Territory> _territories;
-        private readonly Maybe<IRegion> _selectedRegion;
+        private readonly Maybe<Region> _selectedRegion;
         private readonly IPlayerUiDataRepository _playerUiDataRepository;
 
         public WorldMapItemUpdater(
             IReadOnlyList<Territory> territories,
-            Maybe<IRegion> selectedRegion,
+            Maybe<Region> selectedRegion,
             IPlayerUiDataRepository playerUiDataRepository)
         {
             _territories = territories;
@@ -34,18 +34,18 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay
             regionViewModel.IsEnabled = IsEnabled(regionViewModel.Region);
         }
 
-        private bool IsSelected(IRegion region)
+        private bool IsSelected(Region region)
         {
             return _selectedRegion
                 .Fold(x => x == region, () => false);
         }
 
-        private bool IsEnabled(IRegion region)
+        private bool IsEnabled(Region region)
         {
             return _territories.Single(x => x.Region == region).IsEnabled;
         }
 
-        private Color GetPlayerColor(IRegion region)
+        private Color GetPlayerColor(Region region)
         {
             var player = _territories.Single(x => x.Region == region).Player;
             var playerUiData = _playerUiDataRepository.Get((string)player);

@@ -44,7 +44,7 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay
         private IList<PlayerStatusViewModel> _playerStatuses;
         private int _numberOfArmies;
         private int _maxNumberOfUserSelectableArmies;
-        private Maybe<IRegion> _previouslySelectedAttackingRegion;
+        private Maybe<Region> _previouslySelectedAttackingRegion;
         private bool _canUserSelectNumberOfArmies;
         private IReadOnlyList<ITerritory> _territories;
 
@@ -133,7 +133,7 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay
         public void DraftArmies(IDraftArmiesPhase draftArmiesPhase)
         {
             _territories = draftArmiesPhase.Territories;
-            _previouslySelectedAttackingRegion = Maybe<IRegion>.Nothing;
+            _previouslySelectedAttackingRegion = Maybe<Region>.Nothing;
 
             UpdatePlayersInformation(draftArmiesPhase.CurrentPlayerName, draftArmiesPhase.PlayerGameDatas);
 
@@ -180,9 +180,9 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay
             ShowAttackPhaseView(_attackPhase);
         }
 
-        void ISelectAttackingRegionInteractionStateObserver.Select(IRegion selectedRegion)
+        void ISelectAttackingRegionInteractionStateObserver.Select(Region selectedRegion)
         {
-            _previouslySelectedAttackingRegion = Maybe<IRegion>.Create(selectedRegion);
+            _previouslySelectedAttackingRegion = Maybe<Region>.Create(selectedRegion);
 
             ShowAttackPhaseView(_attackPhase, selectedRegion);
         }
@@ -199,7 +199,7 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay
             ShowFortifyView(_attackPhase);
         }
 
-        void ISelectSourceRegionForFortificationInteractionStateObserver.Select(IRegion selectedRegion)
+        void ISelectSourceRegionForFortificationInteractionStateObserver.Select(Region selectedRegion)
         {
             ShowFortifyView(_attackPhase, selectedRegion);
         }
@@ -224,7 +224,7 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay
             }
         }
 
-        private void OnRegionClicked(IRegion region)
+        private void OnRegionClicked(Region region)
         {
             _interactionState.OnRegionClicked(region);
         }
@@ -243,7 +243,7 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay
             UpdateView();
         }
 
-        private void ShowAttackPhaseView(IAttackPhase attackPhase, IRegion selectedRegion)
+        private void ShowAttackPhaseView(IAttackPhase attackPhase, Region selectedRegion)
         {
             _interactionState = _interactionStateFactory.CreateAttackInteractionState(attackPhase, selectedRegion, this);
 
@@ -257,7 +257,7 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay
             UpdateView();
         }
 
-        private void ShowFortifyView(IAttackPhase attackPhase, IRegion selectedRegion)
+        private void ShowFortifyView(IAttackPhase attackPhase, Region selectedRegion)
         {
             _interactionState = _interactionStateFactory.CreateFortifyInteractionState(attackPhase, selectedRegion, this);
 

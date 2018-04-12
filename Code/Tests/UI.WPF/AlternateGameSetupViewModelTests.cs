@@ -14,7 +14,6 @@ using FlamingStrike.UI.WPF.ViewModels.Preparation;
 using FluentAssertions;
 using NSubstitute;
 using Xunit;
-using Player = FlamingStrike.GameEngine.Setup.TerritorySelection.Player;
 using Territory = FlamingStrike.GameEngine.Setup.TerritorySelection.Territory;
 
 namespace Tests.UI.WPF
@@ -59,16 +58,14 @@ namespace Tests.UI.WPF
             var expectedWorldMapViewModel = new WorldMapViewModel();
             _worldMapViewModelFactory.Create(null)
                 .ReturnsForAnyArgs(expectedWorldMapViewModel);
-            var territories = new List<Territory>();
-            //var enabledRegions = new List<IRegion> { new RegionBuilder().Build() };
             var placeArmyRegionSelector = Substitute.For<ITerritorySelector>();
-            placeArmyRegionSelector.GetTerritories().Returns(territories);
-            //placeArmyRegionSelector.SelectableRegions.Returns(enabledRegions);
+            placeArmyRegionSelector.GetTerritories().Returns(new List<Territory>());
+            placeArmyRegionSelector.GetPlayer().Returns(new PlayerBuilder().Build());
 
             var sut = Create();
             sut.SelectRegion(placeArmyRegionSelector);
 
-            _worldMapViewModelFactory.Received().Update(expectedWorldMapViewModel, /*territories*/null, Maybe<IRegion>.Nothing);
+            _worldMapViewModelFactory.Received().Update(expectedWorldMapViewModel, Arg.Any<List<FlamingStrike.UI.WPF.ViewModels.Gameplay.Territory>>(), Maybe<Region>.Nothing);
         }
 
         [Fact]
@@ -164,6 +161,17 @@ namespace Tests.UI.WPF
         private AlternateGameSetupViewModel Create()
         {
             return (AlternateGameSetupViewModel)_factory.Create();
+        }
+
+        public class PlayerBuilder
+        {
+            private PlayerName _name = new PlayerName("");
+            private int _armiesToPlace = 0;
+
+            public Player Build()
+            {
+                return new Player(_name, _armiesToPlace);
+            }
         }
     }
 }

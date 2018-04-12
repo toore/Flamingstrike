@@ -4,7 +4,7 @@ namespace FlamingStrike.GameEngine.Play
 {
     public interface ITerritory
     {
-        IRegion Region { get; }
+        Region Region { get; }
         PlayerName Name { get; }
         int Armies { get; }
         int GetNumberOfArmiesThatAreAvailableForAnAttack();
@@ -18,7 +18,7 @@ namespace FlamingStrike.GameEngine.Play
     {
         private const int MaxNumberOfAttackingArmies = 3;
 
-        public Territory(IRegion region, PlayerName playerName, int armies)
+        public Territory(Region region, PlayerName playerName, int armies)
         {
             if (armies <= 0)
             {
@@ -30,7 +30,7 @@ namespace FlamingStrike.GameEngine.Play
             Armies = armies;
         }
 
-        public IRegion Region { get; }
+        public Region Region { get; }
         public PlayerName Name { get; }
         public int Armies { get; }
 

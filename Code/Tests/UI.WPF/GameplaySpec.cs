@@ -55,12 +55,9 @@ namespace Tests.UI.WPF
 
         private void all_armies_are_placed_on_the_map()
         {
-            const int numberOfArmiesForEachPlayer = 40;
-            const int armiesAssignedToTerritoriesAutomatically = 21;
             const int numberOfPlayers = 2;
-            const int numberOfArmiesToPlace = (numberOfArmiesForEachPlayer - armiesAssignedToTerritoriesAutomatically) * numberOfPlayers;
 
-            for (var i = 0; i < numberOfArmiesToPlace; i++)
+            for (var i = 0; i < numberOfPlayers; i++)
             {
                 var regionViewModel = _gameSetupViewModel.WorldMapViewModel.WorldMapViewModels
                     .OfType<RegionViewModel>()

@@ -3,14 +3,14 @@ using FlamingStrike.GameEngine;
 
 namespace FlamingStrike.UI.WPF.RegionModels
 {
-    public abstract class RegionModelBase : IRegionModel
+    public abstract class RegionModelBase : RegionModel
     {
-        protected RegionModelBase(IRegion region)
+        protected RegionModelBase(Region region)
         {
             Region = region;
         }
 
-        public IRegion Region { get; }
+        public Region Region { get; }
 
         public abstract string Name { get; }
         public abstract Point NamePosition { get; }

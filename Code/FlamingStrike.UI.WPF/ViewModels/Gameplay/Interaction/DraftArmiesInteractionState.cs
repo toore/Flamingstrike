@@ -16,11 +16,11 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay.Interaction
 
         public override string Title => string.Format(Resources.DRAFT_ARMIES, _draftArmiesPhase.NumberOfArmiesToDraft);
 
-        public override IReadOnlyList<IRegion> EnabledRegions => _draftArmiesPhase.RegionsAllowedToDraftArmies;
+        public override IReadOnlyList<Region> EnabledRegions => _draftArmiesPhase.RegionsAllowedToDraftArmies;
 
         public override bool CanUserSelectNumberOfArmies => true;
 
-        public override void OnRegionClicked(IRegion region)
+        public override void OnRegionClicked(Region region)
         {
             const int numberOfArmies = 1;
             _draftArmiesPhase.PlaceDraftArmies(region, numberOfArmies);

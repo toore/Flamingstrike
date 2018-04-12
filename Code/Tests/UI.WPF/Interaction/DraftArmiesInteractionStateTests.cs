@@ -21,7 +21,7 @@ namespace Tests.UI.WPF.Interaction
         [Fact]
         public void Places_one_army_in_region()
         {
-            var region = Substitute.For<IRegion>();
+            var region = Region.Alaska;
 
             _sut.OnRegionClicked(region);
 

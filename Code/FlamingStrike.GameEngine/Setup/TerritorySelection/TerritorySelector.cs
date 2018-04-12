@@ -7,7 +7,7 @@ namespace FlamingStrike.GameEngine.Setup.TerritorySelection
     {
         IReadOnlyList<Territory> GetTerritories();
         Player GetPlayer();
-        void PlaceArmyInRegion(IRegion region);
+        void PlaceArmyInRegion(Region region);
         int GetArmiesLeftToPlace();
     }
 
@@ -36,7 +36,7 @@ namespace FlamingStrike.GameEngine.Setup.TerritorySelection
             return new Player(_currentPlayer.Name, _currentPlayer.ArmiesToPlace);
         }
 
-        public void PlaceArmyInRegion(IRegion region)
+        public void PlaceArmyInRegion(Region region)
         {
             _armyPlacer.PlaceArmyInRegion(_currentPlayer, region, _alternateGameSetupData);
         }

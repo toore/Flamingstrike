@@ -17,13 +17,13 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay.Interaction
 
         public override string Title => Resources.SEND_ARMIES_TO_OCCUPY;
 
-        public override IReadOnlyList<IRegion> EnabledRegions => new[] { _sendArmiesToOccupyPhase.OccupiedRegion };
+        public override IReadOnlyList<Region> EnabledRegions => new[] { _sendArmiesToOccupyPhase.OccupiedRegion };
 
-        public override Maybe<IRegion> SelectedRegion => Maybe<IRegion>.Create(_sendArmiesToOccupyPhase.AttackingRegion);
+        public override Maybe<Region> SelectedRegion => Maybe<Region>.Create(_sendArmiesToOccupyPhase.AttackingRegion);
 
         public override bool CanUserSelectNumberOfArmies => true;
 
-        public override void OnRegionClicked(IRegion region)
+        public override void OnRegionClicked(Region region)
         {
             _sendArmiesToOccupyPhase.SendAdditionalArmiesToOccupy(1);
         }

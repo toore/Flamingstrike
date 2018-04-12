@@ -8,7 +8,7 @@ namespace Tests.UI.WPF.Interaction
 {
     public class FortifyInteractionStateTests
     {
-        private readonly IRegion _selectedRegion;
+        private readonly Region _selectedRegion;
         private readonly IAttackPhase _attackPhase;
         private readonly IFortifyInteractionStateObserver _fortifyInteractionStateObserver;
         private readonly FortifyInteractionState _sut;
@@ -16,7 +16,7 @@ namespace Tests.UI.WPF.Interaction
         public FortifyInteractionStateTests()
         {
             _attackPhase = Substitute.For<IAttackPhase>();
-            _selectedRegion = Substitute.For<IRegion>();
+            _selectedRegion = Region.Brazil;
             _fortifyInteractionStateObserver = Substitute.For<IFortifyInteractionStateObserver>();
 
             _sut = new FortifyInteractionState(_attackPhase, _selectedRegion, _fortifyInteractionStateObserver);
@@ -25,7 +25,7 @@ namespace Tests.UI.WPF.Interaction
         [Fact]
         public void Fortifies_territory()
         {
-            var region = Substitute.For<IRegion>();
+            var region = Region.NorthAfrica;
 
             _sut.OnRegionClicked(region);
 
@@ -35,8 +35,6 @@ namespace Tests.UI.WPF.Interaction
         [Fact]
         public void Deselects_region()
         {
-            var region = Substitute.For<IRegion>();
-
             _sut.OnRegionClicked(_selectedRegion);
 
             _fortifyInteractionStateObserver.Received().DeselectRegion();

@@ -6,7 +6,7 @@ namespace FlamingStrike.UI.WPF.RegionModels
 {
     public class KamchatkaModel : RegionModelBase
     {
-        public KamchatkaModel(IRegion region) : base(region) {}
+        public KamchatkaModel(Region region) : base(region) {}
 
         public override string Name => Resources.KAMCHATKA;
 

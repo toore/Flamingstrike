@@ -3,9 +3,9 @@ using FlamingStrike.GameEngine;
 
 namespace FlamingStrike.UI.WPF.RegionModels
 {
-    public interface IRegionModel
+    public interface RegionModel
     {
-        IRegion Region { get; }
+        Region Region { get; }
 
         string Name { get; }
         Point NamePosition { get; }

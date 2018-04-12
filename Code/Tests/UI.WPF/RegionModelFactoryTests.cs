@@ -1,5 +1,4 @@
 ﻿using System.Linq;
-using FlamingStrike.GameEngine;
 using FlamingStrike.UI.WPF.RegionModels;
 using FluentAssertions;
 using Xunit;
@@ -13,9 +12,7 @@ namespace Tests.UI.WPF
 
         public RegionModelFactoryTests()
         {
-            var regions = new Regions();
-
-            _sut = new RegionModelFactory(regions);
+            _sut = new RegionModelFactory();
         }
 
         [Fact]

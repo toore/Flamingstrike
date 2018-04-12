@@ -148,7 +148,7 @@
       <DependentUpon>WorldMapTestUserControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="GameEngine\Setup\AlternateGameSetupTests.cs" />
-    <Compile Include="GameEngine\RegionsTests.cs" />
+    <Compile Include="GameEngine\WorldMapFactoryTests.cs" />
     <Page Include="UI.WPF\WorldMapTestUserControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

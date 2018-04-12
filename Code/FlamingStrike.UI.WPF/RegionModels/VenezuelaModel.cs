@@ -6,7 +6,7 @@ namespace FlamingStrike.UI.WPF.RegionModels
 {
     public class VenezuelaModel : RegionModelBase
     {
-        public VenezuelaModel(IRegion region) : base(region) {}
+        public VenezuelaModel(Region region) : base(region) {}
 
         public override string Name => Resources.VENEZUELA;
 

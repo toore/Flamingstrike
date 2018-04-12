@@ -6,20 +6,22 @@ namespace FlamingStrike.GameEngine.Play
 {
     public interface IAttacker
     {
-        bool CanAttack(IReadOnlyList<ITerritory> territories, IRegion attackingRegion, IRegion defendingRegion);
-        AttackOutcome Attack(IReadOnlyList<ITerritory> territories, IRegion attackingRegion, IRegion defendingRegion);
+        bool CanAttack(IReadOnlyList<ITerritory> territories, Region attackingRegion, Region defendingRegion);
+        AttackOutcome Attack(IReadOnlyList<ITerritory> territories, Region attackingRegion, Region defendingRegion);
     }
 
     public class Attacker : IAttacker
     {
         private readonly IBattle _battle;
+        private readonly IWorldMap _worldMap;
 
-        public Attacker(IBattle battle)
+        public Attacker(IBattle battle, IWorldMap worldMap)
         {
             _battle = battle;
+            _worldMap = worldMap;
         }
 
-        public bool CanAttack(IReadOnlyList<ITerritory> territories, IRegion attackingRegion, IRegion defendingRegion)
+        public bool CanAttack(IReadOnlyList<ITerritory> territories, Region attackingRegion, Region defendingRegion)
         {
             var attackingTerritory = territories.Single(x => x.Region == attackingRegion);
             var defendingTerritory = territories.Single(x => x.Region == defendingRegion);
@@ -34,9 +36,9 @@ namespace FlamingStrike.GameEngine.Play
             return canAttack;
         }
 
-        private static bool HasBorder(ITerritory attackingTerritory, ITerritory defendingTerritory)
+        private bool HasBorder(ITerritory attackingTerritory, ITerritory defendingTerritory)
         {
-            return attackingTerritory.Region.HasBorder(defendingTerritory.Region);
+            return _worldMap.HasBorder(attackingTerritory.Region, defendingTerritory.Region);
         }
 
         private static bool IsAttackerAndDefenderDifferentPlayers(ITerritory attackingTerritory, ITerritory defendingTerritory)
@@ -49,7 +51,7 @@ namespace FlamingStrike.GameEngine.Play
             return attackingTerritory.GetNumberOfArmiesThatAreAvailableForAnAttack() > 0;
         }
 
-        public AttackOutcome Attack(IReadOnlyList<ITerritory> territories, IRegion attackingRegion, IRegion defendingRegion)
+        public AttackOutcome Attack(IReadOnlyList<ITerritory> territories, Region attackingRegion, Region defendingRegion)
         {
             if (!CanAttack(territories, attackingRegion, defendingRegion))
             {

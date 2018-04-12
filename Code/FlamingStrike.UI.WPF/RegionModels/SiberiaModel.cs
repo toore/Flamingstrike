@@ -6,7 +6,7 @@ namespace FlamingStrike.UI.WPF.RegionModels
 {
     public class SiberiaModel : RegionModelBase
     {
-        public SiberiaModel(IRegion region) : base(region) {}
+        public SiberiaModel(Region region) : base(region) {}
 
         public override string Name => Resources.SIBERIA;
 

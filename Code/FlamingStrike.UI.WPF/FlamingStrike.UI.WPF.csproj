@@ -196,7 +196,7 @@
     <Compile Include="RegionModels\NewGuineaModel.cs" />
     <Compile Include="RegionModels\NorthAfricaModel.cs" />
     <Compile Include="RegionModels\NorthernEuropeModel.cs" />
-    <Compile Include="RegionModels\NorthwestRegionModel.cs" />
+    <Compile Include="RegionModels\NorthwestTerritoryModel.cs" />
     <Compile Include="RegionModels\OntarioModel.cs" />
     <Compile Include="RegionModels\PeruModel.cs" />
     <Compile Include="RegionModels\QuebecModel.cs" />

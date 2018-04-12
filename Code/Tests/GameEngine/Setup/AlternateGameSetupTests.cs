@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using FlamingStrike.GameEngine;
 using FlamingStrike.GameEngine.Setup;
 using FluentAssertions;
@@ -13,18 +12,16 @@ namespace Tests.GameEngine.Setup
     public class AlternateGameSetupTests
     {
         private readonly AlternateGameSetupObserverSpyDecorator _alternateGameSetupObserver;
-        private readonly IRegions _regions;
         private readonly List<PlayerName> _players;
         private readonly IStartingInfantryCalculator _startingInfantryCalculator;
         private readonly IShuffler _shuffler;
         private readonly PlayerName _player1;
         private readonly PlayerName _player2;
-        private readonly List<IRegion> _regionElements;
+        private readonly List<Region> _regions;
 
         public AlternateGameSetupTests()
         {
             _alternateGameSetupObserver = new AlternateGameSetupObserverSpyDecorator(new AutoRespondingAlternateGameSetupObserver());
-            _regions = Substitute.For<IRegions>();
             _players = new List<PlayerName> { null, null };
             _startingInfantryCalculator = Substitute.For<IStartingInfantryCalculator>();
             _shuffler = Substitute.For<IShuffler>();
@@ -34,16 +31,13 @@ namespace Tests.GameEngine.Setup
 
             _shuffler.Shuffle(_players).Returns(new List<PlayerName> { _player1, _player2 });
 
-            _regionElements = new List<IRegion> { null };
-            _regions.GetAll().Returns(_regionElements);
+            _regions = new List<Region> { Region.Alaska };
         }
 
         [Fact]
         public void Shuffles_player_order()
         {
-            var region1 = Substitute.For<IRegion>();
-            var region2 = Substitute.For<IRegion>();
-            _shuffler.Shuffle(_regionElements).Returns(new List<IRegion> { region1, region2 });
+            _shuffler.Shuffle(_regions).Returns(new List<Region> { Region.Afghanistan, Region.Alaska });
             _startingInfantryCalculator.Get(2).Returns(1);
 
             RunSetup();
@@ -54,10 +48,7 @@ namespace Tests.GameEngine.Setup
         [Fact]
         public void Shuffles_and_assigns_territories_to_players()
         {
-            var region1 = Substitute.For<IRegion>();
-            var region2 = Substitute.For<IRegion>();
-            var region3 = Substitute.For<IRegion>();
-            _shuffler.Shuffle(_regionElements).Returns(new List<IRegion> { region1, region2, region3 });
+            _shuffler.Shuffle(_regions).Returns(new List<Region> { Region.Afghanistan, Region.Alaska, Region.Alberta });
             _startingInfantryCalculator.Get(2).Returns(3);
 
             RunSetup();
@@ -66,9 +57,9 @@ namespace Tests.GameEngine.Setup
                 .BeEquivalentTo(
                     new[]
                         {
-                            new Territory(region1, _player1, 2),
-                            new Territory(region2, _player2, 3),
-                            new Territory(region3, _player1, 1)
+                            new Territory(Region.Afghanistan, _player1, 2),
+                            new Territory(Region.Alaska, _player2, 3),
+                            new Territory(Region.Alberta, _player1, 1)
                         }, options => options.WithStrictOrdering());
         }
 

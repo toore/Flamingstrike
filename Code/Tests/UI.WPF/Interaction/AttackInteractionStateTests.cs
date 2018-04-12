@@ -10,19 +10,19 @@ namespace Tests.UI.WPF.Interaction
     {
         private readonly AttackInteractionState _sut;
         private readonly IAttackPhase _attackPhase;
-        private readonly IRegion _selectedRegion;
-        private readonly IRegion _attackedRegion;
+        private readonly Region _selectedRegion;
+        private readonly Region _attackedRegion;
         private readonly IAttackInteractionStateObserver _attackInteractionStateObserver;
 
         public AttackInteractionStateTests()
         {
             _attackPhase = Substitute.For<IAttackPhase>();
-            _selectedRegion = Substitute.For<IRegion>();
+            _selectedRegion = Region.Brazil;
             _attackInteractionStateObserver = Substitute.For<IAttackInteractionStateObserver>();
 
             _sut = new AttackInteractionState(_attackPhase, _selectedRegion, _attackInteractionStateObserver);
 
-            _attackedRegion = Substitute.For<IRegion>();
+            _attackedRegion = Region.NorthAfrica;
         }
 
         [Fact]

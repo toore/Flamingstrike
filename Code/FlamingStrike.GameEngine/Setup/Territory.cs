@@ -2,13 +2,13 @@ namespace FlamingStrike.GameEngine.Setup
 {
     public class Territory
     {
-        public Territory(IRegion region, Player player)
+        public Territory(Region region, Player player)
         {
             Region = region;
             Player = player;
         }
 
-        public IRegion Region { get; }
+        public Region Region { get; }
         public Player Player { get; }
         public int Armies { get; private set; }
 

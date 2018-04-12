@@ -16,13 +16,13 @@ namespace FlamingStrike.GameEngine.Setup
     public class AlternateGameSetup : IArmyPlacer
     {
         private readonly IAlternateGameSetupObserver _alternateGameSetupObserver;
-        private readonly IRegions _regions;
+        private readonly IReadOnlyList<Region> _regions;
         private readonly IStartingInfantryCalculator _startingInfantryCalculator;
         private readonly IShuffler _shuffler;
 
         public AlternateGameSetup(
             IAlternateGameSetupObserver alternateGameSetupObserver,
-            IRegions regions,
+            IReadOnlyList<Region> regions,
             IStartingInfantryCalculator startingInfantryCalculator,
             IShuffler shuffler)
         {
@@ -52,7 +52,7 @@ namespace FlamingStrike.GameEngine.Setup
 
         private AlternateGameSetupData AssignPlayersToTerritories(IReadOnlyList<Player> players)
         {
-            var territories = _regions.GetAll()
+            var territories = _regions
                 .Shuffle(_shuffler)
                 .Select((region, i) => new Territory(region, players[i % players.Count]))
                 .ToList();
@@ -92,7 +92,7 @@ namespace FlamingStrike.GameEngine.Setup
             _alternateGameSetupObserver.NewGamePlaySetup(gamePlaySetup);
         }
 
-        public void PlaceArmyInRegion(Player currentPlayer, IRegion selectedRegion, AlternateGameSetupData alternateGameSetupData)
+        public void PlaceArmyInRegion(Player currentPlayer, Region selectedRegion, AlternateGameSetupData alternateGameSetupData)
         {
             alternateGameSetupData
                 .Territories

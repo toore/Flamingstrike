@@ -6,7 +6,7 @@ namespace FlamingStrike.UI.WPF.RegionModels
 {
     public class UralModel : RegionModelBase
     {
-        public UralModel(IRegion region) : base(region) {}
+        public UralModel(Region region) : base(region) {}
 
         public override string Name => Resources.URAL;
 

@@ -9,17 +9,17 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay
 
     public class RegionViewModel : ViewModelBase, IRegionViewModel
     {
-        private readonly IRegionModel _regionModel;
-        private readonly Action<IRegion> _onClick;
+        private readonly RegionModel _regionModel;
+        private readonly Action<Region> _onClick;
 
-        public RegionViewModel(IRegionModel regionModel, Action<IRegion> onClick)
+        public RegionViewModel(RegionModel regionModel, Action<Region> onClick)
         {
             _regionModel = regionModel;
             _onClick = onClick;
         }
 
         public string Path => _regionModel.Path;
-        public IRegion Region => _regionModel.Region;
+        public Region Region => _regionModel.Region;
 
         private Color _strokeColor;
         private Color _fillColor;

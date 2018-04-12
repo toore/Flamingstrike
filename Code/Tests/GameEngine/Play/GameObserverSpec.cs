@@ -14,12 +14,12 @@ namespace Tests.GameEngine.Play
 {
     public class GameObserverSpec : SpecBase<GameObserverSpec>
     {
-        private Regions _regions;
         private PlayerName _player1;
         private PlayerName _player2;
         private IDie _die;
         private readonly List<Territory> _territories = new List<Territory>();
         private readonly GameObserverSpy _gameObserverSpy = new GameObserverSpy();
+        private IWorldMap _worldMap;
 
         [Fact]
         public void First_player_draft_armies()
@@ -174,7 +174,7 @@ namespace Tests.GameEngine.Play
 
         private void player_drafts_armies_in_north_africa()
         {
-            _gameObserverSpy.DraftArmiesPhase.PlaceDraftArmies(_regions.NorthAfrica, 1);
+            _gameObserverSpy.DraftArmiesPhase.PlaceDraftArmies(Region.NorthAfrica, 1);
         }
 
         private void player_1_should_have_a_card()
@@ -193,12 +193,12 @@ namespace Tests.GameEngine.Play
 
         private void player_moves_one_army_from_north_africa_to_east_africa()
         {
-            _gameObserverSpy.AttackPhase.Fortify(_regions.NorthAfrica, _regions.EastAfrica, 1);
+            _gameObserverSpy.AttackPhase.Fortify(Region.NorthAfrica, Region.EastAfrica, 1);
         }
 
         private GameObserverSpec a_game_with_two_human_players()
         {
-            _regions = new Regions();
+            _worldMap = new WorldMapFactory().Create();
 
             _player1 = new PlayerName("player 1");
             _player2 = new PlayerName("player 2");
@@ -214,12 +214,12 @@ namespace Tests.GameEngine.Play
             var battle = new Battle(dice, new ArmiesLostCalculator());
             var armyDrafter = new ArmyDrafter();
             var territoryOccupier = new TerritoryOccupier();
-            var fortifier = new Fortifier();
-            var attacker = new Attacker(battle);
+            var fortifier = new Fortifier(_worldMap);
+            var attacker = new Attacker(battle, _worldMap);
             var playerEliminationRules = new PlayerEliminationRules();
-            var gamePhaseFactory = new GamePhaseFactory(armyDrafter, attacker, fortifier, playerEliminationRules, territoryOccupier);
+            var gamePhaseFactory = new GamePhaseFactory(armyDrafter, attacker, fortifier, playerEliminationRules, territoryOccupier, _worldMap);
             var fisherYatesShuffle = new FisherYatesShuffler(new RandomWrapper());
-            var deckFactory = new DeckFactory(_regions, fisherYatesShuffle);
+            var deckFactory = new DeckFactory(_worldMap.GetAll(), fisherYatesShuffle);
             var gameFactory = new GameBootstrapper(gamePhaseFactory, armyDraftCalculator, deckFactory);
 
             IReadOnlyList<PlayerName> players = new List<PlayerName>
@@ -236,38 +236,38 @@ namespace Tests.GameEngine.Play
 
         private GameObserverSpec player_drafts_three_armies_in_north_africa()
         {
-            _gameObserverSpy.DraftArmiesPhase.PlaceDraftArmies(_regions.NorthAfrica, 3);
+            _gameObserverSpy.DraftArmiesPhase.PlaceDraftArmies(Region.NorthAfrica, 3);
             return this;
         }
 
         private void player_drafts_thirtytwo_armies_in_iceland()
         {
-            _gameObserverSpy.DraftArmiesPhase.PlaceDraftArmies(_regions.Iceland, 32);
+            _gameObserverSpy.DraftArmiesPhase.PlaceDraftArmies(Region.Iceland, 32);
         }
 
         private GameObserverSpec player_drafts_thirtyfive_armies_in_scandinavia()
         {
-            _gameObserverSpy.DraftArmiesPhase.PlaceDraftArmies(_regions.Scandinavia, 35);
+            _gameObserverSpy.DraftArmiesPhase.PlaceDraftArmies(Region.Scandinavia, 35);
             return this;
         }
 
         private void player_drafts_thirtyfive_armies_in_north_africa()
         {
-            _gameObserverSpy.DraftArmiesPhase.PlaceDraftArmies(_regions.NorthAfrica, 35);
+            _gameObserverSpy.DraftArmiesPhase.PlaceDraftArmies(Region.NorthAfrica, 35);
         }
 
         private void player_drafts_three_armies_in_brazil()
         {
-            _gameObserverSpy.DraftArmiesPhase.PlaceDraftArmies(_regions.Brazil, 3);
+            _gameObserverSpy.DraftArmiesPhase.PlaceDraftArmies(Region.Brazil, 3);
         }
 
         private GameObserverSpec player_1_occupies_north_africa_with_five_armies()
         {
-            AddTerritoryToGame(_regions.NorthAfrica, _player1, 5);
+            AddTerritoryToGame(Region.NorthAfrica, _player1, 5);
             return this;
         }
 
-        private void AddTerritoryToGame(IRegion region, PlayerName playerName, int armies)
+        private void AddTerritoryToGame(Region region, PlayerName playerName, int armies)
         {
             _territories.Add(new Territory(region, playerName, armies));
         }
@@ -275,42 +275,42 @@ namespace Tests.GameEngine.Play
         private GameObserverSpec player_1_occupies_every_territory_except_brazil_and_venezuela_and_north_africa_with_one_army_each()
         {
             GetAllRegionsExcept(
-                _regions.Brazil,
-                _regions.Venezuela,
-                _regions.NorthAfrica).Apply(x => AddTerritoryToGame(x, _player1, 1));
+                Region.Brazil,
+                Region.Venezuela,
+                Region.NorthAfrica).Apply(x => AddTerritoryToGame(x, _player1, 1));
 
             return this;
         }
 
         private GameObserverSpec player_2_occupies_brazil_and_venezuela_with_one_army_each()
         {
-            AddTerritoryToGame(_regions.Brazil, _player2, 1);
-            AddTerritoryToGame(_regions.Venezuela, _player2, 1);
+            AddTerritoryToGame(Region.Brazil, _player2, 1);
+            AddTerritoryToGame(Region.Venezuela, _player2, 1);
             return this;
         }
 
         private GameObserverSpec player_1_occupies_every_territory_except_brazil_with_one_army_each()
         {
             GetAllRegionsExcept(
-                _regions.Brazil).Apply(x => AddTerritoryToGame(x, _player1, 1));
+                Region.Brazil).Apply(x => AddTerritoryToGame(x, _player1, 1));
             return this;
         }
 
         private GameObserverSpec player_2_occupies_brazil_with_one_army()
         {
-            AddTerritoryToGame(_regions.Brazil, _player2, 1);
+            AddTerritoryToGame(Region.Brazil, _player2, 1);
             return this;
         }
 
-        private IEnumerable<IRegion> GetAllRegionsExcept(params IRegion[] exceptRegions)
+        private IEnumerable<Region> GetAllRegionsExcept(params Region[] exceptRegions)
         {
-            return _regions.GetAll().Except(exceptRegions);
+            return _worldMap.GetAll().Except(exceptRegions);
         }
 
         private GameObserverSpec player_attacks_brazil_from_north_africa_and_wins()
         {
             _die.Roll().Returns(6, 6, 6, 1);
-            _gameObserverSpy.AttackPhase.Attack(_regions.NorthAfrica, _regions.Brazil);
+            _gameObserverSpy.AttackPhase.Attack(Region.NorthAfrica, Region.Brazil);
             return this;
         }
 
@@ -328,21 +328,21 @@ namespace Tests.GameEngine.Play
 
         private void player_1_should_occupy_north_africa_with_six_armies()
         {
-            _gameObserverSpy.Territories.ShouldContainSingleTerritory(_regions.NorthAfrica)
+            _gameObserverSpy.Territories.ShouldContainSingleTerritory(Region.NorthAfrica)
                 .PlayerShouldBe(_player1)
                 .ArmiesShouldBe(6);
         }
 
         private void player_2_should_occupy_brazil_with_4_armies()
         {
-            _gameObserverSpy.Territories.ShouldContainSingleTerritory(_regions.Brazil)
+            _gameObserverSpy.Territories.ShouldContainSingleTerritory(Region.Brazil)
                 .PlayerShouldBe(_player2)
                 .ArmiesShouldBe(4);
         }
 
         private GameObserverSpec player_1_should_occupy_brazil_with_five_armies()
         {
-            _gameObserverSpy.Territories.ShouldContainSingleTerritory(_regions.Brazil)
+            _gameObserverSpy.Territories.ShouldContainSingleTerritory(Region.Brazil)
                 .PlayerShouldBe(_player1)
                 .ArmiesShouldBe(5);
             return this;
@@ -350,14 +350,14 @@ namespace Tests.GameEngine.Play
 
         private void player_1_should_occupy_north_africa_with_three_armies()
         {
-            _gameObserverSpy.Territories.ShouldContainSingleTerritory(_regions.NorthAfrica)
+            _gameObserverSpy.Territories.ShouldContainSingleTerritory(Region.NorthAfrica)
                 .PlayerShouldBe(_player1)
                 .ArmiesShouldBe(3);
         }
 
         private void east_africa_should_have_two_armies()
         {
-            _gameObserverSpy.Territories.ShouldContainSingleTerritory(_regions.EastAfrica)
+            _gameObserverSpy.Territories.ShouldContainSingleTerritory(Region.EastAfrica)
                 .PlayerShouldBe(_player1)
                 .ArmiesShouldBe(2);
         }
@@ -458,7 +458,7 @@ namespace Tests.GameEngine.Play
             return playerGameDatas.Single(x => x.PlayerName == playerName);
         }
 
-        public static TerritoryAssertion ShouldContainSingleTerritory(this IReadOnlyList<ITerritory> territories, IRegion region)
+        public static TerritoryAssertion ShouldContainSingleTerritory(this IReadOnlyList<ITerritory> territories, Region region)
         {
             territories.Should().ContainSingle(x => x.Region == region);
             return new TerritoryAssertion(territories.Single(x => x.Region == region));

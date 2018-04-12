@@ -10,12 +10,12 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay.Interaction
         bool CanEnterFortifyMode { get; }
         bool CanEnterAttackMode { get; }
         bool CanEndTurn { get; }
-        IReadOnlyList<IRegion> EnabledRegions { get; }
-        Maybe<IRegion> SelectedRegion { get; }
+        IReadOnlyList<Region> EnabledRegions { get; }
+        Maybe<Region> SelectedRegion { get; }
         bool CanUserSelectNumberOfArmies { get; }
         int DefaultNumberOfUserSelectedArmies { get; }
         int MaxNumberOfUserSelectableArmies { get; }
-        void OnRegionClicked(IRegion region);
+        void OnRegionClicked(Region region);
         void EndTurn();
     }
 }

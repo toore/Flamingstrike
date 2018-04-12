@@ -24,7 +24,7 @@ namespace Tests.UI.WPF.Interaction
         [Fact]
         public void Selects_source_region_for_fortification()
         {
-            var region = Substitute.For<IRegion>();
+            var region = Region.Brazil;
 
             _sut.OnRegionClicked(region);
 

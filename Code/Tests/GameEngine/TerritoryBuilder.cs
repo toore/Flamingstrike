@@ -6,7 +6,7 @@ namespace Tests.GameEngine
 {
     public class TerritoryBuilder
     {
-        private IRegion _region = Substitute.For<IRegion>();
+        private Region _region = FlamingStrike.GameEngine.Region.Alaska;
         private PlayerName _playerName = new PlayerName("player name");
         private int _armies = 1;
 
@@ -15,7 +15,7 @@ namespace Tests.GameEngine
             return new Territory(_region, _playerName, _armies);
         }
 
-        public TerritoryBuilder Region(IRegion region)
+        public TerritoryBuilder Region(Region region)
         {
             _region = region;
             return this;

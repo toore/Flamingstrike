@@ -24,7 +24,7 @@ namespace Tests.UI.WPF.Interaction
         [Fact]
         public void Selects_a_region_to_attack_from()
         {
-            var region = Substitute.For<IRegion>();
+            var region = Region.Brazil;
 
             _sut.OnRegionClicked(region);
 

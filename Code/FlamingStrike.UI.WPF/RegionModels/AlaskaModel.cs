@@ -6,7 +6,7 @@ namespace FlamingStrike.UI.WPF.RegionModels
 {
     public class AlaskaModel : RegionModelBase
     {
-        public AlaskaModel(IRegion alaska) : base(alaska) {}
+        public AlaskaModel(Region alaska) : base(alaska) {}
 
         public override string Name => Resources.ALASKA;
         public override Point NamePosition => new Point(50, 40);

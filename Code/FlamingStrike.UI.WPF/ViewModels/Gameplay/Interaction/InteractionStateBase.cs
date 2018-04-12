@@ -15,9 +15,9 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay.Interaction
 
         public virtual bool CanEndTurn => false;
 
-        public virtual IReadOnlyList<IRegion> EnabledRegions => new List<IRegion>();
+        public virtual IReadOnlyList<Region> EnabledRegions => new List<Region>();
 
-        public virtual Maybe<IRegion> SelectedRegion => Maybe<IRegion>.Nothing;
+        public virtual Maybe<Region> SelectedRegion => Maybe<Region>.Nothing;
 
         public virtual bool CanUserSelectNumberOfArmies => false;
 
@@ -25,7 +25,7 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay.Interaction
 
         public virtual int MaxNumberOfUserSelectableArmies => 1;
 
-        public virtual void OnRegionClicked(IRegion region)
+        public virtual void OnRegionClicked(Region region)
         {
             throw new InvalidOperationException();
         }

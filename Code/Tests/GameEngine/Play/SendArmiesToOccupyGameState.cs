@@ -11,8 +11,8 @@ namespace Tests.GameEngine.Play
     {
         private readonly IGamePhaseConductor _gamePhaseConductor;
         private readonly ITerritoryOccupier _territoryOccupier;
-        private readonly IRegion _attackingRegion;
-        private readonly IRegion _occupiedRegion;
+        private readonly Region _attackingRegion;
+        private readonly Region _occupiedRegion;
         private readonly IReadOnlyList<ITerritory> _territories = new List<ITerritory>();
 
         public SendArmiesToOccupyGameStateTests()
@@ -20,8 +20,8 @@ namespace Tests.GameEngine.Play
             _gamePhaseConductor = Substitute.For<IGamePhaseConductor>();
             _territoryOccupier = Substitute.For<ITerritoryOccupier>();
 
-            _attackingRegion = Substitute.For<IRegion>();
-            _occupiedRegion = Substitute.For<IRegion>();
+            _attackingRegion = Region.Brazil;
+            _occupiedRegion = Region.NorthAfrica;
         }
 
         private SendArmiesToOccupyPhase Sut => new SendArmiesToOccupyPhase(

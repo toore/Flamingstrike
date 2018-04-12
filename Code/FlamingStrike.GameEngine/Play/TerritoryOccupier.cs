@@ -5,12 +5,12 @@ namespace FlamingStrike.GameEngine.Play
 {
     public interface ITerritoryOccupier
     {
-        IReadOnlyList<ITerritory> SendInAdditionalArmiesToOccupy(IReadOnlyList<ITerritory> territories, IRegion attackingRegion, IRegion occupiedRegion, int numberOfAdditionalArmiesToSendIn);
+        IReadOnlyList<ITerritory> SendInAdditionalArmiesToOccupy(IReadOnlyList<ITerritory> territories, Region attackingRegion, Region occupiedRegion, int numberOfAdditionalArmiesToSendIn);
     }
 
     public class TerritoryOccupier : ITerritoryOccupier
     {
-        public IReadOnlyList<ITerritory> SendInAdditionalArmiesToOccupy(IReadOnlyList<ITerritory> territories, IRegion attackingRegion, IRegion occupiedRegion, int numberOfAdditionalArmiesToSendIn)
+        public IReadOnlyList<ITerritory> SendInAdditionalArmiesToOccupy(IReadOnlyList<ITerritory> territories, Region attackingRegion, Region occupiedRegion, int numberOfAdditionalArmiesToSendIn)
         {
             var attackingTerritory = territories.Single(x => x.Region == attackingRegion);
             var occupiedTerritory = territories.Single(x => x.Region == occupiedRegion);

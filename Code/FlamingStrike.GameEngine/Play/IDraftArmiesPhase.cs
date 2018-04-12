@@ -8,7 +8,7 @@ namespace FlamingStrike.GameEngine.Play
         IReadOnlyList<ITerritory> Territories { get; }
         IReadOnlyList<IPlayerGameData> PlayerGameDatas { get; }
         int NumberOfArmiesToDraft { get; }
-        IReadOnlyList<IRegion> RegionsAllowedToDraftArmies { get; }
-        void PlaceDraftArmies(IRegion region, int numberOfArmies);
+        IReadOnlyList<Region> RegionsAllowedToDraftArmies { get; }
+        void PlaceDraftArmies(Region region, int numberOfArmies);
     }
 }

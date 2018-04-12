@@ -44,7 +44,7 @@ namespace FlamingStrike.UI.WPF.ViewModels.AlternateSetup
             WorldMapViewModel = _worldMapViewModelFactory.Create(x => _onRegionClick(x));
         }
 
-        private Action<IRegion> _onRegionClick;
+        private Action<Region> _onRegionClick;
 
         public WorldMapViewModel WorldMapViewModel { get; }
 
@@ -88,13 +88,13 @@ namespace FlamingStrike.UI.WPF.ViewModels.AlternateSetup
 
         private void UpdateView(
             IReadOnlyList<Territory> territories,
-            Action<IRegion> selectAction,
+            Action<Region> selectAction,
             Player player,
             int armiesToPlace)
         {
             _onRegionClick = selectAction;
 
-            _worldMapViewModelFactory.Update(WorldMapViewModel, Convert(territories), Maybe<IRegion>.Nothing);
+            _worldMapViewModelFactory.Update(WorldMapViewModel, Convert(territories), Maybe<Region>.Nothing);
 
             PlayerName = (string)player.Name;
             PlayerColor = _playerUiDataRepository.Get((string)player.Name).Color;
