@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using FlamingStrike.Core;
 
 namespace FlamingStrike.GameEngine.Play
 {
@@ -122,8 +121,10 @@ namespace FlamingStrike.GameEngine.Play
 
         public void PassTurnToNextPlayer(GameData gameData)
         {
-            var nextPlayer = gameData.Players.Select(x => x.PlayerName).ToList()
-                .GetNext(gameData.CurrentPlayerName);
+            var currentPlayerIndex = gameData.Players.Select(x => x.PlayerName)
+                .ToList()
+                .IndexOf(gameData.CurrentPlayerName);
+            var nextPlayer = gameData.Players[(currentPlayerIndex + 1) % gameData.Players.Count].PlayerName;
 
             var numberOfArmiesToDraft = _armyDraftCalculator.Calculate(nextPlayer, gameData.Territories);
             var updatedGameData = new GameData(gameData.Territories, gameData.Players, nextPlayer, gameData.Deck);
