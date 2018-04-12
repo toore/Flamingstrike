@@ -2,15 +2,15 @@ using System.Collections.Generic;
 
 namespace FlamingStrike.GameEngine.Play
 {
-    public interface IPlayerGameData
+    public interface IPlayer
     {
         PlayerName PlayerName { get; }
         IReadOnlyList<ICard> Cards { get; }
     }
 
-    public class PlayerGameData : IPlayerGameData
+    public class Player : IPlayer
     {
-        public PlayerGameData(PlayerName playerName, IReadOnlyList<ICard> cards)
+        public Player(PlayerName playerName, IReadOnlyList<ICard> cards)
         {
             PlayerName = playerName;
             Cards = cards;

@@ -10,24 +10,24 @@ namespace FlamingStrike.GameEngine.Play
             IGamePhaseConductor gamePhaseConductor,
             PlayerName currentPlayerName,
             IReadOnlyList<ITerritory> territories,
-            IReadOnlyList<IPlayerGameData> playerGameDatas,
+            IReadOnlyList<IPlayer> players,
             IDeck deck)
         {
             _gamePhaseConductor = gamePhaseConductor;
             CurrentPlayerName = currentPlayerName;
             Territories = territories;
-            PlayerGameDatas = playerGameDatas;
+            Players = players;
             Deck = deck;
         }
 
         public PlayerName CurrentPlayerName { get; }
         public IReadOnlyList<ITerritory> Territories { get; }
-        public IReadOnlyList<IPlayerGameData> PlayerGameDatas { get; }
+        public IReadOnlyList<IPlayer> Players { get; }
         public IDeck Deck { get; }
 
         public void EndTurn()
         {
-            _gamePhaseConductor.PassTurnToNextPlayer(new GameData(Territories, PlayerGameDatas, CurrentPlayerName, Deck));
+            _gamePhaseConductor.PassTurnToNextPlayer(new GameData(Territories, Players, CurrentPlayerName, Deck));
         }
     }
 }

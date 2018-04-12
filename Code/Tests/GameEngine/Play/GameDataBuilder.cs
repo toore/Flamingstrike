@@ -7,13 +7,13 @@ namespace Tests.GameEngine.Play
     public class GameDataBuilder
     {
         private IReadOnlyList<ITerritory> _territories;
-        private readonly List<IPlayerGameData> _playerGameDatas = new List<IPlayerGameData>();
+        private readonly List<IPlayer> _players = new List<IPlayer>();
         private PlayerName _currentPlayerName;
         private IDeck _deck = new DeckBuilder().Build();
 
         public GameData Build()
         {
-            return new GameData(_territories, _playerGameDatas, _currentPlayerName, _deck);
+            return new GameData(_territories, _players, _currentPlayerName, _deck);
         }
 
         public GameDataBuilder Territories(params ITerritory[] territories)
@@ -22,9 +22,9 @@ namespace Tests.GameEngine.Play
             return this;
         }
 
-        public GameDataBuilder AddPlayer(IPlayerGameData playerGameData)
+        public GameDataBuilder AddPlayer(IPlayer player)
         {
-            _playerGameDatas.Add(playerGameData);
+            _players.Add(player);
             return this;
         }
 

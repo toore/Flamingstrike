@@ -45,7 +45,7 @@ namespace Tests.GameEngine.Play
             _gamePhaseConductor, 
             _currentPlayerName, 
             _gameData.Territories, 
-            _gameData.PlayerGameDatas, 
+            _gameData.Players, 
             _gameData.Deck, 
             _numberOfArmiesToDraft, 
             _armyDrafter);

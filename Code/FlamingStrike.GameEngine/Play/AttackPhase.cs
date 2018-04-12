@@ -18,7 +18,7 @@ namespace FlamingStrike.GameEngine.Play
             IGamePhaseConductor gamePhaseConductor,
             PlayerName currentPlayerName,
             IReadOnlyList<ITerritory> territories,
-            IReadOnlyList<IPlayerGameData> playerGameDatas,
+            IReadOnlyList<IPlayer> players,
             IDeck deck,
             ConqueringAchievement conqueringAchievement,
             IAttacker attacker,
@@ -34,13 +34,13 @@ namespace FlamingStrike.GameEngine.Play
             _worldMap = worldMap;
             CurrentPlayerName = currentPlayerName;
             Territories = territories;
-            PlayerGameDatas = playerGameDatas;
+            Players = players;
             Deck = deck;
         }
 
         public PlayerName CurrentPlayerName { get; }
         public IReadOnlyList<ITerritory> Territories { get; }
-        public IReadOnlyList<IPlayerGameData> PlayerGameDatas { get; }
+        public IReadOnlyList<IPlayer> Players { get; }
         public IDeck Deck { get; }
 
         public IReadOnlyList<Region> GetRegionsThatCanBeSourceForAttackOrFortification()
@@ -69,7 +69,7 @@ namespace FlamingStrike.GameEngine.Play
             }
             else
             {
-                MoveOnToAttackPhase(attackOutcome.Territories, PlayerGameDatas);
+                MoveOnToAttackPhase(attackOutcome.Territories, Players);
             }
         }
 
@@ -81,8 +81,8 @@ namespace FlamingStrike.GameEngine.Play
             }
 
             var updatedTerritories = _fortifier.Fortify(Territories, sourceRegion, destinationRegion, armies);
-            var playersAndDeck = UpdatePlayerGameDatasAndDeck();
-            var updatedGameData = new GameData(updatedTerritories, playersAndDeck.PlayerGameDatas, CurrentPlayerName, playersAndDeck.Deck);
+            var playersAndDeck = UpdatePlayersAndDeck();
+            var updatedGameData = new GameData(updatedTerritories, playersAndDeck.Players, CurrentPlayerName, playersAndDeck.Deck);
 
             _gamePhaseConductor.WaitForTurnToEnd(updatedGameData);
         }
@@ -101,9 +101,9 @@ namespace FlamingStrike.GameEngine.Play
 
         public void EndTurn()
         {
-            var playersAndDeck = UpdatePlayerGameDatasAndDeck();
+            var playersAndDeck = UpdatePlayersAndDeck();
 
-            var updatedGameData = new GameData(Territories, playersAndDeck.PlayerGameDatas, CurrentPlayerName, playersAndDeck.Deck);
+            var updatedGameData = new GameData(Territories, playersAndDeck.Players, CurrentPlayerName, playersAndDeck.Deck);
 
             _gamePhaseConductor.PassTurnToNextPlayer(updatedGameData);
         }
@@ -132,7 +132,7 @@ namespace FlamingStrike.GameEngine.Play
             }
             else
             {
-                ContinueWithAttackOrOccupation(attackingRegion, defeatedRegion, updatedTerritories, PlayerGameDatas);
+                ContinueWithAttackOrOccupation(attackingRegion, defeatedRegion, updatedTerritories, Players);
             }
         }
 
@@ -143,37 +143,37 @@ namespace FlamingStrike.GameEngine.Play
 
         private void AquireAllCardsFromPlayerAndSendArmiesToOccupy(PlayerName defeatedPlayerName, Region attackingRegion, Region defeatedRegion, IReadOnlyList<ITerritory> updatedTerritories)
         {
-            var eliminatedPlayerGameData = PlayerGameDatas.Single(x => x.PlayerName == defeatedPlayerName);
+            var eliminatedPlayerGameData = Players.Single(x => x.PlayerName == defeatedPlayerName);
 
             var updatedCurrentPlayer = LetCurrentPlayerAquireAllCardsFromEliminatedPlayer(eliminatedPlayerGameData);
             var updatedEliminatedPlayer = RemoveAllCardsForPlayer(eliminatedPlayerGameData);
 
-            var updatedPlayerGameDatas = PlayerGameDatas
-                .Replace(GetCurrentPlayerGameData(), updatedCurrentPlayer)
+            var updatedPlayerGameDatas = Players
+                .Replace(GetCurrentPlayer(), updatedCurrentPlayer)
                 .Replace(eliminatedPlayerGameData, updatedEliminatedPlayer)
                 .ToList();
 
             ContinueWithAttackOrOccupation(attackingRegion, defeatedRegion, updatedTerritories, updatedPlayerGameDatas);
         }
 
-        private IPlayerGameData GetCurrentPlayerGameData()
+        private IPlayer GetCurrentPlayer()
         {
-            return PlayerGameDatas.Single(x => x.PlayerName == CurrentPlayerName);
+            return Players.Single(x => x.PlayerName == CurrentPlayerName);
         }
 
-        private PlayerGameData LetCurrentPlayerAquireAllCardsFromEliminatedPlayer(IPlayerGameData eliminatedPlayerGameData)
+        private Player LetCurrentPlayerAquireAllCardsFromEliminatedPlayer(IPlayer eliminatedPlayer)
         {
-            return new PlayerGameData(
+            return new Player(
                 CurrentPlayerName,
-                GetCurrentPlayerGameData().Cards.Concat(eliminatedPlayerGameData.Cards).ToList());
+                GetCurrentPlayer().Cards.Concat(eliminatedPlayer.Cards).ToList());
         }
 
-        private static PlayerGameData RemoveAllCardsForPlayer(IPlayerGameData eliminatedPlayerGameData)
+        private static Player RemoveAllCardsForPlayer(IPlayer eliminatedPlayer)
         {
-            return new PlayerGameData(eliminatedPlayerGameData.PlayerName, new List<ICard>());
+            return new Player(eliminatedPlayer.PlayerName, new List<ICard>());
         }
 
-        private void ContinueWithAttackOrOccupation(Region sourceRegion, Region destinationRegion, IReadOnlyList<ITerritory> updatedTerritories, IReadOnlyList<IPlayerGameData> updatedPlayerGameDatas)
+        private void ContinueWithAttackOrOccupation(Region sourceRegion, Region destinationRegion, IReadOnlyList<ITerritory> updatedTerritories, IReadOnlyList<IPlayer> updatedPlayerGameDatas)
         {
             var numberOfArmiesThatCanBeSentToOccupy = updatedTerritories
                 .Single(x => x.Region == sourceRegion).GetNumberOfArmiesThatCanBeSentToOccupy();
@@ -188,14 +188,14 @@ namespace FlamingStrike.GameEngine.Play
             }
         }
 
-        private void SendArmiesToOccupy(Region sourceRegion, Region destinationRegion, IReadOnlyList<ITerritory> updatedTerritories, IReadOnlyList<IPlayerGameData> updatedPlayerGameDatas)
+        private void SendArmiesToOccupy(Region sourceRegion, Region destinationRegion, IReadOnlyList<ITerritory> updatedTerritories, IReadOnlyList<IPlayer> updatedPlayerGameDatas)
         {
             var updatedGameData = new GameData(updatedTerritories, updatedPlayerGameDatas, CurrentPlayerName, Deck);
 
             _gamePhaseConductor.SendArmiesToOccupy(sourceRegion, destinationRegion, updatedGameData);
         }
 
-        private void MoveOnToAttackPhase(IReadOnlyList<ITerritory> updatedTerritories, IReadOnlyList<IPlayerGameData> updatedPlayerGameDatas)
+        private void MoveOnToAttackPhase(IReadOnlyList<ITerritory> updatedTerritories, IReadOnlyList<IPlayer> updatedPlayerGameDatas)
         {
             var updatedGameData = new GameData(updatedTerritories, updatedPlayerGameDatas, CurrentPlayerName, Deck);
 
@@ -219,18 +219,18 @@ namespace FlamingStrike.GameEngine.Play
             return _fortifier.CanFortify(Territories, sourceRegion, destinationRegion);
         }
 
-        private PlayerGameDatasAndDeck UpdatePlayerGameDatasAndDeck()
+        private PlayersAndDeck UpdatePlayersAndDeck()
         {
-            var updatedPlayerGameDatas = AwardCard()
-                .Bind(x => AddCardToPlayer(GetCurrentPlayerGameData(), x.TopCard))
+            var players = AwardCard()
+                .Bind(x => AddCardToPlayer(GetCurrentPlayer(), x.TopCard))
                 .Fold(
-                    x => PlayerGameDatas.Replace(GetCurrentPlayerGameData(), x).ToList(),
-                    () => PlayerGameDatas);
+                    x => Players.Replace(GetCurrentPlayer(), x).ToList(),
+                    () => Players);
 
             var updatedDeck = AwardCard()
                 .Fold(x => x.RestOfTheDeck, () => Deck);
 
-            return new PlayerGameDatasAndDeck(updatedPlayerGameDatas, updatedDeck);
+            return new PlayersAndDeck(players, updatedDeck);
         }
 
         private Maybe<DrawCard> AwardCard()
@@ -248,21 +248,21 @@ namespace FlamingStrike.GameEngine.Play
             return _conqueringAchievement == ConqueringAchievement.SuccessfullyConqueredAtLeastOneTerritory;
         }
 
-        private PlayerGameData AddCardToPlayer(IPlayerGameData playerGameData, ICard card)
+        private Player AddCardToPlayer(IPlayer player, ICard card)
         {
-            var playerCards = playerGameData.Cards.Concat(new[] { card }).ToList();
+            var playerCards = player.Cards.Concat(new[] { card }).ToList();
 
-            return new PlayerGameData(CurrentPlayerName, playerCards);
+            return new Player(CurrentPlayerName, playerCards);
         }
 
-        private class PlayerGameDatasAndDeck
+        private class PlayersAndDeck
         {
-            public IReadOnlyList<IPlayerGameData> PlayerGameDatas { get; }
+            public IReadOnlyList<IPlayer> Players { get; }
             public IDeck Deck { get; }
 
-            public PlayerGameDatasAndDeck(IReadOnlyList<IPlayerGameData> playerGameDatas, IDeck deck)
+            public PlayersAndDeck(IReadOnlyList<IPlayer> players, IDeck deck)
             {
-                PlayerGameDatas = playerGameDatas;
+                Players = players;
                 Deck = deck;
             }
         }

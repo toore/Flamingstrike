@@ -13,7 +13,7 @@ namespace FlamingStrike.GameEngine.Play
             IGamePhaseConductor gamePhaseConductor,
             PlayerName currentPlayerName,
             IReadOnlyList<ITerritory> territories,
-            IReadOnlyList<IPlayerGameData> playerGameDatas,
+            IReadOnlyList<IPlayer> players,
             IDeck deck,
             int numberOfArmiesToDraft,
             IArmyDrafter armyDrafter)
@@ -22,14 +22,14 @@ namespace FlamingStrike.GameEngine.Play
             _armyDrafter = armyDrafter;
             CurrentPlayerName = currentPlayerName;
             Territories = territories;
-            PlayerGameDatas = playerGameDatas;
+            Players = players;
             Deck = deck;
             NumberOfArmiesToDraft = numberOfArmiesToDraft;
         }
 
         public PlayerName CurrentPlayerName { get; }
         public IReadOnlyList<ITerritory> Territories { get; }
-        public IReadOnlyList<IPlayerGameData> PlayerGameDatas { get; }
+        public IReadOnlyList<IPlayer> Players { get; }
         public IDeck Deck { get; }
         public int NumberOfArmiesToDraft { get; }
 
@@ -58,7 +58,7 @@ namespace FlamingStrike.GameEngine.Play
             }
 
             var updatedTerritories = _armyDrafter.PlaceDraftArmies(Territories, region, numberOfArmies);
-            var updatedGameData = new GameData(updatedTerritories, PlayerGameDatas, CurrentPlayerName, Deck);
+            var updatedGameData = new GameData(updatedTerritories, Players, CurrentPlayerName, Deck);
 
             var numberOfArmiesLeftToPlace = NumberOfArmiesToDraft - numberOfArmies;
             if (numberOfArmiesLeftToPlace > 0)

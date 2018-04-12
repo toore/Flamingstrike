@@ -11,7 +11,7 @@ namespace FlamingStrike.GameEngine.Play
             IGamePhaseConductor gamePhaseConductor,
             PlayerName currentPlayerName,
             IReadOnlyList<ITerritory> territories,
-            IReadOnlyList<IPlayerGameData> playerGameDatas,
+            IReadOnlyList<IPlayer> players,
             IDeck deck,
             Region attackingRegion,
             Region occupiedRegion,
@@ -21,7 +21,7 @@ namespace FlamingStrike.GameEngine.Play
             _territoryOccupier = territoryOccupier;
             CurrentPlayerName = currentPlayerName;
             Territories = territories;
-            PlayerGameDatas = playerGameDatas;
+            Players = players;
             Deck = deck;
             AttackingRegion = attackingRegion;
             OccupiedRegion = occupiedRegion;
@@ -29,7 +29,7 @@ namespace FlamingStrike.GameEngine.Play
 
         public PlayerName CurrentPlayerName { get; }
         public IReadOnlyList<ITerritory> Territories { get; }
-        public IReadOnlyList<IPlayerGameData> PlayerGameDatas { get; }
+        public IReadOnlyList<IPlayer> Players { get; }
         public IDeck Deck { get; }
         public Region AttackingRegion { get; }
         public Region OccupiedRegion { get; }
@@ -37,7 +37,7 @@ namespace FlamingStrike.GameEngine.Play
         public void SendAdditionalArmiesToOccupy(int numberOfArmies)
         {
             var updatedTerritories = _territoryOccupier.SendInAdditionalArmiesToOccupy(Territories, AttackingRegion, OccupiedRegion, numberOfArmies);
-            var updatedGameData = new GameData(updatedTerritories, PlayerGameDatas, CurrentPlayerName, Deck);
+            var updatedGameData = new GameData(updatedTerritories, Players, CurrentPlayerName, Deck);
 
             _gamePhaseConductor.ContinueWithAttackPhase(
                 ConqueringAchievement.SuccessfullyConqueredAtLeastOneTerritory,

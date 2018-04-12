@@ -29,7 +29,7 @@ namespace Tests.UI.WPF
         private readonly PlayerName _currentPlayerName;
         private readonly Color _currentPlayerColor;
         private readonly object[] _expectedCurrentPlayerStatusViewModels;
-        private readonly IPlayerGameData[] _playerGameDatas;
+        private readonly IPlayer[] _player;
         private readonly IDraftArmiesPhase _draftArmiesPhase;
         private readonly IAttackPhase _attackPhase;
 
@@ -55,16 +55,16 @@ namespace Tests.UI.WPF
             _currentPlayerName = new PlayerBuilder().Name("current player").Build();
             _currentPlayerColor = Color.FromArgb(1, 2, 3, 4);
             _playerUiDataRepository.Get((string)_currentPlayerName).Returns(new PlayerUiData((string)_currentPlayerName, _currentPlayerColor));
-            var firstPlayerGameData = new PlayerGameData(new PlayerBuilder().Name("player 1").Build(), new List<ICard>());
-            var secondPlayerGameData = new PlayerGameData(new PlayerBuilder().Name("player 2").Build(), new List<ICard>());
-            var thirdPlayerGameData = new PlayerGameData(new PlayerBuilder().Name("player 3").Build(), new List<ICard>());
+            var firstPlayerGameData = new Player(new PlayerBuilder().Name("player 1").Build(), new List<ICard>());
+            var secondPlayerGameData = new Player(new PlayerBuilder().Name("player 2").Build(), new List<ICard>());
+            var thirdPlayerGameData = new Player(new PlayerBuilder().Name("player 3").Build(), new List<ICard>());
             var firstPlayerStatusViewModel = new PlayerStatusViewModelBuilder().Build();
             var secondPlayerStatusViewModel = new PlayerStatusViewModelBuilder().Build();
             var thirdPlayerStatusViewModel = new PlayerStatusViewModelBuilder().Build();
             playerStatusViewModelFactory.Create(firstPlayerGameData).Returns(firstPlayerStatusViewModel);
             playerStatusViewModelFactory.Create(secondPlayerGameData).Returns(secondPlayerStatusViewModel);
             playerStatusViewModelFactory.Create(thirdPlayerGameData).Returns(thirdPlayerStatusViewModel);
-            _playerGameDatas = new IPlayerGameData[]
+            _player = new IPlayer[]
                 {
                     firstPlayerGameData,
                     secondPlayerGameData,
@@ -92,7 +92,7 @@ namespace Tests.UI.WPF
             var draftArmiesPhase = Substitute.For<IDraftArmiesPhase>();
             draftArmiesPhase.NumberOfArmiesToDraft.Returns(1);
             draftArmiesPhase.CurrentPlayerName.Returns(_currentPlayerName);
-            draftArmiesPhase.PlayerGameDatas.Returns(_playerGameDatas);
+            draftArmiesPhase.Players.Returns(_player);
 
             _sut.DraftArmies(draftArmiesPhase);
 
@@ -125,7 +125,7 @@ namespace Tests.UI.WPF
         {
             var attackPhase = Substitute.For<IAttackPhase>();
             attackPhase.CurrentPlayerName.Returns(_currentPlayerName);
-            attackPhase.PlayerGameDatas.Returns(_playerGameDatas);
+            attackPhase.Players.Returns(_player);
             _sut.DraftArmies(_draftArmiesPhase);
 
             _sut.Attack(attackPhase);
@@ -162,7 +162,7 @@ namespace Tests.UI.WPF
         {
             var attackPhase = Substitute.For<IAttackPhase>();
             attackPhase.CurrentPlayerName.Returns(_currentPlayerName);
-            attackPhase.PlayerGameDatas.Returns(_playerGameDatas);
+            attackPhase.Players.Returns(_player);
             _sut.DraftArmies(_draftArmiesPhase);
             _sut.Attack(attackPhase);
 
@@ -195,7 +195,7 @@ namespace Tests.UI.WPF
         {
             var attackPhase = Substitute.For<IAttackPhase>();
             attackPhase.CurrentPlayerName.Returns(_currentPlayerName);
-            attackPhase.PlayerGameDatas.Returns(_playerGameDatas);
+            attackPhase.Players.Returns(_player);
             _sut.DraftArmies(_draftArmiesPhase);
             _sut.Attack(attackPhase);
             _sut.EnterFortifyMode();
@@ -230,7 +230,7 @@ namespace Tests.UI.WPF
         {
             var sendArmiesToOccupyPhase = Substitute.For<ISendArmiesToOccupyPhase>();
             sendArmiesToOccupyPhase.CurrentPlayerName.Returns(_currentPlayerName);
-            sendArmiesToOccupyPhase.PlayerGameDatas.Returns(_playerGameDatas);
+            sendArmiesToOccupyPhase.Players.Returns(_player);
             _sut.DraftArmies(_draftArmiesPhase);
             _sut.Attack(_attackPhase);
 
@@ -250,7 +250,7 @@ namespace Tests.UI.WPF
         {
             var sendArmiesToOccupyPhase = Substitute.For<ISendArmiesToOccupyPhase>();
             sendArmiesToOccupyPhase.CurrentPlayerName.Returns(_currentPlayerName);
-            sendArmiesToOccupyPhase.PlayerGameDatas.Returns(_playerGameDatas);
+            sendArmiesToOccupyPhase.Players.Returns(_player);
             _sut.DraftArmies(_draftArmiesPhase);
             _sut.Attack(_attackPhase);
 
@@ -270,7 +270,7 @@ namespace Tests.UI.WPF
         {
             var endTurnPhase = Substitute.For<IEndTurnPhase>();
             endTurnPhase.CurrentPlayerName.Returns(_currentPlayerName);
-            endTurnPhase.PlayerGameDatas.Returns(_playerGameDatas);
+            endTurnPhase.Players.Returns(_player);
             _sut.DraftArmies(_draftArmiesPhase);
 
             _sut.EndTurn(endTurnPhase);

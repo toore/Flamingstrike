@@ -6,7 +6,7 @@ namespace FlamingStrike.GameEngine.Play
     {
         PlayerName CurrentPlayerName { get; }
         IReadOnlyList<ITerritory> Territories { get; }
-        IReadOnlyList<IPlayerGameData> PlayerGameDatas { get; }
+        IReadOnlyList<IPlayer> Players { get; }
         void EndTurn();
     }
 }

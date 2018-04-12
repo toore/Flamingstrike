@@ -7,14 +7,14 @@ namespace FlamingStrike.GameEngine.Play
     public class GameData
     {
         public IReadOnlyList<ITerritory> Territories { get; }
-        public IReadOnlyList<IPlayerGameData> PlayerGameDatas { get; }
+        public IReadOnlyList<IPlayer> Players { get; }
         public PlayerName CurrentPlayerName { get; }
         public IDeck Deck { get; }
 
-        public GameData(IReadOnlyList<ITerritory> territories, IReadOnlyList<IPlayerGameData> playerGameDatas, PlayerName currentPlayerName, IDeck deck)
+        public GameData(IReadOnlyList<ITerritory> territories, IReadOnlyList<IPlayer> players, PlayerName currentPlayerName, IDeck deck)
         {
             Territories = territories;
-            PlayerGameDatas = playerGameDatas;
+            Players = players;
             CurrentPlayerName = currentPlayerName;
             Deck = deck;
         }
@@ -22,9 +22,9 @@ namespace FlamingStrike.GameEngine.Play
 
     public static class GameDataExtensions
     {
-        public static IPlayerGameData GetCurrentPlayerGameData(this GameData gameData)
+        public static IPlayer GetCurrentPlayer(this GameData gameData)
         {
-            return gameData.PlayerGameDatas.Single(x => x.PlayerName == gameData.CurrentPlayerName);
+            return gameData.Players.Single(x => x.PlayerName == gameData.CurrentPlayerName);
         }
     }
 
@@ -59,7 +59,7 @@ namespace FlamingStrike.GameEngine.Play
 
         public void Run(IReadOnlyList<ITerritory> territories, IReadOnlyList<PlayerName> players)
         {
-            var playerGameDatas = players.Select(player => new PlayerGameData(player, new List<ICard>())).ToList();
+            var playerGameDatas = players.Select(player => new Player(player, new List<ICard>())).ToList();
             var currentPlayer = players.First();
 
             var numberOfArmiesToDraft = _armyDraftCalculator.Calculate(currentPlayer, territories);
@@ -74,7 +74,7 @@ namespace FlamingStrike.GameEngine.Play
                 this,
                 gameData.CurrentPlayerName,
                 gameData.Territories,
-                gameData.PlayerGameDatas,
+                gameData.Players,
                 gameData.Deck,
                 numberOfArmiesToDraft);
 
@@ -87,7 +87,7 @@ namespace FlamingStrike.GameEngine.Play
                 this,
                 gameData.CurrentPlayerName,
                 gameData.Territories,
-                gameData.PlayerGameDatas,
+                gameData.Players,
                 gameData.Deck,
                 conqueringAchievement);
 
@@ -100,7 +100,7 @@ namespace FlamingStrike.GameEngine.Play
                 this,
                 gameData.CurrentPlayerName,
                 gameData.Territories,
-                gameData.PlayerGameDatas,
+                gameData.Players,
                 gameData.Deck);
 
             _gameObserver.EndTurn(endTurnPhase);
@@ -112,7 +112,7 @@ namespace FlamingStrike.GameEngine.Play
                 this,
                 gameData.CurrentPlayerName,
                 gameData.Territories,
-                gameData.PlayerGameDatas,
+                gameData.Players,
                 gameData.Deck,
                 attackingRegion,
                 occupiedRegion);
@@ -122,11 +122,11 @@ namespace FlamingStrike.GameEngine.Play
 
         public void PassTurnToNextPlayer(GameData gameData)
         {
-            var nextPlayer = gameData.PlayerGameDatas.Select(x => x.PlayerName).ToList()
+            var nextPlayer = gameData.Players.Select(x => x.PlayerName).ToList()
                 .GetNext(gameData.CurrentPlayerName);
 
             var numberOfArmiesToDraft = _armyDraftCalculator.Calculate(nextPlayer, gameData.Territories);
-            var updatedGameData = new GameData(gameData.Territories, gameData.PlayerGameDatas, nextPlayer, gameData.Deck);
+            var updatedGameData = new GameData(gameData.Territories, gameData.Players, nextPlayer, gameData.Deck);
 
             ContinueToDraftArmies(numberOfArmiesToDraft, updatedGameData);
         }

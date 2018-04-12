@@ -135,7 +135,7 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay
             _territories = draftArmiesPhase.Territories;
             _previouslySelectedAttackingRegion = Maybe<Region>.Nothing;
 
-            UpdatePlayersInformation(draftArmiesPhase.CurrentPlayerName, draftArmiesPhase.PlayerGameDatas);
+            UpdatePlayersInformation(draftArmiesPhase.CurrentPlayerName, draftArmiesPhase.Players);
 
             ShowDraftArmiesView(draftArmiesPhase);
         }
@@ -145,7 +145,7 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay
             _territories = attackPhase.Territories;
             _attackPhase = attackPhase;
 
-            UpdatePlayersInformation(attackPhase.CurrentPlayerName, attackPhase.PlayerGameDatas);
+            UpdatePlayersInformation(attackPhase.CurrentPlayerName, attackPhase.Players);
 
             _previouslySelectedAttackingRegion.End(
                 selectedRegion => ShowAttackPhaseView(attackPhase, selectedRegion),
@@ -156,7 +156,7 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay
         {
             _territories = sendArmiesToOccupyPhase.Territories;
 
-            UpdatePlayersInformation(sendArmiesToOccupyPhase.CurrentPlayerName, sendArmiesToOccupyPhase.PlayerGameDatas);
+            UpdatePlayersInformation(sendArmiesToOccupyPhase.CurrentPlayerName, sendArmiesToOccupyPhase.Players);
 
             ShowSendArmiesToOccupyView(sendArmiesToOccupyPhase);
         }
@@ -165,7 +165,7 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay
         {
             _territories = endTurnPhase.Territories;
 
-            UpdatePlayersInformation(endTurnPhase.CurrentPlayerName, endTurnPhase.PlayerGameDatas);
+            UpdatePlayersInformation(endTurnPhase.CurrentPlayerName, endTurnPhase.Players);
 
             ShowEndTurnView(endTurnPhase);
         }
@@ -285,7 +285,7 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay
             _eventAggregator.PublishOnUIThread(new NewGameMessage());
         }
 
-        private void UpdatePlayersInformation(PlayerName currentPlayerName, IReadOnlyList<IPlayerGameData> playerGameDatas)
+        private void UpdatePlayersInformation(PlayerName currentPlayerName, IReadOnlyList<IPlayer> playerGameDatas)
         {
             PlayerName = (string)currentPlayerName;
             PlayerColor = _playerUiDataRepository.Get((string)currentPlayerName).Color;

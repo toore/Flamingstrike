@@ -106,7 +106,7 @@
   <ItemGroup>
     <Compile Include="GameEngine\Play\DeckBuilder.cs" />
     <Compile Include="GameEngine\Play\GameDataBuilder.cs" />
-    <Compile Include="GameEngine\Play\PlayerGameDataBuilder.cs" />
+    <Compile Include="GameEngine\Play\PlayerBuilder.cs" />
     <Compile Include="UI.WPF\PlayerStatusViewModelBuilder.cs" />
     <Compile Include="GameEngine\Play\AttackPhaseStateGameStateTests.cs" />
     <Compile Include="GameEngine\Play\DraftArmiesPhaseGameStateTests.cs" />

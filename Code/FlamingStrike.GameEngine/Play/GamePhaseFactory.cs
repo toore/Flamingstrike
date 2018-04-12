@@ -4,10 +4,10 @@ namespace FlamingStrike.GameEngine.Play
 {
     public interface IGamePhaseFactory
     {
-        IDraftArmiesPhase CreateDraftArmiesPhase(IGamePhaseConductor gamePhaseConductor, PlayerName currentPlayerName, IReadOnlyList<ITerritory> territories, IReadOnlyList<IPlayerGameData> playerGameDatas, IDeck deck, int numberOfArmiesToDraft);
-        IAttackPhase CreateAttackPhase(IGamePhaseConductor gamePhaseConductor, PlayerName currentPlayerName, IReadOnlyList<ITerritory> territories, IReadOnlyList<IPlayerGameData> playerGameDatas, IDeck deck, ConqueringAchievement conqueringAchievement);
-        IEndTurnPhase CreateEndTurnPhase(IGamePhaseConductor gamePhaseConductor, PlayerName currentPlayerName, IReadOnlyList<ITerritory> territories, IReadOnlyList<IPlayerGameData> playerGameDatas, IDeck deck);
-        ISendArmiesToOccupyPhase CreateSendArmiesToOccupyPhase(IGamePhaseConductor gamePhaseConductor, PlayerName currentPlayerName, IReadOnlyList<ITerritory> territories, IReadOnlyList<IPlayerGameData> playerGameDatas, IDeck deck, Region attackingRegion, Region occupiedRegion);
+        IDraftArmiesPhase CreateDraftArmiesPhase(IGamePhaseConductor gamePhaseConductor, PlayerName currentPlayerName, IReadOnlyList<ITerritory> territories, IReadOnlyList<IPlayer> players, IDeck deck, int numberOfArmiesToDraft);
+        IAttackPhase CreateAttackPhase(IGamePhaseConductor gamePhaseConductor, PlayerName currentPlayerName, IReadOnlyList<ITerritory> territories, IReadOnlyList<IPlayer> players, IDeck deck, ConqueringAchievement conqueringAchievement);
+        IEndTurnPhase CreateEndTurnPhase(IGamePhaseConductor gamePhaseConductor, PlayerName currentPlayerName, IReadOnlyList<ITerritory> territories, IReadOnlyList<IPlayer> players, IDeck deck);
+        ISendArmiesToOccupyPhase CreateSendArmiesToOccupyPhase(IGamePhaseConductor gamePhaseConductor, PlayerName currentPlayerName, IReadOnlyList<ITerritory> territories, IReadOnlyList<IPlayer> players, IDeck deck, Region attackingRegion, Region occupiedRegion);
         IGameOverState CreateGameOverState(PlayerName winner);
     }
 
@@ -36,25 +36,25 @@ namespace FlamingStrike.GameEngine.Play
             _worldMap = worldMap;
         }
 
-        public IDraftArmiesPhase CreateDraftArmiesPhase(IGamePhaseConductor gamePhaseConductor, PlayerName currentPlayerName, IReadOnlyList<ITerritory> territories, IReadOnlyList<IPlayerGameData> playerGameDatas, IDeck deck, int numberOfArmiesToDraft)
+        public IDraftArmiesPhase CreateDraftArmiesPhase(IGamePhaseConductor gamePhaseConductor, PlayerName currentPlayerName, IReadOnlyList<ITerritory> territories, IReadOnlyList<IPlayer> players, IDeck deck, int numberOfArmiesToDraft)
         {
             return new DraftArmiesPhase(
                 gamePhaseConductor,
                 currentPlayerName,
                 territories,
-                playerGameDatas,
+                players,
                 deck,
                 numberOfArmiesToDraft,
                 _armyDrafter);
         }
 
-        public IAttackPhase CreateAttackPhase(IGamePhaseConductor gamePhaseConductor, PlayerName currentPlayerName, IReadOnlyList<ITerritory> territories, IReadOnlyList<IPlayerGameData> playerGameDatas, IDeck deck, ConqueringAchievement conqueringAchievement)
+        public IAttackPhase CreateAttackPhase(IGamePhaseConductor gamePhaseConductor, PlayerName currentPlayerName, IReadOnlyList<ITerritory> territories, IReadOnlyList<IPlayer> players, IDeck deck, ConqueringAchievement conqueringAchievement)
         {
             return new AttackPhase(
                 gamePhaseConductor,
                 currentPlayerName,
                 territories,
-                playerGameDatas,
+                players,
                 deck,
                 conqueringAchievement,
                 _attacker,
@@ -63,23 +63,23 @@ namespace FlamingStrike.GameEngine.Play
                 _worldMap);
         }
 
-        public IEndTurnPhase CreateEndTurnPhase(IGamePhaseConductor gamePhaseConductor, PlayerName currentPlayerName, IReadOnlyList<ITerritory> territories, IReadOnlyList<IPlayerGameData> playerGameDatas, IDeck deck)
+        public IEndTurnPhase CreateEndTurnPhase(IGamePhaseConductor gamePhaseConductor, PlayerName currentPlayerName, IReadOnlyList<ITerritory> territories, IReadOnlyList<IPlayer> players, IDeck deck)
         {
             return new EndTurnPhase(
                 gamePhaseConductor,
                 currentPlayerName,
                 territories,
-                playerGameDatas,
+                players,
                 deck);
         }
 
-        public ISendArmiesToOccupyPhase CreateSendArmiesToOccupyPhase(IGamePhaseConductor gamePhaseConductor, PlayerName currentPlayerName, IReadOnlyList<ITerritory> territories, IReadOnlyList<IPlayerGameData> playerGameDatas, IDeck deck, Region attackingRegion, Region occupiedRegion)
+        public ISendArmiesToOccupyPhase CreateSendArmiesToOccupyPhase(IGamePhaseConductor gamePhaseConductor, PlayerName currentPlayerName, IReadOnlyList<ITerritory> territories, IReadOnlyList<IPlayer> players, IDeck deck, Region attackingRegion, Region occupiedRegion)
         {
             return new SendArmiesToOccupyPhase(
                 gamePhaseConductor,
                 currentPlayerName,
                 territories,
-                playerGameDatas,
+                players,
                 deck,
                 attackingRegion,
                 occupiedRegion,

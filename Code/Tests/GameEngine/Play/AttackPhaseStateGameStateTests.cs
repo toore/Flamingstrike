@@ -15,7 +15,7 @@ namespace Tests.GameEngine.Play
         private readonly GameData _gameData;
         private readonly PlayerName _currentPlayerName;
         private readonly PlayerName _anotherPlayerName;
-        private readonly IPlayerGameData _anotherPlayerGameData;
+        private readonly IPlayer _anotherPlayer;
         private readonly IDeck _deck;
         private readonly IGamePhaseConductor _gamePhaseConductor;
         private readonly IAttacker _attacker;
@@ -43,8 +43,8 @@ namespace Tests.GameEngine.Play
 
             _currentPlayerName = new PlayerName("current player");
             _anotherPlayerName = new PlayerName("another player");
-            _anotherPlayerGameData = Substitute.For<IPlayerGameData>();
-            _anotherPlayerGameData.PlayerName.Returns(_anotherPlayerName);
+            _anotherPlayer = Substitute.For<IPlayer>();
+            _anotherPlayer.PlayerName.Returns(_anotherPlayerName);
 
             _territory.Region.Returns(_region);
             _territory.Name.Returns(_currentPlayerName);
@@ -53,8 +53,8 @@ namespace Tests.GameEngine.Play
 
             _gameData = new GameDataBuilder()
                 .Territories(_territory, anotherTerritory)
-                .AddPlayer(new PlayerGameDataBuilder().Player(_currentPlayerName).Build())
-                .AddPlayer(_anotherPlayerGameData)
+                .AddPlayer(new PlayerBuilder().Player(_currentPlayerName).Build())
+                .AddPlayer(_anotherPlayer)
                 .CurrentPlayer(_currentPlayerName)
                 .Deck(_deck)
                 .Build();
@@ -64,7 +64,7 @@ namespace Tests.GameEngine.Play
             _gamePhaseConductor,
             _currentPlayerName,
             _gameData.Territories,
-            _gameData.PlayerGameDatas,
+            _gameData.Players,
             _gameData.Deck,
             _conqueringAchievement,
             _attacker,
@@ -187,7 +187,7 @@ namespace Tests.GameEngine.Play
 
             Sut.Fortify(_region, _anotherRegion, 1);
 
-            updatedGameData.GetCurrentPlayerGameData().Cards.Should().BeEquivalentTo(topDeckCard);
+            updatedGameData.GetCurrentPlayer().Cards.Should().BeEquivalentTo(topDeckCard);
         }
 
         [Fact]
@@ -198,7 +198,7 @@ namespace Tests.GameEngine.Play
 
             Sut.Fortify(_region, _anotherRegion, 1);
 
-            updatedGameData.GetCurrentPlayerGameData().Cards.Should().BeEmpty();
+            updatedGameData.GetCurrentPlayer().Cards.Should().BeEmpty();
         }
 
         [Fact]
@@ -223,7 +223,7 @@ namespace Tests.GameEngine.Play
 
             Sut.EndTurn();
 
-            updatedGameData.GetCurrentPlayerGameData().Cards.Should().BeEquivalentTo(topDeckCard);
+            updatedGameData.GetCurrentPlayer().Cards.Should().BeEquivalentTo(topDeckCard);
         }
 
         [Fact]
@@ -234,7 +234,7 @@ namespace Tests.GameEngine.Play
 
             Sut.EndTurn();
 
-            updatedGameData.GetCurrentPlayerGameData().Cards.Should().BeEmpty();
+            updatedGameData.GetCurrentPlayer().Cards.Should().BeEmpty();
         }
 
         [Fact]
@@ -252,7 +252,7 @@ namespace Tests.GameEngine.Play
 
             Sut.Attack(_region, _anotherRegion);
 
-            updatedGameData.GetCurrentPlayerGameData().Cards.Should().BeEmpty();
+            updatedGameData.GetCurrentPlayer().Cards.Should().BeEmpty();
         }
 
         [Fact]
@@ -265,7 +265,7 @@ namespace Tests.GameEngine.Play
             var card = Substitute.For<ICard>();
             var anotherCard = Substitute.For<ICard>();
             //_anotherPlayerGameData.PlayerName.Returns(_anotherPlayerName);
-            _anotherPlayerGameData.Cards.Returns(new[] { card, anotherCard });
+            _anotherPlayer.Cards.Returns(new[] { card, anotherCard });
             var updatedTerritories = new List<ITerritory> { _territory };
             var attackOutcome = new AttackOutcome(updatedTerritories, DefendingArmyAvailability.IsEliminated);
             _attacker.Attack(
@@ -280,9 +280,9 @@ namespace Tests.GameEngine.Play
 
             Sut.Attack(_region, _anotherRegion);
 
-            updatedGameData.GetCurrentPlayerGameData().Cards
+            updatedGameData.GetCurrentPlayer().Cards
                 .Should().BeEquivalentTo(new[] { card, anotherCard }, config => config.WithStrictOrdering(), "all cards should be aquired from eliminated player");
-            updatedGameData.PlayerGameDatas.Single(x => x.PlayerName == _anotherPlayerName).Cards
+            updatedGameData.Players.Single(x => x.PlayerName == _anotherPlayerName).Cards
                 .Should().BeEmpty("all cards should be handed over");
         }
 

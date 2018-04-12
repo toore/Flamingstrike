@@ -179,15 +179,15 @@ namespace Tests.GameEngine.Play
 
         private void player_1_should_have_a_card()
         {
-            _gameObserverSpy.PlayerGameDatas
-                .ShouldContainSinglePlayerGameData(_player1)
+            _gameObserverSpy.Players
+                .ShouldContainSinglePlayer(_player1)
                 .Cards.Count().Should().Be(1);
         }
 
         private void player_1_should_not_have_any_card()
         {
-            _gameObserverSpy.PlayerGameDatas
-                .ShouldContainSinglePlayerGameData(_player1)
+            _gameObserverSpy.Players
+                .ShouldContainSinglePlayer(_player1)
                 .Cards.Should().BeEmpty();
         }
 
@@ -379,7 +379,7 @@ namespace Tests.GameEngine.Play
 
         public PlayerName CurrentPlayerName { get; private set; }
         public IReadOnlyList<ITerritory> Territories { get; private set; }
-        public IReadOnlyList<IPlayerGameData> PlayerGameDatas { get; private set; }
+        public IReadOnlyList<IPlayer> Players { get; private set; }
 
         public IDraftArmiesPhase DraftArmiesPhase => (IDraftArmiesPhase)_phase;
         public IAttackPhase AttackPhase => (IAttackPhase)_phase;
@@ -391,7 +391,7 @@ namespace Tests.GameEngine.Play
         {
             CurrentPlayerName = draftArmiesPhase.CurrentPlayerName;
             Territories = draftArmiesPhase.Territories;
-            PlayerGameDatas = draftArmiesPhase.PlayerGameDatas;
+            Players = draftArmiesPhase.Players;
             _phase = draftArmiesPhase;
         }
 
@@ -399,7 +399,7 @@ namespace Tests.GameEngine.Play
         {
             CurrentPlayerName = attackPhase.CurrentPlayerName;
             Territories = attackPhase.Territories;
-            PlayerGameDatas = attackPhase.PlayerGameDatas;
+            Players = attackPhase.Players;
             _phase = attackPhase;
         }
 
@@ -407,7 +407,7 @@ namespace Tests.GameEngine.Play
         {
             CurrentPlayerName = sendArmiesToOccupyPhase.CurrentPlayerName;
             Territories = sendArmiesToOccupyPhase.Territories;
-            PlayerGameDatas = sendArmiesToOccupyPhase.PlayerGameDatas;
+            Players = sendArmiesToOccupyPhase.Players;
             _phase = sendArmiesToOccupyPhase;
         }
 
@@ -415,7 +415,7 @@ namespace Tests.GameEngine.Play
         {
             CurrentPlayerName = endTurnPhase.CurrentPlayerName;
             Territories = endTurnPhase.Territories;
-            PlayerGameDatas = endTurnPhase.PlayerGameDatas;
+            Players = endTurnPhase.Players;
             _phase = endTurnPhase;
         }
 
@@ -423,7 +423,7 @@ namespace Tests.GameEngine.Play
         {
             CurrentPlayerName = null;
             Territories = null;
-            PlayerGameDatas = null;
+            Players = null;
             _phase = gameOverState;
         }
     }
@@ -452,7 +452,7 @@ namespace Tests.GameEngine.Play
 
     internal static class GameStatusExtensions
     {
-        public static IPlayerGameData ShouldContainSinglePlayerGameData(this IReadOnlyList<IPlayerGameData> playerGameDatas, PlayerName playerName)
+        public static IPlayer ShouldContainSinglePlayer(this IReadOnlyList<IPlayer> playerGameDatas, PlayerName playerName)
         {
             playerGameDatas.Should().ContainSingle(x => x.PlayerName == playerName);
             return playerGameDatas.Single(x => x.PlayerName == playerName);
