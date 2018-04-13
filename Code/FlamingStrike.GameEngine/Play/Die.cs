@@ -9,6 +9,8 @@ namespace FlamingStrike.GameEngine.Play
 
     public class Die : IDie
     {
+        private const int Max = 6;
+
         private readonly IRandomWrapper _randomWrapper;
 
         public Die(IRandomWrapper randomWrapper)
@@ -18,7 +20,9 @@ namespace FlamingStrike.GameEngine.Play
 
         public int Roll()
         {
-            return _randomWrapper.Next(1, 7);
+            const int minValueInclusive = 1;
+            const int maxValueExclusive = Max + 1;
+            return _randomWrapper.Next(minValueInclusive, maxValueExclusive);
         }
     }
 }
