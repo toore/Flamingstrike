@@ -454,8 +454,8 @@ namespace Tests.GameEngine.Play
     {
         public static IPlayer ShouldContainSinglePlayer(this IReadOnlyList<IPlayer> playerGameDatas, PlayerName playerName)
         {
-            playerGameDatas.Should().ContainSingle(x => x.PlayerName == playerName);
-            return playerGameDatas.Single(x => x.PlayerName == playerName);
+            playerGameDatas.Should().ContainSingle(x => x.Name == playerName);
+            return playerGameDatas.Single(x => x.Name == playerName);
         }
 
         public static TerritoryAssertion ShouldContainSingleTerritory(this IReadOnlyList<ITerritory> territories, Region region)

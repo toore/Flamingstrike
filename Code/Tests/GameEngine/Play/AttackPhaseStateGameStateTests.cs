@@ -26,6 +26,7 @@ namespace Tests.GameEngine.Play
         private readonly Region _region;
         private readonly Region _anotherRegion;
         private readonly IWorldMap _worldMap;
+        private readonly Player _currentPlayer;
 
         public AttackPhaseStateGameStateTests()
         {
@@ -44,16 +45,17 @@ namespace Tests.GameEngine.Play
             _currentPlayerName = new PlayerName("current player");
             _anotherPlayerName = new PlayerName("another player");
             _anotherPlayer = Substitute.For<IPlayer>();
-            _anotherPlayer.PlayerName.Returns(_anotherPlayerName);
+            _anotherPlayer.Name.Returns(_anotherPlayerName);
 
             _territory.Region.Returns(_region);
             _territory.Name.Returns(_currentPlayerName);
             anotherTerritory.Region.Returns(_anotherRegion);
             anotherTerritory.Name.Returns(_anotherPlayerName);
 
+            _currentPlayer = new PlayerBuilder().Player(_currentPlayerName).Build();
             _gameData = new GameDataBuilder()
                 .Territories(_territory, anotherTerritory)
-                .AddPlayer(new PlayerBuilder().Player(_currentPlayerName).Build())
+                .AddPlayer(_currentPlayer)
                 .AddPlayer(_anotherPlayer)
                 .CurrentPlayer(_currentPlayerName)
                 .Deck(_deck)
@@ -182,7 +184,7 @@ namespace Tests.GameEngine.Play
             GameData updatedGameData = null;
             _gamePhaseConductor.WaitForTurnToEnd(Arg.Do<GameData>(x => updatedGameData = x));
             var topDeckCard = Substitute.For<ICard>();
-            _deck.DrawCard().Returns(new DrawCard(topDeckCard, new DeckBuilder().Build()));
+            _deck.DrawCard().Returns(topDeckCard);
             _conqueringAchievement = ConqueringAchievement.SuccessfullyConqueredAtLeastOneTerritory;
 
             Sut.Fortify(_region, _anotherRegion, 1);
@@ -218,7 +220,7 @@ namespace Tests.GameEngine.Play
             GameData updatedGameData = null;
             _gamePhaseConductor.PassTurnToNextPlayer(Arg.Do<GameData>(x => updatedGameData = x));
             var topDeckCard = Substitute.For<ICard>();
-            _deck.DrawCard().Returns(new DrawCard(topDeckCard, null));
+            _deck.DrawCard().Returns(topDeckCard);
             _conqueringAchievement = ConqueringAchievement.SuccessfullyConqueredAtLeastOneTerritory;
 
             Sut.EndTurn();
@@ -264,8 +266,9 @@ namespace Tests.GameEngine.Play
                 Arg.Do<GameData>(x => updatedGameData = x));
             var card = Substitute.For<ICard>();
             var anotherCard = Substitute.For<ICard>();
-            //_anotherPlayerGameData.PlayerName.Returns(_anotherPlayerName);
-            _anotherPlayer.Cards.Returns(new[] { card, anotherCard });
+            _anotherPlayer
+                .When(x => x.EliminatedBy(_currentPlayer))
+                .Do(x => _currentPlayer.AddCards(new[] { card, anotherCard }));
             var updatedTerritories = new List<ITerritory> { _territory };
             var attackOutcome = new AttackOutcome(updatedTerritories, DefendingArmyAvailability.IsEliminated);
             _attacker.Attack(
@@ -282,7 +285,7 @@ namespace Tests.GameEngine.Play
 
             updatedGameData.GetCurrentPlayer().Cards
                 .Should().BeEquivalentTo(new[] { card, anotherCard }, config => config.WithStrictOrdering(), "all cards should be aquired from eliminated player");
-            updatedGameData.Players.Single(x => x.PlayerName == _anotherPlayerName).Cards
+            updatedGameData.Players.Single(x => x.Name == _anotherPlayerName).Cards
                 .Should().BeEmpty("all cards should be handed over");
         }
 

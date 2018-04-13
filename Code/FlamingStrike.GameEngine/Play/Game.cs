@@ -23,7 +23,7 @@ namespace FlamingStrike.GameEngine.Play
     {
         public static IPlayer GetCurrentPlayer(this GameData gameData)
         {
-            return gameData.Players.Single(x => x.PlayerName == gameData.CurrentPlayerName);
+            return gameData.Players.Single(x => x.Name == gameData.CurrentPlayerName);
         }
     }
 
@@ -121,10 +121,10 @@ namespace FlamingStrike.GameEngine.Play
 
         public void PassTurnToNextPlayer(GameData gameData)
         {
-            var currentPlayerIndex = gameData.Players.Select(x => x.PlayerName)
+            var currentPlayerIndex = gameData.Players.Select(x => x.Name)
                 .ToList()
                 .IndexOf(gameData.CurrentPlayerName);
-            var nextPlayer = gameData.Players[(currentPlayerIndex + 1) % gameData.Players.Count].PlayerName;
+            var nextPlayer = gameData.Players[(currentPlayerIndex + 1) % gameData.Players.Count].Name;
 
             var numberOfArmiesToDraft = _armyDraftCalculator.Calculate(nextPlayer, gameData.Territories);
             var updatedGameData = new GameData(gameData.Territories, gameData.Players, nextPlayer, gameData.Deck);

@@ -32,7 +32,7 @@ namespace FlamingStrike.GameEngine.Play
                 .Shuffle(_shuffler)
                 .ToList();
 
-            return new Deck(cards);
+            return new Deck(new Stack<ICard>(cards));
         }
 
         private ICard GetCard(Region region, int cardIndex)

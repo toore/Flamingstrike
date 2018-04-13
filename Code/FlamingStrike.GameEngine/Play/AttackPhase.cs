@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using FlamingStrike.Core;
 
 namespace FlamingStrike.GameEngine.Play
 {
@@ -143,48 +142,31 @@ namespace FlamingStrike.GameEngine.Play
 
         private void AquireAllCardsFromPlayerAndSendArmiesToOccupy(PlayerName defeatedPlayerName, Region attackingRegion, Region defeatedRegion, IReadOnlyList<ITerritory> updatedTerritories)
         {
-            var eliminatedPlayer = Players.Single(x => x.PlayerName == defeatedPlayerName);
+            var defeatedPlayer = Players.Single(x => x.Name == defeatedPlayerName);
+            var attackingPlayer = Players.Single(x => x.Name == CurrentPlayerName);
 
-            var updatedCurrentPlayer = LetCurrentPlayerAquireAllCardsFromEliminatedPlayer(eliminatedPlayer);
-            var updatedEliminatedPlayer = RemoveAllCardsForPlayer(eliminatedPlayer);
+            defeatedPlayer.EliminatedBy(attackingPlayer);
 
-            var updatedPlayers = Players
-                .Replace(GetCurrentPlayer(), updatedCurrentPlayer)
-                .Replace(eliminatedPlayer, updatedEliminatedPlayer)
-                .ToList();
-
-            ContinueWithAttackOrOccupation(attackingRegion, defeatedRegion, updatedTerritories, updatedPlayers);
+            ContinueWithAttackOrOccupation(attackingRegion, defeatedRegion, updatedTerritories, Players);
         }
 
         private IPlayer GetCurrentPlayer()
         {
-            return Players.Single(x => x.PlayerName == CurrentPlayerName);
+            return Players.Single(x => x.Name == CurrentPlayerName);
         }
 
-        private Player LetCurrentPlayerAquireAllCardsFromEliminatedPlayer(IPlayer eliminatedPlayer)
-        {
-            return new Player(
-                CurrentPlayerName,
-                GetCurrentPlayer().Cards.Concat(eliminatedPlayer.Cards).ToList());
-        }
-
-        private static Player RemoveAllCardsForPlayer(IPlayer eliminatedPlayer)
-        {
-            return new Player(eliminatedPlayer.PlayerName, new List<ICard>());
-        }
-
-        private void ContinueWithAttackOrOccupation(Region sourceRegion, Region destinationRegion, IReadOnlyList<ITerritory> updatedTerritories, IReadOnlyList<IPlayer> updatedPlayerGameDatas)
+        private void ContinueWithAttackOrOccupation(Region sourceRegion, Region destinationRegion, IReadOnlyList<ITerritory> updatedTerritories, IReadOnlyList<IPlayer> updatedPlayers)
         {
             var numberOfArmiesThatCanBeSentToOccupy = updatedTerritories
                 .Single(x => x.Region == sourceRegion).GetNumberOfArmiesThatCanBeSentToOccupy();
 
             if (numberOfArmiesThatCanBeSentToOccupy > 0)
             {
-                SendArmiesToOccupy(sourceRegion, destinationRegion, updatedTerritories, updatedPlayerGameDatas);
+                SendArmiesToOccupy(sourceRegion, destinationRegion, updatedTerritories, updatedPlayers);
             }
             else
             {
-                MoveOnToAttackPhase(updatedTerritories, updatedPlayerGameDatas);
+                MoveOnToAttackPhase(updatedTerritories, updatedPlayers);
             }
         }
 
@@ -221,38 +203,17 @@ namespace FlamingStrike.GameEngine.Play
 
         private PlayersAndDeck UpdatePlayersAndDeck()
         {
-            var players = AwardCard()
-                .Bind(x => AddCardToPlayer(GetCurrentPlayer(), x.TopCard))
-                .Fold(
-                    x => Players.Replace(GetCurrentPlayer(), x).ToList(),
-                    () => Players);
-
-            var updatedDeck = AwardCard()
-                .Fold(x => x.RestOfTheDeck, () => Deck);
-
-            return new PlayersAndDeck(players, updatedDeck);
-        }
-
-        private Maybe<DrawCard> AwardCard()
-        {
             if (ShouldCardBeAwarded())
             {
-                return Maybe<DrawCard>.Create(Deck.DrawCard());
+                GetCurrentPlayer().AddCard(Deck);
             }
 
-            return Maybe<DrawCard>.Nothing;
+            return new PlayersAndDeck(Players, Deck);
         }
 
         private bool ShouldCardBeAwarded()
         {
             return _conqueringAchievement == ConqueringAchievement.SuccessfullyConqueredAtLeastOneTerritory;
-        }
-
-        private Player AddCardToPlayer(IPlayer player, ICard card)
-        {
-            var playerCards = player.Cards.Concat(new[] { card }).ToList();
-
-            return new Player(CurrentPlayerName, playerCards);
         }
 
         private class PlayersAndDeck

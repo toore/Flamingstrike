@@ -19,7 +19,7 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay
 
         public PlayerStatusViewModel Create(IPlayer player)
         {
-            var name = (string)player.PlayerName;
+            var name = (string)player.Name;
             var playerUiData = _playerUiDataRepository.Get(name);
 
             return new PlayerStatusViewModel(name, playerUiData.Color, player.Cards.Count);

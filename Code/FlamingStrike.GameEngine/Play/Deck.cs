@@ -1,40 +1,24 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 
 namespace FlamingStrike.GameEngine.Play
 {
     public interface IDeck
     {
-        DrawCard DrawCard();
+        ICard DrawCard();
     }
 
     public class Deck : IDeck
     {
-        private readonly IReadOnlyList<ICard> _cards;
+        private readonly Stack<ICard> _cards;
 
-        public Deck(IReadOnlyList<ICard> cards)
+        public Deck(Stack<ICard> cards)
         {
             _cards = cards;
         }
 
-        public DrawCard DrawCard()
+        public ICard DrawCard()
         {
-            var topCard = _cards.First();
-            var restOfDeck = new Deck(_cards.Skip(1).ToList());
-
-            return new DrawCard(topCard, restOfDeck);
-        }
-    }
-
-    public class DrawCard
-    {
-        public ICard TopCard { get; }
-        public IDeck RestOfTheDeck { get; }
-
-        public DrawCard(ICard topCard, IDeck restOfTheDeck)
-        {
-            TopCard = topCard;
-            RestOfTheDeck = restOfTheDeck;
+            return _cards.Pop();
         }
     }
 }
