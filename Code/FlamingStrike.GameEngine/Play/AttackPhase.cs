@@ -143,17 +143,17 @@ namespace FlamingStrike.GameEngine.Play
 
         private void AquireAllCardsFromPlayerAndSendArmiesToOccupy(PlayerName defeatedPlayerName, Region attackingRegion, Region defeatedRegion, IReadOnlyList<ITerritory> updatedTerritories)
         {
-            var eliminatedPlayerGameData = Players.Single(x => x.PlayerName == defeatedPlayerName);
+            var eliminatedPlayer = Players.Single(x => x.PlayerName == defeatedPlayerName);
 
-            var updatedCurrentPlayer = LetCurrentPlayerAquireAllCardsFromEliminatedPlayer(eliminatedPlayerGameData);
-            var updatedEliminatedPlayer = RemoveAllCardsForPlayer(eliminatedPlayerGameData);
+            var updatedCurrentPlayer = LetCurrentPlayerAquireAllCardsFromEliminatedPlayer(eliminatedPlayer);
+            var updatedEliminatedPlayer = RemoveAllCardsForPlayer(eliminatedPlayer);
 
-            var updatedPlayerGameDatas = Players
+            var updatedPlayers = Players
                 .Replace(GetCurrentPlayer(), updatedCurrentPlayer)
-                .Replace(eliminatedPlayerGameData, updatedEliminatedPlayer)
+                .Replace(eliminatedPlayer, updatedEliminatedPlayer)
                 .ToList();
 
-            ContinueWithAttackOrOccupation(attackingRegion, defeatedRegion, updatedTerritories, updatedPlayerGameDatas);
+            ContinueWithAttackOrOccupation(attackingRegion, defeatedRegion, updatedTerritories, updatedPlayers);
         }
 
         private IPlayer GetCurrentPlayer()
