@@ -2,19 +2,19 @@
 
 namespace FlamingStrike.GameEngine.Play
 {
-    public interface IBattle
+    public interface IBattleService
     {
         IAttackResult Attack(ITerritory attackingTerritory, ITerritory defendingTerritory);
     }
 
-    public class Battle : IBattle
+    public class BattleService : IBattleService
     {
         private readonly IDice _dice;
         private readonly IArmiesLostCalculator _armiesLostCalculator;
         private const int MaxNumberOfAttackingArmies = 3;
         private const int MaxNumberOfDefendingArmies = 2;
 
-        public Battle(IDice dice, IArmiesLostCalculator armiesLostCalculator)
+        public BattleService(IDice dice, IArmiesLostCalculator armiesLostCalculator)
         {
             _dice = dice;
             _armiesLostCalculator = armiesLostCalculator;

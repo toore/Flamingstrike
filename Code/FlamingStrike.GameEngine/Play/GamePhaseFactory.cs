@@ -14,7 +14,7 @@ namespace FlamingStrike.GameEngine.Play
     public class GamePhaseFactory : IGamePhaseFactory
     {
         private readonly IArmyDrafter _armyDrafter;
-        private readonly IAttacker _attacker;
+        private readonly IAttackService _attackService;
         private readonly IFortifier _fortifier;
         private readonly IPlayerEliminationRules _playerEliminationRules;
         private readonly ITerritoryOccupier _territoryOccupier;
@@ -22,14 +22,14 @@ namespace FlamingStrike.GameEngine.Play
 
         public GamePhaseFactory(
             IArmyDrafter armyDrafter,
-            IAttacker attacker,
+            IAttackService attackService,
             IFortifier fortifier,
             IPlayerEliminationRules playerEliminationRules,
             ITerritoryOccupier territoryOccupier,
             IWorldMap worldMap)
         {
             _armyDrafter = armyDrafter;
-            _attacker = attacker;
+            _attackService = attackService;
             _fortifier = fortifier;
             _playerEliminationRules = playerEliminationRules;
             _territoryOccupier = territoryOccupier;
@@ -57,7 +57,7 @@ namespace FlamingStrike.GameEngine.Play
                 players,
                 deck,
                 conqueringAchievement,
-                _attacker,
+                _attackService,
                 _fortifier,
                 _playerEliminationRules,
                 _worldMap);

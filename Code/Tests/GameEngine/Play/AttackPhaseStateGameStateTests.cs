@@ -18,7 +18,7 @@ namespace Tests.GameEngine.Play
         private readonly IPlayer _anotherPlayer;
         private readonly IDeck _deck;
         private readonly IGamePhaseConductor _gamePhaseConductor;
-        private readonly IAttacker _attacker;
+        private readonly IAttackService _attackService;
         private readonly IFortifier _fortifier;
         private readonly IPlayerEliminationRules _playerEliminationRules;
         private ConqueringAchievement _conqueringAchievement = ConqueringAchievement.NoTerritoryHasBeenConquered;
@@ -32,7 +32,7 @@ namespace Tests.GameEngine.Play
         {
             _deck = Substitute.For<IDeck>();
             _gamePhaseConductor = Substitute.For<IGamePhaseConductor>();
-            _attacker = Substitute.For<IAttacker>();
+            _attackService = Substitute.For<IAttackService>();
             _fortifier = Substitute.For<IFortifier>();
             _playerEliminationRules = Substitute.For<IPlayerEliminationRules>();
 
@@ -69,7 +69,7 @@ namespace Tests.GameEngine.Play
             _gameData.Players,
             _gameData.Deck,
             _conqueringAchievement,
-            _attacker,
+            _attackService,
             _fortifier,
             _playerEliminationRules,
             _worldMap);
@@ -111,7 +111,7 @@ namespace Tests.GameEngine.Play
         {
             var expectedUpdatedTerritories = new List<ITerritory>();
             var attackOutcome = new AttackOutcome(expectedUpdatedTerritories, DefendingArmyAvailability.Exists);
-            _attacker.Attack(
+            _attackService.Attack(
                     _gameData.Territories,
                     _region,
                     _anotherRegion)
@@ -132,7 +132,7 @@ namespace Tests.GameEngine.Play
                 };
 
             var attackOutcome = new AttackOutcome(expectedUpdatedTerritories, DefendingArmyAvailability.IsEliminated);
-            _attacker.Attack(
+            _attackService.Attack(
                     _gameData.Territories,
                     _region,
                     _anotherRegion)
@@ -246,7 +246,7 @@ namespace Tests.GameEngine.Play
             _gamePhaseConductor.ContinueWithAttackPhase(ConqueringAchievement.SuccessfullyConqueredAtLeastOneTerritory, Arg.Do<GameData>(x => updatedGameData = x));
             var updatedTerritories = new List<ITerritory> { _territory };
             var attackOutcome = new AttackOutcome(updatedTerritories, DefendingArmyAvailability.IsEliminated);
-            _attacker.Attack(
+            _attackService.Attack(
                     _gameData.Territories,
                     _region,
                     _anotherRegion)
@@ -271,7 +271,7 @@ namespace Tests.GameEngine.Play
                 .Do(x => _currentPlayer.AddCards(new[] { card, anotherCard }));
             var updatedTerritories = new List<ITerritory> { _territory };
             var attackOutcome = new AttackOutcome(updatedTerritories, DefendingArmyAvailability.IsEliminated);
-            _attacker.Attack(
+            _attackService.Attack(
                     _gameData.Territories,
                     _region,
                     _anotherRegion)
@@ -294,7 +294,7 @@ namespace Tests.GameEngine.Play
         {
             var updatedTerritories = new List<ITerritory>();
             var attackOutcome = new AttackOutcome(updatedTerritories, DefendingArmyAvailability.IsEliminated);
-            _attacker.Attack(
+            _attackService.Attack(
                     _gameData.Territories,
                     _region,
                     _anotherRegion)

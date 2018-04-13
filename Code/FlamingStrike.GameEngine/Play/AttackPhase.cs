@@ -7,7 +7,7 @@ namespace FlamingStrike.GameEngine.Play
     public class AttackPhase : IAttackPhase
     {
         private readonly IGamePhaseConductor _gamePhaseConductor;
-        private readonly IAttacker _attacker;
+        private readonly IAttackService _attackService;
         private readonly IFortifier _fortifier;
         private readonly IPlayerEliminationRules _playerEliminationRules;
         private readonly IWorldMap _worldMap;
@@ -20,14 +20,14 @@ namespace FlamingStrike.GameEngine.Play
             IReadOnlyList<IPlayer> players,
             IDeck deck,
             ConqueringAchievement conqueringAchievement,
-            IAttacker attacker,
+            IAttackService attackService,
             IFortifier fortifier,
             IPlayerEliminationRules playerEliminationRules,
             IWorldMap worldMap)
         {
             _gamePhaseConductor = gamePhaseConductor;
             _conqueringAchievement = conqueringAchievement;
-            _attacker = attacker;
+            _attackService = attackService;
             _fortifier = fortifier;
             _playerEliminationRules = playerEliminationRules;
             _worldMap = worldMap;
@@ -59,7 +59,7 @@ namespace FlamingStrike.GameEngine.Play
 
             var defendingPlayerBeforeTerritoriesAreUpdated = GetPlayer(defendingRegion);
 
-            var attackOutcome = _attacker.Attack(Territories, attackingRegion, defendingRegion);
+            var attackOutcome = _attackService.Attack(Territories, attackingRegion, defendingRegion);
 
             if (attackOutcome.DefendingArmyAvailability == DefendingArmyAvailability.IsEliminated)
             {
@@ -188,7 +188,7 @@ namespace FlamingStrike.GameEngine.Play
         {
             return IsCurrentPlayerOccupyingRegion(attackingRegion)
                    &&
-                   _attacker.CanAttack(Territories, attackingRegion, defendingRegion);
+                   _attackService.CanAttack(Territories, attackingRegion, defendingRegion);
         }
 
         private bool CanFortify(Region sourceRegion, Region destinationRegion)

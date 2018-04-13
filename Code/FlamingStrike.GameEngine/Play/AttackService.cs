@@ -4,20 +4,20 @@ using System.Linq;
 
 namespace FlamingStrike.GameEngine.Play
 {
-    public interface IAttacker
+    public interface IAttackService
     {
         bool CanAttack(IReadOnlyList<ITerritory> territories, Region attackingRegion, Region defendingRegion);
         AttackOutcome Attack(IReadOnlyList<ITerritory> territories, Region attackingRegion, Region defendingRegion);
     }
 
-    public class Attacker : IAttacker
+    public class AttackService : IAttackService
     {
-        private readonly IBattle _battle;
+        private readonly IBattleService _battleService;
         private readonly IWorldMap _worldMap;
 
-        public Attacker(IBattle battle, IWorldMap worldMap)
+        public AttackService(IBattleService battleService, IWorldMap worldMap)
         {
-            _battle = battle;
+            _battleService = battleService;
             _worldMap = worldMap;
         }
 
@@ -61,7 +61,7 @@ namespace FlamingStrike.GameEngine.Play
             var attackingTerritory = territories.Single(territory => territory.Region == attackingRegion);
             var defendingTerritory = territories.Single(territory => territory.Region == defendingRegion);
 
-            var battleResult = _battle.Attack(attackingTerritory, defendingTerritory);
+            var battleResult = _battleService.Attack(attackingTerritory, defendingTerritory);
 
             var updatedTerritories = territories
                 .Except(new[] { attackingTerritory, defendingTerritory })

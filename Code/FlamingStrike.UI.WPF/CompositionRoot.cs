@@ -53,21 +53,21 @@ namespace FlamingStrike.UI.WPF
                 playerStatusViewModelFactory);
 
             var randomWrapper = new RandomWrapper();
-            var shuffle = new FisherYatesShuffler(randomWrapper);
+            var shuffler = new FisherYatesShuffler(randomWrapper);
             var worldMapFactory = new WorldMapFactory();
             var worldMap = worldMapFactory.Create();
-            var deckFactory = new DeckFactory(worldMap.GetAll(), shuffle);
-            var battleCalculator = new ArmiesLostCalculator();
-            var dice = new Die(randomWrapper);
-            var diceRoller = new Dice(dice);
-            var battle = new Battle(diceRoller, battleCalculator);
+            var deckFactory = new DeckFactory(worldMap.GetAll(), shuffler);
+            var armiesLostCalculator = new ArmiesLostCalculator();
+            var die = new Die(randomWrapper);
+            var dice = new Dice(die);
+            var battleService = new BattleService(dice, armiesLostCalculator);
             var armyDrafter = new ArmyDrafter();
             var territoryOccupier = new TerritoryOccupier();
             var fortifier = new Fortifier(worldMap);
-            var attacker = new Attacker(battle, worldMap);
+            var attackService = new AttackService(battleService, worldMap);
             var playerEliminationRules = new PlayerEliminationRules();
             var armyDraftCalculator = new ArmyDraftCalculator(new[] { Continent.Asia, Continent.NorthAmerica, Continent.Europe, Continent.Africa, Continent.Australia, Continent.SouthAmerica });
-            var gamePhaseFactory = new GamePhaseFactory(armyDrafter, attacker, fortifier, playerEliminationRules, territoryOccupier, worldMap);
+            var gamePhaseFactory = new GamePhaseFactory(armyDrafter, attackService, fortifier, playerEliminationRules, territoryOccupier, worldMap);
 
             AlternateGameSetupViewModelFactory = new AlternateGameSetupViewModelFactory(
                 worldMapViewModelFactory,
@@ -81,7 +81,7 @@ namespace FlamingStrike.UI.WPF
             var startingInfantryCalculator = new StartingInfantryCalculator();
 #endif
 
-            AlternateGameSetupBootstrapper = new AlternateGameSetupBootstrapper(worldMap.GetAll(), shuffle, startingInfantryCalculator);
+            AlternateGameSetupBootstrapper = new AlternateGameSetupBootstrapper(worldMap.GetAll(), shuffler, startingInfantryCalculator);
 
             GameBootstrapper = new GameBootstrapper(gamePhaseFactory, armyDraftCalculator, deckFactory);
         }

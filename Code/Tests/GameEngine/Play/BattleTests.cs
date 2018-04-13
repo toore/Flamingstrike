@@ -10,7 +10,7 @@ namespace Tests.GameEngine.Play
 {
     public abstract class BattleTests
     {
-        private readonly Battle _sut;
+        private readonly BattleService _sut;
         private readonly IDice _dice;
         private readonly IArmiesLostCalculator _armiesLostCalculator;
 
@@ -19,7 +19,7 @@ namespace Tests.GameEngine.Play
             _dice = Substitute.For<IDice>();
             _armiesLostCalculator = Substitute.For<IArmiesLostCalculator>();
 
-            _sut = new Battle(_dice, _armiesLostCalculator);
+            _sut = new BattleService(_dice, _armiesLostCalculator);
         }
 
         public class Uses_correct_number_of_dices_with_respect_to_number_of_armies : BattleTests

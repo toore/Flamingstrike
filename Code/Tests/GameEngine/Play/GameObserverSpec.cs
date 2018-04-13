@@ -211,11 +211,11 @@ namespace Tests.GameEngine.Play
             _die = Substitute.For<IDie>();
             var dice = new Dice(_die);
             var armyDraftCalculator = new ArmyDraftCalculator(new[] { Continent.Asia, Continent.NorthAmerica, Continent.Europe, Continent.Africa, Continent.Australia, Continent.SouthAmerica });
-            var battle = new Battle(dice, new ArmiesLostCalculator());
+            var battle = new BattleService(dice, new ArmiesLostCalculator());
             var armyDrafter = new ArmyDrafter();
             var territoryOccupier = new TerritoryOccupier();
             var fortifier = new Fortifier(_worldMap);
-            var attacker = new Attacker(battle, _worldMap);
+            var attacker = new AttackService(battle, _worldMap);
             var playerEliminationRules = new PlayerEliminationRules();
             var gamePhaseFactory = new GamePhaseFactory(armyDrafter, attacker, fortifier, playerEliminationRules, territoryOccupier, _worldMap);
             var fisherYatesShuffle = new FisherYatesShuffler(new RandomWrapper());
