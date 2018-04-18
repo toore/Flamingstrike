@@ -301,4 +301,12 @@ namespace Tests.GameEngine.Play
             _gamePhaseConductor.Received().PlayerIsTheWinner(_currentPlayerName);
         }
     }
+
+    public static class GameDataExtensions
+    {
+        public static IPlayer GetCurrentPlayer(this GameData gameData)
+        {
+            return gameData.Players.Single(x => x.Name == gameData.CurrentPlayerName);
+        }
+    }
 }

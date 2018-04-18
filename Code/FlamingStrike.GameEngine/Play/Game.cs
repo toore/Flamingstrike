@@ -19,14 +19,6 @@ namespace FlamingStrike.GameEngine.Play
         }
     }
 
-    public static class GameDataExtensions
-    {
-        public static IPlayer GetCurrentPlayer(this GameData gameData)
-        {
-            return gameData.Players.Single(x => x.Name == gameData.CurrentPlayerName);
-        }
-    }
-
     public interface IGamePhaseConductor
     {
         void ContinueToDraftArmies(int numberOfArmiesToDraft, GameData gameData);
