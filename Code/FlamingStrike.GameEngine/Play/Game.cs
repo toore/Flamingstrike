@@ -48,14 +48,14 @@ namespace FlamingStrike.GameEngine.Play
             _gamePhaseFactory = gamePhaseFactory;
         }
 
-        public void Run(IReadOnlyList<ITerritory> territories, IReadOnlyList<PlayerName> players)
+        public void Start(IReadOnlyList<ITerritory> territories, IReadOnlyList<PlayerName> playerNames)
         {
-            var playerGameDatas = players.Select(player => new Player(player, new List<ICard>())).ToList();
-            var currentPlayer = players.First();
+            var players = playerNames.Select(player => new Player(player, new List<ICard>())).ToList();
+            var currentPlayer = playerNames.First();
 
             var numberOfArmiesToDraft = _armyDraftCalculator.Calculate(currentPlayer, territories);
 
-            var gameData = new GameData(territories, playerGameDatas, currentPlayer, _deckFactory.Create());
+            var gameData = new GameData(territories, players, currentPlayer, _deckFactory.Create());
             ContinueToDraftArmies(numberOfArmiesToDraft, gameData);
         }
 

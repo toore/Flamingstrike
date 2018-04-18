@@ -36,7 +36,7 @@ namespace FlamingStrike.GameEngine.Play
                 .Select(x => new Territory(x.Region, x.Name, x.Armies))
                 .ToList();
 
-            game.Run(territories, gamePlaySetup.GetPlayers());
+            game.Start(territories, gamePlaySetup.GetPlayers());
         }
     }
 }
