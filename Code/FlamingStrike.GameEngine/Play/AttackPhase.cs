@@ -59,16 +59,18 @@ namespace FlamingStrike.GameEngine.Play
 
             var defendingPlayerBeforeTerritoriesAreUpdated = GetPlayer(defendingRegion);
 
-            var attackOutcome = _attackService.Attack(Territories, attackingRegion, defendingRegion);
+            var attackingTerritory = Territories.Single(x => x.Region == attackingRegion);
+            var defendingTerritory = Territories.Single(x => x.Region == defendingRegion);
+            var attackOutcome = _attackService.Attack(attackingTerritory, defendingTerritory);
 
-            if (attackOutcome.DefendingArmyAvailability == DefendingArmyAvailability.IsEliminated)
+            if (attackOutcome == DefendingArmyStatus.IsEliminated)
             {
                 var defeatedPlayer = defendingPlayerBeforeTerritoriesAreUpdated;
-                DefendingArmyIsEliminated(defeatedPlayer, attackingRegion, defendingRegion, attackOutcome.Territories);
+                DefendingArmyIsEliminated(defeatedPlayer, attackingRegion, defendingRegion, Territories);
             }
             else
             {
-                MoveOnToAttackPhase(attackOutcome.Territories, Players);
+                MoveOnToAttackPhase(Territories, Players);
             }
         }
 
@@ -121,7 +123,7 @@ namespace FlamingStrike.GameEngine.Play
         {
             _conqueringAchievement = ConqueringAchievement.SuccessfullyConqueredAtLeastOneTerritory;
 
-            if (_playerEliminationRules.IsOnePlayerLeftInTheGame(updatedTerritories))
+            if (_playerEliminationRules.IsOnePlayerLeftInTheGame(Territories))
             {
                 GameIsOver();
             }
@@ -186,9 +188,12 @@ namespace FlamingStrike.GameEngine.Play
 
         private bool CanAttack(Region attackingRegion, Region defendingRegion)
         {
+            var attackingTerritory = Territories.Single(x => x.Region == attackingRegion);
+            var defendingTerritory = Territories.Single(x => x.Region == defendingRegion);
+
             return IsCurrentPlayerOccupyingRegion(attackingRegion)
                    &&
-                   _attackService.CanAttack(Territories, attackingRegion, defendingRegion);
+                   _attackService.CanAttack(attackingTerritory, defendingTerritory);
         }
 
         private bool CanFortify(Region sourceRegion, Region destinationRegion)

@@ -9,7 +9,7 @@ using Xunit;
 
 namespace Tests.GameEngine.Play
 {
-    public class DraftArmiesPhaseGameStateTests
+    public class DraftArmiesPhaseTests
     {
         private readonly GameData _gameData;
         private readonly IGamePhaseConductor _gamePhaseConductor;
@@ -19,7 +19,7 @@ namespace Tests.GameEngine.Play
         private int _numberOfArmiesToDraft;
         private readonly PlayerName _currentPlayerName;
 
-        public DraftArmiesPhaseGameStateTests()
+        public DraftArmiesPhaseTests()
         {
             _gamePhaseConductor = Substitute.For<IGamePhaseConductor>();
             _armyDrafter = Substitute.For<IArmyDrafter>();

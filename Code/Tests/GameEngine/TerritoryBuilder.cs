@@ -1,6 +1,5 @@
 using FlamingStrike.GameEngine;
 using FlamingStrike.GameEngine.Play;
-using NSubstitute;
 
 namespace Tests.GameEngine
 {

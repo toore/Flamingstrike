@@ -1,37 +1,34 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace FlamingStrike.GameEngine.Play
 {
     public interface IAttackService
     {
-        bool CanAttack(IReadOnlyList<ITerritory> territories, Region attackingRegion, Region defendingRegion);
-        AttackOutcome Attack(IReadOnlyList<ITerritory> territories, Region attackingRegion, Region defendingRegion);
+        bool CanAttack(ITerritory attacking, ITerritory defending);
+        DefendingArmyStatus Attack(ITerritory attackingTerritory, ITerritory defendingTerritory);
     }
 
     public class AttackService : IAttackService
     {
-        private readonly IBattleService _battleService;
         private readonly IWorldMap _worldMap;
+        private readonly IDice _dice;
+        private readonly IArmiesLostCalculator _armiesLostCalculator;
 
-        public AttackService(IBattleService battleService, IWorldMap worldMap)
+        public AttackService(IWorldMap worldMap, IDice dice, IArmiesLostCalculator armiesLostCalculator)
         {
-            _battleService = battleService;
             _worldMap = worldMap;
+            _dice = dice;
+            _armiesLostCalculator = armiesLostCalculator;
         }
 
-        public bool CanAttack(IReadOnlyList<ITerritory> territories, Region attackingRegion, Region defendingRegion)
+        public bool CanAttack(ITerritory attacking, ITerritory defending)
         {
-            var attackingTerritory = territories.Single(x => x.Region == attackingRegion);
-            var defendingTerritory = territories.Single(x => x.Region == defendingRegion);
-
             var canAttack =
-                HasBorder(attackingTerritory, defendingTerritory)
+                HasBorder(attacking, defending)
                 &&
-                IsAttackerAndDefenderDifferentPlayers(attackingTerritory, defendingTerritory)
+                IsAttackerAndDefenderDifferentPlayers(attacking, defending)
                 &&
-                HasAttackerEnoughArmiesToPerformAttack(attackingTerritory);
+                HasEnoughArmiesToPerformAttack(attacking);
 
             return canAttack;
         }
@@ -46,50 +43,43 @@ namespace FlamingStrike.GameEngine.Play
             return attackingTerritory.Name != defendingTerritory.Name;
         }
 
-        private static bool HasAttackerEnoughArmiesToPerformAttack(ITerritory attackingTerritory)
+        private static bool HasEnoughArmiesToPerformAttack(ITerritory attackingTerritory)
         {
-            return attackingTerritory.GetNumberOfArmiesThatAreAvailableForAnAttack() > 0;
+            return attackingTerritory.GetNumberOfArmiesThatCanAttack() > 0;
         }
 
-        public AttackOutcome Attack(IReadOnlyList<ITerritory> territories, Region attackingRegion, Region defendingRegion)
+        public DefendingArmyStatus Attack(ITerritory attackingTerritory, ITerritory defendingTerritory)
         {
-            if (!CanAttack(territories, attackingRegion, defendingRegion))
+            if (!CanAttack(attackingTerritory, defendingTerritory))
             {
                 throw new InvalidOperationException("Can't attack");
             }
 
-            var attackingTerritory = territories.Single(territory => territory.Region == attackingRegion);
-            var defendingTerritory = territories.Single(territory => territory.Region == defendingRegion);
+            var numberOfArmiesUsedInAnAttack = attackingTerritory.GetNumberOfArmiesUsedInAnAttack();
 
-            var battleResult = _battleService.Attack(attackingTerritory, defendingTerritory);
+            var dices = _dice.Roll(numberOfArmiesUsedInAnAttack, defendingTerritory.GetNumberOfDefendingArmies());
 
-            var updatedTerritories = territories
-                .Except(new[] { attackingTerritory, defendingTerritory })
-                .Union(new[] { battleResult.UpdatedAttackingTerritory, battleResult.UpdatedDefendingTerritory })
-                .ToList();
+            var attackerLosses = _armiesLostCalculator.CalculateAttackerLosses(dices.AttackValues, dices.DefenceValues);
+            attackingTerritory.RemoveArmies(attackerLosses);
 
-            var defendingArmyAvailability = battleResult.IsDefenderDefeated() ? DefendingArmyAvailability.IsEliminated
-                : DefendingArmyAvailability.Exists;
+            var attackingArmiesAfterCasualties = numberOfArmiesUsedInAnAttack - attackerLosses;
+            var defenderLosses = _armiesLostCalculator.CalculateDefenderLosses(dices.AttackValues, dices.DefenceValues);
 
-            return new AttackOutcome(updatedTerritories, defendingArmyAvailability);
+            if (defendingTerritory.GetNumberOfDefendingArmies() - defenderLosses == 0)
+            {
+                defendingTerritory.Occupy(attackingTerritory.Name, attackingArmiesAfterCasualties);
+                attackingTerritory.RemoveArmies(attackingArmiesAfterCasualties);
+                return DefendingArmyStatus.IsEliminated;
+            }
+
+            defendingTerritory.RemoveArmies(defenderLosses);
+            return DefendingArmyStatus.IsAlive;
         }
     }
 
-    public enum DefendingArmyAvailability
+    public enum DefendingArmyStatus
     {
-        Exists,
+        IsAlive,
         IsEliminated
-    }
-
-    public class AttackOutcome
-    {
-        public IReadOnlyList<ITerritory> Territories { get; }
-        public DefendingArmyAvailability DefendingArmyAvailability { get; }
-
-        public AttackOutcome(IReadOnlyList<ITerritory> territories, DefendingArmyAvailability defendingArmyAvailability)
-        {
-            Territories = territories;
-            DefendingArmyAvailability = defendingArmyAvailability;
-        }
     }
 }

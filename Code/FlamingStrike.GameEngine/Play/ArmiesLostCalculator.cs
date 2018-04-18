@@ -6,31 +6,24 @@ namespace FlamingStrike.GameEngine.Play
 {
     public interface IArmiesLostCalculator
     {
-        ArmiesLost Calculate(IEnumerable<int> attack, IEnumerable<int> defence);
-    }
-
-    public class ArmiesLost
-    {
-        public ArmiesLost(int attackingArmiesLost, int defendingArmiesLost)
-        {
-            AttackingArmiesLost = attackingArmiesLost;
-            DefendingArmiesLost = defendingArmiesLost;
-        }
-
-        public int AttackingArmiesLost { get; }
-        public int DefendingArmiesLost { get; }
+        int CalculateAttackerLosses(ICollection<int> attack, ICollection<int> defence);
+        int CalculateDefenderLosses(ICollection<int> attack, ICollection<int> defence);
     }
 
     public class ArmiesLostCalculator : IArmiesLostCalculator
     {
-        public ArmiesLost Calculate(IEnumerable<int> attack, IEnumerable<int> defence)
+        public int CalculateAttackerLosses(ICollection<int> attack, ICollection<int> defence)
         {
-            var matchedAttackAndDefenceValues = MatchAttackAndDefenceValues(attack.ToList(), defence.ToList())
-                .ToList();
+            var matchedAttackAndDefenceValues = MatchAttackAndDefenceValues(attack, defence);
 
-            return new ArmiesLost(
-                GetAttackerLosses(matchedAttackAndDefenceValues),
-                GetDefenderLosses(matchedAttackAndDefenceValues));
+            return GetAttackerLosses(matchedAttackAndDefenceValues);
+        }
+
+        public int CalculateDefenderLosses(ICollection<int> attack, ICollection<int> defence)
+        {
+            var matchedAttackAndDefenceValues = MatchAttackAndDefenceValues(attack, defence);
+
+            return GetDefenderLosses(matchedAttackAndDefenceValues);
         }
 
         private static IEnumerable<AttackAndDefenceMatch> MatchAttackAndDefenceValues(ICollection<int> attackValues, ICollection<int> defenceValues)

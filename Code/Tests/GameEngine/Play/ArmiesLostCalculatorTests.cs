@@ -14,7 +14,7 @@ namespace Tests.GameEngine.Play
             _sut = new ArmiesLostCalculator();
         }
 
-        public static IEnumerable<object[]> _attackerCasualtiesCases
+        public static IEnumerable<object[]> _attackerLossesCases
         {
             get
             {
@@ -30,14 +30,13 @@ namespace Tests.GameEngine.Play
         }
 
         [Theory]
-        [MemberData(nameof(_attackerCasualtiesCases))]
-        public void CalculateAttackerCasualties(int expectedCasualties, IEnumerable<int> attack, IEnumerable<int> defence)
+        [MemberData(nameof(_attackerLossesCases))]
+        public void CalculateAttackerLosses(int expectedCasualties, ICollection<int> attack, ICollection<int> defence)
         {
-            _sut.Calculate(attack, defence).AttackingArmiesLost
-                .Should().Be(expectedCasualties);
+            _sut.CalculateAttackerLosses(attack, defence).Should().Be(expectedCasualties);
         }
 
-        public static IEnumerable<object[]> _defenderCasualtiesCases
+        public static IEnumerable<object[]> _defenderLossesCases
         {
             get
             {
@@ -53,11 +52,10 @@ namespace Tests.GameEngine.Play
         }
 
         [Theory]
-        [MemberData(nameof(_defenderCasualtiesCases))]
-        public void CalculateDefenderCasualties(int expectedCasualties, IEnumerable<int> attack, IEnumerable<int> defence)
+        [MemberData(nameof(_defenderLossesCases))]
+        public void CalculateDefenderLosses(int expectedLosses, ICollection<int> attack, ICollection<int> defence)
         {
-            _sut.Calculate(attack, defence).DefendingArmiesLost
-                .Should().Be(expectedCasualties);
+            _sut.CalculateDefenderLosses(attack, defence).Should().Be(expectedLosses);
         }
     }
 }

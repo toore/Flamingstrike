@@ -10,7 +10,7 @@ using Xunit;
 
 namespace Tests.GameEngine.Play
 {
-    public class AttackPhaseStateGameStateTests
+    public class AttackPhaseTests
     {
         private readonly GameData _gameData;
         private readonly PlayerName _currentPlayerName;
@@ -28,7 +28,7 @@ namespace Tests.GameEngine.Play
         private readonly IWorldMap _worldMap;
         private readonly Player _currentPlayer;
 
-        public AttackPhaseStateGameStateTests()
+        public AttackPhaseTests()
         {
             _deck = Substitute.For<IDeck>();
             _gamePhaseConductor = Substitute.For<IGamePhaseConductor>();
@@ -110,12 +110,11 @@ namespace Tests.GameEngine.Play
         public void Attacks_but_territory_is_defended()
         {
             var expectedUpdatedTerritories = new List<ITerritory>();
-            var attackOutcome = new AttackOutcome(expectedUpdatedTerritories, DefendingArmyAvailability.Exists);
-            _attackService.Attack(
-                    _gameData.Territories,
-                    _region,
-                    _anotherRegion)
-                .Returns(attackOutcome);
+            //var attackOutcome = new AttackOutcome(expectedUpdatedTerritories, DefendingArmy.IsAlive);
+            //_attackService.Attack(
+            //        _region,
+            //        _anotherRegion)
+            //    .Returns(attackOutcome);
 
             Sut.Attack(_region, _anotherRegion);
 
@@ -131,12 +130,11 @@ namespace Tests.GameEngine.Play
                     new TerritoryBuilder().Region(_anotherRegion).Build()
                 };
 
-            var attackOutcome = new AttackOutcome(expectedUpdatedTerritories, DefendingArmyAvailability.IsEliminated);
-            _attackService.Attack(
-                    _gameData.Territories,
-                    _region,
-                    _anotherRegion)
-                .Returns(attackOutcome);
+            //var attackOutcome = new AttackOutcome(expectedUpdatedTerritories, DefendingArmy.IsEliminated);
+            //_attackService.Attack(
+            //        _region,
+            //        _anotherRegion)
+            //    .Returns(attackOutcome);
 
             Sut.Attack(_region, _anotherRegion);
 
@@ -245,12 +243,11 @@ namespace Tests.GameEngine.Play
             GameData updatedGameData = null;
             _gamePhaseConductor.ContinueWithAttackPhase(ConqueringAchievement.SuccessfullyConqueredAtLeastOneTerritory, Arg.Do<GameData>(x => updatedGameData = x));
             var updatedTerritories = new List<ITerritory> { _territory };
-            var attackOutcome = new AttackOutcome(updatedTerritories, DefendingArmyAvailability.IsEliminated);
-            _attackService.Attack(
-                    _gameData.Territories,
-                    _region,
-                    _anotherRegion)
-                .Returns(attackOutcome);
+            //var attackOutcome = new AttackOutcome(updatedTerritories, DefendingArmy.IsEliminated);
+            //_attackService.Attack(
+            //        _region,
+            //        _anotherRegion)
+            //    .Returns(attackOutcome);
 
             Sut.Attack(_region, _anotherRegion);
 
@@ -270,12 +267,11 @@ namespace Tests.GameEngine.Play
                 .When(x => x.EliminatedBy(_currentPlayer))
                 .Do(x => _currentPlayer.AddCards(new[] { card, anotherCard }));
             var updatedTerritories = new List<ITerritory> { _territory };
-            var attackOutcome = new AttackOutcome(updatedTerritories, DefendingArmyAvailability.IsEliminated);
-            _attackService.Attack(
-                    _gameData.Territories,
-                    _region,
-                    _anotherRegion)
-                .Returns(attackOutcome);
+            //var attackOutcome = new AttackOutcome(updatedTerritories, DefendingArmy.IsEliminated);
+            //_attackService.Attack(
+            //        _region,
+            //        _anotherRegion)
+            //    .Returns(attackOutcome);
             _playerEliminationRules.IsPlayerEliminated(
                     updatedTerritories,
                     _anotherPlayerName)
@@ -293,12 +289,11 @@ namespace Tests.GameEngine.Play
         public void When_last_defending_player_is_eliminated_the_game_is_over()
         {
             var updatedTerritories = new List<ITerritory>();
-            var attackOutcome = new AttackOutcome(updatedTerritories, DefendingArmyAvailability.IsEliminated);
-            _attackService.Attack(
-                    _gameData.Territories,
-                    _region,
-                    _anotherRegion)
-                .Returns(attackOutcome);
+            //var attackOutcome = new AttackOutcome(updatedTerritories, DefendingArmy.IsEliminated);
+            //_attackService.Attack(
+            //        _region,
+            //        _anotherRegion)
+            //    .Returns(attackOutcome);
             _playerEliminationRules.IsOnePlayerLeftInTheGame(updatedTerritories).Returns(true);
 
             Sut.Attack(_region, _anotherRegion);
