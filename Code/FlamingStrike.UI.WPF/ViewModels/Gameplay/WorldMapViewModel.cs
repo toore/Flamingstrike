@@ -9,6 +9,6 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay
             WorldMapViewModels = new ObservableCollection<IWorldMapItemViewModel>();
         }
 
-        public ObservableCollection<IWorldMapItemViewModel> WorldMapViewModels { get; private set; }
+        public ObservableCollection<IWorldMapItemViewModel> WorldMapViewModels { get; }
     }
 }

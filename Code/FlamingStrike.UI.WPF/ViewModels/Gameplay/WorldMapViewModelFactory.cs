@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using FlamingStrike.Core;
 using FlamingStrike.GameEngine;
-using FlamingStrike.UI.WPF.Extensions;
 using FlamingStrike.UI.WPF.RegionModels;
 using FlamingStrike.UI.WPF.ViewModels.Preparation;
 
@@ -49,7 +48,10 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay
         {
             var worldMapViewModel = new WorldMapViewModel();
             var worldMapItems = CreateWorldMapItemViewModels(onClick);
-            worldMapViewModel.WorldMapViewModels.Add(worldMapItems);
+            foreach (var viewModel in worldMapItems)
+            {
+                worldMapViewModel.WorldMapViewModels.Add(viewModel);
+            }
 
             return worldMapViewModel;
         }

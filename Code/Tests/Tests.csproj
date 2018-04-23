@@ -136,7 +136,6 @@
     <Compile Include="UI.WPF\Interaction\SelectAttackingRegionInteractionStateTests.cs" />
     <Compile Include="SpecBase.cs" />
     <Compile Include="UI.WPF\GameplaySpec.cs" />
-    <Compile Include="UI.WPF\EnumerableExtensionsTests.cs" />
     <Compile Include="UI.WPF\GamePreparationViewModelTests.cs" />
     <Compile Include="UI.WPF\AlternateGameSetupViewModelTests.cs" />
     <Compile Include="UI.WPF\MainGameViewModelTests.cs" />
