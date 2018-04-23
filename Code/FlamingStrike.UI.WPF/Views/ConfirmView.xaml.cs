@@ -12,9 +12,6 @@ namespace FlamingStrike.UI.WPF.Views
 
     public class ConfirmViewModelDesignerData : ConfirmViewModel
     {
-        //public string Message => "Message displays here";
-        //public string ConfirmText => "Confirm";
-        //public string AbortText => "Abort";
         public ConfirmViewModelDesignerData()
             : base(null)
         {

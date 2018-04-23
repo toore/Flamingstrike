@@ -27,19 +27,12 @@ namespace FlamingStrike.UI.WPF.ViewModels.Preparation
 
             var playerColors = new[]
                 {
-                    Color.FromRgb(0x32, 0x32, 0x32), // black
-                    //Colors.DarkGray,
+                    Color.FromRgb(0x32, 0x32, 0x32),
                     Colors.DarkOrange,
                     Colors.DarkRed,
-                    //Colors.Blue,
                     Colors.Purple,
                     Colors.DarkGreen,
-
-                    Color.FromRgb(0xC8, 0xC8, 0xC8) // white
-                    //Colors.CornflowerBlue,
-                    //Colors.MediumPurple,
-                    //Colors.DarkGoldenrod,
-                    //Colors.MediumSeaGreen
+                    Color.FromRgb(0xC8, 0xC8, 0xC8)
                 };
 
             const int maxNumberOfPlayers = 6;
