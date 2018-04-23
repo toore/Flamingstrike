@@ -27,7 +27,7 @@ namespace FlamingStrike.GameEngine.Play
 
         public void EndTurn()
         {
-            _gamePhaseConductor.PassTurnToNextPlayer(new GameData(Territories, Players, CurrentPlayerName, Deck));
+            _gamePhaseConductor.PassTurnToNextPlayer();
         }
     }
 }

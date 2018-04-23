@@ -211,13 +211,10 @@ namespace Tests.GameEngine.Play
             _die = Substitute.For<IDie>();
             var dice = new Dice(_die);
             var armyDraftCalculator = new ArmyDraftCalculator(new[] { Continent.Asia, Continent.NorthAmerica, Continent.Europe, Continent.Africa, Continent.Australia, Continent.SouthAmerica });
-            var armyDrafter = new ArmyDrafter();
-            var territoryOccupier = new TerritoryOccupier();
-            var fortifier = new Fortifier(_worldMap);
             var armiesLostCalculator = new ArmiesLostCalculator();
             var attacker = new AttackService(_worldMap, dice, armiesLostCalculator);
             var playerEliminationRules = new PlayerEliminationRules();
-            var gamePhaseFactory = new GamePhaseFactory(armyDrafter, attacker, fortifier, playerEliminationRules, territoryOccupier, _worldMap);
+            var gamePhaseFactory = new GamePhaseFactory(attacker, playerEliminationRules, _worldMap);
             var fisherYatesShuffle = new FisherYatesShuffler(new RandomWrapper());
             var deckFactory = new DeckFactory(_worldMap.GetAll(), fisherYatesShuffle);
             var gameFactory = new GameBootstrapper(gamePhaseFactory, armyDraftCalculator, deckFactory);
@@ -439,7 +436,7 @@ namespace Tests.GameEngine.Play
 
         public TerritoryAssertion PlayerShouldBe(PlayerName playerName)
         {
-            _territory.Name.Should().Be(playerName);
+            _territory.PlayerName.Should().Be(playerName);
             return this;
         }
 
@@ -452,10 +449,10 @@ namespace Tests.GameEngine.Play
 
     internal static class GameStatusExtensions
     {
-        public static IPlayer ShouldContainSinglePlayer(this IReadOnlyList<IPlayer> playerGameDatas, PlayerName playerName)
+        public static IPlayer ShouldContainSinglePlayer(this IReadOnlyList<IPlayer> players, PlayerName name)
         {
-            playerGameDatas.Should().ContainSingle(x => x.Name == playerName);
-            return playerGameDatas.Single(x => x.Name == playerName);
+            players.Should().ContainSingle(x => x.Name == name);
+            return players.Single(x => x.Name == name);
         }
 
         public static TerritoryAssertion ShouldContainSingleTerritory(this IReadOnlyList<ITerritory> territories, Region region)

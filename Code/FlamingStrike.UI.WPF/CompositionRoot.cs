@@ -60,13 +60,10 @@ namespace FlamingStrike.UI.WPF
             var armiesLostCalculator = new ArmiesLostCalculator();
             var die = new Die(randomWrapper);
             var dice = new Dice(die);
-            var armyDrafter = new ArmyDrafter();
-            var territoryOccupier = new TerritoryOccupier();
-            var fortifier = new Fortifier(worldMap);
             var attackService = new AttackService(worldMap, dice, armiesLostCalculator);
             var playerEliminationRules = new PlayerEliminationRules();
             var armyDraftCalculator = new ArmyDraftCalculator(new[] { Continent.Asia, Continent.NorthAmerica, Continent.Europe, Continent.Africa, Continent.Australia, Continent.SouthAmerica });
-            var gamePhaseFactory = new GamePhaseFactory(armyDrafter, attackService, fortifier, playerEliminationRules, territoryOccupier, worldMap);
+            var gamePhaseFactory = new GamePhaseFactory(attackService, playerEliminationRules, worldMap);
 
             AlternateGameSetupViewModelFactory = new AlternateGameSetupViewModelFactory(
                 worldMapViewModelFactory,

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using FlamingStrike.GameEngine;
 using FlamingStrike.GameEngine.Play;
 using FluentAssertions;
-using FluentAssertions.Common;
 using NSubstitute;
 using Xunit;
 
@@ -13,7 +12,6 @@ namespace Tests.GameEngine.Play
     {
         private readonly GameData _gameData;
         private readonly IGamePhaseConductor _gamePhaseConductor;
-        private readonly IArmyDrafter _armyDrafter;
         private readonly Region _region;
         private readonly Region _anotherRegion;
         private int _numberOfArmiesToDraft;
@@ -22,7 +20,6 @@ namespace Tests.GameEngine.Play
         public DraftArmiesPhaseTests()
         {
             _gamePhaseConductor = Substitute.For<IGamePhaseConductor>();
-            _armyDrafter = Substitute.For<IArmyDrafter>();
 
             _currentPlayerName = new PlayerName("current player");
             var territory = Substitute.For<ITerritory>();
@@ -30,7 +27,7 @@ namespace Tests.GameEngine.Play
             _region = Region.Brazil;
             _anotherRegion = Region.NorthAfrica;
             territory.Region.Returns(_region);
-            territory.Name.Returns(_currentPlayerName);
+            territory.PlayerName.Returns(_currentPlayerName);
             anotherTerritory.Region.Returns(_anotherRegion);
 
             _gameData = new GameDataBuilder()
@@ -42,13 +39,12 @@ namespace Tests.GameEngine.Play
         }
 
         private DraftArmiesPhase Sut => new DraftArmiesPhase(
-            _gamePhaseConductor, 
-            _currentPlayerName, 
-            _gameData.Territories, 
-            _gameData.Players, 
-            _gameData.Deck, 
-            _numberOfArmiesToDraft, 
-            _armyDrafter);
+            _gamePhaseConductor,
+            _currentPlayerName,
+            _gameData.Territories,
+            _gameData.Players,
+            _gameData.Deck,
+            _numberOfArmiesToDraft);
 
         [Fact]
         public void Can_place_draft_armies_for_occupied_territory()
@@ -74,24 +70,24 @@ namespace Tests.GameEngine.Play
         public void After_placing_draft_armies_continues_to_draft_armies()
         {
             var expectedUpdatedTerritories = new List<ITerritory>();
-            _armyDrafter.PlaceDraftArmies(_gameData.Territories, _region, 1).Returns(expectedUpdatedTerritories);
+            //_armyDrafter.PlaceDraftArmies(_gameData.Territories, _region, 1).Returns(expectedUpdatedTerritories);
 
             _numberOfArmiesToDraft = 3;
             Sut.PlaceDraftArmies(_region, 1);
 
-            _gamePhaseConductor.Received().ContinueToDraftArmies(2, Arg.Is<GameData>(x => x.Territories.IsSameOrEqualTo(expectedUpdatedTerritories)));
+            _gamePhaseConductor.Received().ContinueToDraftArmies(2);
         }
 
         [Fact]
         public void After_placing_all_draft_armies_continues_with_attack_phase()
         {
             var expectedUpdatedTerritories = new List<ITerritory>();
-            _armyDrafter.PlaceDraftArmies(_gameData.Territories, _region, 2).Returns(expectedUpdatedTerritories);
+            //_armyDrafter.PlaceDraftArmies(_gameData.Territories, _region, 2).Returns(expectedUpdatedTerritories);
 
             _numberOfArmiesToDraft = 2;
             Sut.PlaceDraftArmies(_region, 2);
 
-            _gamePhaseConductor.Received().ContinueWithAttackPhase(ConqueringAchievement.NoTerritoryHasBeenConquered, Arg.Is<GameData>(x => x.Territories.IsSameOrEqualTo(expectedUpdatedTerritories)));
+            _gamePhaseConductor.Received().ContinueWithAttackPhase(ConqueringAchievement.NoTerritoryHasBeenConquered);
         }
 
         [Fact]

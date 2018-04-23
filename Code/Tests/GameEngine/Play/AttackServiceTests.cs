@@ -16,6 +16,10 @@ namespace Tests.GameEngine.Play
         private readonly IWorldMap _worldMap;
         private readonly IDice _dice;
         private readonly IArmiesLostCalculator _armiesLostCalculator;
+        private readonly PlayerName _player;
+        private readonly PlayerName _anotherPlayer;
+        private readonly Region _region;
+        private readonly Region _anotherRegion;
 
         protected AttackServiceTests()
         {
@@ -24,22 +28,67 @@ namespace Tests.GameEngine.Play
             _armiesLostCalculator = Substitute.For<IArmiesLostCalculator>();
 
             _sut = new AttackService(_worldMap, _dice, _armiesLostCalculator);
+
+            _player = new PlayerName("player");
+            _anotherPlayer = new PlayerName("another player");
+
+            _region = Region.Brazil;
+            _anotherRegion = Region.NorthAfrica;
+        }
+
+        public class Can_attack_guards : AttackServiceTests
+        {
+            [Fact]
+            public void Can_attack()
+            {
+                var territory = new TerritoryBuilder().Region(_region).Player(_player).Armies(2).Build();
+                var anotherTerritory = new TerritoryBuilder().Region(_anotherRegion).Player(_anotherPlayer).Build();
+                _worldMap.HasBorder(_region, _anotherRegion).Returns(true);
+
+                _sut.CanAttack(territory, anotherTerritory).Should().BeTrue();
+            }
+
+            [Fact]
+            public void Can_not_attack_when_there_is_no_border_between_territories()
+            {
+                var territory = new TerritoryBuilder().Region(_region).Player(_player).Armies(2).Build();
+                var anotherTerritory = new TerritoryBuilder().Region(_anotherRegion).Player(_anotherPlayer).Build();
+
+                AssertCanNotAttackAndAttackThrows(territory, anotherTerritory);
+            }
+
+            [Fact]
+            public void Can_not_attack_when_same_player_occupies_territories()
+            {
+                var territory = new TerritoryBuilder().Region(_region).Player(_player).Armies(2).Build();
+                var anotherTerritory = new TerritoryBuilder().Region(_anotherRegion).Player(_player).Build();
+                _worldMap.HasBorder(_region, _anotherRegion).Returns(true);
+
+                AssertCanNotAttackAndAttackThrows(territory, anotherTerritory);
+            }
+
+            [Fact]
+            public void Can_not_attack_when_not_enough_armies()
+            {
+                var territory = new TerritoryBuilder().Region(_region).Player(_player).Armies(1).Build();
+                var anotherTerritory = new TerritoryBuilder().Region(_anotherRegion).Player(_anotherPlayer).Build();
+                _worldMap.HasBorder(_region, _anotherRegion).Returns(true);
+
+                AssertCanNotAttackAndAttackThrows(territory, anotherTerritory);
+            }
+
+            private void AssertCanNotAttackAndAttackThrows(Territory territory, Territory anotherTerritory)
+            {
+                _sut.CanAttack(territory, anotherTerritory).Should().BeFalse();
+                Action act = () => _sut.Attack(territory, anotherTerritory);
+                act.Should().Throw<InvalidOperationException>();
+            }
         }
 
         public class Uses_correct_number_of_dices_with_respect_to_number_of_armies : AttackServiceTests
         {
-            private readonly PlayerName _player;
-            private readonly PlayerName _anotherPlayer;
-            private readonly Region _region;
-            private readonly Region _anotherRegion;
-
             public Uses_correct_number_of_dices_with_respect_to_number_of_armies()
             {
-                _player = new PlayerName("player");
-                _anotherPlayer = new PlayerName("another player");
-                _region = Region.Brazil;
-                _anotherRegion = Region.NorthAfrica;
-
                 _worldMap.HasBorder(_region, _anotherRegion).Returns(true);
 
                 _dice.Roll(Arg.Any<int>(), Arg.Any<int>()).ReturnsForAnyArgs(new DiceResultBuilder().Build());
@@ -94,18 +143,8 @@ namespace Tests.GameEngine.Play
 
         public class Territories_are_updated_after_battle : AttackServiceTests
         {
-            private readonly PlayerName _player;
-            private readonly PlayerName _anotherPlayer;
-            private readonly Region _region;
-            private readonly Region _anotherRegion;
-
             public Territories_are_updated_after_battle()
             {
-                _player = new PlayerName("player");
-                _anotherPlayer = new PlayerName("another player");
-                _region = Region.Brazil;
-                _anotherRegion = Region.NorthAfrica;
-
                 _worldMap.HasBorder(_region, _anotherRegion).Returns(true);
             }
 
@@ -123,10 +162,10 @@ namespace Tests.GameEngine.Play
 
                 defendingArmyStatus.Should().Be(DefendingArmyStatus.IsAlive);
                 attackingTerritory.Region.Should().Be(attackingTerritory.Region);
-                attackingTerritory.Name.Should().Be(attackingTerritory.Name);
+                attackingTerritory.PlayerName.Should().Be(attackingTerritory.PlayerName);
                 attackingTerritory.Armies.Should().Be(2);
                 defendingTerritory.Region.Should().Be(defendingTerritory.Region);
-                defendingTerritory.Name.Should().Be(defendingTerritory.Name);
+                defendingTerritory.PlayerName.Should().Be(defendingTerritory.PlayerName);
                 defendingTerritory.Armies.Should().Be(1);
             }
 
@@ -144,10 +183,10 @@ namespace Tests.GameEngine.Play
 
                 defendingArmyStatus.Should().Be(DefendingArmyStatus.IsAlive);
                 attackingTerritory.Region.Should().Be(attackingTerritory.Region);
-                attackingTerritory.Name.Should().Be(attackingTerritory.Name);
+                attackingTerritory.PlayerName.Should().Be(attackingTerritory.PlayerName);
                 attackingTerritory.Armies.Should().Be(2);
                 defendingTerritory.Region.Should().Be(defendingTerritory.Region);
-                defendingTerritory.Name.Should().Be(defendingTerritory.Name);
+                defendingTerritory.PlayerName.Should().Be(defendingTerritory.PlayerName);
                 defendingTerritory.Armies.Should().Be(1);
             }
 
@@ -165,10 +204,10 @@ namespace Tests.GameEngine.Play
 
                 defendingArmyStatus.Should().Be(DefendingArmyStatus.IsAlive);
                 attackingTerritory.Region.Should().Be(attackingTerritory.Region);
-                attackingTerritory.Name.Should().Be(attackingTerritory.Name);
+                attackingTerritory.PlayerName.Should().Be(attackingTerritory.PlayerName);
                 attackingTerritory.Armies.Should().Be(3);
                 defendingTerritory.Region.Should().Be(defendingTerritory.Region);
-                defendingTerritory.Name.Should().Be(defendingTerritory.Name);
+                defendingTerritory.PlayerName.Should().Be(defendingTerritory.PlayerName);
                 defendingTerritory.Armies.Should().Be(1);
             }
 
@@ -186,10 +225,10 @@ namespace Tests.GameEngine.Play
 
                 defendingArmyStatus.Should().Be(DefendingArmyStatus.IsEliminated);
                 attackingTerritory.Region.Should().Be(attackingTerritory.Region);
-                attackingTerritory.Name.Should().Be(attackingTerritory.Name);
+                attackingTerritory.PlayerName.Should().Be(attackingTerritory.PlayerName);
                 attackingTerritory.Armies.Should().Be(1);
                 defendingTerritory.Region.Should().Be(defendingTerritory.Region);
-                defendingTerritory.Name.Should().Be(attackingTerritory.Name);
+                defendingTerritory.PlayerName.Should().Be(attackingTerritory.PlayerName);
                 defendingTerritory.Armies.Should().Be(1);
             }
 

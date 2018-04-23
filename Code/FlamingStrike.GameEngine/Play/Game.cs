@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 
 namespace FlamingStrike.GameEngine.Play
 {
@@ -21,11 +20,11 @@ namespace FlamingStrike.GameEngine.Play
 
     public interface IGamePhaseConductor
     {
-        void ContinueToDraftArmies(int numberOfArmiesToDraft, GameData gameData);
-        void ContinueWithAttackPhase(ConqueringAchievement conqueringAchievement, GameData gameData);
-        void SendArmiesToOccupy(Region sourceRegion, Region destinationRegion, GameData gameData);
-        void WaitForTurnToEnd(GameData gameData);
-        void PassTurnToNextPlayer(GameData gameData);
+        void ContinueToDraftArmies(int numberOfArmiesToDraft);
+        void ContinueWithAttackPhase(ConqueringAchievement conqueringAchievement);
+        void SendArmiesToOccupy(Region sourceRegion, Region destinationRegion);
+        void WaitForTurnToEnd();
+        void PassTurnToNextPlayer();
         void PlayerIsTheWinner(PlayerName winner);
     }
 
@@ -34,94 +33,100 @@ namespace FlamingStrike.GameEngine.Play
         private readonly IGameObserver _gameObserver;
         private readonly IGamePhaseFactory _gamePhaseFactory;
         private readonly IArmyDraftCalculator _armyDraftCalculator;
-        private readonly IDeckFactory _deckFactory;
+        private readonly List<Territory> _territories;
+        private readonly List<Player> _players;
+        private readonly IDeck _deck;
+        private int _currentPlayerIndex;
 
         public Game(
             IGameObserver gameObserver,
             IGamePhaseFactory gamePhaseFactory,
             IArmyDraftCalculator armyDraftCalculator,
-            IDeckFactory deckFactory)
+            List<Territory> territories,
+            List<Player> players,
+            IDeck deck)
         {
             _gameObserver = gameObserver;
             _armyDraftCalculator = armyDraftCalculator;
-            _deckFactory = deckFactory;
+            _territories = territories;
+            _players = players;
+            _deck = deck;
             _gamePhaseFactory = gamePhaseFactory;
+
+            _currentPlayerIndex = 0;
         }
 
-        public void Start(IReadOnlyList<ITerritory> territories, IReadOnlyList<PlayerName> playerNames)
+        public void Start()
         {
-            var players = playerNames.Select(player => new Player(player, new List<ICard>())).ToList();
-            var currentPlayer = playerNames.First();
+            var numberOfArmiesToDraft = _armyDraftCalculator.Calculate(GetCurrentPlayerName(), _territories);
 
-            var numberOfArmiesToDraft = _armyDraftCalculator.Calculate(currentPlayer, territories);
-
-            var gameData = new GameData(territories, players, currentPlayer, _deckFactory.Create());
-            ContinueToDraftArmies(numberOfArmiesToDraft, gameData);
+            ContinueToDraftArmies(numberOfArmiesToDraft);
         }
 
-        public void ContinueToDraftArmies(int numberOfArmiesToDraft, GameData gameData)
+        private PlayerName GetCurrentPlayerName()
+        {
+            return _players[_currentPlayerIndex].Name;
+        }
+
+        public void ContinueToDraftArmies(int numberOfArmiesToDraft)
         {
             var draftArmiesPhase = _gamePhaseFactory.CreateDraftArmiesPhase(
                 this,
-                gameData.CurrentPlayerName,
-                gameData.Territories,
-                gameData.Players,
-                gameData.Deck,
+                GetCurrentPlayerName(),
+                _territories,
+                _players,
+                _deck,
                 numberOfArmiesToDraft);
 
             _gameObserver.DraftArmies(draftArmiesPhase);
         }
 
-        public void ContinueWithAttackPhase(ConqueringAchievement conqueringAchievement, GameData gameData)
+        public void ContinueWithAttackPhase(ConqueringAchievement conqueringAchievement)
         {
             var attackPhase = _gamePhaseFactory.CreateAttackPhase(
                 this,
-                gameData.CurrentPlayerName,
-                gameData.Territories,
-                gameData.Players,
-                gameData.Deck,
+                GetCurrentPlayerName(),
+                _territories,
+                _players,
+                _deck,
                 conqueringAchievement);
 
             _gameObserver.Attack(attackPhase);
         }
 
-        public void WaitForTurnToEnd(GameData gameData)
+        public void WaitForTurnToEnd()
         {
             var endTurnPhase = _gamePhaseFactory.CreateEndTurnPhase(
                 this,
-                gameData.CurrentPlayerName,
-                gameData.Territories,
-                gameData.Players,
-                gameData.Deck);
+                GetCurrentPlayerName(),
+                _territories,
+                _players,
+                _deck);
 
             _gameObserver.EndTurn(endTurnPhase);
         }
 
-        public void SendArmiesToOccupy(Region attackingRegion, Region occupiedRegion, GameData gameData)
+        public void SendArmiesToOccupy(Region attackingRegion, Region occupiedRegion)
         {
             var sendArmiesToOccupyPhase = _gamePhaseFactory.CreateSendArmiesToOccupyPhase(
                 this,
-                gameData.CurrentPlayerName,
-                gameData.Territories,
-                gameData.Players,
-                gameData.Deck,
+                GetCurrentPlayerName(),
+                _territories,
+                _players,
+                _deck,
                 attackingRegion,
                 occupiedRegion);
 
             _gameObserver.SendArmiesToOccupy(sendArmiesToOccupyPhase);
         }
 
-        public void PassTurnToNextPlayer(GameData gameData)
+        public void PassTurnToNextPlayer()
         {
-            var currentPlayerIndex = gameData.Players.Select(x => x.Name)
-                .ToList()
-                .IndexOf(gameData.CurrentPlayerName);
-            var nextPlayer = gameData.Players[(currentPlayerIndex + 1) % gameData.Players.Count].Name;
+            _currentPlayerIndex = (_currentPlayerIndex + 1) % _players.Count;
 
-            var numberOfArmiesToDraft = _armyDraftCalculator.Calculate(nextPlayer, gameData.Territories);
-            var updatedGameData = new GameData(gameData.Territories, gameData.Players, nextPlayer, gameData.Deck);
+            var numberOfArmiesToDraft = _armyDraftCalculator.Calculate(GetCurrentPlayerName(), _territories);
 
-            ContinueToDraftArmies(numberOfArmiesToDraft, updatedGameData);
+            ContinueToDraftArmies(numberOfArmiesToDraft);
         }
 
         public void PlayerIsTheWinner(PlayerName winner)

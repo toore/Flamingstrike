@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using FlamingStrike.GameEngine;
 using FlamingStrike.GameEngine.Play;
-using FluentAssertions.Common;
 using NSubstitute;
 using Xunit;
 
@@ -10,18 +9,22 @@ namespace Tests.GameEngine.Play
     public class SendArmiesToOccupyGameStateTests
     {
         private readonly IGamePhaseConductor _gamePhaseConductor;
-        private readonly ITerritoryOccupier _territoryOccupier;
         private readonly Region _attackingRegion;
         private readonly Region _occupiedRegion;
-        private readonly IReadOnlyList<ITerritory> _territories = new List<ITerritory>();
+        private readonly IReadOnlyList<ITerritory> _territories;
 
         public SendArmiesToOccupyGameStateTests()
         {
             _gamePhaseConductor = Substitute.For<IGamePhaseConductor>();
-            _territoryOccupier = Substitute.For<ITerritoryOccupier>();
 
             _attackingRegion = Region.Brazil;
             _occupiedRegion = Region.NorthAfrica;
+
+            _territories = new ITerritory[]
+                {
+                    new TerritoryBuilder().Region(_attackingRegion).Armies(2).Build(),
+                    new TerritoryBuilder().Region(_occupiedRegion).Build(),
+                };
         }
 
         private SendArmiesToOccupyPhase Sut => new SendArmiesToOccupyPhase(
@@ -31,24 +34,14 @@ namespace Tests.GameEngine.Play
             null,
             null,
             _attackingRegion,
-            _occupiedRegion,
-            _territoryOccupier);
+            _occupiedRegion);
 
         [Fact]
         public void Sending_armies_to_occupy_continues_with_attack_state()
         {
-            var expectedUpdatedTerritories = new List<ITerritory>();
-            _territoryOccupier.SendInAdditionalArmiesToOccupy(
-                _territories,
-                _attackingRegion,
-                _occupiedRegion,
-                1).Returns(expectedUpdatedTerritories);
-
             Sut.SendAdditionalArmiesToOccupy(1);
 
-            _gamePhaseConductor.Received().ContinueWithAttackPhase(
-                ConqueringAchievement.SuccessfullyConqueredAtLeastOneTerritory,
-                Arg.Is<GameData>(x => x.Territories.IsSameOrEqualTo(expectedUpdatedTerritories)));
+            _gamePhaseConductor.Received().ContinueWithAttackPhase(ConqueringAchievement.SuccessfullyConqueredAtLeastOneTerritory);
         }
     }
 }

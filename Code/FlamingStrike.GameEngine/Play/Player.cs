@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -30,6 +31,11 @@ namespace FlamingStrike.GameEngine.Play
 
         public void EliminatedBy(IPlayer attackingPlayer)
         {
+            if (IsEliminated)
+            {
+                throw new InvalidOperationException("Player is already eliminated");
+            }
+
             attackingPlayer.AddCards(_cards);
             _cards.Clear();
             IsEliminated = true;

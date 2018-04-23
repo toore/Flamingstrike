@@ -5,7 +5,7 @@ namespace FlamingStrike.GameEngine.Play
     public interface ITerritory
     {
         Region Region { get; }
-        PlayerName Name { get; }
+        PlayerName PlayerName { get; }
         int Armies { get; }
         int GetNumberOfArmiesThatCanAttack();
         int GetNumberOfArmiesUsedInAnAttack();
@@ -13,7 +13,8 @@ namespace FlamingStrike.GameEngine.Play
         int GetNumberOfArmiesThatCanFortifyAnotherTerritory();
         int GetNumberOfArmiesThatCanBeSentToOccupy();
         void Occupy(PlayerName name, int armies);
-        void RemoveArmies(int armiesLost);
+        void RemoveArmies(int numberOfArmies);
+        void AddArmies(int numberOfArmies);
     }
 
     public class Territory : ITerritory
@@ -29,12 +30,12 @@ namespace FlamingStrike.GameEngine.Play
             }
 
             Region = region;
-            Name = playerName;
+            PlayerName = playerName;
             Armies = armies;
         }
 
         public Region Region { get; }
-        public PlayerName Name { get; private set; }
+        public PlayerName PlayerName { get; private set; }
         public int Armies { get; private set; }
 
         public int GetNumberOfArmiesThatCanAttack()
@@ -64,23 +65,38 @@ namespace FlamingStrike.GameEngine.Play
 
         public void Occupy(PlayerName name, int armies)
         {
-            Name = name;
+            PlayerName = name;
             Armies = armies;
         }
 
-        public void RemoveArmies(int numberOfArmiesLost)
+        public void RemoveArmies(int numberOfArmies)
         {
-            if (numberOfArmiesLost > Armies)
+            if (numberOfArmies <= 0)
+            {
+                throw new InvalidOperationException("Can't remove zero or less armies.");
+            }
+
+            if (numberOfArmies > Armies)
             {
                 throw new InvalidOperationException("Can't remove more armies than exist");
             }
 
-            if (numberOfArmiesLost == Armies)
+            if (numberOfArmies == Armies)
             {
                 throw new InvalidOperationException("Can't remove all armies without being occupied");
             }
 
-            Armies = Armies - numberOfArmiesLost;
+            Armies = Armies - numberOfArmies;
+        }
+
+        public void AddArmies(int numberOfArmies)
+        {
+            if (numberOfArmies <= 0)
+            {
+                throw new InvalidOperationException("Can't add zero or less armies.");
+            }
+
+            Armies += numberOfArmies;
         }
     }
 }

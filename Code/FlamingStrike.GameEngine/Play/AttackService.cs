@@ -33,21 +33,6 @@ namespace FlamingStrike.GameEngine.Play
             return canAttack;
         }
 
-        private bool HasBorder(ITerritory attackingTerritory, ITerritory defendingTerritory)
-        {
-            return _worldMap.HasBorder(attackingTerritory.Region, defendingTerritory.Region);
-        }
-
-        private static bool IsAttackerAndDefenderDifferentPlayers(ITerritory attackingTerritory, ITerritory defendingTerritory)
-        {
-            return attackingTerritory.Name != defendingTerritory.Name;
-        }
-
-        private static bool HasEnoughArmiesToPerformAttack(ITerritory attackingTerritory)
-        {
-            return attackingTerritory.GetNumberOfArmiesThatCanAttack() > 0;
-        }
-
         public DefendingArmyStatus Attack(ITerritory attackingTerritory, ITerritory defendingTerritory)
         {
             if (!CanAttack(attackingTerritory, defendingTerritory))
@@ -60,20 +45,43 @@ namespace FlamingStrike.GameEngine.Play
             var dices = _dice.Roll(numberOfArmiesUsedInAnAttack, defendingTerritory.GetNumberOfDefendingArmies());
 
             var attackerLosses = _armiesLostCalculator.CalculateAttackerLosses(dices.AttackValues, dices.DefenceValues);
-            attackingTerritory.RemoveArmies(attackerLosses);
+
+            if (attackerLosses > 0)
+            {
+                attackingTerritory.RemoveArmies(attackerLosses);
+            }
 
             var attackingArmiesAfterCasualties = numberOfArmiesUsedInAnAttack - attackerLosses;
             var defenderLosses = _armiesLostCalculator.CalculateDefenderLosses(dices.AttackValues, dices.DefenceValues);
 
-            if (defendingTerritory.GetNumberOfDefendingArmies() - defenderLosses == 0)
+            if (defendingTerritory.GetNumberOfDefendingArmies() == defenderLosses)
             {
-                defendingTerritory.Occupy(attackingTerritory.Name, attackingArmiesAfterCasualties);
+                defendingTerritory.Occupy(attackingTerritory.PlayerName, attackingArmiesAfterCasualties);
                 attackingTerritory.RemoveArmies(attackingArmiesAfterCasualties);
                 return DefendingArmyStatus.IsEliminated;
             }
 
-            defendingTerritory.RemoveArmies(defenderLosses);
+            if (defenderLosses > 0)
+            {
+                defendingTerritory.RemoveArmies(defenderLosses);
+            }
+
             return DefendingArmyStatus.IsAlive;
+        }
+
+        private bool HasBorder(ITerritory attackingTerritory, ITerritory defendingTerritory)
+        {
+            return _worldMap.HasBorder(attackingTerritory.Region, defendingTerritory.Region);
+        }
+
+        private static bool IsAttackerAndDefenderDifferentPlayers(ITerritory attackingTerritory, ITerritory defendingTerritory)
+        {
+            return attackingTerritory.PlayerName != defendingTerritory.PlayerName;
+        }
+
+        private static bool HasEnoughArmiesToPerformAttack(ITerritory attackingTerritory)
+        {
+            return attackingTerritory.GetNumberOfArmiesThatCanAttack() > 0;
         }
     }
 

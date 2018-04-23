@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using FlamingStrike.GameEngine.Setup.Finished;
 
@@ -26,17 +27,23 @@ namespace FlamingStrike.GameEngine.Play
 
         public void Run(IGameObserver gameObserver, IGamePlaySetup gamePlaySetup)
         {
+            var territories = gamePlaySetup.GetTerritories()
+                .Select(x => new Territory(x.Region, x.Name, x.Armies))
+                .ToList();
+            var players = gamePlaySetup.GetPlayers().Select(player => new Player(player, new List<ICard>())).ToList();
+            var deck = _deckFactory.Create();
+            //var gameData = new GameData(, players.First().Name, deck);
+
             var game = new Game(
                 gameObserver,
                 _gamePhaseFactory,
                 _armyDraftCalculator,
-                _deckFactory);
+                territories,
+                players,
+                deck
+            );
 
-            var territories = gamePlaySetup.GetTerritories()
-                .Select(x => new Territory(x.Region, x.Name, x.Armies))
-                .ToList();
-
-            game.Start(territories, gamePlaySetup.GetPlayers());
+            game.Start();
         }
     }
 }

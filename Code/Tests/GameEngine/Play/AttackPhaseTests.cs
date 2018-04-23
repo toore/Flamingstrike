@@ -4,309 +4,218 @@ using System.Linq;
 using FlamingStrike.GameEngine;
 using FlamingStrike.GameEngine.Play;
 using FluentAssertions;
-using FluentAssertions.Common;
 using NSubstitute;
 using Xunit;
 
 namespace Tests.GameEngine.Play
 {
-    public class AttackPhaseTests
+    public abstract class AttackPhaseTests
     {
-        private readonly GameData _gameData;
-        private readonly PlayerName _currentPlayerName;
-        private readonly PlayerName _anotherPlayerName;
-        private readonly IPlayer _anotherPlayer;
         private readonly IDeck _deck;
         private readonly IGamePhaseConductor _gamePhaseConductor;
         private readonly IAttackService _attackService;
-        private readonly IFortifier _fortifier;
         private readonly IPlayerEliminationRules _playerEliminationRules;
-        private ConqueringAchievement _conqueringAchievement = ConqueringAchievement.NoTerritoryHasBeenConquered;
-        private readonly ITerritory _territory;
+        private readonly IWorldMap _worldMap;
         private readonly Region _region;
         private readonly Region _anotherRegion;
-        private readonly IWorldMap _worldMap;
+        private readonly PlayerName _currentPlayerName;
+        private readonly PlayerName _anotherPlayerName;
         private readonly Player _currentPlayer;
+        private IPlayer _anotherPlayer;
+        private ITerritory _territory;
+        private Territory _anotherTerritory;
+        private ConqueringAchievement _conqueringAchievement = ConqueringAchievement.NoTerritoryHasBeenConquered;
 
-        public AttackPhaseTests()
+        protected AttackPhaseTests()
         {
             _deck = Substitute.For<IDeck>();
             _gamePhaseConductor = Substitute.For<IGamePhaseConductor>();
             _attackService = Substitute.For<IAttackService>();
-            _fortifier = Substitute.For<IFortifier>();
             _playerEliminationRules = Substitute.For<IPlayerEliminationRules>();
 
             _worldMap = new WorldMapFactory().Create();
-            _region = Region.Alaska;
+            _region = Region.NorthAfrica;
             _anotherRegion = Region.Brazil;
-            _territory = Substitute.For<ITerritory>();
-            var anotherTerritory = Substitute.For<ITerritory>();
 
             _currentPlayerName = new PlayerName("current player");
             _anotherPlayerName = new PlayerName("another player");
-            _anotherPlayer = Substitute.For<IPlayer>();
-            _anotherPlayer.Name.Returns(_anotherPlayerName);
-
-            _territory.Region.Returns(_region);
-            _territory.Name.Returns(_currentPlayerName);
-            anotherTerritory.Region.Returns(_anotherRegion);
-            anotherTerritory.Name.Returns(_anotherPlayerName);
 
             _currentPlayer = new PlayerBuilder().Player(_currentPlayerName).Build();
-            _gameData = new GameDataBuilder()
-                .Territories(_territory, anotherTerritory)
-                .AddPlayer(_currentPlayer)
-                .AddPlayer(_anotherPlayer)
-                .CurrentPlayer(_currentPlayerName)
-                .Deck(_deck)
-                .Build();
         }
 
         private AttackPhase Sut => new AttackPhase(
             _gamePhaseConductor,
             _currentPlayerName,
-            _gameData.Territories,
-            _gameData.Players,
-            _gameData.Deck,
+            new[] { _territory, _anotherTerritory },
+            new[] { _currentPlayer, _anotherPlayer },
+            _deck,
             _conqueringAchievement,
             _attackService,
-            _fortifier,
             _playerEliminationRules,
             _worldMap);
 
-        [Fact]
-        public void Can_attack()
+        public class Attacking : AttackPhaseTests
         {
-            //_attacker.CanAttack(
-            //        _gameData.Territories,
-            //        _region,
-            //        _anotherRegion)
-            //    .Returns(true);
+            private readonly ICard _card;
+            private readonly ICard _anotherCard;
 
-            //Sut.CanAttack(_region, _anotherRegion).Should().BeTrue();
+            public Attacking()
+            {
+                _card = Substitute.For<ICard>();
+                _anotherCard = Substitute.For<ICard>();
+
+                _anotherPlayer = new PlayerBuilder().Player(_anotherPlayerName)
+                    .AddCard(_card)
+                    .AddCard(_anotherCard).Build();
+
+                _territory = new TerritoryBuilder().Region(_region).Player(_currentPlayerName).Armies(2).Build();
+                _anotherTerritory = new TerritoryBuilder().Region(_anotherRegion).Player(_anotherPlayerName).Armies(1).Build();
+            }
+
+            [Fact]
+            public void Attack_from_another_players_territory_throws()
+            {
+                Action act = () => Sut.Attack(_anotherRegion, _region);
+
+                act.Should().Throw<InvalidOperationException>();
+            }
+
+            [Fact]
+            public void Attacks_but_territory_is_defended()
+            {
+                _attackService.Attack(_territory, _anotherTerritory).Returns(DefendingArmyStatus.IsAlive);
+
+                Sut.Attack(_region, _anotherRegion);
+
+                _gamePhaseConductor.Received().ContinueWithAttackPhase(ConqueringAchievement.NoTerritoryHasBeenConquered);
+            }
+
+            [Fact]
+            public void Attacks_and_defeats_defender()
+            {
+                _attackService.Attack(_territory, _anotherTerritory).Returns(DefendingArmyStatus.IsEliminated);
+
+                Sut.Attack(_region, _anotherRegion);
+
+                _gamePhaseConductor.Received().SendArmiesToOccupy(_region, _anotherRegion);
+            }
+
+            [Fact]
+            public void Fortify_from_another_players_territory_throws()
+            {
+                Action act = () => Sut.Fortify(_anotherRegion, _region, 1);
+
+                act.Should().Throw<InvalidOperationException>();
+            }
+
+            [Fact]
+            public void End_turn_passes_turn_to_next_player()
+            {
+                Sut.EndTurn();
+
+                _gamePhaseConductor.Received().PassTurnToNextPlayer();
+            }
+
+            [Fact]
+            public void Player_should_be_awarded_card_when_turn_ends()
+            {
+                var topDeckCard = Substitute.For<ICard>();
+                _deck.DrawCard().Returns(topDeckCard);
+                _conqueringAchievement = ConqueringAchievement.SuccessfullyConqueredAtLeastOneTerritory;
+
+                Sut.EndTurn();
+
+                _currentPlayer.Cards.Should().BeEquivalentTo(topDeckCard);
+            }
+
+            [Fact]
+            public void Player_should_not_be_awarded_card_when_turn_ends()
+            {
+                Sut.EndTurn();
+
+                _currentPlayer.Cards.Should().BeEmpty();
+            }
+
+            [Fact]
+            public void Player_should_not_be_awarded_card_after_attack()
+            {
+                _attackService.Attack(_territory, _anotherTerritory).Returns(DefendingArmyStatus.IsEliminated);
+
+                Sut.Attack(_region, _anotherRegion);
+
+                _currentPlayer.Cards.Should().BeEmpty();
+            }
+
+            [Fact]
+            public void Player_should_receive_eliminated_players_cards()
+            {
+                _attackService.Attack(_territory, _anotherTerritory).Returns(DefendingArmyStatus.IsEliminated);
+                _playerEliminationRules.IsPlayerEliminated(Arg.Is<IEnumerable<ITerritory>>(x => x.SequenceEqual(new[] { _territory, _anotherTerritory })), _anotherPlayerName).Returns(true);
+
+                Sut.Attack(_region, _anotherRegion);
+
+                _currentPlayer.Cards.Should().BeEquivalentTo(_card, _anotherCard);
+                _anotherPlayer.Cards.Should().BeEmpty();
+            }
+
+            [Fact]
+            public void When_last_defending_player_is_eliminated_the_game_is_over()
+            {
+                _attackService.Attack(_territory, _anotherTerritory).Returns(DefendingArmyStatus.IsEliminated);
+                _playerEliminationRules.IsOnePlayerLeftInTheGame(Arg.Is<IEnumerable<ITerritory>>(x => x.SequenceEqual(new[] { _territory, _anotherTerritory }))).Returns(true);
+
+                Sut.Attack(_region, _anotherRegion);
+
+                _gamePhaseConductor.Received().PlayerIsTheWinner(_currentPlayerName);
+            }
         }
 
-        [Fact]
-        public void Can_not_attack()
+        public class Fortification : AttackPhaseTests
         {
-            //Sut.CanAttack(_region, _anotherRegion).Should().BeFalse();
-        }
+            public Fortification()
+            {
+                _anotherPlayer = new PlayerBuilder().Player(_anotherPlayerName).Build();
 
-        [Fact]
-        public void Can_not_attack_from_another_players_territory()
-        {
-            //Sut.CanAttack(_anotherRegion, _region).Should().BeFalse();
-        }
+                _territory = new TerritoryBuilder().Region(_region).Player(_currentPlayerName).Armies(6).Build();
+                _anotherTerritory = new TerritoryBuilder().Region(_anotherRegion).Player(_currentPlayerName).Armies(1).Build();
+            }
 
-        [Fact]
-        public void Attack_from_another_players_territory_throws()
-        {
-            Action act = () => Sut.Attack(_anotherRegion, _region);
+            [Fact]
+            public void Fortifies()
+            {
+                Sut.Fortify(_region, _anotherRegion, 2);
 
-            act.Should().Throw<InvalidOperationException>();
-        }
+                _territory.Armies.Should().Be(4);
+                _anotherTerritory.Armies.Should().Be(3);
+            }
 
-        [Fact]
-        public void Attacks_but_territory_is_defended()
-        {
-            var expectedUpdatedTerritories = new List<ITerritory>();
-            //var attackOutcome = new AttackOutcome(expectedUpdatedTerritories, DefendingArmy.IsAlive);
-            //_attackService.Attack(
-            //        _region,
-            //        _anotherRegion)
-            //    .Returns(attackOutcome);
+            [Fact]
+            public void Fortifies_and_waits_for_turn_to_end()
+            {
+                Sut.Fortify(_region, _anotherRegion, 2);
 
-            Sut.Attack(_region, _anotherRegion);
+                _gamePhaseConductor.Received().WaitForTurnToEnd();
+            }
 
-            _gamePhaseConductor.Received().ContinueWithAttackPhase(ConqueringAchievement.NoTerritoryHasBeenConquered, Arg.Is<GameData>(x => x.Territories.IsSameOrEqualTo(expectedUpdatedTerritories)));
-        }
+            [Fact]
+            public void Player_is_awarded_card_after_fortification()
+            {
+                var topDeckCard = Substitute.For<ICard>();
+                _deck.DrawCard().Returns(topDeckCard);
+                _conqueringAchievement = ConqueringAchievement.SuccessfullyConqueredAtLeastOneTerritory;
 
-        [Fact]
-        public void Attacks_and_defeats_defender()
-        {
-            var expectedUpdatedTerritories = new List<ITerritory>
-                {
-                    new TerritoryBuilder().Region(_region).Armies(2).Build(),
-                    new TerritoryBuilder().Region(_anotherRegion).Build()
-                };
+                Sut.Fortify(_region, _anotherRegion, 1);
 
-            //var attackOutcome = new AttackOutcome(expectedUpdatedTerritories, DefendingArmy.IsEliminated);
-            //_attackService.Attack(
-            //        _region,
-            //        _anotherRegion)
-            //    .Returns(attackOutcome);
+                _currentPlayer.Cards.Should().BeEquivalentTo(topDeckCard);
+            }
 
-            Sut.Attack(_region, _anotherRegion);
+            [Fact]
+            public void Player_is_not_awarded_card_after_fortification()
+            {
+                Sut.Fortify(_region, _anotherRegion, 1);
 
-            _gamePhaseConductor.Received().SendArmiesToOccupy(_region, _anotherRegion, Arg.Is<GameData>(x => x.Territories.IsSameOrEqualTo(expectedUpdatedTerritories)));
-        }
-
-        [Fact]
-        public void Can_fortify()
-        {
-            //_fortifier.CanFortify(
-            //        _gameData.Territories,
-            //        _region,
-            //        _anotherRegion)
-            //    .Returns(true);
-
-            //Sut.CanFortify(_region, _anotherRegion).Should().BeTrue();
-        }
-
-        [Fact]
-        public void Can_not_fortify()
-        {
-            //Sut.CanFortify(_region, _anotherRegion).Should().BeFalse();
-        }
-
-        [Fact]
-        public void Can_not_fortify_from_another_players_territory()
-        {
-            //Sut.CanFortify(_anotherRegion, _region).Should().BeFalse();
-        }
-
-        [Fact]
-        public void Fortifies()
-        {
-            var expectedUpdatedTerritories = new List<ITerritory>();
-            _fortifier.Fortify(_gameData.Territories, _region, _anotherRegion, 1).Returns(expectedUpdatedTerritories);
-
-            Sut.Fortify(_region, _anotherRegion, 1);
-
-            _gamePhaseConductor.Received().WaitForTurnToEnd(Arg.Is<GameData>(x => x.Territories.IsSameOrEqualTo(expectedUpdatedTerritories)));
-        }
-
-        [Fact]
-        public void Player_is_awarded_card_after_fortification()
-        {
-            GameData updatedGameData = null;
-            _gamePhaseConductor.WaitForTurnToEnd(Arg.Do<GameData>(x => updatedGameData = x));
-            var topDeckCard = Substitute.For<ICard>();
-            _deck.DrawCard().Returns(topDeckCard);
-            _conqueringAchievement = ConqueringAchievement.SuccessfullyConqueredAtLeastOneTerritory;
-
-            Sut.Fortify(_region, _anotherRegion, 1);
-
-            updatedGameData.GetCurrentPlayer().Cards.Should().BeEquivalentTo(topDeckCard);
-        }
-
-        [Fact]
-        public void Player_is_not_awarded_card_after_fortification()
-        {
-            GameData updatedGameData = null;
-            _gamePhaseConductor.WaitForTurnToEnd(Arg.Do<GameData>(x => updatedGameData = x));
-
-            Sut.Fortify(_region, _anotherRegion, 1);
-
-            updatedGameData.GetCurrentPlayer().Cards.Should().BeEmpty();
-        }
-
-        [Fact]
-        public void End_turn_passes_turn_to_next_player()
-        {
-            GameData updatedGameData = null;
-            _gamePhaseConductor.PassTurnToNextPlayer(Arg.Do<GameData>(x => updatedGameData = x));
-
-            Sut.EndTurn();
-
-            _gameData.Should().BeEquivalentTo(updatedGameData);
-        }
-
-        [Fact]
-        public void Player_should_receive_card_when_turn_ends()
-        {
-            GameData updatedGameData = null;
-            _gamePhaseConductor.PassTurnToNextPlayer(Arg.Do<GameData>(x => updatedGameData = x));
-            var topDeckCard = Substitute.For<ICard>();
-            _deck.DrawCard().Returns(topDeckCard);
-            _conqueringAchievement = ConqueringAchievement.SuccessfullyConqueredAtLeastOneTerritory;
-
-            Sut.EndTurn();
-
-            updatedGameData.GetCurrentPlayer().Cards.Should().BeEquivalentTo(topDeckCard);
-        }
-
-        [Fact]
-        public void Player_should_not_receive_card_when_turn_ends()
-        {
-            GameData updatedGameData = null;
-            _gamePhaseConductor.PassTurnToNextPlayer(Arg.Do<GameData>(x => updatedGameData = x));
-
-            Sut.EndTurn();
-
-            updatedGameData.GetCurrentPlayer().Cards.Should().BeEmpty();
-        }
-
-        [Fact]
-        public void Player_should_not_receive_card_after_attack()
-        {
-            GameData updatedGameData = null;
-            _gamePhaseConductor.ContinueWithAttackPhase(ConqueringAchievement.SuccessfullyConqueredAtLeastOneTerritory, Arg.Do<GameData>(x => updatedGameData = x));
-            var updatedTerritories = new List<ITerritory> { _territory };
-            //var attackOutcome = new AttackOutcome(updatedTerritories, DefendingArmy.IsEliminated);
-            //_attackService.Attack(
-            //        _region,
-            //        _anotherRegion)
-            //    .Returns(attackOutcome);
-
-            Sut.Attack(_region, _anotherRegion);
-
-            updatedGameData.GetCurrentPlayer().Cards.Should().BeEmpty();
-        }
-
-        [Fact]
-        public void Player_should_receive_eliminated_players_cards()
-        {
-            GameData updatedGameData = null;
-            _gamePhaseConductor.ContinueWithAttackPhase(
-                ConqueringAchievement.SuccessfullyConqueredAtLeastOneTerritory,
-                Arg.Do<GameData>(x => updatedGameData = x));
-            var card = Substitute.For<ICard>();
-            var anotherCard = Substitute.For<ICard>();
-            _anotherPlayer
-                .When(x => x.EliminatedBy(_currentPlayer))
-                .Do(x => _currentPlayer.AddCards(new[] { card, anotherCard }));
-            var updatedTerritories = new List<ITerritory> { _territory };
-            //var attackOutcome = new AttackOutcome(updatedTerritories, DefendingArmy.IsEliminated);
-            //_attackService.Attack(
-            //        _region,
-            //        _anotherRegion)
-            //    .Returns(attackOutcome);
-            _playerEliminationRules.IsPlayerEliminated(
-                    updatedTerritories,
-                    _anotherPlayerName)
-                .Returns(true);
-
-            Sut.Attack(_region, _anotherRegion);
-
-            updatedGameData.GetCurrentPlayer().Cards
-                .Should().BeEquivalentTo(new[] { card, anotherCard }, config => config.WithStrictOrdering(), "all cards should be aquired from eliminated player");
-            updatedGameData.Players.Single(x => x.Name == _anotherPlayerName).Cards
-                .Should().BeEmpty("all cards should be handed over");
-        }
-
-        [Fact]
-        public void When_last_defending_player_is_eliminated_the_game_is_over()
-        {
-            var updatedTerritories = new List<ITerritory>();
-            //var attackOutcome = new AttackOutcome(updatedTerritories, DefendingArmy.IsEliminated);
-            //_attackService.Attack(
-            //        _region,
-            //        _anotherRegion)
-            //    .Returns(attackOutcome);
-            _playerEliminationRules.IsOnePlayerLeftInTheGame(updatedTerritories).Returns(true);
-
-            Sut.Attack(_region, _anotherRegion);
-
-            _gamePhaseConductor.Received().PlayerIsTheWinner(_currentPlayerName);
-        }
-    }
-
-    public static class GameDataExtensions
-    {
-        public static IPlayer GetCurrentPlayer(this GameData gameData)
-        {
-            return gameData.Players.Single(x => x.Name == gameData.CurrentPlayerName);
+                _currentPlayer.Cards.Should().BeEmpty();
+            }
         }
     }
 }

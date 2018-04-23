@@ -13,13 +13,13 @@ namespace FlamingStrike.GameEngine.Play
     {
         public bool IsPlayerEliminated(IEnumerable<ITerritory> territories, PlayerName player)
         {
-            return territories.All(x => x.Name != player);
+            return territories.All(x => x.PlayerName != player);
         }
 
         public bool IsOnePlayerLeftInTheGame(IEnumerable<ITerritory> territories)
         {
             return territories
-                .Select(x => x.Name)
+                .Select(x => x.PlayerName)
                 .Distinct()
                 .Count() == 1;
         }

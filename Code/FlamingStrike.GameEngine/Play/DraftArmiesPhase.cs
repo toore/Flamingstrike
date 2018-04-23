@@ -7,7 +7,6 @@ namespace FlamingStrike.GameEngine.Play
     public class DraftArmiesPhase : IDraftArmiesPhase
     {
         private readonly IGamePhaseConductor _gamePhaseConductor;
-        private readonly IArmyDrafter _armyDrafter;
 
         public DraftArmiesPhase(
             IGamePhaseConductor gamePhaseConductor,
@@ -15,11 +14,9 @@ namespace FlamingStrike.GameEngine.Play
             IReadOnlyList<ITerritory> territories,
             IReadOnlyList<IPlayer> players,
             IDeck deck,
-            int numberOfArmiesToDraft,
-            IArmyDrafter armyDrafter)
+            int numberOfArmiesToDraft)
         {
             _gamePhaseConductor = gamePhaseConductor;
-            _armyDrafter = armyDrafter;
             CurrentPlayerName = currentPlayerName;
             Territories = territories;
             Players = players;
@@ -57,17 +54,17 @@ namespace FlamingStrike.GameEngine.Play
                 throw new ArgumentOutOfRangeException(nameof(numberOfArmies));
             }
 
-            var updatedTerritories = _armyDrafter.PlaceDraftArmies(Territories, region, numberOfArmies);
-            var updatedGameData = new GameData(updatedTerritories, Players, CurrentPlayerName, Deck);
+            Territories.Single(x => x.Region == region)
+                .AddArmies(numberOfArmies);
 
             var numberOfArmiesLeftToPlace = NumberOfArmiesToDraft - numberOfArmies;
             if (numberOfArmiesLeftToPlace > 0)
             {
-                _gamePhaseConductor.ContinueToDraftArmies(numberOfArmiesLeftToPlace, updatedGameData);
+                _gamePhaseConductor.ContinueToDraftArmies(numberOfArmiesLeftToPlace);
             }
             else
             {
-                _gamePhaseConductor.ContinueWithAttackPhase(ConqueringAchievement.NoTerritoryHasBeenConquered, updatedGameData);
+                _gamePhaseConductor.ContinueWithAttackPhase(ConqueringAchievement.NoTerritoryHasBeenConquered);
             }
         }
 
@@ -78,7 +75,7 @@ namespace FlamingStrike.GameEngine.Play
 
         private bool IsCurrentPlayerOccupyingRegion(Region region)
         {
-            return CurrentPlayerName == Territories.Single(x => x.Region == region).Name;
+            return CurrentPlayerName == Territories.Single(x => x.Region == region).PlayerName;
         }
     }
 }

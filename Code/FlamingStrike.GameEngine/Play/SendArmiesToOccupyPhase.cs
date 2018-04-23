@@ -1,11 +1,11 @@
 using System.Collections.Generic;
+using System.Linq;
 
 namespace FlamingStrike.GameEngine.Play
 {
     public class SendArmiesToOccupyPhase : ISendArmiesToOccupyPhase
     {
         private readonly IGamePhaseConductor _gamePhaseConductor;
-        private readonly ITerritoryOccupier _territoryOccupier;
 
         public SendArmiesToOccupyPhase(
             IGamePhaseConductor gamePhaseConductor,
@@ -14,11 +14,9 @@ namespace FlamingStrike.GameEngine.Play
             IReadOnlyList<IPlayer> players,
             IDeck deck,
             Region attackingRegion,
-            Region occupiedRegion,
-            ITerritoryOccupier territoryOccupier)
+            Region occupiedRegion)
         {
             _gamePhaseConductor = gamePhaseConductor;
-            _territoryOccupier = territoryOccupier;
             CurrentPlayerName = currentPlayerName;
             Territories = territories;
             Players = players;
@@ -36,12 +34,13 @@ namespace FlamingStrike.GameEngine.Play
 
         public void SendAdditionalArmiesToOccupy(int numberOfArmies)
         {
-            var updatedTerritories = _territoryOccupier.SendInAdditionalArmiesToOccupy(Territories, AttackingRegion, OccupiedRegion, numberOfArmies);
-            var updatedGameData = new GameData(updatedTerritories, Players, CurrentPlayerName, Deck);
+            var attackingTerritory = Territories.Single(x => x.Region == AttackingRegion);
+            var occupiedTerritory = Territories.Single(x => x.Region == OccupiedRegion);
 
-            _gamePhaseConductor.ContinueWithAttackPhase(
-                ConqueringAchievement.SuccessfullyConqueredAtLeastOneTerritory,
-                updatedGameData);
+            attackingTerritory.RemoveArmies(numberOfArmies);
+            occupiedTerritory.AddArmies(numberOfArmies);
+
+            _gamePhaseConductor.ContinueWithAttackPhase(ConqueringAchievement.SuccessfullyConqueredAtLeastOneTerritory);
         }
     }
 }

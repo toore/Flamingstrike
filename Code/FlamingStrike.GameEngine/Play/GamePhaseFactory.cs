@@ -13,26 +13,17 @@ namespace FlamingStrike.GameEngine.Play
 
     public class GamePhaseFactory : IGamePhaseFactory
     {
-        private readonly IArmyDrafter _armyDrafter;
         private readonly IAttackService _attackService;
-        private readonly IFortifier _fortifier;
         private readonly IPlayerEliminationRules _playerEliminationRules;
-        private readonly ITerritoryOccupier _territoryOccupier;
         private readonly IWorldMap _worldMap;
 
         public GamePhaseFactory(
-            IArmyDrafter armyDrafter,
             IAttackService attackService,
-            IFortifier fortifier,
             IPlayerEliminationRules playerEliminationRules,
-            ITerritoryOccupier territoryOccupier,
             IWorldMap worldMap)
         {
-            _armyDrafter = armyDrafter;
             _attackService = attackService;
-            _fortifier = fortifier;
             _playerEliminationRules = playerEliminationRules;
-            _territoryOccupier = territoryOccupier;
             _worldMap = worldMap;
         }
 
@@ -44,8 +35,7 @@ namespace FlamingStrike.GameEngine.Play
                 territories,
                 players,
                 deck,
-                numberOfArmiesToDraft,
-                _armyDrafter);
+                numberOfArmiesToDraft);
         }
 
         public IAttackPhase CreateAttackPhase(IGamePhaseConductor gamePhaseConductor, PlayerName currentPlayerName, IReadOnlyList<ITerritory> territories, IReadOnlyList<IPlayer> players, IDeck deck, ConqueringAchievement conqueringAchievement)
@@ -58,7 +48,6 @@ namespace FlamingStrike.GameEngine.Play
                 deck,
                 conqueringAchievement,
                 _attackService,
-                _fortifier,
                 _playerEliminationRules,
                 _worldMap);
         }
@@ -82,8 +71,7 @@ namespace FlamingStrike.GameEngine.Play
                 players,
                 deck,
                 attackingRegion,
-                occupiedRegion,
-                _territoryOccupier);
+                occupiedRegion);
         }
 
         public IGameOverState CreateGameOverState(PlayerName winner)
