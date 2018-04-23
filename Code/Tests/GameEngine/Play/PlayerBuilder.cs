@@ -6,17 +6,17 @@ namespace Tests.GameEngine.Play
 {
     public class PlayerBuilder
     {
-        private PlayerName _playerName = new GameEngine.PlayerBuilder().Build();
+        private PlayerName _name = new GameEngine.PlayerBuilder().Build();
         private readonly List<ICard> _cards = new List<ICard>();
 
         public Player Build()
         {
-            return new Player(_playerName, _cards);
+            return new Player(_name, _cards);
         }
 
-        public PlayerBuilder Player(PlayerName playerName)
+        public PlayerBuilder Name(PlayerName playerName)
         {
-            _playerName = playerName;
+            _name = playerName;
             return this;
         }
 

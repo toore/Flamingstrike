@@ -2,22 +2,6 @@ using System.Collections.Generic;
 
 namespace FlamingStrike.GameEngine.Play
 {
-    public class GameData
-    {
-        public IReadOnlyList<ITerritory> Territories { get; }
-        public IReadOnlyList<IPlayer> Players { get; }
-        public PlayerName CurrentPlayerName { get; }
-        public IDeck Deck { get; }
-
-        public GameData(IReadOnlyList<ITerritory> territories, IReadOnlyList<IPlayer> players, PlayerName currentPlayerName, IDeck deck)
-        {
-            Territories = territories;
-            Players = players;
-            CurrentPlayerName = currentPlayerName;
-            Deck = deck;
-        }
-    }
-
     public interface IGamePhaseConductor
     {
         void ContinueToDraftArmies(int numberOfArmiesToDraft);

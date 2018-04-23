@@ -17,10 +17,10 @@ namespace FlamingStrike.GameEngine.Play
     {
         private readonly List<ICard> _cards;
 
-        public Player(PlayerName playerName, List<ICard> cards)
+        public Player(PlayerName name, List<ICard> cards)
         {
             _cards = cards;
-            Name = playerName;
+            Name = name;
         }
 
         public PlayerName Name { get; }

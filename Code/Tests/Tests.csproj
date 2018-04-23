@@ -105,7 +105,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="GameEngine\Play\DeckBuilder.cs" />
-    <Compile Include="GameEngine\Play\GameDataBuilder.cs" />
     <Compile Include="GameEngine\Play\PlayerBuilder.cs" />
     <Compile Include="GameEngine\Play\TerritoryTests.cs" />
     <Compile Include="UI.WPF\PlayerStatusViewModelBuilder.cs" />

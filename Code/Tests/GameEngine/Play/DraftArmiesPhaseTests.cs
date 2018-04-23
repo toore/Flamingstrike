@@ -10,52 +10,46 @@ namespace Tests.GameEngine.Play
 {
     public class DraftArmiesPhaseTests
     {
-        private readonly GameData _gameData;
         private readonly IGamePhaseConductor _gamePhaseConductor;
         private readonly Region _region;
         private readonly Region _anotherRegion;
-        private int _numberOfArmiesToDraft;
+        private readonly int _numberOfArmiesToDraft;
         private readonly PlayerName _currentPlayerName;
+        private readonly Territory _territory;
+        private readonly Territory _anotherTerritory;
+        private readonly Player _player;
 
         public DraftArmiesPhaseTests()
         {
             _gamePhaseConductor = Substitute.For<IGamePhaseConductor>();
 
             _currentPlayerName = new PlayerName("current player");
-            var territory = Substitute.For<ITerritory>();
-            var anotherTerritory = Substitute.For<ITerritory>();
+
+            _player = new PlayerBuilder().Name(_currentPlayerName).Build();
+
             _region = Region.Brazil;
             _anotherRegion = Region.NorthAfrica;
-            territory.Region.Returns(_region);
-            territory.PlayerName.Returns(_currentPlayerName);
-            anotherTerritory.Region.Returns(_anotherRegion);
 
-            _gameData = new GameDataBuilder()
-                .CurrentPlayer(_currentPlayerName)
-                .Territories(territory, anotherTerritory)
-                .Build();
+            _territory = new TerritoryBuilder().Region(_region).Player(_currentPlayerName).Armies(2).Build();
+            _anotherTerritory = new TerritoryBuilder().Region(_anotherRegion).Build();
 
-            _numberOfArmiesToDraft = 0;
+            _numberOfArmiesToDraft = 3;
         }
 
         private DraftArmiesPhase Sut => new DraftArmiesPhase(
             _gamePhaseConductor,
             _currentPlayerName,
-            _gameData.Territories,
-            _gameData.Players,
-            _gameData.Deck,
+            new[] { _territory, _anotherTerritory },
+            new[] { _player, new PlayerBuilder().Name(_anotherTerritory.PlayerName).Build() },
+            new Deck(new Stack<ICard>()),
             _numberOfArmiesToDraft);
 
         [Fact]
-        public void Can_place_draft_armies_for_occupied_territory()
+        public void Place_draft_armies_for_occupied_territory()
         {
-            //Sut.CanPlaceDraftArmies(_region).Should().BeTrue();
-        }
+            Sut.PlaceDraftArmies(_region, 1);
 
-        [Fact]
-        public void Can_not_place_draft_armies_for_another_territory()
-        {
-            //Sut.CanPlaceDraftArmies(_anotherRegion).Should().BeFalse();
+            _territory.Armies.Should().Be(3);
         }
 
         [Fact]
@@ -69,10 +63,6 @@ namespace Tests.GameEngine.Play
         [Fact]
         public void After_placing_draft_armies_continues_to_draft_armies()
         {
-            var expectedUpdatedTerritories = new List<ITerritory>();
-            //_armyDrafter.PlaceDraftArmies(_gameData.Territories, _region, 1).Returns(expectedUpdatedTerritories);
-
-            _numberOfArmiesToDraft = 3;
             Sut.PlaceDraftArmies(_region, 1);
 
             _gamePhaseConductor.Received().ContinueToDraftArmies(2);
@@ -81,11 +71,7 @@ namespace Tests.GameEngine.Play
         [Fact]
         public void After_placing_all_draft_armies_continues_with_attack_phase()
         {
-            var expectedUpdatedTerritories = new List<ITerritory>();
-            //_armyDrafter.PlaceDraftArmies(_gameData.Territories, _region, 2).Returns(expectedUpdatedTerritories);
-
-            _numberOfArmiesToDraft = 2;
-            Sut.PlaceDraftArmies(_region, 2);
+            Sut.PlaceDraftArmies(_region, 3);
 
             _gamePhaseConductor.Received().ContinueWithAttackPhase(ConqueringAchievement.NoTerritoryHasBeenConquered);
         }
@@ -93,7 +79,7 @@ namespace Tests.GameEngine.Play
         [Fact]
         public void Placing_more_draft_armies_than_left_throws()
         {
-            Action act = () => Sut.PlaceDraftArmies(_region, 2);
+            Action act = () => Sut.PlaceDraftArmies(_region, 4);
 
             act.Should().Throw<ArgumentOutOfRangeException>();
         }

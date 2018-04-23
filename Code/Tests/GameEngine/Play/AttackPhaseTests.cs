@@ -40,7 +40,7 @@ namespace Tests.GameEngine.Play
             _currentPlayerName = new PlayerName("current player");
             _anotherPlayerName = new PlayerName("another player");
 
-            _currentPlayer = new PlayerBuilder().Player(_currentPlayerName).Build();
+            _currentPlayer = new PlayerBuilder().Name(_currentPlayerName).Build();
         }
 
         private AttackPhase Sut => new AttackPhase(
@@ -64,7 +64,7 @@ namespace Tests.GameEngine.Play
                 _card = Substitute.For<ICard>();
                 _anotherCard = Substitute.For<ICard>();
 
-                _anotherPlayer = new PlayerBuilder().Player(_anotherPlayerName)
+                _anotherPlayer = new PlayerBuilder().Name(_anotherPlayerName)
                     .AddCard(_card)
                     .AddCard(_anotherCard).Build();
 
@@ -174,7 +174,7 @@ namespace Tests.GameEngine.Play
         {
             public Fortification()
             {
-                _anotherPlayer = new PlayerBuilder().Player(_anotherPlayerName).Build();
+                _anotherPlayer = new PlayerBuilder().Name(_anotherPlayerName).Build();
 
                 _territory = new TerritoryBuilder().Region(_region).Player(_currentPlayerName).Armies(6).Build();
                 _anotherTerritory = new TerritoryBuilder().Region(_anotherRegion).Player(_currentPlayerName).Armies(1).Build();
