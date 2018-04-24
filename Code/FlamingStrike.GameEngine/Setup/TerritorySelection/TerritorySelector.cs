@@ -1,49 +1,40 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 
 namespace FlamingStrike.GameEngine.Setup.TerritorySelection
 {
     public interface ITerritorySelector
     {
         IReadOnlyList<Territory> GetTerritories();
-        Player GetPlayer();
+        PlayerName Player { get; }
         void PlaceArmyInRegion(Region region);
-        int GetArmiesLeftToPlace();
+        int ArmiesLeftToPlace { get; }
     }
 
     public class TerritorySelector : ITerritorySelector
     {
         private readonly IArmyPlacer _armyPlacer;
-        private readonly AlternateGameSetupData _alternateGameSetupData;
-        private readonly Setup.Player _currentPlayer;
+        private readonly IReadOnlyList<Territory> _territories;
 
-        public TerritorySelector(IArmyPlacer armyPlacer, AlternateGameSetupData alternateGameSetupData, Setup.Player currentPlayer)
+        public TerritorySelector(IArmyPlacer armyPlacer, PlayerName player, int armiesLeftToPlace, IReadOnlyList<Territory> territories)
         {
+            Player = player;
+            ArmiesLeftToPlace = armiesLeftToPlace;
             _armyPlacer = armyPlacer;
-            _alternateGameSetupData = alternateGameSetupData;
-            _currentPlayer = currentPlayer;
+            _territories = territories;
         }
+
+        public PlayerName Player { get; }
+
+        public int ArmiesLeftToPlace { get; }
 
         public IReadOnlyList<Territory> GetTerritories()
         {
-            return _alternateGameSetupData.Territories
-                .Select(x => new Territory(x.Region, x.Player.Name, x.Armies, x.Player == _currentPlayer))
-                .ToList();
-        }
-
-        public Player GetPlayer()
-        {
-            return new Player(_currentPlayer.Name, _currentPlayer.ArmiesToPlace);
+            return _territories;
         }
 
         public void PlaceArmyInRegion(Region region)
         {
-            _armyPlacer.PlaceArmyInRegion(_currentPlayer, region, _alternateGameSetupData);
-        }
-
-        public int GetArmiesLeftToPlace()
-        {
-            return _currentPlayer.ArmiesToPlace;
+            _armyPlacer.PlaceArmyInRegion(region);
         }
     }
 }

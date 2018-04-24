@@ -132,12 +132,12 @@ namespace Tests.GameEngine.Setup
 
         private void player_1_is_about_to_place_an_army()
         {
-            _alternateGameSetupObserverSpy.TerritorySelector.GetPlayer().Name.Should().Be(_player1);
+            _alternateGameSetupObserverSpy.TerritorySelector.Player.Should().Be(_player1);
         }
 
         private void player_2_is_about_to_place_an_army()
         {
-            _alternateGameSetupObserverSpy.TerritorySelector.GetPlayer().Name.Should().Be(_player2);
+            _alternateGameSetupObserverSpy.TerritorySelector.Player.Should().Be(_player2);
         }
 
         private void game_is_started()

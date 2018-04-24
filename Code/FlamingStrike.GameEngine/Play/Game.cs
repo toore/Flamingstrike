@@ -47,11 +47,6 @@ namespace FlamingStrike.GameEngine.Play
             ContinueToDraftArmies(numberOfArmiesToDraft);
         }
 
-        private PlayerName GetCurrentPlayerName()
-        {
-            return _players[_currentPlayerIndex].Name;
-        }
-
         public void ContinueToDraftArmies(int numberOfArmiesToDraft)
         {
             var draftArmiesPhase = _gamePhaseFactory.CreateDraftArmiesPhase(
@@ -118,6 +113,11 @@ namespace FlamingStrike.GameEngine.Play
             var gameOverState = _gamePhaseFactory.CreateGameOverState(winner);
 
             _gameObserver.GameOver(gameOverState);
+        }
+
+        private PlayerName GetCurrentPlayerName()
+        {
+            return _players[_currentPlayerIndex].Name;
         }
     }
 }

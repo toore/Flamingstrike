@@ -13,7 +13,6 @@ using FlamingStrike.UI.WPF.Services;
 using FlamingStrike.UI.WPF.ViewModels.Gameplay;
 using FlamingStrike.UI.WPF.ViewModels.Messages;
 using FlamingStrike.UI.WPF.ViewModels.Preparation;
-using Player = FlamingStrike.GameEngine.Setup.TerritorySelection.Player;
 using Territory = FlamingStrike.GameEngine.Setup.TerritorySelection.Territory;
 
 namespace FlamingStrike.UI.WPF.ViewModels.AlternateSetup
@@ -77,8 +76,8 @@ namespace FlamingStrike.UI.WPF.ViewModels.AlternateSetup
             UpdateView(
                 territorySelector.GetTerritories(),
                 territorySelector.PlaceArmyInRegion,
-                territorySelector.GetPlayer(),
-                territorySelector.GetArmiesLeftToPlace());
+                (string)territorySelector.Player,
+                territorySelector.ArmiesLeftToPlace);
         }
 
         public void NewGamePlaySetup(IGamePlaySetup gamePlaySetup)
@@ -89,15 +88,15 @@ namespace FlamingStrike.UI.WPF.ViewModels.AlternateSetup
         private void UpdateView(
             IReadOnlyList<Territory> territories,
             Action<Region> selectAction,
-            Player player,
+            string player,
             int armiesToPlace)
         {
             _onRegionClick = selectAction;
 
             _worldMapViewModelFactory.Update(WorldMapViewModel, Convert(territories), Maybe<Region>.Nothing);
 
-            PlayerName = (string)player.Name;
-            PlayerColor = _playerUiDataRepository.Get((string)player.Name).Color;
+            PlayerName = player;
+            PlayerColor = _playerUiDataRepository.Get(player).Color;
 
             InformationText = string.Format(Resources.PLACE_ARMY, armiesToPlace);
         }

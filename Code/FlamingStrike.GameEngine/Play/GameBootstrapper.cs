@@ -32,7 +32,6 @@ namespace FlamingStrike.GameEngine.Play
                 .ToList();
             var players = gamePlaySetup.GetPlayers().Select(player => new Player(player, new List<ICard>())).ToList();
             var deck = _deckFactory.Create();
-            //var gameData = new GameData(, players.First().Name, deck);
 
             var game = new Game(
                 gameObserver,
@@ -40,8 +39,7 @@ namespace FlamingStrike.GameEngine.Play
                 _armyDraftCalculator,
                 territories,
                 players,
-                deck
-            );
+                deck);
 
             game.Start();
         }

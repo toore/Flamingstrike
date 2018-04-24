@@ -60,7 +60,7 @@ namespace Tests.UI.WPF
                 .ReturnsForAnyArgs(expectedWorldMapViewModel);
             var placeArmyRegionSelector = Substitute.For<ITerritorySelector>();
             placeArmyRegionSelector.GetTerritories().Returns(new List<Territory>());
-            placeArmyRegionSelector.GetPlayer().Returns(new PlayerBuilder().Build());
+            placeArmyRegionSelector.Player.Returns(new PlayerName(""));
 
             var sut = Create();
             sut.SelectRegion(placeArmyRegionSelector);
@@ -72,8 +72,8 @@ namespace Tests.UI.WPF
         public void SelectRegion_updates_information_text()
         {
             var placeArmyRegionSelector = Substitute.For<ITerritorySelector>();
-            placeArmyRegionSelector.GetPlayer().Returns(new Player(new PlayerName(""), 1));
-            placeArmyRegionSelector.GetArmiesLeftToPlace().Returns(1);
+            placeArmyRegionSelector.Player.Returns(new PlayerName(""));
+            placeArmyRegionSelector.ArmiesLeftToPlace.Returns(1);
 
             var sut = Create();
             var monitor = sut.Monitor();
@@ -87,7 +87,7 @@ namespace Tests.UI.WPF
         public void SelectRegion_updates_player_name()
         {
             var placeArmyRegionSelector = Substitute.For<ITerritorySelector>();
-            placeArmyRegionSelector.GetPlayer().Returns(new Player(new PlayerName("player name"), 0));
+            placeArmyRegionSelector.Player.Returns(new PlayerName("player name"));
             _playerUiDataRepository.Get(null).ReturnsForAnyArgs(new PlayerUiData("", Colors.Black));
 
             var sut = Create();

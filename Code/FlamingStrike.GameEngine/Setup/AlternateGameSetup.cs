@@ -19,6 +19,9 @@ namespace FlamingStrike.GameEngine.Setup
         private readonly IReadOnlyList<Region> _regions;
         private readonly IStartingInfantryCalculator _startingInfantryCalculator;
         private readonly IShuffler _shuffler;
+        private List<Player> _players;
+        private List<Territory> _territories;
+        private int _currentPlayerIndex;
 
         public AlternateGameSetup(
             IAlternateGameSetupObserver alternateGameSetupObserver,
@@ -34,10 +37,19 @@ namespace FlamingStrike.GameEngine.Setup
 
         public void Run(IReadOnlyList<PlayerName> playerNames)
         {
-            var players = Shuffle(playerNames);
-            var territoriesAndPlayers = AssignPlayersToTerritories(players);
+            _players = Shuffle(playerNames);
+            AssignPlayersToTerritories();
 
-            PlaceArmies(territoriesAndPlayers);
+            PlaceArmies();
+        }
+
+        public void PlaceArmyInRegion(Region selectedRegion)
+        {
+            _territories.Single(x => x.Region == selectedRegion).PlaceArmy();
+
+            _currentPlayerIndex = (_currentPlayerIndex + 1) % _players.Count;
+
+            ContinueToPlaceArmy();
         }
 
         private List<Player> Shuffle(IReadOnlyCollection<PlayerName> players)
@@ -50,80 +62,62 @@ namespace FlamingStrike.GameEngine.Setup
                 .ToList();
         }
 
-        private AlternateGameSetupData AssignPlayersToTerritories(IReadOnlyList<Player> players)
+        private void AssignPlayersToTerritories()
         {
-            var territories = _regions
+            _territories = _regions
                 .Shuffle(_shuffler)
-                .Select((region, i) => new Territory(region, players[i % players.Count]))
+                .Select((region, i) => new Territory(region, _players[i % _players.Count]))
                 .ToList();
 
-            foreach (var territory in territories)
+            foreach (var territory in _territories)
             {
                 territory.PlaceArmy();
             }
-
-            return new AlternateGameSetupData(territories, players, players[territories.Count % players.Count]);
         }
 
-        private void PlaceArmies(AlternateGameSetupData alternateGameSetupData)
+        private void PlaceArmies()
         {
-            ContinueToPlaceArmy(alternateGameSetupData);
+            _currentPlayerIndex = _territories.Count % _players.Count;
+            ContinueToPlaceArmy();
         }
 
-        private void ContinueToPlaceArmy(AlternateGameSetupData alternateGameSetupData)
+        private void ContinueToPlaceArmy()
         {
-            var player = alternateGameSetupData.Players.Single(x => x.Name == alternateGameSetupData.CurrentPlayer.Name);
-            if (player.HasArmiesLeftToPlace())
+            if (GetCurrentPlayer().HasArmiesLeftToPlace())
             {
-                SelectRegionToPlaceArmy(player, alternateGameSetupData);
+                SelectRegionToPlaceArmy();
             }
             else
             {
-                SetupHasEnded(alternateGameSetupData);
+                SetupHasEnded();
             }
         }
 
-        private void SetupHasEnded(AlternateGameSetupData alternateGameSetupData)
+        private Player GetCurrentPlayer()
+        {
+            return _players[_currentPlayerIndex];
+        }
+
+        private void SetupHasEnded()
         {
             var gamePlaySetup = new GamePlaySetup(
-                alternateGameSetupData.Players.Select(x => x.Name).ToList(),
-                alternateGameSetupData.Territories.Select(x => new Finished.Territory(x.Region, x.Player.Name, x.Armies)).ToList());
+                _players.Select(x => x.Name).ToList(),
+                _territories.Select(x => new Finished.Territory(x.Region, x.Player.Name, x.Armies)).ToList());
 
             _alternateGameSetupObserver.NewGamePlaySetup(gamePlaySetup);
         }
 
-        public void PlaceArmyInRegion(Player currentPlayer, Region selectedRegion, AlternateGameSetupData alternateGameSetupData)
+        private void SelectRegionToPlaceArmy()
         {
-            alternateGameSetupData
-                .Territories
-                .Single(x => x.Region == selectedRegion)
-                .PlaceArmy();
+            var currentPlayer = GetCurrentPlayer();
 
-            var nextPlayerIndex = alternateGameSetupData.Players.ToList().IndexOf(currentPlayer) + 1;
-            var nextPlayer = alternateGameSetupData.Players[nextPlayerIndex % alternateGameSetupData.Players.Count];
-            var gameSetupData = new AlternateGameSetupData(alternateGameSetupData.Territories, alternateGameSetupData.Players, nextPlayer);
-            ContinueToPlaceArmy(gameSetupData);
-        }
+            var territories = _territories
+                .Select(x => new TerritorySelection.Territory(x.Region, x.Player.Name, x.Armies, x.Player == currentPlayer))
+                .ToList();
 
-        private void SelectRegionToPlaceArmy(Player player, AlternateGameSetupData alternateGameSetupData)
-        {
-            var territorySelector = new TerritorySelector(this, alternateGameSetupData, player);
+            var territorySelector = new TerritorySelector(this, currentPlayer.Name, currentPlayer.ArmiesToPlace, territories);
 
             _alternateGameSetupObserver.SelectRegion(territorySelector);
-        }
-    }
-
-    public class AlternateGameSetupData
-    {
-        public IReadOnlyList<Territory> Territories { get; }
-        public IReadOnlyList<Player> Players { get; }
-        public Player CurrentPlayer { get; }
-
-        public AlternateGameSetupData(IReadOnlyList<Territory> territories, IReadOnlyList<Player> players, Player currentPlayer)
-        {
-            Territories = territories;
-            Players = players;
-            CurrentPlayer = currentPlayer;
         }
     }
 }
