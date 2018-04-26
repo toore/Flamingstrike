@@ -41,7 +41,7 @@ namespace FlamingStrike.GameEngine
         {
             if (key == value)
             {
-                throw new ArgumentException("Region can't have border to itself. Key and value are equal.");
+                throw new ArgumentException($"Region can't have border to itself. {nameof(key)} and {nameof(value)} are equal.");
             }
 
             if (_map.ContainsKey(key) && _map[key].Contains(value))
