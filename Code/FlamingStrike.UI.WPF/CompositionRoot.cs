@@ -4,6 +4,7 @@ using FlamingStrike.GameEngine.Play;
 using FlamingStrike.GameEngine.Setup;
 using FlamingStrike.UI.WPF.RegionModels;
 using FlamingStrike.UI.WPF.Services;
+using FlamingStrike.UI.WPF.Services.GameEngineClient;
 using FlamingStrike.UI.WPF.ViewModels;
 using FlamingStrike.UI.WPF.ViewModels.AlternateSetup;
 using FlamingStrike.UI.WPF.ViewModels.Gameplay;
@@ -17,11 +18,10 @@ namespace FlamingStrike.UI.WPF
     {
         public PlayerUiDataRepository PlayerUiDataRepository { get; }
         public IEventAggregator EventAggregator { get; }
-        public AlternateGameSetupBootstrapper AlternateGameSetupBootstrapper { get; }
         public IGamePreparationViewModelFactory GamePreparationViewModelFactory { get; }
         public IGameplayViewModelFactory GameplayViewModelFactory { get; }
         public IAlternateGameSetupViewModelFactory AlternateGameSetupViewModelFactory { get; }
-        public IGameBootstrapper GameBootstrapper { get; }
+        public IGameEngineClientProxy GameEngineClientProxy { get; }
 
         public CompositionRoot()
         {
@@ -77,9 +77,10 @@ namespace FlamingStrike.UI.WPF
             var startingInfantryCalculator = new StartingInfantryCalculator();
 #endif
 
-            AlternateGameSetupBootstrapper = new AlternateGameSetupBootstrapper(worldMap.GetAll(), shuffler, startingInfantryCalculator);
+            var alternateGameSetupBootstrapper = new AlternateGameSetupBootstrapper(worldMap.GetAll(), shuffler, startingInfantryCalculator);
+            var gameBootstrapper = new GameBootstrapper(gamePhaseFactory, armyDraftCalculator, deckFactory);
 
-            GameBootstrapper = new GameBootstrapper(gamePhaseFactory, armyDraftCalculator, deckFactory);
+            GameEngineClientProxy = new GameEngineAdapter(alternateGameSetupBootstrapper, gameBootstrapper);
         }
     }
 

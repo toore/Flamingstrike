@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using FlamingStrike.Core;
-using FlamingStrike.GameEngine;
-using FlamingStrike.GameEngine.Play;
 using FlamingStrike.UI.WPF.Properties;
+using FlamingStrike.UI.WPF.Services.GameEngineClient;
+using FlamingStrike.UI.WPF.Services.GameEngineClient.Play;
 
 namespace FlamingStrike.UI.WPF.ViewModels.Gameplay.Interaction
 {
@@ -42,7 +42,7 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay.Interaction
 
         public override int DefaultNumberOfUserSelectedArmies => MaxNumberOfUserSelectableArmies;
 
-        public override int MaxNumberOfUserSelectableArmies => GetSelectedTerritory().GetNumberOfArmiesUsedInAnAttack();
+        public override int MaxNumberOfUserSelectableArmies => GetSelectedTerritory().GetMaxNumberOfPossibleAttackingArmies();
 
         public override void OnRegionClicked(Region region)
         {
@@ -61,7 +61,7 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay.Interaction
             _attackPhase.EndTurn();
         }
 
-        private ITerritory GetSelectedTerritory()
+        private Services.GameEngineClient.Play.Territory GetSelectedTerritory()
         {
             return _attackPhase.Territories.Single(x => x.Region == _selectedRegion);
         }

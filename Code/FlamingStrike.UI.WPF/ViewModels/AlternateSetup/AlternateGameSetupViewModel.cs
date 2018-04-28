@@ -4,22 +4,21 @@ using System.Linq;
 using System.Windows.Media;
 using Caliburn.Micro;
 using FlamingStrike.Core;
-using FlamingStrike.GameEngine;
-using FlamingStrike.GameEngine.Setup;
-using FlamingStrike.GameEngine.Setup.Finished;
-using FlamingStrike.GameEngine.Setup.TerritorySelection;
 using FlamingStrike.UI.WPF.Properties;
 using FlamingStrike.UI.WPF.Services;
+using FlamingStrike.UI.WPF.Services.GameEngineClient;
+using FlamingStrike.UI.WPF.Services.GameEngineClient.SetupFinished;
+using FlamingStrike.UI.WPF.Services.GameEngineClient.SetupTerritorySelection;
 using FlamingStrike.UI.WPF.ViewModels.Gameplay;
 using FlamingStrike.UI.WPF.ViewModels.Messages;
 using FlamingStrike.UI.WPF.ViewModels.Preparation;
-using Territory = FlamingStrike.GameEngine.Setup.TerritorySelection.Territory;
+using Territory = FlamingStrike.UI.WPF.Services.GameEngineClient.SetupTerritorySelection.Territory;
 
 namespace FlamingStrike.UI.WPF.ViewModels.AlternateSetup
 {
     public interface IAlternateGameSetupViewModel : IGameboardViewModel, IAlternateGameSetupObserver {}
 
-    public class AlternateGameSetupViewModel : Screen, IAlternateGameSetupViewModel
+    public class AlternateGameSetupViewModel : Screen, IAlternateGameSetupViewModel, IAlternateGameSetupObserver
     {
         private readonly IWorldMapViewModelFactory _worldMapViewModelFactory;
         private readonly IPlayerUiDataRepository _playerUiDataRepository;
@@ -75,8 +74,8 @@ namespace FlamingStrike.UI.WPF.ViewModels.AlternateSetup
         {
             UpdateView(
                 territorySelector.GetTerritories(),
+                territorySelector.Player,
                 territorySelector.PlaceArmyInRegion,
-                (string)territorySelector.Player,
                 territorySelector.ArmiesLeftToPlace);
         }
 
@@ -87,13 +86,13 @@ namespace FlamingStrike.UI.WPF.ViewModels.AlternateSetup
 
         private void UpdateView(
             IReadOnlyList<Territory> territories,
-            Action<Region> selectAction,
             string player,
+            Action<Region> onRegionClick,
             int armiesToPlace)
         {
-            _onRegionClick = selectAction;
-
             _worldMapViewModelFactory.Update(WorldMapViewModel, Convert(territories), Maybe<Region>.Nothing);
+
+            _onRegionClick = onRegionClick;
 
             PlayerName = player;
             PlayerColor = _playerUiDataRepository.Get(player).Color;

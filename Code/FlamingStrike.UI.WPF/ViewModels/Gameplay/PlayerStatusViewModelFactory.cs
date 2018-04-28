@@ -1,11 +1,11 @@
-﻿using FlamingStrike.GameEngine.Play;
+﻿using FlamingStrike.UI.WPF.Services.GameEngineClient.Play;
 using FlamingStrike.UI.WPF.ViewModels.Preparation;
 
 namespace FlamingStrike.UI.WPF.ViewModels.Gameplay
 {
     public interface IPlayerStatusViewModelFactory
     {
-        PlayerStatusViewModel Create(IPlayer player);
+        PlayerStatusViewModel Create(Player player);
     }
 
     public class PlayerStatusViewModelFactory : IPlayerStatusViewModelFactory
@@ -17,12 +17,12 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay
             _playerUiDataRepository = playerUiDataRepository;
         }
 
-        public PlayerStatusViewModel Create(IPlayer player)
+        public PlayerStatusViewModel Create(Player player)
         {
-            var name = (string)player.Name;
+            var name = player.Name;
             var playerUiData = _playerUiDataRepository.Get(name);
 
-            return new PlayerStatusViewModel(name, playerUiData.Color, player.Cards.Count);
+            return new PlayerStatusViewModel(name, playerUiData.Color, player.NumberOfCards);
         }
     }
 }

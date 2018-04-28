@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Media;
-using FlamingStrike.GameEngine;
 using FlamingStrike.UI.WPF.RegionModels;
+using FlamingStrike.UI.WPF.Services.GameEngineClient;
 
 namespace FlamingStrike.UI.WPF.ViewModels.Gameplay
 {
@@ -9,10 +9,10 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay
 
     public class RegionViewModel : ViewModelBase, IRegionViewModel
     {
-        private readonly RegionModel _regionModel;
+        private readonly IRegionModel _regionModel;
         private readonly Action<Region> _onClick;
 
-        public RegionViewModel(RegionModel regionModel, Action<Region> onClick)
+        public RegionViewModel(IRegionModel regionModel, Action<Region> onClick)
         {
             _regionModel = regionModel;
             _onClick = onClick;

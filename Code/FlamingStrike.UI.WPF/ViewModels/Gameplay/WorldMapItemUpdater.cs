@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Media;
 using FlamingStrike.Core;
-using FlamingStrike.GameEngine;
+using FlamingStrike.UI.WPF.Services.GameEngineClient;
 using FlamingStrike.UI.WPF.ViewModels.Preparation;
 
 namespace FlamingStrike.UI.WPF.ViewModels.Gameplay

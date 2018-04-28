@@ -1,6 +1,5 @@
-using FlamingStrike.GameEngine.Play;
-using FlamingStrike.GameEngine.Setup;
 using FlamingStrike.UI.WPF;
+using FlamingStrike.UI.WPF.Services.GameEngineClient;
 using FlamingStrike.UI.WPF.ViewModels;
 using FlamingStrike.UI.WPF.ViewModels.AlternateSetup;
 using FlamingStrike.UI.WPF.ViewModels.Gameplay;
@@ -15,18 +14,16 @@ namespace Tests.UI.WPF
 
         public MainGameViewModelDecorator(
             IPlayerUiDataRepository playerUiDataRepository,
-            IAlternateGameSetupBootstrapper alternateGameSetupBootstrapper,
             IGamePreparationViewModelFactory gamePreparationViewModelFactory,
             IGameplayViewModelFactory gameplayViewModelFactory,
             IAlternateGameSetupViewModelFactory alternateGameSetupViewModelFactory,
-            IGameBootstrapper gameBootstrapper)
+            IGameEngineClientProxy gameEngineClientProxy)
             : base(
                 playerUiDataRepository,
-                alternateGameSetupBootstrapper,
                 gamePreparationViewModelFactory,
                 gameplayViewModelFactory,
                 alternateGameSetupViewModelFactory,
-                gameBootstrapper) {}
+                gameEngineClientProxy) {}
 
         public new void OnInitialize()
         {

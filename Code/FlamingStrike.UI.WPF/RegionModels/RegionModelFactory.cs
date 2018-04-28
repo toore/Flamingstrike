@@ -1,16 +1,16 @@
 using System.Collections.Generic;
-using FlamingStrike.GameEngine;
+using FlamingStrike.UI.WPF.Services.GameEngineClient;
 
 namespace FlamingStrike.UI.WPF.RegionModels
 {
     public interface IRegionModelFactory
     {
-        IEnumerable<RegionModel> Create();
+        IEnumerable<IRegionModel> Create();
     }
 
     public class RegionModelFactory : IRegionModelFactory
     {
-        public IEnumerable<RegionModel> Create()
+        public IEnumerable<IRegionModel> Create()
         {
             yield return new AlaskaModel(Region.Alaska);
             yield return new AlbertaModel(Region.Alberta);

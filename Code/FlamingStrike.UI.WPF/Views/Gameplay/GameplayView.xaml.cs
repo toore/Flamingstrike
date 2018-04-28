@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Media;
 using FlamingStrike.Core;
-using FlamingStrike.GameEngine;
-using FlamingStrike.GameEngine.Play;
 using FlamingStrike.UI.WPF.RegionModels;
+using FlamingStrike.UI.WPF.Services.GameEngineClient;
+using FlamingStrike.UI.WPF.Services.GameEngineClient.Play;
 using FlamingStrike.UI.WPF.ViewModels.Gameplay;
 using FlamingStrike.UI.WPF.ViewModels.Preparation;
 using Territory = FlamingStrike.UI.WPF.ViewModels.Gameplay.Territory;
@@ -30,11 +30,11 @@ namespace FlamingStrike.UI.WPF.Views.Gameplay
 
             var random = new Random();
 
-            PlayerName[] players = { new PlayerName("player one"), new PlayerName("player two") };
-            playerUiDataRepository.Add(new PlayerUiData((string)players[0], Colors.DeepPink));
-            playerUiDataRepository.Add(new PlayerUiData((string)players[1], Colors.Teal));
+            string[] players = { "player one", "player two" };
+            playerUiDataRepository.Add(new PlayerUiData(players[0], Colors.DeepPink));
+            playerUiDataRepository.Add(new PlayerUiData(players[1], Colors.Teal));
 
-            var regions = new WorldMapFactory().Create().GetAll();
+            var regions = Enum.GetValues(typeof(Region)).OfType<Region>();
 
             var territories = regions
                 .Select((region, i) => new Territory(region, true, players[i % players.Length], random.Next(99) + 1))

@@ -1,6 +1,5 @@
-using FlamingStrike.GameEngine;
-using FlamingStrike.GameEngine.Play;
 using FlamingStrike.UI.WPF.Properties;
+using FlamingStrike.UI.WPF.Services.GameEngineClient.Play;
 
 namespace FlamingStrike.UI.WPF.ViewModels.Gameplay.Interaction
 {

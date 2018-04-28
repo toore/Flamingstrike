@@ -1,18 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Windows.Media;
 using Caliburn.Micro;
-using FlamingStrike.GameEngine;
-using FlamingStrike.GameEngine.Play;
 using FlamingStrike.UI.WPF.Properties;
 using FlamingStrike.UI.WPF.Services;
+using FlamingStrike.UI.WPF.Services.GameEngineClient;
+using FlamingStrike.UI.WPF.Services.GameEngineClient.Play;
 using FlamingStrike.UI.WPF.ViewModels.Gameplay;
 using FlamingStrike.UI.WPF.ViewModels.Gameplay.Interaction;
 using FlamingStrike.UI.WPF.ViewModels.Messages;
 using FlamingStrike.UI.WPF.ViewModels.Preparation;
 using FluentAssertions;
 using NSubstitute;
-using Tests.GameEngine;
 using Xunit;
 
 namespace Tests.UI.WPF
@@ -26,10 +24,10 @@ namespace Tests.UI.WPF
         private readonly IEventAggregator _eventAggregator;
         private readonly WorldMapViewModel _worldMapViewModel = new WorldMapViewModel();
 
-        private readonly PlayerName _currentPlayerName;
+        private readonly string _currentPlayerName;
         private readonly Color _currentPlayerColor;
         private readonly object[] _expectedCurrentPlayerStatusViewModels;
-        private readonly IPlayer[] _player;
+        private readonly Player[] _player;
         private readonly IDraftArmiesPhase _draftArmiesPhase;
         private readonly IAttackPhase _attackPhase;
 
@@ -52,19 +50,19 @@ namespace Tests.UI.WPF
                 _eventAggregator,
                 playerStatusViewModelFactory);
 
-            _currentPlayerName = new PlayerBuilder().Name("current player").Build();
+            _currentPlayerName = "current player";
             _currentPlayerColor = Color.FromArgb(1, 2, 3, 4);
-            _playerUiDataRepository.Get((string)_currentPlayerName).Returns(new PlayerUiData((string)_currentPlayerName, _currentPlayerColor));
-            var firstPlayerGameData = new Player(new PlayerBuilder().Name("player 1").Build(), new List<ICard>());
-            var secondPlayerGameData = new Player(new PlayerBuilder().Name("player 2").Build(), new List<ICard>());
-            var thirdPlayerGameData = new Player(new PlayerBuilder().Name("player 3").Build(), new List<ICard>());
+            _playerUiDataRepository.Get(_currentPlayerName).Returns(new PlayerUiData(_currentPlayerName, _currentPlayerColor));
+            var firstPlayerGameData = new Player("player 1", 0);
+            var secondPlayerGameData = new Player("player 2", 0);
+            var thirdPlayerGameData = new Player("player 3", 0);
             var firstPlayerStatusViewModel = new PlayerStatusViewModelBuilder().Build();
             var secondPlayerStatusViewModel = new PlayerStatusViewModelBuilder().Build();
             var thirdPlayerStatusViewModel = new PlayerStatusViewModelBuilder().Build();
             playerStatusViewModelFactory.Create(firstPlayerGameData).Returns(firstPlayerStatusViewModel);
             playerStatusViewModelFactory.Create(secondPlayerGameData).Returns(secondPlayerStatusViewModel);
             playerStatusViewModelFactory.Create(thirdPlayerGameData).Returns(thirdPlayerStatusViewModel);
-            _player = new IPlayer[]
+            _player = new[]
                 {
                     firstPlayerGameData,
                     secondPlayerGameData,
@@ -73,10 +71,10 @@ namespace Tests.UI.WPF
             _expectedCurrentPlayerStatusViewModels = new object[] { firstPlayerStatusViewModel, secondPlayerStatusViewModel, thirdPlayerStatusViewModel };
 
             _draftArmiesPhase = Substitute.For<IDraftArmiesPhase>();
-            _draftArmiesPhase.CurrentPlayerName.Returns(new PlayerName(""));
+            _draftArmiesPhase.CurrentPlayerName.Returns("");
 
             _attackPhase = Substitute.For<IAttackPhase>();
-            _attackPhase.CurrentPlayerName.Returns(new PlayerName(""));
+            _attackPhase.CurrentPlayerName.Returns("");
         }
 
         [Fact]
@@ -307,10 +305,10 @@ namespace Tests.UI.WPF
             var endTurnPhase = Substitute.For<IEndTurnPhase>();
             endTurnPhase.CurrentPlayerName.Returns(_currentPlayerName);
             var draftArmiesPhase = Substitute.For<IDraftArmiesPhase>();
-            draftArmiesPhase.CurrentPlayerName.Returns(new PlayerName(""));
+            draftArmiesPhase.CurrentPlayerName.Returns("");
             _sut.DraftArmies(draftArmiesPhase);
             var attackPhase = Substitute.For<IAttackPhase>();
-            attackPhase.CurrentPlayerName.Returns(new PlayerName(""));
+            attackPhase.CurrentPlayerName.Returns("");
             _sut.Attack(attackPhase);
 
             var monitor = _sut.Monitor();
@@ -346,7 +344,7 @@ namespace Tests.UI.WPF
         public void Game_over_displays_dialog()
         {
             var gameOverState = Substitute.For<IGameOverState>();
-            gameOverState.Winner.Returns(new PlayerBuilder().Name("winner").Build());
+            gameOverState.Winner.Returns("winner");
 
             _sut.GameOver(gameOverState);
 

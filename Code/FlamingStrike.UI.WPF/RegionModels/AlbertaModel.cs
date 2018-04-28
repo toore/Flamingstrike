@@ -1,12 +1,12 @@
 using System.Windows;
-using FlamingStrike.GameEngine;
 using FlamingStrike.UI.WPF.Properties;
+using FlamingStrike.UI.WPF.Services.GameEngineClient;
 
 namespace FlamingStrike.UI.WPF.RegionModels
 {
     public class AlbertaModel : RegionModelBase
     {
-        public AlbertaModel(Region alberta): base(alberta) {}
+        public AlbertaModel(Region alberta) : base(alberta) {}
 
         public override string Name => Resources.ALBERTA;
         public override Point NamePosition => new Point(140, 110);

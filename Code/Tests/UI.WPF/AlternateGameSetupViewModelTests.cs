@@ -2,11 +2,11 @@
 using System.Windows.Media;
 using Caliburn.Micro;
 using FlamingStrike.Core;
-using FlamingStrike.GameEngine;
-using FlamingStrike.GameEngine.Setup.Finished;
-using FlamingStrike.GameEngine.Setup.TerritorySelection;
 using FlamingStrike.UI.WPF.Properties;
 using FlamingStrike.UI.WPF.Services;
+using FlamingStrike.UI.WPF.Services.GameEngineClient;
+using FlamingStrike.UI.WPF.Services.GameEngineClient.SetupFinished;
+using FlamingStrike.UI.WPF.Services.GameEngineClient.SetupTerritorySelection;
 using FlamingStrike.UI.WPF.ViewModels.AlternateSetup;
 using FlamingStrike.UI.WPF.ViewModels.Gameplay;
 using FlamingStrike.UI.WPF.ViewModels.Messages;
@@ -14,7 +14,6 @@ using FlamingStrike.UI.WPF.ViewModels.Preparation;
 using FluentAssertions;
 using NSubstitute;
 using Xunit;
-using Territory = FlamingStrike.GameEngine.Setup.TerritorySelection.Territory;
 
 namespace Tests.UI.WPF
 {
@@ -59,8 +58,8 @@ namespace Tests.UI.WPF
             _worldMapViewModelFactory.Create(null)
                 .ReturnsForAnyArgs(expectedWorldMapViewModel);
             var placeArmyRegionSelector = Substitute.For<ITerritorySelector>();
-            placeArmyRegionSelector.GetTerritories().Returns(new List<Territory>());
-            placeArmyRegionSelector.Player.Returns(new PlayerName(""));
+            placeArmyRegionSelector.GetTerritories().Returns(new List<FlamingStrike.UI.WPF.Services.GameEngineClient.SetupTerritorySelection.Territory>());
+            placeArmyRegionSelector.Player.Returns("");
 
             var sut = Create();
             sut.SelectRegion(placeArmyRegionSelector);
@@ -72,7 +71,7 @@ namespace Tests.UI.WPF
         public void SelectRegion_updates_information_text()
         {
             var placeArmyRegionSelector = Substitute.For<ITerritorySelector>();
-            placeArmyRegionSelector.Player.Returns(new PlayerName(""));
+            placeArmyRegionSelector.Player.Returns("");
             placeArmyRegionSelector.ArmiesLeftToPlace.Returns(1);
 
             var sut = Create();
@@ -87,7 +86,7 @@ namespace Tests.UI.WPF
         public void SelectRegion_updates_player_name()
         {
             var placeArmyRegionSelector = Substitute.For<ITerritorySelector>();
-            placeArmyRegionSelector.Player.Returns(new PlayerName("player name"));
+            placeArmyRegionSelector.Player.Returns("player name");
             _playerUiDataRepository.Get(null).ReturnsForAnyArgs(new PlayerUiData("", Colors.Black));
 
             var sut = Create();
@@ -161,17 +160,6 @@ namespace Tests.UI.WPF
         private AlternateGameSetupViewModel Create()
         {
             return (AlternateGameSetupViewModel)_factory.Create();
-        }
-
-        public class PlayerBuilder
-        {
-            private PlayerName _name = new PlayerName("");
-            private int _armiesToPlace = 0;
-
-            public Player Build()
-            {
-                return new Player(_name, _armiesToPlace);
-            }
         }
     }
 }

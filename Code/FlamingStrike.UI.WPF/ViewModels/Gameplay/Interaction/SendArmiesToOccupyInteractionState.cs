@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using FlamingStrike.Core;
-using FlamingStrike.GameEngine;
-using FlamingStrike.GameEngine.Play;
 using FlamingStrike.UI.WPF.Properties;
+using FlamingStrike.UI.WPF.Services.GameEngineClient;
+using FlamingStrike.UI.WPF.Services.GameEngineClient.Play;
 
 namespace FlamingStrike.UI.WPF.ViewModels.Gameplay.Interaction
 {

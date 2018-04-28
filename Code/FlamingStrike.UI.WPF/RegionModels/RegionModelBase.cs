@@ -1,9 +1,9 @@
 ﻿using System.Windows;
-using FlamingStrike.GameEngine;
+using FlamingStrike.UI.WPF.Services.GameEngineClient;
 
 namespace FlamingStrike.UI.WPF.RegionModels
 {
-    public abstract class RegionModelBase : RegionModel
+    public abstract class RegionModelBase : IRegionModel
     {
         protected RegionModelBase(Region region)
         {

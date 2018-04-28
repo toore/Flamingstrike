@@ -1,33 +1,31 @@
-﻿using FlamingStrike.GameEngine.Play;
-using FlamingStrike.GameEngine.Setup;
+﻿using FlamingStrike.UI.WPF.Services.GameEngineClient;
+using FlamingStrike.UI.WPF.Services.GameEngineClient.SetupFinished;
 using FlamingStrike.UI.WPF.ViewModels.AlternateSetup;
 using FlamingStrike.UI.WPF.ViewModels.Gameplay;
 using FlamingStrike.UI.WPF.ViewModels.Messages;
 using FlamingStrike.UI.WPF.ViewModels.Preparation;
 using FluentAssertions;
 using NSubstitute;
-using Tests.GameEngine.Setup;
 using Xunit;
+using Territory = FlamingStrike.UI.WPF.Services.GameEngineClient.SetupFinished.Territory;
 
 namespace Tests.UI.WPF
 {
     public class MainGameViewModelTests
     {
         private readonly IPlayerUiDataRepository _playerUiDataRepository;
-        private readonly IAlternateGameSetupBootstrapper _alternateGameSetupBootstrapper;
         private readonly IGamePreparationViewModelFactory _gamePreparationViewModelFactory;
         private readonly IGameplayViewModelFactory _gameplayViewModelFactory;
         private readonly IAlternateGameSetupViewModelFactory _alternateGameSetupViewModelFactory;
-        private readonly IGameBootstrapper _gameBootstrapper;
+        private readonly IGameEngineClientProxy _gameEngineClientProxy;
 
         public MainGameViewModelTests()
         {
             _playerUiDataRepository = Substitute.For<IPlayerUiDataRepository>();
-            _alternateGameSetupBootstrapper = Substitute.For<IAlternateGameSetupBootstrapper>();
             _gamePreparationViewModelFactory = Substitute.For<IGamePreparationViewModelFactory>();
             _gameplayViewModelFactory = Substitute.For<IGameplayViewModelFactory>();
             _alternateGameSetupViewModelFactory = Substitute.For<IAlternateGameSetupViewModelFactory>();
-            _gameBootstrapper = Substitute.For<IGameBootstrapper>();
+            _gameEngineClientProxy = Substitute.For<IGameEngineClientProxy>();
         }
 
         [Fact]
@@ -74,7 +72,7 @@ namespace Tests.UI.WPF
             _gameplayViewModelFactory.Create().Returns(gameplayViewModel);
 
             var sut = Initialize();
-            sut.Handle(new StartGameplayMessage(new GamePlaySetupBuilder().Build()));
+            sut.Handle(new StartGameplayMessage(new GamePlaySetup(new string[] {}, new Territory[] {})));
 
             sut.ActiveItem.Should().Be(gameplayViewModel);
         }
@@ -83,11 +81,10 @@ namespace Tests.UI.WPF
         {
             return new MainGameViewModelDecorator(
                 _playerUiDataRepository,
-                _alternateGameSetupBootstrapper,
                 _gamePreparationViewModelFactory,
                 _gameplayViewModelFactory,
                 _alternateGameSetupViewModelFactory,
-                _gameBootstrapper);
+                _gameEngineClientProxy);
         }
     }
 }

@@ -1,5 +1,5 @@
-using FlamingStrike.GameEngine;
-using FlamingStrike.GameEngine.Play;
+using FlamingStrike.UI.WPF.Services.GameEngineClient;
+using FlamingStrike.UI.WPF.Services.GameEngineClient.Play;
 using FlamingStrike.UI.WPF.ViewModels.Gameplay.Interaction;
 using NSubstitute;
 using Xunit;

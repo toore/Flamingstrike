@@ -2,15 +2,15 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using FlamingStrike.Core;
-using FlamingStrike.GameEngine;
 using FlamingStrike.UI.WPF.RegionModels;
+using FlamingStrike.UI.WPF.Services.GameEngineClient;
 using FlamingStrike.UI.WPF.ViewModels.Preparation;
 
 namespace FlamingStrike.UI.WPF.ViewModels.Gameplay
 {
     public class Territory
     {
-        public Territory(Region region, bool isEnabled, PlayerName player, int armies)
+        public Territory(Region region, bool isEnabled, string player, int armies)
         {
             Region = region;
             IsEnabled = isEnabled;
@@ -20,7 +20,7 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay
 
         public Region Region { get; }
         public bool IsEnabled { get; }
-        public PlayerName Player { get; }
+        public string Player { get; }
         public int Armies { get; }
     }
 

@@ -3,9 +3,9 @@ using System.Linq;
 using System.Windows.Media;
 using Caliburn.Micro;
 using FlamingStrike.Core;
-using FlamingStrike.GameEngine;
-using FlamingStrike.GameEngine.Play;
 using FlamingStrike.UI.WPF.Services;
+using FlamingStrike.UI.WPF.Services.GameEngineClient;
+using FlamingStrike.UI.WPF.Services.GameEngineClient.Play;
 using FlamingStrike.UI.WPF.ViewModels.Gameplay.Interaction;
 using FlamingStrike.UI.WPF.ViewModels.Messages;
 using FlamingStrike.UI.WPF.ViewModels.Preparation;
@@ -46,7 +46,7 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay
         private int _maxNumberOfUserSelectableArmies;
         private Maybe<Region> _previouslySelectedAttackingRegion;
         private bool _canUserSelectNumberOfArmies;
-        private IReadOnlyList<ITerritory> _territories;
+        private IReadOnlyList<Services.GameEngineClient.Play.Territory> _territories;
 
         public GameplayViewModel(
             IInteractionStateFactory interactionStateFactory,
@@ -278,17 +278,17 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay
             UpdateView();
         }
 
-        private void ShowGameOverMessage(PlayerName winner)
+        private void ShowGameOverMessage(string winner)
         {
-            _dialogManager.ShowGameOverDialog((string)winner);
+            _dialogManager.ShowGameOverDialog(winner);
 
             _eventAggregator.PublishOnUIThread(new NewGameMessage());
         }
 
-        private void UpdatePlayersInformation(PlayerName currentPlayerName, IReadOnlyList<IPlayer> playerGameDatas)
+        private void UpdatePlayersInformation(string currentPlayerName, IReadOnlyList<Player> playerGameDatas)
         {
-            PlayerName = (string)currentPlayerName;
-            PlayerColor = _playerUiDataRepository.Get((string)currentPlayerName).Color;
+            PlayerName = currentPlayerName;
+            PlayerColor = _playerUiDataRepository.Get(currentPlayerName).Color;
 
             PlayerStatuses = playerGameDatas
                 .Select(x => _playerStatusViewModelFactory.Create(x))
@@ -311,7 +311,7 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay
                 _interactionState.SelectedRegion);
         }
 
-        private IReadOnlyList<Territory> Convert(IEnumerable<ITerritory> territories)
+        private IReadOnlyList<Territory> Convert(IEnumerable<Services.GameEngineClient.Play.Territory> territories)
         {
             return territories
                 .Select(x => new Territory(x.Region, _interactionState.EnabledRegions.Contains(x.Region), x.PlayerName, x.Armies)).ToList();

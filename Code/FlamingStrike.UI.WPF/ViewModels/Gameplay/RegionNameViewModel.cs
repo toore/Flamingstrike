@@ -1,14 +1,14 @@
 ﻿using System.Windows;
-using FlamingStrike.GameEngine;
 using FlamingStrike.UI.WPF.RegionModels;
+using FlamingStrike.UI.WPF.Services.GameEngineClient;
 
 namespace FlamingStrike.UI.WPF.ViewModels.Gameplay
 {
     public class RegionNameViewModel : ViewModelBase, IWorldMapItemViewModel
     {
-        private readonly RegionModel _regionModel;
+        private readonly IRegionModel _regionModel;
 
-        public RegionNameViewModel(RegionModel regionModel)
+        public RegionNameViewModel(IRegionModel regionModel)
         {
             _regionModel = regionModel;
         }
