@@ -24,3 +24,7 @@ Improvements:
 - [ ] Give user hints or help messages. E.g. A selected territory with only one army can't attack any territory.
 - [ ] Create Neutral AI player
 - [ ] Add Nuclear custom rules...What!?
+
+Other:
+
+-[ ] Multiplayer, not only hotseat
