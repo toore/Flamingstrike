@@ -12,7 +12,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlamingStrike.UI.WPF", "Fla
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlamingStrike.GameEngine", "FlamingStrike.GameEngine\FlamingStrike.GameEngine.csproj", "{A35C3BAE-9424-4B3F-8413-F01CEBAC0233}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlamingStrike.Core", "FlamingStrike.Core\FlamingStrike.Core.csproj", "{4042274D-44C5-4E8B-BE62-5861FE661EAF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlamingStrike.Core", "FlamingStrike.Core\FlamingStrike.Core.csproj", "{4042274D-44C5-4E8B-BE62-5861FE661EAF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
