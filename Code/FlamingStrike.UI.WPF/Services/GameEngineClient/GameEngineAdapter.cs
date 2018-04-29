@@ -7,7 +7,7 @@ using FlamingStrike.UI.WPF.ViewModels.Gameplay;
 
 namespace FlamingStrike.UI.WPF.Services.GameEngineClient
 {
-    public partial class GameEngineAdapter : IGameEngineClientProxy
+    public class GameEngineAdapter : IGameEngineClientProxy
     {
         private readonly IAlternateGameSetupBootstrapper _alternateGameSetupBootstrapper;
         private readonly IGameBootstrapper _gameBootstrapper;

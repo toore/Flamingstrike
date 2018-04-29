@@ -7,41 +7,38 @@ using ISendArmiesToOccupyPhase = FlamingStrike.GameEngine.Play.ISendArmiesToOccu
 
 namespace FlamingStrike.UI.WPF.Services.GameEngineClient
 {
-    public partial class GameEngineAdapter
+    public class GameObserverAdapter : GameEngine.Play.IGameObserver
     {
-        private class GameObserverAdapter : GameEngine.Play.IGameObserver
+        private readonly IGameObserver _gameObserver;
+
+        public GameObserverAdapter(IGameObserver gameObserver)
         {
-            private readonly IGameObserver _gameObserver;
+            _gameObserver = gameObserver;
+        }
 
-            public GameObserverAdapter(IGameObserver gameObserver)
-            {
-                _gameObserver = gameObserver;
-            }
+        public void DraftArmies(IDraftArmiesPhase draftArmiesPhase)
+        {
+            _gameObserver.DraftArmies(new DraftArmiesPhaseAdapter(draftArmiesPhase));
+        }
 
-            public void DraftArmies(IDraftArmiesPhase draftArmiesPhase)
-            {
-                _gameObserver.DraftArmies(new DraftArmiesPhaseAdapter(draftArmiesPhase));
-            }
+        public void Attack(IAttackPhase attackPhase)
+        {
+            _gameObserver.Attack(new AttackPhaseAdapter(attackPhase));
+        }
 
-            public void Attack(IAttackPhase attackPhase)
-            {
-                _gameObserver.Attack(new AttackPhaseAdapter(attackPhase));
-            }
+        public void SendArmiesToOccupy(ISendArmiesToOccupyPhase sendArmiesToOccupyPhase)
+        {
+            _gameObserver.SendArmiesToOccupy(new SendArmiesToOccupyPhaseAdapter(sendArmiesToOccupyPhase));
+        }
 
-            public void SendArmiesToOccupy(ISendArmiesToOccupyPhase sendArmiesToOccupyPhase)
-            {
-                _gameObserver.SendArmiesToOccupy(new SendArmiesToOccupyPhaseAdapter(sendArmiesToOccupyPhase));
-            }
+        public void EndTurn(IEndTurnPhase endTurnPhase)
+        {
+            _gameObserver.EndTurn(new EndTurnPhaseAdapter(endTurnPhase));
+        }
 
-            public void EndTurn(IEndTurnPhase endTurnPhase)
-            {
-                _gameObserver.EndTurn(new EndTurnPhaseAdapter(endTurnPhase));
-            }
-
-            public void GameOver(IGameOverState gameOverState)
-            {
-                _gameObserver.GameOver(new GameOverState((string)gameOverState.Winner));
-            }
+        public void GameOver(IGameOverState gameOverState)
+        {
+            _gameObserver.GameOver(new GameOverState((string)gameOverState.Winner));
         }
     }
 }
