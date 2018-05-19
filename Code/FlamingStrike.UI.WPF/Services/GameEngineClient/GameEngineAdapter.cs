@@ -3,7 +3,9 @@ using System.Linq;
 using FlamingStrike.GameEngine;
 using FlamingStrike.GameEngine.Play;
 using FlamingStrike.GameEngine.Setup;
-using FlamingStrike.UI.WPF.ViewModels.Gameplay;
+using FlamingStrike.UI.WPF.Services.GameEngineClient.SetupFinished;
+using GamePlaySetup = FlamingStrike.GameEngine.Setup.Finished.GamePlaySetup;
+using Territory = FlamingStrike.GameEngine.Setup.Finished.Territory;
 
 namespace FlamingStrike.UI.WPF.Services.GameEngineClient
 {
@@ -26,13 +28,13 @@ namespace FlamingStrike.UI.WPF.Services.GameEngineClient
             _alternateGameSetupBootstrapper.Run(gameSetupObserverAdapter, playerNames);
         }
 
-        public void StartGame(IGameplayViewModel gameplayViewModel, SetupFinished.IGamePlaySetup gamePlaySetup)
+        public void StartGame(IGameObserver gameObserver, IGamePlaySetup gamePlaySetup)
         {
-            var gameObserverAdapter = new GameObserverAdapter(gameplayViewModel);
+            var gameObserverAdapter = new GameObserverAdapter(gameObserver);
 
             var players = gamePlaySetup.GetPlayers().Select(x => new PlayerName(x)).ToList();
-            var territories = gamePlaySetup.GetTerritories().Select(x => new GameEngine.Setup.Finished.Territory(x.Region.MapToEngine(), new PlayerName(x.PlayerName), x.Armies)).ToList();
-            var setup = new GameEngine.Setup.Finished.GamePlaySetup(players, territories);
+            var territories = gamePlaySetup.GetTerritories().Select(x => new Territory(x.Region.MapToEngine(), new PlayerName(x.PlayerName), x.Armies)).ToList();
+            var setup = new GamePlaySetup(players, territories);
 
             _gameBootstrapper.Run(gameObserverAdapter, setup);
         }

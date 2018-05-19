@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using FlamingStrike.UI.WPF.Services.GameEngineClient.SetupFinished;
 using FlamingStrike.UI.WPF.Services.GameEngineClient.SetupTerritorySelection;
-using FlamingStrike.UI.WPF.ViewModels.Gameplay;
 using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.Extensions.Logging;
 using Territory = FlamingStrike.UI.WPF.Services.GameEngineClient.SetupTerritorySelection.Territory;
@@ -19,19 +18,20 @@ namespace FlamingStrike.UI.WPF.Services.GameEngineClient
                 .WithConsoleLogger(LogLevel.Trace)
                 .Build();
 
-            hubConnection.On<SelectRegionRequest>(
-                "SelectRegion", dto =>
-                    {
-                        var territorySelector = new TerritorySelector(new ArmyPlacerProxy(hubConnection), dto.Player, dto.ArmiesLeftToPlace, dto.Territories);
-                        alternateGameSetupObserver.SelectRegion(territorySelector);
-                    });
+            hubConnection.On<SelectRegionRequest>("SelectRegion", dto => OnSelectRegion(alternateGameSetupObserver, hubConnection, dto));
             hubConnection.On<GamePlaySetup>("NewGamePlaySetup", alternateGameSetupObserver.NewGamePlaySetup);
 
             await hubConnection.StartAsync();
             await hubConnection.SendAsync("RunSetup", players);
         }
 
-        public void StartGame(IGameplayViewModel gameplayViewModel, IGamePlaySetup gamePlaySetup)
+        private static void OnSelectRegion(IAlternateGameSetupObserver alternateGameSetupObserver, HubConnection hubConnection, SelectRegionRequest dto)
+        {
+            var territorySelector = new TerritorySelector(new ArmyPlacerProxy(hubConnection), dto.Player, dto.ArmiesLeftToPlace, dto.Territories);
+            alternateGameSetupObserver.SelectRegion(territorySelector);
+        }
+
+        public void StartGame(IGameObserver gameObserver, IGamePlaySetup gamePlaySetup)
         {
             throw new NotImplementedException();
         }
