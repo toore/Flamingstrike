@@ -4,7 +4,7 @@ using System.Reflection;
 
 namespace FlamingStrike.UI.WPF.Services.GameEngineClient
 {
-    public static class EngineMappingExtensions
+    public static class GameEngineMappingExtensions
     {
         public static Region MapFromEngine(this GameEngine.Region region)
         {

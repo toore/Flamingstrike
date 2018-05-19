@@ -1,8 +1,8 @@
-﻿namespace FlamingStrike.UI.WPF.Services.GameEngineClient.SetupTerritorySelection
+﻿namespace FlamingStrike.Service.Setup
 {
-    public class Territory
+    public class TerritoryDto
     {
-        public Territory(Region region, string player, int armies, bool isSelectable)
+        public TerritoryDto(string region, string player, int armies, bool isSelectable)
         {
             Region = region;
             Player = player;
@@ -10,7 +10,7 @@
             IsSelectable = isSelectable;
         }
 
-        public Region Region { get; }
+        public string Region { get; }
         public string Player { get; }
         public int Armies { get; }
         public bool IsSelectable { get; }

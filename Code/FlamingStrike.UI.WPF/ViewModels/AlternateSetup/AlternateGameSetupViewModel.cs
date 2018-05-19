@@ -102,7 +102,7 @@ namespace FlamingStrike.UI.WPF.ViewModels.AlternateSetup
 
         private static IReadOnlyList<Gameplay.Territory> Convert(IEnumerable<Territory> territories)
         {
-            return territories.Select(x => new Gameplay.Territory(x.Region, x.IsSelectable, x.Name, x.Armies)).ToList();
+            return territories.Select(x => new Gameplay.Territory(x.Region, x.IsSelectable, x.Player, x.Armies)).ToList();
         }
 
         public bool CanEnterFortifyMode => false;

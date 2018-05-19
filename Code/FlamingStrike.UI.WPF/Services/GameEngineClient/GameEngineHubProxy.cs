@@ -1,0 +1,61 @@
+﻿using System;
+using System.Collections.Generic;
+using FlamingStrike.UI.WPF.Services.GameEngineClient.SetupFinished;
+using FlamingStrike.UI.WPF.Services.GameEngineClient.SetupTerritorySelection;
+using FlamingStrike.UI.WPF.ViewModels.Gameplay;
+using Microsoft.AspNetCore.SignalR.Client;
+using Microsoft.Extensions.Logging;
+using Territory = FlamingStrike.UI.WPF.Services.GameEngineClient.SetupTerritorySelection.Territory;
+
+namespace FlamingStrike.UI.WPF.Services.GameEngineClient
+{
+    public class GameEngineHubProxy : IGameEngineClientProxy
+    {
+        public async void Setup(IAlternateGameSetupObserver alternateGameSetupObserver, IEnumerable<string> players)
+        {
+            var hubConnection = new HubConnectionBuilder()
+                .WithUrl("http://localhost:60643/hubs/gameengine")
+                //.WithUrl("https://localhost:44391/hubs/gameengine")
+                .WithConsoleLogger(LogLevel.Trace)
+                .Build();
+
+            hubConnection.On<SelectRegionRequest>(
+                "SelectRegion", dto =>
+                    {
+                        var territorySelector = new TerritorySelector(new ArmyPlacerProxy(hubConnection), dto.Player, dto.ArmiesLeftToPlace, dto.Territories);
+                        alternateGameSetupObserver.SelectRegion(territorySelector);
+                    });
+            hubConnection.On<GamePlaySetup>("NewGamePlaySetup", alternateGameSetupObserver.NewGamePlaySetup);
+
+            await hubConnection.StartAsync();
+            await hubConnection.SendAsync("RunSetup", players);
+        }
+
+        public void StartGame(IGameplayViewModel gameplayViewModel, IGamePlaySetup gamePlaySetup)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    public class ArmyPlacerProxy : IArmyPlacer
+    {
+        private readonly HubConnection _connection;
+
+        public ArmyPlacerProxy(HubConnection connection)
+        {
+            _connection = connection;
+        }
+
+        public async void PlaceArmyInRegion(Region selectedRegion)
+        {
+            await _connection.SendAsync("PlaceArmyInRegion", Enum.GetName(typeof(Region), selectedRegion));
+        }
+    }
+
+    public class SelectRegionRequest
+    {
+        public string Player { get; set; }
+        public int ArmiesLeftToPlace { get; set; }
+        public IReadOnlyList<Territory> Territories { get; set; }
+    }
+}

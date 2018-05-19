@@ -21,7 +21,7 @@ namespace FlamingStrike.UI.WPF
         public IGamePreparationViewModelFactory GamePreparationViewModelFactory { get; }
         public IGameplayViewModelFactory GameplayViewModelFactory { get; }
         public IAlternateGameSetupViewModelFactory AlternateGameSetupViewModelFactory { get; }
-        public IGameEngineClientProxy GameEngineClientProxy { get; }
+        public IGameEngineClientProxy GameEngineClientProxy { get; private set; }
 
         public CompositionRoot()
         {
@@ -52,6 +52,18 @@ namespace FlamingStrike.UI.WPF
                 EventAggregator,
                 playerStatusViewModelFactory);
 
+            AlternateGameSetupViewModelFactory = new AlternateGameSetupViewModelFactory(
+                worldMapViewModelFactory,
+                PlayerUiDataRepository,
+                dialogManager,
+                EventAggregator);
+
+            //GameEngineClientProxy = CreateInternalGameEngine();
+            GameEngineClientProxy = new GameEngineHubProxy();
+        }
+
+        private GameEngineAdapter CreateInternalGameEngine()
+        {
             var randomWrapper = new RandomWrapper();
             var shuffler = new FisherYatesShuffler(randomWrapper);
             var worldMapFactory = new WorldMapFactory();
@@ -65,13 +77,7 @@ namespace FlamingStrike.UI.WPF
             var armyDraftCalculator = new ArmyDraftCalculator(new[] { Continent.Asia, Continent.NorthAmerica, Continent.Europe, Continent.Africa, Continent.Australia, Continent.SouthAmerica });
             var gamePhaseFactory = new GamePhaseFactory(attackService, playerEliminationRules, worldMap);
 
-            AlternateGameSetupViewModelFactory = new AlternateGameSetupViewModelFactory(
-                worldMapViewModelFactory,
-                PlayerUiDataRepository,
-                dialogManager,
-                EventAggregator);
-
-#if QUICKSETUP
+#if QUICK_SETUP
             var startingInfantryCalculator = new StartingInfantryCalculatorReturning22Armies();
 #else
             var startingInfantryCalculator = new StartingInfantryCalculator();
@@ -80,7 +86,7 @@ namespace FlamingStrike.UI.WPF
             var alternateGameSetupBootstrapper = new AlternateGameSetupBootstrapper(worldMap.GetAll(), shuffler, startingInfantryCalculator);
             var gameBootstrapper = new GameBootstrapper(gamePhaseFactory, armyDraftCalculator, deckFactory);
 
-            GameEngineClientProxy = new GameEngineAdapter(alternateGameSetupBootstrapper, gameBootstrapper);
+            return new GameEngineAdapter(alternateGameSetupBootstrapper, gameBootstrapper);
         }
     }
 

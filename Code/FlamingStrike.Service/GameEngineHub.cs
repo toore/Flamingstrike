@@ -1,6 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
+using FlamingStrike.GameEngine;
+using FlamingStrike.GameEngine.Play;
+using FlamingStrike.GameEngine.Setup;
+using FlamingStrike.GameEngine.Setup.Finished;
+using FlamingStrike.GameEngine.Setup.TerritorySelection;
 using Microsoft.AspNetCore.SignalR;
 
 namespace FlamingStrike.Service
@@ -8,18 +14,87 @@ namespace FlamingStrike.Service
     //[Authorize]
     public class GameEngineHub : Hub
     {
-        public override async Task OnConnectedAsync()
-        {
-            await Clients.All.SendAsync("SendAction", "user", "joined");
+        private readonly IAlternateGameSetupBootstrapper _alternateGameSetupBootstrapper;
+        private readonly IGameBootstrapper _gameBootstrapper;
 
-            //await Clients.All.SendAsync("SendAction", Context.User.Identity.Name, "joined");
+        private AlternateGameSetupClientProxy _alternateGameSetupClientProxy;
+
+        public GameEngineHub(IAlternateGameSetupBootstrapper alternateGameSetupBootstrapper, IGameBootstrapper gameBootstrapper)
+        {
+            _alternateGameSetupBootstrapper = alternateGameSetupBootstrapper;
+            _gameBootstrapper = gameBootstrapper;
         }
 
-        public override async Task OnDisconnectedAsync(Exception ex)
+        public override Task OnConnectedAsync()
         {
-            await Clients.All.SendAsync("SendAction", "user", "left");
+            return base.OnConnectedAsync();
+        }
 
-            //await Clients.All.SendAsync("SendAction", Context.User.Identity.Name, "left");
+        public override Task OnDisconnectedAsync(Exception exception)
+        {
+            return base.OnDisconnectedAsync(exception);
+        }
+
+        public async Task RunSetup(IEnumerable<string> players)
+        {
+            await Task.Run(
+                () =>
+                    {
+                        _alternateGameSetupClientProxy = new AlternateGameSetupClientProxy(this);
+                        _alternateGameSetupBootstrapper.Run(_alternateGameSetupClientProxy, players.Select(x => x.MapToEngine()).ToList());
+                    });
+        }
+
+        public async Task PlaceArmyInRegion(string regionName)
+        {
+            await Task.Run(
+                () =>
+                    {
+                        var region = (Region)typeof(Region).GetFields()
+                            .Where(x => x.IsPublic && x.IsStatic)
+                            .Single(x => x.Name == regionName)
+                            .GetValue(typeof(Region));
+
+                        _alternateGameSetupClientProxy.PlaceArmyInRegion(region);
+                    });
+        }
+    }
+
+    public class AlternateGameSetupClientProxy : IAlternateGameSetupObserver
+    {
+        private readonly GameEngineHub _gameEngineHub;
+        private ITerritorySelector _territorySelector;
+
+        public AlternateGameSetupClientProxy(GameEngineHub gameEngineHub)
+        {
+            _gameEngineHub = gameEngineHub;
+        }
+
+        public void SelectRegion(ITerritorySelector territorySelector)
+        {
+            _territorySelector = territorySelector;
+            _gameEngineHub.Clients.All.SendAsync(
+                "SelectRegion", new
+                    {
+                        Player = (string)territorySelector.Player,
+                        territorySelector.ArmiesLeftToPlace,
+                        Territories = territorySelector.GetTerritories().Select(x => x.MapToDto())
+                    });
+        }
+
+        public void NewGamePlaySetup(IGamePlaySetup gamePlaySetup)
+        {
+            _gameEngineHub.Clients.All.SendAsync(
+                "NewGamePlaySetup", new
+                    {
+                        Players = gamePlaySetup.GetPlayers().Select(x => (string)x),
+                        Territories = gamePlaySetup.GetTerritories().Select(x => x.MapToDto())
+                    });
+        }
+
+        public void PlaceArmyInRegion(Region region)
+        {
+            _territorySelector.PlaceArmyInRegion(region);
         }
     }
 }
