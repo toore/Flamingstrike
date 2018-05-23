@@ -59,7 +59,7 @@ namespace FlamingStrike.UI.WPF
                 EventAggregator);
 
             //GameEngineClientProxy = CreateInternalGameEngine();
-            GameEngineClientProxy = new GameEngineHubProxy();
+            GameEngineClientProxy = new GameEngineProxy();
         }
 
         private GameEngineAdapter CreateInternalGameEngine()

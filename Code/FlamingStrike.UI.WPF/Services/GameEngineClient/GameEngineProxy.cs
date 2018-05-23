@@ -8,7 +8,7 @@ using Territory = FlamingStrike.UI.WPF.Services.GameEngineClient.SetupTerritoryS
 
 namespace FlamingStrike.UI.WPF.Services.GameEngineClient
 {
-    public class GameEngineHubProxy : IGameEngineClientProxy
+    public class GameEngineProxy : IGameEngineClientProxy
     {
         public async void Setup(IAlternateGameSetupObserver alternateGameSetupObserver, IEnumerable<string> players)
         {

@@ -182,7 +182,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Services\GameEngineClient\AlternateGameSetupObserverAdapter.cs" />
-    <Compile Include="Services\GameEngineClient\GameEngineHubProxy.cs" />
+    <Compile Include="Services\GameEngineClient\GameEngineProxy.cs" />
     <Compile Include="Services\GameEngineClient\Play\AttackPhaseAdapter.cs" />
     <Compile Include="Services\GameEngineClient\GameEngineAdapter.cs" />
     <Compile Include="Services\GameEngineClient\GameObserverAdapter.cs" />
