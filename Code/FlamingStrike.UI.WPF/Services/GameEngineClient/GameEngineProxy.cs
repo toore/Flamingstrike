@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using FlamingStrike.UI.WPF.Services.GameEngineClient.SetupFinished;
 using FlamingStrike.UI.WPF.Services.GameEngineClient.SetupTerritorySelection;
 using Microsoft.AspNetCore.SignalR.Client;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Territory = FlamingStrike.UI.WPF.Services.GameEngineClient.SetupTerritorySelection.Territory;
 
@@ -15,7 +16,8 @@ namespace FlamingStrike.UI.WPF.Services.GameEngineClient
             var hubConnection = new HubConnectionBuilder()
                 .WithUrl("http://localhost:60643/hubs/gameengine")
                 //.WithUrl("https://localhost:44391/hubs/gameengine")
-                .WithConsoleLogger(LogLevel.Trace)
+                .ConfigureLogging(cfg=>cfg.AddConsole())
+                //.WithConsoleLogger(LogLevel.Trace)
                 .Build();
 
             hubConnection.On<SelectRegionRequest>("SelectRegion", dto => OnSelectRegion(alternateGameSetupObserver, hubConnection, dto));
