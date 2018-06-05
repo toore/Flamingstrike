@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using FlamingStrike.GameEngine;
@@ -17,22 +16,12 @@ namespace FlamingStrike.Service
         private readonly IAlternateGameSetupBootstrapper _alternateGameSetupBootstrapper;
         private readonly IGameBootstrapper _gameBootstrapper;
 
-        private AlternateGameSetupClientProxy _alternateGameSetupClientProxy;
+        private static AlternateGameSetupClientProxy _alternateGameSetupClientProxy;
 
         public GameEngineHub(IAlternateGameSetupBootstrapper alternateGameSetupBootstrapper, IGameBootstrapper gameBootstrapper)
         {
             _alternateGameSetupBootstrapper = alternateGameSetupBootstrapper;
             _gameBootstrapper = gameBootstrapper;
-        }
-
-        public override Task OnConnectedAsync()
-        {
-            return base.OnConnectedAsync();
-        }
-
-        public override Task OnDisconnectedAsync(Exception exception)
-        {
-            return base.OnDisconnectedAsync(exception);
         }
 
         public async Task RunSetup(IEnumerable<string> players)

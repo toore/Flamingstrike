@@ -18,13 +18,13 @@ namespace FlamingStrike.UI.WPF.Services.GameEngineClient
                 .ConfigureLogging(cfg => cfg.AddConsole())
                 .Build();
 
-            hubConnection.On<SelectRegionRequest>("SelectRegion", OnSelectRegionRequest);
+            hubConnection.On<SelectRegionRequest>("SelectRegion", SelectRegionRequest);
             hubConnection.On<GamePlaySetup>("NewGamePlaySetup", alternateGameSetupObserver.NewGamePlaySetup);
 
             await hubConnection.StartAsync();
             await hubConnection.SendAsync("RunSetup", players);
 
-            void OnSelectRegionRequest(SelectRegionRequest dto)
+            void SelectRegionRequest(SelectRegionRequest dto)
             {
                 var territorySelector = new TerritorySelector(new ArmyPlacerProxy(hubConnection), dto.Player, dto.ArmiesLeftToPlace, dto.Territories);
                 alternateGameSetupObserver.SelectRegion(territorySelector);
