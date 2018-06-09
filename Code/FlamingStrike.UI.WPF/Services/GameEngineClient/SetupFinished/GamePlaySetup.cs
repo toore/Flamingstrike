@@ -4,8 +4,8 @@ namespace FlamingStrike.UI.WPF.Services.GameEngineClient.SetupFinished
 {
     public interface IGamePlaySetup
     {
-        IReadOnlyList<string> GetPlayers();
-        IReadOnlyList<Territory> GetTerritories();
+        IEnumerable<string> GetPlayers();
+        IEnumerable<Territory> GetTerritories();
     }
 
     public class GamePlaySetup : IGamePlaySetup
@@ -19,12 +19,12 @@ namespace FlamingStrike.UI.WPF.Services.GameEngineClient.SetupFinished
             _territories = territories;
         }
 
-        public IReadOnlyList<string> GetPlayers()
+        public IEnumerable<string> GetPlayers()
         {
             return _players;
         }
 
-        public IReadOnlyList<Territory> GetTerritories()
+        public IEnumerable<Territory> GetTerritories()
         {
             return _territories;
         }

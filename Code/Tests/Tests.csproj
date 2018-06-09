@@ -69,6 +69,9 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Reactive, Version=4.0.0.0, Culture=neutral, PublicKeyToken=94bc3704cddfc263, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Reactive.4.0.0\lib\net46\System.Reactive.dll</HintPath>
+    </Reference>
     <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.5.0\lib\netstandard2.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
     </Reference>
@@ -80,6 +83,8 @@
       <Private>True</Private>
       <Private>True</Private>
     </Reference>
+    <Reference Include="System.Windows" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Caliburn.Micro.3.2.0\lib\net45\System.Windows.Interactivity.dll</HintPath>
     </Reference>
@@ -111,6 +116,7 @@
     <Compile Include="GameEngine\Play\DeckBuilder.cs" />
     <Compile Include="GameEngine\Play\PlayerBuilder.cs" />
     <Compile Include="GameEngine\Play\TerritoryTests.cs" />
+    <Compile Include="UI.WPF\CaliburnScreenExtensions.cs" />
     <Compile Include="UI.WPF\PlayerStatusViewModelBuilder.cs" />
     <Compile Include="GameEngine\Play\AttackPhaseTests.cs" />
     <Compile Include="GameEngine\Play\DraftArmiesPhaseTests.cs" />

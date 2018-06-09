@@ -85,7 +85,7 @@ namespace FlamingStrike.UI.WPF.ViewModels
             var players = _playerUiDataRepository.GetAll().Select(x => x.Player).ToList();
             var gameSetupViewModel = _alternateGameSetupViewModelFactory.Create();
 
-            _gameEngineClientProxy.Setup(gameSetupViewModel, players);
+            _gameEngineClientProxy.Setup(players);
 
             ActivateItem(gameSetupViewModel);
         }

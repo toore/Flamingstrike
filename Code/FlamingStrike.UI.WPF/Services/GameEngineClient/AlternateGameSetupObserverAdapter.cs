@@ -1,23 +1,26 @@
-﻿using System.Linq;
-using FlamingStrike.GameEngine.Setup.Finished;
-using FlamingStrike.GameEngine.Setup.TerritorySelection;
-using GamePlaySetup = FlamingStrike.UI.WPF.Services.GameEngineClient.SetupFinished.GamePlaySetup;
+﻿using System;
+using System.Linq;
+using FlamingStrike.UI.WPF.Services.GameEngineClient.SetupFinished;
+using FlamingStrike.UI.WPF.Services.GameEngineClient.SetupTerritorySelection;
 using Territory = FlamingStrike.UI.WPF.Services.GameEngineClient.SetupTerritorySelection.Territory;
-using TerritorySelector = FlamingStrike.UI.WPF.Services.GameEngineClient.SetupTerritorySelection.TerritorySelector;
 
 namespace FlamingStrike.UI.WPF.Services.GameEngineClient
 {
     public class AlternateGameSetupObserverAdapter : GameEngine.Setup.IAlternateGameSetupObserver, IArmyPlacer
     {
-        private readonly IAlternateGameSetupObserver _alternateGameSetupObserver;
-        private ITerritorySelector _territorySelector;
+        private readonly IObserver<ITerritorySelector> _territorySelectorObserver;
+        private readonly IObserver<IGamePlaySetup> _gamePlaySetupObserver;
+        private GameEngine.Setup.TerritorySelection.ITerritorySelector _territorySelector;
 
-        public AlternateGameSetupObserverAdapter(IAlternateGameSetupObserver alternateGameSetupObserver)
+        public AlternateGameSetupObserverAdapter(
+            IObserver<ITerritorySelector> territorySelectorObserver,
+            IObserver<IGamePlaySetup> gamePlaySetupObserver)
         {
-            _alternateGameSetupObserver = alternateGameSetupObserver;
+            _territorySelectorObserver = territorySelectorObserver;
+            _gamePlaySetupObserver = gamePlaySetupObserver;
         }
 
-        public void SelectRegion(ITerritorySelector territorySelector)
+        public void SelectRegion(GameEngine.Setup.TerritorySelection.ITerritorySelector territorySelector)
         {
             _territorySelector = territorySelector;
 
@@ -26,17 +29,17 @@ namespace FlamingStrike.UI.WPF.Services.GameEngineClient
                 .ToList();
             var selector = new TerritorySelector(this, (string)territorySelector.Player, territorySelector.ArmiesLeftToPlace, territories);
 
-            _alternateGameSetupObserver.SelectRegion(selector);
+            _territorySelectorObserver.OnNext(selector);
         }
 
-        public void NewGamePlaySetup(IGamePlaySetup gamePlaySetup)
+        public void NewGamePlaySetup(GameEngine.Setup.Finished.IGamePlaySetup gamePlaySetup)
         {
             var players = gamePlaySetup.GetPlayers().Select(x => (string)x).ToList();
             var territories = gamePlaySetup.GetTerritories()
                 .Select(x => new SetupFinished.Territory(x.Region.MapFromEngine(), (string)x.Name, x.Armies))
                 .ToList();
 
-            _alternateGameSetupObserver.NewGamePlaySetup(new GamePlaySetup(players, territories));
+            _gamePlaySetupObserver.OnNext(new GamePlaySetup(players, territories));
         }
 
         public void PlaceArmyInRegion(Region selectedRegion)

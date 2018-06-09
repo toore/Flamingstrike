@@ -16,14 +16,15 @@ using Territory = FlamingStrike.UI.WPF.Services.GameEngineClient.SetupTerritoryS
 
 namespace FlamingStrike.UI.WPF.ViewModels.AlternateSetup
 {
-    public interface IAlternateGameSetupViewModel : IGameboardViewModel, IAlternateGameSetupObserver {}
+    public interface IAlternateGameSetupViewModel : IGameboardViewModel {}
 
-    public class AlternateGameSetupViewModel : Screen, IAlternateGameSetupViewModel, IAlternateGameSetupObserver
+    public class AlternateGameSetupViewModel : Screen, IAlternateGameSetupViewModel
     {
         private readonly IWorldMapViewModelFactory _worldMapViewModelFactory;
         private readonly IPlayerUiDataRepository _playerUiDataRepository;
         private readonly IDialogManager _dialogManager;
         private readonly IEventAggregator _eventAggregator;
+        private readonly IGameEngineClientProxy _gameEngineClientProxy;
         private string _informationText;
         private string _playerName;
         private Color _playerColor;
@@ -32,17 +33,21 @@ namespace FlamingStrike.UI.WPF.ViewModels.AlternateSetup
             IWorldMapViewModelFactory worldMapViewModelFactory,
             IPlayerUiDataRepository playerUiDataRepository,
             IDialogManager dialogManager,
-            IEventAggregator eventAggregator)
+            IEventAggregator eventAggregator,
+            IGameEngineClientProxy gameEngineClientProxy)
         {
             _worldMapViewModelFactory = worldMapViewModelFactory;
             _playerUiDataRepository = playerUiDataRepository;
             _dialogManager = dialogManager;
             _eventAggregator = eventAggregator;
+            _gameEngineClientProxy = gameEngineClientProxy;
 
             WorldMapViewModel = _worldMapViewModelFactory.Create(x => _onRegionClick(x));
         }
 
         private Action<Region> _onRegionClick;
+        private IDisposable _selectRegionSubscription;
+        private IDisposable _gamePlaySetupSubscription;
 
         public WorldMapViewModel WorldMapViewModel { get; }
 
@@ -70,7 +75,23 @@ namespace FlamingStrike.UI.WPF.ViewModels.AlternateSetup
 
         public void ShowCards() {}
 
-        public void SelectRegion(ITerritorySelector territorySelector)
+        protected override void OnActivate()
+        {
+            base.OnActivate();
+
+            _selectRegionSubscription = _gameEngineClientProxy.OnSelectRegion.Subscribe(SelectRegion);
+            _gamePlaySetupSubscription = _gameEngineClientProxy.OnGamePlaySetup.Subscribe(NewGamePlaySetup);
+        }
+
+        protected override void OnDeactivate(bool close)
+        {
+            base.OnDeactivate(close);
+
+            _selectRegionSubscription.Dispose();
+            _gamePlaySetupSubscription.Dispose();
+        }
+
+        private void SelectRegion(ITerritorySelector territorySelector)
         {
             UpdateView(
                 territorySelector.GetTerritories(),
@@ -79,7 +100,7 @@ namespace FlamingStrike.UI.WPF.ViewModels.AlternateSetup
                 territorySelector.ArmiesLeftToPlace);
         }
 
-        public void NewGamePlaySetup(IGamePlaySetup gamePlaySetup)
+        private void NewGamePlaySetup(IGamePlaySetup gamePlaySetup)
         {
             _eventAggregator.PublishOnUIThread(new StartGameplayMessage(gamePlaySetup));
         }

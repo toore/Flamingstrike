@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Windows.Media;
 using Caliburn.Micro;
 using FlamingStrike.Core;
@@ -14,16 +15,18 @@ using FlamingStrike.UI.WPF.ViewModels.Preparation;
 using FluentAssertions;
 using NSubstitute;
 using Xunit;
+using Territory = FlamingStrike.UI.WPF.Services.GameEngineClient.SetupTerritorySelection.Territory;
 
 namespace Tests.UI.WPF
 {
     public class AlternateGameSetupViewModelTests
     {
+        private readonly AlternateGameSetupViewModelFactory _factory;
         private readonly IWorldMapViewModelFactory _worldMapViewModelFactory;
         private readonly IPlayerUiDataRepository _playerUiDataRepository;
         private readonly IDialogManager _dialogManager;
         private readonly IEventAggregator _eventAggregator;
-        private readonly AlternateGameSetupViewModelFactory _factory;
+        private readonly ExposedObservablesGameEngineClientStub _gameEngineClientProxy;
 
         public AlternateGameSetupViewModelTests()
         {
@@ -31,12 +34,14 @@ namespace Tests.UI.WPF
             _playerUiDataRepository = Substitute.For<IPlayerUiDataRepository>();
             _dialogManager = Substitute.For<IDialogManager>();
             _eventAggregator = Substitute.For<IEventAggregator>();
+            _gameEngineClientProxy = new ExposedObservablesGameEngineClientStub();
 
             _factory = new AlternateGameSetupViewModelFactory(
                 _worldMapViewModelFactory,
                 _playerUiDataRepository,
                 _dialogManager,
-                _eventAggregator);
+                _eventAggregator,
+                _gameEngineClientProxy);
         }
 
         [Fact]
@@ -58,11 +63,11 @@ namespace Tests.UI.WPF
             _worldMapViewModelFactory.Create(null)
                 .ReturnsForAnyArgs(expectedWorldMapViewModel);
             var placeArmyRegionSelector = Substitute.For<ITerritorySelector>();
-            placeArmyRegionSelector.GetTerritories().Returns(new List<FlamingStrike.UI.WPF.Services.GameEngineClient.SetupTerritorySelection.Territory>());
+            placeArmyRegionSelector.GetTerritories().Returns(new List<Territory>());
             placeArmyRegionSelector.Player.Returns("");
 
             var sut = Create();
-            sut.SelectRegion(placeArmyRegionSelector);
+            _gameEngineClientProxy.SelectRegion(placeArmyRegionSelector);
 
             _worldMapViewModelFactory.Received().Update(expectedWorldMapViewModel, Arg.Any<List<FlamingStrike.UI.WPF.ViewModels.Gameplay.Territory>>(), Maybe<Region>.Nothing);
         }
@@ -76,7 +81,7 @@ namespace Tests.UI.WPF
 
             var sut = Create();
             var monitor = sut.Monitor();
-            sut.SelectRegion(placeArmyRegionSelector);
+            _gameEngineClientProxy.SelectRegion(placeArmyRegionSelector);
 
             sut.InformationText.Should().Be(string.Format(Resources.PLACE_ARMY, 1));
             monitor.Should().RaisePropertyChangeFor(x => x.InformationText);
@@ -91,7 +96,7 @@ namespace Tests.UI.WPF
 
             var sut = Create();
             var monitor = sut.Monitor();
-            sut.SelectRegion(placeArmyRegionSelector);
+            _gameEngineClientProxy.SelectRegion(placeArmyRegionSelector);
 
             sut.PlayerName.Should().Be("player name");
             monitor.Should().RaisePropertyChangeFor(x => x.PlayerName);
@@ -105,7 +110,7 @@ namespace Tests.UI.WPF
             _eventAggregator.WhenForAnyArgs(x => x.PublishOnUIThread(null)).Do(ci => expectedGamePlaySetup = ci.Arg<StartGameplayMessage>().GamePlaySetup);
 
             var sut = Create();
-            sut.NewGamePlaySetup(gamePlaySetup);
+            _gameEngineClientProxy.NewGamePlaySetup(gamePlaySetup);
 
             _eventAggregator.ReceivedWithAnyArgs().PublishOnUIThread(null);
             expectedGamePlaySetup.Should().Be(gamePlaySetup);
@@ -159,7 +164,35 @@ namespace Tests.UI.WPF
 
         private AlternateGameSetupViewModel Create()
         {
-            return (AlternateGameSetupViewModel)_factory.Create();
+            var alternateGameSetupViewModel = (AlternateGameSetupViewModel)_factory.Create();
+            //IActivate parent = new Parent();
+            //alternateGameSetupViewModel.ActivateWith(parent);
+            //parent.Activate();
+            alternateGameSetupViewModel.Activate();
+            return alternateGameSetupViewModel;
+        }
+    }
+
+    public class ExposedObservablesGameEngineClientStub : GameEngineClientProxyBase, IGameEngineClientProxy
+    {
+        public void Setup(IEnumerable<string> players)
+        {
+            throw new InvalidOperationException();
+        }
+
+        public void StartGame(IGameObserver gameObserver, IGamePlaySetup gamePlaySetup)
+        {
+            throw new InvalidOperationException();
+        }
+
+        public void SelectRegion(ITerritorySelector territorySelector)
+        {
+            _territorySelectorSubject.OnNext(territorySelector);
+        }
+
+        public void NewGamePlaySetup(IGamePlaySetup gamePlaySetup)
+        {
+            _gamePlaySetupSubject.OnNext(gamePlaySetup);
         }
     }
 }

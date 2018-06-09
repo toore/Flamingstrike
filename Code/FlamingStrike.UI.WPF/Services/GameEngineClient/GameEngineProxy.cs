@@ -8,9 +8,9 @@ using Territory = FlamingStrike.UI.WPF.Services.GameEngineClient.SetupTerritoryS
 
 namespace FlamingStrike.UI.WPF.Services.GameEngineClient
 {
-    public class GameEngineProxy : IGameEngineClientProxy
+    public class GameEngineProxy : GameEngineClientProxyBase, IGameEngineClientProxy
     {
-        public async void Setup(IAlternateGameSetupObserver alternateGameSetupObserver, IEnumerable<string> players)
+        public async void Setup(IEnumerable<string> players)
         {
             var hubConnection = new HubConnectionBuilder()
                 .WithUrl("http://localhost:60643/hubs/gameengine")
@@ -19,7 +19,7 @@ namespace FlamingStrike.UI.WPF.Services.GameEngineClient
                 .Build();
 
             hubConnection.On<SelectRegionRequest>("SelectRegion", SelectRegionRequest);
-            hubConnection.On<GamePlaySetup>("NewGamePlaySetup", alternateGameSetupObserver.NewGamePlaySetup);
+            hubConnection.On<GamePlaySetup>("NewGamePlaySetup", _gamePlaySetupSubject.OnNext);
 
             await hubConnection.StartAsync();
             await hubConnection.SendAsync("RunSetup", players);
@@ -27,7 +27,7 @@ namespace FlamingStrike.UI.WPF.Services.GameEngineClient
             void SelectRegionRequest(SelectRegionRequest dto)
             {
                 var territorySelector = new TerritorySelector(new ArmyPlacerProxy(hubConnection), dto.Player, dto.ArmiesLeftToPlace, dto.Territories);
-                alternateGameSetupObserver.SelectRegion(territorySelector);
+                _territorySelectorSubject.OnNext(territorySelector);
             }
         }
 

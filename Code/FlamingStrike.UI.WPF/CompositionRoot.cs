@@ -21,7 +21,7 @@ namespace FlamingStrike.UI.WPF
         public IGamePreparationViewModelFactory GamePreparationViewModelFactory { get; }
         public IGameplayViewModelFactory GameplayViewModelFactory { get; }
         public IAlternateGameSetupViewModelFactory AlternateGameSetupViewModelFactory { get; }
-        public IGameEngineClientProxy GameEngineClientProxy { get; private set; }
+        public IGameEngineClientProxy GameEngineClientProxy { get; }
 
         public CompositionRoot()
         {
@@ -52,17 +52,18 @@ namespace FlamingStrike.UI.WPF
                 EventAggregator,
                 playerStatusViewModelFactory);
 
+            //GameEngineClientProxy = CreateInternalGameEngine();
+            GameEngineClientProxy = new GameEngineProxy();
+
             AlternateGameSetupViewModelFactory = new AlternateGameSetupViewModelFactory(
                 worldMapViewModelFactory,
                 PlayerUiDataRepository,
                 dialogManager,
-                EventAggregator);
-
-            //GameEngineClientProxy = CreateInternalGameEngine();
-            GameEngineClientProxy = new GameEngineProxy();
+                EventAggregator,
+                GameEngineClientProxy);
         }
 
-        private GameEngineAdapter CreateInternalGameEngine()
+        private GameEngineAdapter CreateInProcessGameEngine()
         {
             var randomWrapper = new RandomWrapper();
             var shuffler = new FisherYatesShuffler(randomWrapper);

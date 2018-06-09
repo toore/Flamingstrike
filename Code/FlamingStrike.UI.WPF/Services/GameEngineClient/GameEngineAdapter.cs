@@ -9,7 +9,7 @@ using Territory = FlamingStrike.GameEngine.Setup.Finished.Territory;
 
 namespace FlamingStrike.UI.WPF.Services.GameEngineClient
 {
-    public class GameEngineAdapter : IGameEngineClientProxy
+    public class GameEngineAdapter : GameEngineClientProxyBase, IGameEngineClientProxy
     {
         private readonly IAlternateGameSetupBootstrapper _alternateGameSetupBootstrapper;
         private readonly IGameBootstrapper _gameBootstrapper;
@@ -20,9 +20,9 @@ namespace FlamingStrike.UI.WPF.Services.GameEngineClient
             _gameBootstrapper = gameBootstrapper;
         }
 
-        public void Setup(IAlternateGameSetupObserver alternateGameSetupObserver, IEnumerable<string> players)
+        public void Setup(IEnumerable<string> players)
         {
-            var gameSetupObserverAdapter = new AlternateGameSetupObserverAdapter(alternateGameSetupObserver);
+            var gameSetupObserverAdapter = new AlternateGameSetupObserverAdapter(_territorySelectorSubject, _gamePlaySetupSubject);
             var playerNames = players.Select(x => new PlayerName(x)).ToList();
 
             _alternateGameSetupBootstrapper.Run(gameSetupObserverAdapter, playerNames);
