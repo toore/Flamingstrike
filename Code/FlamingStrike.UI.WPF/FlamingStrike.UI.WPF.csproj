@@ -208,7 +208,6 @@
     <Compile Include="Services\GameEngineClient\SetupFinished\Territory.cs" />
     <Compile Include="Services\GameEngineClient\IArmyPlacer.cs" />
     <Compile Include="Services\GameEngineClient\IGameEngineClientProxy.cs" />
-    <Compile Include="Services\GameEngineClient\IGameObserver.cs" />
     <Compile Include="Services\GameEngineClient\Play\IAttackPhase.cs" />
     <Compile Include="Services\GameEngineClient\Play\IDraftArmiesPhase.cs" />
     <Compile Include="Services\GameEngineClient\Play\IEndTurnPhase.cs" />

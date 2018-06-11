@@ -1,5 +1,6 @@
 ﻿using Caliburn.Micro;
 using FlamingStrike.UI.WPF.Services;
+using FlamingStrike.UI.WPF.Services.GameEngineClient;
 using FlamingStrike.UI.WPF.ViewModels.Gameplay.Interaction;
 using FlamingStrike.UI.WPF.ViewModels.Preparation;
 
@@ -17,6 +18,7 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay
         private readonly IDialogManager _dialogManager;
         private readonly IEventAggregator _eventAggregator;
         private readonly IPlayerStatusViewModelFactory _playerStatusViewModelFactory;
+        private readonly IGameEngineClientProxy _gameEngineClientProxy;
         private readonly IInteractionStateFactory _interactionStateFactory;
 
         public GameplayViewModelFactory(
@@ -25,7 +27,8 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay
             IPlayerUiDataRepository playerUiDataRepository,
             IDialogManager dialogManager,
             IEventAggregator eventAggregator,
-            IPlayerStatusViewModelFactory playerStatusViewModelFactory)
+            IPlayerStatusViewModelFactory playerStatusViewModelFactory,
+            IGameEngineClientProxy gameEngineClientProxy)
         {
             _interactionStateFactory = interactionStateFactory;
             _worldMapViewModelFactory = worldMapViewModelFactory;
@@ -33,6 +36,7 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay
             _dialogManager = dialogManager;
             _eventAggregator = eventAggregator;
             _playerStatusViewModelFactory = playerStatusViewModelFactory;
+            _gameEngineClientProxy = gameEngineClientProxy;
         }
 
         public IGameplayViewModel Create()
@@ -43,7 +47,8 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay
                 _playerUiDataRepository,
                 _dialogManager,
                 _eventAggregator,
-                _playerStatusViewModelFactory);
+                _playerStatusViewModelFactory,
+                _gameEngineClientProxy);
         }
     }
 }

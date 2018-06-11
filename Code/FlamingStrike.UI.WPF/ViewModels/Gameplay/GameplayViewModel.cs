@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Media;
 using Caliburn.Micro;
@@ -12,7 +13,7 @@ using FlamingStrike.UI.WPF.ViewModels.Preparation;
 
 namespace FlamingStrike.UI.WPF.ViewModels.Gameplay
 {
-    public interface IGameplayViewModel : IGameboardViewModel, IGameObserver
+    public interface IGameplayViewModel : IGameboardViewModel
     {
         IList<PlayerStatusViewModel> PlayerStatuses { get; }
         int NumberOfUserSelectedArmies { get; set; }
@@ -20,7 +21,7 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay
     }
 
     public class GameplayViewModel :
-        ViewModelBase,
+        Screen,
         IGameplayViewModel,
         ISelectAttackingRegionInteractionStateObserver,
         IAttackInteractionStateObserver,
@@ -33,6 +34,7 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay
         private readonly IDialogManager _dialogManager;
         private readonly IEventAggregator _eventAggregator;
         private readonly IPlayerStatusViewModelFactory _playerStatusViewModelFactory;
+        private readonly IGameEngineClientProxy _gameEngineClientProxy;
         private string _informationText;
         private string _playerName;
         private Color _playerColor;
@@ -47,6 +49,11 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay
         private Maybe<Region> _previouslySelectedAttackingRegion;
         private bool _canUserSelectNumberOfArmies;
         private IReadOnlyList<Services.GameEngineClient.Play.Territory> _territories;
+        private IDisposable _draftArmiesSubscription;
+        private IDisposable _attackSubscription;
+        private IDisposable _sendArmiesSubscription;
+        private IDisposable _endTurnSubscription;
+        private IDisposable _gameOverSubscription;
 
         public GameplayViewModel(
             IInteractionStateFactory interactionStateFactory,
@@ -54,7 +61,8 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay
             IPlayerUiDataRepository playerUiDataRepository,
             IDialogManager dialogManager,
             IEventAggregator eventAggregator,
-            IPlayerStatusViewModelFactory playerStatusViewModelFactory)
+            IPlayerStatusViewModelFactory playerStatusViewModelFactory,
+            IGameEngineClientProxy gameEngineClientProxy)
         {
             _interactionStateFactory = interactionStateFactory;
             _worldMapViewModelFactory = worldMapViewModelFactory;
@@ -62,6 +70,7 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay
             _dialogManager = dialogManager;
             _eventAggregator = eventAggregator;
             _playerStatusViewModelFactory = playerStatusViewModelFactory;
+            _gameEngineClientProxy = gameEngineClientProxy;
 
             WorldMapViewModel = _worldMapViewModelFactory.Create(OnRegionClicked);
         }
@@ -71,43 +80,43 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay
         public string InformationText
         {
             get => _informationText;
-            private set { NotifyOfPropertyChange(value, () => InformationText, x => _informationText = x); }
+            private set { this.NotifyOfPropertyChange(value, () => InformationText, x => _informationText = x); }
         }
 
         public string PlayerName
         {
             get => _playerName;
-            private set { NotifyOfPropertyChange(value, () => PlayerName, x => _playerName = x); }
+            private set { this.NotifyOfPropertyChange(value, () => PlayerName, x => _playerName = x); }
         }
 
         public Color PlayerColor
         {
             get => _playerColor;
-            private set { NotifyOfPropertyChange(value, () => PlayerColor, x => _playerColor = x); }
+            private set { this.NotifyOfPropertyChange(value, () => PlayerColor, x => _playerColor = x); }
         }
 
         public bool CanEnterFortifyMode
         {
             get => _canEnterFortifyMode;
-            private set { NotifyOfPropertyChange(value, () => CanEnterFortifyMode, x => _canEnterFortifyMode = x); }
+            private set { this.NotifyOfPropertyChange(value, () => CanEnterFortifyMode, x => _canEnterFortifyMode = x); }
         }
 
         public bool CanEnterAttackMode
         {
             get => _canEnterAttackMode;
-            private set { NotifyOfPropertyChange(value, () => CanEnterAttackMode, x => _canEnterAttackMode = x); }
+            private set { this.NotifyOfPropertyChange(value, () => CanEnterAttackMode, x => _canEnterAttackMode = x); }
         }
 
         public bool CanEndTurn
         {
             get => _canEndTurn;
-            private set { NotifyOfPropertyChange(value, () => CanEndTurn, x => _canEndTurn = x); }
+            private set { this.NotifyOfPropertyChange(value, () => CanEndTurn, x => _canEndTurn = x); }
         }
 
         public IList<PlayerStatusViewModel> PlayerStatuses
         {
             get => _playerStatuses;
-            private set { NotifyOfPropertyChange(value, () => PlayerStatuses, x => _playerStatuses = x); }
+            private set { this.NotifyOfPropertyChange(value, () => PlayerStatuses, x => _playerStatuses = x); }
         }
 
         public int NumberOfUserSelectedArmies
@@ -119,18 +128,40 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay
         public int MaxNumberOfUserSelectableArmies
         {
             get => _maxNumberOfUserSelectableArmies;
-            private set => NotifyOfPropertyChange(value, () => MaxNumberOfUserSelectableArmies, x => _maxNumberOfUserSelectableArmies = x);
+            private set => this.NotifyOfPropertyChange(value, () => MaxNumberOfUserSelectableArmies, x => _maxNumberOfUserSelectableArmies = x);
         }
 
         public bool CanUserSelectNumberOfArmies
         {
             get => _canUserSelectNumberOfArmies;
-            private set => NotifyOfPropertyChange(value, () => CanUserSelectNumberOfArmies, x => _canUserSelectNumberOfArmies = x);
+            private set => this.NotifyOfPropertyChange(value, () => CanUserSelectNumberOfArmies, x => _canUserSelectNumberOfArmies = x);
         }
 
         public bool CanShowCards => true;
 
-        public void DraftArmies(IDraftArmiesPhase draftArmiesPhase)
+        protected override void OnActivate()
+        {
+            base.OnActivate();
+
+            _draftArmiesSubscription = _gameEngineClientProxy.OnDraftArmies.Subscribe(DraftArmies);
+            _attackSubscription = _gameEngineClientProxy.OnAttack.Subscribe(Attack);
+            _sendArmiesSubscription = _gameEngineClientProxy.OnSendArmiesToOccupy.Subscribe(SendArmiesToOccupy);
+            _endTurnSubscription = _gameEngineClientProxy.OnEndTurn.Subscribe(EndTurn);
+            _gameOverSubscription = _gameEngineClientProxy.OnGameOver.Subscribe(GameOver);
+        }
+
+        protected override void OnDeactivate(bool close)
+        {
+            base.OnDeactivate(close);
+
+            _draftArmiesSubscription.Dispose();
+            _attackSubscription.Dispose();
+            _sendArmiesSubscription.Dispose();
+            _endTurnSubscription.Dispose();
+            _gameOverSubscription.Dispose();
+        }
+
+        private void DraftArmies(IDraftArmiesPhase draftArmiesPhase)
         {
             _territories = draftArmiesPhase.Territories;
             _previouslySelectedAttackingRegion = Maybe<Region>.Nothing;
@@ -140,7 +171,7 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay
             ShowDraftArmiesView(draftArmiesPhase);
         }
 
-        public void Attack(IAttackPhase attackPhase)
+        private void Attack(IAttackPhase attackPhase)
         {
             _territories = attackPhase.Territories;
             _attackPhase = attackPhase;
@@ -152,7 +183,7 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay
                 () => ShowAttackPhaseView(attackPhase));
         }
 
-        public void SendArmiesToOccupy(ISendArmiesToOccupyPhase sendArmiesToOccupyPhase)
+        private void SendArmiesToOccupy(ISendArmiesToOccupyPhase sendArmiesToOccupyPhase)
         {
             _territories = sendArmiesToOccupyPhase.Territories;
 
@@ -161,7 +192,7 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay
             ShowSendArmiesToOccupyView(sendArmiesToOccupyPhase);
         }
 
-        public void EndTurn(IEndTurnPhase endTurnPhase)
+        private void EndTurn(IEndTurnPhase endTurnPhase)
         {
             _territories = endTurnPhase.Territories;
 
@@ -170,7 +201,7 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay
             ShowEndTurnView(endTurnPhase);
         }
 
-        public void GameOver(IGameOverState gameOverState)
+        private void GameOver(IGameOverState gameOverState)
         {
             ShowGameOverMessage(gameOverState.Winner);
         }

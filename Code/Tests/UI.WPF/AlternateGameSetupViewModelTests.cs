@@ -26,7 +26,7 @@ namespace Tests.UI.WPF
         private readonly IPlayerUiDataRepository _playerUiDataRepository;
         private readonly IDialogManager _dialogManager;
         private readonly IEventAggregator _eventAggregator;
-        private readonly ExposedObservablesGameEngineClientStub _gameEngineClientProxy;
+        private readonly FakeGameEngineClient _gameEngineClientProxy;
 
         public AlternateGameSetupViewModelTests()
         {
@@ -34,7 +34,7 @@ namespace Tests.UI.WPF
             _playerUiDataRepository = Substitute.For<IPlayerUiDataRepository>();
             _dialogManager = Substitute.For<IDialogManager>();
             _eventAggregator = Substitute.For<IEventAggregator>();
-            _gameEngineClientProxy = new ExposedObservablesGameEngineClientStub();
+            _gameEngineClientProxy = new FakeGameEngineClient();
 
             _factory = new AlternateGameSetupViewModelFactory(
                 _worldMapViewModelFactory,
@@ -66,7 +66,7 @@ namespace Tests.UI.WPF
             placeArmyRegionSelector.GetTerritories().Returns(new List<Territory>());
             placeArmyRegionSelector.Player.Returns("");
 
-            var sut = Create();
+            Create();
             _gameEngineClientProxy.SelectRegion(placeArmyRegionSelector);
 
             _worldMapViewModelFactory.Received().Update(expectedWorldMapViewModel, Arg.Any<List<FlamingStrike.UI.WPF.ViewModels.Gameplay.Territory>>(), Maybe<Region>.Nothing);
@@ -109,7 +109,7 @@ namespace Tests.UI.WPF
             var gamePlaySetup = Substitute.For<IGamePlaySetup>();
             _eventAggregator.WhenForAnyArgs(x => x.PublishOnUIThread(null)).Do(ci => expectedGamePlaySetup = ci.Arg<StartGameplayMessage>().GamePlaySetup);
 
-            var sut = Create();
+            Create();
             _gameEngineClientProxy.NewGamePlaySetup(gamePlaySetup);
 
             _eventAggregator.ReceivedWithAnyArgs().PublishOnUIThread(null);
@@ -165,34 +165,31 @@ namespace Tests.UI.WPF
         private AlternateGameSetupViewModel Create()
         {
             var alternateGameSetupViewModel = (AlternateGameSetupViewModel)_factory.Create();
-            //IActivate parent = new Parent();
-            //alternateGameSetupViewModel.ActivateWith(parent);
-            //parent.Activate();
             alternateGameSetupViewModel.Activate();
             return alternateGameSetupViewModel;
         }
-    }
 
-    public class ExposedObservablesGameEngineClientStub : GameEngineClientProxyBase, IGameEngineClientProxy
-    {
-        public void Setup(IEnumerable<string> players)
+        private class FakeGameEngineClient : GameEngineClientProxyBase
         {
-            throw new InvalidOperationException();
-        }
+            public override void Setup(IEnumerable<string> players)
+            {
+                throw new InvalidOperationException();
+            }
 
-        public void StartGame(IGameObserver gameObserver, IGamePlaySetup gamePlaySetup)
-        {
-            throw new InvalidOperationException();
-        }
+            public override void StartGame(IGamePlaySetup gamePlaySetup)
+            {
+                throw new InvalidOperationException();
+            }
 
-        public void SelectRegion(ITerritorySelector territorySelector)
-        {
-            _territorySelectorSubject.OnNext(territorySelector);
-        }
+            public void SelectRegion(ITerritorySelector territorySelector)
+            {
+                _territorySelectorSubject.OnNext(territorySelector);
+            }
 
-        public void NewGamePlaySetup(IGamePlaySetup gamePlaySetup)
-        {
-            _gamePlaySetupSubject.OnNext(gamePlaySetup);
+            public void NewGamePlaySetup(IGamePlaySetup gamePlaySetup)
+            {
+                _gamePlaySetupSubject.OnNext(gamePlaySetup);
+            }
         }
     }
 }

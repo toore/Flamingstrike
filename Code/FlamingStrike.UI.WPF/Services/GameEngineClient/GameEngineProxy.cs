@@ -8,32 +8,52 @@ using Territory = FlamingStrike.UI.WPF.Services.GameEngineClient.SetupTerritoryS
 
 namespace FlamingStrike.UI.WPF.Services.GameEngineClient
 {
-    public class GameEngineProxy : GameEngineClientProxyBase, IGameEngineClientProxy
+    public class GameEngineProxy : GameEngineClientProxyBase
     {
-        public async void Setup(IEnumerable<string> players)
+        private HubConnection _hubConnection;
+
+        private async void LazyConnect()
         {
-            var hubConnection = new HubConnectionBuilder()
+            if (_hubConnection != null)
+            {
+                return;
+
+            }
+            _hubConnection = new HubConnectionBuilder()
                 .WithUrl("http://localhost:60643/hubs/gameengine")
                 //.WithUrl("https://localhost:44391/hubs/gameengine")
                 .ConfigureLogging(cfg => cfg.AddConsole())
                 .Build();
 
-            hubConnection.On<SelectRegionRequest>("SelectRegion", SelectRegionRequest);
-            hubConnection.On<GamePlaySetup>("NewGamePlaySetup", _gamePlaySetupSubject.OnNext);
+            _hubConnection.On<SelectRegionRequest>("SelectRegion", SelectRegionRequest);
+            _hubConnection.On<GamePlaySetup>("NewGamePlaySetup", GamePlaySetup);
 
-            await hubConnection.StartAsync();
-            await hubConnection.SendAsync("RunSetup", players);
-
-            void SelectRegionRequest(SelectRegionRequest dto)
-            {
-                var territorySelector = new TerritorySelector(new ArmyPlacerProxy(hubConnection), dto.Player, dto.ArmiesLeftToPlace, dto.Territories);
-                _territorySelectorSubject.OnNext(territorySelector);
-            }
+            await _hubConnection.StartAsync();
         }
 
-        public void StartGame(IGameObserver gameObserver, IGamePlaySetup gamePlaySetup)
+        public override async void Setup(IEnumerable<string> players)
         {
+            LazyConnect();
+
+            await _hubConnection.SendAsync("RunSetup", players);
+        }
+
+        public override void StartGame(IGamePlaySetup gamePlaySetup)
+        {
+            LazyConnect();
+
             throw new NotImplementedException();
+        }
+
+        private void SelectRegionRequest(SelectRegionRequest dto)
+        {
+            var territorySelector = new TerritorySelector(new ArmyPlacerProxy(_hubConnection), dto.Player, dto.ArmiesLeftToPlace, dto.Territories);
+            _territorySelectorSubject.OnNext(territorySelector);
+        }
+
+        private void GamePlaySetup(GamePlaySetup gamePlaySetup)
+        {
+            _gamePlaySetupSubject.OnNext(gamePlaySetup);
         }
     }
 

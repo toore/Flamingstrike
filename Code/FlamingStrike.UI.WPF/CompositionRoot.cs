@@ -44,16 +44,17 @@ namespace FlamingStrike.UI.WPF
             var interactionStateFactory = new InteractionStateFactory();
             var playerStatusViewModelFactory = new PlayerStatusViewModelFactory(PlayerUiDataRepository);
 
+            //GameEngineClientProxy = CreateInternalGameEngine();
+            GameEngineClientProxy = new GameEngineProxy();
+
             GameplayViewModelFactory = new GameplayViewModelFactory(
                 interactionStateFactory,
                 worldMapViewModelFactory,
                 PlayerUiDataRepository,
                 dialogManager,
                 EventAggregator,
-                playerStatusViewModelFactory);
-
-            //GameEngineClientProxy = CreateInternalGameEngine();
-            GameEngineClientProxy = new GameEngineProxy();
+                playerStatusViewModelFactory,
+                GameEngineClientProxy);
 
             AlternateGameSetupViewModelFactory = new AlternateGameSetupViewModelFactory(
                 worldMapViewModelFactory,

@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Windows.Media;
 using Caliburn.Micro;
 using FlamingStrike.UI.WPF.Properties;
 using FlamingStrike.UI.WPF.Services;
 using FlamingStrike.UI.WPF.Services.GameEngineClient;
 using FlamingStrike.UI.WPF.Services.GameEngineClient.Play;
+using FlamingStrike.UI.WPF.Services.GameEngineClient.SetupFinished;
 using FlamingStrike.UI.WPF.ViewModels.Gameplay;
 using FlamingStrike.UI.WPF.ViewModels.Gameplay.Interaction;
 using FlamingStrike.UI.WPF.ViewModels.Messages;
@@ -30,6 +32,7 @@ namespace Tests.UI.WPF
         private readonly Player[] _player;
         private readonly IDraftArmiesPhase _draftArmiesPhase;
         private readonly IAttackPhase _attackPhase;
+        private readonly FakeGameEngineClient _gameEngineClientProxy;
 
         public GameplayViewModelTests()
         {
@@ -39,6 +42,7 @@ namespace Tests.UI.WPF
             _dialogManager = Substitute.For<IDialogManager>();
             _eventAggregator = Substitute.For<IEventAggregator>();
             var playerStatusViewModelFactory = Substitute.For<IPlayerStatusViewModelFactory>();
+            _gameEngineClientProxy = new FakeGameEngineClient();
 
             _worldMapViewModelFactory.Create(null).ReturnsForAnyArgs(_worldMapViewModel);
 
@@ -48,7 +52,10 @@ namespace Tests.UI.WPF
                 _playerUiDataRepository,
                 _dialogManager,
                 _eventAggregator,
-                playerStatusViewModelFactory);
+                playerStatusViewModelFactory,
+                _gameEngineClientProxy);
+
+            _sut.Activate();
 
             _currentPlayerName = "current player";
             _currentPlayerColor = Color.FromArgb(1, 2, 3, 4);
@@ -92,7 +99,7 @@ namespace Tests.UI.WPF
             draftArmiesPhase.CurrentPlayerName.Returns(_currentPlayerName);
             draftArmiesPhase.Players.Returns(_player);
 
-            _sut.DraftArmies(draftArmiesPhase);
+            _gameEngineClientProxy.DraftArmies(draftArmiesPhase);
 
             _sut.PlayerName.Should().Be("current player");
             _sut.PlayerColor.Should().Be(_currentPlayerColor);
@@ -110,7 +117,7 @@ namespace Tests.UI.WPF
                 .ReturnsForAnyArgs(new PlayerUiData("", Colors.Black));
 
             var monitor = _sut.Monitor();
-            _sut.DraftArmies(_draftArmiesPhase);
+            _gameEngineClientProxy.DraftArmies(_draftArmiesPhase);
 
             monitor.Should().RaisePropertyChangeFor(x => x.PlayerName);
             monitor.Should().RaisePropertyChangeFor(x => x.PlayerColor);
@@ -124,9 +131,9 @@ namespace Tests.UI.WPF
             var attackPhase = Substitute.For<IAttackPhase>();
             attackPhase.CurrentPlayerName.Returns(_currentPlayerName);
             attackPhase.Players.Returns(_player);
-            _sut.DraftArmies(_draftArmiesPhase);
+            _gameEngineClientProxy.DraftArmies(_draftArmiesPhase);
 
-            _sut.Attack(attackPhase);
+            _gameEngineClientProxy.Attack(attackPhase);
 
             _sut.PlayerName.Should().Be("current player");
             _sut.PlayerColor.Should().Be(_currentPlayerColor);
@@ -142,10 +149,10 @@ namespace Tests.UI.WPF
         {
             var attackPhase = Substitute.For<IAttackPhase>();
             attackPhase.CurrentPlayerName.Returns(_currentPlayerName);
-            _sut.DraftArmies(_draftArmiesPhase);
+            _gameEngineClientProxy.DraftArmies(_draftArmiesPhase);
 
             var monitor = _sut.Monitor();
-            _sut.Attack(attackPhase);
+            _gameEngineClientProxy.Attack(attackPhase);
 
             monitor.Should().RaisePropertyChangeFor(x => x.PlayerName);
             monitor.Should().RaisePropertyChangeFor(x => x.PlayerColor);
@@ -161,8 +168,8 @@ namespace Tests.UI.WPF
             var attackPhase = Substitute.For<IAttackPhase>();
             attackPhase.CurrentPlayerName.Returns(_currentPlayerName);
             attackPhase.Players.Returns(_player);
-            _sut.DraftArmies(_draftArmiesPhase);
-            _sut.Attack(attackPhase);
+            _gameEngineClientProxy.DraftArmies(_draftArmiesPhase);
+            _gameEngineClientProxy.Attack(attackPhase);
 
             _sut.EnterFortifyMode();
 
@@ -178,8 +185,8 @@ namespace Tests.UI.WPF
         [Fact]
         public void Entering_fortify_mode_raises_property_changed()
         {
-            _sut.DraftArmies(_draftArmiesPhase);
-            _sut.Attack(_attackPhase);
+            _gameEngineClientProxy.DraftArmies(_draftArmiesPhase);
+            _gameEngineClientProxy.Attack(_attackPhase);
 
             var monitor = _sut.Monitor();
             _sut.EnterFortifyMode();
@@ -194,8 +201,8 @@ namespace Tests.UI.WPF
             var attackPhase = Substitute.For<IAttackPhase>();
             attackPhase.CurrentPlayerName.Returns(_currentPlayerName);
             attackPhase.Players.Returns(_player);
-            _sut.DraftArmies(_draftArmiesPhase);
-            _sut.Attack(attackPhase);
+            _gameEngineClientProxy.DraftArmies(_draftArmiesPhase);
+            _gameEngineClientProxy.Attack(attackPhase);
             _sut.EnterFortifyMode();
 
             _sut.EnterAttackMode();
@@ -212,8 +219,8 @@ namespace Tests.UI.WPF
         [Fact]
         public void Entering_attack_mode_raises_property_changed()
         {
-            _sut.DraftArmies(_draftArmiesPhase);
-            _sut.Attack(_attackPhase);
+            _gameEngineClientProxy.DraftArmies(_draftArmiesPhase);
+            _gameEngineClientProxy.Attack(_attackPhase);
             _sut.EnterFortifyMode();
 
             var monitor = _sut.Monitor();
@@ -229,10 +236,10 @@ namespace Tests.UI.WPF
             var sendArmiesToOccupyPhase = Substitute.For<ISendArmiesToOccupyPhase>();
             sendArmiesToOccupyPhase.CurrentPlayerName.Returns(_currentPlayerName);
             sendArmiesToOccupyPhase.Players.Returns(_player);
-            _sut.DraftArmies(_draftArmiesPhase);
-            _sut.Attack(_attackPhase);
+            _gameEngineClientProxy.DraftArmies(_draftArmiesPhase);
+            _gameEngineClientProxy.Attack(_attackPhase);
 
-            _sut.SendArmiesToOccupy(sendArmiesToOccupyPhase);
+            _gameEngineClientProxy.SendArmiesToOccupy(sendArmiesToOccupyPhase);
 
             _sut.PlayerName.Should().Be("current player");
             _sut.PlayerColor.Should().Be(_currentPlayerColor);
@@ -249,11 +256,11 @@ namespace Tests.UI.WPF
             var sendArmiesToOccupyPhase = Substitute.For<ISendArmiesToOccupyPhase>();
             sendArmiesToOccupyPhase.CurrentPlayerName.Returns(_currentPlayerName);
             sendArmiesToOccupyPhase.Players.Returns(_player);
-            _sut.DraftArmies(_draftArmiesPhase);
-            _sut.Attack(_attackPhase);
+            _gameEngineClientProxy.DraftArmies(_draftArmiesPhase);
+            _gameEngineClientProxy.Attack(_attackPhase);
 
             var monitor = _sut.Monitor();
-            _sut.SendArmiesToOccupy(sendArmiesToOccupyPhase);
+            _gameEngineClientProxy.SendArmiesToOccupy(sendArmiesToOccupyPhase);
 
             monitor.Should().RaisePropertyChangeFor(x => x.PlayerName);
             monitor.Should().RaisePropertyChangeFor(x => x.PlayerColor);
@@ -269,9 +276,9 @@ namespace Tests.UI.WPF
             var endTurnPhase = Substitute.For<IEndTurnPhase>();
             endTurnPhase.CurrentPlayerName.Returns(_currentPlayerName);
             endTurnPhase.Players.Returns(_player);
-            _sut.DraftArmies(_draftArmiesPhase);
+            _gameEngineClientProxy.DraftArmies(_draftArmiesPhase);
 
-            _sut.EndTurn(endTurnPhase);
+            _gameEngineClientProxy.EndTurn(endTurnPhase);
 
             _sut.PlayerName.Should().Be("current player");
             _sut.PlayerColor.Should().Be(_currentPlayerColor);
@@ -287,10 +294,10 @@ namespace Tests.UI.WPF
         {
             var endTurnPhase = Substitute.For<IEndTurnPhase>();
             endTurnPhase.CurrentPlayerName.Returns(_currentPlayerName);
-            _sut.DraftArmies(_draftArmiesPhase);
+            _gameEngineClientProxy.DraftArmies(_draftArmiesPhase);
 
             var monitor = _sut.Monitor();
-            _sut.EndTurn(endTurnPhase);
+            _gameEngineClientProxy.EndTurn(endTurnPhase);
 
             monitor.Should().RaisePropertyChangeFor(x => x.PlayerName);
             monitor.Should().RaisePropertyChangeFor(x => x.PlayerColor);
@@ -306,13 +313,13 @@ namespace Tests.UI.WPF
             endTurnPhase.CurrentPlayerName.Returns(_currentPlayerName);
             var draftArmiesPhase = Substitute.For<IDraftArmiesPhase>();
             draftArmiesPhase.CurrentPlayerName.Returns("");
-            _sut.DraftArmies(draftArmiesPhase);
+            _gameEngineClientProxy.DraftArmies(draftArmiesPhase);
             var attackPhase = Substitute.For<IAttackPhase>();
             attackPhase.CurrentPlayerName.Returns("");
-            _sut.Attack(attackPhase);
+            _gameEngineClientProxy.Attack(attackPhase);
 
             var monitor = _sut.Monitor();
-            _sut.EndTurn(endTurnPhase);
+            _gameEngineClientProxy.EndTurn(endTurnPhase);
 
             monitor.Should().RaisePropertyChangeFor(x => x.PlayerName);
             monitor.Should().RaisePropertyChangeFor(x => x.PlayerColor);
@@ -326,12 +333,12 @@ namespace Tests.UI.WPF
         {
             var endTurnPhase = Substitute.For<IEndTurnPhase>();
             endTurnPhase.CurrentPlayerName.Returns(_currentPlayerName);
-            _sut.DraftArmies(_draftArmiesPhase);
-            _sut.Attack(_attackPhase);
+            _gameEngineClientProxy.DraftArmies(_draftArmiesPhase);
+            _gameEngineClientProxy.Attack(_attackPhase);
             _sut.EnterFortifyMode();
 
             var monitor = _sut.Monitor();
-            _sut.EndTurn(endTurnPhase);
+            _gameEngineClientProxy.EndTurn(endTurnPhase);
 
             monitor.Should().RaisePropertyChangeFor(x => x.PlayerName);
             monitor.Should().RaisePropertyChangeFor(x => x.PlayerColor);
@@ -346,7 +353,7 @@ namespace Tests.UI.WPF
             var gameOverState = Substitute.For<IGameOverState>();
             gameOverState.Winner.Returns("winner");
 
-            _sut.GameOver(gameOverState);
+            _gameEngineClientProxy.GameOver(gameOverState);
 
             _dialogManager.Received().ShowGameOverDialog("winner");
             _eventAggregator.Received().PublishOnUIThread(Arg.Any<NewGameMessage>());
@@ -370,6 +377,44 @@ namespace Tests.UI.WPF
             _sut.EndGame();
 
             _eventAggregator.Received().PublishOnUIThread(Arg.Any<NewGameMessage>());
+        }
+
+        private class FakeGameEngineClient : GameEngineClientProxyBase
+        {
+            public override void Setup(IEnumerable<string> players)
+            {
+                throw new InvalidOperationException();
+            }
+
+            public override void StartGame(IGamePlaySetup gamePlaySetup)
+            {
+                throw new InvalidOperationException();
+            }
+
+            public void DraftArmies(IDraftArmiesPhase draftArmiesPhase)
+            {
+                _draftArmiesPhaseSubject.OnNext(draftArmiesPhase);
+            }
+
+            public void Attack(IAttackPhase attackPhase)
+            {
+                _attackPhaseSubject.OnNext(attackPhase);
+            }
+
+            public void SendArmiesToOccupy(ISendArmiesToOccupyPhase sendArmiesToOccupyPhase)
+            {
+                _sendArmiesToOccupyPhaseSubject.OnNext(sendArmiesToOccupyPhase);
+            }
+
+            public void EndTurn(IEndTurnPhase endTurnPhase)
+            {
+                _endTurnPhaseSubject.OnNext(endTurnPhase);
+            }
+
+            public void GameOver(IGameOverState gameOverState)
+            {
+                _gameOverStateSubject.OnNext(gameOverState);
+            }
         }
     }
 }

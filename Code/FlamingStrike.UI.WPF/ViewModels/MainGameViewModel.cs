@@ -94,7 +94,7 @@ namespace FlamingStrike.UI.WPF.ViewModels
         {
             var gameplayViewModel = _gameplayViewModelFactory.Create();
 
-            _gameEngineClientProxy.StartGame(gameplayViewModel, gamePlaySetup);
+            _gameEngineClientProxy.StartGame(gamePlaySetup);
 
             ActivateItem(gameplayViewModel);
         }
