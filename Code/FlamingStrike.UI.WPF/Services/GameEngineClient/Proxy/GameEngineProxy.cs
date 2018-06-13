@@ -6,7 +6,7 @@ using FlamingStrike.UI.WPF.Services.GameEngineClient.SetupTerritorySelection;
 using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.Extensions.Logging;
 
-namespace FlamingStrike.UI.WPF.Services.GameEngineClient
+namespace FlamingStrike.UI.WPF.Services.GameEngineClient.Proxy
 {
     public class GameEngineProxy : GameEngineClientProxyBase
     {
@@ -25,8 +25,8 @@ namespace FlamingStrike.UI.WPF.Services.GameEngineClient
                 .ConfigureLogging(cfg => cfg.AddConsole())
                 .Build();
 
-            _hubConnection.On<SelectRegionRequest>("SelectRegion", SelectRegionRequest);
-            _hubConnection.On<GamePlaySetup>("NewGamePlaySetup", GamePlaySetup);
+            _hubConnection.On<SelectRegion>("SelectRegion", SelectRegion);
+            _hubConnection.On<GamePlaySetup>("NewGamePlaySetup", NewGamePlaySetup);
 
             _hubConnection.On<DraftArmies>("DraftArmies", DraftArmies);
             _hubConnection.On<Attack>("Attack", Attack);
@@ -62,13 +62,13 @@ namespace FlamingStrike.UI.WPF.Services.GameEngineClient
                     });
         }
 
-        private void SelectRegionRequest(SelectRegionRequest dto)
+        private void SelectRegion(SelectRegion dto)
         {
             var territorySelector = new TerritorySelector(new ArmyPlacerProxy(_hubConnection), dto.Player, dto.ArmiesLeftToPlace, dto.Territories);
             _territorySelectorSubject.OnNext(territorySelector);
         }
 
-        private void GamePlaySetup(GamePlaySetup gamePlaySetup)
+        private void NewGamePlaySetup(GamePlaySetup gamePlaySetup)
         {
             _gamePlaySetupSubject.OnNext(gamePlaySetup);
         }
@@ -109,12 +109,4 @@ namespace FlamingStrike.UI.WPF.Services.GameEngineClient
     internal class EndTurn {}
 
     internal class GameOver {}
-
-    public static class GameEngineProxyExtensions
-    {
-        public static string MapToDto(this Region region)
-        {
-            return Enum.GetName(typeof(Region), region);
-        }
-    }
 }

@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using FlamingStrike.UI.WPF.Services.GameEngineClient.Play;
 
-namespace FlamingStrike.UI.WPF.Services.GameEngineClient.Play
+namespace FlamingStrike.UI.WPF.Services.GameEngineClient.Adapter
 {
     public class AttackPhaseAdapter : IAttackPhase
     {

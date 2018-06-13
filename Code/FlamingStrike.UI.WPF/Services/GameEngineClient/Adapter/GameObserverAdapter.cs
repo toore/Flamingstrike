@@ -6,7 +6,7 @@ using IEndTurnPhase = FlamingStrike.GameEngine.Play.IEndTurnPhase;
 using IGameOverState = FlamingStrike.GameEngine.Play.IGameOverState;
 using ISendArmiesToOccupyPhase = FlamingStrike.GameEngine.Play.ISendArmiesToOccupyPhase;
 
-namespace FlamingStrike.UI.WPF.Services.GameEngineClient
+namespace FlamingStrike.UI.WPF.Services.GameEngineClient.Adapter
 {
     public class GameObserverAdapter : GameEngine.Play.IGameObserver
     {

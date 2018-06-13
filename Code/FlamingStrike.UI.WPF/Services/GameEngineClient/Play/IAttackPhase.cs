@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using FlamingStrike.UI.WPF.Services.GameEngineClient.SetupFinished;
 
 namespace FlamingStrike.UI.WPF.Services.GameEngineClient.Play
 {

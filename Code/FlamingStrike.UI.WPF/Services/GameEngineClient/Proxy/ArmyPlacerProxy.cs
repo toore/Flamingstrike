@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.SignalR.Client;
 
-namespace FlamingStrike.UI.WPF.Services.GameEngineClient
+namespace FlamingStrike.UI.WPF.Services.GameEngineClient.Proxy
 {
     public class ArmyPlacerProxy : IArmyPlacer
     {

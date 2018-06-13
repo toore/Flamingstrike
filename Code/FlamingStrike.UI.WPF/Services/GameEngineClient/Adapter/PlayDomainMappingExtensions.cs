@@ -1,6 +1,8 @@
 using FlamingStrike.GameEngine.Play;
+using Player = FlamingStrike.UI.WPF.Services.GameEngineClient.Play.Player;
+using Territory = FlamingStrike.UI.WPF.Services.GameEngineClient.Play.Territory;
 
-namespace FlamingStrike.UI.WPF.Services.GameEngineClient.Play
+namespace FlamingStrike.UI.WPF.Services.GameEngineClient.Adapter
 {
     public static class PlayDomainMappingExtensions
     {

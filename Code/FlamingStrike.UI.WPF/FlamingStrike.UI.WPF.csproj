@@ -191,33 +191,33 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Services\GameEngineClient\AlternateGameSetupObserverAdapter.cs" />
-    <Compile Include="Services\GameEngineClient\ArmyPlacerProxy.cs" />
-    <Compile Include="Services\GameEngineClient\GameEngineClientProxyBase.cs" />
-    <Compile Include="Services\GameEngineClient\GameEngineProxy.cs" />
-    <Compile Include="Services\GameEngineClient\Play\AttackPhaseAdapter.cs" />
-    <Compile Include="Services\GameEngineClient\GameEngineAdapter.cs" />
-    <Compile Include="Services\GameEngineClient\GameObserverAdapter.cs" />
-    <Compile Include="Services\GameEngineClient\Play\DraftArmiesPhaseAdapter.cs" />
-    <Compile Include="Services\GameEngineClient\Play\EndTurnPhaseAdapter.cs" />
-    <Compile Include="Services\GameEngineClient\Play\PlayDomainMappingExtensions.cs" />
-    <Compile Include="Services\GameEngineClient\Play\Player.cs" />
-    <Compile Include="Services\GameEngineClient\Play\SendArmiesToOccupyPhaseAdapter.cs" />
-    <Compile Include="Services\GameEngineClient\Play\Territory.cs" />
-    <Compile Include="Services\GameEngineClient\GameEngineMappingExtensions.cs" />
-    <Compile Include="Services\GameEngineClient\SetupTerritorySelection\SelectRegionRequest.cs" />
+    <Compile Include="Services\GameEngineClient\Adapter\AlternateGameSetupObserverAdapter.cs" />
+    <Compile Include="Services\GameEngineClient\Adapter\AttackPhaseAdapter.cs" />
+    <Compile Include="Services\GameEngineClient\Adapter\DraftArmiesPhaseAdapter.cs" />
+    <Compile Include="Services\GameEngineClient\Adapter\EndTurnPhaseAdapter.cs" />
+    <Compile Include="Services\GameEngineClient\Adapter\GameEngineAdapter.cs" />
+    <Compile Include="Services\GameEngineClient\Adapter\GameEngineMappingExtensions.cs" />
+    <Compile Include="Services\GameEngineClient\Adapter\GameObserverAdapter.cs" />
+    <Compile Include="Services\GameEngineClient\Adapter\PlayDomainMappingExtensions.cs" />
+    <Compile Include="Services\GameEngineClient\Adapter\SendArmiesToOccupyPhaseAdapter.cs" />
     <Compile Include="Services\GameEngineClient\SetupFinished\GamePlaySetup.cs" />
-    <Compile Include="Services\GameEngineClient\SetupFinished\Territory.cs" />
-    <Compile Include="Services\GameEngineClient\IArmyPlacer.cs" />
-    <Compile Include="Services\GameEngineClient\IGameEngineClientProxy.cs" />
     <Compile Include="Services\GameEngineClient\Play\IAttackPhase.cs" />
     <Compile Include="Services\GameEngineClient\Play\IDraftArmiesPhase.cs" />
     <Compile Include="Services\GameEngineClient\Play\IEndTurnPhase.cs" />
     <Compile Include="Services\GameEngineClient\Play\IGameOverState.cs" />
     <Compile Include="Services\GameEngineClient\Play\ISendArmiesToOccupyPhase.cs" />
+    <Compile Include="Services\GameEngineClient\Play\Player.cs" />
+    <Compile Include="Services\GameEngineClient\Play\Territory.cs" />
+    <Compile Include="Services\GameEngineClient\Proxy\ArmyPlacerProxy.cs" />
+    <Compile Include="Services\GameEngineClient\GameEngineClientProxyBase.cs" />
+    <Compile Include="Services\GameEngineClient\Proxy\GameEngineProxy.cs" />
+    <Compile Include="Services\GameEngineClient\Proxy\GameEngineProxyMappingExtensions.cs" />
+    <Compile Include="Services\GameEngineClient\Proxy\SelectRegion.cs" />
+    <Compile Include="Services\GameEngineClient\IArmyPlacer.cs" />
+    <Compile Include="Services\GameEngineClient\IGameEngineClientProxy.cs" />
     <Compile Include="Services\GameEngineClient\Region.cs" />
-    <Compile Include="Services\GameEngineClient\SetupTerritorySelection\Player.cs" />
     <Compile Include="Services\GameEngineClient\SetupTerritorySelection\Territory.cs" />
+    <Compile Include="Services\GameEngineClient\SetupFinished\Territory.cs" />
     <Compile Include="Services\GameEngineClient\SetupTerritorySelection\TerritorySelector.cs" />
     <Compile Include="ViewModels\Gameplay\Interaction\EndTurnInteractionState.cs" />
     <Compile Include="ViewModels\Gameplay\Interaction\InteractionStateBase.cs" />
@@ -438,6 +438,7 @@
       <Name>FlamingStrike.GameEngine</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -4,7 +4,7 @@ using FlamingStrike.UI.WPF.Services.GameEngineClient.SetupFinished;
 using FlamingStrike.UI.WPF.Services.GameEngineClient.SetupTerritorySelection;
 using Territory = FlamingStrike.UI.WPF.Services.GameEngineClient.SetupTerritorySelection.Territory;
 
-namespace FlamingStrike.UI.WPF.Services.GameEngineClient
+namespace FlamingStrike.UI.WPF.Services.GameEngineClient.Adapter
 {
     public class AlternateGameSetupObserverAdapter : GameEngine.Setup.IAlternateGameSetupObserver, IArmyPlacer
     {

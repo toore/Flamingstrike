@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Reflection;
 
-namespace FlamingStrike.UI.WPF.Services.GameEngineClient
+namespace FlamingStrike.UI.WPF.Services.GameEngineClient.Adapter
 {
     public static class GameEngineMappingExtensions
     {

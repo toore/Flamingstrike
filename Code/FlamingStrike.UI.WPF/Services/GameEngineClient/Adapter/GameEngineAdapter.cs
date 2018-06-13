@@ -7,7 +7,7 @@ using FlamingStrike.UI.WPF.Services.GameEngineClient.SetupFinished;
 using GamePlaySetup = FlamingStrike.GameEngine.Setup.Finished.GamePlaySetup;
 using Territory = FlamingStrike.GameEngine.Setup.Finished.Territory;
 
-namespace FlamingStrike.UI.WPF.Services.GameEngineClient
+namespace FlamingStrike.UI.WPF.Services.GameEngineClient.Adapter
 {
     public class GameEngineAdapter : GameEngineClientProxyBase
     {

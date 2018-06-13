@@ -5,6 +5,8 @@ using FlamingStrike.GameEngine.Setup;
 using FlamingStrike.UI.WPF.RegionModels;
 using FlamingStrike.UI.WPF.Services;
 using FlamingStrike.UI.WPF.Services.GameEngineClient;
+using FlamingStrike.UI.WPF.Services.GameEngineClient.Adapter;
+using FlamingStrike.UI.WPF.Services.GameEngineClient.Proxy;
 using FlamingStrike.UI.WPF.ViewModels;
 using FlamingStrike.UI.WPF.ViewModels.AlternateSetup;
 using FlamingStrike.UI.WPF.ViewModels.Gameplay;
