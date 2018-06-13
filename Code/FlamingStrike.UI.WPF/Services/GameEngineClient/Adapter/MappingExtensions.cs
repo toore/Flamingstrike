@@ -7,7 +7,7 @@ using Territory = FlamingStrike.UI.WPF.Services.GameEngineClient.Play.Territory;
 
 namespace FlamingStrike.UI.WPF.Services.GameEngineClient.Adapter
 {
-    public static class GameEngineMappingExtensions
+    public static class MappingExtensions
     {
         public static Region MapFromEngine(this GameEngine.Region region)
         {
@@ -27,9 +27,9 @@ namespace FlamingStrike.UI.WPF.Services.GameEngineClient.Adapter
             return new Territory(territory.Region.MapFromEngine(), (string)territory.PlayerName, territory.Armies);
         }
 
-        public static Player MapFromEngine(this IPlayer x)
+        public static Player MapFromEngine(this IPlayer player)
         {
-            return new Player((string)x.Name, x.Cards.Count);
+            return new Player((string)player.Name, player.Cards.Count);
         }
     }
 }

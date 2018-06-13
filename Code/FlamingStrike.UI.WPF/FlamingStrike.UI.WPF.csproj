@@ -196,7 +196,7 @@
     <Compile Include="Services\GameEngineClient\Adapter\DraftArmiesPhaseAdapter.cs" />
     <Compile Include="Services\GameEngineClient\Adapter\EndTurnPhaseAdapter.cs" />
     <Compile Include="Services\GameEngineClient\Adapter\GameEngineAdapter.cs" />
-    <Compile Include="Services\GameEngineClient\Adapter\GameEngineMappingExtensions.cs" />
+    <Compile Include="Services\GameEngineClient\Adapter\MappingExtensions.cs" />
     <Compile Include="Services\GameEngineClient\Adapter\GameObserverAdapter.cs" />
     <Compile Include="Services\GameEngineClient\Adapter\SendArmiesToOccupyPhaseAdapter.cs" />
     <Compile Include="Services\GameEngineClient\Proxy\DraftArmies.cs" />
@@ -212,7 +212,7 @@
     <Compile Include="Services\GameEngineClient\Proxy\ArmyPlacerProxy.cs" />
     <Compile Include="Services\GameEngineClient\GameEngineClientBase.cs" />
     <Compile Include="Services\GameEngineClient\Proxy\GameEngineProxy.cs" />
-    <Compile Include="Services\GameEngineClient\Proxy\GameEngineProxyMappingExtensions.cs" />
+    <Compile Include="Services\GameEngineClient\Proxy\MappingExtensions.cs" />
     <Compile Include="Services\GameEngineClient\Proxy\SelectRegion.cs" />
     <Compile Include="Services\GameEngineClient\IArmyPlacer.cs" />
     <Compile Include="Services\GameEngineClient\IGameEngineClient.cs" />

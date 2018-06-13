@@ -6,6 +6,7 @@ using FlamingStrike.GameEngine.Setup;
 using FlamingStrike.GameEngine.Setup.Finished;
 using FlamingStrike.Service.Play;
 using Microsoft.AspNetCore.SignalR;
+using GamePlaySetup = FlamingStrike.Service.Play.GamePlaySetup;
 
 namespace FlamingStrike.Service
 {
@@ -41,7 +42,7 @@ namespace FlamingStrike.Service
                 () => { _alternateGameSetupClientProxy.PlaceArmyInRegion(regionName.MapRegionNameToEngine()); });
         }
 
-        public async Task StartGame(GamePlaySetupRequest gamePlaySetupRequest)
+        public async Task StartGame(GamePlaySetup gamePlaySetup)
         {
             await Task.Run(
                 () =>
@@ -50,9 +51,9 @@ namespace FlamingStrike.Service
 
                         _gameBootstrapper.Run(
                             _gameClientProxy,
-                            new GamePlaySetup(
-                                gamePlaySetupRequest.GetPlayers().Select(x => x.MapToEngine()).ToList(),
-                                gamePlaySetupRequest.GetTerritories().Select(x => x.MapToEngine()).ToList()));
+                            new GameEngine.Setup.Finished.GamePlaySetup(
+                                gamePlaySetup.GetPlayers().Select(x => x.MapToEngine()).ToList(),
+                                gamePlaySetup.GetTerritories().Select(x => x.MapToEngine()).ToList()));
                     });
         }
 

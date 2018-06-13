@@ -2,12 +2,12 @@
 
 namespace FlamingStrike.Service.Play
 {
-    public class GamePlaySetupRequest
+    public class GamePlaySetup
     {
         private readonly IReadOnlyList<string> _players;
-        private readonly IReadOnlyList<TerritoryDto> _territories;
+        private readonly IReadOnlyList<Territory> _territories;
 
-        public GamePlaySetupRequest(IReadOnlyList<string> players, IReadOnlyList<TerritoryDto> territories)
+        public GamePlaySetup(IReadOnlyList<string> players, IReadOnlyList<Territory> territories)
         {
             _players = players;
             _territories = territories;
@@ -18,7 +18,7 @@ namespace FlamingStrike.Service.Play
             return _players;
         }
 
-        public IEnumerable<TerritoryDto> GetTerritories()
+        public IEnumerable<Territory> GetTerritories()
         {
             return _territories;
         }

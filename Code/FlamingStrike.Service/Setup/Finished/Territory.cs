@@ -1,8 +1,8 @@
 ﻿namespace FlamingStrike.Service.Setup.Finished
 {
-    public class TerritoryDto
+    public class Territory
     {
-        public TerritoryDto(string region, string player, int armies)
+        public Territory(string region, string player, int armies)
         {
             Region = region;
             Player = player;

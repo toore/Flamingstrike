@@ -1,8 +1,8 @@
 ﻿namespace FlamingStrike.Service.Play
 {
-    public class TerritoryDto
+    public class Territory
     {
-        public TerritoryDto(string region, string playerName, int armies)
+        public Territory(string region, string playerName, int armies)
         {
             Region = region;
             PlayerName = playerName;
