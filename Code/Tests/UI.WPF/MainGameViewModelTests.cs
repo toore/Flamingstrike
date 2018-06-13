@@ -17,7 +17,7 @@ namespace Tests.UI.WPF
         private readonly IGamePreparationViewModelFactory _gamePreparationViewModelFactory;
         private readonly IGameplayViewModelFactory _gameplayViewModelFactory;
         private readonly IAlternateGameSetupViewModelFactory _alternateGameSetupViewModelFactory;
-        private readonly IGameEngineClientProxy _gameEngineClientProxy;
+        private readonly IGameEngineClient _gameEngineClient;
 
         public MainGameViewModelTests()
         {
@@ -25,7 +25,7 @@ namespace Tests.UI.WPF
             _gamePreparationViewModelFactory = Substitute.For<IGamePreparationViewModelFactory>();
             _gameplayViewModelFactory = Substitute.For<IGameplayViewModelFactory>();
             _alternateGameSetupViewModelFactory = Substitute.For<IAlternateGameSetupViewModelFactory>();
-            _gameEngineClientProxy = Substitute.For<IGameEngineClientProxy>();
+            _gameEngineClient = Substitute.For<IGameEngineClient>();
         }
 
         [Fact]
@@ -84,7 +84,7 @@ namespace Tests.UI.WPF
                 _gamePreparationViewModelFactory,
                 _gameplayViewModelFactory,
                 _alternateGameSetupViewModelFactory,
-                _gameEngineClientProxy);
+                _gameEngineClient);
         }
     }
 }

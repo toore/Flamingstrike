@@ -8,7 +8,7 @@ using Microsoft.Extensions.Logging;
 
 namespace FlamingStrike.UI.WPF.Services.GameEngineClient.Proxy
 {
-    public class GameEngineProxy : GameEngineClientProxyBase
+    public class GameEngineProxy : GameEngineClientBase
     {
         private HubConnection _hubConnection;
 

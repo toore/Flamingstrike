@@ -6,7 +6,7 @@ using FlamingStrike.UI.WPF.Services.GameEngineClient.SetupTerritorySelection;
 
 namespace FlamingStrike.UI.WPF.Services.GameEngineClient
 {
-    public interface IGameEngineClientProxy
+    public interface IGameEngineClient
     {
         IObservable<IGamePlaySetup> OnGamePlaySetup { get; }
         IObservable<ITerritorySelector> OnSelectRegion { get; }

@@ -34,7 +34,7 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay
         private readonly IDialogManager _dialogManager;
         private readonly IEventAggregator _eventAggregator;
         private readonly IPlayerStatusViewModelFactory _playerStatusViewModelFactory;
-        private readonly IGameEngineClientProxy _gameEngineClientProxy;
+        private readonly IGameEngineClient _gameEngineClient;
         private string _informationText;
         private string _playerName;
         private Color _playerColor;
@@ -62,7 +62,7 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay
             IDialogManager dialogManager,
             IEventAggregator eventAggregator,
             IPlayerStatusViewModelFactory playerStatusViewModelFactory,
-            IGameEngineClientProxy gameEngineClientProxy)
+            IGameEngineClient gameEngineClient)
         {
             _interactionStateFactory = interactionStateFactory;
             _worldMapViewModelFactory = worldMapViewModelFactory;
@@ -70,7 +70,7 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay
             _dialogManager = dialogManager;
             _eventAggregator = eventAggregator;
             _playerStatusViewModelFactory = playerStatusViewModelFactory;
-            _gameEngineClientProxy = gameEngineClientProxy;
+            _gameEngineClient = gameEngineClient;
 
             WorldMapViewModel = _worldMapViewModelFactory.Create(OnRegionClicked);
         }
@@ -143,11 +143,11 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay
         {
             base.OnActivate();
 
-            _draftArmiesSubscription = _gameEngineClientProxy.OnDraftArmies.Subscribe(DraftArmies);
-            _attackSubscription = _gameEngineClientProxy.OnAttack.Subscribe(Attack);
-            _sendArmiesSubscription = _gameEngineClientProxy.OnSendArmiesToOccupy.Subscribe(SendArmiesToOccupy);
-            _endTurnSubscription = _gameEngineClientProxy.OnEndTurn.Subscribe(EndTurn);
-            _gameOverSubscription = _gameEngineClientProxy.OnGameOver.Subscribe(GameOver);
+            _draftArmiesSubscription = _gameEngineClient.OnDraftArmies.Subscribe(DraftArmies);
+            _attackSubscription = _gameEngineClient.OnAttack.Subscribe(Attack);
+            _sendArmiesSubscription = _gameEngineClient.OnSendArmiesToOccupy.Subscribe(SendArmiesToOccupy);
+            _endTurnSubscription = _gameEngineClient.OnEndTurn.Subscribe(EndTurn);
+            _gameOverSubscription = _gameEngineClient.OnGameOver.Subscribe(GameOver);
         }
 
         protected override void OnDeactivate(bool close)

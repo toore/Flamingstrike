@@ -24,7 +24,7 @@ namespace FlamingStrike.UI.WPF.ViewModels.AlternateSetup
         private readonly IPlayerUiDataRepository _playerUiDataRepository;
         private readonly IDialogManager _dialogManager;
         private readonly IEventAggregator _eventAggregator;
-        private readonly IGameEngineClientProxy _gameEngineClientProxy;
+        private readonly IGameEngineClient _gameEngineClient;
         private string _informationText;
         private string _playerName;
         private Color _playerColor;
@@ -34,13 +34,13 @@ namespace FlamingStrike.UI.WPF.ViewModels.AlternateSetup
             IPlayerUiDataRepository playerUiDataRepository,
             IDialogManager dialogManager,
             IEventAggregator eventAggregator,
-            IGameEngineClientProxy gameEngineClientProxy)
+            IGameEngineClient gameEngineClient)
         {
             _worldMapViewModelFactory = worldMapViewModelFactory;
             _playerUiDataRepository = playerUiDataRepository;
             _dialogManager = dialogManager;
             _eventAggregator = eventAggregator;
-            _gameEngineClientProxy = gameEngineClientProxy;
+            _gameEngineClient = gameEngineClient;
 
             WorldMapViewModel = _worldMapViewModelFactory.Create(x => _onRegionClick(x));
         }
@@ -79,8 +79,8 @@ namespace FlamingStrike.UI.WPF.ViewModels.AlternateSetup
         {
             base.OnActivate();
 
-            _selectRegionSubscription = _gameEngineClientProxy.OnSelectRegion.Subscribe(SelectRegion);
-            _gamePlaySetupSubscription = _gameEngineClientProxy.OnGamePlaySetup.Subscribe(NewGamePlaySetup);
+            _selectRegionSubscription = _gameEngineClient.OnSelectRegion.Subscribe(SelectRegion);
+            _gamePlaySetupSubscription = _gameEngineClient.OnGamePlaySetup.Subscribe(NewGamePlaySetup);
         }
 
         protected override void OnDeactivate(bool close)

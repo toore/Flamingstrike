@@ -209,12 +209,12 @@
     <Compile Include="Services\GameEngineClient\Play\Player.cs" />
     <Compile Include="Services\GameEngineClient\Play\Territory.cs" />
     <Compile Include="Services\GameEngineClient\Proxy\ArmyPlacerProxy.cs" />
-    <Compile Include="Services\GameEngineClient\GameEngineClientProxyBase.cs" />
+    <Compile Include="Services\GameEngineClient\GameEngineClientBase.cs" />
     <Compile Include="Services\GameEngineClient\Proxy\GameEngineProxy.cs" />
     <Compile Include="Services\GameEngineClient\Proxy\GameEngineProxyMappingExtensions.cs" />
     <Compile Include="Services\GameEngineClient\Proxy\SelectRegion.cs" />
     <Compile Include="Services\GameEngineClient\IArmyPlacer.cs" />
-    <Compile Include="Services\GameEngineClient\IGameEngineClientProxy.cs" />
+    <Compile Include="Services\GameEngineClient\IGameEngineClient.cs" />
     <Compile Include="Services\GameEngineClient\Region.cs" />
     <Compile Include="Services\GameEngineClient\SetupTerritorySelection\Territory.cs" />
     <Compile Include="Services\GameEngineClient\SetupFinished\Territory.cs" />

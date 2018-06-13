@@ -17,13 +17,13 @@ namespace Tests.UI.WPF
             IGamePreparationViewModelFactory gamePreparationViewModelFactory,
             IGameplayViewModelFactory gameplayViewModelFactory,
             IAlternateGameSetupViewModelFactory alternateGameSetupViewModelFactory,
-            IGameEngineClientProxy gameEngineClientProxy)
+            IGameEngineClient gameEngineClient)
             : base(
                 playerUiDataRepository,
                 gamePreparationViewModelFactory,
                 gameplayViewModelFactory,
                 alternateGameSetupViewModelFactory,
-                gameEngineClientProxy) {}
+                gameEngineClient) {}
 
         public new void OnInitialize()
         {

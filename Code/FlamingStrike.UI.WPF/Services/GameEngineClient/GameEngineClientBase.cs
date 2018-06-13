@@ -8,7 +8,7 @@ using FlamingStrike.UI.WPF.Services.GameEngineClient.SetupTerritorySelection;
 
 namespace FlamingStrike.UI.WPF.Services.GameEngineClient
 {
-    public abstract class GameEngineClientProxyBase : IGameEngineClientProxy
+    public abstract class GameEngineClientBase : IGameEngineClient
     {
         protected readonly ISubject<ITerritorySelector> _territorySelectorSubject;
         protected readonly ISubject<IGamePlaySetup> _gamePlaySetupSubject;
@@ -18,7 +18,7 @@ namespace FlamingStrike.UI.WPF.Services.GameEngineClient
         protected readonly ISubject<IEndTurnPhase> _endTurnPhaseSubject;
         protected readonly ISubject<IGameOverState> _gameOverStateSubject;
 
-        protected GameEngineClientProxyBase()
+        protected GameEngineClientBase()
         {
             _territorySelectorSubject = new Subject<ITerritorySelector>();
             _gamePlaySetupSubject = new Subject<IGamePlaySetup>();

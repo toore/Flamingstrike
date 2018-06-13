@@ -9,7 +9,7 @@ using Territory = FlamingStrike.GameEngine.Setup.Finished.Territory;
 
 namespace FlamingStrike.UI.WPF.Services.GameEngineClient.Adapter
 {
-    public class GameEngineAdapter : GameEngineClientProxyBase
+    public class GameEngineAdapter : GameEngineClientBase
     {
         private readonly IAlternateGameSetupBootstrapper _alternateGameSetupBootstrapper;
         private readonly IGameBootstrapper _gameBootstrapper;

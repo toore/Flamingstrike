@@ -169,7 +169,7 @@ namespace Tests.UI.WPF
             return alternateGameSetupViewModel;
         }
 
-        private class FakeGameEngineClient : GameEngineClientProxyBase
+        private class FakeGameEngineClient : GameEngineClientBase
         {
             public override void Setup(IEnumerable<string> players)
             {

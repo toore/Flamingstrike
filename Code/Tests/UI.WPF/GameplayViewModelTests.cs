@@ -379,7 +379,7 @@ namespace Tests.UI.WPF
             _eventAggregator.Received().PublishOnUIThread(Arg.Any<NewGameMessage>());
         }
 
-        private class FakeGameEngineClient : GameEngineClientProxyBase
+        private class FakeGameEngineClient : GameEngineClientBase
         {
             public override void Setup(IEnumerable<string> players)
             {

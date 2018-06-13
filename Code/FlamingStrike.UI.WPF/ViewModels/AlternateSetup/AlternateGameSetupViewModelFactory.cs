@@ -17,20 +17,20 @@ namespace FlamingStrike.UI.WPF.ViewModels.AlternateSetup
         private readonly IPlayerUiDataRepository _playerUiDataRepository;
         private readonly IDialogManager _dialogManager;
         private readonly IEventAggregator _eventAggregator;
-        private readonly IGameEngineClientProxy _gameEngineClientProxy;
+        private readonly IGameEngineClient _gameEngineClient;
 
         public AlternateGameSetupViewModelFactory(
             IWorldMapViewModelFactory worldMapViewModelFactory,
             IPlayerUiDataRepository playerUiDataRepository,
             IDialogManager dialogManager,
             IEventAggregator eventAggregator,
-            IGameEngineClientProxy gameEngineClientProxy)
+            IGameEngineClient gameEngineClient)
         {
             _worldMapViewModelFactory = worldMapViewModelFactory;
             _playerUiDataRepository = playerUiDataRepository;
             _dialogManager = dialogManager;
             _eventAggregator = eventAggregator;
-            _gameEngineClientProxy = gameEngineClientProxy;
+            _gameEngineClient = gameEngineClient;
         }
 
         public IAlternateGameSetupViewModel Create()
@@ -40,7 +40,7 @@ namespace FlamingStrike.UI.WPF.ViewModels.AlternateSetup
                 _playerUiDataRepository,
                 _dialogManager,
                 _eventAggregator,
-                _gameEngineClientProxy);
+                _gameEngineClient);
         }
     }
 }

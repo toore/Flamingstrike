@@ -23,7 +23,7 @@ namespace FlamingStrike.UI.WPF
         public IGamePreparationViewModelFactory GamePreparationViewModelFactory { get; }
         public IGameplayViewModelFactory GameplayViewModelFactory { get; }
         public IAlternateGameSetupViewModelFactory AlternateGameSetupViewModelFactory { get; }
-        public IGameEngineClientProxy GameEngineClientProxy { get; }
+        public IGameEngineClient GameEngineClient { get; }
 
         public CompositionRoot()
         {
@@ -47,7 +47,7 @@ namespace FlamingStrike.UI.WPF
             var playerStatusViewModelFactory = new PlayerStatusViewModelFactory(PlayerUiDataRepository);
 
             //GameEngineClientProxy = CreateInternalGameEngine();
-            GameEngineClientProxy = new GameEngineProxy();
+            GameEngineClient = new Services.GameEngineClient.Proxy.GameEngineProxy();
 
             GameplayViewModelFactory = new GameplayViewModelFactory(
                 interactionStateFactory,
@@ -56,14 +56,14 @@ namespace FlamingStrike.UI.WPF
                 dialogManager,
                 EventAggregator,
                 playerStatusViewModelFactory,
-                GameEngineClientProxy);
+                GameEngineClient);
 
             AlternateGameSetupViewModelFactory = new AlternateGameSetupViewModelFactory(
                 worldMapViewModelFactory,
                 PlayerUiDataRepository,
                 dialogManager,
                 EventAggregator,
-                GameEngineClientProxy);
+                GameEngineClient);
         }
 
         private GameEngineAdapter CreateInProcessGameEngine()
