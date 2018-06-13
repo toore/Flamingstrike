@@ -46,8 +46,6 @@ namespace FlamingStrike.UI.WPF.Services.GameEngineClient.Proxy
 
         public override async void StartGame(IGamePlaySetup gamePlaySetup)
         {
-            LazyConnect();
-
             await _hubConnection.SendAsync(
                 "StartGame", new
                     {
@@ -56,7 +54,7 @@ namespace FlamingStrike.UI.WPF.Services.GameEngineClient.Proxy
                             x => new
                                 {
                                     Region = x.Region.MapToDto(),
-                                    x.Player,
+                                    PlayerName = x.Player,
                                     x.Armies
                                 })
                     });
@@ -73,10 +71,10 @@ namespace FlamingStrike.UI.WPF.Services.GameEngineClient.Proxy
             _gamePlaySetupSubject.OnNext(gamePlaySetup);
         }
 
-        private void DraftArmies(DraftArmies draftArmies)
+        private void DraftArmies(DraftArmies dto)
         {
-            throw new NotImplementedException();
-            //_draftArmiesPhaseSubject.OnNext(new );
+            var draftArmiesPhase = new DraftArmiesProxy(_hubConnection, dto.CurrentPlayerName, dto.Territories, dto.Players, dto.NumberOfArmiesToDraft, dto.RegionsAllowedToDraftArmies);
+            _draftArmiesPhaseSubject.OnNext(draftArmiesPhase);
         }
 
         private void Attack(Attack attack)
@@ -99,8 +97,6 @@ namespace FlamingStrike.UI.WPF.Services.GameEngineClient.Proxy
             throw new NotImplementedException();
         }
     }
-
-    public class DraftArmies {}
 
     public class Attack {}
 

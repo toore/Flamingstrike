@@ -5,8 +5,17 @@ namespace FlamingStrike.UI.WPF.Services.GameEngineClient.Proxy
 {
     public class SelectRegion
     {
-        public string Player { get; set; }
-        public int ArmiesLeftToPlace { get; set; }
-        public IReadOnlyList<Territory> Territories { get; set; }
+        public SelectRegion(string player, int armiesLeftToPlace, IReadOnlyList<Territory> territories)
+        {
+            Player = player;
+            ArmiesLeftToPlace = armiesLeftToPlace;
+            Territories = territories;
+        }
+
+        public string Player { get; }
+        
+        public int ArmiesLeftToPlace { get; }
+        
+        public IReadOnlyList<Territory> Territories { get; }
     }
 }

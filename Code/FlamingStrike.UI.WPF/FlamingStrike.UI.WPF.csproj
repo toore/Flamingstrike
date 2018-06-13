@@ -199,6 +199,8 @@
     <Compile Include="Services\GameEngineClient\Adapter\GameEngineMappingExtensions.cs" />
     <Compile Include="Services\GameEngineClient\Adapter\GameObserverAdapter.cs" />
     <Compile Include="Services\GameEngineClient\Adapter\SendArmiesToOccupyPhaseAdapter.cs" />
+    <Compile Include="Services\GameEngineClient\Proxy\DraftArmies.cs" />
+    <Compile Include="Services\GameEngineClient\Proxy\DraftArmiesProxy.cs" />
     <Compile Include="Services\GameEngineClient\SetupFinished\GamePlaySetup.cs" />
     <Compile Include="Services\GameEngineClient\Play\IAttackPhase.cs" />
     <Compile Include="Services\GameEngineClient\Play\IDraftArmiesPhase.cs" />

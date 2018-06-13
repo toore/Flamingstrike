@@ -30,7 +30,7 @@ namespace FlamingStrike.Service
                 () =>
                     {
                         _alternateGameSetupClientProxy = new AlternateGameSetupClientProxy(this);
-                        
+
                         _alternateGameSetupBootstrapper.Run(_alternateGameSetupClientProxy, players.Select(x => x.MapToEngine()).ToList());
                     });
         }
@@ -38,7 +38,7 @@ namespace FlamingStrike.Service
         public async Task PlaceArmyInRegion(string regionName)
         {
             await Task.Run(
-                () => { _alternateGameSetupClientProxy.PlaceArmyInRegion(regionName.MapRegionToEngine()); });
+                () => { _alternateGameSetupClientProxy.PlaceArmyInRegion(regionName.MapRegionNameToEngine()); });
         }
 
         public async Task StartGame(GamePlaySetupRequest gamePlaySetupRequest)
@@ -54,6 +54,12 @@ namespace FlamingStrike.Service
                                 gamePlaySetupRequest.GetPlayers().Select(x => x.MapToEngine()).ToList(),
                                 gamePlaySetupRequest.GetTerritories().Select(x => x.MapToEngine()).ToList()));
                     });
+        }
+
+        public async Task PlaceDraftArmies(PlaceDraftArmies placeDraftArmies)
+        {
+            await Task.Run(
+                () => { _gameClientProxy.PlaceDraftArmies(placeDraftArmies.Region.MapRegionNameToEngine(), placeDraftArmies.NumberOfArmies); });
         }
     }
 }

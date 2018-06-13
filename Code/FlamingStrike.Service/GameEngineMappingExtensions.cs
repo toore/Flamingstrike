@@ -14,7 +14,7 @@ namespace FlamingStrike.Service
             return new PlayerName(playerName);
         }
 
-        public static Region MapRegionToEngine(this string regionName)
+        public static Region MapRegionNameToEngine(this string regionName)
         {
             return (Region)typeof(Region).GetFields()
                 .Where(x => x.IsPublic && x.IsStatic)
@@ -34,7 +34,7 @@ namespace FlamingStrike.Service
 
         public static GameEngine.Setup.Finished.Territory MapToEngine(this Play.TerritoryDto territory)
         {
-            return new GameEngine.Setup.Finished.Territory(territory.Region.MapRegionToEngine(), territory.Player.MapToEngine(), territory.Armies);
+            return new GameEngine.Setup.Finished.Territory(territory.Region.MapRegionNameToEngine(), territory.PlayerName.MapToEngine(), territory.Armies);
         }
 
         public static Play.TerritoryDto MapToDto(this ITerritory territory)
