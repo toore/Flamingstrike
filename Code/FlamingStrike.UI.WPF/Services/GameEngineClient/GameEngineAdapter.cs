@@ -33,7 +33,7 @@ namespace FlamingStrike.UI.WPF.Services.GameEngineClient
             var gameObserverAdapter = new GameObserverAdapter(_draftArmiesPhaseSubject, _attackPhaseSubject, _sendArmiesToOccupyPhaseSubject, _endTurnPhaseSubject, _gameOverStateSubject);
 
             var players = gamePlaySetup.GetPlayers().Select(x => new PlayerName(x)).ToList();
-            var territories = gamePlaySetup.GetTerritories().Select(x => new Territory(x.Region.MapToEngine(), new PlayerName(x.PlayerName), x.Armies)).ToList();
+            var territories = gamePlaySetup.GetTerritories().Select(x => new Territory(x.Region.MapToEngine(), new PlayerName(x.Player), x.Armies)).ToList();
             var setup = new GamePlaySetup(players, territories);
 
             _gameBootstrapper.Run(gameObserverAdapter, setup);

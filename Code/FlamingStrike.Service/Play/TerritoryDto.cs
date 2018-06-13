@@ -1,15 +1,15 @@
-namespace FlamingStrike.UI.WPF.Services.GameEngineClient.SetupFinished
+﻿namespace FlamingStrike.Service.Play
 {
-    public class Territory
+    public class TerritoryDto
     {
-        public Territory(Region region, string player, int armies)
+        public TerritoryDto(string region, string player, int armies)
         {
             Region = region;
             Player = player;
             Armies = armies;
         }
 
-        public Region Region { get; }
+        public string Region { get; }
         public string Player { get; }
         public int Armies { get; }
     }

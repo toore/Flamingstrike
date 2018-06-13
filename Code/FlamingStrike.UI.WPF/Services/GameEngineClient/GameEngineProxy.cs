@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using FlamingStrike.UI.WPF.Services.GameEngineClient.SetupFinished;
 using FlamingStrike.UI.WPF.Services.GameEngineClient.SetupTerritorySelection;
 using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.Extensions.Logging;
-using Territory = FlamingStrike.UI.WPF.Services.GameEngineClient.SetupTerritorySelection.Territory;
 
 namespace FlamingStrike.UI.WPF.Services.GameEngineClient
 {
@@ -17,8 +17,8 @@ namespace FlamingStrike.UI.WPF.Services.GameEngineClient
             if (_hubConnection != null)
             {
                 return;
-
             }
+
             _hubConnection = new HubConnectionBuilder()
                 .WithUrl("http://localhost:60643/hubs/gameengine")
                 //.WithUrl("https://localhost:44391/hubs/gameengine")
@@ -27,6 +27,12 @@ namespace FlamingStrike.UI.WPF.Services.GameEngineClient
 
             _hubConnection.On<SelectRegionRequest>("SelectRegion", SelectRegionRequest);
             _hubConnection.On<GamePlaySetup>("NewGamePlaySetup", GamePlaySetup);
+
+            _hubConnection.On<DraftArmies>("DraftArmies", DraftArmies);
+            _hubConnection.On<Attack>("Attack", Attack);
+            _hubConnection.On<SendArmiesToOccupy>("SendArmiesToOccupy", SendArmiesToOccupy);
+            _hubConnection.On<EndTurn>("EndTurn", EndTurn);
+            _hubConnection.On<GameOver>("GameOver", GameOver);
 
             await _hubConnection.StartAsync();
         }
@@ -38,11 +44,22 @@ namespace FlamingStrike.UI.WPF.Services.GameEngineClient
             await _hubConnection.SendAsync("RunSetup", players);
         }
 
-        public override void StartGame(IGamePlaySetup gamePlaySetup)
+        public override async void StartGame(IGamePlaySetup gamePlaySetup)
         {
             LazyConnect();
 
-            throw new NotImplementedException();
+            await _hubConnection.SendAsync(
+                "StartGame", new
+                    {
+                        Players = gamePlaySetup.GetPlayers(),
+                        Territories = gamePlaySetup.GetTerritories().Select(
+                            x => new
+                                {
+                                    Region = x.Region.MapToDto(),
+                                    x.Player,
+                                    x.Armies
+                                })
+                    });
         }
 
         private void SelectRegionRequest(SelectRegionRequest dto)
@@ -55,27 +72,49 @@ namespace FlamingStrike.UI.WPF.Services.GameEngineClient
         {
             _gamePlaySetupSubject.OnNext(gamePlaySetup);
         }
-    }
 
-    public class ArmyPlacerProxy : IArmyPlacer
-    {
-        private readonly HubConnection _connection;
-
-        public ArmyPlacerProxy(HubConnection connection)
+        private void DraftArmies(DraftArmies draftArmies)
         {
-            _connection = connection;
+            throw new NotImplementedException();
+            //_draftArmiesPhaseSubject.OnNext(new );
         }
 
-        public async void PlaceArmyInRegion(Region selectedRegion)
+        private void Attack(Attack attack)
         {
-            await _connection.SendAsync("PlaceArmyInRegion", Enum.GetName(typeof(Region), selectedRegion));
+            throw new NotImplementedException();
+        }
+
+        private void SendArmiesToOccupy(SendArmiesToOccupy sendArmiesToOccupy)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void EndTurn(EndTurn endTurn)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void GameOver(GameOver gameOver)
+        {
+            throw new NotImplementedException();
         }
     }
 
-    public class SelectRegionRequest
+    public class DraftArmies {}
+
+    public class Attack {}
+
+    internal class SendArmiesToOccupy {}
+
+    internal class EndTurn {}
+
+    internal class GameOver {}
+
+    public static class GameEngineProxyExtensions
     {
-        public string Player { get; set; }
-        public int ArmiesLeftToPlace { get; set; }
-        public IReadOnlyList<Territory> Territories { get; set; }
+        public static string MapToDto(this Region region)
+        {
+            return Enum.GetName(typeof(Region), region);
+        }
     }
 }

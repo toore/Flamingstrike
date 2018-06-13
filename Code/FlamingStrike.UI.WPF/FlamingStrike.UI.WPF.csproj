@@ -192,6 +192,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Services\GameEngineClient\AlternateGameSetupObserverAdapter.cs" />
+    <Compile Include="Services\GameEngineClient\ArmyPlacerProxy.cs" />
     <Compile Include="Services\GameEngineClient\GameEngineClientProxyBase.cs" />
     <Compile Include="Services\GameEngineClient\GameEngineProxy.cs" />
     <Compile Include="Services\GameEngineClient\Play\AttackPhaseAdapter.cs" />
@@ -204,6 +205,7 @@
     <Compile Include="Services\GameEngineClient\Play\SendArmiesToOccupyPhaseAdapter.cs" />
     <Compile Include="Services\GameEngineClient\Play\Territory.cs" />
     <Compile Include="Services\GameEngineClient\GameEngineMappingExtensions.cs" />
+    <Compile Include="Services\GameEngineClient\SetupTerritorySelection\SelectRegionRequest.cs" />
     <Compile Include="Services\GameEngineClient\SetupFinished\GamePlaySetup.cs" />
     <Compile Include="Services\GameEngineClient\SetupFinished\Territory.cs" />
     <Compile Include="Services\GameEngineClient\IArmyPlacer.cs" />
