@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Linq;
 using System.Reflection;
+using FlamingStrike.GameEngine.Play;
+using Player = FlamingStrike.UI.WPF.Services.GameEngineClient.Play.Player;
+using Territory = FlamingStrike.UI.WPF.Services.GameEngineClient.Play.Territory;
 
 namespace FlamingStrike.UI.WPF.Services.GameEngineClient.Adapter
 {
@@ -17,6 +20,16 @@ namespace FlamingStrike.UI.WPF.Services.GameEngineClient.Adapter
                 .Select(x => x.GetValue(null))
                 .Cast<GameEngine.Region>()
                 .Single(x => x.Name.Equals(Enum.GetName(typeof(Region), region), StringComparison.InvariantCultureIgnoreCase));
+        }
+
+        public static Territory MapFromEngine(this ITerritory territory)
+        {
+            return new Territory(territory.Region.MapFromEngine(), (string)territory.PlayerName, territory.Armies);
+        }
+
+        public static Player MapFromEngine(this IPlayer x)
+        {
+            return new Player((string)x.Name, x.Cards.Count);
         }
     }
 }

@@ -198,7 +198,6 @@
     <Compile Include="Services\GameEngineClient\Adapter\GameEngineAdapter.cs" />
     <Compile Include="Services\GameEngineClient\Adapter\GameEngineMappingExtensions.cs" />
     <Compile Include="Services\GameEngineClient\Adapter\GameObserverAdapter.cs" />
-    <Compile Include="Services\GameEngineClient\Adapter\PlayDomainMappingExtensions.cs" />
     <Compile Include="Services\GameEngineClient\Adapter\SendArmiesToOccupyPhaseAdapter.cs" />
     <Compile Include="Services\GameEngineClient\SetupFinished\GamePlaySetup.cs" />
     <Compile Include="Services\GameEngineClient\Play\IAttackPhase.cs" />
