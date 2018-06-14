@@ -2,15 +2,15 @@
 
 Clone of a famous strategic game. Details and history about the original game can be found here: https://en.wikipedia.org/wiki/Risk_(game).
 
-The game is based on the standard rules, but the intent is to add some homebrew or custom rules. We'll see about that... :)
+The game is based on the standard rules, but the intent is to add some homebrew or custom rules.
 
-The game engine is built upon .NET standard. WPF front end using Caliburn.Micro. The service is built with .Net Core.
+The game engine is built with .NET standard. WPF front end using Caliburn.Micro. The service is built with .Net Core. The client can host the game server in-process or use the server api.
 
 Enjoy!
 
 ## TODO
 
-Not implemented game states/phases:
+The basics, game states/phases:
 
 - [ ] TradeInSetsHoldingAtLeastThreeCards
 - [x] DraftArmies
@@ -20,7 +20,7 @@ Not implemented game states/phases:
 - [x] Fortify
 - [x] GameOver
 
-Issues:
+Must haves:
 
 - [ ] Show current player's cards, and enable trade-in set of cards
 - [ ] Eliminated player should not take turn
@@ -35,6 +35,6 @@ Improvements:
 - [ ] Create Neutral AI player
 - [ ] Add Nuclear custom rules...What!?
 
-Other:
+Nice to haves:
 
 - [ ] Multiplayer, not only hotseat
