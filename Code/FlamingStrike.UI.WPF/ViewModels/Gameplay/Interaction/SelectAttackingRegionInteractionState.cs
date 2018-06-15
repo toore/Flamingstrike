@@ -21,7 +21,7 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay.Interaction
             _selectAttackingRegionInteractionStateObserver = selectAttackingRegionInteractionStateObserver;
         }
 
-        public override string Title => Resources.ATTACK_SELECT_FROM_TERRITORY;
+        public override string Title => Resources.SELECT_TERRITORY_TO_START_THE_ATTACK_FROM;
 
         public override bool CanEnterFortifyMode => true;
 

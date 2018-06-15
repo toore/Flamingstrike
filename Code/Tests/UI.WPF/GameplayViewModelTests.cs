@@ -138,7 +138,7 @@ namespace Tests.UI.WPF
             _sut.PlayerName.Should().Be("current player");
             _sut.PlayerColor.Should().Be(_currentPlayerColor);
             _sut.PlayerStatuses.Should().BeEquivalentTo(_expectedCurrentPlayerStatusViewModels);
-            _sut.InformationText.Should().Be(Resources.ATTACK_SELECT_FROM_TERRITORY);
+            _sut.InformationText.Should().Be(Resources.SELECT_TERRITORY_TO_START_THE_ATTACK_FROM);
             _sut.CanEnterFortifyMode.Should().BeTrue();
             _sut.CanEnterAttackMode.Should().BeFalse();
             _sut.CanEndTurn.Should().BeTrue();
@@ -176,7 +176,7 @@ namespace Tests.UI.WPF
             _sut.PlayerName.Should().Be("current player");
             _sut.PlayerColor.Should().Be(_currentPlayerColor);
             _sut.PlayerStatuses.Should().BeEquivalentTo(_expectedCurrentPlayerStatusViewModels);
-            _sut.InformationText.Should().Be(Resources.FORTIFY_SELECT_TERRITORY_TO_MOVE_FROM);
+            _sut.InformationText.Should().Be(Resources.SELECT_TERRITORY_TO_MOVE_FROM);
             _sut.CanEnterFortifyMode.Should().BeFalse();
             _sut.CanEnterAttackMode.Should().BeTrue();
             _sut.CanEndTurn.Should().BeTrue();
@@ -210,7 +210,7 @@ namespace Tests.UI.WPF
             _sut.PlayerName.Should().Be("current player");
             _sut.PlayerColor.Should().Be(_currentPlayerColor);
             _sut.PlayerStatuses.Should().BeEquivalentTo(_expectedCurrentPlayerStatusViewModels);
-            _sut.InformationText.Should().Be(Resources.ATTACK_SELECT_FROM_TERRITORY);
+            _sut.InformationText.Should().Be(Resources.SELECT_TERRITORY_TO_START_THE_ATTACK_FROM);
             _sut.CanEnterFortifyMode.Should().BeTrue();
             _sut.CanEnterAttackMode.Should().BeFalse();
             _sut.CanEndTurn.Should().BeTrue();

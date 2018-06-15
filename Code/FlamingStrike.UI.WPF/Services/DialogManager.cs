@@ -19,7 +19,7 @@ namespace FlamingStrike.UI.WPF.Services
 
         public bool? ConfirmEndGame()
         {
-            var message = Resources.ARE_YOU_SURE_YOU_WANT_TO_END_GAME;
+            var message = Resources.ARE_YOU_SURE_YOU_WANT_TO_END_THE_GAME;
             var displayName = Resources.END_GAME;
             var confirmText = Resources.YES;
             var abortText = Resources.NO;

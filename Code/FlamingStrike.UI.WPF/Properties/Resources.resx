@@ -126,7 +126,7 @@
   <data name="ALBERTA" xml:space="preserve">
     <value>Alberta</value>
   </data>
-  <data name="ARE_YOU_SURE_YOU_WANT_TO_END_GAME" xml:space="preserve">
+  <data name="ARE_YOU_SURE_YOU_WANT_TO_END_THE_GAME" xml:space="preserve">
     <value>Are you sure you want to end the game?</value>
   </data>
   <data name="ARG0_IS_THE_WINNER" xml:space="preserve">
@@ -139,11 +139,11 @@
   <data name="ATTACK" xml:space="preserve">
     <value>Attack</value>
   </data>
-  <data name="ATTACK_SELECT_FROM_TERRITORY" xml:space="preserve">
-    <value>Attack - Select From Territory</value>
+  <data name="SELECT_TERRITORY_TO_START_THE_ATTACK_FROM" xml:space="preserve">
+    <value>Select Territory to Start the Attack from</value>
   </data>
-  <data name="ATTACK_SELECT_TERRITORY_TO_ATTACK" xml:space="preserve">
-    <value>Attack - Select Territory to Attack</value>
+  <data name="SELECT_TERRITORY_TO_ATTACK" xml:space="preserve">
+    <value>Select Territory to Attack</value>
   </data>
   <data name="BRAZIL" xml:space="preserve">
     <value>Brazil</value>
@@ -161,7 +161,7 @@
     <value>Congo</value>
   </data>
   <data name="DRAFT_ARMIES" xml:space="preserve">
-    <value>Draft Armies - Armies To Draft: {0}</value>
+    <value>Draft Armies - Left: {0}</value>
     <comment>ARG0 specifies armies left</comment>
   </data>
   <data name="EASTERN_AUSTRALIA" xml:space="preserve">
@@ -185,11 +185,11 @@
   <data name="FORTIFY" xml:space="preserve">
     <value>Fortify</value>
   </data>
-  <data name="FORTIFY_SELECT_TERRITORY_TO_MOVE_FROM" xml:space="preserve">
-    <value>Fortify - Select Territory to Move From</value>
+  <data name="SELECT_TERRITORY_TO_MOVE_FROM" xml:space="preserve">
+    <value>Select Territory to Move from</value>
   </data>
-  <data name="FORTIFY_SELECT_TERRITORY_TO_MOVE_TO" xml:space="preserve">
-    <value>Fortify - Select Territory to Move To</value>
+  <data name="SELECT_TERRITORY_TO_MOVE_TO" xml:space="preserve">
+    <value>Select Territory to Move To</value>
   </data>
   <data name="GAME_OVER" xml:space="preserve">
     <value>Game Over</value>
@@ -258,7 +258,7 @@
     <value>Peru</value>
   </data>
   <data name="PLACE_ARMY" xml:space="preserve">
-    <value>Place Army - Armies To Place: {0}</value>
+    <value>Place Army - Left: {0}</value>
     <comment>ARG0 specifies armies left</comment>
   </data>
   <data name="PLAYER" xml:space="preserve">

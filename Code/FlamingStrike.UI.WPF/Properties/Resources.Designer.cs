@@ -90,9 +90,9 @@ namespace FlamingStrike.UI.WPF.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Are you sure you want to end the game?.
         /// </summary>
-        public static string ARE_YOU_SURE_YOU_WANT_TO_END_GAME {
+        public static string ARE_YOU_SURE_YOU_WANT_TO_END_THE_GAME {
             get {
-                return ResourceManager.GetString("ARE_YOU_SURE_YOU_WANT_TO_END_GAME", resourceCulture);
+                return ResourceManager.GetString("ARE_YOU_SURE_YOU_WANT_TO_END_THE_GAME", resourceCulture);
             }
         }
         
@@ -120,24 +120,6 @@ namespace FlamingStrike.UI.WPF.Properties {
         public static string ATTACK {
             get {
                 return ResourceManager.GetString("ATTACK", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Attack - Select From Territory.
-        /// </summary>
-        public static string ATTACK_SELECT_FROM_TERRITORY {
-            get {
-                return ResourceManager.GetString("ATTACK_SELECT_FROM_TERRITORY", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Attack - Select Territory to Attack.
-        /// </summary>
-        public static string ATTACK_SELECT_TERRITORY_TO_ATTACK {
-            get {
-                return ResourceManager.GetString("ATTACK_SELECT_TERRITORY_TO_ATTACK", resourceCulture);
             }
         }
         
@@ -187,7 +169,7 @@ namespace FlamingStrike.UI.WPF.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Draft Armies - Armies To Draft: {0}.
+        ///   Looks up a localized string similar to Draft Armies - Left: {0}.
         /// </summary>
         public static string DRAFT_ARMIES {
             get {
@@ -255,24 +237,6 @@ namespace FlamingStrike.UI.WPF.Properties {
         public static string FORTIFY {
             get {
                 return ResourceManager.GetString("FORTIFY", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Fortify - Select Territory to Move From.
-        /// </summary>
-        public static string FORTIFY_SELECT_TERRITORY_TO_MOVE_FROM {
-            get {
-                return ResourceManager.GetString("FORTIFY_SELECT_TERRITORY_TO_MOVE_FROM", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Fortify - Select Territory to Move To.
-        /// </summary>
-        public static string FORTIFY_SELECT_TERRITORY_TO_MOVE_TO {
-            get {
-                return ResourceManager.GetString("FORTIFY_SELECT_TERRITORY_TO_MOVE_TO", resourceCulture);
             }
         }
         
@@ -475,7 +439,7 @@ namespace FlamingStrike.UI.WPF.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Place Army - Armies To Place: {0}.
+        ///   Looks up a localized string similar to Place Army - Left: {0}.
         /// </summary>
         public static string PLACE_ARMY {
             get {
@@ -525,6 +489,42 @@ namespace FlamingStrike.UI.WPF.Properties {
         public static string SELECT_TERRITORY {
             get {
                 return ResourceManager.GetString("SELECT_TERRITORY", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select Territory to Attack.
+        /// </summary>
+        public static string SELECT_TERRITORY_TO_ATTACK {
+            get {
+                return ResourceManager.GetString("SELECT_TERRITORY_TO_ATTACK", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select Territory to Move from.
+        /// </summary>
+        public static string SELECT_TERRITORY_TO_MOVE_FROM {
+            get {
+                return ResourceManager.GetString("SELECT_TERRITORY_TO_MOVE_FROM", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select Territory to Move To.
+        /// </summary>
+        public static string SELECT_TERRITORY_TO_MOVE_TO {
+            get {
+                return ResourceManager.GetString("SELECT_TERRITORY_TO_MOVE_TO", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select Territory to Start the Attack from.
+        /// </summary>
+        public static string SELECT_TERRITORY_TO_START_THE_ATTACK_FROM {
+            get {
+                return ResourceManager.GetString("SELECT_TERRITORY_TO_START_THE_ATTACK_FROM", resourceCulture);
             }
         }
         

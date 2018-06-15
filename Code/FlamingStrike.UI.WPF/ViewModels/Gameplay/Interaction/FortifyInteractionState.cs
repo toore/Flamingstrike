@@ -30,7 +30,7 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay.Interaction
             EnabledRegions = regionsThatCanBeInteractedWith;
         }
 
-        public override string Title => Resources.FORTIFY_SELECT_TERRITORY_TO_MOVE_TO;
+        public override string Title => Resources.SELECT_TERRITORY_TO_MOVE_TO;
 
         public override bool CanEndTurn => true;
 

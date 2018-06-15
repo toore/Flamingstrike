@@ -30,7 +30,7 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay.Interaction
             EnabledRegions = regionsThatCanBeInteractedWith;
         }
 
-        public override string Title => Resources.ATTACK_SELECT_TERRITORY_TO_ATTACK;
+        public override string Title => Resources.SELECT_TERRITORY_TO_ATTACK;
 
         public override bool CanEndTurn => true;
 
