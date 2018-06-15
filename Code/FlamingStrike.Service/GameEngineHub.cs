@@ -3,10 +3,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using FlamingStrike.GameEngine.Play;
 using FlamingStrike.GameEngine.Setup;
-using FlamingStrike.GameEngine.Setup.Finished;
 using FlamingStrike.Service.Play;
 using Microsoft.AspNetCore.SignalR;
-using GamePlaySetup = FlamingStrike.Service.Play.GamePlaySetup;
 
 namespace FlamingStrike.Service
 {
@@ -61,6 +59,30 @@ namespace FlamingStrike.Service
         {
             await Task.Run(
                 () => { _gameClientProxy.PlaceDraftArmies(placeDraftArmies.Region.MapRegionNameToEngine(), placeDraftArmies.NumberOfArmies); });
+        }
+
+        public async Task Attack(Attack attack)
+        {
+            await Task.Run(
+                () => { _gameClientProxy.Attack(attack.AttackingRegion.MapRegionNameToEngine(), attack.DefendingRegion.MapRegionNameToEngine()); });
+        }
+
+        public async Task Fortify(Fortify fortify)
+        {
+            await Task.Run(
+                () => { _gameClientProxy.Fortify(fortify.SourceRegion.MapRegionNameToEngine(), fortify.DestinationRegion.MapRegionNameToEngine(), fortify.Armies); });
+        }
+
+        public async Task<IEnumerable<string>> GetRegionsThatCanBeAttacked(string sourceRegion)
+        {
+            return await Task.Run(
+                () => _gameClientProxy.GetRegionsThatCanBeAttacked(sourceRegion.MapRegionNameToEngine()).Select(x => x.Name));
+        }
+
+        public async Task GetRegionsThatCanBeFortified(string sourceRegion)
+        {
+            await Task.Run(
+                () => _gameClientProxy.GetRegionsThatCanBeFortified(sourceRegion.MapRegionNameToEngine()));
         }
     }
 }

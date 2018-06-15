@@ -18,13 +18,13 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay.Interaction
         private readonly Region _selectedRegion;
         private readonly IAttackInteractionStateObserver _attackInteractionStateObserver;
 
-        public AttackInteractionState(IAttackPhase attackPhase, Region selectedRegion, IAttackInteractionStateObserver attackInteractionStateObserver)
+        public AttackInteractionState(IAttackPhase attackPhase, Region selectedRegion, IReadOnlyList<Region> regionsThatCanBeAttacked, IAttackInteractionStateObserver attackInteractionStateObserver)
         {
             _attackPhase = attackPhase;
             _selectedRegion = selectedRegion;
             _attackInteractionStateObserver = attackInteractionStateObserver;
 
-            var regionsThatCanBeInteractedWith = attackPhase.GetRegionsThatCanBeAttacked(selectedRegion)
+            var regionsThatCanBeInteractedWith = regionsThatCanBeAttacked
                 .Concat(new[] { selectedRegion }).ToList();
 
             EnabledRegions = regionsThatCanBeInteractedWith;

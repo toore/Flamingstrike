@@ -1,4 +1,5 @@
-﻿using FlamingStrike.UI.WPF.Services.GameEngineClient;
+﻿using System.Collections.Generic;
+using FlamingStrike.UI.WPF.Services.GameEngineClient;
 using FlamingStrike.UI.WPF.Services.GameEngineClient.Play;
 using FlamingStrike.UI.WPF.ViewModels.Gameplay.Interaction;
 using NSubstitute;
@@ -20,7 +21,7 @@ namespace Tests.UI.WPF.Interaction
             _selectedRegion = Region.Brazil;
             _attackInteractionStateObserver = Substitute.For<IAttackInteractionStateObserver>();
 
-            _sut = new AttackInteractionState(_attackPhase, _selectedRegion, _attackInteractionStateObserver);
+            _sut = new AttackInteractionState(_attackPhase, _selectedRegion, new List<Region>(), _attackInteractionStateObserver);
 
             _attackedRegion = Region.NorthAfrica;
         }

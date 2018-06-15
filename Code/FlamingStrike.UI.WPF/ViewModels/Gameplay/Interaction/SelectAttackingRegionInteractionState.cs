@@ -26,7 +26,8 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay.Interaction
         public override bool CanEnterFortifyMode => true;
 
         public override bool CanEndTurn => true;
-        public override IReadOnlyList<Region> EnabledRegions => _attackPhase.GetRegionsThatCanBeSourceForAttackOrFortification();
+
+        public override IReadOnlyList<Region> EnabledRegions => _attackPhase.RegionsThatCanBeSourceForAttackOrFortification;
 
         public override void OnRegionClicked(Region region)
         {

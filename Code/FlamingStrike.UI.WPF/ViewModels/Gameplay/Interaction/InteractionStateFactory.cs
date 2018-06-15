@@ -1,4 +1,5 @@
-
+using System.Linq;
+using System.Threading.Tasks;
 using FlamingStrike.UI.WPF.Services.GameEngineClient;
 using FlamingStrike.UI.WPF.Services.GameEngineClient.Play;
 
@@ -8,7 +9,7 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay.Interaction
     {
         IInteractionState CreateDraftArmiesInteractionState(IDraftArmiesPhase draftArmiesPhase);
         IInteractionState CreateSelectAttackingRegionInteractionState(IAttackPhase attackPhase, ISelectAttackingRegionInteractionStateObserver selectAttackingRegionInteractionStateObserver);
-        IInteractionState CreateAttackInteractionState(IAttackPhase attackPhase, Region selectedRegion, IAttackInteractionStateObserver attackInteractionStateObserver);
+        Task<IInteractionState> CreateAttackInteractionState(IAttackPhase attackPhase, Region selectedRegion, IAttackInteractionStateObserver attackInteractionStateObserver);
         IInteractionState CreateSendArmiesToOccupyInteractionState(ISendArmiesToOccupyPhase sendArmiesToOccupyPhase);
         IInteractionState CreateSelectSourceRegionForFortificationInteractionState(IAttackPhase attackPhase, ISelectSourceRegionForFortificationInteractionStateObserver selectSourceRegionForFortificationInteractionStateObserver);
         IInteractionState CreateFortifyInteractionState(IAttackPhase attackPhase, Region selectedRegion, IFortifyInteractionStateObserver fortifyInteractionStateObserver);
@@ -27,9 +28,11 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay.Interaction
             return new SelectAttackingRegionInteractionState(attackPhase, selectAttackingRegionInteractionStateObserver);
         }
 
-        public IInteractionState CreateAttackInteractionState(IAttackPhase attackPhase, Region selectedRegion, IAttackInteractionStateObserver attackInteractionStateObserver)
+        public async Task<IInteractionState> CreateAttackInteractionState(IAttackPhase attackPhase, Region selectedRegion, IAttackInteractionStateObserver attackInteractionStateObserver)
         {
-            return new AttackInteractionState(attackPhase, selectedRegion, attackInteractionStateObserver);
+            var regionsThatCanBeAttacked = await attackPhase.GetRegionsThatCanBeAttacked(selectedRegion);
+
+            return await Task.FromResult(new AttackInteractionState(attackPhase, selectedRegion, regionsThatCanBeAttacked.ToList(), attackInteractionStateObserver));
         }
 
         public IInteractionState CreateSendArmiesToOccupyInteractionState(ISendArmiesToOccupyPhase sendArmiesToOccupyPhase)

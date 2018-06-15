@@ -7,7 +7,7 @@ namespace FlamingStrike.GameEngine.Play
         PlayerName CurrentPlayerName { get; }
         IReadOnlyList<ITerritory> Territories { get; }
         IReadOnlyList<IPlayer> Players { get; }
-        IReadOnlyList<Region> GetRegionsThatCanBeSourceForAttackOrFortification();
+        IEnumerable<Region> RegionsThatCanBeSourceForAttackOrFortification { get; }
         void Attack(Region attackingRegion, Region defendingRegion);
         void Fortify(Region sourceRegion, Region destinationRegion, int armies);
         IEnumerable<Region> GetRegionsThatCanBeAttacked(Region sourceRegion);

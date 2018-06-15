@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using FlamingStrike.UI.WPF.Services.GameEngineClient.Play;
 
 namespace FlamingStrike.UI.WPF.Services.GameEngineClient.Adapter
@@ -17,9 +18,9 @@ namespace FlamingStrike.UI.WPF.Services.GameEngineClient.Adapter
         public IReadOnlyList<Territory> Territories => _attackPhase.Territories.Select(x => x.MapFromEngine()).ToList();
         public IReadOnlyList<Player> Players => _attackPhase.Players.Select(x => x.MapFromEngine()).ToList();
 
-        public IReadOnlyList<Region> GetRegionsThatCanBeSourceForAttackOrFortification()
+        public IReadOnlyList<Region> RegionsThatCanBeSourceForAttackOrFortification
         {
-            return _attackPhase.GetRegionsThatCanBeSourceForAttackOrFortification().Select(x => x.MapFromEngine()).ToList();
+            get { return _attackPhase.RegionsThatCanBeSourceForAttackOrFortification.Select(x => x.MapFromEngine()).ToList(); }
         }
 
         public void Attack(Region attackingRegion, Region defendingRegion)
@@ -32,9 +33,9 @@ namespace FlamingStrike.UI.WPF.Services.GameEngineClient.Adapter
             _attackPhase.Fortify(sourceRegion.MapToEngine(), destinationRegion.MapToEngine(), armies);
         }
 
-        public IEnumerable<Region> GetRegionsThatCanBeAttacked(Region sourceRegion)
+        public Task<IEnumerable<Region>> GetRegionsThatCanBeAttacked(Region sourceRegion)
         {
-            return _attackPhase.GetRegionsThatCanBeAttacked(sourceRegion.MapToEngine()).Select(x => x.MapFromEngine());
+            return Task.FromResult(_attackPhase.GetRegionsThatCanBeAttacked(sourceRegion.MapToEngine()).Select(x => x.MapFromEngine()));
         }
 
         public IEnumerable<Region> GetRegionsThatCanBeFortified(Region sourceRegion)

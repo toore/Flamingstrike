@@ -73,13 +73,14 @@ namespace FlamingStrike.UI.WPF.Services.GameEngineClient.Proxy
 
         private void DraftArmies(DraftArmies dto)
         {
-            var draftArmiesPhase = new DraftArmiesProxy(_hubConnection, dto.CurrentPlayerName, dto.Territories, dto.Players, dto.NumberOfArmiesToDraft, dto.RegionsAllowedToDraftArmies);
-            _draftArmiesPhaseSubject.OnNext(draftArmiesPhase);
+            var draftArmiesProxy = new DraftArmiesProxy(_hubConnection, dto.CurrentPlayerName, dto.Territories, dto.Players, dto.NumberOfArmiesToDraft, dto.RegionsAllowedToDraftArmies);
+            _draftArmiesPhaseSubject.OnNext(draftArmiesProxy);
         }
 
-        private void Attack(Attack attack)
+        private void Attack(Attack dto)
         {
-            throw new NotImplementedException();
+            var attackProxy = new AttackProxy(_hubConnection, dto.CurrentPlayerName, dto.Territories, dto.Players, dto.RegionsThatCanBeSourceForAttackOrFortification);
+            _attackPhaseSubject.OnNext(attackProxy);
         }
 
         private void SendArmiesToOccupy(SendArmiesToOccupy sendArmiesToOccupy)
@@ -97,8 +98,6 @@ namespace FlamingStrike.UI.WPF.Services.GameEngineClient.Proxy
             throw new NotImplementedException();
         }
     }
-
-    public class Attack {}
 
     internal class SendArmiesToOccupy {}
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using FlamingStrike.GameEngine;
 using FlamingStrike.GameEngine.Play;
@@ -10,6 +11,7 @@ namespace FlamingStrike.Service
     {
         private readonly GameEngineHub _gameEngineHub;
         private IDraftArmiesPhase _draftArmiesPhase;
+        private IAttackPhase _attackPhase;
 
         public GameClientProxy(GameEngineHub gameEngineHub)
         {
@@ -37,7 +39,40 @@ namespace FlamingStrike.Service
 
         public void Attack(IAttackPhase attackPhase)
         {
-            throw new NotImplementedException();
+            _attackPhase = attackPhase;
+            _gameEngineHub.Clients.All.SendAsync(
+                "Attack", new
+                    {
+                        CurrentPlayerName = (string)attackPhase.CurrentPlayerName,
+                        Territories = attackPhase.Territories.Select(t => t.MapToDto()),
+                        Players = attackPhase.Players.Select(p => p.MapToDto()),
+                        RegionsThatCanBeSourceForAttackOrFortification = attackPhase.RegionsThatCanBeSourceForAttackOrFortification.Select(x => x.Name),
+                    });
+        }
+
+        public void Attack(Region attackingRegion, Region defendingRegion)
+        {
+            _attackPhase.Attack(attackingRegion, defendingRegion);
+        }
+
+        public void Fortify(Region sourceRegion, Region destinationRegion, int armies)
+        {
+            _attackPhase.Fortify(sourceRegion, destinationRegion, armies);
+        }
+
+        public IEnumerable<Region> GetRegionsThatCanBeAttacked(Region sourceRegion)
+        {
+            return _attackPhase.GetRegionsThatCanBeAttacked(sourceRegion);
+        }
+
+        public IEnumerable<Region> GetRegionsThatCanBeFortified(Region sourceRegion)
+        {
+            return _attackPhase.GetRegionsThatCanBeFortified(sourceRegion);
+        }
+
+        public void EndTurn()
+        {
+            _attackPhase.EndTurn();
         }
 
         public void SendArmiesToOccupy(ISendArmiesToOccupyPhase sendArmiesToOccupyPhase)

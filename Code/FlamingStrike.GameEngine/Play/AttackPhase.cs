@@ -39,12 +39,14 @@ namespace FlamingStrike.GameEngine.Play
         public IReadOnlyList<IPlayer> Players { get; }
         public IDeck Deck { get; }
 
-        public IReadOnlyList<Region> GetRegionsThatCanBeSourceForAttackOrFortification()
+        public IEnumerable<Region> RegionsThatCanBeSourceForAttackOrFortification
         {
-            return Territories
-                .Where(x => IsCurrentPlayerOccupyingRegion(x.Region))
-                .Select(x => x.Region)
-                .ToList();
+            get
+            {
+                return Territories
+                    .Where(x => IsCurrentPlayerOccupyingRegion(x.Region))
+                    .Select(x => x.Region);
+            }
         }
 
         public void Attack(Region attackingRegion, Region defendingRegion)
