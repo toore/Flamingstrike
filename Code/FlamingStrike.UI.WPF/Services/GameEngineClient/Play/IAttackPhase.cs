@@ -12,7 +12,7 @@ namespace FlamingStrike.UI.WPF.Services.GameEngineClient.Play
         void Attack(Region attackingRegion, Region defendingRegion);
         void Fortify(Region sourceRegion, Region destinationRegion, int armies);
         Task<IEnumerable<Region>> GetRegionsThatCanBeAttacked(Region sourceRegion);
-        IEnumerable<Region> GetRegionsThatCanBeFortified(Region sourceRegion);
+        Task<IEnumerable<Region>> GetRegionsThatCanBeFortified(Region sourceRegion);
         void EndTurn();
     }
 }

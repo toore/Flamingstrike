@@ -288,9 +288,9 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay
             UpdateView();
         }
 
-        private void ShowFortifyView(IAttackPhase attackPhase, Region selectedRegion)
+        private async void ShowFortifyView(IAttackPhase attackPhase, Region selectedRegion)
         {
-            _interactionState = _interactionStateFactory.CreateFortifyInteractionState(attackPhase, selectedRegion, this);
+            _interactionState = await _interactionStateFactory.CreateFortifyInteractionState(attackPhase, selectedRegion, this);
 
             UpdateView();
         }

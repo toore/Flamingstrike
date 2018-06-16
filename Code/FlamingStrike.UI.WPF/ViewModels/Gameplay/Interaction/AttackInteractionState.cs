@@ -18,16 +18,12 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay.Interaction
         private readonly Region _selectedRegion;
         private readonly IAttackInteractionStateObserver _attackInteractionStateObserver;
 
-        public AttackInteractionState(IAttackPhase attackPhase, Region selectedRegion, IReadOnlyList<Region> regionsThatCanBeAttacked, IAttackInteractionStateObserver attackInteractionStateObserver)
+        public AttackInteractionState(IAttackPhase attackPhase, Region selectedRegion, IReadOnlyList<Region> enabledRegions, IAttackInteractionStateObserver attackInteractionStateObserver)
         {
             _attackPhase = attackPhase;
             _selectedRegion = selectedRegion;
             _attackInteractionStateObserver = attackInteractionStateObserver;
-
-            var regionsThatCanBeInteractedWith = regionsThatCanBeAttacked
-                .Concat(new[] { selectedRegion }).ToList();
-
-            EnabledRegions = regionsThatCanBeInteractedWith;
+            EnabledRegions = enabledRegions;
         }
 
         public override string Title => Resources.SELECT_TERRITORY_TO_ATTACK;

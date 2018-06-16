@@ -40,7 +40,8 @@ namespace FlamingStrike.UI.WPF.Services.GameEngineClient.Proxy
                 "Fortify", new
                     {
                         SourceRegion = sourceRegion.MapToDto(),
-                        DestinationRegion = destinationRegion.MapToDto()
+                        DestinationRegion = destinationRegion.MapToDto(),
+                        Armies = armies
                     });
         }
 
@@ -49,9 +50,9 @@ namespace FlamingStrike.UI.WPF.Services.GameEngineClient.Proxy
             return await _hubConnection.InvokeAsync<IEnumerable<Region>>("GetRegionsThatCanBeAttacked", sourceRegion.MapToDto());
         }
 
-        public IEnumerable<Region> GetRegionsThatCanBeFortified(Region sourceRegion)
+        public async Task<IEnumerable<Region>> GetRegionsThatCanBeFortified(Region sourceRegion)
         {
-            throw new NotImplementedException();
+            return await _hubConnection.InvokeAsync<IEnumerable<Region>>("GetRegionsThatCanBeFortified", sourceRegion.MapToDto());
         }
 
         public void EndTurn()

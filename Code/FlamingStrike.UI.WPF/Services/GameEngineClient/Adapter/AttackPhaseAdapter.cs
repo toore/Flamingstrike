@@ -38,9 +38,9 @@ namespace FlamingStrike.UI.WPF.Services.GameEngineClient.Adapter
             return Task.FromResult(_attackPhase.GetRegionsThatCanBeAttacked(sourceRegion.MapToEngine()).Select(x => x.MapFromEngine()));
         }
 
-        public IEnumerable<Region> GetRegionsThatCanBeFortified(Region sourceRegion)
+        public Task<IEnumerable<Region>> GetRegionsThatCanBeFortified(Region sourceRegion)
         {
-            return _attackPhase.GetRegionsThatCanBeFortified(sourceRegion.MapToEngine()).Select(x => x.MapFromEngine());
+            return Task.FromResult(_attackPhase.GetRegionsThatCanBeFortified(sourceRegion.MapToEngine()).Select(x => x.MapFromEngine()));
         }
 
         public void EndTurn()

@@ -79,10 +79,10 @@ namespace FlamingStrike.Service
                 () => _gameClientProxy.GetRegionsThatCanBeAttacked(sourceRegion.MapRegionNameToEngine()).Select(x => x.Name));
         }
 
-        public async Task GetRegionsThatCanBeFortified(string sourceRegion)
+        public async Task<IEnumerable<string>> GetRegionsThatCanBeFortified(string sourceRegion)
         {
-            await Task.Run(
-                () => _gameClientProxy.GetRegionsThatCanBeFortified(sourceRegion.MapRegionNameToEngine()));
+            return await Task.Run(
+                () => _gameClientProxy.GetRegionsThatCanBeFortified(sourceRegion.MapRegionNameToEngine()).Select(x => x.Name));
         }
 
         public async Task SendAdditionalArmiesToOccupy(int numberOfArmies)

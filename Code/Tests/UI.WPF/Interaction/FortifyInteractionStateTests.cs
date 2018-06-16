@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using FlamingStrike.UI.WPF.Services.GameEngineClient;
 using FlamingStrike.UI.WPF.Services.GameEngineClient.Play;
 using FlamingStrike.UI.WPF.ViewModels.Gameplay.Interaction;
@@ -19,7 +20,7 @@ namespace Tests.UI.WPF.Interaction
             _selectedRegion = Region.Brazil;
             _fortifyInteractionStateObserver = Substitute.For<IFortifyInteractionStateObserver>();
 
-            _sut = new FortifyInteractionState(_attackPhase, _selectedRegion, _fortifyInteractionStateObserver);
+            _sut = new FortifyInteractionState(_attackPhase, _selectedRegion, new List<Region>(), _fortifyInteractionStateObserver);
         }
 
         [Fact]

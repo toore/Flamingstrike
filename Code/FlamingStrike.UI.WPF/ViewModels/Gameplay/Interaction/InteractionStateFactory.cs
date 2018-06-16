@@ -12,7 +12,7 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay.Interaction
         Task<IInteractionState> CreateAttackInteractionState(IAttackPhase attackPhase, Region selectedRegion, IAttackInteractionStateObserver attackInteractionStateObserver);
         IInteractionState CreateSendArmiesToOccupyInteractionState(ISendArmiesToOccupyPhase sendArmiesToOccupyPhase);
         IInteractionState CreateSelectSourceRegionForFortificationInteractionState(IAttackPhase attackPhase, ISelectSourceRegionForFortificationInteractionStateObserver selectSourceRegionForFortificationInteractionStateObserver);
-        IInteractionState CreateFortifyInteractionState(IAttackPhase attackPhase, Region selectedRegion, IFortifyInteractionStateObserver fortifyInteractionStateObserver);
+        Task<IInteractionState> CreateFortifyInteractionState(IAttackPhase attackPhase, Region selectedRegion, IFortifyInteractionStateObserver fortifyInteractionStateObserver);
         IInteractionState CreateEndTurnInteractionState(IEndTurnPhase endTurnPhase);
     }
 
@@ -32,7 +32,10 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay.Interaction
         {
             var regionsThatCanBeAttacked = await attackPhase.GetRegionsThatCanBeAttacked(selectedRegion);
 
-            return await Task.FromResult(new AttackInteractionState(attackPhase, selectedRegion, regionsThatCanBeAttacked.ToList(), attackInteractionStateObserver));
+            var enabledRegions = regionsThatCanBeAttacked
+                .Concat(new[] { selectedRegion }).ToList();
+
+            return await Task.FromResult(new AttackInteractionState(attackPhase, selectedRegion, enabledRegions.ToList(), attackInteractionStateObserver));
         }
 
         public IInteractionState CreateSendArmiesToOccupyInteractionState(ISendArmiesToOccupyPhase sendArmiesToOccupyPhase)
@@ -45,9 +48,14 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay.Interaction
             return new SelectSourceRegionForFortificationInteractionState(attackPhase, selectSourceRegionForFortificationInteractionStateObserver);
         }
 
-        public IInteractionState CreateFortifyInteractionState(IAttackPhase attackPhase, Region selectedRegion, IFortifyInteractionStateObserver fortifyInteractionStateObserver)
+        public async Task<IInteractionState> CreateFortifyInteractionState(IAttackPhase attackPhase, Region selectedRegion, IFortifyInteractionStateObserver fortifyInteractionStateObserver)
         {
-            return new FortifyInteractionState(attackPhase, selectedRegion, fortifyInteractionStateObserver);
+            var regionsThatCanBeFortified = await attackPhase.GetRegionsThatCanBeFortified(selectedRegion);
+
+            var enabledRegions = regionsThatCanBeFortified
+                .Concat(new[] { selectedRegion }).ToList();
+
+            return await Task.FromResult(new FortifyInteractionState(attackPhase, selectedRegion, enabledRegions.ToList(), fortifyInteractionStateObserver));
         }
 
         public IInteractionState CreateEndTurnInteractionState(IEndTurnPhase endTurnPhase)
