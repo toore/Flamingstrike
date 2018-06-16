@@ -111,7 +111,7 @@ namespace FlamingStrike.Service
 
         public void GameOver(IGameOverState gameOverState)
         {
-            throw new NotImplementedException();
+            _clientProxy.SendAsync("GameOver", (string)gameOverState.Winner);
         }
     }
 }

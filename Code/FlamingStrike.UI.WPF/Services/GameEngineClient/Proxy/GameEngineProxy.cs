@@ -1,6 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using FlamingStrike.UI.WPF.Services.GameEngineClient.Play;
 using FlamingStrike.UI.WPF.Services.GameEngineClient.SetupFinished;
 using FlamingStrike.UI.WPF.Services.GameEngineClient.SetupTerritorySelection;
 using Microsoft.AspNetCore.SignalR.Client;
@@ -32,7 +32,7 @@ namespace FlamingStrike.UI.WPF.Services.GameEngineClient.Proxy
             _hubConnection.On<Attack>("Attack", Attack);
             _hubConnection.On<SendArmiesToOccupy>("SendArmiesToOccupy", SendArmiesToOccupy);
             _hubConnection.On<EndTurn>("EndTurn", EndTurn);
-            _hubConnection.On<GameOver>("GameOver", GameOver);
+            _hubConnection.On<string>("GameOver", GameOver);
 
             await _hubConnection.StartAsync();
         }
@@ -89,18 +89,15 @@ namespace FlamingStrike.UI.WPF.Services.GameEngineClient.Proxy
             _sendArmiesToOccupyPhaseSubject.OnNext(sendArmiesToOccupyProxy);
         }
 
-        private void EndTurn(EndTurn endTurn)
+        private void EndTurn(EndTurn dto)
         {
-            throw new NotImplementedException();
+            var endTurnProxy = new EndTurnProxy(_hubConnection, dto.CurrentPlayerName, dto.Territories, dto.Players);
+            _endTurnPhaseSubject.OnNext(endTurnProxy);
         }
 
-        private void GameOver(GameOver gameOver)
+        private void GameOver(string winner)
         {
-            throw new NotImplementedException();
+            _gameOverStateSubject.OnNext(new GameOverState(winner));
         }
     }
-
-    internal class EndTurn {}
-
-    internal class GameOver {}
 }
