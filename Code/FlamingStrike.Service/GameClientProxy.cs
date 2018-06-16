@@ -13,6 +13,7 @@ namespace FlamingStrike.Service
         private IDraftArmiesPhase _draftArmiesPhase;
         private IAttackPhase _attackPhase;
         private ISendArmiesToOccupyPhase _sendArmiesToOccupyPhase;
+        private Action _endTurn;
 
         public GameClientProxy(IClientProxy clientProxy)
         {
@@ -41,6 +42,7 @@ namespace FlamingStrike.Service
         public void Attack(IAttackPhase attackPhase)
         {
             _attackPhase = attackPhase;
+            _endTurn = attackPhase.EndTurn;
             _clientProxy.SendAsync(
                 "Attack", new
                     {
@@ -73,7 +75,7 @@ namespace FlamingStrike.Service
 
         public void EndTurn()
         {
-            _attackPhase.EndTurn();
+            _endTurn();
         }
 
         public void SendArmiesToOccupy(ISendArmiesToOccupyPhase sendArmiesToOccupyPhase)
@@ -86,7 +88,7 @@ namespace FlamingStrike.Service
                         Territories = sendArmiesToOccupyPhase.Territories.Select(t => t.MapToDto()),
                         Players = sendArmiesToOccupyPhase.Players.Select(p => p.MapToDto()),
                         AttackingRegion = sendArmiesToOccupyPhase.AttackingRegion.Name,
-                        OccupiedRegion = sendArmiesToOccupyPhase.OccupiedRegion.Name,
+                        OccupiedRegion = sendArmiesToOccupyPhase.OccupiedRegion.Name
                     });
         }
 
@@ -97,7 +99,14 @@ namespace FlamingStrike.Service
 
         public void EndTurn(IEndTurnPhase endTurnPhase)
         {
-            throw new NotImplementedException();
+            _endTurn = endTurnPhase.EndTurn;
+            _clientProxy.SendAsync(
+                "EndTurn", new
+                    {
+                        CurrentPlayerName = (string)endTurnPhase.CurrentPlayerName,
+                        Territories = endTurnPhase.Territories.Select(t => t.MapToDto()),
+                        Players = endTurnPhase.Players.Select(p => p.MapToDto()),
+                    });
         }
 
         public void GameOver(IGameOverState gameOverState)
