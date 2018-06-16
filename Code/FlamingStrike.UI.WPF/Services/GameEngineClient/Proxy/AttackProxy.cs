@@ -56,7 +56,7 @@ namespace FlamingStrike.UI.WPF.Services.GameEngineClient.Proxy
 
         public void EndTurn()
         {
-            throw new NotImplementedException();
+            _hubConnection.SendAsync("EndTurn");
         }
     }
 }

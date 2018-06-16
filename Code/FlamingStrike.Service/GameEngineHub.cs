@@ -90,5 +90,11 @@ namespace FlamingStrike.Service
             await Task.Run(
                 () => _gameClientProxy.SendAdditionalArmiesToOccupy(numberOfArmies));
         }
+
+        public async Task EndTurn()
+        {
+            await Task.Run(
+                () => _gameClientProxy.EndTurn());
+        }
     }
 }
