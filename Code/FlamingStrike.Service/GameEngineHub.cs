@@ -28,7 +28,7 @@ namespace FlamingStrike.Service
             await Task.Run(
                 () =>
                     {
-                        _alternateGameSetupClientProxy = new AlternateGameSetupClientProxy(this);
+                        _alternateGameSetupClientProxy = new AlternateGameSetupClientProxy(Clients.All);
 
                         _alternateGameSetupBootstrapper.Run(_alternateGameSetupClientProxy, players.Select(x => x.MapToEngine()).ToList());
                     });
@@ -45,7 +45,7 @@ namespace FlamingStrike.Service
             await Task.Run(
                 () =>
                     {
-                        _gameClientProxy = new GameClientProxy(this);
+                        _gameClientProxy = new GameClientProxy(Clients.All);
 
                         _gameBootstrapper.Run(
                             _gameClientProxy,
@@ -83,6 +83,12 @@ namespace FlamingStrike.Service
         {
             await Task.Run(
                 () => _gameClientProxy.GetRegionsThatCanBeFortified(sourceRegion.MapRegionNameToEngine()));
+        }
+
+        public async Task SendAdditionalArmiesToOccupy(int numberOfArmies)
+        {
+            await Task.Run(
+                () => _gameClientProxy.SendAdditionalArmiesToOccupy(numberOfArmies));
         }
     }
 }

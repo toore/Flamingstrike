@@ -203,6 +203,8 @@
     <Compile Include="Services\GameEngineClient\Proxy\AttackProxy.cs" />
     <Compile Include="Services\GameEngineClient\Proxy\DraftArmies.cs" />
     <Compile Include="Services\GameEngineClient\Proxy\DraftArmiesProxy.cs" />
+    <Compile Include="Services\GameEngineClient\Proxy\SendArmiesToOccupy.cs" />
+    <Compile Include="Services\GameEngineClient\Proxy\SendArmiesToOccupyProxy.cs" />
     <Compile Include="Services\GameEngineClient\SetupFinished\GamePlaySetup.cs" />
     <Compile Include="Services\GameEngineClient\Play\IAttackPhase.cs" />
     <Compile Include="Services\GameEngineClient\Play\IDraftArmiesPhase.cs" />

@@ -9,18 +9,18 @@ namespace FlamingStrike.Service
 {
     public class AlternateGameSetupClientProxy : IAlternateGameSetupObserver
     {
-        private readonly GameEngineHub _gameEngineHub;
+        private readonly IClientProxy _clientProxy;
         private ITerritorySelector _territorySelector;
 
-        public AlternateGameSetupClientProxy(GameEngineHub gameEngineHub)
+        public AlternateGameSetupClientProxy(IClientProxy clientProxy)
         {
-            _gameEngineHub = gameEngineHub;
+            _clientProxy = clientProxy;
         }
 
         public void SelectRegion(ITerritorySelector territorySelector)
         {
             _territorySelector = territorySelector;
-            _gameEngineHub.Clients.All.SendAsync(
+            _clientProxy.SendAsync(
                 "SelectRegion", new
                     {
                         Player = (string)territorySelector.Player,
@@ -31,7 +31,7 @@ namespace FlamingStrike.Service
 
         public void NewGamePlaySetup(IGamePlaySetup gamePlaySetup)
         {
-            _gameEngineHub.Clients.All.SendAsync(
+            _clientProxy.SendAsync(
                 "NewGamePlaySetup", new
                     {
                         Players = gamePlaySetup.GetPlayers().Select(x => (string)x),

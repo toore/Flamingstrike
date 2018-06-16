@@ -9,19 +9,20 @@ namespace FlamingStrike.Service
 {
     public class GameClientProxy : IGameObserver
     {
-        private readonly GameEngineHub _gameEngineHub;
+        private readonly IClientProxy _clientProxy;
         private IDraftArmiesPhase _draftArmiesPhase;
         private IAttackPhase _attackPhase;
+        private ISendArmiesToOccupyPhase _sendArmiesToOccupyPhase;
 
-        public GameClientProxy(GameEngineHub gameEngineHub)
+        public GameClientProxy(IClientProxy clientProxy)
         {
-            _gameEngineHub = gameEngineHub;
+            _clientProxy = clientProxy;
         }
 
         public void DraftArmies(IDraftArmiesPhase draftArmiesPhase)
         {
             _draftArmiesPhase = draftArmiesPhase;
-            _gameEngineHub.Clients.All.SendAsync(
+            _clientProxy.SendAsync(
                 "DraftArmies", new
                     {
                         CurrentPlayerName = (string)draftArmiesPhase.CurrentPlayerName,
@@ -40,7 +41,7 @@ namespace FlamingStrike.Service
         public void Attack(IAttackPhase attackPhase)
         {
             _attackPhase = attackPhase;
-            _gameEngineHub.Clients.All.SendAsync(
+            _clientProxy.SendAsync(
                 "Attack", new
                     {
                         CurrentPlayerName = (string)attackPhase.CurrentPlayerName,
@@ -77,7 +78,21 @@ namespace FlamingStrike.Service
 
         public void SendArmiesToOccupy(ISendArmiesToOccupyPhase sendArmiesToOccupyPhase)
         {
-            throw new NotImplementedException();
+            _sendArmiesToOccupyPhase = sendArmiesToOccupyPhase;
+            _clientProxy.SendAsync(
+                "SendArmiesToOccupy", new
+                    {
+                        CurrentPlayerName = (string)sendArmiesToOccupyPhase.CurrentPlayerName,
+                        Territories = sendArmiesToOccupyPhase.Territories.Select(t => t.MapToDto()),
+                        Players = sendArmiesToOccupyPhase.Players.Select(p => p.MapToDto()),
+                        AttackingRegion = sendArmiesToOccupyPhase.AttackingRegion.Name,
+                        OccupiedRegion = sendArmiesToOccupyPhase.OccupiedRegion.Name,
+                    });
+        }
+
+        public void SendAdditionalArmiesToOccupy(int numberOfArmies)
+        {
+            _sendArmiesToOccupyPhase.SendAdditionalArmiesToOccupy(numberOfArmies);
         }
 
         public void EndTurn(IEndTurnPhase endTurnPhase)

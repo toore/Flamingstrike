@@ -83,9 +83,10 @@ namespace FlamingStrike.UI.WPF.Services.GameEngineClient.Proxy
             _attackPhaseSubject.OnNext(attackProxy);
         }
 
-        private void SendArmiesToOccupy(SendArmiesToOccupy sendArmiesToOccupy)
+        private void SendArmiesToOccupy(SendArmiesToOccupy dto)
         {
-            throw new NotImplementedException();
+            var sendArmiesToOccupyProxy = new SendArmiesToOccupyProxy(_hubConnection, dto.CurrentPlayerName, dto.Territories, dto.Players, dto.AttackingRegion, dto.OccupiedRegion);
+            _sendArmiesToOccupyPhaseSubject.OnNext(sendArmiesToOccupyProxy);
         }
 
         private void EndTurn(EndTurn endTurn)
@@ -98,8 +99,6 @@ namespace FlamingStrike.UI.WPF.Services.GameEngineClient.Proxy
             throw new NotImplementedException();
         }
     }
-
-    internal class SendArmiesToOccupy {}
 
     internal class EndTurn {}
 
