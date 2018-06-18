@@ -46,7 +46,7 @@ namespace FlamingStrike.UI.WPF.ViewModels.Preparation
             return new GamePreparationPlayerViewModel(_playerTypes)
                 {
                     Name = string.Format(Resources.PLAYER_NUMBER, playerIndex + 1),
-                    OnIsEnabledChanged = () => OnEnabledPlayerChanged(),
+                    OnIsEnabledChanged = OnEnabledPlayerChanged,
                     Color = color
                 };
         }

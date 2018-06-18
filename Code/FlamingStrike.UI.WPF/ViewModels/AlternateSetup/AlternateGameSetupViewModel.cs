@@ -66,7 +66,7 @@ namespace FlamingStrike.UI.WPF.ViewModels.AlternateSetup
         public Color PlayerColor
         {
             get => _playerColor;
-            set => this.NotifyOfPropertyChange(value, () => PlayerColor, x => _playerColor = x);
+            private set => this.NotifyOfPropertyChange(value, () => PlayerColor, x => _playerColor = x);
         }
 
         public bool CanUserSelectNumberOfArmies => false;
@@ -83,6 +83,11 @@ namespace FlamingStrike.UI.WPF.ViewModels.AlternateSetup
             _gamePlaySetupSubscription = _gameEngineClient.OnGamePlaySetup.Subscribe(NewGamePlaySetup);
         }
 
+        protected override void OnInitialize()
+        {
+            base.OnInitialize();
+        }
+
         protected override void OnDeactivate(bool close)
         {
             base.OnDeactivate(close);
@@ -94,7 +99,7 @@ namespace FlamingStrike.UI.WPF.ViewModels.AlternateSetup
         private void SelectRegion(ITerritorySelector territorySelector)
         {
             UpdateView(
-                territorySelector.GetTerritories(),
+                territorySelector.Territories,
                 territorySelector.Player,
                 territorySelector.PlaceArmyInRegion,
                 territorySelector.ArmiesLeftToPlace);
@@ -106,7 +111,7 @@ namespace FlamingStrike.UI.WPF.ViewModels.AlternateSetup
         }
 
         private void UpdateView(
-            IReadOnlyList<Territory> territories,
+            IEnumerable<Territory> territories,
             string player,
             Action<Region> onRegionClick,
             int armiesToPlace)

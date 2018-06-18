@@ -55,7 +55,7 @@ namespace Tests.UI.WPF
                 playerStatusViewModelFactory,
                 _gameEngineClientProxy);
 
-            _sut.Activate();
+            ((IActivate)_sut).Activate();
 
             _currentPlayerName = "current player";
             _currentPlayerColor = Color.FromArgb(1, 2, 3, 4);

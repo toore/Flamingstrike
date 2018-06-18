@@ -116,7 +116,6 @@
     <Compile Include="GameEngine\Play\DeckBuilder.cs" />
     <Compile Include="GameEngine\Play\PlayerBuilder.cs" />
     <Compile Include="GameEngine\Play\TerritoryTests.cs" />
-    <Compile Include="UI.WPF\CaliburnScreenExtensions.cs" />
     <Compile Include="UI.WPF\PlayerStatusViewModelBuilder.cs" />
     <Compile Include="GameEngine\Play\AttackPhaseTests.cs" />
     <Compile Include="GameEngine\Play\DraftArmiesPhaseTests.cs" />

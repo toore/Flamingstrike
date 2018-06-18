@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using Caliburn.Micro;
 using FlamingStrike.UI.WPF;
 using FlamingStrike.UI.WPF.ViewModels.AlternateSetup;
 using FlamingStrike.UI.WPF.ViewModels.Gameplay;
@@ -11,7 +12,7 @@ namespace Tests.UI.WPF
     public class GameplaySpec : SpecBase<GameplaySpec>
     {
         private MainGameViewModelDecorator _mainGameViewModel;
-        private AlternateGameSetupViewModel _gameSetupViewModel;
+        private AlternateGameSetupViewModel _alternateGameSetupViewModel;
 
         [Fact]
         public void Game_is_setup_and_started()
@@ -31,24 +32,25 @@ namespace Tests.UI.WPF
         {
             _mainGameViewModel = new MainGameViewModelDecorator(new CompositionRoot());
 
-            OnInitializeIsCalledByCaliburnMicroFramework(_mainGameViewModel);
+            CaliburnMicroFrameworkActivation(_mainGameViewModel);
         }
 
-        private static void OnInitializeIsCalledByCaliburnMicroFramework(MainGameViewModelDecorator viewModel)
+        private static void CaliburnMicroFrameworkActivation(MainGameViewModelDecorator viewModel)
         {
             viewModel.OnInitialize();
+            ((IActivate)viewModel).Activate();
         }
 
         private GameplaySpec two_human_players_are_confirmed()
         {
-            var gameSettingsViewModel = (IGamePreparationViewModel)_mainGameViewModel.ActiveItem;
+            var gamePreparationViewModel = (IGamePreparationViewModel)_mainGameViewModel.ActiveItem;
 
-            gameSettingsViewModel.PotentialPlayers.First().IsEnabled = true;
-            gameSettingsViewModel.PotentialPlayers.ElementAt(1).IsEnabled = true;
+            gamePreparationViewModel.PotentialPlayers.First().IsEnabled = true;
+            gamePreparationViewModel.PotentialPlayers.ElementAt(1).IsEnabled = true;
 
-            gameSettingsViewModel.Confirm();
+            gamePreparationViewModel.Confirm();
 
-            _gameSetupViewModel = (AlternateGameSetupViewModel)_mainGameViewModel.ActiveItem;
+            _alternateGameSetupViewModel = (AlternateGameSetupViewModel)_mainGameViewModel.ActiveItem;
 
             return this;
         }
@@ -59,7 +61,7 @@ namespace Tests.UI.WPF
 
             for (var i = 0; i < numberOfPlayers; i++)
             {
-                var regionViewModel = _gameSetupViewModel.WorldMapViewModel.WorldMapViewModels
+                var regionViewModel = _alternateGameSetupViewModel.WorldMapViewModel.WorldMapViewModels
                     .OfType<RegionViewModel>()
                     .First(x => x.IsEnabled);
                 regionViewModel.OnClick();

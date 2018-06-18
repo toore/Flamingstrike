@@ -63,7 +63,7 @@ namespace Tests.UI.WPF
             _worldMapViewModelFactory.Create(null)
                 .ReturnsForAnyArgs(expectedWorldMapViewModel);
             var placeArmyRegionSelector = Substitute.For<ITerritorySelector>();
-            placeArmyRegionSelector.GetTerritories().Returns(new List<Territory>());
+            placeArmyRegionSelector.Territories.Returns(new List<Territory>());
             placeArmyRegionSelector.Player.Returns("");
 
             Create();
@@ -165,7 +165,7 @@ namespace Tests.UI.WPF
         private AlternateGameSetupViewModel Create()
         {
             var alternateGameSetupViewModel = (AlternateGameSetupViewModel)_factory.Create();
-            alternateGameSetupViewModel.Activate();
+            ((IActivate)alternateGameSetupViewModel).Activate();
             return alternateGameSetupViewModel;
         }
 
