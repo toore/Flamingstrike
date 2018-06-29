@@ -58,8 +58,9 @@ namespace Tests.UI.WPF
         private void all_armies_are_placed_on_the_map()
         {
             const int numberOfPlayers = 2;
+            const int armiesToPlace = 19;
 
-            for (var i = 0; i < numberOfPlayers; i++)
+            for (var i = 0; i < numberOfPlayers * armiesToPlace; i++)
             {
                 var regionViewModel = _alternateGameSetupViewModel.WorldMapViewModel.WorldMapViewModels
                     .OfType<RegionViewModel>()

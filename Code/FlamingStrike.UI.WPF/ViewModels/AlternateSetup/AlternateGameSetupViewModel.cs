@@ -28,6 +28,9 @@ namespace FlamingStrike.UI.WPF.ViewModels.AlternateSetup
         private string _informationText;
         private string _playerName;
         private Color _playerColor;
+        private Action<Region> _onRegionClick;
+        private IDisposable _selectRegionSubscription;
+        private IDisposable _gamePlaySetupSubscription;
 
         public AlternateGameSetupViewModel(
             IWorldMapViewModelFactory worldMapViewModelFactory,
@@ -44,10 +47,6 @@ namespace FlamingStrike.UI.WPF.ViewModels.AlternateSetup
 
             WorldMapViewModel = _worldMapViewModelFactory.Create(x => _onRegionClick(x));
         }
-
-        private Action<Region> _onRegionClick;
-        private IDisposable _selectRegionSubscription;
-        private IDisposable _gamePlaySetupSubscription;
 
         public WorldMapViewModel WorldMapViewModel { get; }
 
