@@ -1,4 +1,6 @@
 ﻿using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using Caliburn.Micro;
 using FlamingStrike.UI.WPF.Services.GameEngineClient;
 using FlamingStrike.UI.WPF.Services.GameEngineClient.SetupFinished;
@@ -28,7 +30,7 @@ namespace FlamingStrike.UI.WPF.ViewModels
                 compositionRoot.AlternateGameSetupViewModelFactory,
                 compositionRoot.GameEngineClient)
         {
-            compositionRoot.EventAggregator.Subscribe(this);
+            compositionRoot.EventAggregator.SubscribeOnPublishedThread(this);
         }
 
         protected MainGameViewModel(
@@ -45,11 +47,11 @@ namespace FlamingStrike.UI.WPF.ViewModels
             _gameEngineClient = gameEngineClient;
         }
 
-        protected override void OnInitialize()
+        protected override async Task OnInitializeAsync(CancellationToken cancellationToken)
         {
-            base.OnInitialize();
+            await base.OnInitializeAsync(cancellationToken);
 
-            InitializeNewGame();
+            await InitializeNewGameAsync();
         }
 
         public override string DisplayName
@@ -58,43 +60,43 @@ namespace FlamingStrike.UI.WPF.ViewModels
             set {}
         }
 
-        public void Handle(NewGameMessage newGameMessage)
+        public async Task HandleAsync(NewGameMessage newGameMessage, CancellationToken cancellationToken)
         {
-            InitializeNewGame();
+            await InitializeNewGameAsync();
         }
 
-        public void Handle(StartGameSetupMessage startGameSetupMessage)
+        public async Task HandleAsync(StartGameSetupMessage startGameSetupMessage, CancellationToken cancellationToken)
         {
-            StartGameSetup();
+            await StartGameSetupAsync();
         }
 
-        public void Handle(StartGameplayMessage startGameplayMessage)
+        public async Task HandleAsync(StartGameplayMessage startGameplayMessage, CancellationToken cancellationToken)
         {
-            StartGamePlay(startGameplayMessage.GamePlaySetup);
+            await StartGamePlayAsync(startGameplayMessage.GamePlaySetup);
         }
 
-        private void InitializeNewGame()
+        private async Task InitializeNewGameAsync()
         {
             var gamePreparationViewModel = _gamePreparationViewModelFactory.Create();
 
-            ActivateItem(gamePreparationViewModel);
+            await ActivateItemAsync(gamePreparationViewModel);
         }
 
-        private void StartGameSetup()
+        private async Task StartGameSetupAsync()
         {
             var players = _playerUiDataRepository.GetAll().Select(x => x.Player).ToList();
             var gameSetupViewModel = _alternateGameSetupViewModelFactory.Create();
 
-            ActivateItem(gameSetupViewModel);
+            await ActivateItemAsync(gameSetupViewModel);
 
             _gameEngineClient.Setup(players);
         }
 
-        private void StartGamePlay(IGamePlaySetup gamePlaySetup)
+        private async Task StartGamePlayAsync(IGamePlaySetup gamePlaySetup)
         {
             var gameplayViewModel = _gameplayViewModelFactory.Create();
 
-            ActivateItem(gameplayViewModel);
+            await ActivateItemAsync(gameplayViewModel);
 
             _gameEngineClient.StartGame(gamePlaySetup);
         }

@@ -1,4 +1,5 @@
-﻿using Caliburn.Micro;
+﻿using System.Threading.Tasks;
+using Caliburn.Micro;
 
 namespace FlamingStrike.UI.WPF.ViewModels
 {
@@ -6,9 +7,9 @@ namespace FlamingStrike.UI.WPF.ViewModels
     {
         public string Message { get; set; }
 
-        public void Close()
+        public async Task Close()
         {
-            TryClose();
+            await TryCloseAsync();
         }
     }
 }

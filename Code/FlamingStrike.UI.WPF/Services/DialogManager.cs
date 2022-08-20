@@ -1,11 +1,12 @@
-﻿using FlamingStrike.UI.WPF.Properties;
+﻿using System.Threading.Tasks;
+using FlamingStrike.UI.WPF.Properties;
 
 namespace FlamingStrike.UI.WPF.Services
 {
     public interface IDialogManager
     {
-        bool? ConfirmEndGame();
-        void ShowGameOverDialog(string winnerName);
+        Task<bool?> ConfirmEndGameAsync();
+        Task ShowGameOverDialogAsync(string winnerName);
     }
 
     public class DialogManager : IDialogManager
@@ -17,22 +18,22 @@ namespace FlamingStrike.UI.WPF.Services
             _userNotifier = userNotifier;
         }
 
-        public bool? ConfirmEndGame()
+        public async Task<bool?> ConfirmEndGameAsync()
         {
             var message = Resources.ARE_YOU_SURE_YOU_WANT_TO_END_THE_GAME;
             var displayName = Resources.END_GAME;
             var confirmText = Resources.YES;
             var abortText = Resources.NO;
 
-            return _userNotifier.Confirm(message, displayName, confirmText, abortText);
+            return await _userNotifier.ConfirmAsync(message, displayName, confirmText, abortText);
         }
 
-        public void ShowGameOverDialog(string winnerName)
+        public async Task ShowGameOverDialogAsync(string winnerName)
         {
             var message = string.Format(Resources.ARG0_IS_THE_WINNER, winnerName);
             var displayName = Resources.GAME_OVER;
 
-            _userNotifier.Notify(message, displayName);
+            await _userNotifier.NotifyAsync(message, displayName);
         }
     }
 }

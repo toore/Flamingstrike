@@ -125,7 +125,7 @@ namespace Tests.GameEngine.Play
 
                 Sut.EndTurn();
 
-                _currentPlayer.Cards.Should().BeEquivalentTo(topDeckCard);
+                _currentPlayer.Cards.Should().BeEquivalentTo(new[] { topDeckCard });
             }
 
             [Fact]
@@ -154,7 +154,7 @@ namespace Tests.GameEngine.Play
 
                 Sut.Attack(_region, _anotherRegion);
 
-                _currentPlayer.Cards.Should().BeEquivalentTo(_card, _anotherCard);
+                _currentPlayer.Cards.Should().BeEquivalentTo(new[] { _card, _anotherCard });
                 _anotherPlayer.Cards.Should().BeEmpty();
             }
 
@@ -206,7 +206,7 @@ namespace Tests.GameEngine.Play
 
                 Sut.Fortify(_region, _anotherRegion, 1);
 
-                _currentPlayer.Cards.Should().BeEquivalentTo(topDeckCard);
+                _currentPlayer.Cards.Should().BeEquivalentTo(new[] { topDeckCard });
             }
 
             [Fact]

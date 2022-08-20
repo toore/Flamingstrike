@@ -13,7 +13,7 @@ namespace FlamingStrike.UI.WPF.Views
 
         protected override void OnStartup(object sender, StartupEventArgs e)
         {
-            DisplayRootViewFor<MainGameViewModel>();
+            DisplayRootViewForAsync<MainGameViewModel>();
         }
     }
 }

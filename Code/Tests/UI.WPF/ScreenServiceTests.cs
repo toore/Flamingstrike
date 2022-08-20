@@ -1,4 +1,5 @@
-﻿using Caliburn.Micro;
+﻿using System.Threading.Tasks;
+using Caliburn.Micro;
 using FlamingStrike.UI.WPF.Services;
 using NSubstitute;
 using Xunit;
@@ -15,21 +16,21 @@ namespace Tests.UI.WPF
         }
 
         [Fact]
-        public void Confirm_calls_try_close_with_dialog_result_true()
+        public async Task Confirm_calls_try_close_with_dialog_result_true()
         {
             var screen = Substitute.For<Screen>();
-            _screenConfirmationService.Confirm(screen);
+            await _screenConfirmationService.Confirm(screen);
 
-            screen.Received().TryClose(true);
+            await screen.Received().TryCloseAsync(true);
         }
 
         [Fact]
-        public void Cancle_calls_try_close_with_dialog_result_false()
+        public async Task Cancle_calls_try_close_with_dialog_result_false()
         {
             var screen = Substitute.For<Screen>();
-            _screenConfirmationService.Cancel(screen);
+            await _screenConfirmationService.Cancel(screen);
 
-            screen.Received().TryClose(false);
+            await screen.Received().TryCloseAsync(false);
         }
     }
 }

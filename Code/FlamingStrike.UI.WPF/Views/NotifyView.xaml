@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         xmlns:Micro="http://www.caliburnproject.org"
         xmlns:Properties="clr-namespace:FlamingStrike.UI.WPF.Properties"
         xmlns:Views="clr-namespace:FlamingStrike.UI.WPF.Views"

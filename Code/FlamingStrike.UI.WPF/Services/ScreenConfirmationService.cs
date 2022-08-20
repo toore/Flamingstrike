@@ -1,23 +1,24 @@
-﻿using Caliburn.Micro;
+﻿using System.Threading.Tasks;
+using Caliburn.Micro;
 
 namespace FlamingStrike.UI.WPF.Services
 {
     public interface IScreenConfirmationService
     {
-        void Confirm(Screen screen);
-        void Cancel(Screen screen);
+        Task Confirm(Screen screen);
+        Task Cancel(Screen screen);
     }
 
     public class ScreenConfirmationService : IScreenConfirmationService
     {
-        public void Confirm(Screen screen)
+        public async Task Confirm(Screen screen)
         {
-            screen.TryClose(true);
+            await screen.TryCloseAsync(true);
         }
 
-        public void Cancel(Screen screen)
+        public async Task Cancel(Screen screen)
         {
-            screen.TryClose(false);
+            await screen.TryCloseAsync(false);
         }
     }
 }

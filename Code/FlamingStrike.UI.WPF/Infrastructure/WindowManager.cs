@@ -1,13 +1,14 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Windows;
 
 namespace FlamingStrike.UI.WPF.Infrastructure
 {
     public class WindowManager : Caliburn.Micro.WindowManager
     {
-        protected override Window CreateWindow(object rootModel, bool isDialog, object context, IDictionary<string, object> settings)
+        protected override async Task<Window> CreateWindowAsync(object rootModel, bool isDialog, object context, IDictionary<string, object> settings)
         {
-            var window = base.CreateWindow(rootModel, isDialog, context, settings);
+            var window = await base.CreateWindowAsync(rootModel, isDialog, context, settings);
 
             if (isDialog)
             {

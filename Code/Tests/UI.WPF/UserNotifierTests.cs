@@ -1,4 +1,5 @@
-﻿using Caliburn.Micro;
+﻿using System.Threading.Tasks;
+using Caliburn.Micro;
 using FlamingStrike.UI.WPF.Services;
 using FlamingStrike.UI.WPF.ViewModels;
 using FluentAssertions;
@@ -24,24 +25,24 @@ namespace Tests.UI.WPF
         [Theory]
         [InlineData(true)]
         [InlineData(false)]
-        public void Shows_confirm_dialog(bool expectedConfirmation)
+        public async Task Shows_confirm_dialog(bool expectedConfirmation)
         {
             var confirmViewModel = new ConfirmViewModel(null);
             _confirmViewModelFactory.Create("message", "display name", "confirm text", "abort text").Returns(confirmViewModel);
-            _windowManager.ShowDialog(confirmViewModel).Returns(expectedConfirmation);
+            _windowManager.ShowDialogAsync(confirmViewModel).Returns(Task.FromResult<bool?>(expectedConfirmation));
 
-            var confirm = _userNotifier.Confirm("message", "display name", "confirm text", "abort text");
+            var confirm = await _userNotifier.ConfirmAsync("message", "display name", "confirm text", "abort text");
 
-            _windowManager.Received(1).ShowDialog(confirmViewModel);
+            await _windowManager.Received(1).ShowDialogAsync(confirmViewModel);
             confirm.Should().Be(expectedConfirmation);
         }
 
         [Fact]
-        public void Shows_notifying_dialog()
+        public async Task Shows_notifying_dialog()
         {
-            _userNotifier.Notify("message", "display name");
+            await _userNotifier.NotifyAsync("message", "display name");
 
-            _windowManager.Received(1).ShowDialog(Arg.Is<NotifyViewModel>(vm =>
+            await _windowManager.Received(1).ShowDialogAsync(Arg.Is<NotifyViewModel>(vm =>
                 vm.Message == "message"
                 &&
                 vm.DisplayName == "display name"));

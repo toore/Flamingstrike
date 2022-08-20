@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Media;
 using Caliburn.Micro;
 using FlamingStrike.UI.WPF.Properties;
@@ -10,7 +11,7 @@ namespace FlamingStrike.UI.WPF.ViewModels.Preparation
     public interface IGamePreparationViewModel : IMainViewModel
     {
         IList<GamePreparationPlayerViewModel> PotentialPlayers { get; }
-        void Confirm();
+        Task ConfirmAsync();
     }
 
     public class GamePreparationViewModel : ViewModelBase, IGamePreparationViewModel
@@ -60,7 +61,7 @@ namespace FlamingStrike.UI.WPF.ViewModels.Preparation
 
         public bool CanConfirm => GetPlayers().Count() > 1;
 
-        public void Confirm()
+        public async Task ConfirmAsync()
         {
             _playerUiDataRepository.Clear();
 
@@ -69,7 +70,7 @@ namespace FlamingStrike.UI.WPF.ViewModels.Preparation
                 _playerUiDataRepository.Add(new PlayerUiData(player.Name, player.Color));
             }
 
-            _eventAggregator.PublishOnUIThread(new StartGameSetupMessage());
+            await _eventAggregator.PublishOnUIThreadAsync(new StartGameSetupMessage());
         }
 
         private IEnumerable<GamePreparationPlayerViewModel> GetPlayers()

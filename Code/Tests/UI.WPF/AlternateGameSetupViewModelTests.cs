@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Windows.Media;
 using Caliburn.Micro;
 using FlamingStrike.Core;
@@ -45,19 +46,19 @@ namespace Tests.UI.WPF
         }
 
         [Fact]
-        public void WorldMapViewModel_is_initialized()
+        public async Task WorldMapViewModel_is_initialized()
         {
             var expectedWorldMapViewModel = new WorldMapViewModel();
             _worldMapViewModelFactory.Create(null)
                 .ReturnsForAnyArgs(expectedWorldMapViewModel);
 
-            var sut = Create();
+            var sut = await CreateAsync();
 
             sut.WorldMapViewModel.Should().Be(expectedWorldMapViewModel);
         }
 
         [Fact]
-        public void SelectRegion_updates_world_map_view_model()
+        public async Task SelectRegion_updates_world_map_view_model()
         {
             var expectedWorldMapViewModel = new WorldMapViewModel();
             _worldMapViewModelFactory.Create(null)
@@ -66,20 +67,20 @@ namespace Tests.UI.WPF
             placeArmyRegionSelector.Territories.Returns(new List<Territory>());
             placeArmyRegionSelector.Player.Returns("");
 
-            Create();
+            await CreateAsync();
             _gameEngineClientProxy.SelectRegion(placeArmyRegionSelector);
 
             _worldMapViewModelFactory.Received().Update(expectedWorldMapViewModel, Arg.Any<List<FlamingStrike.UI.WPF.ViewModels.Gameplay.Territory>>(), Maybe<Region>.Nothing);
         }
 
         [Fact]
-        public void SelectRegion_updates_information_text()
+        public async Task SelectRegion_updates_information_text()
         {
             var placeArmyRegionSelector = Substitute.For<ITerritorySelector>();
             placeArmyRegionSelector.Player.Returns("");
             placeArmyRegionSelector.ArmiesLeftToPlace.Returns(1);
 
-            var sut = Create();
+            var sut = await CreateAsync();
             var monitor = sut.Monitor();
             _gameEngineClientProxy.SelectRegion(placeArmyRegionSelector);
 
@@ -88,13 +89,13 @@ namespace Tests.UI.WPF
         }
 
         [Fact]
-        public void SelectRegion_updates_player_name()
+        public async Task SelectRegion_updates_player_name()
         {
             var placeArmyRegionSelector = Substitute.For<ITerritorySelector>();
             placeArmyRegionSelector.Player.Returns("player name");
             _playerUiDataRepository.Get(null).ReturnsForAnyArgs(new PlayerUiData("", Colors.Black));
 
-            var sut = Create();
+            var sut = await CreateAsync();
             var monitor = sut.Monitor();
             _gameEngineClientProxy.SelectRegion(placeArmyRegionSelector);
 
@@ -103,69 +104,69 @@ namespace Tests.UI.WPF
         }
 
         [Fact]
-        public void When_finished_setup_game_conductor_is_notified()
+        public async Task When_finished_setup_game_conductor_is_notified()
         {
             IGamePlaySetup expectedGamePlaySetup = null;
             var gamePlaySetup = Substitute.For<IGamePlaySetup>();
-            _eventAggregator.WhenForAnyArgs(x => x.PublishOnUIThread(null)).Do(ci => expectedGamePlaySetup = ci.Arg<StartGameplayMessage>().GamePlaySetup);
+            _eventAggregator.WhenForAnyArgs(x => x.PublishOnUIThreadAsync(null)).Do(ci => expectedGamePlaySetup = ci.Arg<StartGameplayMessage>().GamePlaySetup);
 
-            Create();
+            await CreateAsync();
             _gameEngineClientProxy.NewGamePlaySetup(gamePlaySetup);
 
-            _eventAggregator.ReceivedWithAnyArgs().PublishOnUIThread(null);
+            await _eventAggregator.ReceivedWithAnyArgs().PublishOnUIThreadAsync(null);
             expectedGamePlaySetup.Should().Be(gamePlaySetup);
         }
 
         [Fact]
-        public void Can_not_enter_fortify_mode()
+        public async Task Can_not_enter_fortify_mode()
         {
-            var sut = Create();
+            var sut = await CreateAsync();
 
             sut.CanEnterFortifyMode.Should().BeFalse();
         }
 
         [Fact]
-        public void Can_not_enter_attack_mode()
+        public async Task Can_not_enter_attack_mode()
         {
-            var sut = Create();
+            var sut = await CreateAsync();
 
             sut.CanEnterAttackMode.Should().BeFalse();
         }
 
         [Fact]
-        public void Can_not_end_turn()
+        public async Task Can_not_end_turn()
         {
-            var sut = Create();
+            var sut = await CreateAsync();
 
             sut.CanEndTurn.Should().BeFalse();
         }
 
         [Fact]
-        public void Confirm_sends_end_game_message()
+        public async Task Confirm_sends_end_game_message()
         {
-            _dialogManager.ConfirmEndGame().Returns(true);
+            _dialogManager.ConfirmEndGameAsync().Returns(true);
 
-            var sut = Create();
-            sut.EndGame();
+            var sut = await CreateAsync();
+            await sut.EndGameAsync();
 
-            _eventAggregator.Received().PublishOnUIThread(Arg.Any<NewGameMessage>());
+            await _eventAggregator.Received().PublishOnUIThreadAsync(Arg.Any<NewGameMessage>());
         }
 
         [Fact]
-        public void Cancel_does_not_send_end_game_message()
+        public async Task Cancel_does_not_send_end_game_message()
         {
-            _dialogManager.ConfirmEndGame().Returns(false);
+            _dialogManager.ConfirmEndGameAsync().Returns(false);
 
-            var sut = Create();
-            sut.EndGame();
+            var sut = await CreateAsync();
+            await sut.EndGameAsync();
 
-            _eventAggregator.DidNotReceive().PublishOnUIThread(Arg.Any<NewGameMessage>());
+            await _eventAggregator.DidNotReceive().PublishOnUIThreadAsync(Arg.Any<NewGameMessage>());
         }
 
-        private AlternateGameSetupViewModel Create()
+        private async Task<AlternateGameSetupViewModel> CreateAsync()
         {
             var alternateGameSetupViewModel = (AlternateGameSetupViewModel)_factory.Create();
-            ((IActivate)alternateGameSetupViewModel).Activate();
+            await ((IActivate)alternateGameSetupViewModel).ActivateAsync();
             return alternateGameSetupViewModel;
         }
 

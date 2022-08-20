@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Windows.Media;
 using Caliburn.Micro;
 using FlamingStrike.UI.WPF.Properties;
@@ -24,7 +25,7 @@ namespace Tests.UI.WPF
         private readonly IPlayerUiDataRepository _playerUiDataRepository;
         private readonly IDialogManager _dialogManager;
         private readonly IEventAggregator _eventAggregator;
-        private readonly WorldMapViewModel _worldMapViewModel = new WorldMapViewModel();
+        private readonly WorldMapViewModel _worldMapViewModel = new();
 
         private readonly string _currentPlayerName;
         private readonly Color _currentPlayerColor;
@@ -55,7 +56,7 @@ namespace Tests.UI.WPF
                 playerStatusViewModelFactory,
                 _gameEngineClientProxy);
 
-            ((IActivate)_sut).Activate();
+            ((IActivate)_sut).ActivateAsync();
 
             _currentPlayerName = "current player";
             _currentPlayerColor = Color.FromArgb(1, 2, 3, 4);
@@ -355,28 +356,28 @@ namespace Tests.UI.WPF
 
             _gameEngineClientProxy.GameOver(gameOverState);
 
-            _dialogManager.Received().ShowGameOverDialog("winner");
-            _eventAggregator.Received().PublishOnUIThread(Arg.Any<NewGameMessage>());
+            _dialogManager.Received().ShowGameOverDialogAsync("winner");
+            _eventAggregator.Received().PublishOnUIThreadAsync(Arg.Any<NewGameMessage>());
         }
 
         [Fact]
-        public void End_game_displays_confirm_dialog()
+        public async Task End_game_displays_confirm_dialog()
         {
-            _dialogManager.ConfirmEndGame().Returns(false);
+            _dialogManager.ConfirmEndGameAsync().Returns(Task.FromResult<bool?>(false));
 
-            _sut.EndGame();
+            await _sut.EndGameAsync();
 
-            _eventAggregator.DidNotReceiveWithAnyArgs().PublishOnUIThread(null);
+            await _eventAggregator.DidNotReceiveWithAnyArgs().PublishOnUIThreadAsync(null);
         }
 
         [Fact]
-        public void Game_ends_after_confirmation()
+        public async Task Game_ends_after_confirmation()
         {
-            _dialogManager.ConfirmEndGame().Returns(true);
+            _dialogManager.ConfirmEndGameAsync().Returns(Task.FromResult<bool?>(true));
 
-            _sut.EndGame();
+            await _sut.EndGameAsync();
 
-            _eventAggregator.Received().PublishOnUIThread(Arg.Any<NewGameMessage>());
+            await _eventAggregator.Received().PublishOnUIThreadAsync(Arg.Any<NewGameMessage>());
         }
 
         private class FakeGameEngineClient : GameEngineClientBase

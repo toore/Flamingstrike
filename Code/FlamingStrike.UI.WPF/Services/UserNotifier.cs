@@ -1,12 +1,13 @@
-﻿using Caliburn.Micro;
+﻿using System.Threading.Tasks;
+using Caliburn.Micro;
 using FlamingStrike.UI.WPF.ViewModels;
 
 namespace FlamingStrike.UI.WPF.Services
 {
     public interface IUserNotifier
     {
-        bool? Confirm(string message, string displayName, string confirmText, string abortText);
-        void Notify(string message, string displayName);
+        Task<bool?> ConfirmAsync(string message, string displayName, string confirmText, string abortText);
+        Task NotifyAsync(string message, string displayName);
     }
 
     public class UserNotifier : IUserNotifier
@@ -20,14 +21,14 @@ namespace FlamingStrike.UI.WPF.Services
             _confirmViewModelFactory = confirmViewModelFactory;
         }
 
-        public bool? Confirm(string message, string displayName, string confirmText, string abortText)
+        public async Task<bool?> ConfirmAsync(string message, string displayName, string confirmText, string abortText)
         {
             var confirmViewModel = _confirmViewModelFactory.Create(message, displayName, confirmText, abortText);
             
-            return _windowManager.ShowDialog(confirmViewModel);
+            return await _windowManager.ShowDialogAsync(confirmViewModel);
         }
 
-        public void Notify(string message, string displayName)
+        public async Task NotifyAsync(string message, string displayName)
         {
             var notifyViewModel = new NotifyViewModel
                 {
@@ -35,7 +36,7 @@ namespace FlamingStrike.UI.WPF.Services
                     DisplayName = displayName
                 };
             
-            _windowManager.ShowDialog(notifyViewModel);
+            await _windowManager.ShowDialogAsync(notifyViewModel);
         }
     }
 }

@@ -4,6 +4,7 @@ using FlamingStrike.GameEngine.Setup;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Toore.Shuffling;
 
 namespace FlamingStrike.Service
@@ -20,15 +21,15 @@ namespace FlamingStrike.Service
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseSignalR(
-                routes => { routes.MapHub<GameEngineHub>("/hubs/gameengine"); });
+            app.UseRouting();
+            app.UseEndpoints(endpoints => endpoints.MapHub<GameEngineHub>("/hubs/gameengine"));
         }
     }
 

@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Threading.Tasks;
 using Caliburn.Micro;
 using FlamingStrike.UI.WPF.ViewModels.Messages;
 using FlamingStrike.UI.WPF.ViewModels.Preparation;
@@ -55,11 +56,11 @@ namespace Tests.UI.WPF
         }
 
         [Fact]
-        public void Confirm_publishes_message()
+        public async Task Confirm_publishes_message()
         {
-            _gameInitializationViewModel.Confirm();
+            await _gameInitializationViewModel.ConfirmAsync();
 
-            _gameEventAggregator.Received().PublishOnUIThread(Arg.Any<StartGameSetupMessage>());
+            await _gameEventAggregator.Received().PublishOnUIThreadAsync(Arg.Any<StartGameSetupMessage>());
         }
     }
 }

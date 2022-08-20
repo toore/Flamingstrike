@@ -1,4 +1,6 @@
 ﻿using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using Caliburn.Micro;
 using FlamingStrike.UI.WPF;
 using FlamingStrike.UI.WPF.ViewModels.AlternateSetup;
@@ -15,40 +17,40 @@ namespace Tests.UI.WPF
         private AlternateGameSetupViewModel _alternateGameSetupViewModel;
 
         [Fact]
-        public void Game_is_setup_and_started()
+        public async Task Game_is_setup_and_started()
         {
-            Given
+            await Given
                 .a_new_game();
 
-            When
-                .two_human_players_are_confirmed()
+            (await When
+                .two_human_players_are_confirmed())
                 .all_armies_are_placed_on_the_map();
 
             Then
                 .the_game_is_started();
         }
 
-        private void a_new_game()
+        private async Task a_new_game()
         {
             _mainGameViewModel = new MainGameViewModelDecorator(new CompositionRoot());
 
-            CaliburnMicroFrameworkActivation(_mainGameViewModel);
+            await CaliburnMicroFrameworkActivation(_mainGameViewModel);
         }
 
-        private static void CaliburnMicroFrameworkActivation(MainGameViewModelDecorator viewModel)
+        private static async Task CaliburnMicroFrameworkActivation(MainGameViewModelDecorator viewModel)
         {
-            viewModel.OnInitialize();
-            ((IActivate)viewModel).Activate();
+            await viewModel.OnInitializeAsync(CancellationToken.None);
+            await ((IActivate)viewModel).ActivateAsync();
         }
 
-        private GameplaySpec two_human_players_are_confirmed()
+        private async Task<GameplaySpec> two_human_players_are_confirmed()
         {
             var gamePreparationViewModel = (IGamePreparationViewModel)_mainGameViewModel.ActiveItem;
 
             gamePreparationViewModel.PotentialPlayers.First().IsEnabled = true;
             gamePreparationViewModel.PotentialPlayers.ElementAt(1).IsEnabled = true;
 
-            gamePreparationViewModel.Confirm();
+            await gamePreparationViewModel.ConfirmAsync();
 
             _alternateGameSetupViewModel = (AlternateGameSetupViewModel)_mainGameViewModel.ActiveItem;
 

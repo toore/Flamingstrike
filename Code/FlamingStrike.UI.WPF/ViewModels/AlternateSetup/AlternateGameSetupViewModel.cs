@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Media;
 using Caliburn.Micro;
 using FlamingStrike.Core;
@@ -74,22 +76,17 @@ namespace FlamingStrike.UI.WPF.ViewModels.AlternateSetup
 
         public void ShowCards() {}
 
-        protected override void OnActivate()
+        protected override async Task OnActivateAsync(CancellationToken cancellationToken)
         {
-            base.OnActivate();
+            await base.OnActivateAsync(cancellationToken);
 
             _selectRegionSubscription = _gameEngineClient.OnSelectRegion.Subscribe(SelectRegion);
             _gamePlaySetupSubscription = _gameEngineClient.OnGamePlaySetup.Subscribe(NewGamePlaySetup);
         }
 
-        protected override void OnInitialize()
+        protected override async Task OnDeactivateAsync(bool close, CancellationToken cancellationToken)
         {
-            base.OnInitialize();
-        }
-
-        protected override void OnDeactivate(bool close)
-        {
-            base.OnDeactivate(close);
+            await base.OnDeactivateAsync(close, cancellationToken);
 
             _selectRegionSubscription.Dispose();
             _gamePlaySetupSubscription.Dispose();
@@ -106,7 +103,7 @@ namespace FlamingStrike.UI.WPF.ViewModels.AlternateSetup
 
         private void NewGamePlaySetup(IGamePlaySetup gamePlaySetup)
         {
-            _eventAggregator.PublishOnUIThread(new StartGameplayMessage(gamePlaySetup));
+            _eventAggregator.PublishOnUIThreadAsync(new StartGameplayMessage(gamePlaySetup));
         }
 
         private void UpdateView(
@@ -142,13 +139,13 @@ namespace FlamingStrike.UI.WPF.ViewModels.AlternateSetup
 
         public void EndTurn() {}
 
-        public void EndGame()
+        public async Task EndGameAsync()
         {
-            var confirm = _dialogManager.ConfirmEndGame();
+            var confirm = await _dialogManager.ConfirmEndGameAsync();
 
             if (confirm.HasValue && confirm.Value)
             {
-                _eventAggregator.PublishOnUIThread(new NewGameMessage());
+                await _eventAggregator.PublishOnUIThreadAsync(new NewGameMessage());
             }
         }
     }

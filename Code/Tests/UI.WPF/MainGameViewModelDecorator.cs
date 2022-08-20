@@ -1,3 +1,5 @@
+using System.Threading;
+using System.Threading.Tasks;
 using FlamingStrike.UI.WPF;
 using FlamingStrike.UI.WPF.Services.GameEngineClient;
 using FlamingStrike.UI.WPF.ViewModels;
@@ -25,9 +27,9 @@ namespace Tests.UI.WPF
                 alternateGameSetupViewModelFactory,
                 gameEngineClient) {}
 
-        public new void OnInitialize()
+        public new async Task OnInitializeAsync(CancellationToken cancellationToken)
         {
-            base.OnInitialize();
+            await base.OnInitializeAsync(cancellationToken);
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Windows.Media;
 using FlamingStrike.UI.WPF.ViewModels.Preparation;
 
@@ -29,7 +30,7 @@ namespace FlamingStrike.UI.WPF.Views.Preparation
 
         public IList<GamePreparationPlayerViewModel> PotentialPlayers { get; }
 
-        public void Confirm()
+        public Task ConfirmAsync()
         {
             throw new NotImplementedException();
         }

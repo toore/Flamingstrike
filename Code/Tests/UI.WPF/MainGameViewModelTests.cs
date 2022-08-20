@@ -1,4 +1,6 @@
-﻿using FlamingStrike.UI.WPF.Services.GameEngineClient;
+﻿using System.Threading;
+using System.Threading.Tasks;
+using FlamingStrike.UI.WPF.Services.GameEngineClient;
 using FlamingStrike.UI.WPF.Services.GameEngineClient.SetupFinished;
 using FlamingStrike.UI.WPF.ViewModels.AlternateSetup;
 using FlamingStrike.UI.WPF.ViewModels.Gameplay;
@@ -29,50 +31,50 @@ namespace Tests.UI.WPF
         }
 
         [Fact]
-        public void OnInitialize_shows_game_settings_view()
+        public async Task OnInitialize_shows_game_settings_view()
         {
             var gameSettingsViewModel = Substitute.For<IGamePreparationViewModel>();
             _gamePreparationViewModelFactory.Create().Returns(gameSettingsViewModel);
             var sut = Initialize();
 
-            sut.OnInitialize();
+            await sut.OnInitializeAsync(CancellationToken.None);
             var actual = sut.ActiveItem;
 
             actual.Should().Be(gameSettingsViewModel);
         }
 
         [Fact]
-        public void New_game_message_shows_game_settings_view()
+        public async Task New_game_message_shows_game_settings_view()
         {
             var gameInitializationViewModel = Substitute.For<IGamePreparationViewModel>();
             _gamePreparationViewModelFactory.Create().Returns(gameInitializationViewModel);
 
             var sut = Initialize();
-            sut.Handle(new NewGameMessage());
+            await sut.HandleAsync(new NewGameMessage(), CancellationToken.None);
 
             sut.ActiveItem.Should().Be(gameInitializationViewModel);
         }
 
         [Fact]
-        public void Setup_game_message_shows_game_setup_view()
+        public async Task Setup_game_message_shows_game_setup_view()
         {
             var gameSetupViewModel = Substitute.For<IAlternateGameSetupViewModel>();
             _alternateGameSetupViewModelFactory.Create().Returns(gameSetupViewModel);
 
             var sut = Initialize();
-            sut.Handle(new StartGameSetupMessage());
+            await sut.HandleAsync(new StartGameSetupMessage(), CancellationToken.None);
 
             sut.ActiveItem.Should().Be(gameSetupViewModel);
         }
 
         [Fact]
-        public void Start_game_play_message_shows_gameplay_view()
+        public async Task Start_game_play_message_shows_gameplay_view()
         {
             var gameplayViewModel = Substitute.For<IGameplayViewModel>();
             _gameplayViewModelFactory.Create().Returns(gameplayViewModel);
 
             var sut = Initialize();
-            sut.Handle(new StartGameplayMessage(new GamePlaySetup(new string[] {}, new Territory[] {})));
+            await sut.HandleAsync(new StartGameplayMessage(new GamePlaySetup(new string[] {}, new Territory[] {})), CancellationToken.None);
 
             sut.ActiveItem.Should().Be(gameplayViewModel);
         }

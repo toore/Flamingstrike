@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Media;
 using FlamingStrike.Core;
 using FlamingStrike.UI.WPF.RegionModels;
@@ -93,7 +94,7 @@ namespace FlamingStrike.UI.WPF.Views.Gameplay
             throw new NotImplementedException();
         }
 
-        public void EndGame()
+        public Task EndGameAsync()
         {
             throw new NotImplementedException();
         }

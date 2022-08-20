@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Media;
 using Caliburn.Micro;
 using FlamingStrike.Core;
@@ -139,20 +141,20 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay
 
         public bool CanShowCards => true;
 
-        protected override void OnActivate()
+        protected override async Task OnActivateAsync(CancellationToken cancellationToken)
         {
-            base.OnActivate();
+            await base.OnActivateAsync(cancellationToken);
 
             _draftArmiesSubscription = _gameEngineClient.OnDraftArmies.Subscribe(DraftArmies);
             _attackSubscription = _gameEngineClient.OnAttack.Subscribe(Attack);
             _sendArmiesSubscription = _gameEngineClient.OnSendArmiesToOccupy.Subscribe(SendArmiesToOccupy);
             _endTurnSubscription = _gameEngineClient.OnEndTurn.Subscribe(EndTurn);
-            _gameOverSubscription = _gameEngineClient.OnGameOver.Subscribe(GameOver);
+            _gameOverSubscription = _gameEngineClient.OnGameOver.Subscribe(x => GameOverAsync(x));
         }
 
-        protected override void OnDeactivate(bool close)
+        protected override async Task OnDeactivateAsync(bool close, CancellationToken cancellationToken)
         {
-            base.OnDeactivate(close);
+            await base.OnDeactivateAsync(close, cancellationToken);
 
             _draftArmiesSubscription.Dispose();
             _attackSubscription.Dispose();
@@ -201,9 +203,9 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay
             ShowEndTurnView(endTurnPhase);
         }
 
-        private void GameOver(IGameOverState gameOverState)
+        private async Task GameOverAsync(IGameOverState gameOverState)
         {
-            ShowGameOverMessage(gameOverState.Winner);
+            await ShowGameOverMessageAsync(gameOverState.Winner);
         }
 
         public void EnterAttackMode()
@@ -245,13 +247,13 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay
             _interactionState.EndTurn();
         }
 
-        public void EndGame()
+        public async Task EndGameAsync()
         {
-            var confirm = _dialogManager.ConfirmEndGame();
+            var confirm = await _dialogManager.ConfirmEndGameAsync();
 
             if (confirm.HasValue && confirm.Value)
             {
-                _eventAggregator.PublishOnUIThread(new NewGameMessage());
+                await _eventAggregator.PublishOnUIThreadAsync(new NewGameMessage());
             }
         }
 
@@ -309,11 +311,11 @@ namespace FlamingStrike.UI.WPF.ViewModels.Gameplay
             UpdateView();
         }
 
-        private void ShowGameOverMessage(string winner)
+        private async Task ShowGameOverMessageAsync(string winner)
         {
-            _dialogManager.ShowGameOverDialog(winner);
+            await _dialogManager.ShowGameOverDialogAsync(winner);
 
-            _eventAggregator.PublishOnUIThread(new NewGameMessage());
+            await _eventAggregator.PublishOnUIThreadAsync(new NewGameMessage());
         }
 
         private void UpdatePlayersInformation(string currentPlayerName, IReadOnlyList<Player> playerGameDatas)

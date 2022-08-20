@@ -1,4 +1,5 @@
-﻿using System.Windows.Media;
+﻿using System.Threading.Tasks;
+using System.Windows.Media;
 using FlamingStrike.UI.WPF.ViewModels.Gameplay;
 
 namespace FlamingStrike.UI.WPF.ViewModels
@@ -17,6 +18,6 @@ namespace FlamingStrike.UI.WPF.ViewModels
         void EnterAttackMode();
         void EnterFortifyMode();
         void EndTurn();
-        void EndGame();
+        Task EndGameAsync();
     }
 }
