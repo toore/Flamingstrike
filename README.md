@@ -6,7 +6,7 @@ Clone of a famous strategic game. Details and history about the original game ca
 
 The game is based on the standard rules, but the intent is to add some homebrew or custom rules.
 
-The game engine is built with .NET standard. WPF front end using Caliburn.Micro. The service is built with .Net Core. The client can host the game server in-process or use the server api.
+~~The game engine is built with .NET standard.~~ WPF front end using Caliburn.Micro. ~~The service is built with .Net Core.~~ The client can host the game server in-process or use the server api.
 
 Enjoy!
 
