@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<TargetFramework>net6.0-windows</TargetFramework>
 		<OutputType>WinExe</OutputType>
@@ -26,7 +26,7 @@
 		<PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
 		<PackageReference Include="Caliburn.Micro" Version="4.0.210" />
 		<PackageReference Include="Extended.Wpf.Toolkit" Version="4.4.0" />
-		<PackageReference Include="Microsoft.Windows.Compatibility" Version="6.0.0" />
+		<PackageReference Include="Microsoft.Windows.Compatibility" Version="6.0.6" />
 		<PackageReference Include="Microsoft.AspNetCore.Connections.Abstractions" Version="6.0.8" />
 		<PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="6.0.8" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Console" Version="6.0.0" />
