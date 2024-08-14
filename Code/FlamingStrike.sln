@@ -1,20 +1,22 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27130.2036
+# Visual Studio Version 17
+VisualStudioVersion = 17.10.35122.118
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{F02CB4F8-34FC-4D10-9039-C3CCE3AF5CDB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tests", "Tests\Tests.csproj", "{F02CB4F8-34FC-4D10-9039-C3CCE3AF5CDB}"
 	ProjectSection(ProjectDependencies) = postProject
 		{4042274D-44C5-4E8B-BE62-5861FE661EAF} = {4042274D-44C5-4E8B-BE62-5861FE661EAF}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlamingStrike.UI.WPF", "FlamingStrike.UI.WPF\FlamingStrike.UI.WPF.csproj", "{3B937F0E-E727-442D-B1DA-E5ED6EF939D5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlamingStrike.UI.WPF", "FlamingStrike.UI.WPF\FlamingStrike.UI.WPF.csproj", "{3B937F0E-E727-442D-B1DA-E5ED6EF939D5}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlamingStrike.GameEngine", "FlamingStrike.GameEngine\FlamingStrike.GameEngine.csproj", "{A35C3BAE-9424-4B3F-8413-F01CEBAC0233}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlamingStrike.Core", "FlamingStrike.Core\FlamingStrike.Core.csproj", "{4042274D-44C5-4E8B-BE62-5861FE661EAF}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlamingStrike.Service", "FlamingStrike.Service\FlamingStrike.Service.csproj", "{345698C3-C3CF-4013-BB8E-B6074CFFE2D8}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlamingStrike.Ui.Maui", "FlamingStrike.Ui.Maui\FlamingStrike.Ui.Maui.csproj", "{8D5C0019-C1CC-4566-B5FA-80C9DFDA7F02}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -53,6 +55,15 @@ Global
 		{345698C3-C3CF-4013-BB8E-B6074CFFE2D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{345698C3-C3CF-4013-BB8E-B6074CFFE2D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{345698C3-C3CF-4013-BB8E-B6074CFFE2D8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8D5C0019-C1CC-4566-B5FA-80C9DFDA7F02}.Debug_QuickSetup|Any CPU.ActiveCfg = Debug|Any CPU
+		{8D5C0019-C1CC-4566-B5FA-80C9DFDA7F02}.Debug_QuickSetup|Any CPU.Build.0 = Debug|Any CPU
+		{8D5C0019-C1CC-4566-B5FA-80C9DFDA7F02}.Debug_QuickSetup|Any CPU.Deploy.0 = Debug|Any CPU
+		{8D5C0019-C1CC-4566-B5FA-80C9DFDA7F02}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8D5C0019-C1CC-4566-B5FA-80C9DFDA7F02}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8D5C0019-C1CC-4566-B5FA-80C9DFDA7F02}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{8D5C0019-C1CC-4566-B5FA-80C9DFDA7F02}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8D5C0019-C1CC-4566-B5FA-80C9DFDA7F02}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8D5C0019-C1CC-4566-B5FA-80C9DFDA7F02}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
