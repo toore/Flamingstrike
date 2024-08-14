@@ -1,13 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
-		<TargetFramework>net6.0-windows</TargetFramework>
+		<TargetFramework>net8.0-windows8.0</TargetFramework>
 		<OutputType>WinExe</OutputType>
 		<UseWindowsForms>False</UseWindowsForms>
 		<UseWPF>true</UseWPF>
 		<ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
 	</PropertyGroup>
 	<PropertyGroup>
-		<StartupObject></StartupObject>
+		<StartupObject>FlamingStrike.UI.WPF.Views.App</StartupObject>
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug_QuickSetup|AnyCPU'">
 		<DebugSymbols>true</DebugSymbols>
