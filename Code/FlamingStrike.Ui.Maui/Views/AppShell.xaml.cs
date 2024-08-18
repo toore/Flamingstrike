@@ -1,4 +1,4 @@
-﻿namespace FlamingStrike.Maui
+﻿namespace FlamingStrike.Maui.Views
 {
     public partial class AppShell : Shell
     {

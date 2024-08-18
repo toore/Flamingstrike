@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using FlamingStrike.Maui.Views;
+using Microsoft.Extensions.Logging;
 
 namespace FlamingStrike.Maui
 {

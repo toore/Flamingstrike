@@ -1,6 +1,6 @@
 ﻿using FlamingStrike.Maui.ViewModels.Preparation;
 
-namespace FlamingStrike.Maui;
+namespace FlamingStrike.Maui.Views;
 
 public partial class App : Application
 {

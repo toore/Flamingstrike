@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Shell
-    x:Class="FlamingStrike.Maui.AppShell"
+    x:Class="FlamingStrike.Maui.Views.AppShell"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:local="clr-namespace:FlamingStrike.Maui"
+    xmlns:views="clr-namespace:FlamingStrike.Maui.Views"
     Shell.FlyoutBehavior="Disabled"
     Title="FlamingStrike.Maui">
 
     <ShellContent
         Title="Start a new game"
-        ContentTemplate="{DataTemplate local:MainPage}"
+        ContentTemplate="{DataTemplate views:MainPage}"
         Route="MainPage" />
 
 </Shell>
