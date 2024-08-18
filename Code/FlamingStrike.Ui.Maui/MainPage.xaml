@@ -43,19 +43,7 @@
                                                   Offset="1.0" />
                                 </LinearGradientBrush>
                             </Border.Stroke>
-                            <!--<Rectangle.Fill>
-                                <SolidColorBrush Color="{Binding Color}" />
-                            </Rectangle.Fill>-->
                         </Border>
-
-                        <!--<Rectangle Grid.Column="3"
-                                   Margin="5"
-                                   Width="20"
-                                   Height="20">
-                            <Rectangle.Fill>
-                                <SolidColorBrush Color="{Binding Color}" />
-                            </Rectangle.Fill>
-                        </Rectangle>-->
 
                     </Grid>
                 </DataTemplate>
