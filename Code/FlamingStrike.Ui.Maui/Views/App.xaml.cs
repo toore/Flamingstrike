@@ -8,7 +8,8 @@ public partial class App : Application
     {
         InitializeComponent();
 
-        MainPage = new AppShell();
+        var appShell = new AppShell();
+        MainPage = appShell;
 
         var gamePreparationViewModelFactory = new GamePreparationViewModelFactory(
             new PlayerTypes(),

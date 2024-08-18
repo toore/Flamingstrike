@@ -1,4 +1,6 @@
-﻿namespace FlamingStrike.Maui.ViewModels.Preparation
+﻿using CommunityToolkit.Mvvm.Input;
+
+namespace FlamingStrike.Maui.ViewModels.Preparation
 {
     public interface IGamePreparationViewModel
     {
@@ -6,7 +8,7 @@
         Task ConfirmAsync();
     }
 
-    public class GamePreparationViewModel : ViewModelBase, IGamePreparationViewModel
+    public partial class GamePreparationViewModel : ViewModelBase, IGamePreparationViewModel
     {
         private readonly IPlayerTypes _playerTypes;
         //private readonly IEventAggregator _eventAggregator;
@@ -53,6 +55,7 @@
 
         public bool CanConfirm => GetPlayers().Count() > 1;
 
+        [RelayCommand]
         public async Task ConfirmAsync()
         {
             _playerUiDataRepository.Clear();
