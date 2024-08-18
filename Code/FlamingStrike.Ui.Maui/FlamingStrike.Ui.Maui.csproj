@@ -24,7 +24,7 @@
 		<ApplicationTitle>Flaming Strike</ApplicationTitle>
 
 		<!-- App Identifier -->
-		<ApplicationId>com.companyname.flamingstrike</ApplicationId>
+		<ApplicationId>com.toore.flamingstrike</ApplicationId>
 
 		<!-- Versions -->
 		<ApplicationDisplayVersion>2.0</ApplicationDisplayVersion>
