@@ -1,4 +1,6 @@
-﻿using CommunityToolkit.Mvvm.Input;
+﻿using Caliburn.Micro;
+using CommunityToolkit.Mvvm.Input;
+using FlamingStrike.Maui.ViewModels.Messages;
 
 namespace FlamingStrike.Maui.ViewModels.Preparation
 {
@@ -11,13 +13,13 @@ namespace FlamingStrike.Maui.ViewModels.Preparation
     public partial class GamePreparationViewModel : ViewModelBase, IGamePreparationViewModel
     {
         private readonly IPlayerTypes _playerTypes;
-        //private readonly IEventAggregator _eventAggregator;
+        private readonly IEventAggregator _eventAggregator;
         private readonly IPlayerUiDataRepository _playerUiDataRepository;
 
-        public GamePreparationViewModel(IPlayerTypes playerTypes, IPlayerUiDataRepository playerUiDataRepository/*, IEventAggregator eventAggregator*/)
+        public GamePreparationViewModel(IPlayerTypes playerTypes, IPlayerUiDataRepository playerUiDataRepository, IEventAggregator eventAggregator)
         {
             _playerTypes = playerTypes;
-            //_eventAggregator = eventAggregator;
+            _eventAggregator = eventAggregator;
             _playerUiDataRepository = playerUiDataRepository;
 
             var playerColors = new[]
@@ -65,7 +67,7 @@ namespace FlamingStrike.Maui.ViewModels.Preparation
                 _playerUiDataRepository.Add(new PlayerUiData(player.Name, player.Color));
             }
 
-            //await _eventAggregator.PublishOnUIThreadAsync(new StartGameSetupMessage());
+            await _eventAggregator.PublishOnUIThreadAsync(new StartGameSetupMessage());
         }
 
         private IEnumerable<GamePreparationPlayerViewModel> GetPlayers()

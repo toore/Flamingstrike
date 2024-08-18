@@ -1,10 +1,14 @@
-﻿using FlamingStrike.Maui.ViewModels.Preparation;
+﻿using Caliburn.Micro;
+using FlamingStrike.Maui.ViewModels.Preparation;
 
 namespace FlamingStrike.Maui.Views;
 
 public partial class App : Application
 {
-    public App()
+    public App(
+        IPlayerTypes playerTypes, 
+        IPlayerUiDataRepository playerUiDataRepository,
+        IEventAggregator eventAggregator)
     {
         InitializeComponent();
 
@@ -12,8 +16,9 @@ public partial class App : Application
         MainPage = appShell;
 
         var gamePreparationViewModelFactory = new GamePreparationViewModelFactory(
-            new PlayerTypes(),
-            new PlayerUiDataRepository());
+            playerTypes,
+            playerUiDataRepository,
+            eventAggregator);
 
         MainPage.BindingContext = gamePreparationViewModelFactory.Create();
     }

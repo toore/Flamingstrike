@@ -1,4 +1,6 @@
-﻿namespace FlamingStrike.Maui.ViewModels.Preparation
+﻿using Caliburn.Micro;
+
+namespace FlamingStrike.Maui.ViewModels.Preparation
 {
     public interface IGamePreparationViewModelFactory
     {
@@ -9,18 +11,18 @@
     {
         private readonly IPlayerTypes _playerTypes;
         private readonly IPlayerUiDataRepository _playerUiDataRepository;
-        //private readonly IEventAggregator _eventAggregator;
+        private readonly IEventAggregator _eventAggregator;
 
-        public GamePreparationViewModelFactory(IPlayerTypes playerTypes, IPlayerUiDataRepository playerUiDataRepository/*, IEventAggregator eventAggregator*/)
+        public GamePreparationViewModelFactory(IPlayerTypes playerTypes, IPlayerUiDataRepository playerUiDataRepository, IEventAggregator eventAggregator)
         {
             _playerTypes = playerTypes;
             _playerUiDataRepository = playerUiDataRepository;
-            //_eventAggregator = eventAggregator;
+            _eventAggregator = eventAggregator;
         }
 
         public IGamePreparationViewModel Create()
         {
-            return new GamePreparationViewModel(_playerTypes, _playerUiDataRepository/*, _eventAggregator*/);
+            return new GamePreparationViewModel(_playerTypes, _playerUiDataRepository, _eventAggregator);
         }
     }
 }
