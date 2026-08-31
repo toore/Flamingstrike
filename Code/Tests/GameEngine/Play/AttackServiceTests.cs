@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Threading.Tasks;
 using FlamingStrike.GameEngine;
 using FlamingStrike.GameEngine.Play;
 using FluentAssertions;
 using NSubstitute;
 using Xunit;
 using Xunit.Sdk;
+using Xunit.v3;
 
 namespace Tests.GameEngine.Play
 {
@@ -98,11 +100,21 @@ namespace Tests.GameEngine.Play
 
             private class NumberOfAttackingDicesCasesAttribute : DataAttribute
             {
-                public override IEnumerable<object[]> GetData(MethodInfo methodUnderTest)
+                public override ValueTask<IReadOnlyCollection<ITheoryDataRow>> GetData(
+                    MethodInfo testMethod, DisposalTracker disposalTracker)
                 {
-                    yield return new object[] { 5, 3 };
-                    yield return new object[] { 4, 3 };
-                    yield return new object[] { 2, 1 };
+                    return ValueTask.FromResult<IReadOnlyCollection<ITheoryDataRow>>(
+                        new List<ITheoryDataRow>
+                        {
+                            new TheoryDataRow(5, 3),
+                            new TheoryDataRow(4, 3),
+                            new TheoryDataRow(2, 1)
+                        });
+                }
+
+                public override bool SupportsDiscoveryEnumeration()
+                {
+                    throw new NotImplementedException();
                 }
             }
 
@@ -120,11 +132,21 @@ namespace Tests.GameEngine.Play
 
             private class NumberOfDefendingDicesCasesAttribute : DataAttribute
             {
-                public override IEnumerable<object[]> GetData(MethodInfo methodUnderTest)
+                public override ValueTask<IReadOnlyCollection<ITheoryDataRow>> GetData(
+                    MethodInfo testMethod, DisposalTracker disposalTracker)
                 {
-                    yield return new object[] { 3, 2 };
-                    yield return new object[] { 2, 2 };
-                    yield return new object[] { 1, 1 };
+                    return ValueTask.FromResult<IReadOnlyCollection<ITheoryDataRow>>(
+                        new List<ITheoryDataRow>
+                        {
+                            new TheoryDataRow(3, 2),
+                            new TheoryDataRow(2, 2),
+                            new TheoryDataRow(1, 1)
+                        });
+                }
+
+                public override bool SupportsDiscoveryEnumeration()
+                {
+                    throw new NotImplementedException();
                 }
             }
 
